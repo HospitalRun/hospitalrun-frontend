@@ -1,6 +1,8 @@
-import Ember from 'ember';
+import { map } from '@ember/object/computed';
+import { isEmpty } from '@ember/utils';
+import Mixin from '@ember/object/mixin';
 import SelectValues from 'hospitalrun/utils/select-values';
-export default Ember.Mixin.create({
+export default Mixin.create({
   defaultUnitList: [
     'ampoule',
     'bag',
@@ -38,12 +40,12 @@ export default Ember.Mixin.create({
   unitList: function() {
     let defaultUnitList = this.get('defaultUnitList');
     let inventoryUnitList = this.get('inventoryUnitList');
-    if (Ember.isEmpty(inventoryUnitList)) {
+    if (isEmpty(inventoryUnitList)) {
       return defaultUnitList;
     } else {
       return inventoryUnitList;
     }
   }.property('inventoryUnitList', 'defaultUnitList'),
 
-  unitListForSelect: Ember.computed.map('unitList', SelectValues.selectValuesMap)
+  unitListForSelect: map('unitList', SelectValues.selectValuesMap)
 });

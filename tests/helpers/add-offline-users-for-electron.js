@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { registerAsyncHelper } from '@ember/test';
 import PouchDB from 'pouchdb';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 
@@ -42,7 +42,7 @@ const MOCK_USER_DATA = [{
   }
 }];
 
-export default Ember.Test.registerAsyncHelper('addOfflineUsersForElectron', function() {
+export default registerAsyncHelper('addOfflineUsersForElectron', function() {
   if (window.ELECTRON) {
     return wait().then(() => {
       PouchDB.plugin(PouchAdapterMemory);

@@ -1,9 +1,7 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
-
-const { isEmpty } = Ember;
 
 const LOCATION = 'Springfield Hospital';
 const EXAMINER = 'Sarah Kearney';

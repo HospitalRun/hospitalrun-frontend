@@ -1,6 +1,7 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
-  database: Ember.inject.service(),
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
+  database: service(),
 
   /**
    * Lazily load patient list so that it doesn't impact performance.

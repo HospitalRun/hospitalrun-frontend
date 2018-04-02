@@ -1,20 +1,12 @@
+import { inject as controller } from '@ember/controller';
+import { alias } from '@ember/object/computed';
+import { isEmpty } from '@ember/utils';
+import { set, get, computed } from '@ember/object';
 import AppointmentIndexController from 'hospitalrun/appointments/index/controller';
 import AppointmentStatuses from 'hospitalrun/mixins/appointment-statuses';
 import moment from 'moment';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 import SelectValues from 'hospitalrun/utils/select-values';
-import Ember from 'ember';
-
-const {
-  computed,
-  computed: {
-    alias
-  },
-  get,
-  inject,
-  isEmpty,
-  set
-} = Ember;
 
 export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes, {
   appointmentType: null,
@@ -26,7 +18,7 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
   status: null,
   viewType: 'agendaWeek',
 
-  appointmentsController: inject.controller('appointments'),
+  appointmentsController: controller('appointments'),
   locations: alias('appointmentsController.locationList.value'),
   physicians: alias('appointmentsController.physicianList.value'),
 

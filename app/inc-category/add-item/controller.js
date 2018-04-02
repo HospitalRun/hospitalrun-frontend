@@ -1,14 +1,7 @@
-import Ember from 'ember';
+import Controller, { inject as controller } from '@ember/controller';
+import { alias } from '@ember/object/computed';
+import { get } from '@ember/object';
 import { translationMacro as t } from 'ember-i18n';
-
-const {
-  Controller,
-  computed: {
-    alias
-  },
-  get,
-  inject
-} = Ember;
 
 export default Controller.extend({
   showUpdateButton: true,
@@ -16,7 +9,7 @@ export default Controller.extend({
   updateButtonAction: 'add',
   updateButtonText: 'Add',
 
-  incidentCategoryEdit: inject.controller('inc-category/edit'),
+  incidentCategoryEdit: controller('inc-category/edit'),
   editController: alias('incidentCategoryEdit'),
 
   actions: {

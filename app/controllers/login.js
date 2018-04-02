@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import { isAbortError, isTimeoutError } from 'ember-ajax/errors';
 
-let LoginController = Ember.Controller.extend({
-  session: Ember.inject.service(),
+let LoginController = Controller.extend({
+  session: service(),
   errorMessage: null,
   identification: null,
   password: null,

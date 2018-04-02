@@ -1,5 +1,5 @@
+import { run } from '@ember/runloop';
 import { moduleForModel, test } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('proc-charge', 'Unit | Model | proc-charge', {
   needs: [
@@ -9,12 +9,13 @@ moduleForModel('proc-charge', 'Unit | Model | proc-charge', {
     'model:inventory',
     'model:inv-purchase',
     'model:inv-location',
-    'model:pricing'
+    'model:pricing',
+    'service:session'
   ]
 });
 
 test('medicationCharge', function(assert) {
-  let medication = Ember.run(() => this.store().createRecord('inventory'));
+  let medication = run(() => this.store().createRecord('inventory'));
   let procCharge = this.subject({
     newMedicationCharge: 11,
     medication
@@ -38,14 +39,14 @@ test('medicationChange empty medication', function(assert) {
 });
 
 test('medicationCharge empty newMedicationCharge', function(assert) {
-  let medication = Ember.run(() => this.store().createRecord('inventory'));
+  let medication = run(() => this.store().createRecord('inventory'));
   let procCharge = this.subject({ medication });
 
   assert.strictEqual(procCharge.get('medicationCharge'), true);
 });
 
 test('medicationName', function(assert) {
-  let medication = Ember.run(() => this.store().createRecord('inventory', {
+  let medication = run(() => this.store().createRecord('inventory', {
     name: 'Test Item',
     price: 12.5
   }));
@@ -55,7 +56,7 @@ test('medicationName', function(assert) {
 });
 
 test('medicationPrice', function(assert) {
-  let medication = Ember.run(() => this.store().createRecord('inventory', {
+  let medication = run(() => this.store().createRecord('inventory', {
     name: 'Testing',
     price: 133.59
   }));

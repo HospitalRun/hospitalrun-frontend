@@ -1,11 +1,15 @@
+import { run } from '@ember/runloop';
+import EmberObject from '@ember/object';
+import { getOwner } from '@ember/application';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 import tHelper from 'ember-i18n/helper';
 import localeConfig from 'ember-i18n/config/en';
 
 moduleFor('controller:abstract-edit-controller', 'Unit | Controller | abstract-edit-controller', {
   needs: [
     'service:i18n',
+    'service:session',
+    'service:lookupLists',
     'locale:en/translations',
     'locale:en/config',
     'util:i18n/missing-message',
@@ -19,7 +23,7 @@ moduleFor('controller:abstract-edit-controller', 'Unit | Controller | abstract-e
 
     // manually inject the i18n service as initialzer does not run
     // in unit test
-    Ember.getOwner(this).inject('controller', 'i18n', 'service:i18n');
+    getOwner(this).inject('controller', 'i18n', 'service:i18n');
 
     // register t helper
     this.registry.register('helper:t', tHelper);
@@ -42,13 +46,13 @@ test('cancelButtonText hasDirtyAttributes', function(assert) {
 
 test('disabledAction', function(assert) {
   assert.equal(this.subject({
-    model: Ember.Object.create()
+    model: EmberObject.create()
   }).get('disabledAction'), 'showDisabledDialog');
 });
 
 test('disabledAction invalid', function(assert) {
   let controller = this.subject({
-    model: Ember.Object.create({
+    model: EmberObject.create({
       isValid: true
     })
   });
@@ -125,7 +129,7 @@ test('actions.update exception message', function(assert) {
     assert.equal(alertMessage, 'An error occurred while attempting to save: Test');
   };
 
-  Ember.run(() => {
+  run(() => {
     controller.send('update');
   });
 });

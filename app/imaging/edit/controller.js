@@ -1,10 +1,13 @@
+import { alias } from '@ember/object/computed';
+import { isArray } from '@ember/array';
+import { isEmpty } from '@ember/utils';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
-import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-  imagingController: Ember.inject.controller('imaging'),
+  imagingController: controller('imaging'),
 
   chargePricingCategory: 'Imaging',
   chargeRoute: 'imaging.charge',
@@ -14,7 +17,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     let isNew = this.get('model.isNew');
     let imagingTypeName = this.get('model.imagingTypeName');
     let selectedImagingType = this.get('selectedImagingType');
-    if (isNew && (Ember.isEmpty(imagingTypeName) || Ember.isArray(selectedImagingType) && selectedImagingType.length > 1)) {
+    if (isNew && (isEmpty(imagingTypeName) || isArray(selectedImagingType) && selectedImagingType.length > 1)) {
       return false;
     } else {
       return this.currentUserCan('complete_imaging');
@@ -30,7 +33,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
           this.set('model.imagingDate', new Date());
           this.send('update');
         }
-      }.bind(this)).catch(Ember.K);
+      }.bind(this)).catch(function() {});
     },
 
     /**
@@ -40,12 +43,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       if (this.get('model.isNew')) {
         let newImaging = this.get('model');
         let selectedImagingType = this.get('selectedImagingType');
-        if (Ember.isEmpty(this.get('model.status'))) {
+        if (isEmpty(this.get('model.status'))) {
           this.set('model.status', 'Requested');
         }
         this.set('model.requestedBy', newImaging.getUserName());
         this.set('model.requestedDate', new Date());
-        if (Ember.isEmpty(selectedImagingType)) {
+        if (isEmpty(selectedImagingType)) {
           this.saveNewPricing(this.get('model.imagingTypeName'), 'Imaging', 'model.imagingType').then(function() {
             this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
               this.saveModel();
@@ -53,7 +56,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
           }.bind(this));
         } else {
           this.getSelectedPricing('selectedImagingType').then(function(pricingRecords) {
-            if (Ember.isArray(pricingRecords)) {
+            if (isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'imagingType', 'imaging', 'Imaging');
             } else {
               this.set('model.imagingType', pricingRecords);
@@ -90,11 +93,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }],
 
   pricingTypeForObjectType: 'Imaging Procedure',
-  pricingTypes: Ember.computed.alias('imagingController.imagingPricingTypes'),
+  pricingTypes: alias('imagingController.imagingPricingTypes'),
 
   pricingList: null, // This gets filled in by the route
 
-  radiologistList: Ember.computed.alias('imagingController.radiologistList'),
+  radiologistList: alias('imagingController.radiologistList'),
 
   updateCapability: 'add_imaging',
 

@@ -1,12 +1,14 @@
+import { isEmpty } from '@ember/utils';
+import EmberObject from '@ember/object';
+import { inject as service } from '@ember/service';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import Ember from 'ember';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractEditRoute.extend(PatientVisits, PouchDbMixin, PatientNotes, {
-  customForms: Ember.inject.service(),
+  customForms: service(),
   editTitle: t('patients.titles.edit'),
   modelName: 'patient',
   newTitle: t('patients.titles.new'),
@@ -56,7 +58,7 @@ export default AbstractEditRoute.extend(PatientVisits, PouchDbMixin, PatientNote
   getNewData() {
     let customForms = this.get('customForms');
     let newPatientData = {
-      customForms: Ember.Object.create()
+      customForms: EmberObject.create()
     };
     return customForms.setDefaultCustomForms(['patient', 'socialwork'], newPatientData);
   },
@@ -67,7 +69,7 @@ export default AbstractEditRoute.extend(PatientVisits, PouchDbMixin, PatientNote
     let externalId = model.get('externalPatientId');
     let maxValue = this.get('maxValue');
     let patientId = model.get('id');
-    if (Ember.isEmpty(friendlyId) && !Ember.isEmpty(externalId)) {
+    if (isEmpty(friendlyId) && !isEmpty(externalId)) {
       model.set('friendlyId', externalId);
     }
     this._super(controller, model);

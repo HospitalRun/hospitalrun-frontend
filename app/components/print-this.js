@@ -1,11 +1,9 @@
-import Ember from 'ember';
+import { later, scheduleOnce } from '@ember/runloop';
+import Component from '@ember/component';
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 
-const {
-  get,
-  isEmpty
-} = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   print: true,
   delay: null,
 
@@ -13,11 +11,11 @@ export default Ember.Component.extend({
     if (get(this, 'print')) {
       let delay = get(this, 'delay');
       if (!isEmpty(delay) && !isNaN(delay) && delay > 0) {
-        Ember.run.later(null, function() {
+        later(null, function() {
           window.print();
         }, delay);
       } else {
-        Ember.run.scheduleOnce('afterRender', this, function() {
+        scheduleOnce('afterRender', this, function() {
           window.print();
         });
       }

@@ -1,11 +1,11 @@
-import Ember from 'ember';
+import { registerAsyncHelper } from '@ember/test';
 
 const crusts =  ['Thin', 'Deep Dish', 'Flatbread'];
 const desserts = ['Ice Cream', 'Cookies', 'Cake'];
 const toppings =  ['Cheese', 'Pepperoni', 'Mushrooms'];
 const header = ['______________________________'];
 
-Ember.Test.registerAsyncHelper('createCustomFormForType', function(app, formType, alwaysInclude, assert) {
+registerAsyncHelper('createCustomFormForType', function(app, formType, alwaysInclude, assert) {
   function addField(fieldType, label, values) {
     click('button:contains(Add Field)');
     waitToAppear('.modal-dialog');
@@ -99,7 +99,7 @@ Ember.Test.registerAsyncHelper('createCustomFormForType', function(app, formType
   });
 });
 
-Ember.Test.registerAsyncHelper('checkCustomFormIsDisplayed', function(app, assert, header) {
+registerAsyncHelper('checkCustomFormIsDisplayed', function(app, assert, header) {
   waitToAppear(`h4:contains(${header})`);
 
   andThen(() => {
@@ -127,7 +127,7 @@ Ember.Test.registerAsyncHelper('checkCustomFormIsDisplayed', function(app, asser
   });
 });
 
-Ember.Test.registerAsyncHelper('fillCustomForm', function(app, header) {
+registerAsyncHelper('fillCustomForm', function(app, header) {
   let formSelector = `h4:contains(${header}) + .js-custom-form`;
   select(`${formSelector} select`, crusts[2]);
   click(`${formSelector} input[type=checkbox]:last`);
@@ -136,7 +136,7 @@ Ember.Test.registerAsyncHelper('fillCustomForm', function(app, header) {
   fillIn(`${formSelector} label:contains(Beverage)+input[type=text]`, `Small text for the form ${header}`);
 });
 
-Ember.Test.registerAsyncHelper('checkCustomFormIsFilled', function(app, assert, header) {
+registerAsyncHelper('checkCustomFormIsFilled', function(app, assert, header) {
   waitToAppear(`h4:contains(${header})`);
 
   andThen(() => {
@@ -151,7 +151,7 @@ Ember.Test.registerAsyncHelper('checkCustomFormIsFilled', function(app, assert, 
   });
 });
 
-Ember.Test.registerAsyncHelper('checkCustomFormIsFilledAndReadonly', function(app, assert, header) {
+registerAsyncHelper('checkCustomFormIsFilledAndReadonly', function(app, assert, header) {
   waitToAppear(`h4:contains(${header})`);
 
   andThen(() => {
@@ -166,7 +166,7 @@ Ember.Test.registerAsyncHelper('checkCustomFormIsFilledAndReadonly', function(ap
   });
 });
 
-Ember.Test.registerAsyncHelper('attachCustomForm', function(app, name) {
+registerAsyncHelper('attachCustomForm', function(app, name) {
   waitToAppear('button:contains(Add Form)');
   click('button:contains(Add Form)');
   waitToAppear('.modal-dialog');
