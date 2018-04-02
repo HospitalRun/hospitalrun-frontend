@@ -1,9 +1,10 @@
+import { inject as controller } from '@ember/controller';
+import { alias } from '@ember/object/computed';
 import ProcedureChargeController from 'hospitalrun/procedures/charge/controller';
-import Ember from 'ember';
 
 export default ProcedureChargeController.extend({
   cancelAction: 'closeModal',
   newPricingItem: false,
-  requestingController: Ember.inject.controllers('imaging/edit'),
-  pricingList: Ember.computed.alias('requestingController.chargesPricingList')
+  requestingController: controller('imaging/edit'),
+  pricingList: alias('requestingController.chargesPricingList')
 });

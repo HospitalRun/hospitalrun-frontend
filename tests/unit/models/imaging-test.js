@@ -7,7 +7,8 @@ moduleForModel('imaging', 'Unit | Model | imaging', {
     'model:patient',
     'model:visit',
     'ember-validations@validator:local/acceptance',
-    'ember-validations@validator:local/presence'
+    'ember-validations@validator:local/presence',
+    'service:session'
   ]
 });
 

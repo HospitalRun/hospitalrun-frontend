@@ -1,5 +1,10 @@
+import { isEmpty } from '@ember/utils';
+import {
+  Promise as EmberPromise,
+  all,
+  resolve
+} from 'rsvp';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import Ember from 'ember';
 export default AbstractEditRoute.extend({
   editTitle: 'Edit Invoice',
   modelName: 'invoice',
@@ -20,26 +25,26 @@ export default AbstractEditRoute.extend({
   },
 
   afterModel(model) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let lineItems = model.get('lineItems');
       let promises = [];
       lineItems.forEach(function(lineItem) {
         promises.push(lineItem.reload());
       });
-      Ember.RSVP.all(promises, 'Reload billing line items for invoice').then(function(results) {
+      all(promises, 'Reload billing line items for invoice').then(function(results) {
         let detailPromises = [];
         results.forEach(function(result) {
           result.get('details').forEach(function(detail) {
             detailPromises.push(detail.reload());
           });
         });
-        Ember.RSVP.all(detailPromises, 'Reload billing line item details for invoice').then(resolve, reject);
+        all(detailPromises, 'Reload billing line item details for invoice').then(resolve, reject);
       }, reject);
     });
   },
 
   getNewData() {
-    return Ember.RSVP.resolve({
+    return resolve({
       billDate: new Date(),
       status: 'Draft'
     });
@@ -53,7 +58,7 @@ export default AbstractEditRoute.extend({
     lineItems.forEach(function(lineItem) {
       lineItem.get('details').forEach(function(detail) {
         let pricingItem = detail.get('pricingItem');
-        if (!Ember.isEmpty(pricingItem)) {
+        if (!isEmpty(pricingItem)) {
           promises.push(pricingItem.reload());
         }
       });

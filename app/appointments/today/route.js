@@ -1,9 +1,7 @@
+import { computed } from '@ember/object';
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
 import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
-import Ember from 'ember';
-
-const { computed } = Ember;
 
 export default AppointmentIndexRoute.extend({
   editReturn: 'appointments.today',

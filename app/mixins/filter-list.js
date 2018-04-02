@@ -1,19 +1,13 @@
-import Ember from 'ember';
+import EmberMap from '@ember/map';
+import Mixin from '@ember/object/mixin';
+import { isEmpty, compare } from '@ember/utils';
+import { isHTMLSafe } from '@ember/string';
+import { set, get } from '@ember/object';
 
-const {
-  compare,
-  get,
-  isEmpty,
-  String: {
-    isHTMLSafe
-  },
-  set
-} = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   filterBy: null,
   filterValue: null,
-  filteredBy: new Ember.Map(),
+  filteredBy: new EmberMap(),
   sortByDesc: null,
   sortByKey: null,
 

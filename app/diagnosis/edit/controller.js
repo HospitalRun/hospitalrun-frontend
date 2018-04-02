@@ -1,14 +1,12 @@
-import Ember from 'ember';
+import { Promise as EmberPromise } from 'rsvp';
+import { alias } from '@ember/object/computed';
+import { computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-
-const {
-  computed
-} = Ember;
 
 export default AbstractEditController.extend({
   updateCapability: 'add_diagnosis',
-  editController: Ember.computed.alias('model.editController'),
-  diagnosisList: Ember.computed.alias('editController.diagnosisList'),
+  editController: alias('model.editController'),
+  diagnosisList: alias('editController.diagnosisList'),
   newDiagnosis: false,
 
   lookupListsToUpdate: [{
@@ -56,7 +54,7 @@ export default AbstractEditController.extend({
   beforeUpdate() {
     let diagnosis = this.get('model');
     this.set('newDiagnosis', diagnosis.get('isNew'));
-    return Ember.RSVP.Promise.resolve();
+    return EmberPromise.resolve();
   },
 
   actions: {

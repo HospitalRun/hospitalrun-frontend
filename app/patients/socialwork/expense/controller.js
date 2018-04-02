@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import Controller, { inject as controller } from '@ember/controller';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import SelectValues from 'hospitalrun/utils/select-values';
 import { translationMacro as t } from 'ember-i18n';
 
-export default Ember.Controller.extend(IsUpdateDisabled, {
-  patientsController: Ember.inject.controller('patients'),
+export default Controller.extend(IsUpdateDisabled, {
+  patientsController: controller('patients'),
 
   categoryTypes: [
     'Clothing',
@@ -18,7 +19,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
     'Water'
   ].map(SelectValues.selectValuesMap),
 
-  editController: Ember.computed.alias('patientsController'),
+  editController: alias('patientsController'),
   showUpdateButton: true,
   title: t('patients.titles.socialWork'),
   updateButtonAction: 'update',

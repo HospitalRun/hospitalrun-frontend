@@ -1,12 +1,9 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import SelectValues from 'hospitalrun/utils/select-values';
 
-const {
-  computed,
-  isEmpty
-} = Ember;
-
-export default Ember.Component.extend(SelectValues, {
+export default Component.extend(SelectValues, {
   classNames: ['detail-section-content', 'js-custom-form'],
   propertyPrefix: '',
   fieldsByRow: computed('form', 'form.fields.[]', 'form.columns', function() {
@@ -33,7 +30,7 @@ export default Ember.Component.extend(SelectValues, {
         classNames += ` col-sm-${colWidth * colSpan}`;
         field.set('displayClassNames', classNames);
         if (field.get('type') === 'radio') {
-          field.set('mappedValues', field.get('values').map((value) => Ember.get(value, 'label')));
+          field.set('mappedValues', field.get('values').map((value) => get(value, 'label')));
         }
         currentRow.push(field);
         colCount += colSpan;

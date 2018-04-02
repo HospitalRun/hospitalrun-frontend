@@ -1,12 +1,16 @@
 import { moduleForModel } from 'ember-qunit';
 
-import { testValidPropertyValues, testInvalidPropertyValues } from '../../helpers/validate-properties';
+import {
+  testValidPropertyValues,
+  testInvalidPropertyValues
+} from '../../helpers/validate-properties';
 
 moduleForModel('billing-line-item', 'Unit | Model | billing-line-item', {
   needs: [
     'ember-validations@validator:local/presence',
     'ember-validations@validator:local/numericality',
-    'model:line-item-detail'
+    'model:line-item-detail',
+    'service:session'
   ]
 });
 

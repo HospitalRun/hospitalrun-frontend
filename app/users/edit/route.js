@@ -1,8 +1,7 @@
+import { resolve } from 'rsvp';
+import { set } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
-
-const { set } = Ember;
 
 export default AbstractEditRoute.extend({
   editTitle: t('labels.editUser'),
@@ -10,7 +9,7 @@ export default AbstractEditRoute.extend({
   newTitle: t('labels.newUser'),
 
   getNewData() {
-    return Ember.RSVP.resolve({
+    return resolve({
       roles: ['Data Entry', 'user']
     });
   },

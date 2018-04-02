@@ -1,12 +1,7 @@
+import { isEmpty } from '@ember/utils';
+import EmberObject, { computed, get } from '@ember/object';
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
-import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
-
-const {
-  get,
-  isEmpty,
-  computed
-} = Ember;
 
 export default AppointmentIndexRoute.extend({
   dateIntervalEnd: null,
@@ -76,7 +71,7 @@ export default AppointmentIndexRoute.extend({
         });
       }
     });
-    return Ember.Object.create({
+    return EmberObject.create({
       events,
       resources
     });

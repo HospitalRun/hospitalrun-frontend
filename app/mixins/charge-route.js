@@ -1,6 +1,8 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
-  database: Ember.inject.service(),
+import { Promise as EmberPromise } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
+  database: service(),
   actions: {
     deleteCharge(model) {
       this.controller.send('deleteCharge', model);
@@ -9,7 +11,7 @@ export default Ember.Mixin.create({
   pricingList: null,
 
   afterModel() {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let database = this.get('database');
       let maxId = database.getMaxPouchId('pricing');
       let minId = database.getMinPouchId('pricing');

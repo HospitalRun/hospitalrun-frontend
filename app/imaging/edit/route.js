@@ -1,8 +1,8 @@
+import { resolve } from 'rsvp';
 import { translationMacro as t } from 'ember-i18n';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
-import Ember from 'ember';
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, PatientListRoute, {
@@ -18,7 +18,7 @@ export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, PatientL
   },
 
   getNewData() {
-    return Ember.RSVP.resolve({
+    return resolve({
       selectPatient: true,
       requestDate: moment().startOf('day').toDate()
     });

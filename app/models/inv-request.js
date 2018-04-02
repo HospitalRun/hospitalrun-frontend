@@ -1,10 +1,9 @@
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import DS from 'ember-data';
-import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
-
-const { computed } = Ember;
 
 /**
  * Model to represent a request for inventory items.
@@ -44,7 +43,7 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   deliveryDetails: computed('deliveryAisle', 'deliveryLocation', 'patient', function() {
     let locationName = this.get('deliveryLocationName');
     let patient = this.get('patient');
-    if (Ember.isEmpty(patient)) {
+    if (isEmpty(patient)) {
       return locationName;
     } else {
       return patient.get('displayName');
@@ -52,14 +51,14 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   }),
 
   haveReason: computed('reason', function() {
-    return !Ember.isEmpty(this.get('reason'));
+    return !isEmpty(this.get('reason'));
   }),
 
   isAdjustment: computed('transactionType', function() {
     let adjustmentTypes = this.get('adjustmentTypes');
     let transactionType = this.get('transactionType');
     let adjustmentType = adjustmentTypes.findBy('type', transactionType);
-    return !Ember.isEmpty(adjustmentType);
+    return !isEmpty(adjustmentType);
   }),
 
   isFulfillment: computed('transactionType', function() {
@@ -86,9 +85,9 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
             // Requested items don't show the type ahead and therefore don't need validation.
             return false;
           }
-          if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
+          if (isEmpty(itemName) || isEmpty(itemTypeAhead)) {
             // force validation to fail if fields are empty and requested items are empty
-            return Ember.isEmpty(requestedItems);
+            return isEmpty(requestedItems);
           } else {
             let typeAheadName = itemTypeAhead.substr(0, itemName.length);
             if (itemName !== typeAheadName) {
@@ -110,7 +109,7 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
         },
         if(object) {
           let requestedItems = object.get('requestedItems');
-          return (Ember.isEmpty(requestedItems));
+          return isEmpty(requestedItems);
         }
       },
       acceptance: {

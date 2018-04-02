@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 
-export default Ember.Mixin.create(PouchDbMixin, {
+export default Mixin.create(PouchDbMixin, {
   getPatientInvoices(patient) {
     let patientId = patient.get('id');
     return this.store.query('invoice', {

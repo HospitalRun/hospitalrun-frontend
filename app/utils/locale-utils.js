@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import $ from 'jquery';
 
 /**
  * Utilities for working with ember-i18n locales
@@ -10,12 +10,12 @@ import Ember from 'ember';
  * Walk up configuration objects from most specific to least.
  */
 function walkConfigs(id, owner) {
-  let appConfig = owner._lookupFactory(`locale:${id}/config`);
+  let appConfig = owner.factoryFor(`locale:${id}/config`);
   if (appConfig) {
     return appConfig;
   }
 
-  let addonConfig = owner._lookupFactory(`ember-i18n@config:${id}`);
+  let addonConfig = owner.factoryFor(`ember-i18n@config:${id}`);
   if (addonConfig) {
     return addonConfig;
   }
@@ -37,9 +37,9 @@ function parentLocale(id) {
  */
 function setRTL(active) {
   if (active) {
-    Ember.$('body').addClass('rtl');
+    $('body').addClass('rtl');
   } else {
-    Ember.$('body').removeClass('rtl');
+    $('body').removeClass('rtl');
   }
 }
 

@@ -1,12 +1,8 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { get, computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 
-const {
-  computed,
-  get,
-  isEmpty
-} = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: 'ps-info-group long-form',
 
   canAddAllergy: null,
