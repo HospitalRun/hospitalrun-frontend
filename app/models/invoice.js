@@ -1,11 +1,11 @@
+import { isEmpty } from '@ember/utils';
+import { mapBy, sum } from '@ember/object/computed';
+import { set, get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import DS from 'ember-data';
-import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
-
-const { computed, get, set } = Ember;
 
 export default AbstractModel.extend(DateFormat, NumberFormat, {
   // Attributes
@@ -35,11 +35,11 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     return this.dateToTime(get(this, 'billDate'));
   }),
 
-  discountTotals: Ember.computed.mapBy('lineItemsByCategory', 'discount'),
-  discount: Ember.computed.sum('discountTotals'),
+  discountTotals: mapBy('lineItemsByCategory', 'discount'),
+  discount: sum('discountTotals'),
 
-  nationalInsuranceTotals: Ember.computed.mapBy('lineItemsByCategory', 'nationalInsurance'),
-  nationalInsurance: Ember.computed.sum('nationalInsuranceTotals'),
+  nationalInsuranceTotals: mapBy('lineItemsByCategory', 'nationalInsurance'),
+  nationalInsurance: sum('nationalInsuranceTotals'),
 
   paidFlag: computed('status', function() {
     return get(this, 'status') === 'Paid';
@@ -51,16 +51,16 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     return this._numberFormat((patientResponsibility - paidTotal), true);
   }),
 
-  privateInsuranceTotals: Ember.computed.mapBy('lineItemsByCategory', 'privateInsurance'),
-  privateInsurance: Ember.computed.sum('privateInsuranceTotals'),
+  privateInsuranceTotals: mapBy('lineItemsByCategory', 'privateInsurance'),
+  privateInsurance: sum('privateInsuranceTotals'),
 
-  lineTotals: Ember.computed.mapBy('lineItems', 'total'),
-  total: Ember.computed.sum('lineTotals'),
+  lineTotals: mapBy('lineItems', 'total'),
+  total: sum('lineTotals'),
 
   displayInvoiceNumber: computed('externalInvoiceNumber', 'id', function() {
     let externalInvoiceNumber = get(this, 'externalInvoiceNumber');
     let id = get(this, 'id');
-    return Ember.isEmpty(externalInvoiceNumber) ? id : externalInvoiceNumber;
+    return isEmpty(externalInvoiceNumber) ? id : externalInvoiceNumber;
   }),
 
   lineItemsByCategory: computed('lineItems.@each.amountOwed', function() {
@@ -69,7 +69,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     lineItems.forEach(function(lineItem) {
       let category = get(lineItem, 'category');
       let categoryList = byCategory.findBy('category', category);
-      if (Ember.isEmpty(categoryList)) {
+      if (isEmpty(categoryList)) {
         categoryList = {
           category,
           items: []
@@ -89,15 +89,15 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   }),
 
   patientIdChanged: function() {
-    if (!Ember.isEmpty(get(this, 'patient'))) {
+    if (!isEmpty(get(this, 'patient'))) {
       let patientDisplayName = get(this, 'patient.displayName');
       let patientDisplayId = get(this, 'patient.displayPatientId');
       set(this, 'patientInfo', `${patientDisplayName} - ${patientDisplayId}`);
     }
   }.observes('patient.displayName', 'patient.id', 'patient.displayPatientId'),
 
-  patientResponsibilityTotals: Ember.computed.mapBy('lineItems', 'amountOwed'),
-  patientResponsibility: Ember.computed.sum('patientResponsibilityTotals'),
+  patientResponsibilityTotals: mapBy('lineItems', 'amountOwed'),
+  patientResponsibility: sum('patientResponsibilityTotals'),
   finalPatientResponsibility: computed('patientResponsibility', 'paymentProfile', function() {
     let setFee = this._getValidNumber(this.get('paymentProfile.setFee'));
     let discountAmount = this._getValidNumber(this.get('paymentProfile.discountAmount'));

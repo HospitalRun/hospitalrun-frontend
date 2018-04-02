@@ -1,6 +1,6 @@
+import Service from '@ember/service';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
 import sinon from 'sinon';
 
 const languagePreference = {
@@ -12,7 +12,7 @@ moduleForComponent('language-select', 'Integration | Component | language select
   beforeEach() {
     this.inject.service('i18n');
 
-    this.register('service:language-preference', Ember.Service.extend(languagePreference));
+    this.register('service:language-preference', Service.extend(languagePreference));
     this.inject.service('language-preference', { as: 'languagePreference' });
   },
   afterEach() {

@@ -1,11 +1,12 @@
+import { alias } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractEditController.extend({
-  inventoryController: Ember.inject.controller('inventory'),
+  inventoryController: controller('inventory'),
 
-  warehouseList: Ember.computed.alias('inventoryController.warehouseList'),
-  aisleLocationList: Ember.computed.alias('inventoryController.aisleLocationList'),
+  warehouseList: alias('inventoryController.warehouseList'),
+  aisleLocationList: alias('inventoryController.aisleLocationList'),
 
   lookupListsToUpdate: [{
     name: 'aisleLocationList', // Name of property containing lookup list

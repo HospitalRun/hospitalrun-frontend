@@ -1,9 +1,9 @@
+import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
-
-const { computed } = Ember;
 
 /**
  * Model to represent the location(s) of inventory items.
@@ -15,7 +15,7 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
   quantity: DS.attr('number'),
   location: DS.attr('string'),
   aisleLocation: DS.attr('string'),
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
   locationNameWithQuantity: computed('locationName', 'quantity', function() {
     let quantity = this.get('quantity');
@@ -43,7 +43,7 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
           let adjustmentQuantity = object.get('adjustmentQuantity');
           let transactionType = object.get('transactionType');
           let locationQuantity = object.get('quantity');
-          if (Ember.isEmpty(adjustmentQuantity) || isNaN(adjustmentQuantity)) {
+          if (isEmpty(adjustmentQuantity) || isNaN(adjustmentQuantity)) {
             return true;
           }
           if (transactionType !== 'Adjustment (Add)' && adjustmentQuantity > locationQuantity) {
@@ -68,7 +68,7 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
           let transferLocation = object.get('transferLocation');
           let transferItem = object.get('transferItem');
           // If we don't have a transfer item, then a transfer is not occurring.
-          if (!Ember.isEmpty(transferItem) && Ember.isEmpty(transferLocation)) {
+          if (!isEmpty(transferItem) && isEmpty(transferLocation)) {
             return true;
           }
           return false;

@@ -1,6 +1,7 @@
-import Ember from 'ember';
 import Application from '../../app';
 import config from '../../config/environment';
+import { merge } from '@ember/polyfills';
+import { run } from '@ember/runloop';
 
 import './run-with-pouch-dump';
 import './authenticate-user';
@@ -26,19 +27,18 @@ function createTranslationWrapper(original, context) {
 }
 
 export default function startApp(attrs) {
-  let application;
+  let attributes = merge({}, config.APP);
+  attributes.autoboot = true;
+  attributes = merge(attributes, attrs); // use defaults, but you can override;
 
-  // use defaults, but you can override
-  let attributes = Ember.assign({}, config.APP, attrs);
-
-  Ember.run(() => {
-    application = Application.create(attributes);
+  return run(() => {
+    let application = Application.create(attributes);
     application.setupForTesting();
     application.injectTestHelpers();
+
+    let translationService = application.__container__.lookup('service:i18n');
+    application.__container__.lookup('service:i18n').t = createTranslationWrapper(translationService.t, translationService);
+
+    return application;
   });
-
-  let translationService = application.__container__.lookup('service:i18n');
-  application.__container__.lookup('service:i18n').t = createTranslationWrapper(translationService.t, translationService);
-
-  return application;
 }

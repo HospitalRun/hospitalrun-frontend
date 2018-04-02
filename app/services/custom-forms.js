@@ -1,15 +1,9 @@
-import Ember from 'ember';
-
-const {
-  Service,
-  get,
-  inject,
-  isEmpty,
-  set
-} = Ember;
+import Service, { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+import EmberObject, { set, get } from '@ember/object';
 
 export default Service.extend({
-  store: inject.service(),
+  store: service(),
 
   getCustomForms(formTypes) {
     return this.get('store').query('custom-form', {
@@ -25,7 +19,7 @@ export default Service.extend({
       if (!isEmpty(customForms)) {
         customForms.forEach((customForm) => {
           if (get(customForm, 'alwaysInclude')) {
-            set(model, `customForms.${get(customForm, 'id')}`, Ember.Object.create());
+            set(model, `customForms.${get(customForm, 'id')}`, EmberObject.create());
           }
         });
       }

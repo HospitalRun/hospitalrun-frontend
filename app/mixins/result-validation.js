@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import Mixin from '@ember/object/mixin';
 import { translationMacro as t } from 'ember-i18n';
 
-export default Ember.Mixin.create({
+export default Mixin.create({
   validations: {
     result: {
       acceptance: {
@@ -12,7 +13,7 @@ export default Ember.Mixin.create({
           }
           let status = object.get('status');
           let result = object.get('result');
-          if (status === 'Completed' && Ember.isEmpty(result)) {
+          if (status === 'Completed' && isEmpty(result)) {
             // force validation to fail
             return true;
           }

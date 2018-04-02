@@ -1,32 +1,32 @@
+import EmberObject from '@ember/object';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleFor('mixin:number-format', 'Unit | Mixin | number-format');
 
 test('_calculateTotal', function(assert) {
-  let records = [5, 5, 6].map((id) => Ember.Object.create({ id }));
-  let numberFormat = Ember.Object.extend(NumberFormat).create({ records });
+  let records = [5, 5, 6].map((id) => EmberObject.create({ id }));
+  let numberFormat = EmberObject.extend(NumberFormat).create({ records });
 
   assert.strictEqual(numberFormat._calculateTotal('records', 'id'), 16, 'Should add property array');
 });
 
 test('_calculateTotal property name', function(assert) {
-  let records = [5, 2, 3].map((id) => Ember.Object.create({ id }));
-  let numberFormat = Ember.Object.extend(NumberFormat).create();
+  let records = [5, 2, 3].map((id) => EmberObject.create({ id }));
+  let numberFormat = EmberObject.extend(NumberFormat).create();
 
   assert.strictEqual(numberFormat._calculateTotal(records, 'id'), 10, 'Should add passed in array');
 });
 
 test('_calculateTotal invalid number', function(assert) {
-  let records = [5, 'test', 3].map((id) => Ember.Object.create({ id }));
-  let numberFormat = Ember.Object.extend(NumberFormat).create({ records });
+  let records = [5, 'test', 3].map((id) => EmberObject.create({ id }));
+  let numberFormat = EmberObject.extend(NumberFormat).create({ records });
 
   assert.strictEqual(numberFormat._calculateTotal('records', 'id'), 8, 'Should treat invalid number as 0');
 });
 
 test('_numberFormat', function(assert) {
-  let numberFormat = Ember.Object.extend(NumberFormat).create();
+  let numberFormat = EmberObject.extend(NumberFormat).create();
 
   assert.strictEqual(numberFormat._numberFormat(), undefined, 'Should return undefined for no argument');
   assert.strictEqual(numberFormat._numberFormat('test'), undefined, 'Should return undefined for no number');
@@ -39,7 +39,7 @@ test('_numberFormat', function(assert) {
 });
 
 test('_getValidNumber', function(assert) {
-  let numberFormat = Ember.Object.extend(NumberFormat).create();
+  let numberFormat = EmberObject.extend(NumberFormat).create();
 
   assert.strictEqual(numberFormat._getValidNumber(), 0, 'Should return 0 for no argument');
   assert.strictEqual(numberFormat._getValidNumber('test'), 0, 'Should return 0 for invalid number');
@@ -49,7 +49,7 @@ test('_getValidNumber', function(assert) {
 });
 
 test('_validNumber', function(assert) {
-  let numberFormat = Ember.Object.extend(NumberFormat).create();
+  let numberFormat = EmberObject.extend(NumberFormat).create();
 
   assert.strictEqual(numberFormat._validNumber(1), true, 'Should return true for basic int');
   assert.strictEqual(numberFormat._validNumber(1.5), true, 'Should return true for float');

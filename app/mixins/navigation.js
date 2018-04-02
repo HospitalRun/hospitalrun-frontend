@@ -1,13 +1,9 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
+import { isEqual } from '@ember/utils';
+import { set, get, computed } from '@ember/object';
+import { camelize } from '@ember/string';
 
-const { camelize } = Ember.String;
-const {
-  get,
-  isEqual,
-  set
-} = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   navItems: [
     {
       title: 'Inventory',
@@ -366,7 +362,7 @@ export default Ember.Mixin.create({
   ],
 
   // Navigation items get mapped localizations
-  localizedNavItems: Ember.computed('navItems.[]', 'i18n.locale', function() {
+  localizedNavItems: computed('navItems.[]', 'i18n.locale', function() {
     let localizationPrefix = 'navigation.';
     // Supports unlocalized keys for now, otherwise we would get:
     // "Missing translation: key.etc.path"

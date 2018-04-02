@@ -1,15 +1,18 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
 
-export default Ember.Mixin.create({
-  customForms: Ember.inject.service(),
+export default Mixin.create({
+  customForms: service(),
   formType: null,
   formsForType: null,
   openModalAction: 'openModal',
 
-  formsForSelect: Ember.computed('formsForType', 'usedForms', function() {
+  formsForSelect: computed('formsForType', 'usedForms', function() {
     let formsForType = this.get('formsForType');
     let usedForms = this.get('usedForms');
-    if (!Ember.isEmpty(formsForType)) {
+    if (!isEmpty(formsForType)) {
       let formsForSelect = formsForType.filter((customForm) => {
         return (!usedForms.includes(customForm.get('id')));
       });
@@ -23,10 +26,10 @@ export default Ember.Mixin.create({
     }
   }),
 
-  formsToDisplay: Ember.computed('formsForType', 'model.customForms', function() {
+  formsToDisplay: computed('formsForType', 'model.customForms', function() {
     let formsForType = this.get('formsForType');
     let modelForms = this.get('model.customForms');
-    if (!Ember.isEmpty(modelForms) && !Ember.isEmpty(formsForType)) {
+    if (!isEmpty(modelForms) && !isEmpty(formsForType)) {
       return Object.keys(modelForms).map((formId) => {
         return {
           form: formsForType.findBy('id', formId),
@@ -36,14 +39,14 @@ export default Ember.Mixin.create({
     }
   }),
 
-  showAddButton: Ember.computed('formsForSelect', function() {
+  showAddButton: computed('formsForSelect', function() {
     let formsForSelect = this.get('formsForSelect');
-    return !Ember.isEmpty(formsForSelect);
+    return !isEmpty(formsForSelect);
   }),
 
-  usedForms: Ember.computed('model.customForms', function() {
+  usedForms: computed('model.customForms', function() {
     let modelForms = this.get('model.customForms');
-    if (Ember.isEmpty(modelForms)) {
+    if (isEmpty(modelForms)) {
       return [];
     } else {
       return Object.keys(modelForms);

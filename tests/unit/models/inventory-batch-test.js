@@ -7,7 +7,8 @@ import {
 moduleForModel('inventory-batch', 'Unit | Model | inventory-batch', {
   needs: [
     'ember-validations@validator:local/presence',
-    'ember-validations@validator:local/numericality'
+    'ember-validations@validator:local/numericality',
+    'service:session'
   ]
 });
 

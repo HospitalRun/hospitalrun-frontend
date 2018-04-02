@@ -1,5 +1,5 @@
+import { isEmpty } from '@ember/utils';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import Ember from 'ember';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractIndexRoute.extend(UserSession, {
   category: null,
@@ -20,7 +20,7 @@ export default AbstractIndexRoute.extend(UserSession, {
     let queryParams = {
       mapReduce: 'pricing_by_category'
     };
-    if (!Ember.isEmpty(category)) {
+    if (!isEmpty(category)) {
       queryParams.options = {
         startkey: [category, null, null, null],
         endkey: [category, {}, {}, maxId]

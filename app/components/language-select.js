@@ -1,11 +1,14 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-  i18n: Ember.inject.service(),
-  languagePreference: Ember.inject.service(),
-  selectedLanguage: Ember.computed.alias('i18n.locale'),
+export default Component.extend({
+  i18n: service(),
+  languagePreference: service(),
+  selectedLanguage: alias('i18n.locale'),
 
-  languageOptions: Ember.computed('i18n.locale', function() {
+  languageOptions: computed('i18n.locale', function() {
     let i18n = this.get('i18n');
     // Hacking around the fact that i18n
     // has no support for t(key, locale).

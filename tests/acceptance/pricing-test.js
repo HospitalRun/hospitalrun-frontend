@@ -82,35 +82,36 @@ test('visiting /pricing/ward', function(assert) {
 test('create new price', function(assert) {
   runWithPouchDump('billing', function() {
     authenticateUser();
-    visit('/pricing/edit/new');
+    visit('/pricing');
+    click('button:contains(+ new item)');
     andThen(function() {
       assert.equal(currentURL(), '/pricing/edit/new');
-      fillIn('.price-name input', 'Xray Foot');
-      fillIn('.price-amount input', 100);
-      fillIn('.price-department input', 'Imaging');
-      select('.price-category', 'Imaging');
-      click('button:contains(Add):last');
+    });
+    fillIn('.price-name input', 'Xray Foot');
+    fillIn('.price-amount input', 100);
+    fillIn('.price-department input', 'Imaging');
+    select('.price-category', 'Imaging');
+    click('button:contains(Add):last');
+    waitToAppear('.modal-dialog');
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Pricing Item Saved', 'Pricing Item saved');
+      click('button:contains(Ok)');
+    });
+    andThen(() => {
+      click('button:contains(Add Override)');
       waitToAppear('.modal-dialog');
-      andThen(() => {
-        assert.equal(find('.modal-title').text(), 'Pricing Item Saved', 'Pricing Item saved');
-        click('button:contains(Ok)');
-      });
-      andThen(() => {
-        click('button:contains(Add Override)');
-        waitToAppear('.modal-dialog');
-      });
-      andThen(() => {
-        assert.equal(find('.modal-title').text(), 'Add Override', 'Add Override Dialog displays');
-        select('.pricing-profile', 'Half off');
-        fillIn('.pricing-override-price input', 20);
-      });
-      andThen(() => {
-        click('button:contains(Add):last');
-        waitToAppear('.override-profile');
-      });
-      andThen(() => {
-        assert.equal(find('.override-profile').text(), 'Half off', 'Pricing override saved');
-      });
+    });
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Add Override', 'Add Override Dialog displays');
+      select('.pricing-profile', 'Half off');
+      fillIn('.pricing-override-price input', 20);
+    });
+    andThen(() => {
+      click('button:contains(Add):last');
+      waitToAppear('.override-profile');
+    });
+    andThen(() => {
+      assert.equal(find('.override-profile').text(), 'Half off', 'Pricing override saved');
     });
   });
 });

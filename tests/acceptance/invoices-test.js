@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
@@ -40,7 +39,7 @@ test('create invoice', function(assert) {
 
 test('print invoice', function(assert) {
   runWithPouchDump('billing', function() {
-    window.print = Ember.K; // Disable browser print dialog.
+    window.print = function() {}; // Disable browser print dialog.
     authenticateUser();
     visit('/invoices');
     andThen(function() {

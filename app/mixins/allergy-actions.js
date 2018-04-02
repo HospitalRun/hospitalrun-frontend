@@ -1,11 +1,7 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
+import { set, get } from '@ember/object';
 
-const {
-  get,
-  set
-} = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   openAllergyModal(allergy) {
     set(allergy, 'editController', this);
     this.send('openModal', 'allergy.edit', allergy);
