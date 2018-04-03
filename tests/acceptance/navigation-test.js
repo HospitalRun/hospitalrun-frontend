@@ -35,3 +35,35 @@ test('about dialog', function(assert) {
     });
   });
 });
+
+test('search text clears after search', function(assert) {
+  runWithPouchDump('default', function() {
+    authenticateUser();
+    visit('/patients');
+
+    andThen(() => {
+      fillIn('.sidebar-nav-search div input', 'fakeSearchText');
+      click('.glyphicon-search');
+      waitToAppear('h1:contains(Search Results)');
+    });
+    andThen(() => {
+      assert.equal(find('.sidebar-nav-search div input').val(), '');
+    });
+  });
+});
+
+test('search text clears after selecting new nav item', function(assert) {
+  runWithPouchDump('default', function() {
+    authenticateUser();
+    visit('/patients');
+
+    andThen(() => {
+      fillIn('.sidebar-nav-search div input', 'fakeSearchText');
+      click('a:contains(Inventory)');
+      waitToAppear('h1:contains(Requests)');
+    });
+    andThen(() => {
+      assert.equal(find('.sidebar-nav-search div input').val(), '');
+    });
+  });
+});
