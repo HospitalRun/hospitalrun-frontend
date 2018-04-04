@@ -1,8 +1,8 @@
 {{#each formsToDisplay as |customForm|}}
   <h4>{{customForm.form.name}}</h4>
-  {{custom-form model=model form=customForm.form propertyPrefix=customForm.propertyPrefix}}
+  {{custom-form model=model form=customForm.form propertyPrefix=customForm.propertyPrefix rapidForm=rapidForm isReadonly=isReadonly}}
 {{/each}}
-{{#if showAddButton}}
+{{#if (and showAddButton (not isReadonly))}}
   <div class="row">
     <div class="col-sm-2">
       <label class="control-label">&nbsp;</label>

@@ -8,6 +8,10 @@
   .view-action-buttons {
     float: right;
 
+    .rtl & {
+      float: left;
+    }
+
     .btn {
       margin: 10px 0 10px 15px;
       border: 1px solid $green;

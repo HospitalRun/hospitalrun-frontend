@@ -1,7 +1,6 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import RSVP from 'rsvp';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
-import PouchDB from 'pouchdb';
-import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
 import { module, test } from 'qunit';
@@ -46,13 +45,9 @@ const MOCK_USER_DATA = [{
   }
 }];
 
-const {
-  RSVP
-} = Ember;
-
 function addAllUsers(assert) {
   if (window.ELECTRON) {
-    return _addOfflineUsers();
+    return addOfflineUsersForElectron();
   }
   stubRequest('get', '/db/_users/_all_docs', function(request) {
     let expectedQuery = {
@@ -69,18 +64,6 @@ function addAllUsers(assert) {
   return RSVP.resolve();
 }
 
-function _addOfflineUsers() {
-  return wait().then(() => {
-    PouchDB.plugin(PouchAdapterMemory);
-    let usersDB = new PouchDB('_users', {
-      adapter: 'memory'
-    });
-    let [, joeUser] = MOCK_USER_DATA; // hradmin already added by run-with-pouch-dump
-    delete joeUser.doc._rev;
-    return usersDB.put(joeUser.doc);
-  });
-}
-
 module('Acceptance | users', {
   beforeEach() {
     FakeServer.start();
@@ -89,7 +72,7 @@ module('Acceptance | users', {
 
   afterEach() {
     FakeServer.stop();
-    Ember.run(this.application, 'destroy');
+    run(this.application, 'destroy');
   }
 });
 

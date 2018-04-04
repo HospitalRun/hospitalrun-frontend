@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
 import EmberValidations from 'ember-validations';
 
-export default Ember.Controller.extend(EmberValidations, {
+export default Controller.extend(EmberValidations, {
   hideCancelButton: true,
   updateCapability: 'update_config',
 

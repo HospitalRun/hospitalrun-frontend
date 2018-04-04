@@ -1,19 +1,25 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false}}
+  {{#em-form model=model submitButton=false as |form|}}
     <div class="row">
-      {{em-input property="name" label=(t 'admin.customForms.labels.formName') class="form-input-group required col-xs-4 custom-form-name"}}
-      {{em-select class="col-xs-3 form-input-group required custom-form-type" label=(t 'admin.customForms.labels.formType')
+      {{form.input property="name" label=(t 'admin.customForms.labels.formName') class="form-input-group required col-xs-4 custom-form-name"}}
+      {{form.select class="col-xs-3 form-input-group required custom-form-type" label=(t 'admin.customForms.labels.formType')
         property="formType" content=formTypes prompt=" "
       }}
-      {{em-input property="columns" label=(t 'admin.customForms.labels.columns') class="form-input-group col-xs-2 custom-form-columns"}}
-      {{em-checkbox label=(t 'admin.customForms.labels.alwaysInclude') property="alwaysInclude" class="form-input-group col-xs-2" }}
+      {{form.input property="columns" label=(t 'admin.customForms.labels.columns') class="form-input-group col-xs-2 custom-form-columns"}}
     </div>
-    <h4>
-      {{t 'admin.customForms.titles.fields'}}
-      <button class="btn btn-primary align-right" {{action 'addField'}}>
-        {{t 'admin.customForms.buttons.addField'}}
-      </button>
-    </h4>
+    <div class="row">
+      {{form.checkbox label=(t 'admin.customForms.labels.alwaysInclude') property="alwaysInclude" class="form-input-group col-xs-2 js-custom-form-always-include" }}
+    </div>
+    <div class="row">
+      <h4 class="col-xs-8">
+        {{t 'admin.customForms.titles.fields'}}
+      </h4>
+      <div class="col-xs-4">
+        <button class="btn btn-primary align-right" {{action 'addField'}}>
+          {{t 'admin.customForms.buttons.addField'}}
+        </button>
+      </div>
+    </div>
     <table class="table">
       <tr class="table-header">
         <th>{{t 'admin.customForms.labels.label'}}</th>
@@ -61,8 +67,8 @@
         <h3 class="panel-title">{{formName}}</h3>
       </div>
       <div class="panel-body">
-        {{#em-form model=previewModel submitButton=false}}
-          {{custom-form model=previewModel form=model}}
+        {{#em-form model=previewModel submitButton=false as |form|}}
+          {{custom-form model=previewModel form=model rapidForm=form}}
         {{/em-form}}
       </div>
     </div>

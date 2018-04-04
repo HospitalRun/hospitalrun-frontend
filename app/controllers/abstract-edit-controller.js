@@ -1,13 +1,16 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { isArray, A } from '@ember/array';
+import Controller from '@ember/controller';
+import { isEmpty } from '@ember/utils';
+import RSVP, { Promise as EmberPromise } from 'rsvp';
+import { set, get } from '@ember/object';
 import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import { task } from 'ember-concurrency';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-const { get, inject, isEmpty, RSVP, set } = Ember;
-
-export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
+export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
 
   cancelButtonText: function() {
@@ -23,7 +26,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   disabledAction: function() {
     let model = get(this, 'model');
     if (model.validate) {
-      model.validate().catch(Ember.K);
+      model.validate().catch(function() {});
     }
     let isValid = model.get('isValid');
     if (!isValid) {
@@ -35,7 +38,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     return get(this, 'model.isNew') || get(this, 'model.isDeleted');
   }.property('model.isNew', 'model.isDeleted'),
 
-  lookupLists: inject.service(),
+  lookupLists: service(),
   /**
    *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
    *  lookupListsToUpdate: [{
@@ -96,7 +99,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    */
   _addValueToLookupList(lookupList, value, listsToUpdate, listName) {
     let lookupListValues = lookupList.get('value');
-    if (!Ember.isArray(lookupListValues)) {
+    if (!isArray(lookupListValues)) {
       lookupListValues = [];
     }
     if (!lookupListValues.includes(value)) {
@@ -175,7 +178,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * @returns {Promise} Promise that resolves after before update is done.
    */
   beforeUpdate() {
-    return Ember.RSVP.Promise.resolve();
+    return EmberPromise.resolve();
   },
 
   /**
@@ -200,7 +203,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    */
   updateLookupLists() {
     let lookupListsToUpdate = get(this, 'lookupListsToUpdate');
-    let listsToUpdate = Ember.A();
+    let listsToUpdate = A();
     let lookupPromises = [];
     if (!isEmpty(lookupListsToUpdate)) {
       lookupListsToUpdate.forEach((list) => {
@@ -242,7 +245,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
         userCanAdd: true
       }));
     }
-    if (Ember.isArray(propertyValue)) {
+    if (isArray(propertyValue)) {
       propertyValue.forEach(function(value) {
         this._addValueToLookupList(lookupList, value, listsToUpdate, listInfo.name);
       }.bind(this));

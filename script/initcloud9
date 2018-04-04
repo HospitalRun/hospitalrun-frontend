@@ -10,7 +10,6 @@ npm install -g bower
 
 printf "Installing node dependecies...\n"
 npm install
-npm install -g phantomjs-prebuilt
 
 printf "Installing bower components...\n"
 bower install

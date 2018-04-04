@@ -1,12 +1,12 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { isEmpty, compare } from '@ember/utils';
+import { A } from '@ember/array';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
 import FilterList from 'hospitalrun/mixins/filter-list';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-const {
-  computed
-} = Ember;
-
-export default Ember.Component.extend(FilterList, UserSession, {
+export default Component.extend(FilterList, UserSession, {
   editImagingAction: 'editImaging',
   editLabAction: 'editLab',
   editMedicationAction: 'editMedication',
@@ -20,7 +20,7 @@ export default Ember.Component.extend(FilterList, UserSession, {
   showDeleteMedicationAction: 'showDeleteMedication',
   sortKey: null,
   sortDesc: false,
-  orderTypeFilters: Ember.computed(function() {
+  orderTypeFilters: computed(function() {
     let i18n = this.get('i18n');
     return [
       i18n.t('components.patientOrders.labels.imagingOrderType').toString(),
@@ -29,27 +29,27 @@ export default Ember.Component.extend(FilterList, UserSession, {
     ];
   }),
 
-  canAddImaging: Ember.computed(function() {
+  canAddImaging: computed(function() {
     return this.currentUserCan('add_imaging');
   }),
 
-  canAddLab: Ember.computed(function() {
+  canAddLab: computed(function() {
     return this.currentUserCan('add_lab');
   }),
 
-  canAddMedication: Ember.computed(function() {
+  canAddMedication: computed(function() {
     return this.currentUserCan('add_medication');
   }),
 
-  canDeleteImaging: Ember.computed(function() {
+  canDeleteImaging: computed(function() {
     return this.currentUserCan('delete_imaging');
   }),
 
-  canDeleteLab: Ember.computed(function() {
+  canDeleteLab: computed(function() {
     return this.currentUserCan('delete_lab');
   }),
 
-  canDeleteMedication: Ember.computed(function() {
+  canDeleteMedication: computed(function() {
     return this.currentUserCan('delete_medication');
   }),
 
@@ -66,7 +66,7 @@ export default Ember.Component.extend(FilterList, UserSession, {
     let imaging = this.get('visit.imaging');
     let labs = this.get('visit.labs');
     let medication = this.get('visit.medication');
-    let orderList = new Ember.A();
+    let orderList = new A();
     orderList.addObjects(imaging.map((item) => {
       item.set('orderType', i18n.t('components.patientOrders.labels.imagingOrderType'));
       item.set('name', item.get('imagingType.name'));
@@ -93,11 +93,11 @@ export default Ember.Component.extend(FilterList, UserSession, {
     return orderList;
   }),
 
-  sortedOrders: Ember.computed('filteredList', 'sortKey', 'sortDesc', function() {
+  sortedOrders: computed('filteredList', 'sortKey', 'sortDesc', function() {
     let filteredList = this.get('filteredList');
     let sortDesc = this.get('sortDesc');
     let sortKey = this.get('sortKey');
-    if (Ember.isEmpty(filteredList) || Ember.isEmpty(sortKey)) {
+    if (isEmpty(filteredList) || isEmpty(sortKey)) {
       return filteredList;
     }
     filteredList = filteredList.sort(function(a, b) {
@@ -108,15 +108,15 @@ export default Ember.Component.extend(FilterList, UserSession, {
         compareB = compareB.toString();
       }
       if (sortDesc) {
-        return Ember.compare(compareB, compareA);
+        return compare(compareB, compareA);
       } else {
-        return Ember.compare(compareA, compareB);
+        return compare(compareA, compareB);
       }
     });
     return filteredList;
   }),
 
-  i18n: Ember.inject.service(),
+  i18n: service(),
   visit: null,
 
   _setPermissions(item, editPerm, deletePerm) {

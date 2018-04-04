@@ -1,11 +1,11 @@
+import EmberObject from '@ember/object';
 import AppointmentStatuses from 'hospitalrun/mixins/appointment-statuses';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleFor('mixin:appointment-statuses', 'Unit | Mixin | appointment-statuses');
 
 test('appointmentStatusList', function(assert) {
-  let appointmentStatuses = Ember.Object.extend(AppointmentStatuses).create();
+  let appointmentStatuses = EmberObject.extend(AppointmentStatuses).create();
   assert.deepEqual(appointmentStatuses.get('appointmentStatusList'), [
     'Attended',
     'Scheduled',
@@ -15,7 +15,7 @@ test('appointmentStatusList', function(assert) {
 });
 
 test('appointmentStatuses', function(assert) {
-  let appointmentStatuses = Ember.Object.extend(AppointmentStatuses).create();
+  let appointmentStatuses = EmberObject.extend(AppointmentStatuses).create();
   assert.deepEqual(appointmentStatuses.get('appointmentStatuses'), [
     {
       id: 'Attended',
@@ -37,7 +37,7 @@ test('appointmentStatuses', function(assert) {
 });
 
 test('appointmentStatusesWithEmpty', function(assert) {
-  let appointmentStatuses = Ember.Object.extend(AppointmentStatuses).create();
+  let appointmentStatuses = EmberObject.extend(AppointmentStatuses).create();
   assert.deepEqual(appointmentStatuses.get('appointmentStatusesWithEmpty'), [
     {
       id: '',

@@ -1,8 +1,17 @@
+import { resolve } from 'rsvp';
+import { alias, map } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
+import { inject as service } from '@ember/service';
+import EmberObject, {
+  get,
+  computed,
+  setProperties
+} from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AllergyActions from 'hospitalrun/mixins/allergy-actions';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
-import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import ReturnTo from 'hospitalrun/mixins/return-to';
@@ -10,11 +19,6 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
-
-const {
-  get,
-  isEmpty
-} = Ember;
 
 export default AbstractEditController.extend(AllergyActions, BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, PatientVisits, {
 
@@ -83,7 +87,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     return this.currentUserCan('delete_visit');
   }.property(),
 
-  patientTypes: Ember.computed(function() {
+  patientTypes: computed(function() {
     let i18n = get(this, 'i18n');
     let types = [
       'Charity',
@@ -94,37 +98,37 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     });
   }),
 
-  config: Ember.inject.service(),
-  filesystem: Ember.inject.service(),
-  database: Ember.inject.service(),
-  patientController: Ember.inject.controller('patients'),
+  config: service(),
+  filesystem: service(),
+  database: service(),
+  patientController: controller('patients'),
 
-  addressOptions: Ember.computed.alias('patientController.addressOptions'),
-  address1Include: Ember.computed.alias('patientController.addressOptions.value.address1Include'),
-  address1Label: Ember.computed.alias('patientController.addressOptions.value.address1Label'),
-  address2Include: Ember.computed.alias('patientController.addressOptions.value.address2Include'),
-  address2Label: Ember.computed.alias('patientController.addressOptions.value.address2Label'),
-  address3Include: Ember.computed.alias('patientController.addressOptions.value.address3Include'),
-  address3Label: Ember.computed.alias('patientController.addressOptions.value.address3Label'),
-  address4Include: Ember.computed.alias('patientController.addressOptions.value.address4Include'),
-  address4Label: Ember.computed.alias('patientController.addressOptions.value.address4Label'),
+  addressOptions: alias('patientController.addressOptions'),
+  address1Include: alias('patientController.addressOptions.value.address1Include'),
+  address1Label: alias('patientController.addressOptions.value.address1Label'),
+  address2Include: alias('patientController.addressOptions.value.address2Include'),
+  address2Label: alias('patientController.addressOptions.value.address2Label'),
+  address3Include: alias('patientController.addressOptions.value.address3Include'),
+  address3Label: alias('patientController.addressOptions.value.address3Label'),
+  address4Include: alias('patientController.addressOptions.value.address4Include'),
+  address4Label: alias('patientController.addressOptions.value.address4Label'),
 
-  clinicList: Ember.computed.alias('patientController.clinicList'),
-  countryList: Ember.computed.alias('patientController.countryList'),
-  diagnosisList: Ember.computed.alias('patientController.diagnosisList'),
-  isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
-  pricingProfiles: Ember.computed.map('patientController.pricingProfiles', SelectValues.selectObjectMap),
-  sexList: Ember.computed.alias('patientController.sexList'),
-  statusList: Ember.computed.alias('patientController.statusList'),
+  clinicList: alias('patientController.clinicList'),
+  countryList: alias('patientController.countryList'),
+  diagnosisList: alias('patientController.diagnosisList'),
+  isFileSystemEnabled: alias('filesystem.isFileSystemEnabled'),
+  pricingProfiles: map('patientController.pricingProfiles', SelectValues.selectObjectMap),
+  sexList: alias('patientController.sexList'),
+  statusList: alias('patientController.statusList'),
 
   haveAdditionalContacts: function() {
     let additionalContacts = this.get('model.additionalContacts');
-    return (!Ember.isEmpty(additionalContacts));
+    return !isEmpty(additionalContacts);
   }.property('model.additionalContacts'),
 
   haveAddressOptions: function() {
     let addressOptions = this.get('addressOptions');
-    return (!Ember.isEmpty(addressOptions));
+    return !isEmpty(addressOptions);
   }.property('addressOptions'),
 
   lookupListsToUpdate: [{
@@ -165,14 +169,14 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
 
   showExpenseTotal: function() {
     let expenses = this.get('model.expenses');
-    return (!Ember.isEmpty(expenses));
+    return !isEmpty(expenses);
   }.property('model.expenses.[]'),
 
   totalExpenses: function() {
     let expenses = this.get('model.expenses');
-    if (!Ember.isEmpty(expenses)) {
+    if (!isEmpty(expenses)) {
       let total = expenses.reduce(function(previousValue, expense) {
-        if (!Ember.isEmpty(expense.cost)) {
+        if (!isEmpty(expense.cost)) {
           return previousValue + parseInt(expense.cost);
         }
       }, 0);
@@ -383,7 +387,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
 
     showAddPatientNote(model) {
       if (this.get('canAddNote')) {
-        if (Ember.isEmpty(model)) {
+        if (isEmpty(model)) {
           model = this.get('store').createRecord('patient-note', {
             patient: this.get('model'),
             createdBy: this.getUserName()
@@ -399,7 +403,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     },
 
     showDeleteContact(contact) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deleteContact',
         title: this.get('i18n').t('patients.titles.deleteContact'),
         message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'contact' }),
@@ -410,7 +414,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     },
 
     showDeleteExpense(expense) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deleteExpense',
         title: this.get('i18n').t('patients.titles.deleteExpense'),
         message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'expense' }),
@@ -421,7 +425,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     },
 
     showDeleteFamily(familyInfo) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deleteFamily',
         title: this.get('i18n').t('patients.titles.deleteFamilyMember'),
         message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'family member' }),
@@ -445,7 +449,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     },
 
     showDeletePhoto(photo) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deletePhoto',
         title: this.get('i18n').t('patients.titles.deletePhoto'),
         message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
@@ -484,11 +488,11 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
       visits.removeObject(deletedVisit);
       if (patientAdmitted || patientCheckedIn) {
         let patientUpdate = false;
-        if (patientAdmitted && Ember.isEmpty(visits.findBy('status', VisitStatus.ADMITTED))) {
+        if (patientAdmitted && isEmpty(visits.findBy('status', VisitStatus.ADMITTED))) {
           patient.set('admitted', false);
           patientUpdate = true;
         }
-        if (patientCheckedIn && Ember.isEmpty(visits.findBy('status', VisitStatus.CHECKED_IN))) {
+        if (patientCheckedIn && isEmpty(visits.findBy('status', VisitStatus.CHECKED_IN))) {
           patient.set('checkedIn', false);
           patientUpdate = true;
         }
@@ -519,14 +523,14 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
 
   _showEditSocial(editAttributes, modelName, route) {
     let model;
-    if (Ember.isEmpty(editAttributes)) {
+    if (isEmpty(editAttributes)) {
       model = this.get('store').createRecord(modelName, {
         newRecord: true
       });
     } else {
       model = this.get('store').push({
         data: {
-          id: Ember.get(editAttributes, 'id'),
+          id: get(editAttributes, 'id'),
           type: modelName,
           attributes: editAttributes
         }
@@ -547,10 +551,10 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     let objectToUpdate = recordToUpdate.serialize();
     objectToUpdate.id = recordToUpdate.get('id');
     if (isNew) {
-      socialRecords.addObject(Ember.Object.create(objectToUpdate));
+      socialRecords.addObject(EmberObject.create(objectToUpdate));
     } else {
       let updateRecord = socialRecords.findBy('id', objectToUpdate.id);
-      Ember.setProperties(updateRecord, objectToUpdate);
+      setProperties(updateRecord, objectToUpdate);
     }
     patient.set(name, socialRecords);
     this.send('update', true);
@@ -578,7 +582,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
 
   beforeUpdate() {
     if (!this.get('model.isNew')) {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
     return this.generateFriendlyId('patient').then((friendlyId) => {
       this.model.set('friendlyId', friendlyId);

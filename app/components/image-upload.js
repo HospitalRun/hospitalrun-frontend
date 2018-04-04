@@ -1,7 +1,5 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
 import InputComponent from 'ember-rapid-forms/components/em-input';
-
-const { isEmpty } = Ember;
 
 export default InputComponent.extend({
   fileInputEl: null,

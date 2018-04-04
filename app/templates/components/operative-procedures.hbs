@@ -1,5 +1,5 @@
 <div class="row">
-  {{select-or-typeahead
+  {{select-or-typeahead form=form model=model
     className=(concat (if (not-eq haveProcedures true) 'required ') 'procedure-description col-sm-10')
     property="procedureDescription"
     label=(t 'components.operativeProcedures.labels.procedure') list=procedureList

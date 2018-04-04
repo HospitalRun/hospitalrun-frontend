@@ -8,7 +8,7 @@
     <th>{{t 'labels.actions'}}</th>
   </tr>
   {{#each patientMedications as |medication|}}
-    <tr {{action "editMedication" medication}}>
+    <tr {{action "editMedication" medication}} class="{{if medication.canEdit (if canAddMedication "clickable")}}">
       <td>{{date-format medication.prescriptionDate}}</td>
       <td>{{medication.medicationName}}</td>
       <td>{{medication.status}}</td>

@@ -1,8 +1,12 @@
-import Ember from 'ember';
+import { Promise as EmberPromise, resolve } from 'rsvp';
+import { isEmpty } from '@ember/utils';
+import EmberObject from '@ember/object';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
 import PatientId from 'hospitalrun/mixins/patient-id';
 
-export default Ember.Mixin.create(PatientId, {
-  customForms: Ember.inject.service(),
+export default Mixin.create(PatientId, {
+  customForms: service(),
   addedNewPatient: false,
   newPatientId: null,
 
@@ -24,7 +28,7 @@ export default Ember.Mixin.create(PatientId, {
       let patientTypeAhead = this.get('model.patientTypeAhead');
       let nameParts = patientTypeAhead.split(' ');
       let patientDetails = {
-        customForms: Ember.Object.create(),
+        customForms: EmberObject.create(),
         friendlyId,
         patientFullName: patientTypeAhead,
         requestingController: this
@@ -50,15 +54,15 @@ export default Ember.Mixin.create(PatientId, {
 
   _getNewPatientId() {
     let newPatientId = this.get('newPatientId');
-    if (Ember.isEmpty(newPatientId)) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+    if (isEmpty(newPatientId)) {
+      return new EmberPromise(function(resolve, reject) {
         this.generateFriendlyId('patient').then(function(friendlyId) {
           this.set('newPatientId', friendlyId);
           resolve(friendlyId);
         }.bind(this), reject);
       }.bind(this));
     } else {
-      return Ember.RSVP.resolve(newPatientId);
+      return resolve(newPatientId);
     }
   }
 });

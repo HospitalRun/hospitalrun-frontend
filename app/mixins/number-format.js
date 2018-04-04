@@ -1,5 +1,8 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
+import { isEmpty } from '@ember/utils';
+import { get } from '@ember/object';
+import { isArray } from '@ember/array';
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
   /**
    * Given an array and property, total all of the property values in the array and return the value.
    * @param array Array|String either the actual array or the property name of the array on this object.
@@ -9,13 +12,13 @@ export default Ember.Mixin.create({
   _calculateTotal(array, propertyName) {
     let arrayItems;
     let total = 0;
-    if (Ember.isArray(array)) {
+    if (isArray(array)) {
       arrayItems = array;
     } else {
       arrayItems = this.get(array);
     }
     total = arrayItems.reduce(function(previousValue, lineItem) {
-      return previousValue += this._getValidNumber(Ember.get(lineItem, propertyName));
+      return previousValue += this._getValidNumber(get(lineItem, propertyName));
     }.bind(this), 0);
     return this._numberFormat(total, true);
   },
@@ -26,7 +29,7 @@ export default Ember.Mixin.create({
    * @returns number a valid number.
    */
   _getValidNumber(number) {
-    if (Ember.isEmpty(number) || isNaN(number)) {
+    if (isEmpty(number) || isNaN(number)) {
       return 0;
     } else {
       return Number(number);
@@ -42,7 +45,7 @@ export default Ember.Mixin.create({
    */
   _numberFormat(value, returnAsNumber) {
     let returnValue;
-    if (!Ember.isEmpty(value)) {
+    if (!isEmpty(value)) {
       if (isNaN(value)) {
         return;
       }
@@ -60,7 +63,7 @@ export default Ember.Mixin.create({
   },
 
   _validNumber(number) {
-    return (!Ember.isEmpty(number) && !isNaN(number) && number > 0);
+    return !isEmpty(number) && !isNaN(number) && number > 0;
   },
 
   _round100(number) {

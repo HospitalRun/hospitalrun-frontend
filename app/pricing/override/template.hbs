@@ -3,8 +3,8 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false}}
-    {{em-select label=(t 'billing.labels.pricingProfile')
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.select label=(t 'billing.labels.pricingProfile')
       property="profile"
       content=pricingProfiles
       optionValuePath="selectObject"
@@ -12,6 +12,6 @@
       class="required pricing-profile"
       prompt=" "
     }}
-    {{number-input label=(t 'labels.price') property="price" class="required pricing-override-price"}}
+    {{number-input model=model label=(t 'labels.price') property="price" class="required pricing-override-price"}}
   {{/em-form}}
 {{/modal-dialog}}

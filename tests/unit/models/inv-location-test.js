@@ -8,6 +8,7 @@ moduleForModel('inv-location', 'Unit | Model | inv-location', {
     'ember-validations@validator:local/acceptance',
     'ember-validations@validator:local/presence',
     'service:i18n',
+    'service:session',
     'locale:en/translations',
     'locale:en/config',
     'util:i18n/missing-message',

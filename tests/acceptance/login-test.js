@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
@@ -11,7 +11,7 @@ module('Acceptance | login', {
 
   afterEach() {
     FakeServer.stop();
-    Ember.run(this.application, 'destroy');
+    run(this.application, 'destroy');
   }
 });
 

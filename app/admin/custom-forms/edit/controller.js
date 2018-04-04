@@ -1,22 +1,14 @@
+import EmberObject, { computed } from '@ember/object';
+import { isEmpty, compare } from '@ember/utils';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import uuid from 'npm:uuid';
 
-const {
-  computed,
-  isEmpty
-} = Ember;
-
 export default AbstractEditController.extend({
-  customForms: Ember.inject.service(),
   preview: false,
-  previewModel: Ember.Object.create(),
+  previewModel: EmberObject.create(),
   updateCapability: 'update_config',
 
   afterUpdate() {
-    let customForms = this.get('customForms');
-    let model = this.get('model');
-    customForms.resetCustomFormByType(model.get('formType'));
     this.displayAlert(this.get('i18n').t('admin.customForms.titles.formSaved'), this.get('i18n').t('admin.customForms.messages.formSaved', this.get('model')));
   },
 
@@ -94,7 +86,7 @@ export default AbstractEditController.extend({
         value: i18n.t(`admin.customForms.labels.${formTypeId}FormType`)
       };
     }).sort(function(a, b) {
-      return Ember.compare(a.value.toString(), b.value.toString());
+      return compare(a.value.toString(), b.value.toString());
     });
   }),
 
@@ -166,5 +158,4 @@ export default AbstractEditController.extend({
       });
     }
   }
-
 });

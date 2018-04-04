@@ -1,16 +1,7 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
-module('Acceptance | procedures', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | procedures');
 
 testWithVisit('Add procedure', function(assert) {
   let procedureDesc = 'Release Left Elbow Bursa and Ligament, Percutaneous Approach';

@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { getOwner } from '@ember/application';
 import localeConfig from 'ember-i18n/config/en';
 import moment from 'moment';
 import sinonTest from 'ember-sinon-qunit/test-support/test';
@@ -21,7 +22,7 @@ moduleFor('controller:abstract-report-controller', 'Unit | Controller | abstract
 
     // manually inject the i18n service as initialzer does not run
     // in unit test
-    Ember.getOwner(this).inject('controller', 'i18n', 'service:i18n');
+    getOwner(this).inject('controller', 'i18n', 'service:i18n');
 
     // register t helper
     this.registry.register('helper:t', tHelper);
@@ -57,11 +58,11 @@ sinonTest('_setReportTitle', function(assert) {
     endDate,
     startDate,
     reportTypes: [
-      Ember.Object.create({
+      EmberObject.create({
         value: 'one',
         name: 'Number One'
       }),
-      Ember.Object.create({
+      EmberObject.create({
         value: 'two',
         name: 'Number Two'
       })
@@ -78,11 +79,11 @@ sinonTest('_setReportTitle single date', function(assert) {
   let controller = this.subject({
     endDate,
     reportTypes: [
-      Ember.Object.create({
+      EmberObject.create({
         value: 'one',
         name: 'Number One'
       }),
-      Ember.Object.create({
+      EmberObject.create({
         value: 'two',
         name: 'Number Two'
       })
@@ -90,7 +91,7 @@ sinonTest('_setReportTitle single date', function(assert) {
     reportType: 'one'
   });
 
-  this.stub(window, 'moment', () => {
+  this.stub(window, 'moment').callsFake(() => {
     return {
       format() {
         return 'April 3rd, 2015';

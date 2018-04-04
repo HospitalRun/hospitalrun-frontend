@@ -1,5 +1,6 @@
+import TextField from '@ember/component/text-field';
 import Ember from 'ember';
-export default Ember.TextField.extend(Ember.TargetActionSupport, {
+export default TextField.extend(Ember.TargetActionSupport, {
   change() {
     this.triggerAction({
       action: 'search'

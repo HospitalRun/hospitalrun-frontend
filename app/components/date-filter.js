@@ -1,9 +1,5 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import PikadayComponent from 'hospitalrun/mixins/pikaday-component';
-
-const {
-  Component
-} = Ember;
 
 export default Component.extend(PikadayComponent, {
   classNames: ['input-group'],

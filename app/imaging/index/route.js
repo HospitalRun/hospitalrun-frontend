@@ -1,8 +1,6 @@
+import { computed } from '@ember/object';
 import { translationMacro as t } from 'ember-i18n';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import Ember from 'ember';
-
-const { computed } = Ember;
 
 export default AbstractIndexRoute.extend({
   modelName: 'imaging',

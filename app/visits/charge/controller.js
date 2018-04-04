@@ -1,8 +1,8 @@
+import { inject as controller } from '@ember/controller';
 import ProcedureChargeController from 'hospitalrun/procedures/charge/controller';
-import Ember from 'ember';
 
 export default ProcedureChargeController.extend({
   cancelAction: 'closeModal',
   newPricingItem: false,
-  requestingController: Ember.inject.controller('visits/edit')
+  requestingController: controller('visits/edit')
 });
