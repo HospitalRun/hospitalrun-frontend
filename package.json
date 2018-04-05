@@ -82,7 +82,7 @@
     "ember-resolver": "^4.0.0",
     "ember-select-list": "0.9.5",
     "ember-simple-auth": "^1.5.1",
-    "ember-sinon-qunit": "1.6.0",
+    "ember-sinon-qunit": "3.1.0",
     "ember-source": "2.18.2",
     "ember-truth-helpers": "2.0.0",
     "ember-validations": "2.0.0-alpha.5",
