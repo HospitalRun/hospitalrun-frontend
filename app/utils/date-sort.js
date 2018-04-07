@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import { compare } from '@ember/utils';
 export default {
   sortByDate(firstItem, secondItem, compareAttribute) {
     let firstDate = firstItem.get(compareAttribute);
     let secondDate = secondItem.get(compareAttribute);
-    return Ember.compare(firstDate.getTime(), secondDate.getTime());
+    return compare(firstDate.getTime(), secondDate.getTime());
   }
 };

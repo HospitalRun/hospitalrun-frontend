@@ -1,6 +1,7 @@
+import EmberObject from '@ember/object';
+import { run } from '@ember/runloop';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 
 const DIAGNOSIS_PROPERTIES = ['active', 'date', 'diagnosis', 'secondaryDiagnosis'];
 
@@ -24,13 +25,14 @@ moduleFor('mixin:patient-diagnosis', 'Unit | Mixin | patient-diagnosis', {
     'model:diagnosis',
     'model:report',
     'ember-validations@validator:local/acceptance',
-    'ember-validations@validator:local/presence'
+    'ember-validations@validator:local/presence',
+    'service:session'
   ],
   store() {
     return this.container.lookup('service:store');
   },
   getVisitData() {
-    return Ember.run(() => {
+    return run(() => {
       let visitDate = new Date(1393822800000);
       return this.store().createRecord('visit', {
         startDate: visitDate,
@@ -58,7 +60,7 @@ moduleFor('mixin:patient-diagnosis', 'Unit | Mixin | patient-diagnosis', {
 });
 
 test('get active primary diagnoses', function(assert) {
-  let patientDiagnosis = Ember.Object.extend(PatientDiagnosis).create();
+  let patientDiagnosis = EmberObject.extend(PatientDiagnosis).create();
   let visit = this.getVisitData();
   let diagnosesList = patientDiagnosis.getDiagnoses(visit, true, false);
   assert.deepEqual(diagnosesDump(diagnosesList), [{
@@ -70,7 +72,7 @@ test('get active primary diagnoses', function(assert) {
 });
 
 test('get all primary diagnoses', function(assert) {
-  let patientDiagnosis = Ember.Object.extend(PatientDiagnosis).create();
+  let patientDiagnosis = EmberObject.extend(PatientDiagnosis).create();
   let visit = this.getVisitData();
   let diagnosesList = patientDiagnosis.getDiagnoses(visit, false, false);
   assert.deepEqual(diagnosesDump(diagnosesList), [{
@@ -87,7 +89,7 @@ test('get all primary diagnoses', function(assert) {
 });
 
 test('get active secondary diagnoses', function(assert) {
-  let patientDiagnosis = Ember.Object.extend(PatientDiagnosis).create();
+  let patientDiagnosis = EmberObject.extend(PatientDiagnosis).create();
   let visit = this.getVisitData();
   let diagnosesList = patientDiagnosis.getDiagnoses(visit, true, true);
   assert.deepEqual(diagnosesDump(diagnosesList), [
@@ -101,7 +103,7 @@ test('get active secondary diagnoses', function(assert) {
 });
 
 test('get all secondary diagnoses', function(assert) {
-  let patientDiagnosis = Ember.Object.extend(PatientDiagnosis).create();
+  let patientDiagnosis = EmberObject.extend(PatientDiagnosis).create();
   let visit = this.getVisitData();
   let diagnosesList = patientDiagnosis.getDiagnoses(visit, false, true);
   assert.deepEqual(diagnosesDump(diagnosesList), [

@@ -1,11 +1,13 @@
+import { Promise as EmberPromise } from 'rsvp';
+import { alias } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 
 export default AbstractEditController.extend({
   cancelAction: 'closeModal',
   newCharge: false,
-  requestingController: Ember.inject.controller('procedures/edit'),
-  medicationList: Ember.computed.alias('requestingController.medicationList'),
+  requestingController: controller('procedures/edit'),
+  medicationList: alias('requestingController.medicationList'),
 
   updateCapability: 'add_charge',
 
@@ -27,7 +29,7 @@ export default AbstractEditController.extend({
       model.set('medicationTitle', inventoryItem.get('name'));
       model.set('priceOfMedication', inventoryItem.get('price'));
     }
-    return Ember.RSVP.Promise.resolve();
+    return EmberPromise.resolve();
   },
 
   afterUpdate(record) {

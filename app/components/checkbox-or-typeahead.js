@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { isArray } from '@ember/array';
+import { isEmpty } from '@ember/utils';
+import { get, defineProperty, computed } from '@ember/object';
 import SelectOrTypeahead from 'hospitalrun/components/select-or-typeahead';
 export default SelectOrTypeahead.extend({
   checkboxesPerRow: 5,
@@ -6,12 +8,12 @@ export default SelectOrTypeahead.extend({
 
   _getLabelFromContent(object) {
     let optionLabelPath = this.get('optionLabelPath');
-    return Ember.get(object, optionLabelPath);
+    return get(object, optionLabelPath);
   },
 
   _getValueFromContent(object) {
     let optionValuePath = this.get('optionValuePath');
-    return Ember.get(object, optionValuePath);
+    return get(object, optionValuePath);
   },
 
   _mapCheckboxValues(value) {
@@ -23,10 +25,10 @@ export default SelectOrTypeahead.extend({
 
   _setup: function() {
     let property = this.get('property');
-    Ember.defineProperty(this, 'errors', Ember.computed(`model.errors.${property}`, function() {
+    defineProperty(this, 'errors', computed(`model.errors.${property}`, function() {
       let property = this.get('property');
       let errors = this.get(`model.errors.${property}`);
-      if (!Ember.isEmpty(errors)) {
+      if (!isEmpty(errors)) {
         return errors[0];
       }
     }));
@@ -49,7 +51,7 @@ export default SelectOrTypeahead.extend({
       let property = this.get('property');
       let propertyName = `model.${property}`;
       let selectedValues = this.get(propertyName);
-      if (!Ember.isArray(selectedValues)) {
+      if (!isArray(selectedValues)) {
         selectedValues = [];
       }
       if (checked && !selectedValues.includes(value)) {
@@ -59,7 +61,7 @@ export default SelectOrTypeahead.extend({
       }
       this.set(propertyName, selectedValues);
       this.set('selection', selectedValues);
-      this.get('model').validate().catch(Ember.K);
+      this.get('model').validate().catch(function() {});
     }
   }
 

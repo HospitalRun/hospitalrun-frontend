@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import { once } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
 import TypeAhead from 'hospitalrun/components/type-ahead';
 export default TypeAhead.extend({
   classNameBindings: ['haveInventoryItems'],
   displayKey: 'name',
   showQuantity: true,
-  i18n: Ember.inject.service(),
-  store: Ember.inject.service(),
+  i18n: service(),
+  store: service(),
 
   _mapInventoryItems(item) {
     let returnObj = {};
@@ -23,7 +25,7 @@ export default TypeAhead.extend({
 
   haveInventoryItems: function() {
     let content = this.get('content');
-    if (!Ember.isEmpty(content) && content.length > 0) {
+    if (!isEmpty(content) && content.length > 0) {
       return 'have-inventory-items';
     }
   }.property('content'),
@@ -49,12 +51,12 @@ export default TypeAhead.extend({
   itemSelected(selectedInventoryItem) {
     this._super();
     let store = this.get('store');
-    if (!Ember.isEmpty(selectedInventoryItem)) {
+    if (!isEmpty(selectedInventoryItem)) {
       store.find('inventory', selectedInventoryItem.id).then((inventoryItem) => {
         let model = this.get('model');
         model.set('inventoryItem', inventoryItem);
-        Ember.run.once(this, function() {
-          model.validate().catch(Ember.K);
+        once(this, function() {
+          model.validate().catch(function() {});
         });
       });
     }

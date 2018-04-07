@@ -1,10 +1,17 @@
+import { isEmpty } from '@ember/utils';
+import {
+  reject,
+  Promise as EmberPromise,
+  allSettled,
+  resolve
+} from 'rsvp';
+import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import Ember from 'ember';
 import UserSession from 'hospitalrun/mixins/user-session';
 /**
  * Abstract route for top level modules (eg patients, inventory, users)
  */
-export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
+export default Route.extend(UserSession, AuthenticatedRouteMixin, {
   addCapability: null,
   additionalModels: null,
   allowSearch: true,
@@ -78,13 +85,13 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
       return this._super(transition);
     } else {
       this.transitionTo('index');
-      return Ember.RSVP.reject('Not available');
+      return reject('Not available');
     }
   },
 
   model() {
-    if (!Ember.isEmpty(this.additionalModels)) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+    if (!isEmpty(this.additionalModels)) {
+      return new EmberPromise(function(resolve, reject) {
         let promises = this.additionalModels.map(function(modelMap) {
 
           if (modelMap.queryArgs) {
@@ -95,7 +102,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
             return this.store.find(...modelMap.findArgs);
           }
         }.bind(this));
-        Ember.RSVP.allSettled(promises, `All additional Models for ${this.get('moduleName')}`).then(function(array) {
+        allSettled(promises, `All additional Models for ${this.get('moduleName')}`).then(function(array) {
           array.forEach(function(item, index) {
             if (item.state === 'fulfilled') {
               this.set(this.additionalModels[index].name, item.value);
@@ -105,7 +112,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
         }.bind(this), reject);
       }.bind(this), `Additional Models for ${this.get('moduleName')}`);
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   },
 
@@ -124,7 +131,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     let currentController = this.controllerFor(this.get('moduleName'));
     let propsToSet = this.getProperties('additionalButtons', 'currentScreenTitle', 'newButtonAction', 'newButtonText', 'sectionTitle', 'subActions');
     currentController.setProperties(propsToSet);
-    if (!Ember.isEmpty(this.additionalModels)) {
+    if (!isEmpty(this.additionalModels)) {
       this.additionalModels.forEach(function(item) {
         controller.set(item.name, this.get(item.name));
       }.bind(this));

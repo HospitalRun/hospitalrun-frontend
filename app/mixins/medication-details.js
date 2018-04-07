@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import { Promise as EmberPromise } from 'rsvp';
+import Mixin from '@ember/object/mixin';
+import { isEmpty } from '@ember/utils';
 import DS from 'ember-data';
 
-const { isEmpty } = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   // Denormalized medication details so that inventory records do not need to be retrieved
 
   /**
@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
    */
   getMedicationName(inventoryAttribute) {
     let medicationTitle = this.get('medicationTitle');
-    if (!Ember.isEmpty(medicationTitle)) {
+    if (!isEmpty(medicationTitle)) {
       return medicationTitle;
     } else {
       let inventoryObject = this.get(inventoryAttribute);
@@ -40,7 +40,7 @@ export default Ember.Mixin.create({
    */
   getMedicationPrice(inventoryAttribute) {
     let priceOfMedication = this.get('priceOfMedication');
-    if (!Ember.isEmpty(priceOfMedication)) {
+    if (!isEmpty(priceOfMedication)) {
       return priceOfMedication;
     } else {
       let inventoryObject = this.get(inventoryAttribute);
@@ -55,10 +55,10 @@ export default Ember.Mixin.create({
   },
 
   getMedicationDetails(inventoryAttribute) {
-    return new Ember.RSVP.Promise((resolve) => {
+    return new EmberPromise((resolve) => {
       let medicationTitle = this.get('medicationTitle');
       let priceOfMedication = this.get('priceOfMedication');
-      if (!Ember.isEmpty(medicationTitle) && !Ember.isEmpty(priceOfMedication)) {
+      if (!isEmpty(medicationTitle) && !isEmpty(priceOfMedication)) {
         resolve({
           name: medicationTitle,
           price: priceOfMedication

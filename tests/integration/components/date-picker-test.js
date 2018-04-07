@@ -1,7 +1,7 @@
+import EmberObject from '@ember/object';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
-import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('date-picker', 'Integration | Component | date picker', {
@@ -10,7 +10,7 @@ moduleForComponent('date-picker', 'Integration | Component | date picker', {
 
 test('it renders', function(assert) {
 
-  this.set('model', Ember.Object.create({
+  this.set('model', EmberObject.create({
     test: new Date()
   }));
 
@@ -25,7 +25,7 @@ test('it calls the event handler', function(assert) {
   let stub = sinon.stub();
 
   this.on('testAction', stub);
-  this.set('model', Ember.Object.create({
+  this.set('model', EmberObject.create({
     test: new Date()
   }));
 

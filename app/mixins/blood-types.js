@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
 import SelectValues from 'hospitalrun/utils/select-values';
-export default Ember.Mixin.create({
+export default Mixin.create({
   bloodTypes: [
     'A+',
     'A1+ (A1 +ve)',

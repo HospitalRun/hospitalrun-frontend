@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   actions: {
     dateSetActionWrapper(newDate) {
-      if (!Ember.isEmpty(this.get('dateSetAction'))) {
+      if (!isEmpty(this.get('dateSetAction'))) {
         this.sendAction('dateSetAction', newDate);
       }
     }
