@@ -19,7 +19,6 @@ export default Ember.Controller.extend(ProgressDialog, {
         let currentRouteName = this.get('currentRouteName');
         let currentSearchText = this.get('currentSearchText');
         if (currentSearchText !== textToFind || currentRouteName.indexOf('.search') === -1) {
-          this.set('searchText', '');
           this.set('progressMessage', `Searching for ${textToFind}. Please wait...`);
           this.showProgressModal();
           this.transitionToRoute(`${this.searchRoute}/${textToFind}`);

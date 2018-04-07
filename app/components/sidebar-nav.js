@@ -41,6 +41,7 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, UserSessi
 
     search() {
       this.sendAction('search', this.get('searchText'));
+      this.set('searchText', '');
     },
 
     navAction(nav) {
