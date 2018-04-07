@@ -1,4 +1,9 @@
-import Ember from 'ember';
+import { isArray } from '@ember/array';
+import { Promise as EmberPromise, hash } from 'rsvp';
+import { isEmpty } from '@ember/utils';
+import { computed, get } from '@ember/object';
+import { map, alias } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import moment from 'moment';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
@@ -7,18 +12,18 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, VisitTypes, {
-  patientsController: Ember.inject.controller('patients'),
+  patientsController: controller('patients'),
 
-  clinicList: Ember.computed.map('patientsController.clinicList.value', SelectValues.selectValuesMap),
-  diagnosisList: Ember.computed.alias('patientsController.diagnosisList'),
-  physicianList: Ember.computed.map('patientsController.physicianList.value', SelectValues.selectValuesMap),
-  locationList: Ember.computed.map('patientsController.locationList.value', SelectValues.selectValuesMap),
-  statusList: Ember.computed.map('patientsController.statusList.value', SelectValues.selectValuesMap),
-  visitTypesList: Ember.computed.alias('patientsController.visitTypesList'),
+  clinicList: map('patientsController.clinicList.value', SelectValues.selectValuesMap),
+  diagnosisList: alias('patientsController.diagnosisList'),
+  physicianList: map('patientsController.physicianList.value', SelectValues.selectValuesMap),
+  locationList: map('patientsController.locationList.value', SelectValues.selectValuesMap),
+  statusList: map('patientsController.statusList.value', SelectValues.selectValuesMap),
+  visitTypesList: alias('patientsController.visitTypesList'),
   reportType: 'detailedAdmissions',
   patientDetails: {},
 
-  admissionReportColumns: Ember.computed(function() {
+  admissionReportColumns: computed(function() {
     let i18n = this.get('i18n');
     return {
       sex: {
@@ -34,7 +39,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
     };
   }),
-  admissionDetailReportColumns: Ember.computed(function() {
+  admissionDetailReportColumns: computed(function() {
     let i18n = this.get('i18n');
     return {
       id: {
@@ -67,7 +72,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
     };
   }),
-  diagnosticReportColumns: Ember.computed(function() {
+  diagnosticReportColumns: computed(function() {
     let i18n = this.get('i18n');
     return {
       type: {
@@ -83,7 +88,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
     };
   }),
-  procedureDetailReportColumns: Ember.computed(function() {
+  procedureDetailReportColumns: computed(function() {
     let i18n = this.get('i18n');
     return {
       id: {
@@ -109,7 +114,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
     };
   }),
-  reportColumns: Ember.computed(function() {
+  reportColumns: computed(function() {
     let i18n = this.get('i18n');
     return {
       visitDate: {
@@ -194,7 +199,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
     };
   }),
-  statusReportColumns: Ember.computed(function() {
+  statusReportColumns: computed(function() {
     let i18n = this.get('i18n');
     return {
       id: {
@@ -226,7 +231,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
     };
   }),
-  reportTypes: Ember.computed(function() {
+  reportTypes: computed(function() {
     let i18n = this.get('i18n');
     return [{
       name: i18n.t('patients.titles.admissionsDetail'),
@@ -281,11 +286,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   _addContactToList(phone, email, prefix, contactList) {
     let contactArray = [];
-    if (!Ember.isEmpty(email) || !Ember.isEmpty(phone)) {
-      if (!Ember.isEmpty(phone)) {
+    if (!isEmpty(email) || !isEmpty(phone)) {
+      if (!isEmpty(phone)) {
         contactArray.push(phone);
       }
-      if (!Ember.isEmpty(email)) {
+      if (!isEmpty(email)) {
         contactArray.push(email);
       }
       contactList.push(prefix + contactArray.join(', '));
@@ -293,14 +298,14 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _addReportRow(row, skipFormatting, reportColumns, rowAction) {
-    if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.patient)) {
+    if (isEmpty(rowAction) && !isEmpty(row.patient)) {
       let patientId = null;
       if (row.get) {
         patientId = row.get('patient.id');
       } else {
         patientId = row.patient.get('id');
       }
-      if (!Ember.isEmpty(patientId)) {
+      if (!isEmpty(patientId)) {
         rowAction = {
           action: 'viewPatient',
           model: patientId
@@ -326,7 +331,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   _addPatientProcedureRows(procedureTotals, reportColumns) {
     procedureTotals.forEach(function(procedureTotal) {
-      if (!Ember.isEmpty(procedureTotal.records)) {
+      if (!isEmpty(procedureTotal.records)) {
         procedureTotal.records.forEach(function(patientProcedure, index) {
           this._addReportRow({
             patient: patientProcedure.get('patient'),
@@ -354,15 +359,15 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     let email = patient.get('email');
     let phone = patient.get('phone');
     this._addContactToList(phone, email, 'Primary: ', contactList);
-    if (!Ember.isEmpty(additionalContacts)) {
+    if (!isEmpty(additionalContacts)) {
       additionalContacts.forEach(function(contact) {
         contactDesc = '';
-        if (!Ember.isEmpty(contact.name) && !Ember.isEmpty(contact.relationship)) {
-          if (!Ember.isEmpty(contact.name)) {
+        if (!isEmpty(contact.name) && !isEmpty(contact.relationship)) {
+          if (!isEmpty(contact.name)) {
             contactDesc += contact.name;
           }
-          if (!Ember.isEmpty(contact.relationship)) {
-            if (!Ember.isEmpty(contactDesc)) {
+          if (!isEmpty(contact.relationship)) {
+            if (!isEmpty(contactDesc)) {
               contactDesc += ' - ';
             }
             contactDesc += contact.relationship;
@@ -393,10 +398,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       mapReduce: 'imaging_by_status'
     };
     let maxValue = this.get('maxValue');
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       findParams.options.startkey = ['Completed', null, filterStartDate.getTime(), null];
 
-      if (!Ember.isEmpty(filterEndDate)) {
+      if (!isEmpty(filterEndDate)) {
         filterEndDate = moment(filterEndDate).endOf('day').toDate();
         findParams.options.endkey = ['Completed', maxValue, filterEndDate.getTime(), maxValue];
       }
@@ -425,7 +430,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       },
       mapReduce: 'patient_by_status'
     };
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       this.store.query('patient', findParams).then(resolve, reject);
     }.bind(this));
   },
@@ -441,10 +446,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       mapReduce: 'procedure_by_date'
     };
     let maxValue = this.get('maxValue');
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       findParams.options.startkey = [filterStartDate.getTime(), null];
 
-      if (!Ember.isEmpty(filterEndDate)) {
+      if (!isEmpty(filterEndDate)) {
         filterEndDate = moment(filterEndDate).endOf('day').toDate();
         findParams.options.endkey = [filterEndDate.getTime(), maxValue];
       }
@@ -473,10 +478,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
      * Admissions - start date between start and end date
      * Discharge end date between start and end date
      */
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let isDischargeReport = this.get('isDischargeReport');
       findParams.options.startkey = [filterStartDate.getTime(), null];
-      if (!Ember.isEmpty(filterEndDate)) {
+      if (!isEmpty(filterEndDate)) {
         filterEndDate = moment(filterEndDate).endOf('day').toDate();
         if (isDischargeReport) {
           findParams.options.endkey = [filterEndDate.getTime(), maxValue];
@@ -492,14 +497,14 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   _filterByLike(records, field, likeCondition) {
     return records.filter(function(record) {
       let fieldValue = record.get('field');
-      if (Ember.isEmpty(fieldValue)) {
+      if (isEmpty(fieldValue)) {
         return false;
       } else {
-        if (Ember.isArray(fieldValue)) {
+        if (isArray(fieldValue)) {
           let foundValue = fieldValue.find(function(value) {
             return this._haveLikeValue(value, likeCondition);
           }.bind(this));
-          return !Ember.isEmpty(foundValue);
+          return !isEmpty(foundValue);
         } else {
           return this._haveLikeValue(fieldValue, likeCondition);
         }
@@ -510,7 +515,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   _filterInPatientVisit(visit) {
     let outPatient = visit.get('outPatient');
     let status = visit.get('status');
-    return !outPatient && !Ember.isEmpty(status);
+    return !outPatient && !isEmpty(status);
   },
 
   _finishVisitReport(visits) {
@@ -561,7 +566,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }
     visits = visits.filter(this._filterInPatientVisit);
     visits.forEach(function(visit) {
-      if (!this.get('isDischargeReport') || !Ember.isEmpty(visit.get('endDate'))) {
+      if (!this.get('isDischargeReport') || !isEmpty(visit.get('endDate'))) {
         let reportRow = {
           patient: visit.get('patient'),
           patientId: visit.get('patient.displayPatientId'),
@@ -633,7 +638,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         }
       };
     }
-    if (Ember.isEmpty(reportEndDate)) {
+    if (isEmpty(reportEndDate)) {
       reportEndDate = moment().endOf('day');
     } else {
       reportEndDate = moment(reportEndDate).endOf('day');
@@ -641,7 +646,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     let patientDays = visits.reduce(function(previousValue, visit) {
       let calcEndDate = visit.get('endDate');
       let calcStartDate = moment(visit.get('startDate')).startOf('day');
-      if (Ember.isEmpty(calcEndDate)) {
+      if (isEmpty(calcEndDate)) {
         calcEndDate = moment().endOf('day');
       } else {
         calcEndDate = moment(calcEndDate).endOf('day');
@@ -679,7 +684,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       let reportColumns;
       procedures = procedures.filter(function(procedure) {
         let visit = procedure.get('visit');
-        if (Ember.isEmpty(visit) || Ember.isEmpty(visit.get('patient.id')) || visit.get('patient.archived') === true) {
+        if (isEmpty(visit) || isEmpty(visit.get('patient.id')) || visit.get('patient.archived') === true) {
           return false;
         } else {
           return true;
@@ -727,7 +732,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       'primaryDiagnosis', 'secondaryDiagnosis'
     );
     for (let filter in visitFilters) {
-      if (!Ember.isEmpty(visitFilters[filter])) {
+      if (!isEmpty(visitFilters[filter])) {
         switch (filter) {
           case 'diagnosis': {
             visits = this._filterByLike(visits, 'diagnosisList', visitFilters[filter]);
@@ -745,7 +750,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       visits.forEach(function(visit) {
         promisesMap[visit.get('id')] = visit.get('procedures');
       });
-      Ember.RSVP.hash(promisesMap).then(function(resolutionHash) {
+      hash(promisesMap).then(function(resolutionHash) {
         visits.forEach(function(visit) {
           visit.set('resolvedProcedures', resolutionHash[visit.get('id')]);
         });
@@ -757,13 +762,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _getPatientVisits(patients) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let visitHash = {
       };
       patients.forEach(function(patient) {
         visitHash[patient.get('id')] = this.getPatientVisits(patient);
       }.bind(this));
-      Ember.RSVP.hash(visitHash).then(function(resolvedHash) {
+      hash(visitHash).then(function(resolvedHash) {
         patients.forEach(function(patient) {
           patient.set('visits', resolvedHash[patient.get('id')]);
         });
@@ -778,9 +783,9 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   _listToString(items, descField, dateField) {
     let itemList = [];
-    if (!Ember.isEmpty(items)) {
+    if (!isEmpty(items)) {
       itemList = items.map(function(item) {
-        return `${Ember.get(item, descField)} ( ${this._dateFormat(Ember.get(item, dateField))})`;
+        return `${get(item, descField)} ( ${this._dateFormat(get(item, dateField))})`;
       }.bind(this));
     }
     return itemList.join(',\n');
@@ -799,12 +804,12 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     records.forEach(function(record) {
       let type = record.get(typeField);
       let typeObject;
-      if (!Ember.isEmpty(type)) {
+      if (!isEmpty(type)) {
         typeObject = types.find(function(item) {
           let itemType = item.type;
           return itemType.trim().toLowerCase() === type.toLowerCase();
         });
-        if (Ember.isEmpty(typeObject)) {
+        if (isEmpty(typeObject)) {
           typeObject = {
             type: type.trim(),
             total: 0,
@@ -835,10 +840,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     if (reportType === 'status') {
       return true;
     }
-    if (Ember.isEmpty(startDate)) {
+    if (isEmpty(startDate)) {
       alertMessage = 'Please enter a start date.';
       isValid = false;
-    } else if (!Ember.isEmpty(endDate) && endDate.getTime() < startDate.getTime()) {
+    } else if (!isEmpty(endDate) && endDate.getTime() < startDate.getTime()) {
       alertMessage = 'Please enter an end date after the start date.';
       isValid = false;
     }

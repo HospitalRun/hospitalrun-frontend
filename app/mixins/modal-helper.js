@@ -1,5 +1,7 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
+import { isEmpty } from '@ember/utils';
+import EmberObject from '@ember/object';
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
   /**
    * Display a message in a closable modal.
    * @param title string containing the title to display.
@@ -10,7 +12,7 @@ export default Ember.Mixin.create({
    */
   displayAlert(title, message, okAction, okContext, cancelAction) {
     let i18n = this.get('i18n');
-    let modalOptions = Ember.Object.extend({
+    let modalOptions = EmberObject.extend({
       updateButtonText: i18n.t('buttons.ok')
     });
 
@@ -33,8 +35,8 @@ export default Ember.Mixin.create({
 
   displayConfirm(title, message, confirmAction, model) {
     let i18n = this.get('i18n');
-    if (Ember.isEmpty(model)) {
-      model = Ember.Object.create();
+    if (isEmpty(model)) {
+      model = EmberObject.create();
     }
     model.set('confirmAction', confirmAction);
     model.set('title', title);

@@ -1,5 +1,8 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
+import EmberObject from '@ember/object';
+import { htmlSafe } from '@ember/string';
+import { later, cancel } from '@ember/runloop';
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
   progressDialog: null,
   progressDialogDefaults: {
     showProgress: true,
@@ -14,7 +17,7 @@ export default Ember.Mixin.create({
   progressTitle: null,
 
   scheduleProgress(f) {
-    return Ember.run.later(this, function() {
+    return later(this, function() {
       f.apply(this);
       this.set('progressTimer', this.scheduleProgress(f));
     }, this.get('progressInterval'));
@@ -28,18 +31,18 @@ export default Ember.Mixin.create({
       progressBarValue = 0;
     }
     progressDialog.set('progressBarValue', progressBarValue);
-    let progressBarStyle = Ember.String.htmlSafe(`width: ${progressBarValue}%`);
+    let progressBarStyle = htmlSafe(`width: ${progressBarValue}%`);
     progressDialog.set('progressBarStyle', progressBarStyle);
   },
 
   closeProgressModal() {
-    Ember.run.cancel(this.get('progressTimer'));
+    cancel(this.get('progressTimer'));
     this.send('closeModal');
   },
 
   showProgressModal() {
-    let progressDialog = Ember.Object.create(this.get('progressDialogDefaults'));
-    progressDialog.progressBarStyle = Ember.String.htmlSafe(progressDialog.progressBarStyle);
+    let progressDialog = EmberObject.create(this.get('progressDialogDefaults'));
+    progressDialog.progressBarStyle = htmlSafe(progressDialog.progressBarStyle);
     progressDialog.set('title', this.get('progressTitle'));
     progressDialog.set('message', this.get('progressMessage'));
     this.set('progressDialog', progressDialog);

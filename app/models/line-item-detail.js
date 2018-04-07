@@ -1,9 +1,7 @@
+import { get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
-
-const { computed, get } = Ember;
 
 export default AbstractModel.extend(NumberFormat, {
   // Attributes

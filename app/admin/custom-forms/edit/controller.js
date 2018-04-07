@@ -1,15 +1,11 @@
+import EmberObject, { computed } from '@ember/object';
+import { isEmpty, compare } from '@ember/utils';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import uuid from 'npm:uuid';
-
-const {
-  computed,
-  isEmpty
-} = Ember;
 
 export default AbstractEditController.extend({
   preview: false,
-  previewModel: Ember.Object.create(),
+  previewModel: EmberObject.create(),
   updateCapability: 'update_config',
 
   afterUpdate() {
@@ -90,7 +86,7 @@ export default AbstractEditController.extend({
         value: i18n.t(`admin.customForms.labels.${formTypeId}FormType`)
       };
     }).sort(function(a, b) {
-      return Ember.compare(a.value.toString(), b.value.toString());
+      return compare(a.value.toString(), b.value.toString());
     });
   }),
 

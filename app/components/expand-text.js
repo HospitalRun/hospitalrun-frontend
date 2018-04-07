@@ -1,18 +1,12 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import { htmlSafe } from '@ember/string';
+import { computed } from '@ember/object';
 import textExpansion from '../utils/text-expansion';
 
-const {
-  Component,
-  String: {
-    htmlSafe
-  },
-  computed,
-  inject
-} = Ember;
-
 export default Component.extend({
-  i18n: inject.service(),
-  store: inject.service(),
+  i18n: service(),
+  store: service(),
 
   userText: '',
 

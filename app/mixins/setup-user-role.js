@@ -1,5 +1,5 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
   setupUserRole() {
     let session = this.get('session');
     let userRole = session.get('data.authenticated.role');
@@ -9,6 +9,6 @@ export default Ember.Mixin.create({
       let sessionData = session.get('data');
       sessionStore.persist(sessionData);
       return true;
-    }).catch(Ember.K);
+    }).catch(function() {});
   }
 });

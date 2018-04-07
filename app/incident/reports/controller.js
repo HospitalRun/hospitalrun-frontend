@@ -1,10 +1,10 @@
+import { computed, get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import RSVP from 'rsvp';
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
-import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import UserSession from 'hospitalrun/mixins/user-session';
 import moment from 'moment';
-
-const { get, computed, isEmpty, RSVP } = Ember;
 
 export default AbstractReportController.extend(UserSession, NumberFormat, {
   reportType: 'department',

@@ -1,4 +1,8 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import { isEmpty } from '@ember/utils';
+import RSVP from 'rsvp';
+import Service, { inject as service } from '@ember/service';
+import { set, get } from '@ember/object';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
 import OAuthHeaders from 'hospitalrun/mixins/oauth-headers';
@@ -8,18 +12,6 @@ import PouchDBUsers from 'npm:pouchdb-users';
 import PouchDBWorker from 'npm:worker-pouch/client';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
-const {
-  computed: {
-    alias
-  },
-  get,
-  inject,
-  isEmpty,
-  RSVP,
-  Service,
-  set
-} = Ember;
-
 export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   mainDB: null, // Server DB
   oauthHeaders: null,
@@ -28,7 +20,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   usePouchFind: false,
   usersDB: null, // local users database for standAlone mode
 
-  config: inject.service(),
+  config: service(),
   standAlone: alias('config.standAlone'),
 
   createDB(configs) {

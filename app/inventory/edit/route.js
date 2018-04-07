@@ -1,5 +1,5 @@
+import { resolve } from 'rsvp';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 import InventoryId from 'hospitalrun/mixins/inventory-id';
 export default AbstractEditRoute.extend(InventoryId, {
@@ -30,7 +30,7 @@ export default AbstractEditRoute.extend(InventoryId, {
   },
 
   getNewData() {
-    return Ember.RSVP.resolve({
+    return resolve({
       dateReceived: new Date(),
       quantityGroups: []
     });

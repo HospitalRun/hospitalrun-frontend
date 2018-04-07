@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 
-export default Ember.Controller.extend(ProgressDialog, {
-  filesystem: Ember.inject.service(),
-  session: Ember.inject.service(),
+export default Controller.extend(ProgressDialog, {
+  filesystem: service(),
+  session: service(),
 
   allowSearch: false,
   currentSearchText: null,

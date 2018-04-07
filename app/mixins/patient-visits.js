@@ -1,14 +1,13 @@
-import Ember from 'ember';
+import { resolve } from 'rsvp';
+import Mixin from '@ember/object/mixin';
+import { isEmpty } from '@ember/utils';
+import { get } from '@ember/object';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 import DS from 'ember-data';
 import moment from 'moment';
-const {
-  isEmpty,
-  get
-} = Ember;
 
-export default Ember.Mixin.create(PouchDbMixin, {
+export default Mixin.create(PouchDbMixin, {
   getPatientVisits(patient) {
     let maxValue = this.get('maxValue');
     let patientId = patient.get('id');
@@ -53,7 +52,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
 
   _getVisitCollection(visits, name) {
     let returnList = [];
-    if (!Ember.isEmpty(visits)) {
+    if (!isEmpty(visits)) {
       visits.forEach(function(visit) {
         get(visit, name).then(function(items) {
           returnList.addObjects(items);
@@ -113,7 +112,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
     } else if (status === VisitStatus.DISCHARGED && patientAdmitted) {
       return this._updateUnlessVisitStatusExists(patient, VisitStatus.ADMITTED, 'admitted');
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   },
 

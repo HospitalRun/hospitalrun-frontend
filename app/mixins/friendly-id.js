@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 
-const { get, inject, isEmpty } = Ember;
-
-export default Ember.Mixin.create({
-  database: inject.service(),
+export default Mixin.create({
+  database: service(),
   sequenceName: null,
   sequenceView: null,
 
@@ -48,7 +49,7 @@ export default Ember.Mixin.create({
   _findNextPrefix(type, prefixChars) {
     prefixChars++;
     return this._findSequenceByPrefix(type, prefixChars).then((records) => {
-      if (Ember.isEmpty(records.rows)) {
+      if (isEmpty(records.rows)) {
         return type.toLowerCase().substr(0, prefixChars);
       } else {
         return this._findNextSequence(type, prefixChars);

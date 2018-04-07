@@ -1,11 +1,10 @@
+import { isEmpty } from '@ember/utils';
+import { get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import CanEditRequested from 'hospitalrun/mixins/can-edit-requested';
 import DS from 'ember-data';
 import DateFormat from 'hospitalrun/mixins/date-format';
-import Ember from 'ember';
 import MedicationDetails from 'hospitalrun/mixins/medication-details';
-
-const { computed, get } = Ember;
 
 export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDetails, {
   // Attributes
@@ -53,7 +52,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
           }
           let prescription = get(object, 'prescription');
           let quantity = get(object, 'quantity');
-          return Ember.isEmpty(prescription) && Ember.isEmpty(quantity);
+          return isEmpty(prescription) && isEmpty(quantity);
         },
         message: 'Please enter a prescription or a quantity'
       }
@@ -68,7 +67,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
           }
           let itemName = get(object, 'inventoryItem.name');
           let itemTypeAhead = get(object, 'inventoryItemTypeAhead');
-          if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
+          if (isEmpty(itemName) || isEmpty(itemTypeAhead)) {
             // force validation to fail
             return true;
           } else {

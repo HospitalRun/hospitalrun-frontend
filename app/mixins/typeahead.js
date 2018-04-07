@@ -1,14 +1,14 @@
+import { isEmpty } from '@ember/utils';
+import Mixin from '@ember/object/mixin';
+import { observer, computed } from '@ember/object';
 import DS from 'ember-data';
-import Ember from 'ember';
 
-const { computed, observer } = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   _mapContentItems() {
     let content = this.get('content');
     if (content) {
       let mapped = content.filter(function(item) {
-        return !Ember.isEmpty(item);
+        return !isEmpty(item);
       });
       if (content instanceof DS.RecordArray) {
         mapped = mapped.map((item) => {
@@ -102,7 +102,7 @@ export default Ember.Mixin.create({
       $input.on('blur', (event) => {
         let selection = this.get('selection');
         let targetValue = event.target.value.trim();
-        if (!Ember.isEmpty(selection)) {
+        if (!isEmpty(selection)) {
           if (selection.trim) {
             selection = selection.trim();
           }
@@ -111,11 +111,11 @@ export default Ember.Mixin.create({
         if (!this.get('selectedItem')) {
           let lastHint = this.get('lastHint');
           let exactMatch = false;
-          if (Ember.isEmpty(lastHint)) {
+          if (isEmpty(lastHint)) {
             lastHint = targetValue;
             exactMatch = true;
           }
-          if (!Ember.isEmpty(targetValue) && !Ember.isEmpty(lastHint)) {
+          if (!isEmpty(targetValue) && !isEmpty(lastHint)) {
             this.get('bloodhound').search(lastHint, (suggestions) => {
               if (suggestions.length > 0) {
                 if (!exactMatch || lastHint.toLowerCase() === suggestions[0][this.get('displayKey')].toLowerCase()) {
@@ -127,7 +127,7 @@ export default Ember.Mixin.create({
                 this.itemSelected();
               }
             });
-          } else if (Ember.isEmpty(targetValue)) {
+          } else if (isEmpty(targetValue)) {
             this.itemSelected();
           }
         }
@@ -139,7 +139,7 @@ export default Ember.Mixin.create({
     this.set('selection', itemSelection);
     this.set('selectedItem', true);
     let selectedAction = this.get('selectedAction');
-    if (!Ember.isEmpty(selectedAction)) {
+    if (!isEmpty(selectedAction)) {
       this.sendAction('selectedAction', itemSelection);
     }
   },

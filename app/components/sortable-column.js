@@ -1,5 +1,6 @@
-import Ember from 'ember';
-export default Ember.Component.extend({
+import { isEmpty } from '@ember/utils';
+import Component from '@ember/component';
+export default Component.extend({
   classNames: ['sortable-column'],
   tagName: 'th',
   action: 'sortByKey',
@@ -30,7 +31,7 @@ export default Ember.Component.extend({
     },
 
     filter(filterValue) {
-      if (Ember.isEmpty(filterValue)) {
+      if (isEmpty(filterValue)) {
         this.set('filtered');
       } else {
         this.set('filtered', true);

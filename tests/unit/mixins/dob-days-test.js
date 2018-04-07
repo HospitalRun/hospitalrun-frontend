@@ -1,6 +1,7 @@
+import { run } from '@ember/runloop';
+import { getOwner } from '@ember/application';
 import DOBDays from 'hospitalrun/mixins/dob-days';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 import DS from 'ember-data';
 import tHelper from 'ember-i18n/helper';
 import localeConfig from 'ember-i18n/config/en';
@@ -21,7 +22,7 @@ moduleFor('mixin:dob-days', 'Unit | Mixin | dob-days', {
     this.registry.register('locale:en/config', localeConfig);
 
     // Inject i18n as the intializer does not run in unit test
-    Ember.getOwner(this).inject('model', 'i18n', 'service:i18n');
+    getOwner(this).inject('model', 'i18n', 'service:i18n');
 
     // register t helper
     this.registry.register('helper:t', tHelper);
@@ -35,7 +36,7 @@ moduleFor('mixin:dob-days', 'Unit | Mixin | dob-days', {
   },
   subject(attrs) {
     let subject;
-    Ember.run(() => {
+    run(() => {
       let Test = DS.Model.extend(DOBDays);
       this.register('model:test', Test);
       subject = this.store().createRecord('test', attrs);
