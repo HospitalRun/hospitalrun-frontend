@@ -10,7 +10,7 @@ test('Check In/Check Out Existing outpatient', function(assert) {
     visit('/patients/outpatient');
     andThen(function() {
       assert.equal(currentURL(), '/patients/outpatient', 'Outpatient url is correct');
-      assert.equal(find('.view-current-title').text(), 'Today\'s Outpatients', 'Title is correct');
+      assert.dom('.view-current-title').hasText('Today\'s Outpatients', 'Title is correct');
       click('button:contains(Patient Check In)');
     });
     andThen(function() {
@@ -19,14 +19,14 @@ test('Check In/Check Out Existing outpatient', function(assert) {
       waitToAppear('.patient-name .ps-info-data');
     });
     andThen(function() {
-      assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient record displays');
-      assert.equal(find('.new-patient-checkbox input:checked').length, 0, 'New Patient checkbox is not checked');
+      assert.dom('.patient-name .ps-info-data').hasText('Joe Bagadonuts', 'Joe Bagadonuts patient record displays');
+      assert.dom('.new-patient-checkbox input').isNotChecked('New Patient checkbox is not checked');
       select('.visit-type', 'Clinic');
       click('button:contains(Check In)');
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Patient Checked In', 'Patient has been checked in');
+      assert.dom('.modal-title').hasText('Patient Checked In', 'Patient has been checked in');
       click('.modal-footer button:contains(Ok)');
     });
     andThen(function() {
@@ -40,12 +40,12 @@ test('Check In/Check Out Existing outpatient', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Patient Check Out', 'Patient checkout confirmation displays');
+      assert.dom('.modal-title').hasText('Patient Check Out', 'Patient checkout confirmation displays');
       click('button:contains(Ok)');
       waitToAppear('.modal-title:contains(Patient Checked Out)');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Patient Checked Out', 'Patient has been checked out confirmation');
+      assert.dom('.modal-title').hasText('Patient Checked Out', 'Patient has been checked out confirmation');
       click('button:contains(Ok)');
     });
     andThen(function() {
@@ -62,7 +62,7 @@ test('Check In/Check Out new outpatient', function(assert) {
     visit('/patients/outpatient');
     andThen(function() {
       assert.equal(currentURL(), '/patients/outpatient', 'Outpatient url is correct');
-      assert.equal(find('.view-current-title').text(), 'Today\'s Outpatients', 'Title is correct');
+      assert.dom('.view-current-title').hasText('Today\'s Outpatients', 'Title is correct');
       click('button:contains(Patient Check In)');
     });
     andThen(function() {
@@ -70,7 +70,7 @@ test('Check In/Check Out new outpatient', function(assert) {
       typeAheadFillIn('.patient-name', 'Jane Bagadonuts');
     });
     andThen(function() {
-      assert.equal(find('.new-patient-checkbox input:checked').length, 1, 'New Patient checkbox is checked');
+      assert.dom('.new-patient-checkbox input').isChecked('New Patient checkbox is checked');
       selectDate('.checkin-date input', visitDate.toDate());
       select('.visit-type', 'Followup');
       typeAheadFillIn('.visit-location', visitLocation);
@@ -80,13 +80,16 @@ test('Check In/Check Out new outpatient', function(assert) {
       waitToAppear('.modal-title:contains(New Patient)');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'New Patient', 'New Patient dialog appears');
+      assert.dom('.modal-title').hasText('New Patient', 'New Patient dialog appears');
       click('.modal-footer button:contains(Add)');
       waitToAppear('.modal-title:contains(Patient Checked In)');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Patient Checked In', 'Patient has been checked in');
-      assert.equal(find('.modal-body').text().trim(), 'Jane Bagadonuts has been created and checked in.', 'Patient has been created and checked in');
+      assert.dom('.modal-title').hasText('Patient Checked In', 'Patient has been checked in');
+      assert.dom('.modal-body').hasText(
+        'Jane Bagadonuts has been created and checked in.',
+        'Patient has been created and checked in'
+      );
       click('button:contains(Ok)');
     });
     andThen(function() {
@@ -101,7 +104,10 @@ test('Check In/Check Out new outpatient', function(assert) {
       waitToAppear(`.view-current-title:contains(Outpatients for ${visitDate.format('l')})`);
     });
     andThen(function() {
-      assert.equal(find('.view-current-title').text(), `Outpatients for ${visitDate.format('l')}`, 'Title updates to specified date');
+      assert.dom('.view-current-title').hasText(
+        `Outpatients for ${visitDate.format('l')}`,
+        'Title updates to specified date'
+      );
       waitToAppear('.outpatient-list td:contains(Jane Bagadonuts)');
     });
     andThen(function() {
@@ -125,18 +131,18 @@ test('Check In/Check Out new outpatient', function(assert) {
       waitToAppear('.view-current-title:contains(Edit Visit)');
     });
     andThen(function() {
-      assert.equal(find('.view-current-title').text(), 'Edit Visit', 'Visit displays on checkout from patient listing');
-      assert.equal(find('.patient-name .ps-info-data').text(), 'Jane Bagadonuts', 'Jane Bagadonuts patient record displays');
+      assert.dom('.view-current-title').hasText('Edit Visit', 'Visit displays on checkout from patient listing');
+      assert.dom('.patient-name .ps-info-data').hasText('Jane Bagadonuts', 'Jane Bagadonuts patient record displays');
       click('button:contains(Check Out)');
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Patient Checked Out', 'Patient has been checked out confirmation');
+      assert.dom('.modal-title').hasText('Patient Checked Out', 'Patient has been checked out confirmation');
       click('button:contains(Ok)');
     });
     andThen(function() {
       let checkoutDate = moment();
-      assert.equal(find('.checkout-date input').val(), checkoutDate.format('l h:mm A'), 'Check Out date properly set');
+      assert.dom('.checkout-date input').hasValue(checkoutDate.format('l h:mm A'), 'Check Out date properly set');
       visit('/patients/outpatient');
     });
     andThen(function() {

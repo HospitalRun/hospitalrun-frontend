@@ -38,7 +38,7 @@ test('create a new imaging request', (assert) => {
     click('button:contains(Add)');
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Imaging Request Saved', 'Imaging Request was saved successfully');
+      assert.dom('.modal-title').hasText('Imaging Request Saved', 'Imaging Request was saved successfully');
     });
     click('button:contains(Ok)');
     andThen(() => {
@@ -47,12 +47,12 @@ test('create a new imaging request', (assert) => {
       findWithAssert('button:contains(Complete)');
     });
     andThen(() => {
-      assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
+      assert.dom('.patient-summary').exists({ count: 1 }, 'Patient summary is displayed');
     });
     click('button:contains(Return)');
     andThen(() => {
       assert.equal(currentURL(), '/imaging');
-      assert.equal(find('tr').length, 3, 'Two imaging requests are displayed');
+      assert.dom('tr').exists({ count: 3 }, 'Two imaging requests are displayed');
     });
   });
 });
@@ -64,7 +64,7 @@ test('completed requests are displayed', (assert) => {
 
     andThen(() => {
       assert.equal(currentURL(), '/imaging/completed');
-      assert.equal(find('.table').length, 1, 'Requests table is visible');
+      assert.dom('.table').exists({ count: 1 }, 'Requests table is visible');
     });
   });
 });
@@ -76,8 +76,8 @@ test('mark an imaging request as completed', (assert) => {
 
     andThen(() => {
       assert.equal(currentURL(), '/imaging');
-      assert.equal(find('.table').length, 1, 'Requests table is visible');
-      assert.equal(find('tr').length, 2, 'One imaging request not completed');
+      assert.dom('.table').exists({ count: 1 }, 'Requests table is visible');
+      assert.dom('tr').exists({ count: 2 }, 'One imaging request not completed');
     });
     click('button:contains(Edit):first');
     andThen(() => {
@@ -89,7 +89,7 @@ test('mark an imaging request as completed', (assert) => {
     click('button:contains(Complete)');
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Imaging Request Completed', 'Imaging Request was saved successfully');
+      assert.dom('.modal-title').hasText('Imaging Request Completed', 'Imaging Request was saved successfully');
     });
     click('button:contains(Ok)');
     click('button:contains(Return)');

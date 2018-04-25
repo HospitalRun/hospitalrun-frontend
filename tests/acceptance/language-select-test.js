@@ -17,7 +17,7 @@ test('setting a language preference persists after logout', (assert) => {
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), english.dashboard.title, 'Title is in English after first log in');
+      assert.dom('.view-current-title').hasText(english.dashboard.title, 'Title is in English after first log in');
     });
 
     andThen(() => {
@@ -27,7 +27,7 @@ test('setting a language preference persists after logout', (assert) => {
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), french.dashboard.title, 'Title is in French after language change');
+      assert.dom('.view-current-title').hasText(french.dashboard.title, 'Title is in French after language change');
     });
 
     andThen(() => {
@@ -41,7 +41,7 @@ test('setting a language preference persists after logout', (assert) => {
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), french.dashboard.title, 'Title is in French after 2nd login');
+      assert.dom('.view-current-title').hasText(french.dashboard.title, 'Title is in French after 2nd login');
     });
   });
 });
@@ -56,7 +56,7 @@ test('different users can have different language preferences on the same browse
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), english.dashboard.title, 'Title is in English after first log in');
+      assert.dom('.view-current-title').hasText(english.dashboard.title, 'Title is in English after first log in');
     });
 
     andThen(() => {
@@ -66,7 +66,7 @@ test('different users can have different language preferences on the same browse
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), french.dashboard.title, 'Title is in French after language change');
+      assert.dom('.view-current-title').hasText(french.dashboard.title, 'Title is in French after language change');
     });
 
     andThen(() => {
@@ -82,7 +82,7 @@ test('different users can have different language preferences on the same browse
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), english.dashboard.title, 'Title is in English for another user');
+      assert.dom('.view-current-title').hasText(english.dashboard.title, 'Title is in English for another user');
     });
 
     andThen(() => {
@@ -92,7 +92,7 @@ test('different users can have different language preferences on the same browse
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), german.dashboard.title, 'Title is in German after language change');
+      assert.dom('.view-current-title').hasText(german.dashboard.title, 'Title is in German after language change');
     });
 
     andThen(() => {
@@ -106,7 +106,7 @@ test('different users can have different language preferences on the same browse
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), french.dashboard.title, 'Title is in French after 2nd login');
+      assert.dom('.view-current-title').hasText(french.dashboard.title, 'Title is in French after 2nd login');
     });
 
     andThen(() => {
@@ -122,7 +122,7 @@ test('different users can have different language preferences on the same browse
     });
 
     andThen(() => {
-      assert.equal(find('.view-current-title').text(), german.dashboard.title, 'Title is in German after 2nd login');
+      assert.dom('.view-current-title').hasText(german.dashboard.title, 'Title is in German after 2nd login');
     });
   });
 });

@@ -17,15 +17,15 @@ test('patient notes crud testing', function(assert) {
       waitToAppear('.message:contains(The patient record for John Doe has been saved)');
     });
     andThen(function() {
-      assert.equal(find('.message').text(), 'The patient record for John Doe has been saved.');
+      assert.dom('.message').hasText('The patient record for John Doe has been saved.');
       waitToAppear('.patient-summary');
     });
     andThen(function() {
-      findWithAssert('.patient-summary');
+      assert.dom('.patient-summary').exists();
       click('[data-test-selector=visits-tab]');
     });
     andThen(function() {
-      findWithAssert('#visits');
+      assert.dom('#visits').exists();
       click('button:contains(New Visit)');
     });
     andThen(function() {
@@ -34,7 +34,7 @@ test('patient notes crud testing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Visit Saved', 'New visit has been saved');
+      assert.dom('.modal-title').hasText('Visit Saved', 'New visit has been saved');
       click('button:contains(Ok)');
     });
     andThen(() => {
@@ -46,7 +46,7 @@ test('patient notes crud testing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'New Note for John Doe', 'Notes modal appeared');
+      assert.dom('.modal-title').hasText('New Note for John Doe', 'Notes modal appeared');
       fillIn('.test-note-content textarea', 'This is a note.');
       fillIn('.test-note-attribution input', 'Dr. Nick');
     });
@@ -74,7 +74,7 @@ test('patient notes crud testing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Delete Note', 'Delete Note modal appeared');
+      assert.dom('.modal-title').hasText('Delete Note', 'Delete Note modal appeared');
       click('.modal-footer button:contains(Ok)');
       waitToDisappear('.modal-dialog');
     });

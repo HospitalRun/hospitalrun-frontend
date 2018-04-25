@@ -11,12 +11,12 @@ test('visiting /admin', function(assert) {
       assert.equal(currentURL(), '/admin');
       select('.lookup-type', 'Visit Types');
       andThen(() => {
-        assert.equal(find('h3.panel-title').text(), 'Visit Types', 'Visit Types header is displayed');
+        assert.dom('h3.panel-title').hasText('Visit Types', 'Visit Types header is displayed');
         assert.equal(find('td.lookup-type-value:first').text(), 'Admission', 'Admission visit type displays');
         click('button:contains(Update)');
         waitToAppear('.modal-dialog');
         andThen(() => {
-          assert.equal(find('.modal-title').text(), 'List Saved', 'Lookup list is saved');
+          assert.dom('.modal-title').hasText('List Saved', 'Lookup list is saved');
         });
       });
     });
@@ -33,7 +33,7 @@ test('add new lookup value', function(assert) {
       click('button:contains(Add Value)');
       waitToAppear('.modal-dialog');
       andThen(() => {
-        assert.equal(find('.modal-title').text(), 'Add Value', 'Add value modal is displayed');
+        assert.dom('.modal-title').hasText('Add Value', 'Add value modal is displayed');
         fillIn('.lookup-type-value input', 'Dr Smith');
         click('button:contains(Add):last');
         andThen(() => {
@@ -60,7 +60,7 @@ test('delete lookup value', function(assert) {
         waitToAppear('.modal-dialog');
       });
       andThen(() => {
-        assert.equal(find('.modal-title').text(), 'Delete Value', 'Delete value modal is displayed');
+        assert.dom('.modal-title').hasText('Delete Value', 'Delete value modal is displayed');
         click('.modal-footer button:contains(Ok)');
       });
       andThen(() => {
@@ -81,7 +81,7 @@ test('Update address options', function(assert) {
       andThen(() => {
         waitToAppear('.modal-dialog');
         andThen(() => {
-          assert.equal(find('.modal-title').text(), 'Options Saved', 'Address Options Saved');
+          assert.dom('.modal-title').hasText('Options Saved', 'Address Options Saved');
         });
       });
     });
@@ -99,7 +99,7 @@ test('Update header options', function(assert) {
       andThen(() => {
         waitToAppear('.modal-dialog');
         andThen(() => {
-          assert.equal(find('.modal-title').text(), 'Options Saved', 'Header Options Saved');
+          assert.dom('.modal-title').hasText('Options Saved', 'Header Options Saved');
         });
       });
     });

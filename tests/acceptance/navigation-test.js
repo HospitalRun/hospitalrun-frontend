@@ -31,7 +31,7 @@ test('about dialog', function(assert) {
     waitToAppear('.modal-dialog');
 
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'About HospitalRun', 'About dialog is shown');
+      assert.dom('.modal-title').hasText('About HospitalRun', 'About dialog is shown');
     });
   });
 });
@@ -47,7 +47,7 @@ test('search text clears after search', function(assert) {
       waitToAppear('h1:contains(Search Results)');
     });
     andThen(() => {
-      assert.equal(find('.sidebar-nav-search div input').val(), '');
+      assert.dom('.sidebar-nav-search div input').hasValue('');
     });
   });
 });
@@ -63,7 +63,7 @@ test('search text clears after selecting new nav item', function(assert) {
       waitToAppear('h1:contains(Requests)');
     });
     andThen(() => {
-      assert.equal(find('.sidebar-nav-search div input').val(), '');
+      assert.dom('.sidebar-nav-search div input').hasValue('');
     });
   });
 });

@@ -35,7 +35,7 @@ test('Incident category management', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Delete Item', 'Delete Item modal appears');
+      assert.dom('.modal-title').hasText('Delete Item', 'Delete Item modal appears');
       click('.modal-footer button:contains(Ok)');
       waitToDisappear('.modal-dialog');
     });
@@ -46,8 +46,7 @@ test('Incident category management', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Incident Category Saved',
-        'Incident Category saved modal appears');
+      assert.dom('.modal-title').hasText('Incident Category Saved', 'Incident Category saved modal appears');
       click('button:contains(Return)');
     });
     andThen(() => {
@@ -82,7 +81,7 @@ test('Incident creation and editing', function(assert) {
       waitToAppear('.patient-id:contains(P00001)');
     });
     andThen(() => {
-      assert.equal(find('.patient-id').text(), 'P00001', 'Selected patient id appears');
+      assert.dom('.patient-id').hasText('P00001', 'Selected patient id appears');
       fillIn('.incident-description textarea', 'Patient blacked out and fell down.');
     });
     andThen(() => {
@@ -90,7 +89,7 @@ test('Incident creation and editing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Incident Saved', ' Incident Saved modal appears');
+      assert.dom('.modal-title').hasText('Incident Saved', ' Incident Saved modal appears');
       click('.modal-footer button:contains(Ok)');
     });
     andThen(() => {
@@ -118,7 +117,7 @@ test('Incident creation and editing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Add Attachment', 'Add attachment dialog appears');
+      assert.dom('.modal-title').hasText('Add Attachment', 'Add attachment dialog appears');
       // Right now we don't have a good way to test adding attachments.
       click('.modal-footer button:contains(Cancel)');
       waitToDisappear('.modal-dialog');
@@ -132,7 +131,7 @@ test('Incident creation and editing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Add Custom Form', 'Add custom form dialog appears');
+      assert.dom('.modal-title').hasText('Add Custom Form', 'Add custom form dialog appears');
       select('.form-to-add', 'Incident');
     });
     andThen(() => {
@@ -150,7 +149,7 @@ test('Incident creation and editing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Incident Saved', ' Incident Saved modal appears');
+      assert.dom('.modal-title').hasText('Incident Saved', ' Incident Saved modal appears');
       click('.modal-footer button:contains(Ok)');
       waitToDisappear('.modal-dialog');
     });
@@ -170,24 +169,24 @@ test('Incident creation and editing', function(assert) {
     andThen(() => {
       let incidentDate = moment(1489004400000);
       assert.equal(currentURL(), '/incident/edit/56c64d71-ba30-4271-b899-f6f6b031f589', 'Incident edit url is correct');
-      assert.equal(find('.sentinel-event input:checked').length, 1, 'Sentinel Event checkbox is checked');
-      assert.equal(find('.incident-date input').val(), incidentDate.format(DATE_TIME_FORMAT), 'Date of incident displays');
-      assert.equal(find('.incident-department .tt-input').val(), 'Reception', 'Incident department displays');
-      assert.equal(find('.reported-to input').val(), 'Jane Bagadonuts', 'Reported to displays.');
+      assert.dom('.sentinel-event input').isChecked('Sentinel Event checkbox is checked');
+      assert.dom('.incident-date input').hasValue(incidentDate.format(DATE_TIME_FORMAT), 'Date of incident displays');
+      assert.dom('.incident-department .tt-input').hasValue('Reception', 'Incident department displays');
+      assert.dom('.reported-to input').hasValue('Jane Bagadonuts', 'Reported to displays.');
       assert.equal(find('.incident-category option:selected').text().trim(), 'Accident or Injury', 'Category displays');
       assert.equal(find('.incident-category-item option:selected').text().trim(), 'Patient', 'Category item displays');
-      assert.equal(find('.patient-name .tt-input').val(), 'Joe Bagadonuts - P00001', 'Patient impacted name displays');
-      assert.equal(find('.patient-id').text(), 'P00001', 'Patient id displays');
-      assert.equal(find('.incident-description textarea').val(), 'Patient fell on wet floor.', 'Description displays');
+      assert.dom('.patient-name .tt-input').hasValue('Joe Bagadonuts - P00001', 'Patient impacted name displays');
+      assert.dom('.patient-id').hasText('P00001', 'Patient id displays');
+      assert.dom('.incident-description textarea').hasValue('Patient fell on wet floor.', 'Description displays');
       fillIn('.incident-description textarea', INCIDENT_DESCRIPTION);
     });
     andThen(() => {
-      assert.equal(find('.incident-description textarea').val(), INCIDENT_DESCRIPTION, 'Updated description displays');
+      assert.dom('.incident-description textarea').hasValue(INCIDENT_DESCRIPTION, 'Updated description displays');
       click('.panel-footer button:contains(Update)');
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Incident Saved', ' Incident Saved modal appears');
+      assert.dom('.modal-title').hasText('Incident Saved', ' Incident Saved modal appears');
       click('.modal-footer button:contains(Ok)');
       waitToDisappear('.modal-dialog');
     });
@@ -196,7 +195,7 @@ test('Incident creation and editing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Edit Note', ' Edit Note modal appears');
+      assert.dom('.modal-title').hasText('Edit Note', ' Edit Note modal appears');
       fillIn('.note-description textarea', EDIT_INCIDENT_NOTE);
     });
     andThen(() => {
@@ -204,17 +203,17 @@ test('Incident creation and editing', function(assert) {
       waitToDisappear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.note-description').text(), EDIT_INCIDENT_NOTE, 'Note is updated');
+      assert.dom('.note-description').hasText(EDIT_INCIDENT_NOTE, 'Note is updated');
       click('#notes tr button:contains(Delete)');
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Delete Note', ' Delete Note modal appears');
+      assert.dom('.modal-title').hasText('Delete Note', ' Delete Note modal appears');
       click('.modal-footer button:contains(Delete)');
       waitToDisappear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.note-description').length, 0, 'Note has been deleted');
+      assert.dom('.note-description').doesNotExist('Note has been deleted');
       click('.tab-nav li a:contains(Attachment)');
       waitToAppear('#attachments td a:contains(Download)');
     });
@@ -224,7 +223,7 @@ test('Incident creation and editing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Edit Attachment', ' Edit Attachment modal appears');
+      assert.dom('.modal-title').hasText('Edit Attachment', ' Edit Attachment modal appears');
       fillIn('.attachment-title input', 'Incident Report Form');
     });
     andThen(() => {
@@ -237,7 +236,7 @@ test('Incident creation and editing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Delete Attachment', ' Delete Attachment modal appears');
+      assert.dom('.modal-title').hasText('Delete Attachment', ' Delete Attachment modal appears');
       click('.modal-footer button:contains(Ok)');
     });
     andThen(() => {
@@ -252,17 +251,17 @@ test('Incident deletion', function(assert) {
     visit('/incident');
     andThen(() => {
       assert.equal(currentURL(), '/incident', 'Incident listing url is correct');
-      assert.equal(find('.incident-row').length, 1, 'One incident appears');
+      assert.dom('.incident-row').exists({ count: 1 }, 'One incident appears');
       click('.incident-row button:contains(Delete)');
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Delete Incident', ' Delete Incident modal appears');
+      assert.dom('.modal-title').hasText('Delete Incident', ' Delete Incident modal appears');
       click('.modal-footer button:contains(Delete)');
       waitToDisappear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.incident-row').length, 0, 'Incident diappears from list');
+      assert.dom('.incident-row').doesNotExist('Incident diappears from list');
     });
   });
 });
@@ -271,8 +270,7 @@ function addItem(assert, itemName) {
   click('button:contains(Add Item)');
   waitToAppear('.modal-dialog');
   andThen(() => {
-    assert.equal(find('.modal-title').text(), 'Add Category Item',
-      'Add Category Item modal appears');
+    assert.dom('.modal-title').hasText('Add Category Item', 'Add Category Item modal appears');
     fillIn('.incident-category-item input', itemName);
   });
   andThen(() => {

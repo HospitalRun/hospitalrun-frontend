@@ -35,21 +35,21 @@ test('Adding a new lab request', function(assert) {
     waitToAppear('.modal-dialog');
 
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Lab Request Saved', 'Lab Request was saved successfully');
-      findWithAssert('.patient-summary');
+      assert.dom('.modal-title').hasText('Lab Request Saved', 'Lab Request was saved successfully');
+      assert.dom('.patient-summary').exists();
     });
 
     click('.modal-footer button:contains(Ok)');
 
     andThen(() => {
-      assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
+      assert.dom('.patient-summary').exists({ count: 1 }, 'Patient summary is displayed');
     });
 
     click('.panel-footer button:contains(Return)');
 
     andThen(() => {
       assert.equal(currentURL(), '/labs');
-      assert.equal(find('tr').length, 3, 'Two lab requests are displayed');
+      assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
     });
   });
 });
@@ -60,7 +60,7 @@ test('Marking a lab request as completed', function(assert) {
     visit('/labs/completed');
 
     andThen(() => {
-      assert.equal(find('.alert-info').text().trim(), 'No completed items found.', 'No completed requests are displayed');
+      assert.dom('.alert-info').hasText('No completed items found.', 'No completed requests are displayed');
     });
 
     visit('/labs');
@@ -69,7 +69,7 @@ test('Marking a lab request as completed', function(assert) {
     waitToAppear('.modal-dialog');
 
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Lab Request Completed', 'Lab Request was completed successfully');
+      assert.dom('.modal-title').hasText('Lab Request Completed', 'Lab Request was completed successfully');
     });
 
     click('.modal-footer button:contains(Ok)');
@@ -77,7 +77,7 @@ test('Marking a lab request as completed', function(assert) {
     visit('/labs/completed');
 
     andThen(() => {
-      assert.equal(find('tr').length, 2, 'One completed request is displayed');
+      assert.dom('tr').exists({ count: 2 }, 'One completed request is displayed');
     });
   });
 });
@@ -108,14 +108,14 @@ test('Lab with always included custom form', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/labs');
-      assert.equal(find('tr').length, 3, 'Two lab requests are displayed');
+      assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
     });
 
     click('tr:last');
 
     andThen(() => {
-      assert.equal(find('.test-result-input input').val(), 'Chest is clear', 'There is result');
-      assert.equal(find('.js-lab-notes textarea').val(), 'Dr test ordered another scan', 'There is note');
+      assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
+      assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');
     });
 
     checkCustomFormIsFilled(assert, 'Test Custom Form for Lab included');
@@ -127,7 +127,7 @@ test('Lab with always included custom form', function(assert) {
     visit('/labs/completed');
 
     andThen(() => {
-      assert.equal(find('tr').length, 2, 'One completed request is displayed');
+      assert.dom('tr').exists({ count: 2 }, 'One completed request is displayed');
     });
 
     click('tr:last');
@@ -163,14 +163,14 @@ test('Lab with additional form', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/labs');
-      assert.equal(find('tr').length, 3, 'Two lab requests are displayed');
+      assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
     });
 
     click('tr:last');
 
     andThen(() => {
-      assert.equal(find('.test-result-input input').val(), 'Chest is clear', 'There is result');
-      assert.equal(find('.js-lab-notes textarea').val(), 'Dr test ordered another scan', 'There is note');
+      assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
+      assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');
     });
 
     checkCustomFormIsFilled(assert, 'Test Custom Form for Lab NOT included');
@@ -182,7 +182,7 @@ test('Lab with additional form', function(assert) {
     visit('/labs/completed');
 
     andThen(() => {
-      assert.equal(find('tr').length, 2, 'One completed request is displayed');
+      assert.dom('tr').exists({ count: 2 }, 'One completed request is displayed');
     });
 
     click('tr:last');
@@ -222,14 +222,14 @@ test('Lab with always included custom form and additional form', function(assert
 
     andThen(() => {
       assert.equal(currentURL(), '/labs');
-      assert.equal(find('tr').length, 3, 'Two lab requests are displayed');
+      assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
     });
 
     click('tr:last');
 
     andThen(() => {
-      assert.equal(find('.test-result-input input').val(), 'Chest is clear', 'There is result');
-      assert.equal(find('.js-lab-notes textarea').val(), 'Dr test ordered another scan', 'There is note');
+      assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
+      assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');
     });
 
     checkCustomFormIsFilled(assert, 'Test Custom Form for Lab included');
@@ -242,7 +242,7 @@ test('Lab with always included custom form and additional form', function(assert
     visit('/labs/completed');
 
     andThen(() => {
-      assert.equal(find('tr').length, 2, 'One completed request is displayed');
+      assert.dom('tr').exists({ count: 2 }, 'One completed request is displayed');
     });
 
     click('tr:last');

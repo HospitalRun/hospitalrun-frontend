@@ -32,7 +32,7 @@ test('create invoice', function(assert) {
     });
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Invoice Saved', 'Invoice was saved successfully');
+      assert.dom('.modal-title').hasText('Invoice Saved', 'Invoice was saved successfully');
     });
   });
 });
@@ -52,7 +52,7 @@ test('print invoice', function(assert) {
       click('button:contains(Print)');
     });
     andThen(function() {
-      assert.equal(find('.invoices-review').length, 1, 'Invoice is displayed for printing');
+      assert.dom('.invoices-review').exists({ count: 1 }, 'Invoice is displayed for printing');
     });
   });
 });
@@ -121,7 +121,10 @@ test('delete invoice', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete inv00001?', 'Invoice deletion confirm displays');
+      assert.dom('.alert').hasText(
+        'Are you sure you wish to delete inv00001?',
+        'Invoice deletion confirm displays'
+      );
     });
     click('button:contains(Delete):last');
     waitToDisappear('.invoice-number:contains(inv00001)');
@@ -141,13 +144,13 @@ test('add payment', function(assert) {
     click('button:contains(Add Payment)');
     waitToAppear('.modal-dialog');
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Add Payment', 'Add Payment modal displays');
+      assert.dom('.modal-title').hasText('Add Payment', 'Add Payment modal displays');
     });
     fillIn('.payment-amount input', 100);
     click('.update-payment-btn');
     waitToAppear('.modal-title:contains(Payment Added)');
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Payment Added', 'Payment was saved successfully');
+      assert.dom('.modal-title').hasText('Payment Added', 'Payment was saved successfully');
       click('.modal-footer button:contains(Ok)');
       waitToDisappear('.modal-dialog');
     });
@@ -164,14 +167,14 @@ test('add deposit', function(assert) {
     click('button:contains(add deposit)');
     waitToAppear('.modal-dialog');
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Add Deposit', 'Add Deposit modal displays');
+      assert.dom('.modal-title').hasText('Add Deposit', 'Add Deposit modal displays');
     });
     fillIn('.payment-amount input', 140);
     typeAheadFillIn('.payment-patient', 'Joe Bagadonuts - TCH 00001');
     click('.update-payment-btn');
     waitToAppear('.modal-title:contains(Deposit Added)');
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Deposit Added', 'Deposit was saved successfully');
+      assert.dom('.modal-title').hasText('Deposit Added', 'Deposit was saved successfully');
     });
   });
 });
@@ -187,7 +190,7 @@ test('cashier role', function(assert) {
     visit('/invoices');
     andThen(function() {
       assert.equal(currentURL(), '/invoices');
-      assert.equal(find('.primary-section-link').length, 2, 'Should have 2 navigations');
+      assert.dom('.primary-section-link').exists({ count: 2 }, 'Should have 2 navigations');
       assert.equal(find('.primary-section-link:contains(Scheduling)').length, 1, 'should see Scheduling navigation');
       assert.equal(find('.primary-section-link:contains(Billing)').length, 1,  'should see Billing navigation');
 
@@ -197,7 +200,7 @@ test('cashier role', function(assert) {
     });
     click('a:contains(Billing)');
     andThen(function() {
-      assert.equal(find('.category-sub-item').length, 2, 'Should have 2 sub navigations');
+      assert.dom('.category-sub-item').exists({ count: 2 }, 'Should have 2 sub navigations');
     });
   });
 });
@@ -212,7 +215,7 @@ test('Searching invoices', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/invoices/search/Joe', 'Searched for Joe');
-      assert.equal(find('.invoice-number').length, 1, 'There is one search item');
+      assert.dom('.invoice-number').exists({ count: 1 }, 'There is one search item');
     });
 
     fillIn('[role="search"] div input', 'joe');
@@ -220,14 +223,14 @@ test('Searching invoices', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/invoices/search/joe', 'Searched for all lower case joe');
-      assert.equal(find('.invoice-number').length, 1, 'There is one search item');
+      assert.dom('.invoice-number').exists({ count: 1 }, 'There is one search item');
     });
     fillIn('[role="search"] div input', 'ItemNotFound');
     click('.glyphicon-search');
 
     andThen(() => {
       assert.equal(currentURL(), '/invoices/search/ItemNotFound', 'Searched for ItemNotFound');
-      assert.equal(find('.invoice-number').length, 0, 'There is no search result');
+      assert.dom('.invoice-number').doesNotExist('There is no search result');
     });
   });
 });
