@@ -7,11 +7,9 @@ export default Component.extend({
     this.locationChange = this.currentLocationChanged.bind(this);
   }.on('init'),
 
-  currentLocationChanged(newLocation) {
-    this.get('locationPicker').set('selectedLocation', newLocation);
+  currentLocationChanged() {
     once(this, function() {
       this.get('parentView').locationChange();
     });
   }
-
 });

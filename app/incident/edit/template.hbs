@@ -25,7 +25,6 @@
       {{/unless}}
     </div>
     <div class="row">
-
       {{form.checkbox label=(t 'incident.labels.sentinelEvent') property="sentinelEvent" class="col-sm-3 sentinel-event"}}
       {{date-picker model=model property="dateOfIncident" label=(t 'incident.labels.incidentDate') class="col-sm-3 required incident-date" showTime=true}}
       {{select-or-typeahead form=form model=model className="col-sm-3 required incident-department" property="department"

@@ -7,18 +7,15 @@
           {{date-picker model=model property="endDate" label=(t 'incident.labels.endDate') class="col-sm-4"}}
         </div>
         <div class="row" data-test-selector="select-report-type">
-          <div class="form-group col-xs-6">
-            <label class="control-label" for="report-type">{{t 'incident.labels.reportType'}}</label>
-            {{select-list
-              action=(action (mut reportType))
-              class='form-control'
-              content=reportTypes
-              id='report-type'
-              optionValuePath='value'
-              optionLabelPath='name'
-              value=reportType
-            }}
-          </div>
+          {{form.select
+            class='form-input-group col-xs-6'
+            content=reportTypes
+            id='report-type'
+            optionValuePath='value'
+            optionLabelPath='name'
+            property='reportType'
+            label=(t 'incident.labels.reportType')
+          }}
         </div>
       {{/em-form}}
     </div>

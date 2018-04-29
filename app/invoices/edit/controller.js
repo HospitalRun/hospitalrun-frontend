@@ -1,5 +1,5 @@
 import { merge } from '@ember/polyfills';
-import EmberObject, { set } from '@ember/object';
+import EmberObject, { set, computed } from '@ember/object';
 import {
   all,
   allSettled,
@@ -18,13 +18,17 @@ import uuid from 'npm:uuid';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
   invoiceController: controller('invoices'),
-  expenseAccountList: alias('invoiceController.expenseAccountList.value'),
   patientList: alias('invoiceController.patientList'),
   pharmacyCharges: [],
   pricingProfiles: map('invoiceController.pricingProfiles', SelectValues.selectObjectMap),
   supplyCharges: [],
   updateCapability: 'add_invoice',
   wardCharges: [],
+
+  expenseAccountList: computed('invoiceController.expenseAccountList.value', function() {
+    let listArray = this.get('invoiceController.expenseAccountList.value');
+    return listArray.map((value) => ({ id: value, value }));
+  }),
 
   additionalButtons: function() {
     let buttons = [];
@@ -57,7 +61,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   }.property(),
 
   pharmacyExpenseAccount: function() {
-    let expenseAccountList = this.get('expenseAccountList');
+    let expenseAccountList = this.get('invoiceController.expenseAccountList.value');
     if (!isEmpty(expenseAccountList)) {
       let account = expenseAccountList.find(function(value) {
         if (value.toLowerCase().indexOf('pharmacy') > -1) {
