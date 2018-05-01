@@ -109,15 +109,9 @@ export default {
         updateButtonTextAdd: 'Agregar',
         updateButtonTextUpdate: 'Actualizar'
       } },
-<<<<<<< HEAD
       expenseAccountList: 'Cuentas de gastos',
       imagingPricingTypes: 'Tipos de precios de imágenes',
       incidentDepartments: 'Departamentos de incidencias',
-=======
-      expenseAccountList: 'Lista de gastos',
-      imagingPricingTypes: 'Tipos de precios de radiografías',
-      incidentDepartments: 'Departamentos de incidentes',
->>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea
       inventoryTypes: 'Tipos de inventarios',
       labPricingTypes: 'Precios de laboratorio',
       pageTitle: 'Listas de búsqueda',
