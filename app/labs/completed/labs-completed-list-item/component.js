@@ -1,5 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-  tagName: 'tr'
+export default Component.extend({
+  tagName: 'tr',
+  classNames: ['clickable'],
+
+  click() {
+    this.sendAction('action', this.lab);
+  }
 });

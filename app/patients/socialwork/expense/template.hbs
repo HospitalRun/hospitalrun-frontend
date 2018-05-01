@@ -5,12 +5,12 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
-    {{em-select label=(t 'inventory.reports.rows.category') property="category" class="required"
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.select label=(t 'inventory.reports.rows.category') property="category" class="required"
       content=categoryTypes
       prompt=" "
     }}
-    {{em-input label=(t 'patients.labels.sources') property="sources"}}
-    {{number-input label=(t 'patients.labels.cost') property="cost" class="required"}}
+    {{form.input label=(t 'patients.labels.sources') property="sources"}}
+    {{number-input model=model label=(t 'patients.labels.cost') property="cost" class="required"}}
   {{/em-form}}
 {{/modal-dialog}}

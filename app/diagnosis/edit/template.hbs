@@ -6,9 +6,9 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText
   }}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     {{#if model.isNew}}
-      {{select-or-typeahead
+      {{select-or-typeahead form=form model=model
           property="diagnosis"
           label=(t 'diagnosis.labels.diagnosis')
           list=diagnosisList
@@ -24,12 +24,12 @@
       </div>
     {{/if}}
     <div class="row">
-      {{date-picker property="date" label=(t "diagnosis.labels.date") class="col-sm-4 required"}}
+      {{date-picker model=model property="date" label=(t "diagnosis.labels.date") class="col-sm-4 required"}}
     </div>
     <div class="row">
-      {{em-checkbox label=(t 'diagnosis.labels.secondaryDiagnosis') property="secondaryDiagnosis" class="col-sm-4 secondary-diagnosis"}}
+      {{form.checkbox label=(t 'diagnosis.labels.secondaryDiagnosis') property="secondaryDiagnosis" class="col-sm-4 secondary-diagnosis"}}
       {{#unless model.isNew}}
-        {{em-checkbox label=(t 'diagnosis.labels.activeDiagnosis') property="active" class="col-sm-4"}}
+        {{form.checkbox label=(t 'diagnosis.labels.activeDiagnosis') property="active" class="col-sm-4"}}
       {{/unless}}
     </div>
   {{/em-form}}

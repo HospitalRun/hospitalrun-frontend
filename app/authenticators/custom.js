@@ -1,21 +1,16 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { alias } from '@ember/object/computed';
+import { get } from '@ember/object';
+import RSVP from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 import crypto from 'npm:crypto';
 import MapOauthParams from 'hospitalrun/mixins/map-oauth-params';
 import OAuthHeaders from 'hospitalrun/mixins/oauth-headers';
 
-const {
-  computed: {
-    alias
-  },
-  get,
-  RSVP
-} = Ember;
-
 export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
-  ajax: Ember.inject.service(),
-  config: Ember.inject.service(),
-  database: Ember.inject.service(),
+  ajax: service(),
+  config: service(),
+  database: service(),
   serverEndpoint: '/auth/login',
 
   standAlone: alias('config.standAlone'),
@@ -40,9 +35,7 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
   },
 
   _finishAuth(user, oauthConfigs) {
-    let config = this.get('config');
     let database = this.get('database');
-    config.setCurrentUser(user);
     return database.setup().then(() => {
       user.oauthConfigs = oauthConfigs;
       return user;

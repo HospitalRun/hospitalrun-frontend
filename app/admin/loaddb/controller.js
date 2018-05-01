@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import { translationMacro as t } from 'ember-i18n';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
-export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
-  database: Ember.inject.service(),
-  fileSystem: Ember.inject.service('filesystem'),
+export default Controller.extend(ModalHelper, ProgressDialog, {
+  database: service(),
+  fileSystem: service('filesystem'),
   progressMessage: t('admin.loaddb.progressMessage'),
   progressTitle: t('admin.loaddb.progressTitle'),
   syncResults: null,

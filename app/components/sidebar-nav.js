@@ -1,20 +1,19 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import HospitalRunVersion from 'hospitalrun/mixins/hospitalrun-version';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
-import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
 import Navigation from 'hospitalrun/mixins/navigation';
 
-export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, ProgressDialog, UserSession, Navigation, {
-  ajax: Ember.inject.service(),
-  application: Ember.inject.controller(),
+export default Component.extend(HospitalRunVersion, ModalHelper, UserSession, Navigation, {
+  ajax: service(),
   allowSearch: false,
-  config: Ember.inject.service(),
-  currentSearchText: null,
-  currentRouteName: Ember.computed.alias('application.currentRouteName'),
+  config: service(),
+  i18n: service(),
   progressTitle: 'Searching',
-  searchRoute: null,
-  session: Ember.inject.service(),
+  router: service(),
+  session: service(),
   syncStatus: '',
   currentOpenNav: null,
   selectedLanguage: null,
@@ -24,7 +23,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
       let version = this.get('version');
       this.get('ajax').request('/serverinfo').then((siteInfo) => {
         let message = `Version: ${version}`;
-        if (!Ember.isEmpty(siteInfo)) {
+        if (!isEmpty(siteInfo)) {
           message += ` Site Info: ${siteInfo}`;
         }
         this.displayAlert(this.get('i18n').t('navigation.about'), message);
@@ -44,17 +43,8 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
     },
 
     search() {
-      if (this.allowSearch && this.searchRoute) {
-        let currentRouteName = this.get('currentRouteName');
-        let currentSearchText = this.get('currentSearchText');
-        let textToFind = this.get('searchText');
-        if (currentSearchText !== textToFind || currentRouteName.indexOf('.search') === -1) {
-          this.set('searchText', '');
-          this.set('progressMessage', `Searching for ${textToFind}. Please wait...`);
-          this.showProgressModal();
-          this.transitionToRoute(`${this.searchRoute}/${textToFind}`);
-        }
-      }
+      this.sendAction('search', this.get('searchText'));
+      this.set('searchText', '');
     },
 
     navAction(nav) {
@@ -62,7 +52,8 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
         this.currentOpenNav.closeSubnav();
       }
       this.set('currentOpenNav', nav);
-      this.transitionToRoute(nav.route);
+
+      this.get('router').transitionTo(nav.route);
       this.set('isShowingSettings', false);
     },
 
@@ -73,6 +64,6 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
     closeSettings() {
       this.set('isShowingSettings', false);
     }
-
   }
 });
+

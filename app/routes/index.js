@@ -1,11 +1,12 @@
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { isEmpty } from '@ember/utils';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import Navigation from 'hospitalrun/mixins/navigation';
 import UserRoles from 'hospitalrun/mixins/user-roles';
-import Ember from 'ember';
-const { inject, isEmpty } = Ember;
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, UserRoles, {
-  session: inject.service(),
+export default Route.extend(AuthenticatedRouteMixin, Navigation, UserRoles, {
+  session: service(),
   beforeModel() {
     let session = this.get('session');
     if (!isEmpty(session)) {
@@ -25,7 +26,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, UserRoles
   },
 
   afterModel() {
-    this.controllerFor('navigation').set('allowSearch', false);
+    this.controllerFor('application').set('allowSearch', false);
   },
 
   actions: {

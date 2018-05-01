@@ -1,6 +1,6 @@
 <div class="panel panel-primary">
   <div class="panel-body">
-    {{#em-form model=model submitButton=false }}
+    {{#em-form model=model submitButton=false as |form|}}
       {{file-upload label=(t 'labels.fileToLoad') property="importFileName" selectedFile=importFile }}
       <button class="btn btn-primary" {{action 'loadFile'}}>{{t 'buttons.loadFile'}}</button>
     {{/em-form}}

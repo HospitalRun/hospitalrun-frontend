@@ -29,7 +29,6 @@ npm install -g ember-cli@latest
 npm install -g bower
 npm install
 bower install
-npm install -g phantomjs-prebuilt
 
 sudo su couchdb -c /usr/bin/couchdb &
 sleep 5

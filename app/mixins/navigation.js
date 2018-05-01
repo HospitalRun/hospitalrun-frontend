@@ -1,18 +1,14 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
+import { isEqual } from '@ember/utils';
+import { set, get, computed } from '@ember/object';
+import { camelize } from '@ember/string';
 
-const { camelize } = Ember.String;
-const {
-  get,
-  isEqual,
-  set
-} = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   navItems: [
     {
       title: 'Inventory',
       iconClass: 'octicon-package',
-      route: 'inventory.index',
+      route: 'inventory',
       capability: 'inventory',
       subnav: [
         {
@@ -45,7 +41,7 @@ export default Ember.Mixin.create({
     {
       title: 'Patients',
       iconClass: 'octicon-organization',
-      route: 'patients.index',
+      route: 'patients',
       capability: 'patients',
       subnav: [
         {
@@ -84,7 +80,7 @@ export default Ember.Mixin.create({
     {
       title: 'Scheduling',
       iconClass: 'octicon-calendar',
-      route: 'appointments.index',
+      route: 'appointments',
       capability: 'appointments',
       subnav: [
         {
@@ -136,7 +132,7 @@ export default Ember.Mixin.create({
     {
       title: 'Imaging',
       iconClass: 'octicon-device-camera',
-      route: 'imaging.index',
+      route: 'imaging',
       capability: 'imaging',
       subnav: [
         {
@@ -163,7 +159,7 @@ export default Ember.Mixin.create({
     {
       title: 'Medication',
       iconClass: 'octicon-file-text',
-      route: 'medication.index',
+      route: 'medication',
       capability: 'medication',
       subnav: [
         {
@@ -204,7 +200,7 @@ export default Ember.Mixin.create({
     {
       title: 'Labs',
       iconClass: 'octicon-microscope',
-      route: 'labs.index',
+      route: 'labs',
       capability: 'labs',
       subnav: [
         {
@@ -231,7 +227,7 @@ export default Ember.Mixin.create({
     {
       title: 'Billing',
       iconClass: 'octicon-credit-card',
-      route: 'invoices.index',
+      route: 'invoices',
       capability: 'invoices',
       subnav: [
         {
@@ -297,7 +293,7 @@ export default Ember.Mixin.create({
     {
       title: 'Administration',
       iconClass: 'octicon-person',
-      route: 'admin.lookup',
+      route: 'admin',
       capability: 'admin',
       subnav: [
         {
@@ -366,7 +362,7 @@ export default Ember.Mixin.create({
   ],
 
   // Navigation items get mapped localizations
-  localizedNavItems: Ember.computed('navItems.[]', 'i18n.locale', function() {
+  localizedNavItems: computed('navItems.[]', 'i18n.locale', function() {
     let localizationPrefix = 'navigation.';
     // Supports unlocalized keys for now, otherwise we would get:
     // "Missing translation: key.etc.path"

@@ -1,13 +1,9 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { isEmpty } from '@ember/utils';
+import { set, get } from '@ember/object';
 import moment from 'moment';
 
-const {
-  get,
-  isEmpty,
-  set
-} = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   calendarHeader: {
     center: 'agendaDay,agendaWeek,month',
     left: 'title',

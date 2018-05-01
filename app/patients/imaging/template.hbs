@@ -10,7 +10,7 @@
     <th>{{t 'labels.actions'}}</th>
   </tr>
   {{#each patientImaging as |imaging|}}
-    <tr {{action "editImaging" imaging}}>
+    <tr {{action "editImaging" imaging}} class="{{if imaging.canEdit (if canAddImaging "clickable")}}">
       <td>{{date-format imaging.requestedDate}}</td>
       <td>{{imaging.imagingType.name}}</td>
       <td>{{imaging.status}}</td>

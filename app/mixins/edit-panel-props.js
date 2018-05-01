@@ -1,9 +1,6 @@
-import Ember from 'ember';
-
-const {
-  computed,
-  isEmpty
-} = Ember;
+import Mixin from '@ember/object/mixin';
+import { computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 
 const ALL_PROPS = [
   'actionForUpdateButton',
@@ -17,7 +14,7 @@ const ALL_PROPS = [
   'updateButtonText'
 ];
 
-export default Ember.Mixin.create({
+export default Mixin.create({
 
   additionalButtons: null,
   cancelButtonText: null,

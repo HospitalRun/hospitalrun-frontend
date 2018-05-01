@@ -4,8 +4,8 @@
     title=(t 'customForms.titles.addCustomForm')
     updateButtonAction='addForm'
     updateButtonText=(t 'customForms.buttons.addForm')}}
-  {{#em-form model=model submitButton=false}}
-    {{em-select label=(t 'customForms.labels.formToAdd')
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.select label=(t 'customForms.labels.formToAdd')
       property="selectedForm" content=model.customForms
       prompt=" " class="form-to-add"
     }}

@@ -11,7 +11,7 @@ clean:
 	@echo 'Nothing to do yet!'
 
 .PHONY: test
-test: install node_modules/phantomjs
+test: 
 	@./script/test
 
 .PHONY: build

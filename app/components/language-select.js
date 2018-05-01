@@ -1,10 +1,14 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-  config: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+export default Component.extend({
+  i18n: service(),
+  languagePreference: service(),
+  selectedLanguage: alias('i18n.locale'),
 
-  languageOptions: function() {
+  languageOptions: computed('i18n.locale', function() {
     let i18n = this.get('i18n');
     // Hacking around the fact that i18n
     // has no support for t(key, locale).
@@ -18,24 +22,14 @@ export default Ember.Component.extend({
     });
     i18n.set('locale', currentLocale);
     return options;
-  }.property('currentLanguage'),
+  }),
 
-  onFinish: null,
-
-  _setUserLanguage(language) {
-    let configDB = this.get('config.configDB');
-    configDB.get('current_user').then((user) => {
-      user.i18n = language;
-      configDB.put(user);
-    });
-  },
+  onFinish: () => {},
 
   actions: {
-    selectLanguage(selection) {
-      this._setUserLanguage(selection);
-      this.set('i18n.locale', selection);
+    selectLanguage(i18n) {
+      this.get('languagePreference').saveUserLanguagePreference(i18n);
       this.get('onFinish')();
     }
   }
-
 });

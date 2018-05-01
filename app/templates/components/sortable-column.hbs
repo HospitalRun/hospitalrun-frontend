@@ -12,7 +12,7 @@
     <ul class="dropdown-menu">
       {{#if (eq filterType 'typeahead')}}
         <li>
-          {{typeahead-filter content=filterValues}}
+          {{typeahead-filter model=model content=filterValues}}
         </li>
       {{/if}}
       {{#if (eq 'list' filterType )}}

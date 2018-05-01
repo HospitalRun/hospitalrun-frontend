@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
 
 const rankMultiplierValues = [
   {
@@ -16,7 +16,7 @@ const rankMultiplierValues = [
 ];
 
 export function rankToMultiplier(rank = 'B') {
-  let rankModel = Ember.A(rankMultiplierValues).findBy('rank', rank);
+  let rankModel = A(rankMultiplierValues).findBy('rank', rank);
   return rankModel.value;
 }
 

@@ -1,5 +1,6 @@
-import Ember from 'ember';
-export default Ember.Controller.extend({
+import $ from 'jquery';
+import Controller from '@ember/controller';
+export default Controller.extend({
   selectedPrinter: null,
 
   barcodeUri: function() {
@@ -7,7 +8,7 @@ export default Ember.Controller.extend({
     let name = this.get('model.name');
 
     /* eslint new-cap: ['error', { 'capIsNew': false }]  */
-    return Ember.$(document).JsBarcode(id, {
+    return $(document).JsBarcode(id, {
       width: 1,
       height: 20,
       fontSize: 10,
@@ -45,7 +46,7 @@ export default Ember.Controller.extend({
       if (!selectedPrinter) {
         selectedPrinter = this.get('printers')[0].name;
       }
-      Ember.$.get('/dymo/BarcodeAsImage.label', function(labelXml) {
+      $.get('/dymo/BarcodeAsImage.label', function(labelXml) {
         let barcodeAsImageLabel = dymo.label.framework.openLabelXml(labelXml);
         let pngBase64 = barcodeUri.substr('data:image/png;base64,'.length);
         barcodeAsImageLabel.setObjectText('Image', pngBase64);

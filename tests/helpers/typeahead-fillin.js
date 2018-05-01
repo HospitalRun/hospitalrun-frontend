@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import { registerAsyncHelper } from '@ember/test';
 
-Ember.Test.registerAsyncHelper('typeAheadFillIn', function(app, selector, value) {
+registerAsyncHelper('typeAheadFillIn', function(app, selector, value) {
   let typeAheadSelector = `${selector} .tt-input`;
   fillIn(typeAheadSelector, value);
   triggerEvent(typeAheadSelector, 'input');

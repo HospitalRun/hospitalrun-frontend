@@ -1,9 +1,14 @@
+import { resolve, Promise as EmberPromise } from 'rsvp';
+import { alias, not } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import { inject as controller } from '@ember/controller';
+import { isEmpty } from '@ember/utils';
+import EmberObject, { set, get, computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
 import AllergyActions from 'hospitalrun/mixins/allergy-actions';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
-import Ember from 'ember';
 import moment from 'moment';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
@@ -11,16 +16,9 @@ import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-const {
-  computed,
-  get,
-  isEmpty,
-  set
-} = Ember;
-
 export default AbstractEditController.extend(AddNewPatient, AllergyActions, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
-  visitsController: Ember.inject.controller('visits'),
-  filesystem: Ember.inject.service(),
+  visitsController: controller('visits'),
+  filesystem: service(),
   additionalButtons: computed('model.status', function() {
     let buttonProps = {
       buttonIcon: 'glyphicon glyphicon-log-out',
@@ -123,24 +121,24 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     }
   }.property('model.returnTo', 'model.returnToPatient'),
 
-  allowAddAllergy: computed.not('model.isNew'),
-  allowAddDiagnosis: computed.not('model.isNew'),
-  allowAddOperativePlan: computed.not('model.isNew'),
+  allowAddAllergy: not('model.isNew'),
+  allowAddDiagnosis: not('model.isNew'),
+  allowAddOperativePlan: not('model.isNew'),
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
-  diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
+  diagnosisList: alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   hideChargeHeader: true,
-  isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
-  patientImaging: Ember.computed.alias('model.imaging'),
-  patientLabs: Ember.computed.alias('model.labs'),
-  patientMedications: Ember.computed.alias('model.medication'),
+  isFileSystemEnabled: alias('filesystem.isFileSystemEnabled'),
+  patientImaging: alias('model.imaging'),
+  patientLabs: alias('model.labs'),
+  patientMedications: alias('model.medication'),
   pricingList: null, // This gets filled in by the route
-  pricingTypes: Ember.computed.alias('visitsController.wardPricingTypes'),
-  physicianList: Ember.computed.alias('visitsController.physicianList'),
-  locationList: Ember.computed.alias('visitsController.locationList'),
-  sexList: computed.alias('visitsController.sexList'),
-  visitTypesList: Ember.computed.alias('visitsController.visitTypesList'),
+  pricingTypes: alias('visitsController.wardPricingTypes'),
+  physicianList: alias('visitsController.physicianList'),
+  locationList: alias('visitsController.locationList'),
+  sexList: alias('visitsController.sexList'),
+  visitTypesList: alias('visitsController.visitTypesList'),
   lookupListsToUpdate: [{
     name: 'physicianList',
     property: 'model.examiner',
@@ -234,7 +232,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     let minId = database.getMinPouchId('appointment');
     let patientId = newVisit.get('patient.id');
     if (!isEmpty(appointment)) {
-      return Ember.RSVP.resolve(appointment);
+      return resolve(appointment);
     } else {
       return this.store.query('appointment', {
         options: {
@@ -256,7 +254,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     return this._findAssociatedAppointment(newVisit).then((appointment) => {
       if (isEmpty(appointment)) {
         newVisit.set('hasAppointment', false);
-        return Ember.RSVP.resolve();
+        return resolve();
       } else {
         newVisit.set('hasAppointment', true);
         appointment.set('status', 'Attended');
@@ -276,7 +274,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
   beforeUpdate() {
     let isNew = this.get('model.isNew');
     if (isNew) {
-      return new Ember.RSVP.Promise((resolve, reject) => {
+      return new EmberPromise((resolve, reject) => {
         let newVisit = this.get('model');
         return newVisit.validate().then(() => {
           if (newVisit.get('isValid')) {
@@ -535,7 +533,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     },
 
     showDeletePhoto(photo) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deletePhoto',
         title: this.get('i18n').t('patients.titles.deletePhoto'),
         message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
@@ -563,7 +561,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     },
 
     showDeletePatientNote(note) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deletePatientNote',
         title: 'Delete Note',
         message: 'Are you sure you want to delete this note?',

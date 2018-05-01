@@ -1,25 +1,21 @@
+import { inject as controller } from '@ember/controller';
+import { inject as service } from '@ember/service';
+import { resolve } from 'rsvp';
+import { isEmpty } from '@ember/utils';
+import { alias } from '@ember/object/computed';
+import EmberObject, { set, get, computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import DS from 'ember-data';
-import Ember from 'ember';
 import FriendlyId from 'hospitalrun/mixins/friendly-id';
 import IncidentStatuses, { CLOSED } from 'hospitalrun/mixins/incident-statuses';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
+import CustomFormManager from 'hospitalrun/mixins/custom-form-manager';
 
 const { PromiseArray, PromiseObject } = DS;
 
-const {
-  computed,
-  computed: {
-    alias
-  },
-  get,
-  inject,
-  set
-} = Ember;
-
-export default AbstractEditController.extend(IncidentStatuses, FriendlyId, PatientSubmodule, SelectValues, UserSession, {
+export default AbstractEditController.extend(IncidentStatuses, FriendlyId, PatientSubmodule, SelectValues, UserSession, CustomFormManager, {
   lookupListsToUpdate: [{
     name: 'incidentDepartmentList',
     property: 'model.department',
@@ -29,15 +25,14 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
   sequenceView: 'incident_by_friendly_id',
   updateCapability: 'add_incident',
 
-  customForms: inject.service(),
-  database: inject.service(),
-  filesystem: inject.service(),
-  lookupLists: inject.service(),
+  database: service(),
+  filesystem: service(),
+  lookupLists: service(),
 
-  customFormsToAdd: alias('customForms.formsForSelect'),
-  customFormsToDisplay: alias('customForms.formsToDisplay'),
-  showAddFormButton: alias('customForms.showAddButton'),
-  incidentController: inject.controller('incident'),
+  customFormsToAdd: alias('formsForSelect'),
+  customFormsToDisplay: alias('formsToDisplay'),
+  showAddFormButton: alias('showAddButton'),
+  incidentController: controller('incident'),
 
   canManageIncident: computed('model.{isNew,status}', function() {
     let canManageIncident = this.currentUserCan('manage_incidents');
@@ -66,7 +61,7 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
         });
       })
     });
-  }),
+  }).volatile(),
 
   incidentCategoryList: computed(function() {
     let lookupLists = get(this, 'lookupLists');
@@ -91,7 +86,7 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
 
   itemList: computed('model.categoryName', function() {
     let categoryNameSelected = get(this, 'model.categoryName');
-    if (!Ember.isEmpty(categoryNameSelected)) {
+    if (!isEmpty(categoryNameSelected)) {
       return PromiseArray.create({
         promise: get(this, 'incidentCategoryList').then((categoryList) => {
           let incidentCategory = categoryList.findBy('incidentCategoryName', categoryNameSelected);
@@ -115,14 +110,13 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
       });
 
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   },
 
   setupCustomForms() {
-    let customForms = get(this, 'customForms');
-    let model = get(this, 'model');
-    customForms.setupForms('incident', model);
+    this.set('formType', 'incident');
+    this.initFormsForType();
   },
 
   /**
@@ -156,11 +150,9 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
     },
 
     addCustomForm() {
-      let model = get(this, 'model');
-      let customFormsToAdd = get(this, 'customFormsToAdd');
-      this.send('openModal', 'custom-form-add', Ember.Object.create({
-        modelToAddTo: model,
-        customForms: customFormsToAdd
+      this.send('openModal', 'custom-form-add', EmberObject.create({
+        modelToAddTo: this.get('model'),
+        customForms: this.get('customFormsToAdd')
       }));
     },
 
@@ -207,7 +199,7 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
       let i18n = get(this, 'i18n');
       let modelName = i18n.t('models.attachment.names.singular');
       let message = i18n.t('messages.delete_singular', { name: modelName });
-      let model = Ember.Object.create({
+      let model = EmberObject.create({
         itemToDelete: attachment
       });
       let title = i18n.t('incident.titles.deleteAttachment');

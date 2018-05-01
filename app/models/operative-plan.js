@@ -1,13 +1,8 @@
+import { get, computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import { PLANNED_STATUS } from 'hospitalrun/mixins/operative-plan-statuses';
-
-const {
-  computed,
-  get,
-  isEmpty
-} = Ember;
 
 function defaultProcedures() {
   return [];

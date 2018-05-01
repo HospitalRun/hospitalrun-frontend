@@ -1,22 +1,17 @@
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import { get, computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import DS from 'ember-data';
-import Ember from 'ember';
 import moment from 'moment';
 
 const { PromiseArray } = DS;
 
-const {
-  Component,
-  computed,
-  get,
-  inject,
-  isEmpty
-} = Ember;
-
 export default Component.extend({
   patient: null,
 
-  database: inject.service(),
-  store: inject.service(),
+  database: service(),
+  store: service(),
 
   appointments: computed('patient', function() {
     let patient = get(this, 'patient');

@@ -1,13 +1,13 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     {{#if model.selectPatient}}
-      {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient')content=patientList selection=selectedPatient class="required patient-input"}}
+      {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient')content=patientList selection=selectedPatient class="required patient-input"}}
     {{else}}
-      {{patient-summary patient=model.patient returnTo='imaging.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+      {{patient-summary patient=model.patient returnTo='imaging.edit' returnToContext=model.id disablePatientLink=model.isNew class="clickable"}}
     {{/if}}
     {{#if model.isNew}}
       <div class="row">
-        {{em-select class="col-xs-3 required" label=(t 'labels.visit')
+        {{form.select class="col-xs-3 required" label=(t 'labels.visit')
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
           prompt=(t 'imaging.labels.addNewVisit')
@@ -43,13 +43,13 @@
       </div>
     {{/if}}
     {{#if canComplete}}
-      {{select-or-typeahead property="radiologist"
+      {{select-or-typeahead form=form model=model property="radiologist"
         label=(t 'imaging.labels.radiologist') list=radiologistList
         prompt=" "
         class="radiologist-input"
       }}
-      {{em-input property="result" label=(t 'imaging.labels.resultNotes') class="result-input"}}
+      {{form.input property="result" label=(t 'imaging.labels.resultNotes') class="result-input"}}
     {{/if}}
-    {{expand-text property="notes" label=(t 'imaging.labels.requestedNotes') rows=3 }}
+    {{expand-text property="notes" label=(t 'imaging.labels.requestedNotes') rows=3 form=form}}
   {{/em-form}}
 {{/edit-panel}}

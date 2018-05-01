@@ -11,7 +11,10 @@
         <th>{{t 'labels.notes'}}</th>
       </tr>
       {{#each model as |lab|}}
-        {{labs/completed/labs-completed-list-item lab=lab}}
+        {{labs/completed/labs-completed-list-item
+          lab=lab
+          action='editItem'
+        }}
       {{/each}}
     </table>
   {{else}}

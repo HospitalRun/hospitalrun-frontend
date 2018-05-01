@@ -4,37 +4,63 @@
       {{#if (eq field.type 'radio')}}
         <div class="form-group {{field.displayClassNames}}">
           <label>{{field.label}}</label>
-          {{ext-radio
-            content=field.mappedValues
-            value=(get model (concat propertyPrefix field.property))
-            includeOtherOption=field.includeOtherOption
-            otherOptionLabel=field.otherOptionLabel
-          }}
+          {{#unless isReadonly}}
+            {{ext-radio
+              content=field.mappedValues
+              value=(get model (concat propertyPrefix field.property))
+              includeOtherOption=field.includeOtherOption
+              otherOptionLabel=field.otherOptionLabel
+            }}
+          {{else}}
+            <p class="form-control-static">{{get model (concat propertyPrefix field.property)}}</p>
+          {{/unless}}
         </div>
       {{/if}}
       {{#if (eq field.type 'checkbox')}}
         <div class="form-group {{field.displayClassNames}}">
           <label>{{field.label}}</label>
           {{#each field.values as |checkbox|}}
-            {{em-checkbox label=checkbox.label property=(concat propertyPrefix checkbox.property)}}
+            {{rapidForm.checkbox model=model label=checkbox.label property=(concat propertyPrefix checkbox.property) disabled=isReadonly}}
           {{/each}}
         </div>
       {{/if}}
       {{#if (eq field.type 'textarea')}}
-        {{expand-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
+        {{#unless isReadonly}}
+          {{expand-text model=model label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames form=rapidForm}}
+        {{else}}
+          <div class="{{field.displayClassNames}}">
+            <label>{{field.label}}</label>
+            <p class="form-control-static">{{get model (concat propertyPrefix field.property)}}</p>
+          </div>
+        {{/unless}}
       {{/if}}
       {{#if (eq field.type 'text')}}
-        {{em-input label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
+        {{#unless isReadonly}}
+          {{rapidForm.input model=model label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
+        {{else}}
+          <div class="{{field.displayClassNames}}">
+            <label>{{field.label}}</label>
+            <p class="form-control-static">{{get model (concat propertyPrefix field.property)}}</p>
+          </div>
+        {{/unless}}
       {{/if}}
       {{#if (eq field.type 'select')}}
-        {{em-select label=field.label
-          property=(concat propertyPrefix field.property)
-          content=field.values
-          class=field.displayClassNames
-          prompt=field.prompt
-          optionValuePath="label"
-          optionLabelPath="label"
-        }}
+        {{#unless isReadonly}}
+          {{rapidForm.select label=field.label
+            model=model
+            property=(concat propertyPrefix field.property)
+            content=field.values
+            class=field.displayClassNames
+            prompt=field.prompt
+            optionValuePath="label"
+            optionLabelPath="label"
+          }}
+        {{else}}
+          <div class="{{field.displayClassNames}}">
+            <label>{{field.label}}</label>
+            <p class="form-control-static">{{get model (concat propertyPrefix field.property)}}</p>
+          </div>
+        {{/unless}}
       {{/if}}
       {{#if (eq field.type 'header')}}
         <div class="form-group {{field.displayClassNames}}">
