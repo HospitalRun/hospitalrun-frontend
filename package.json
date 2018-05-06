@@ -70,6 +70,7 @@
     "ember-concurrency-test-waiter": "0.3.1",
     "ember-data": "2.18.2",
     "ember-electron": "^2.7.2",
+    "ember-exam": "^1.0.0",
     "ember-export-application-global": "^2.0.0",
     "ember-fullcalendar": "1.8.0",
     "ember-i18n": "~5.0.0",

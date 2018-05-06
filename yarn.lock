@@ -5412,6 +5412,17 @@ ember-electron@^2.7.2:
     tree-sync "^1.2.2"
     yarn-or-npm "^2.0.4"
 
+ember-exam@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ember-exam/-/ember-exam-1.0.0.tgz#dd750ea407c05b01e74ee27ba42edb58585ae06b"
+  dependencies:
+    chalk "^2.1.0"
+    cli-table2 "^0.2.0"
+    debug "^3.1.0"
+    ember-cli-babel "^6.3.0"
+    fs-extra "^4.0.2"
+    rimraf "^2.6.2"
+
 ember-export-application-global@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ember-export-application-global/-/ember-export-application-global-2.0.0.tgz#8d6d7619ac8a1a3f8c43003549eb21ebed685bd2"
@@ -12839,7 +12850,7 @@ rimraf@2, rimraf@^2.2.8, rimraf@^2.3.2, rimraf@^2.3.4, rimraf@^2.4.3, rimraf@^2.
   dependencies:
     glob "^7.0.5"
 
-rimraf@^2.5.2:
+rimraf@^2.5.2, rimraf@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
