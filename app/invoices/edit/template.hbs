@@ -135,13 +135,13 @@
                       </div>
                     </td>
                     <td class="col-xs-1">
-                      {{#em-form model=detail submitButton=false as |form|}}
-                        {{form.select
-                          class='form-input-group'
-                          content=expenseAccountList
-                          property='expenseAccount'
-                        }}
-                      {{/em-form}}
+                      <div class="form-input-group">
+                        <select class="language-select form-control" onchange={{action (mut detail.expenseAccount) value="target.value"}}>
+                          {{#each expenseAccountList as |account|}}
+                            <option value={{account.id}} selected={{eq detail.expenseAccount account.id}}>{{account.value}}</option>
+                          {{/each}}
+                        </select>
+                      </div>
                     </td>
                     <td class="col-xs-1 text-right">
                       {{number-format detail.amountOwed}}
