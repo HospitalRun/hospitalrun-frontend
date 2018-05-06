@@ -126,34 +126,32 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   app.__deprecatedInstance__.register('service:config', InMemoryConfigService);
   app.__deprecatedInstance__.register('service:database', InMemoryDatabaseService);
 
-  return new EmberPromise(function(resolve) {
-    promise.then(function() {
-      db.setMaxListeners(35);
-      createPouchViews(db, true, dumpName).then(function() {
-        functionToRun();
-        wait().then(function() {
-          let databasesToClean = [
-            configDB,
-            db
-          ];
-          if (window.ELECTRON) {
-            databasesToClean.push(usersDB);
-          }
-          cleanupDatabases(db, databasesToClean).then(function() {
-            configDB = null;
-            db = null;
-            if (window.ELECTRON) {
-              usersDB = null;
-            }
-            resolve();
-          }, function(err) {
-            console.log('error cleaning up dbs:', err);
-          });
-        });
-      });
-    }, function(err) {
-      console.log('error loading db', JSON.stringify(err, null, 2));
-    });
+  return promise.then(function() {
+    db.setMaxListeners(35);
+    return createPouchViews(db, true, dumpName);
+
+  }).then(function() {
+    return functionToRun();
+
+  }).then(function() {
+    return wait();
+
+  }).then(function() {
+    let databasesToClean = [
+      configDB,
+      db
+    ];
+    if (window.ELECTRON) {
+      databasesToClean.push(usersDB);
+    }
+    return cleanupDatabases(db, databasesToClean);
+
+  }).then(function() {
+    configDB = null;
+    db = null;
+    if (window.ELECTRON) {
+      usersDB = null;
+    }
   });
 }
 
