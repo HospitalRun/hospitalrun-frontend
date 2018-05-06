@@ -131,7 +131,7 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
       db.setMaxListeners(35);
       createPouchViews(db, true, dumpName).then(function() {
         functionToRun();
-        andThen(function() {
+        wait().then(function() {
           let databasesToClean = [
             configDB,
             db
