@@ -36,7 +36,7 @@ function destroyDatabases(dbs) {
   return all(destroyQueue);
 }
 
-function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
+async function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   PouchDB.plugin(PouchAdapterMemory);
   PouchDB.plugin(PouchDBUsers);
 
@@ -126,33 +126,28 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   app.__deprecatedInstance__.register('service:config', InMemoryConfigService);
   app.__deprecatedInstance__.register('service:database', InMemoryDatabaseService);
 
-  return promise.then(function() {
-    db.setMaxListeners(35);
-    return createPouchViews(db, true, dumpName);
+  await promise;
 
-  }).then(function() {
-    return functionToRun();
+  db.setMaxListeners(35);
+  await createPouchViews(db, true, dumpName);
 
-  }).then(function() {
-    return wait();
+  await functionToRun();
+  await wait();
 
-  }).then(function() {
-    let databasesToClean = [
-      configDB,
-      db
-    ];
-    if (window.ELECTRON) {
-      databasesToClean.push(usersDB);
-    }
-    return cleanupDatabases(db, databasesToClean);
+  let databasesToClean = [
+    configDB,
+    db
+  ];
+  if (window.ELECTRON) {
+    databasesToClean.push(usersDB);
+  }
+  await cleanupDatabases(db, databasesToClean);
 
-  }).then(function() {
-    configDB = null;
-    db = null;
-    if (window.ELECTRON) {
-      usersDB = null;
-    }
-  });
+  configDB = null;
+  db = null;
+  if (window.ELECTRON) {
+    usersDB = null;
+  }
 }
 
 registerAsyncHelper('runWithPouchDump', runWithPouchDumpAsyncHelper);
