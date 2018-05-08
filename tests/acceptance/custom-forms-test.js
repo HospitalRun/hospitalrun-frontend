@@ -28,9 +28,9 @@ test('crud operations on custom-forms', function(assert) {
         assert.equal(find(`.form-preview label:contains(${dessert}):has(input[type=radio])`).length, 1, `Found ${dessert} radio option`);
       });
       assert.equal(find('.form-preview label:contains(Beverage)').length, 1, 'Found Beverage Label');
-      assert.equal(find('.form-preview input[id*=beverage]').length, 1, 'Found Beverage input');
+      assert.dom('.form-preview input[id*=beverage]').exists({ count: 1 }, 'Found Beverage input');
       assert.equal(find('.form-preview label:contains(Special Instructions)').length, 1, 'Found Special Instructions Label');
-      assert.equal(find('.form-preview textarea[id*=specialInstructions]').length, 1, 'Found special instructions textarea');
+      assert.dom('.form-preview textarea[id*=specialInstructions]').exists({ count: 1 }, 'Found special instructions textarea');
       click('button:contains(Preview)'); // Hide preview to reset it back to being closed.
     });
   }
@@ -40,7 +40,7 @@ test('crud operations on custom-forms', function(assert) {
     visit('/admin/custom-forms');
     andThen(function() {
       assert.equal(currentURL(), '/admin/custom-forms', 'Navigated to custom forms index page');
-      assert.equal(find('.custom-form-name').length, 0, 'No custom forms appears in the listing.');
+      assert.dom('.custom-form-name').doesNotExist('No custom forms appears in the listing.');
     });
     andThen(function() {
       createCustomFormForType('Visit', false, assert);
@@ -58,7 +58,7 @@ test('crud operations on custom-forms', function(assert) {
       waitToAppear('button:contains(Preview)');
     });
     andThen(function() {
-      assert.equal(find('.view-current-title').text(), 'Edit Custom Form', 'Custom form edit page displays');
+      assert.dom('.view-current-title').hasText('Edit Custom Form', 'Custom form edit page displays');
       verifyPreview();
     });
     andThen(function() {
@@ -70,11 +70,11 @@ test('crud operations on custom-forms', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Delete Custom Form', 'Delete confirmation displays');
+      assert.dom('.modal-title').hasText('Delete Custom Form', 'Delete confirmation displays');
       click('.modal-footer button:contains(Ok)');
     });
     andThen(function() {
-      assert.equal(find('.custom-form-name').length, 0, 'Deleted custom form disappears from custom form listing.');
+      assert.dom('.custom-form-name').doesNotExist('Deleted custom form disappears from custom form listing.');
     });
 
   });
@@ -90,13 +90,16 @@ test('switching between pages with custom forms happens without errors', functio
     visit('/patients/edit/new');
     waitToAppear('h4');
     andThen(function() {
-      assert.equal(find('h4').text(), 'Test Custom Form for Patient included', 'Patient custom form is displayed');
+      assert.dom('h4').hasText(
+        'Test Custom Form for Patient included',
+        'Patient custom form is displayed'
+      );
     });
 
     visit('/labs/edit/new');
     waitToAppear('h4');
     andThen(function() {
-      assert.equal(find('h4').text(), 'Test Custom Form for Lab included', 'Lab custom form is displayed');
+      assert.dom('h4').hasText('Test Custom Form for Lab included', 'Lab custom form is displayed');
     });
   });
 });

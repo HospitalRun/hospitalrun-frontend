@@ -42,14 +42,14 @@ test('creating a new medication request', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text().trim(), 'Medication Request Saved', 'New medication request has been saved');
+      assert.dom('.modal-title').hasText('Medication Request Saved', 'New medication request has been saved');
     });
 
     click('button:contains(Ok)');
     click('button:contains(Return)');
     andThen(() => {
       assert.equal(currentURL(), '/medication');
-      assert.equal(find('tr').length, 3, 'New medication request is now displayed');
+      assert.dom('tr').exists({ count: 3 }, 'New medication request is now displayed');
     });
   });
 });
@@ -61,7 +61,7 @@ test('fulfilling a medication request', function(assert) {
     click('button:contains(Fulfill)');
 
     andThen(function() {
-      assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
+      assert.dom('.patient-summary').exists({ count: 1 }, 'Patient summary is displayed');
     });
     waitToAppear('.inventory-location option:contains(No Location)');
     andThen(() => {
@@ -69,7 +69,7 @@ test('fulfilling a medication request', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text().trim(), 'Medication Request Fulfilled', 'Medication Request has been Fulfilled');
+      assert.dom('.modal-title').hasText('Medication Request Fulfilled', 'Medication Request has been Fulfilled');
     });
 
     click('button:contains(Ok)');
@@ -87,12 +87,12 @@ test('complete a medication request', function(assert) {
   runWithPouchDump('medication', function() {
     authenticateUser();
     visit('/medication/completed');
-    assert.equal(find('.clickable').length, 0, 'Should have 0 completed request');
+    assert.dom('.clickable').doesNotExist('Should have 0 completed request');
     visit('/medication');
     click('button:contains(Fulfill)');
 
     andThen(function() {
-      assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
+      assert.dom('.patient-summary').exists({ count: 1 }, 'Patient summary is displayed');
     });
     waitToAppear('.inventory-location option:contains(No Location)');
     andThen(() => {
@@ -100,14 +100,14 @@ test('complete a medication request', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text().trim(), 'Medication Request Fulfilled', 'Medication Request has been Fulfilled');
+      assert.dom('.modal-title').hasText('Medication Request Fulfilled', 'Medication Request has been Fulfilled');
     });
 
     click('button:contains(Ok)');
     visit('/medication/completed');
     andThen(() => {
       assert.equal(currentURL(), '/medication/completed');
-      assert.equal(find('.clickable').length, 1, 'Should have 1 completed request');
+      assert.dom('.clickable').exists({ count: 1 }, 'Should have 1 completed request');
     });
   });
 });
@@ -133,7 +133,7 @@ test('returning medication', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Medication Returned', 'Medication has been return successfully');
+      assert.dom('.modal-title').hasText('Medication Returned', 'Medication has been return successfully');
     });
     click('button:contains(Ok)');
 
@@ -153,7 +153,7 @@ test('Searching medications', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/medication/search/Biogesic', 'Searched for Medication Title: Biogesic');
-      assert.equal(find('.clickable').length, 1, 'There is one search item');
+      assert.dom('.clickable').exists({ count: 1 }, 'There is one search item');
     });
 
     fillIn('[role="search"] div input', 'gesic');
@@ -161,7 +161,7 @@ test('Searching medications', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/medication/search/gesic', 'Searched for all lower case gesic');
-      assert.equal(find('.clickable').length, 1, 'There is one search item');
+      assert.dom('.clickable').exists({ count: 1 }, 'There is one search item');
     });
 
     fillIn('[role="search"] div input', 'hradmin');
@@ -177,7 +177,7 @@ test('Searching medications', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/medication/search/60%20Biogesic%20Pills', 'Searched for Prescription: 60 Biogesic Pills');
-      assert.equal(find('.clickable').length, 1, 'There is one search item');
+      assert.dom('.clickable').exists({ count: 1 }, 'There is one search item');
     });
 
     fillIn('[role="search"] div input', 'ItemNotFound');
@@ -185,7 +185,7 @@ test('Searching medications', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/medication/search/ItemNotFound', 'Searched for ItemNotFound');
-      assert.equal(find('.clickable').length, 0, 'There is no search result');
+      assert.dom('.clickable').doesNotExist('There is no search result');
     });
   });
 });

@@ -94,7 +94,7 @@ test('create new price', function(assert) {
     click('button:contains(Add):last');
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Pricing Item Saved', 'Pricing Item saved');
+      assert.dom('.modal-title').hasText('Pricing Item Saved', 'Pricing Item saved');
       click('button:contains(Ok)');
     });
     andThen(() => {
@@ -102,7 +102,7 @@ test('create new price', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Add Override', 'Add Override Dialog displays');
+      assert.dom('.modal-title').hasText('Add Override', 'Add Override Dialog displays');
       select('.pricing-profile', 'Half off');
       fillIn('.pricing-override-price input', 20);
     });
@@ -111,7 +111,7 @@ test('create new price', function(assert) {
       waitToAppear('.override-profile');
     });
     andThen(() => {
-      assert.equal(find('.override-profile').text(), 'Half off', 'Pricing override saved');
+      assert.dom('.override-profile').hasText('Half off', 'Pricing override saved');
     });
   });
 });
@@ -127,7 +127,10 @@ test('delete price', function(assert) {
     });
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete Blood test?', 'Pricing item is displayed for deletion');
+      assert.dom('.alert').hasText(
+        'Are you sure you wish to delete Blood test?',
+        'Pricing item is displayed for deletion'
+      );
     });
     click('button:contains(Delete):last');
     waitToDisappear('.price-name:contains(Blood test)');
@@ -146,7 +149,7 @@ test('create new pricing profile', function(assert) {
       click('button:contains(+ new item)');
       waitToAppear('.modal-dialog');
       andThen(() => {
-        assert.equal(find('.modal-title').text(), 'New Pricing Profile', 'New Pricing Profile modal appears');
+        assert.dom('.modal-title').hasText('New Pricing Profile', 'New Pricing Profile modal appears');
       });
       fillIn('.pricing-profile-name input', 'Quarter Off');
       fillIn('.pricing-profile-percentage input', 25);
@@ -175,7 +178,7 @@ test('delete pricing profile', function(assert) {
     });
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.modal-title').text().trim(), 'Delete Profile', 'Pricing Profile delete confirmation is displayed');
+      assert.dom('.modal-title').hasText('Delete Profile', 'Pricing Profile delete confirmation is displayed');
     });
     click('button:contains(Ok)');
     waitToDisappear('.pricing-profile-name:contains(Half off)');
@@ -235,7 +238,7 @@ test('Searching pricing', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/pricing/search/ItemNotFound', 'Searched for ItemNotFound');
-      assert.equal(find('.clickable').length, 0, 'There is no search result');
+      assert.dom('.clickable').doesNotExist('There is no search result');
     });
   });
 });

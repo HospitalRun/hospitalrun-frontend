@@ -135,8 +135,8 @@ test('create new user', function(assert) {
         click('button:contains(Add)');
         waitToAppear('.modal-dialog');
         andThen(() => {
-          assert.equal(find('.modal-title').text(), 'User Saved', 'User was saved successfully');
-          assert.equal(find('.view-current-title').text(), 'Edit User', 'Page title changed to Edit User');
+          assert.dom('.modal-title').hasText('User Saved', 'User was saved successfully');
+          assert.dom('.view-current-title').hasText('Edit User', 'Page title changed to Edit User');
         });
         click('button:contains(Ok)');
       });
@@ -178,7 +178,7 @@ test('delete user', function(assert) {
         click('button:contains(Delete):last');
         waitToAppear('.modal-dialog');
         andThen(() => {
-          assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete ?', 'User is displayed for deletion');
+          assert.dom('.alert').hasText('Are you sure you wish to delete ?', 'User is displayed for deletion');
         });
         click('button:contains(Delete):last');
         andThen(() => {

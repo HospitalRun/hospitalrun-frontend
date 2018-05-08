@@ -54,7 +54,7 @@ test('incorrect credentials shows an error message on the screen', function(asse
     waitToAppear('.form-signin-alert');
 
     andThen(function() {
-      assert.equal(find('.form-signin-alert').text(), errorMessage, 'Error reason is shown');
+      assert.dom('.form-signin-alert').hasText(errorMessage, 'Error reason is shown');
     });
 
   });

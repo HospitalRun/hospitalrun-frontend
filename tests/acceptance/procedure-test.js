@@ -5,7 +5,7 @@ moduleForAcceptance('Acceptance | procedures');
 
 testWithVisit('Add procedure', function(assert) {
   let procedureDesc = 'Release Left Elbow Bursa and Ligament, Percutaneous Approach';
-  assert.equal(find('#visit-procedures tr').length, 2, 'One procedure is listed for the visit');
+  assert.dom('#visit-procedures tr').exists({ count: 2 }, 'One procedure is listed for the visit');
   click('button:contains(New Procedure)');
   andThen(function() {
     typeAheadFillIn('.procedure-description', procedureDesc);
@@ -32,7 +32,7 @@ testWithVisit('Edit procedure', function(assert) {
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Add Charge Item', 'Add Charge Item modal appears');
+    assert.dom('.modal-title').hasText('Add Charge Item', 'Add Charge Item modal appears');
     typeAheadFillIn('.charge-item-name', 'Gauze pad');
     click('.modal-footer button:contains(Add)');
   });
@@ -46,7 +46,7 @@ testWithVisit('Edit procedure', function(assert) {
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Edit Charge Item', 'Edit Charge Item modal appears');
+    assert.dom('.modal-title').hasText('Edit Charge Item', 'Edit Charge Item modal appears');
     typeAheadFillIn('.charge-item-name', 'Gauze padding');
   });
   andThen(function() {
@@ -58,13 +58,13 @@ testWithVisit('Edit procedure', function(assert) {
   });
   andThen(function() {
     assert.equal(find('td.charge-item-name:contains(Gauze padding)').length, 1, 'Updated charge item appears');
-    assert.equal(find('.medication-charges tr').length, 2, 'One medication charge exists');
+    assert.dom('.medication-charges tr').exists({ count: 2 }, 'One medication charge exists');
     assert.equal(find('.medication-charges button:contains(Add Medication)').length, 1, 'Add medication button exists');
     click('button:contains(Add Medication)');
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Add Medication Used', 'Add Medication Used modal appears');
+    assert.dom('.modal-title').hasText('Add Medication Used', 'Add Medication Used modal appears');
     typeAheadFillIn('.medication-used', 'Cefazolin 500mg vial (Hazolin) - m00001 (999998 available)');
     waitToDisappear('.disabled-btn:contains(Add)');
   });
@@ -83,7 +83,7 @@ testWithVisit('Edit procedure', function(assert) {
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Edit Medication Used', 'Edit Medication Used modal appears here');
+    assert.dom('.modal-title').hasText('Edit Medication Used', 'Edit Medication Used modal appears here');
     fillIn('.medication-quantity input', 2);
     click('.modal-footer button:contains(Update)');
   });
@@ -100,7 +100,7 @@ testWithVisit('Edit procedure', function(assert) {
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Delete Charge Item', 'Delete Charge Item dialog displays');
+    assert.dom('.modal-title').hasText('Delete Charge Item', 'Delete Charge Item dialog displays');
     click('.modal-footer button:contains(Ok)');
   });
   andThen(function() {
@@ -112,7 +112,7 @@ testWithVisit('Edit procedure', function(assert) {
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Delete Medication Used', 'Delete Medication Used dialog displays');
+    assert.dom('.modal-title').hasText('Delete Medication Used', 'Delete Medication Used dialog displays');
     click('.modal-footer button:contains(Ok)');
   });
   andThen(function() {
@@ -132,25 +132,25 @@ testWithVisit('Edit procedure', function(assert) {
   });
   andThen(function() {
     assert.equal(currentURL(), '/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F', 'Returned back to procedure');
-    assert.equal(find('td.charge-item-name').length, 0, 'Charge item is deleted');
-    assert.equal(find('.medication-charges tr').length, 2, 'Medication used is deleted');
+    assert.dom('td.charge-item-name').doesNotExist('Charge item is deleted');
+    assert.dom('.medication-charges tr').exists({ count: 2 }, 'Medication used is deleted');
   });
 });
 
 testWithVisit('Delete procedure', function(assert) {
-  assert.equal(find('#visit-procedures tr').length, 2, 'One procedure is displayed to delete');
+  assert.dom('#visit-procedures tr').exists({ count: 2 }, 'One procedure is displayed to delete');
   click('#visit-procedures button:contains(Delete)');
   waitToAppear('.modal-dialog');
   andThen(function() {
 
   });
   andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Delete Procedure', 'Delete Procedure confirmation displays');
+    assert.dom('.modal-title').hasText('Delete Procedure', 'Delete Procedure confirmation displays');
     click('.modal-footer button:contains(Delete)');
     waitToDisappear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('#visit-procedures tr').length, 1, 'Procedure is deleted');
+    assert.dom('#visit-procedures tr').exists({ count: 1 }, 'Procedure is deleted');
   });
 });
 
@@ -164,7 +164,7 @@ function testWithVisit(testLabel, testFunction) {
         click('button:contains(Edit)');
       });
       andThen(function() {
-        assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient record displays');
+        assert.dom('.patient-name .ps-info-data').hasText('Joe Bagadonuts', 'Joe Bagadonuts patient record displays');
         click('[data-test-selector=visits-tab]');
         waitToAppear('#visits button:contains(Edit)');
       });
@@ -185,7 +185,7 @@ function updateProcedure(assert, buttonText) {
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Procedure Saved', 'Procedure Saved dialog displays');
+    assert.dom('.modal-title').hasText('Procedure Saved', 'Procedure Saved dialog displays');
     click('button:contains(Ok)');
   });
 }

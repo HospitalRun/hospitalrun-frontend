@@ -73,7 +73,7 @@ test('Testing admitted patient', function(assert) {
     visit('/patients/admitted');
     andThen(function() {
       assert.equal(currentURL(), '/patients/admitted');
-      assert.equal(find('.clickable').length, 1, 'One patient is listed');
+      assert.dom('.clickable').exists({ count: 1 }, 'One patient is listed');
     });
     click('button:contains(Discharge)');
     waitToAppear('.view-current-title:contains(Edit Visit)');
@@ -83,14 +83,14 @@ test('Testing admitted patient', function(assert) {
     click('.panel-footer button:contains(Discharge)');
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Patient Discharged', 'Patient has been discharged');
+      assert.dom('.modal-title').hasText('Patient Discharged', 'Patient has been discharged');
     });
 
     click('button:contains(Ok)');
     visit('/patients/admitted');
     waitToAppear('.view-current-title:contains(Admitted Patients)');
     andThen(() => {
-      assert.equal(find('.clickable').length, 0, 'No patient is listed');
+      assert.dom('.clickable').doesNotExist('No patient is listed');
     });
   });
 });
@@ -108,16 +108,16 @@ test('Adding a new patient record', function(assert) {
     click('.panel-footer button:contains(Add)');
     waitToAppear('.message:contains(The patient record for John Doe has been saved)');
     andThen(function() {
-      assert.equal(find('.message').text().trim(), 'The patient record for John Doe has been saved.');
+      assert.dom('.message').hasText('The patient record for John Doe has been saved.');
     });
 
     waitToAppear('.patient-summary');
 
     andThen(function() {
-      findWithAssert('.patient-summary');
+      assert.dom('.patient-summary').exists();
     });
     andThen(function() {
-      findWithAssert('#general');
+      assert.dom('#general').exists();
     });
 
   });
@@ -134,8 +134,11 @@ test('Delete a patient record', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() =>{
-      assert.equal(find('.modal-title').text(), 'Delete Patient', 'Delete Patient ');
-      assert.equal(find('.modal-body').text().trim(), 'Are you sure you wish to delete Joe Bagadonuts?', 'Patient information appears in modal');
+      assert.dom('.modal-title').hasText('Delete Patient', 'Delete Patient ');
+      assert.dom('.modal-body').hasText(
+        'Are you sure you wish to delete Joe Bagadonuts?',
+        'Patient information appears in modal'
+      );
       click('.modal-footer button:contains(Delete)');
       waitToDisappear('.modal-dialog');
       waitToDisappear('tr.clickable td:contains(Joe)');

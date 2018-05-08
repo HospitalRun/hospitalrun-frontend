@@ -43,7 +43,7 @@ test('Adding a new inventory item', (assert) => {
     waitToAppear('.modal-dialog');
 
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Inventory Item Saved', 'Inventory Item was saved successfully');
+      assert.dom('.modal-title').hasText('Inventory Item Saved', 'Inventory Item was saved successfully');
     });
     click('button:contains(Ok)');
 
@@ -56,7 +56,7 @@ test('Adding a new inventory item', (assert) => {
     click('button:contains(Return)');
     andThen(() => {
       assert.equal(currentURL(), '/inventory/listing');
-      assert.equal(find('tr').length, 2, 'One item is listed');
+      assert.dom('tr').exists({ count: 2 }, 'One item is listed');
     });
   });
 });
@@ -85,7 +85,10 @@ test('Items with negative quantites should not be saved', (assert) => {
     waitToAppear('.modal-dialog');
 
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Warning!!!!', 'Inventory Item with negative quantity should not be saved.');
+      assert.dom('.modal-title').hasText(
+        'Warning!!!!',
+        'Inventory Item with negative quantity should not be saved.'
+      );
     });
     click('button:contains(Ok)');
 
@@ -93,7 +96,10 @@ test('Items with negative quantites should not be saved', (assert) => {
       assert.equal(currentURL(), '/inventory/edit/new');
       findWithAssert('button:contains(Add)');
       findWithAssert('button:contains(Cancel)');
-      assert.equal(find('.test-inv-quantity .help-block').text(), 'not a valid number', 'Error message should be present for invalid quantities');
+      assert.dom('.test-inv-quantity .help-block').hasText(
+        'not a valid number',
+        'Error message should be present for invalid quantities'
+      );
     });
   });
 });
@@ -124,7 +130,7 @@ test('Deleting the last inventory item', (assert) => {
       click('button:contains(Delete)');
       waitToAppear('.modal-dialog');
       andThen(() => {
-        assert.equal(find('.modal-title').text(), 'Delete Item', 'Deleting confirmation.');
+        assert.dom('.modal-title').hasText('Delete Item', 'Deleting confirmation.');
       });
       click('.modal-content button:contains(Delete)');
       waitToAppear('.panel-body .alert-info');
@@ -153,7 +159,7 @@ test('Creating a new inventory request', function(assert) {
     waitToAppear('.modal-dialog');
 
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Request Updated', 'New request has been saved');
+      assert.dom('.modal-title').hasText('Request Updated', 'New request has been saved');
     });
     click('button:contains(Ok)');
     andThen(() => {
@@ -163,7 +169,7 @@ test('Creating a new inventory request', function(assert) {
     click('button:contains(Cancel)');
     andThen(() => {
       assert.equal(currentURL(), '/inventory');
-      assert.equal(find('tr').length, 3, 'Two requests are now displayed');
+      assert.dom('tr').exists({ count: 3 }, 'Two requests are now displayed');
     });
   });
 });
@@ -215,7 +221,7 @@ test('Deleting an inventory request', function(assert) {
     waitToAppear('.modal-dialog');
 
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Delete Item', 'Deleting confirmation');
+      assert.dom('.modal-title').hasText('Delete Item', 'Deleting confirmation');
     });
 
     click('.modal-content button:contains(Delete)');
@@ -334,7 +340,7 @@ function testSimpleReportForm(reportName) {
 
       andThen(() => {
         let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
-        assert.equal(find('.panel-title').text().trim(), reportTitle, `${reportName} Report generated`);
+        assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
         let exportLink = findWithAssert('a:contains(Export Report)');
         assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
       });
@@ -356,7 +362,7 @@ function testSingleDateReportForm(reportName) {
 
       andThen(() => {
         let reportTitle = `${reportName} Report ${moment().format('l')}`;
-        assert.equal(find('.panel-title').text().trim(), reportTitle, `${reportName} Report generated`);
+        assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
         let exportLink = findWithAssert('a:contains(Export Report)');
         assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
       });
