@@ -1,5 +1,5 @@
-{{#em-form model=this submitButton=false as |form|}}
   {{form.select
+  	model=this
     property='locationPicker.selectedLocation'
     content=locationPicker.subLocationList
     class="form-input-group"
@@ -7,4 +7,3 @@
     optionLabelPath="selectObject.locationNameWithQuantity"
     action=locationChange
   }}
-{{/em-form}}

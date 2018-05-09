@@ -136,7 +136,7 @@
                     </td>
                     <td class="col-xs-1">
                       <div class="form-input-group">
-                        <select class="language-select form-control" onchange={{action (mut detail.expenseAccount) value="target.value"}}>
+                        <select class="form-control" onchange={{action (mut detail.expenseAccount) value="target.value"}}>
                           {{#each expenseAccountList as |account|}}
                             <option value={{account}} selected={{eq detail.expenseAccount account}}>{{account}}</option>
                           {{/each}}

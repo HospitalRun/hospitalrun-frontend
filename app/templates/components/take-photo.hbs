@@ -1,6 +1,6 @@
 {{#if canCaptureVideo}}
-  {{#em-form model=this submitButton=false as |form|}}
     {{form.select
+      model=this
       class='form-input-group'
       content=photoSources
       id='photo-source'
@@ -12,6 +12,7 @@
     }}
     {{#if showCameraSelect}}
       {{form.select
+          model=this
           action=(action 'cameraChange')
           class='form-input-group'
           content=videoSources
@@ -22,7 +23,6 @@
           property='selectedCamera'
       }}
     {{/if}}
-  {{/em-form}}
   <div class="camera panel panel-success">
     <div class="panel-body">
       <div class="col-sm-4">
