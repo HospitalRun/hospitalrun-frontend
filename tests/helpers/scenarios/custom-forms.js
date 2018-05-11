@@ -11,7 +11,7 @@ registerAsyncHelper('createCustomFormForType', function(app, formType, alwaysInc
     waitToAppear('.modal-dialog');
     andThen(function() {
       if (assert) {
-        assert.equal(find('.modal-title').text(), 'Add Value', 'Add Value modal displays.');
+        assert.dom('.modal-title').hasText('Add Value', 'Add Value modal displays.');
       }
 
       select('.custom-field-select', fieldType);
@@ -50,7 +50,7 @@ registerAsyncHelper('createCustomFormForType', function(app, formType, alwaysInc
   click('button:contains(new form)');
   andThen(function() {
     if (assert) {
-      assert.equal(find('.view-current-title').text(), 'New Custom Form', 'New custom form edit page displays');
+      assert.dom('.view-current-title').hasText('New Custom Form', 'New custom form edit page displays');
       assert.equal(currentURL(), '/admin/custom-forms/edit/new', 'Navigated to create new custom form');
     }
 
@@ -65,7 +65,7 @@ registerAsyncHelper('createCustomFormForType', function(app, formType, alwaysInc
   });
   andThen(function() {
     if (assert) {
-      assert.equal(find('.modal-title').text(), 'Form Saved', 'Form is saved');
+      assert.dom('.modal-title').hasText('Form Saved', 'Form is saved');
     }
 
     click('.modal-footer button:contains(Ok)');
@@ -92,7 +92,7 @@ registerAsyncHelper('createCustomFormForType', function(app, formType, alwaysInc
   });
   andThen(function() {
     if (assert) {
-      assert.equal(find('.modal-title').text(), 'Form Saved', 'Form is updated');
+      assert.dom('.modal-title').hasText('Form Saved', 'Form is updated');
     }
 
     click('.modal-footer button:contains(Ok)');
@@ -110,14 +110,14 @@ registerAsyncHelper('checkCustomFormIsDisplayed', function(app, assert, header) 
     assert.equal(find('label:contains(Create a Pizza)', formDiv).length, 1, 'There is a form header');
 
     assert.equal(find('label:contains(Pizza Crust)', formDiv).length, 1, 'There is a dropdown header');
-    assert.equal(find('select', formDiv).length, 1, 'There is a dropdown');
+    assert.dom('select', formDiv[0]).exists({ count: 1 }, 'There is a dropdown');
     assert.equal(find('option', formDiv).length, crusts.length, 'There are options');
 
     assert.equal(find('label:contains(Pizza Toppings)', formDiv).length, 1, 'There is a checkbox header');
     assert.equal(find('input[type=checkbox]', formDiv).length, toppings.length, 'There are checkboxes');
 
     assert.equal(find('label:contains(Special Instructions)', formDiv).length, 1, 'There is a textarea header');
-    assert.equal(find('textarea', formDiv).length, 1, 'There is a textarea');
+    assert.dom('textarea', formDiv[0]).exists({ count: 1 }, 'There is a textarea');
 
     assert.equal(find('label:contains(Dessert)', formDiv).length, 1, 'There is a radio header');
     assert.equal(find('input[type=radio]', formDiv).length, desserts.length, 'There are radios');
@@ -143,10 +143,10 @@ registerAsyncHelper('checkCustomFormIsFilled', function(app, assert, header) {
     let formDiv = find(`h4:contains(${header}) + .js-custom-form`);
 
     assert.equal(find('label:contains(Create a Pizza)', formDiv).length, 1, 'There is a form header');
-    assert.equal(find('select', formDiv).val(), crusts[2], 'There is value in select');
+    assert.dom('select', formDiv[0]).hasValue(crusts[2], 'There is value in select');
     assert.ok(find('input[type=checkbox]:last', formDiv).is(':checked'), 'There is value in checkbox');
     assert.equal(find('input:radio:checked', formDiv).val(), desserts[1], 'There is value in radio');
-    assert.equal(find('textarea', formDiv).val(), `Large text for the form ${header}`, 'There is value in textarea');
+    assert.dom('textarea', formDiv[0]).hasValue(`Large text for the form ${header}`, 'There is value in textarea');
     assert.equal(find('label:contains(Beverage)+input[type=text]', formDiv).val(), `Small text for the form ${header}`, 'There is value in the input');
   });
 });
