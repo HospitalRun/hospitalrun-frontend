@@ -4,36 +4,32 @@ import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance
 moduleForAcceptance('Acceptance | patients');
 
 test('visiting /patients route', function(assert) {
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/patients');
-    andThen(function() {
-      assert.equal(currentURL(), '/patients');
-      let noPatientsFound = find('[data-test-selector="no-patients-found"]');
-      assert.equal(noPatientsFound.text().trim(), 'No patients found. Create a new patient record?', 'no records found');
-      let newPatientButton = find('button:contains(+ new patient)');
-      assert.equal(newPatientButton.length, 1, 'Add new patient button is visible');
-    });
-    click('button:contains(+ new patient)');
-    andThen(function() {
-      assert.equal(currentURL(), '/patients/edit/new');
-    });
+  runWithPouchDump('default', async function() {
+    await authenticateUser();
+    await visit('/patients');
+    assert.equal(currentURL(), '/patients');
+
+    let noPatientsFound = find('[data-test-selector="no-patients-found"]');
+    assert.equal(noPatientsFound.text().trim(), 'No patients found. Create a new patient record?', 'no records found');
+    let newPatientButton = find('button:contains(+ new patient)');
+    assert.equal(newPatientButton.length, 1, 'Add new patient button is visible');
+
+    await click('button:contains(+ new patient)');
+    assert.equal(currentURL(), '/patients/edit/new');
   });
 });
 
 test('View reports tab', function(assert) {
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/patients/reports');
+  runWithPouchDump('default', async function() {
+    await authenticateUser();
+    await visit('/patients/reports');
 
-    andThen(function() {
-      let generateReportButton = find('button:contains(Generate Report)');
-      assert.equal(currentURL(), '/patients/reports');
-      assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
-      let reportType = find('[data-test-selector="select-report-type"]');
-      assert.equal(reportType.length, 1, 'Report type select is visible');
-      assert.equal(reportType.find(':selected').text().trim(), 'Admissions Detail', 'Default value selected"');
-    });
+    let generateReportButton = find('button:contains(Generate Report)');
+    assert.equal(currentURL(), '/patients/reports');
+    assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
+    let reportType = find('[data-test-selector="select-report-type"]');
+    assert.equal(reportType.length, 1, 'Report type select is visible');
+    assert.equal(reportType.find(':selected').text().trim(), 'Admissions Detail', 'Default value selected"');
   });
 });
 
@@ -51,174 +47,137 @@ reportNames.forEach((reportName) => {
 });
 
 test('View reports tab | Patient Status', function(assert) {
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/patients/reports');
-    select('[data-test-selector="select-report-type"] select', 'Patient Status');
+  runWithPouchDump('default', async function() {
+    await authenticateUser();
+    await visit('/patients/reports');
+    await select('[data-test-selector="select-report-type"] select', 'Patient Status');
 
-    andThen(function() {
-      let generateReportButton = find('button:contains(Generate Report)');
-      assert.equal(currentURL(), '/patients/reports');
-      assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
-      let reportType = find('[data-test-selector="select-report-type"] select');
-      assert.equal(reportType.length, 1, 'Report type select is visible');
-      assert.equal(reportType.find(':selected').text().trim(), 'Patient Status', 'Default value selected"');
-    });
+    let generateReportButton = find('button:contains(Generate Report)');
+    assert.equal(currentURL(), '/patients/reports');
+    assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
+    let reportType = find('[data-test-selector="select-report-type"] select');
+    assert.equal(reportType.length, 1, 'Report type select is visible');
+    assert.equal(reportType.find(':selected').text().trim(), 'Patient Status', 'Default value selected"');
   });
 });
 
 test('Testing admitted patient', function(assert) {
-  runWithPouchDump('patient', function() {
-    authenticateUser();
-    visit('/patients/admitted');
-    andThen(function() {
-      assert.equal(currentURL(), '/patients/admitted');
-      assert.dom('.clickable').exists({ count: 1 }, 'One patient is listed');
-    });
-    click('button:contains(Discharge)');
-    waitToAppear('.view-current-title:contains(Edit Visit)');
-    andThen(function() {
-      assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'should return visits/edit instead');
-    });
-    click('.panel-footer button:contains(Discharge)');
-    waitToAppear('.modal-dialog');
-    andThen(() => {
-      assert.dom('.modal-title').hasText('Patient Discharged', 'Patient has been discharged');
-    });
+  runWithPouchDump('patient', async function() {
+    await authenticateUser();
+    await visit('/patients/admitted');
+    assert.equal(currentURL(), '/patients/admitted');
+    assert.dom('.clickable').exists({ count: 1 }, 'One patient is listed');
 
-    click('button:contains(Ok)');
-    visit('/patients/admitted');
-    waitToAppear('.view-current-title:contains(Admitted Patients)');
-    andThen(() => {
-      assert.dom('.clickable').doesNotExist('No patient is listed');
-    });
+    await click('button:contains(Discharge)');
+    await waitToAppear('.view-current-title:contains(Edit Visit)');
+    assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'should return visits/edit instead');
+
+    await click('.panel-footer button:contains(Discharge)');
+    await waitToAppear('.modal-dialog');
+    assert.dom('.modal-title').hasText('Patient Discharged', 'Patient has been discharged');
+
+    await click('button:contains(Ok)');
+    await visit('/patients/admitted');
+    await waitToAppear('.view-current-title:contains(Admitted Patients)');
+    assert.dom('.clickable').doesNotExist('No patient is listed');
   });
 });
 
 test('Adding a new patient record', function(assert) {
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/patients/edit/new');
-    andThen(function() {
-      assert.equal(currentURL(), '/patients/edit/new');
-    });
+  runWithPouchDump('default', async function() {
+    await authenticateUser();
+    await visit('/patients/edit/new');
+    assert.equal(currentURL(), '/patients/edit/new');
 
-    fillIn('.test-first-name input', 'John');
-    fillIn('.test-last-name input', 'Doe');
-    click('.panel-footer button:contains(Add)');
-    waitToAppear('.message:contains(The patient record for John Doe has been saved)');
-    andThen(function() {
-      assert.dom('.message').hasText('The patient record for John Doe has been saved.');
-    });
+    await fillIn('.test-first-name input', 'John');
+    await fillIn('.test-last-name input', 'Doe');
+    await click('.panel-footer button:contains(Add)');
+    await waitToAppear('.message:contains(The patient record for John Doe has been saved)');
+    assert.dom('.message').hasText('The patient record for John Doe has been saved.');
 
-    waitToAppear('.patient-summary');
-
-    andThen(function() {
-      assert.dom('.patient-summary').exists();
-    });
-    andThen(function() {
-      assert.dom('#general').exists();
-    });
-
+    await waitToAppear('.patient-summary');
+    assert.dom('.patient-summary').exists();
+    assert.dom('#general').exists();
   });
 });
 
 test('Delete a patient record', function(assert) {
-  runWithPouchDump('patient', function() {
-    authenticateUser();
-    visit('/patients');
-    andThen(() =>{
-      assert.equal(currentURL(), '/patients', 'Patient listing url is correct');
-      assert.equal(find('tr.clickable td:contains(Joe)').length, 1, 'One patient exists to delete.');
-      click('tr.clickable button:contains(Delete)');
-      waitToAppear('.modal-dialog');
-    });
-    andThen(() =>{
-      assert.dom('.modal-title').hasText('Delete Patient', 'Delete Patient ');
-      assert.dom('.modal-body').hasText(
-        'Are you sure you wish to delete Joe Bagadonuts?',
-        'Patient information appears in modal'
-      );
-      click('.modal-footer button:contains(Delete)');
-      waitToDisappear('.modal-dialog');
-      waitToDisappear('tr.clickable td:contains(Joe)');
-    });
-    andThen(function() {
-      assert.equal(find('tr.clickable td:contains(Joe)').length, 0, 'Patient has been successfully deleted.');
-    });
+  runWithPouchDump('patient', async function() {
+    await authenticateUser();
+    await visit('/patients');
+    assert.equal(currentURL(), '/patients', 'Patient listing url is correct');
+    assert.equal(find('tr.clickable td:contains(Joe)').length, 1, 'One patient exists to delete.');
+
+    await click('tr.clickable button:contains(Delete)');
+    await waitToAppear('.modal-dialog');
+    assert.dom('.modal-title').hasText('Delete Patient', 'Delete Patient ');
+    assert.dom('.modal-body').hasText(
+      'Are you sure you wish to delete Joe Bagadonuts?',
+      'Patient information appears in modal'
+    );
+
+    await click('.modal-footer button:contains(Delete)');
+    await waitToDisappear('.modal-dialog');
+    await waitToDisappear('tr.clickable td:contains(Joe)');
+    assert.equal(find('tr.clickable td:contains(Joe)').length, 0, 'Patient has been successfully deleted.');
   });
 });
 
 test('Searching patients', function(assert) {
-  runWithPouchDump('patient', function() {
-    authenticateUser();
-    visit('/patients');
+  runWithPouchDump('patient', async function() {
+    await authenticateUser();
+    await visit('/patients');
 
-    fillIn('[role="search"] div input', 'Joe');
-    click('.glyphicon-search');
+    await fillIn('[role="search"] div input', 'Joe');
+    await click('.glyphicon-search');
+    assert.equal(currentURL(), '/patients/search/Joe', 'Searched for Joe');
+    assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
 
-    andThen(() => {
-      assert.equal(currentURL(), '/patients/search/Joe', 'Searched for Joe');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
-    });
+    await fillIn('[role="search"] div input', 'joe');
+    await click('.glyphicon-search');
+    assert.equal(currentURL(), '/patients/search/joe', 'Searched for all lower case joe');
+    assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
 
-    fillIn('[role="search"] div input', 'joe');
-    click('.glyphicon-search');
-
-    andThen(() => {
-      assert.equal(currentURL(), '/patients/search/joe', 'Searched for all lower case joe');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
-    });
-    fillIn('[role="search"] div input', 'ItemNotFound');
-    click('.glyphicon-search');
-
-    andThen(() => {
-      assert.equal(currentURL(), '/patients/search/ItemNotFound', 'Searched for ItemNotFound');
-      assert.equal(find('button:contains(Delete)').length, 0, 'There is no search result');
-    });
+    await fillIn('[role="search"] div input', 'ItemNotFound');
+    await click('.glyphicon-search');
+    assert.equal(currentURL(), '/patients/search/ItemNotFound', 'Searched for ItemNotFound');
+    assert.equal(find('button:contains(Delete)').length, 0, 'There is no search result');
   });
 });
 
 function testSimpleReportForm(reportName) {
   test(`View reports tab | ${reportName} shows start and end dates`, function(assert) {
-    runWithPouchDump('default', function() {
-      authenticateUser();
-      visit('/patients/reports');
-      select('[data-test-selector="select-report-type"] select', reportName);
+    runWithPouchDump('default', async function() {
+      await authenticateUser();
+      await visit('/patients/reports');
+      await select('[data-test-selector="select-report-type"] select', reportName);
 
-      andThen(function() {
-        let reportStartDate = find('[data-test-selector="select-report-start-date"]');
-        let reportEndDate = find('[data-test-selector="select-report-end-date"]');
-        assert.equal(reportStartDate.length, 1, 'Report start date select is visible');
-        assert.equal(reportEndDate.length, 1, 'Report end date select is visible');
-        let reportType = find('[data-test-selector="select-report-type"] select');
-        assert.equal(reportType.find(':selected').text().trim(), reportName, `${reportName} option selected`);
-      });
+      let reportStartDate = find('[data-test-selector="select-report-start-date"]');
+      let reportEndDate = find('[data-test-selector="select-report-end-date"]');
+      assert.equal(reportStartDate.length, 1, 'Report start date select is visible');
+      assert.equal(reportEndDate.length, 1, 'Report end date select is visible');
+      let reportType = find('[data-test-selector="select-report-type"] select');
+      assert.equal(reportType.find(':selected').text().trim(), reportName, `${reportName} option selected`);
     });
   });
 }
 
 function testExportReportName(reportName) {
   test(`View reports tab | Export reports name for ${reportName} shows report name, start and end dates`, (assert) => {
-    runWithPouchDump('default', () => {
-      authenticateUser();
-      visit('/patients/reports');
-      select('[data-test-selector="select-report-type"] select', reportName);
+    runWithPouchDump('default', async function() {
+      await authenticateUser();
+      await visit('/patients/reports');
+      await select('[data-test-selector="select-report-type"] select', reportName);
+      assert.equal(currentURL(), '/patients/reports');
 
-      andThen(() => {
-        assert.equal(currentURL(), '/patients/reports');
-      });
+      await fillIn('[data-test-selector="select-report-start-date"] input', '12/11/2016');
+      await fillIn('[data-test-selector="select-report-end-date"] input', '12/31/2016');
 
-      fillIn('[data-test-selector="select-report-start-date"] input', '12/11/2016');
-      fillIn('[data-test-selector="select-report-end-date"] input', '12/31/2016');
+      await click('button:contains(Generate Report)');
+      await waitToAppear('.panel-title');
 
-      click('button:contains(Generate Report)');
-      waitToAppear('.panel-title');
-
-      andThen(() => {
-        let exportReportButton = findWithAssert('a:contains(Export Report)');
-        assert.equal($(exportReportButton).attr('download'), `${reportName} Report 12/11/2016 - 12/31/2016.csv`);
-      });
+      let exportReportButton = findWithAssert('a:contains(Export Report)');
+      assert.equal($(exportReportButton).attr('download'), `${reportName} Report 12/11/2016 - 12/31/2016.csv`);
     });
   });
 }
