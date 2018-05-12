@@ -95,7 +95,7 @@
     "minimatch": "^3.0.2",
     "nano": "6.4.3",
     "pouchdb": "6.3.4",
-    "pouchdb-adapter-memory": "6.3.4",
+    "pouchdb-adapter-memory": "6.4.0",
     "pouchdb-list": "^4.0.0",
     "pouchdb-users": "^1.0.3",
     "qunit-dom": "^0.6.2",
