@@ -1,10 +1,6 @@
-{{select-list
-  class='language-select'
-  prompt=(t 'navigation.actions.selectLanguage')
-  content=languageOptions
-  optionLabelPath='name'
-  optionValuePath='id'
-  value=selectedLanguage
-  action=(action 'selectLanguage')
-}}
-
+<select tabindex="-1" class="language-select" onchange={{action 'selectLanguage' value='target.value'}}>
+  <option value disabled>{{t 'navigation.actions.selectLanguage'}}</option>
+  {{#each languageOptions as |lang|}}
+    <option value={{lang.id}} selected={{eq selectedLanguage lang.id}}>{{lang.name}}</option>
+  {{/each}}
+</select>

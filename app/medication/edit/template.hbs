@@ -65,7 +65,7 @@
       {{/unless}}
       {{#if isFulfilling}}
         {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'labels.billTo') list=expenseAccountList selection=model.expenseAccount }}
-        {{inventory-location-picker label=(t 'labels.pullFrom') quantityRequested=model.quantity
+        {{inventory-location-picker form=form label=(t 'labels.pullFrom') quantityRequested=model.quantity
           locationList= model.inventoryItem.availableLocations
           selectedLocations=model.inventoryLocations class="inventory-location"
         }}

@@ -3,7 +3,7 @@
   {{form.input property="invoiceNo" label=(t 'inventory.labels.invoiceNumber') class="col-sm-4"}}
 </div>
 {{#if canEditQuantity }}
-  {{quantity-calc calculated=model.originalQuantity targetUnit=model.distributionUnit quantityGroups=model.quantityGroups unitList=unitList}}
+  {{quantity-calc form=form calculated=model.originalQuantity targetUnit=model.distributionUnit quantityGroups=model.quantityGroups unitList=unitList}}
 {{else}}
   <div class="form-group">
     <label>{{t 'labels.quantity'}}</label>

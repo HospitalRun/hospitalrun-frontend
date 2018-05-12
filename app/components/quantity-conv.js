@@ -2,6 +2,8 @@ import { once } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
+import { computed } from '@ember/object';
+
 export default Component.extend({
   firstQuantity: false,
   quantity: null,
@@ -11,6 +13,11 @@ export default Component.extend({
   resetUnitName: false,
   targetUnit: alias('parentView.targetUnit'),
   unitList: null,
+
+  unitListHash: computed('unitList', function() {
+    let listArray = this.get('unitList');
+    return listArray.map((value) => ({ id: value, value }));
+  }),
 
   unitClass: function() {
     let selectedUnit = this.get('unit');
