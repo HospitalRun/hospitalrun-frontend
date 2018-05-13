@@ -42,18 +42,15 @@ const MOCK_USER_DATA = [{
   }
 }];
 
-export default registerAsyncHelper('addOfflineUsersForElectron', function() {
+export default registerAsyncHelper('addOfflineUsersForElectron', async function() {
+  await wait();
   if (window.ELECTRON) {
-    return wait().then(() => {
-      PouchDB.plugin(PouchAdapterMemory);
-      let usersDB = new PouchDB('_users', {
-        adapter: 'memory'
-      });
-      let [, joeUser] = MOCK_USER_DATA; // hradmin already added by run-with-pouch-dump
-      delete joeUser.doc._rev;
-      return usersDB.put(joeUser.doc);
+    PouchDB.plugin(PouchAdapterMemory);
+    let usersDB = new PouchDB('_users', {
+      adapter: 'memory'
     });
-  } else {
-    return wait();
+    let [, joeUser] = MOCK_USER_DATA; // hradmin already added by run-with-pouch-dump
+    delete joeUser.doc._rev;
+    return usersDB.put(joeUser.doc);
   }
 });

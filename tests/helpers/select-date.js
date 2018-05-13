@@ -1,6 +1,4 @@
 // Derived from https://raw.githubusercontent.com/edgycircle/ember-pikaday/master/addon/helpers/pikaday.js
-import { Promise as EmberPromise } from 'rsvp';
-
 import { registerAsyncHelper } from '@ember/test';
 import moment from 'moment';
 
@@ -14,15 +12,9 @@ function triggerNativeEvent(element, eventName) {
   }
 }
 
-registerAsyncHelper('selectDate', function(app, selector, date) {
-  return new EmberPromise(function(resolve) {
-    click(selector);
-    waitToAppear('.pika-single:not(.is-hidden)').then(function() {
-      fillIn(selector, moment(date).format('l'));
-      andThen(function() {
-        triggerNativeEvent(app.$(selector)[0], 'change');
-        resolve();
-      });
-    });
-  });
+registerAsyncHelper('selectDate', async function(app, selector, date) {
+  await click(selector);
+  await waitToAppear('.pika-single:not(.is-hidden)');
+  await fillIn(selector, moment(date).format('l'));
+  triggerNativeEvent(app.$(selector)[0], 'change');
 });

@@ -2,7 +2,7 @@ import { run } from '@ember/runloop';
 import $ from 'jquery';
 import { registerAsyncHelper } from '@ember/test';
 
-registerAsyncHelper('select', function(app, selector, ...texts) {
+registerAsyncHelper('select', async function(app, selector, ...texts) {
   let $options = app.testHelpers.findWithAssert(`${selector} option`);
 
   $options.each(function() {
@@ -16,5 +16,5 @@ registerAsyncHelper('select', function(app, selector, ...texts) {
     });
   });
 
-  return app.testHelpers.wait();
+  await app.testHelpers.wait();
 });

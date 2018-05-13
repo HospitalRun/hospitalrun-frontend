@@ -16,14 +16,14 @@ function checkVisibility(selector, interval, resolve, visibility) {
   }
 }
 
-function waitToAppear(app, selector, interval = 200) {
-  return new EmberPromise(function(resolve) {
+async function waitToAppear(app, selector, interval = 200) {
+  await new EmberPromise(function(resolve) {
     checkVisibility(selector, interval, resolve, true);
   });
 }
 
-function waitToDisappear(app, selector, interval = 200) {
-  return new EmberPromise(function(resolve) {
+async function waitToDisappear(app, selector, interval = 200) {
+  await new EmberPromise(function(resolve) {
     checkVisibility(selector, interval, resolve, false);
   });
 }
