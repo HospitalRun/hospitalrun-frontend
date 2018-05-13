@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 const DATE_FORMAT = 'l';
 const DATE_TIME_FORMAT = 'l h:mm A';
@@ -15,7 +16,7 @@ const REPORTED_TO = 'Jack Bridges';
 moduleForAcceptance('Acceptance | Incidents');
 
 test('Incident category management', function(assert) {
-  runWithPouchDump('incident', async function() {
+  return runWithPouchDump('incident', async function() {
     await authenticateUser();
     await visit('/admin/inc-category');
     assert.equal(currentURL(), '/admin/inc-category', 'Incident Categories url is correct');
@@ -45,7 +46,7 @@ test('Incident category management', function(assert) {
 });
 
 test('Incident creation and editing', function(assert) {
-  runWithPouchDump('incident', async function() {
+  return runWithPouchDump('incident', async function() {
     let now = moment();
     await authenticateUser();
     await visit('/incident');
@@ -186,7 +187,7 @@ test('Incident creation and editing', function(assert) {
 });
 
 test('Incident deletion', function(assert) {
-  runWithPouchDump('incident', async function() {
+  return runWithPouchDump('incident', async function() {
     await authenticateUser();
     await visit('/incident');
     assert.equal(currentURL(), '/incident', 'Incident listing url is correct');

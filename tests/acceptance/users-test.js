@@ -4,6 +4,7 @@ import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
 import { test } from 'qunit';
 
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 const MOCK_USER_DATA = [{
   'id': 'org.couchdb.user:hradmin',
@@ -75,7 +76,7 @@ moduleForAcceptance('Acceptance | users', {
 });
 
 test('visiting /admin/users', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     let role = PREDEFINED_USER_ROLES.findBy('name', 'User Administrator');
     await authenticateUser({
       roles: role.roles,
@@ -95,7 +96,7 @@ test('visiting /admin/users', function(assert) {
 });
 
 test('create new user', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await addAllUsers(assert);
 
@@ -135,7 +136,7 @@ test('create new user', function(assert) {
 });
 
 test('delete user', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await addAllUsers(assert);
 

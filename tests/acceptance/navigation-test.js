@@ -1,6 +1,7 @@
 import { test } from 'qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 moduleForAcceptance('Acceptance | navigation', {
   beforeEach() {
@@ -13,7 +14,7 @@ moduleForAcceptance('Acceptance | navigation', {
 });
 
 test('about dialog', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/');
 
@@ -31,7 +32,7 @@ test('about dialog', function(assert) {
 });
 
 test('search text clears after search', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/patients');
 
@@ -43,7 +44,7 @@ test('search text clears after search', function(assert) {
 });
 
 test('search text clears after selecting new nav item', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/patients');
 

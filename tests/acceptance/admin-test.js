@@ -1,10 +1,11 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 moduleForAcceptance('Acceptance | admin');
 
 test('visiting /admin', function(assert) {
-  runWithPouchDump('admin', async function() {
+  return runWithPouchDump('admin', async function() {
     await authenticateUser();
     await visit('/admin');
     assert.equal(currentURL(), '/admin');
@@ -20,7 +21,7 @@ test('visiting /admin', function(assert) {
 });
 
 test('add new lookup value', function(assert) {
-  runWithPouchDump('admin', async function() {
+  return runWithPouchDump('admin', async function() {
     await authenticateUser();
     await visit('/admin');
     assert.equal(currentURL(), '/admin');
@@ -38,7 +39,7 @@ test('add new lookup value', function(assert) {
 });
 
 test('delete lookup value', function(assert) {
-  runWithPouchDump('admin', async function() {
+  return runWithPouchDump('admin', async function() {
     await authenticateUser();
     await visit('/admin');
     assert.equal(currentURL(), '/admin');
@@ -56,7 +57,7 @@ test('delete lookup value', function(assert) {
 });
 
 test('Update address options', function(assert) {
-  runWithPouchDump('admin', async function() {
+  return runWithPouchDump('admin', async function() {
     await authenticateUser();
     await visit('/admin/address');
     assert.equal(currentURL(), '/admin/address');
@@ -69,7 +70,7 @@ test('Update address options', function(assert) {
 });
 
 test('Update header options', function(assert) {
-  runWithPouchDump('admin', async function() {
+  return runWithPouchDump('admin', async function() {
     await authenticateUser();
     await visit('/admin/print-header');
     assert.equal(currentURL(), '/admin/print-header');
@@ -84,7 +85,7 @@ test('Update header options', function(assert) {
 test('Update workflow options', function(assert) {
   let selector = 'input[type=checkbox]';
 
-  runWithPouchDump('admin', async function() {
+  return runWithPouchDump('admin', async function() {
     await authenticateUser();
     await visit('/admin/workflow');
     assert.equal(currentURL(), '/admin/workflow', 'Correctly navigated to admin workflow');

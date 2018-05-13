@@ -1,6 +1,7 @@
 import { test } from 'qunit';
 import moment from 'moment';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 const DATE_TIME_FORMAT = 'l h:mm A';
 const DATE_FORMAT = 'l';
@@ -9,7 +10,7 @@ const TIME_FORMAT = 'h:mm';
 moduleForAcceptance('Acceptance | appointments');
 
 test('visiting /appointments', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/appointments');
     assert.equal(currentURL(), '/appointments');
@@ -19,7 +20,7 @@ test('visiting /appointments', function(assert) {
 });
 
 test('visiting /appointments/missed', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     await authenticateUser();
     let url = '/appointments';
     let today = moment();
@@ -38,7 +39,7 @@ test('visiting /appointments/missed', function(assert) {
 });
 
 test('test appointment for today', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     await authenticateUser();
     await visit('/appointments/today');
     assert.dom('.appointment-date').doesNotExist('should have 0 appointment today');
@@ -56,7 +57,7 @@ test('test appointment for today', function(assert) {
 });
 
 test('Creating a new appointment', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     await authenticateUser();
     await visit('/appointments/edit/new');
 
@@ -75,7 +76,7 @@ test('Creating a new appointment', function(assert) {
 });
 
 test('Creating a new appointment from patient screen', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     let today = moment().startOf('day');
     let tomorrow =  moment(today).add(24, 'hours');
     await authenticateUser();
@@ -106,7 +107,7 @@ test('Creating a new appointment from patient screen', function(assert) {
 });
 
 test('Change appointment type', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     let today = moment().startOf('day');
     await authenticateUser();
     await visit('/appointments/edit/new');
@@ -134,7 +135,7 @@ test('Change appointment type', function(assert) {
 });
 
 test('Checkin to a visit from appointment', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     await authenticateUser();
     await createAppointment(assert);
     await visit('/appointments');
@@ -171,7 +172,7 @@ test('Checkin to a visit from appointment', function(assert) {
 });
 
 test('Delete an appointment', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     await authenticateUser();
     await createAppointment(assert);
     await visit('/appointments');
@@ -196,7 +197,7 @@ test('Delete an appointment', function(assert) {
 });
 
 test('Appointment calendar', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     await authenticateUser();
     let today = moment().startOf('day');
     let later =  moment(today).add(1, 'hours');
@@ -225,7 +226,7 @@ test('Appointment calendar', function(assert) {
 });
 
 test('visiting /appointments/search', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     await authenticateUser();
 
     await createAppointment(assert);
@@ -260,7 +261,7 @@ test('visiting /appointments/search', function(assert) {
 });
 
 test('Theater scheduling', function(assert) {
-  runWithPouchDump('appointments', async function() {
+  return runWithPouchDump('appointments', async function() {
     await authenticateUser();
 
     let later = moment();

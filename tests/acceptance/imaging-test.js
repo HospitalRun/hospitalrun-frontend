@@ -1,10 +1,11 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 moduleForAcceptance('Acceptance | imaging');
 
 test('visiting /imaging', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/imaging');
     assert.equal(currentURL(), '/imaging');
@@ -19,7 +20,7 @@ test('visiting /imaging', function(assert) {
 });
 
 test('create a new imaging request', (assert) => {
-  runWithPouchDump('imaging', async function() {
+  return runWithPouchDump('imaging', async function() {
     await authenticateUser();
     await visit('/imaging/edit/new');
     assert.equal(currentURL(), '/imaging/edit/new');
@@ -46,7 +47,7 @@ test('create a new imaging request', (assert) => {
 });
 
 test('completed requests are displayed', (assert) => {
-  runWithPouchDump('imaging', async function() {
+  return runWithPouchDump('imaging', async function() {
     await authenticateUser();
     await visit('/imaging/completed');
     assert.equal(currentURL(), '/imaging/completed');
@@ -55,7 +56,7 @@ test('completed requests are displayed', (assert) => {
 });
 
 test('mark an imaging request as completed', (assert) => {
-  runWithPouchDump('imaging', async function() {
+  return runWithPouchDump('imaging', async function() {
     await authenticateUser();
     await visit('/imaging');
     assert.equal(currentURL(), '/imaging');

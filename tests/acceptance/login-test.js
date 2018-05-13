@@ -2,6 +2,7 @@ import { test } from 'qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 moduleForAcceptance('Acceptance | login', {
   beforeEach() {
@@ -15,24 +16,24 @@ moduleForAcceptance('Acceptance | login', {
 
 test('visiting / redirects user to login', function(assert) {
   assert.expect(1);
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await visit('/');
     assert.equal(currentURL(), '/login');
   });
 });
 
 test('login with correct credentials', function(assert) {
-  login(assert);
+  return login(assert);
 });
 test('login with correct credentials but space around username', function(assert) {
-  login(assert, true);
+  return login(assert, true);
 });
 
 test('incorrect credentials shows an error message on the screen', function(assert) {
   if (!window.ELECTRON) {
     assert.expect(2);
   }
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await visit('/');
 
     let errorMessage = 'Username or password is incorrect.';
@@ -55,7 +56,7 @@ function login(assert, spaceAroundUsername) {
   if (!window.ELECTRON) {
     assert.expect(2);
   }
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await visit('/login');
 
     stubRequest('post', '/auth/login', function(request) {

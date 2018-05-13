@@ -1,10 +1,11 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 moduleForAcceptance('Acceptance | medication');
 
 test('visiting /medication', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/medication');
 
@@ -18,7 +19,7 @@ test('visiting /medication', function(assert) {
 });
 
 test('creating a new medication request', function(assert) {
-  runWithPouchDump('medication', async function() {
+  return runWithPouchDump('medication', async function() {
     await authenticateUser();
     await visit('/medication/edit/new');
     assert.equal(currentURL(), '/medication/edit/new');
@@ -41,7 +42,7 @@ test('creating a new medication request', function(assert) {
 });
 
 test('fulfilling a medication request', function(assert) {
-  runWithPouchDump('medication', async function() {
+  return runWithPouchDump('medication', async function() {
     await authenticateUser();
     await visit('/medication');
     await click('button:contains(Fulfill)');
@@ -62,7 +63,7 @@ test('fulfilling a medication request', function(assert) {
 });
 
 test('complete a medication request', function(assert) {
-  runWithPouchDump('medication', async function() {
+  return runWithPouchDump('medication', async function() {
     await authenticateUser();
     await visit('/medication/completed');
     assert.dom('.clickable').doesNotExist('Should have 0 completed request');
@@ -84,7 +85,7 @@ test('complete a medication request', function(assert) {
 });
 
 test('returning medication', function(assert) {
-  runWithPouchDump('medication', async function() {
+  return runWithPouchDump('medication', async function() {
     await authenticateUser();
     await visit('/medication/return/new');
     assert.equal(currentURL(), '/medication/return/new');
@@ -103,7 +104,7 @@ test('returning medication', function(assert) {
 });
 
 test('Searching medications', function(assert) {
-  runWithPouchDump('medication', async function() {
+  return runWithPouchDump('medication', async function() {
     await authenticateUser();
     await visit('/medication');
 

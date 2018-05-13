@@ -24,7 +24,6 @@ module.exports = {
     'fillCustomForm': true,
     'invalidateSession': true,
     'require': true,
-    'runWithPouchDump': true,
     'select': true,
     'selectDate': true,
     'typeAheadFillIn': true,

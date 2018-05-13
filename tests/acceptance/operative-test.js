@@ -1,5 +1,6 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 const ADDITIONAL_NOTES = 'Additional Notes here';
 const CASE_COMPLEXITY = 7;
@@ -11,7 +12,7 @@ const PROCEDURE_HIP = 'hip adductor release';
 moduleForAcceptance('Acceptance | Operative Plan and Operation Report');
 
 test('Plan and report creation', function(assert) {
-  runWithPouchDump('operative', async function() {
+  return runWithPouchDump('operative', async function() {
     await authenticateUser();
     await visit('/patients');
     assert.equal(currentURL(), '/patients', 'Patients listing url is correct');

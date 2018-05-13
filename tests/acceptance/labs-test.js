@@ -1,10 +1,11 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 moduleForAcceptance('Acceptance | labs');
 
 test('visiting /labs', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/labs');
     assert.equal(currentURL(), '/labs');
@@ -14,7 +15,7 @@ test('visiting /labs', function(assert) {
 });
 
 test('Adding a new lab request', function(assert) {
-  runWithPouchDump('labs', async function() {
+  return runWithPouchDump('labs', async function() {
     await authenticateUser();
     await visit('/labs');
 
@@ -40,7 +41,7 @@ test('Adding a new lab request', function(assert) {
 });
 
 test('Marking a lab request as completed', function(assert) {
-  runWithPouchDump('labs', async function() {
+  return runWithPouchDump('labs', async function() {
     await authenticateUser();
     await visit('/labs/completed');
     assert.dom('.alert-info').hasText('No completed items found.', 'No completed requests are displayed');
@@ -59,7 +60,7 @@ test('Marking a lab request as completed', function(assert) {
 });
 
 test('Lab with always included custom form', function(assert) {
-  runWithPouchDump('labs', async function() {
+  return runWithPouchDump('labs', async function() {
     await authenticateUser();
 
     await createCustomFormForType('Lab', true);
@@ -104,7 +105,7 @@ test('Lab with always included custom form', function(assert) {
 });
 
 test('Lab with additional form', function(assert) {
-  runWithPouchDump('labs', async function() {
+  return runWithPouchDump('labs', async function() {
     await authenticateUser();
 
     await createCustomFormForType('Lab');
@@ -151,7 +152,7 @@ test('Lab with additional form', function(assert) {
 });
 
 test('Lab with always included custom form and additional form', function(assert) {
-  runWithPouchDump('labs', async function() {
+  return runWithPouchDump('labs', async function() {
     await authenticateUser();
 
     await createCustomFormForType('Lab', true);

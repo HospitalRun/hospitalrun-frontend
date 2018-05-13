@@ -1,11 +1,12 @@
 import { test } from 'qunit';
 import moment from 'moment';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 
 moduleForAcceptance('Acceptance | outpatient');
 
 test('Check In/Check Out Existing outpatient', function(assert) {
-  runWithPouchDump('patient', async function() {
+  return runWithPouchDump('patient', async function() {
     await authenticateUser();
     await visit('/patients/outpatient');
     assert.equal(currentURL(), '/patients/outpatient', 'Outpatient url is correct');
@@ -45,7 +46,7 @@ test('Check In/Check Out Existing outpatient', function(assert) {
 });
 
 test('Check In/Check Out new outpatient', function(assert) {
-  runWithPouchDump('patient', async function() {
+  return runWithPouchDump('patient', async function() {
     let visitDate = moment('2015-10-01');
     let visitLocation = 'Outpatient Followup';
     await authenticateUser();

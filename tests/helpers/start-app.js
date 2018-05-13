@@ -3,7 +3,6 @@ import config from '../../config/environment';
 import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 
-import './run-with-pouch-dump';
 import './authenticate-user';
 import './add-offline-users-for-electron';
 import './select';
