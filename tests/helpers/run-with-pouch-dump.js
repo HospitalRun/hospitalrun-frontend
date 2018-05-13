@@ -1,4 +1,5 @@
 /* jshint ignore:start */
+import { getContext } from '@ember/test-helpers';
 import { registerAsyncHelper } from '@ember/test';
 
 import { Promise as EmberPromise, all } from 'rsvp';
@@ -123,8 +124,9 @@ async function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     }
   });
 
-  app.__deprecatedInstance__.register('service:config', InMemoryConfigService);
-  app.__deprecatedInstance__.register('service:database', InMemoryDatabaseService);
+  let owner = getContext().application.__deprecatedInstance__;
+  owner.register('service:config', InMemoryConfigService);
+  owner.register('service:database', InMemoryDatabaseService);
 
   await promise;
 
