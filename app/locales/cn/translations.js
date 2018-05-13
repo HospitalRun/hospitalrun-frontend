@@ -1,5 +1,6 @@
 export default {
   languageName: '简体中文',
+  isoCode: 'CN',  
   admin: {
     address: {
       address1Label: '地址标签1',

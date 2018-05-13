@@ -1,5 +1,6 @@
 export default {
   languageName: 'Türk',
+  isoCode: 'TR',  
   admin: {
     address: {
       address1Label: '',

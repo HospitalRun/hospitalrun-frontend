@@ -1,5 +1,6 @@
 export default {
   languageName: 'Portugues (Brasileiro)',
+  isoCode: 'BR',  
   admin: {
     address: {
       address1Label: 'Rótulo Endereço 1',

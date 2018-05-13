@@ -1,5 +1,6 @@
 export default {
   languageName: 'हिंदी',
+  isoCode: 'HI',  
   admin: {
     address: {
       address1Label: 'पता 1 लेबल',

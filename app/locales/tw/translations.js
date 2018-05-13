@@ -1,5 +1,6 @@
 export default {
   languageName: '繁體中文',
+    isoCode: 'TR',
   admin: {
     address: {
       address1Label: '地址標籤1',

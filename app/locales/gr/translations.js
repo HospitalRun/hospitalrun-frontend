@@ -1,5 +1,6 @@
 export default {
   languageName: 'Ελληνικά',
+  isoCode: 'GR',  
   admin: {
     address: {
       address1Label: 'Ετικέτα Διεύθυνσης 1',

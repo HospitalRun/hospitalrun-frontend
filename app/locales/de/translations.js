@@ -1,5 +1,6 @@
 export default {
   languageName: 'Deutsch',
+  isoCode: 'DE',
   admin: {
     address: {
       address1Label: 'Adresse 1 Kennzeichen',

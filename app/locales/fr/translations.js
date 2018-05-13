@@ -1,4 +1,5 @@
 export default {
+  isoCode: 'FR',  
   admin: {
     address: {
       address1Label: "Label de l'adresse 1",

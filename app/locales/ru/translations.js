@@ -1,5 +1,6 @@
 export default {
   languageName: 'русский',
+  isoCode: 'RU',
   admin: {
     address: {
       address1Label: '',

@@ -1,5 +1,6 @@
 export default {
   languageName: 'اردو',
+  isoCode: 'UR',  
   admin: {
     address: {
       address1Label: 'ایڈریس 1 لیبل',

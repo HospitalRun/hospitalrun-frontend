@@ -1,5 +1,6 @@
 export default {
   languageName: 'Italiano',
+  isoCode: 'IT',  
   admin: {
     address: {
       address1Label: 'Indirizzo 1 etichetta',
