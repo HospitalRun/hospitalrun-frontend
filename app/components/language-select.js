@@ -17,7 +17,8 @@ export default Component.extend({
       i18n.set('locale', item);
       return {
         id: item,
-        name: i18n.t('languageName')
+        name: i18n.t('languageName'),
+        iso: i18n.t('isoCode')
       };
     });
     i18n.set('locale', currentLocale);
