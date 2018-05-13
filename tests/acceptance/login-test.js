@@ -1,17 +1,15 @@
-import { run } from '@ember/runloop';
-import { module, test } from 'qunit';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 
-module('Acceptance | login', {
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+
+moduleForAcceptance('Acceptance | login', {
   beforeEach() {
     FakeServer.start();
-    this.application = startApp();
   },
 
   afterEach() {
     FakeServer.stop();
-    run(this.application, 'destroy');
   }
 });
 
