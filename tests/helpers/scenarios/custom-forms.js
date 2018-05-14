@@ -1,11 +1,9 @@
-import { registerAsyncHelper } from '@ember/test';
-
 const crusts =  ['Thin', 'Deep Dish', 'Flatbread'];
 const desserts = ['Ice Cream', 'Cookies', 'Cake'];
 const toppings =  ['Cheese', 'Pepperoni', 'Mushrooms'];
 const header = ['______________________________'];
 
-registerAsyncHelper('createCustomFormForType', async function(app, formType, alwaysInclude, assert) {
+export async function createCustomFormForType(formType, alwaysInclude, assert) {
   async function addField(fieldType, label, values) {
     await click('button:contains(Add Field)');
     await waitToAppear('.modal-dialog');
@@ -69,9 +67,9 @@ registerAsyncHelper('createCustomFormForType', async function(app, formType, alw
   }
 
   await click('.modal-footer button:contains(Ok)');
-});
+}
 
-registerAsyncHelper('checkCustomFormIsDisplayed', async function(app, assert, header) {
+export async function checkCustomFormIsDisplayed(assert, header) {
   await waitToAppear(`h4:contains(${header})`);
   assert.equal(find(`h4:contains(${header})`).length, 1, `Form ${header} is displayed`);
 
@@ -94,18 +92,18 @@ registerAsyncHelper('checkCustomFormIsDisplayed', async function(app, assert, he
 
   assert.equal(find('label:contains(Beverage)', formDiv).length, 1, 'There is a text header');
   assert.equal(find('label:contains(Beverage)+input[type=text]', formDiv).length, 1, 'There is a text input');
-});
+}
 
-registerAsyncHelper('fillCustomForm', async function(app, header) {
+export async function fillCustomForm(header) {
   let formSelector = `h4:contains(${header}) + .js-custom-form`;
   await select(`${formSelector} select`, crusts[2]);
   await click(`${formSelector} input[type=checkbox]:last`);
   await click(`${formSelector} input[type=radio]:nth(1)`);
   await fillIn(`${formSelector} textarea`, `Large text for the form ${header}`);
   await fillIn(`${formSelector} label:contains(Beverage)+input[type=text]`, `Small text for the form ${header}`);
-});
+}
 
-registerAsyncHelper('checkCustomFormIsFilled', async function(app, assert, header) {
+export async function checkCustomFormIsFilled(assert, header) {
   await waitToAppear(`h4:contains(${header})`);
 
   let formDiv = find(`h4:contains(${header}) + .js-custom-form`);
@@ -116,9 +114,9 @@ registerAsyncHelper('checkCustomFormIsFilled', async function(app, assert, heade
   assert.equal(find('input:radio:checked', formDiv).val(), desserts[1], 'There is value in radio');
   assert.dom('textarea', formDiv[0]).hasValue(`Large text for the form ${header}`, 'There is value in textarea');
   assert.equal(find('label:contains(Beverage)+input[type=text]', formDiv).val(), `Small text for the form ${header}`, 'There is value in the input');
-});
+}
 
-registerAsyncHelper('checkCustomFormIsFilledAndReadonly', async function(app, assert, header) {
+export async function checkCustomFormIsFilledAndReadonly(assert, header) {
   await waitToAppear(`h4:contains(${header})`);
 
   let formDiv = find(`h4:contains(${header}) + .js-custom-form`);
@@ -129,13 +127,13 @@ registerAsyncHelper('checkCustomFormIsFilledAndReadonly', async function(app, as
   assert.ok(find('input[type=checkbox]:last', formDiv).is(':checked'), 'There is value in checkbox');
   assert.equal(find(`p:contains(Large text for the form ${header})`, formDiv).length, 1, 'There is text from textarea');
   assert.equal(find(`p:contains(Small text for the form ${header})`, formDiv).length, 1, 'There is text from input');
-});
+}
 
-registerAsyncHelper('attachCustomForm', async function(app, name) {
+export async function attachCustomForm(name) {
   await waitToAppear('button:contains(Add Form)');
   await click('button:contains(Add Form)');
   await waitToAppear('.modal-dialog');
   await select('.form-to-add', name);
   await click('.modal-footer button:contains(Add Form)');
   await waitToDisappear('.modal-dialog');
-});
+}

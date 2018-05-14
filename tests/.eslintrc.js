@@ -15,13 +15,7 @@ module.exports = {
   globals: {
     '$': true,
     'addOfflineUsersForElectron': true,
-    'attachCustomForm': true,
     'authenticateUser': true,
-    'checkCustomFormIsDisplayed': true,
-    'checkCustomFormIsFilled': true,
-    'checkCustomFormIsFilledAndReadonly': true,
-    'createCustomFormForType': true,
-    'fillCustomForm': true,
     'invalidateSession': true,
     'require': true,
     'select': true,

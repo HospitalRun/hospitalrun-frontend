@@ -3,6 +3,12 @@ import moment from 'moment';
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import {
+  createCustomFormForType,
+  attachCustomForm,
+  fillCustomForm,
+  checkCustomFormIsFilledAndReadonly
+} from 'hospitalrun/tests/helpers/scenarios/custom-forms';
 
 const LOCATION = 'Springfield Hospital';
 const EXAMINER = 'Sarah Kearney';

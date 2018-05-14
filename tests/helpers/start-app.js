@@ -10,8 +10,6 @@ import './select-date';
 import './typeahead-fillin';
 import './wait-to-appear';
 
-import './scenarios/custom-forms';
-
 function createTranslationWrapper(original, context) {
   function t(str, data) {
     let result = original.call(context, str, data);

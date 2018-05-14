@@ -1,6 +1,14 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import {
+  attachCustomForm,
+  createCustomFormForType,
+  checkCustomFormIsDisplayed,
+  fillCustomForm,
+  checkCustomFormIsFilled,
+  checkCustomFormIsFilledAndReadonly
+} from 'hospitalrun/tests/helpers/scenarios/custom-forms';
 
 moduleForAcceptance('Acceptance | labs');
 
