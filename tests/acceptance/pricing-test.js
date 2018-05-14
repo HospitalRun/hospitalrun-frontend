@@ -3,6 +3,7 @@ import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
 import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
   return runWithPouchDump('billing', async function() {

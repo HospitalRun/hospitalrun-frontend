@@ -6,6 +6,7 @@ import select from 'hospitalrun/tests/helpers/select';
 import selectDate from 'hospitalrun/tests/helpers/select-date';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 const DATE_TIME_FORMAT = 'l h:mm A';
 const DATE_FORMAT = 'l';

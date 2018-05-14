@@ -14,8 +14,6 @@ module.exports = {
 
   globals: {
     '$': true,
-    'authenticateUser': true,
-    'invalidateSession': true,
     'require': true,
     'wait': true,
   },

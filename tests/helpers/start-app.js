@@ -3,8 +3,6 @@ import config from '../../config/environment';
 import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 
-import './authenticate-user';
-
 function createTranslationWrapper(original, context) {
   function t(str, data) {
     let result = original.call(context, str, data);

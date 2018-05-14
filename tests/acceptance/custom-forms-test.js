@@ -3,6 +3,7 @@ import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import { createCustomFormForType } from 'hospitalrun/tests/helpers/scenarios/custom-forms';
 import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | custom forms');
 

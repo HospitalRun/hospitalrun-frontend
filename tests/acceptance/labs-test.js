@@ -11,6 +11,7 @@ import {
 } from 'hospitalrun/tests/helpers/scenarios/custom-forms';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | labs');
 
