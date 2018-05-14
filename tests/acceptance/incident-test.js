@@ -3,6 +3,7 @@ import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
+import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 
 const DATE_FORMAT = 'l';
 const DATE_TIME_FORMAT = 'l h:mm A';

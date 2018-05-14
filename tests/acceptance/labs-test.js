@@ -9,6 +9,7 @@ import {
   checkCustomFormIsFilled,
   checkCustomFormIsFilledAndReadonly
 } from 'hospitalrun/tests/helpers/scenarios/custom-forms';
+import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 
 moduleForAcceptance('Acceptance | labs');
 

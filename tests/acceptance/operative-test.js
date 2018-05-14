@@ -1,6 +1,7 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 
 const ADDITIONAL_NOTES = 'Additional Notes here';
 const CASE_COMPLEXITY = 7;

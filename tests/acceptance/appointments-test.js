@@ -4,6 +4,7 @@ import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
 import selectDate from 'hospitalrun/tests/helpers/select-date';
+import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 
 const DATE_TIME_FORMAT = 'l h:mm A';
 const DATE_FORMAT = 'l';
