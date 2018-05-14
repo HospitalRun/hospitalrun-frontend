@@ -2,6 +2,7 @@ import { test } from 'qunit';
 import moment from 'moment';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import select from 'hospitalrun/tests/helpers/select';
 
 const DATE_TIME_FORMAT = 'l h:mm A';
 const DATE_FORMAT = 'l';
