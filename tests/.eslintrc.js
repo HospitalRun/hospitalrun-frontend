@@ -14,7 +14,6 @@ module.exports = {
 
   globals: {
     '$': true,
-    'addOfflineUsersForElectron': true,
     'authenticateUser': true,
     'invalidateSession': true,
     'require': true,
