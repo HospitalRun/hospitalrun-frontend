@@ -4,7 +4,6 @@ import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 
 import './authenticate-user';
-import './wait-to-appear';
 
 function createTranslationWrapper(original, context) {
   function t(str, data) {

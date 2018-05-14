@@ -1,6 +1,8 @@
 // Derived from https://raw.githubusercontent.com/edgycircle/ember-pikaday/master/addon/helpers/pikaday.js
 import moment from 'moment';
 
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+
 function triggerNativeEvent(element, eventName) {
   if (document.createEvent) {
     let event = document.createEvent('Events');

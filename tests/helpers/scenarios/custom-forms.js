@@ -1,4 +1,5 @@
 import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
 
 const crusts =  ['Thin', 'Deep Dish', 'Flatbread'];
 const desserts = ['Ice Cream', 'Cookies', 'Cake'];

@@ -7,6 +7,7 @@ import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import addOfflineUsersForElectron from 'hospitalrun/tests/helpers/add-offline-users-for-electron';
 import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 
 const MOCK_USER_DATA = [{
   'id': 'org.couchdb.user:hradmin',

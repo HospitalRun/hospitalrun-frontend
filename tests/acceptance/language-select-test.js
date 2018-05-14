@@ -3,6 +3,7 @@ import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import addOfflineUsersForElectron from 'hospitalrun/tests/helpers/add-offline-users-for-electron';
 import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 
 import english from 'hospitalrun/locales/en/translations';
 import french from 'hospitalrun/locales/fr/translations';

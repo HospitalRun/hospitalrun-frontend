@@ -2,6 +2,7 @@ import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
 
 moduleForAcceptance('Acceptance | roles');

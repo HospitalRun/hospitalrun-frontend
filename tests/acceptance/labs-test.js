@@ -10,6 +10,7 @@ import {
   checkCustomFormIsFilledAndReadonly
 } from 'hospitalrun/tests/helpers/scenarios/custom-forms';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 
 moduleForAcceptance('Acceptance | labs');
 

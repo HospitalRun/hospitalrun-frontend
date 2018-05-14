@@ -18,8 +18,6 @@ module.exports = {
     'invalidateSession': true,
     'require': true,
     'wait': true,
-    'waitToAppear': true,
-    'waitToDisappear': true
   },
 
   rules: {

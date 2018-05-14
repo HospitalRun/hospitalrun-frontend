@@ -3,6 +3,7 @@ import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 
 moduleForAcceptance('Acceptance | login', {
   beforeEach() {
