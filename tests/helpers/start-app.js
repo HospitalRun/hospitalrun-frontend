@@ -4,7 +4,6 @@ import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 
 import './authenticate-user';
-import './select-date';
 import './typeahead-fillin';
 import './wait-to-appear';
 

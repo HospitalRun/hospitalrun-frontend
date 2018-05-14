@@ -1,5 +1,4 @@
 // Derived from https://raw.githubusercontent.com/edgycircle/ember-pikaday/master/addon/helpers/pikaday.js
-import { registerAsyncHelper } from '@ember/test';
 import moment from 'moment';
 
 function triggerNativeEvent(element, eventName) {
@@ -12,9 +11,11 @@ function triggerNativeEvent(element, eventName) {
   }
 }
 
-registerAsyncHelper('selectDate', async function(app, selector, date) {
+async function selectDate(selector, date) {
   await click(selector);
   await waitToAppear('.pika-single:not(.is-hidden)');
   await fillIn(selector, moment(date).format('l'));
-  triggerNativeEvent(app.$(selector)[0], 'change');
-});
+  triggerNativeEvent($(selector)[0], 'change');
+}
+
+export default selectDate;

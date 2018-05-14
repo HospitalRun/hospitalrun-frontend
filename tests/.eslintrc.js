@@ -17,7 +17,6 @@ module.exports = {
     'authenticateUser': true,
     'invalidateSession': true,
     'require': true,
-    'selectDate': true,
     'typeAheadFillIn': true,
     'wait': true,
     'waitToAppear': true,
