@@ -13,7 +13,7 @@
       {{date-picker model=model property="billDate" label=(t 'labels.billDate') class="col-xs-2"}}
       {{#if model.isNew}}
         {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
-        {{form.select class="col-xs-4 required invoice-visit" label=(t 'labels.visit')
+        {{form.select class="col-xs-4 required form-input-group invoice-visit" label=(t 'labels.visit')
             property="visit" content=patientVisitsForSelect
             optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
             selected=model.visit
@@ -33,7 +33,7 @@
         content=pricingProfiles
         optionValuePath="selectObject"
         optionLabelPath="selectObject.name"
-        class="col-xs-3"
+        class="col-xs-3 form-input-group"
         prompt=" "
         selected=model.paymentProfile
       }}
