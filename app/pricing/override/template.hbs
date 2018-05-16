@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#modal-dialog
     isUpdateDisabled=isUpdateDisabled
     title=title
@@ -15,3 +16,22 @@
     {{number-input label=(t 'labels.price') property="price" class="required pricing-override-price"}}
   {{/em-form}}
 {{/modal-dialog}}
+=======
+{{#modal-dialog
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.select label=(t 'billing.labels.pricingProfile')
+      property="profile"
+      content=pricingProfiles
+      optionValuePath="selectObject"
+      optionLabelPath="selectObject.name"
+      class="required pricing-profile"
+      prompt=" "
+    }}
+    {{number-input model=model label=(t 'labels.price') property="price" class="required pricing-override-price"}}
+  {{/em-form}}
+{{/modal-dialog}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Dervied from http://spin.atomicobject.com/2013/10/29/ember-js-date-picker/
 import InputComponent from 'ember-rapid-forms/components/em-input';
 export default InputComponent.extend({
@@ -17,3 +18,17 @@ export default InputComponent.extend({
     this._super(attrs);
   }
 });
+=======
+import { isEmpty } from '@ember/utils';
+import Component from '@ember/component';
+
+export default Component.extend({
+  actions: {
+    dateSetActionWrapper(newDate) {
+      if (!isEmpty(this.get('dateSetAction'))) {
+        this.sendAction('dateSetAction', newDate);
+      }
+    }
+  }
+});
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

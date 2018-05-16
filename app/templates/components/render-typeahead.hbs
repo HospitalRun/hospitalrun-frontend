@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#if usePricingTypeAhead}}
   {{pricing-typeahead class=className property=property 
     label=label content=content
@@ -9,3 +10,16 @@
     selection=selection setOnBlur=setOnBlur hint=hint
   }}
 {{/if}}
+=======
+{{#if usePricingTypeAhead}}
+  {{pricing-typeahead class=className property=property model=model
+    label=label content=content
+    selection=selection
+  }}
+{{else}}
+  {{type-ahead class=className property=property model=model
+    label=label content=content
+    selection=selection setOnBlur=setOnBlur hint=hint
+  }}
+{{/if}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <tr {{action 'editAppointment' appointment}}>
   <td class="appointment-date">
     {{appointment.formattedAppointmentDate}}
@@ -24,3 +25,31 @@
     {{/if}}
   </td>
 </tr>
+=======
+<tr {{action 'editAppointment' appointment}} class="{{if canEdit "clickable"}}">
+  <td class="appointment-date">
+    {{appointment.formattedAppointmentDate}}
+  </td>
+  <td>{{appointment.patient.displayName}}</td>
+  <td>{{appointment.appointmentType}}</td>
+  <td>{{appointment.location}}</td>
+  <td>{{appointment.provider}}</td>
+  <td class="appointment-status">{{appointment.displayStatus}}</td>
+  <td>
+    {{#if canEdit}}
+      <button class="btn btn-default neutral" {{action 'editAppointment' appointment bubbles=false }}>{{t 'labels.edit'}}</button>
+    {{/if}}
+    {{#if canAddVisit}}
+      {{#if (eq appointment.displayStatus 'Scheduled')}}
+        <button class="btn btn-primary" {{action 'checkIn' appointment bubbles=false }}>
+          <span class="glyphicon glyphicon-log-in"></span>
+          {{t 'visits.buttons.checkIn'}}
+        </button>
+      {{/if}}
+    {{/if}}
+    {{#if canDelete}}
+      <button class="btn btn-default warning" {{action 'deleteItem' appointment  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
+    {{/if}}
+  </td>
+</tr>
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

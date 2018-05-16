@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#modal-dialog
   hideCancelButton=hideCancelButton
   hideUpdateButton=hideUpdateButton
@@ -22,3 +23,29 @@
     }}
   {{/em-form}}
 {{/modal-dialog}}
+=======
+{{#modal-dialog
+  hideCancelButton=hideCancelButton
+  hideUpdateButton=hideUpdateButton
+  isUpdateDisabled=isUpdateDisabled
+  title=title
+  updateButtonAction=updateButtonAction
+  updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false as |form|}}
+    {{expand-text label=(t 'labels.note') property="content" rows=3 class="test-note-content required form-input-group" form=form}}
+    {{form.select class="required" label=(t 'labels.visit')
+      property="visit" content=patientVisitsForSelect
+      optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
+      prompt=(t 'patients.notes.pleaseSelectAVisit')
+      selected=model.visit
+    }}
+    {{select-or-typeahead form=form model=model
+      property="attribution"
+      label=(t 'patients.notes.onBehalfOfLabel' )
+      list=physicianList
+      selection=attribution
+      className="form-input-group test-note-attribution"
+    }}
+  {{/em-form}}
+{{/modal-dialog}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

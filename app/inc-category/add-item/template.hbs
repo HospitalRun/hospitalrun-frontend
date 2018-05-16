@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#modal-dialog
     hideCancelButton=hideCancelButton
     hideUpdateButton=hideUpdateButton
@@ -9,3 +10,16 @@
     {{em-input label=(t 'incident.labels.item') property="item" class="incident-category-item"}}
   {{/em-form}}
 {{/modal-dialog}}
+=======
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.input label=(t 'incident.labels.item') property="item" class="incident-category-item"}}
+  {{/em-form}}
+{{/modal-dialog}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

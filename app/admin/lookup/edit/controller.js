@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 export default Ember.Controller.extend(IsUpdateDisabled, {
@@ -27,3 +28,35 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
     }
   }
 });
+=======
+import { isEmpty } from '@ember/utils';
+import Controller, { inject as controller } from '@ember/controller';
+import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+export default Controller.extend(IsUpdateDisabled, {
+  editController: controller('admin/lookup'),
+  showUpdateButton: true,
+
+  updateButtonAction: 'update',
+  updateButtonText: function() {
+    let i18n = this.get('i18n');
+    if (this.get('model.isNew')) {
+      return i18n.t('buttons.add');
+    } else {
+      return i18n.t('buttons.update');
+    }
+  }.property('model.isNew'),
+
+  actions: {
+    cancel() {
+      this.send('closeModal');
+    },
+
+    update() {
+      if (!isEmpty(this.get('model.value'))) {
+        this.get('editController').send('updateValue', this.get('model'));
+        this.send('closeModal');
+      }
+    }
+  }
+});
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

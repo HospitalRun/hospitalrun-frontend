@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#modal-dialog
     isUpdateDisabled=isUpdateDisabled
     title=title
@@ -11,3 +12,18 @@
     }}
   {{/em-form}}
 {{/modal-dialog}}
+=======
+{{#modal-dialog
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.input property="name" label=(t 'labels.name') class="required"}}
+    {{select-or-typeahead form=form model=model property="category" className="required"
+      label=(t 'labels.category') list=billingCategories
+      selection=model.category
+    }}
+  {{/em-form}}
+{{/modal-dialog}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

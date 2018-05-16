@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#item-listing paginationProps=paginationProps }}
   {{#if model}}
     <table class="table">
@@ -20,3 +21,30 @@
     </div>
   {{/if}}
 {{/item-listing}}
+=======
+{{#item-listing paginationProps=paginationProps }}
+  {{#if model}}
+    <table class="table">
+      <tr class="table-header">
+        <th>{{t 'labels.dateRequested'}}</th>
+        <th>{{t 'labels.dateCompleted'}}</th>
+        <th>{{t 'labels.patient'}}</th>
+        <th>{{t 'labels.requestedBy'}}</th>
+        <th>{{t 'labs.labels.labType'}}</th>
+        <th>{{t 'labels.results'}}</th>
+        <th>{{t 'labels.notes'}}</th>
+      </tr>
+      {{#each model as |lab|}}
+        {{labs/completed/labs-completed-list-item
+          lab=lab
+          action='editItem'
+        }}
+      {{/each}}
+    </table>
+  {{else}}
+    <div class="alert alert-info">
+      <p>{{t 'labs.messages.noCompleted'}}</p>
+    </div>
+  {{/if}}
+{{/item-listing}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

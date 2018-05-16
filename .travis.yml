@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 language: node_js
 node_js:
@@ -43,3 +44,49 @@ env:
 
 
 
+=======
+---
+language: node_js
+node_js:
+  - "6"
+
+branches:
+  only:
+    - "master"
+
+dist: trusty
+sudo: required
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+cache:
+  directories:
+    - $HOME/.npm
+    - $HOME/.cache # includes bowers cache
+
+before_install:
+  - npm config set spin false
+  - npm install -g bower
+  - bower --version
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1024x768x24"
+
+install:
+  - npm install
+  - bower install
+  - export DISPLAY=':99.0'
+
+script:
+  - npm run $COMMAND
+
+env:
+  matrix:
+  - COMMAND=test
+  - CXX=g++-4.8 COMMAND=electron-test
+
+
+
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

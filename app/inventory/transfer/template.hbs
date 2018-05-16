@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#modal-dialog
     isUpdateDisabled=isUpdateDisabled
     title=title
@@ -26,3 +27,33 @@
     </div>
   {{/em-form}}
 {{/modal-dialog}}
+=======
+{{#modal-dialog
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false as |form|}}
+    <div class="form-group">
+      <label class="control-label">{{t 'inventory.labels.item'}}</label>
+      <p class="form-control-static">{{model.transferItem.name}}</p>
+    </div>
+    <div class="form-group">
+      <label class="control-label">{{t 'inventory.labels.transferFrom'}}</label>
+      <p class="form-control-static">{{model.locationName}}</p>
+    </div>
+    <div class="form-group">
+      <label class="control-label">{{t 'inventory.labels.quantityAvailable'}}</label>
+      <p class="form-control-static">{{model.quantity}}</p>
+    </div>
+    {{select-or-typeahead form=form model=model class="required" property="transferLocation" label=(t 'inventory.labels.transferTo') list=warehouseList selection=model.transferLocation }}
+    {{select-or-typeahead form=form model=model property="transferAisleLocation" label=(t 'inventory.labels.transferToAisle') list=aisleLocationList selection=model.transferAisleLocation }}
+    <div class="row">
+      {{number-input model=model property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
+    </div>
+    <div class="row">
+      {{date-picker model=model property="dateCompleted" label=(t 'inventory.labels.dateTransferred') class="col-sm-4 required"}}
+    </div>
+  {{/em-form}}
+{{/modal-dialog}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

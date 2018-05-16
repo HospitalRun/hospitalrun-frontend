@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#modal-dialog
   title=title
   updateButtonText=updateButtonText
@@ -13,4 +14,21 @@
     </div>
   {{/em-form}}
 
+=======
+{{#modal-dialog
+  title=title
+  updateButtonText=updateButtonText
+  hideCancelButton=true
+  isUpdateDisabled=isUpdateDisabled
+  updateButtonAction=updateButtonAction
+  additionalButtons=additionalButtons
+}}
+
+  {{#em-form model=model submitButton=false as |form|}}
+    <div class="row">
+      {{form.input class="col-xs-12 form-group required test-allergy" label=(t 'allergies.labels.allergyName') property="name"}}
+    </div>
+  {{/em-form}}
+
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea
 {{/modal-dialog}}

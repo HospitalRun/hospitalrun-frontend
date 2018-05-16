@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#modal-dialog
     isUpdateDisabled=isUpdateDisabled
     title=(t 'inventory.titles.quickAddTitle')
@@ -8,3 +9,15 @@
     {{partial 'inventory-basic'}}
   {{/em-form}}
 {{/modal-dialog}}
+=======
+{{#modal-dialog
+    isUpdateDisabled=isUpdateDisabled
+    title=(t 'inventory.titles.quickAddTitle')
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  <div class="alert alert-warning" role="alert">{{t 'inventory.messages.itemNotFound' item=model.name}}</div>
+  {{#em-form model=model submitButton=false as |form|}}
+    {{partial 'inventory-basic'}}
+  {{/em-form}}
+{{/modal-dialog}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

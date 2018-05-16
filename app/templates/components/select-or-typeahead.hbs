@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#if userCanAdd}}
   {{partial 'components/render-typeahead'}}
 {{else}}
@@ -7,3 +8,15 @@
     selected=selection prompt=prompt
   }}
 {{/if}}
+=======
+{{#if userCanAdd}}
+  {{partial 'components/render-typeahead'}}
+{{else}}
+  {{form.select class=(concat 'form-input-group ' className) label=label
+    property=property content=content
+    optionValuePath=optionValuePath
+    optionLabelPath=optionLabelPath
+    selected=selection prompt=prompt
+  }}
+{{/if}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

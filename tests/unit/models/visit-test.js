@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Ember from 'ember';
 import { moduleForModel, test } from 'ember-qunit';
 
@@ -40,3 +41,48 @@ test('paymentState', function(assert) {
   assert.equal(model.get('paymentState'), 'clear');
   assert.ok(!model.errors.paymentState.length, 'there should be no error');
 });
+=======
+import { run } from '@ember/runloop';
+import { moduleForModel, test } from 'ember-qunit';
+
+moduleForModel('visit', 'Unit | Model | visit', {
+  // Specify the other units that are required for this test.
+  needs: [
+    'ember-validations@validator:local/acceptance',
+    'ember-validations@validator:local/presence',
+    'model:diagnosis',
+    'model:procedure',
+    'model:imaging',
+    'model:lab',
+    'model:medication',
+    'model:patient',
+    'model:patient-note',
+    'model:proc-charge',
+    'model:vital',
+    'model:visit',
+    'model:report',
+    'service:validations',
+    'service:session'
+  ]
+});
+
+test('paymentState', function(assert) {
+  let model = this.subject();
+
+  run(() => {
+    model.setProperties({
+      paymentState: 'bad value'
+    });
+  });
+  assert.equal(model.get('paymentState'), 'bad value');
+  assert.ok(model.errors.paymentState.length, 'there should errors');
+
+  run(() => {
+    model.setProperties({
+      paymentState: 'clear'
+    });
+  });
+  assert.equal(model.get('paymentState'), 'clear');
+  assert.ok(!model.errors.paymentState.length, 'there should be no error');
+});
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

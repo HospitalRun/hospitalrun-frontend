@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { translationMacro as t } from 'ember-i18n';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
@@ -24,3 +25,31 @@ export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, PatientL
     });
   }
 });
+=======
+import { resolve } from 'rsvp';
+import { translationMacro as t } from 'ember-i18n';
+import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
+import ChargeRoute from 'hospitalrun/mixins/charge-route';
+import moment from 'moment';
+import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
+export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, PatientListRoute, {
+  editTitle: t('imaging.titles.editTitle'),
+  modelName: 'imaging',
+  newTitle: t('imaging.titles.editTitle'),
+  pricingCategory: 'Imaging',
+
+  actions: {
+    returnToAllItems() {
+      this.controller.send('returnToAllItems');
+    }
+  },
+
+  getNewData() {
+    return resolve({
+      selectPatient: true,
+      requestDate: moment().startOf('day').toDate()
+    });
+  }
+});
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{#each formsToDisplay as |customForm|}}
   <h4>{{customForm.form.name}}</h4>
   {{custom-form model=model form=customForm.form propertyPrefix=customForm.propertyPrefix}}
@@ -15,3 +16,22 @@
     </div>
   </div>
 {{/if}}
+=======
+{{#each formsToDisplay as |customForm|}}
+  <h4>{{customForm.form.name}}</h4>
+  {{custom-form model=model form=customForm.form propertyPrefix=customForm.propertyPrefix rapidForm=rapidForm isReadonly=isReadonly}}
+{{/each}}
+{{#if (and showAddButton (not isReadonly))}}
+  <div class="row">
+    <div class="col-sm-2">
+      <label class="control-label">&nbsp;</label>
+      <p class=" form-control-static">
+        <button class="btn btn-primary" {{action 'addForm' bubbles=false }}>
+          <span class="octicon octicon-plus"></span>
+          {{t 'components.customFormManager.buttons.addForm'}}
+        </button>
+      </p>
+    </div>
+  </div>
+{{/if}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{select-list
   className="test-select-lang"
   prompt=(t 'navigation.actions.selectLanguage')
@@ -7,3 +8,15 @@
   action=(action 'selectLanguage')
 }}
 
+=======
+{{select-list
+  class='language-select'
+  prompt=(t 'navigation.actions.selectLanguage')
+  content=languageOptions
+  optionLabelPath='name'
+  optionValuePath='id'
+  value=selectedLanguage
+  action=(action 'selectLanguage')
+}}
+
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea

@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 {{#if session.isAuthenticated}}
   {{render "navigation"}}
 {{/if}}
 {{outlet}}
 {{outlet "modal"}}
+=======
+{{#if session.isAuthenticated}}
+  {{sidebar-nav
+      allowSearch=(readonly allowSearch)
+      isShowingSettings=(readonly isShowingSettings)
+      openModal="openModal"
+      search="search"
+  }}
+{{/if}}
+{{outlet}}
+{{outlet "modal"}}
+>>>>>>> 04412e25eaea300a172007bb9619752ed10be2ea
