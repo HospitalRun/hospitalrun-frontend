@@ -14,6 +14,7 @@
       </div>
       {{#if isStatusReport}}
         {{form.select property="status" label="Patient Status"
+          class="form-input-group"
           content=statusList
           prompt=" "
         }}
@@ -29,21 +30,21 @@
       {{/if}}
       {{#if isVisitReport}}
         <div class="row">
-          {{form.select class="col-sm-6" label="Visit Type"
+          {{form.select class="col-sm-6 form-input-group" label="Visit Type"
             property="visitType" content=visitTypes
             prompt=" "
           }}
-          {{form.select class="col-sm-6" label="Examiner"
+          {{form.select class="col-sm-6 form-input-group" label="Examiner"
             property="examiner" content=physicianList
             prompt=" "
           }}
         </div>
         <div class="row">
-          {{form.select class="col-sm-6" label="Location"
+          {{form.select class="col-sm-6 form-input-group" label="Location"
             property="location" content=locationList
             prompt=" "
           }}
-          {{form.select class="col-sm-6" label="Clinic"
+          {{form.select class="col-sm-6 form-input-group" label="Clinic"
             property="clinic" content=clinicList
             prompt=" "
           }}
