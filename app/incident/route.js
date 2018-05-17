@@ -11,7 +11,6 @@ export default AbstractModuleRoute.extend({
     findArgs: ['inc-category']
   }],
   allowSearch: false,
-  currentScreenTitle: t('incidents.titles.incidents'),
   editTitle: t('incidents.titles.editIncident'),
   newTitle: t('incidents.titles.newIncident'),
   moduleName: 'incident',
