@@ -1,5 +1,5 @@
-import Ember from 'ember';
-export default Ember.Component.extend({
+import Component from '@ember/component';
+export default Component.extend({
   // From http://emberjs.jsbin.com/rwjblue/58/edit?html,css,js,output
   attributeBindings: ['type', 'value'],
   tagName: 'input',

@@ -1,8 +1,6 @@
+import { get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
-
-const { computed, get } = Ember;
 
 export default AbstractModel.extend({
   // Attributes

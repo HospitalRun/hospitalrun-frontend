@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
 import moment from 'moment';
-export default Ember.Mixin.create({
+export default Mixin.create({
   convertDOBToText(birthDate, shortFormat, omitDays) {
     let today = new Date();
     let years = 0;
@@ -9,8 +9,12 @@ export default Ember.Mixin.create({
 
     if (birthDate) {
       if (birthDate.getFullYear === undefined) {
-        birthDate = moment(birthDate, 'l').toDate();
+        birthDate = moment(birthDate, 'LLL').toDate();
       }
+
+      birthDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
       if (birthDate.getFullYear !== undefined) {
         years = today.getFullYear() - birthDate.getFullYear();
         if (today.getMonth() < birthDate.getMonth()

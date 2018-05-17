@@ -4,7 +4,8 @@ moduleForModel('payment', 'Unit | Model | payment', {
   needs: [
     'ember-validations@validator:local/numericality',
     'ember-validations@validator:local/presence',
-    'model:invoice'
+    'model:invoice',
+    'service:session'
   ]
 });
 

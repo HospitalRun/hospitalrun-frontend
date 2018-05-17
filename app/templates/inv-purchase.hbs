@@ -1,9 +1,9 @@
 <div class="row">
-  {{date-picker property="dateReceived" label=(t 'inventory.labels.dateReceived') class="col-sm-4"}}
-  {{em-input property="invoiceNo" label=(t 'inventory.labels.invoiceNumber') class="col-sm-4"}}
+  {{date-picker model=model property="dateReceived" label=(t 'inventory.labels.dateReceived') class="col-sm-4"}}
+  {{form.input property="invoiceNo" label=(t 'inventory.labels.invoiceNumber') class="col-sm-4"}}
 </div>
 {{#if canEditQuantity }}
-  {{quantity-calc calculated=model.originalQuantity targetUnit=model.distributionUnit quantityGroups=model.quantityGroups unitList=unitList}}
+  {{quantity-calc form=form calculated=model.originalQuantity targetUnit=model.distributionUnit quantityGroups=model.quantityGroups unitList=unitList}}
 {{else}}
   <div class="form-group">
     <label>{{t 'labels.quantity'}}</label>
@@ -11,18 +11,18 @@
   </div>
 {{/if}}
 <div class="row">
-  {{number-input property="purchaseCost" label=(t 'inventory.labels.purchaseCost') class="required col-sm-4 test-inv-cost"}}
-  {{em-input property="lotNumber" label=(t 'inventory.labels.serialNumber') class="col-sm-4"}}
+  {{number-input model=model property="purchaseCost" label=(t 'inventory.labels.purchaseCost') class="required col-sm-4 test-inv-cost"}}
+  {{form.input property="lotNumber" label=(t 'inventory.labels.serialNumber') class="col-sm-4"}}
 </div>
 <div class="row">
-  {{date-picker property="expirationDate" label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-4"}}
+  {{date-picker model=model property="expirationDate" label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-4"}}
 </div>
 <div class="row">
-  {{select-or-typeahead property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-6 required test-vendor"}}
-  {{em-input property="vendorItemNo" label=(t 'inventory.labels.vendorItemNumber') class="col-sm-6"}}
+  {{select-or-typeahead form=form model=model property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-6 required test-vendor"}}
+  {{form.input property="vendorItemNo" label=(t 'inventory.labels.vendorItemNumber') class="col-sm-6"}}
 </div>
 {{#if model.isNew}}
-  {{select-or-typeahead property="location" label=(t 'inventory.labels.location') list=warehouseList selection=model.location }}
-  {{select-or-typeahead property="aisleLocation" label=(t 'inventory.labels.aisleLocation') list=aisleLocationList selection=model.aisleLocation }}
+  {{select-or-typeahead form=form model=model property="location" label=(t 'inventory.labels.location') list=warehouseList selection=model.location }}
+  {{select-or-typeahead form=form model=model property="aisleLocation" label=(t 'inventory.labels.aisleLocation') list=aisleLocationList selection=model.aisleLocation }}
 {{/if}}
-{{em-checkbox label=(t 'inventory.labels.gift') property="giftInKind"}}
+{{form.checkbox label=(t 'inventory.labels.gift') property="giftInKind"}}

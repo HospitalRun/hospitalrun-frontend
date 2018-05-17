@@ -6,10 +6,10 @@
     updateButtonAction=updateButtonAction
     updateButtonClass=updateButtonClass
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
-    {{em-input property="caption" label=(t 'patients.labels.caption')}}
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.input property="caption" label=(t 'patients.labels.caption')}}
     {{#if model.isNew}}
-      {{take-photo photoFile=model.photoFile isImage=model.isImage}}
+      {{take-photo form=form photoFile=model.photoFile isImage=model.isImage}}
     {{else}}
       {{#if model.isImage}}
         <div class="thumbnail">

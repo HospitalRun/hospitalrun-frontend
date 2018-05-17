@@ -1,6 +1,8 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { Promise as EmberPromise, all } from 'rsvp';
+import Mixin from '@ember/object/mixin';
 // NOTE!!! inventory-locations mixin is needed for fulfill-request mixin!
-export default Ember.Mixin.create({
+export default Mixin.create({
   actions: {
     doneFulfillRequest() {
       // Placeholder function; override if you need to know when fulfillrequest is complete.
@@ -12,7 +14,7 @@ export default Ember.Mixin.create({
   },
 
   performFulfillRequest(request, closeModal, increment, skipTransition) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let markAsConsumed = request.get('markAsConsumed');
       let transactionType = request.get('transactionType');
       if (transactionType === 'Request') {
@@ -21,7 +23,7 @@ export default Ember.Mixin.create({
       request.get('inventoryItem').then(function(inventoryItem) {
         if (markAsConsumed) {
           request.set('adjustPurchases', true);
-          if (Ember.isEmpty(transactionType)) {
+          if (isEmpty(transactionType)) {
             request.set('transactionType', 'Fulfillment');
           }
           this._performFulfillment(request, inventoryItem, increment).then(function() {
@@ -30,7 +32,7 @@ export default Ember.Mixin.create({
           }.bind(this), reject);
         } else {
           request.set('adjustPurchases', false);
-          if (Ember.isEmpty(transactionType)) {
+          if (isEmpty(transactionType)) {
             request.set('transactionType', 'Transfer');
           }
           this._finishFulfillRequest(request, inventoryItem, closeModal, increment, skipTransition);
@@ -177,13 +179,13 @@ export default Ember.Mixin.create({
         promises.push(purchase.save());
       });
     }
-    Ember.RSVP.all(promises, 'Preliminary saving done for inventory fulfillment').then(function() {
+    all(promises, 'Preliminary saving done for inventory fulfillment').then(function() {
       let savePromises = [];
       savePromises.push(inventoryItem.save());
       request.set('status', 'Completed');
       request.set('completedBy', request.getUserName());
       savePromises.push(request.save());
-      Ember.RSVP.all(savePromises, 'All saving done for inventory fulfillment').then(function() {
+      all(savePromises, 'All saving done for inventory fulfillment').then(function() {
         this.send('doneFulfillRequest');
         if (closeModal) {
           this.send('closeModal');
@@ -207,7 +209,7 @@ export default Ember.Mixin.create({
    * of stock.
    */
   _performFulfillment(request, inventoryItem, increment) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let purchases = inventoryItem.get('purchases');
       let quantityOnHand = inventoryItem.get('quantity');
       let quantityRequested = request.get('quantity');

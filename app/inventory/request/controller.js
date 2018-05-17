@@ -1,20 +1,24 @@
+import { all, resolve } from 'rsvp';
+import EmberObject from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import { alias } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
-import Ember from 'ember';
 
 export default AbstractEditController.extend(FulfillRequest, InventoryLocations, {
-  inventoryController: Ember.inject.controller('inventory'),
+  inventoryController: controller('inventory'),
   inventoryItems: null,
   cancelAction: 'allRequests',
 
-  warehouseList: Ember.computed.alias('inventoryController.warehouseList'),
-  aisleLocationList: Ember.computed.alias('inventoryController.aisleLocationList'),
-  expenseAccountList: Ember.computed.alias('inventoryController.expenseAccountList'),
+  warehouseList: alias('inventoryController.warehouseList'),
+  aisleLocationList: alias('inventoryController.aisleLocationList'),
+  expenseAccountList: alias('inventoryController.expenseAccountList'),
 
   inventoryList: function() {
     let inventoryItems = this.get('inventoryItems');
-    if (!Ember.isEmpty(inventoryItems)) {
+    if (!isEmpty(inventoryItems)) {
       let mappedItems = inventoryItems.map(function(item) {
         return item.doc;
       });
@@ -38,7 +42,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   canFulfill: function() {
     let requestedItems = this.get('model.requestedItems');
-    return Ember.isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
+    return isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
   }.property('model.requestedItems.[]'),
 
   isFulfilling: function() {
@@ -47,7 +51,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     let fulfillRequest = this.get('model.shouldFulfillRequest');
     let isFulfilling = (canFulfill && (isRequested || fulfillRequest));
     if (isFulfilling) {
-      if (Ember.isEmpty(this.get('model.dateCompleted'))) {
+      if (isEmpty(this.get('model.dateCompleted'))) {
         this.set('model.dateCompleted', new Date());
       }
     } else {
@@ -63,7 +67,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   quantityLabel: function() {
     let selectedInventoryItem = this.get('selectedInventoryItem');
-    if (Ember.isEmpty(selectedInventoryItem)) {
+    if (isEmpty(selectedInventoryItem)) {
       return this.get('i18n').t('labels.quantity').toString();
     } else {
       return this.get('i18n').t('inventory.labels.quantity', { unit: selectedInventoryItem.distributionUnit }).toString();
@@ -72,7 +76,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   showRequestedItems: function() {
     let requestedItems = this.get('model.requestedItems');
-    return !Ember.isEmpty(requestedItems);
+    return !isEmpty(requestedItems);
   }.property('model.requestedItems.[]'),
 
   updateViaFulfillRequest: false,
@@ -93,8 +97,8 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       let requestedItems = model.get('requestedItems');
       let quantity = model.get('quantity');
       model.validate().then(function() {
-        if (model.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
-          let requestedItem = Ember.Object.create({
+        if (model.get('isValid') && !isEmpty(inventoryItem) && !isEmpty(quantity)) {
+          let requestedItem = EmberObject.create({
             item: inventoryItem.get('content'),
             quantity
           });
@@ -104,7 +108,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
           model.set('quantity');
           this.set('selectedInventoryItem');
         }
-      }.bind(this)).catch(Ember.K);
+      }.bind(this)).catch(function() {});
     },
 
     allRequests() {
@@ -120,7 +124,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
     showRemoveItem(item) {
       let message = this.get('i18n').t('inventory.messages.removeItemRequest');
-      let model = Ember.Object.create({
+      let model = EmberObject.create({
         itemToRemove: item
       });
       let title = this.get('i18n').t('inventory.titles.removeItem');
@@ -141,7 +145,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
         } else {
           let isNew = this.get('model.isNew');
           let requestedItems = this.get('model.requestedItems');
-          if (isNew && !Ember.isEmpty(requestedItems)) {
+          if (isNew && !isEmpty(requestedItems)) {
             let baseModel = this.get('model');
             let propertiesToCopy = baseModel.getProperties([
               'dateRequested',
@@ -154,7 +158,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
             let inventoryPromises = [];
             let newModels = [];
             let savePromises = [];
-            if (!Ember.isEmpty(this.get('model.inventoryItem')) && !Ember.isEmpty(this.get('model.quantity'))) {
+            if (!isEmpty(this.get('model.inventoryItem')) && !isEmpty(this.get('model.quantity'))) {
               savePromises.push(baseModel.save());
             }
             requestedItems.forEach(function(requestedItem) {
@@ -164,11 +168,11 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
               inventoryPromises.push(modelToSave.get('inventoryItem'));
               newModels.push(modelToSave);
             }.bind(this));
-            Ember.RSVP.all(inventoryPromises, 'Get inventory items for inventory requests').then(function() {
+            all(inventoryPromises, 'Get inventory items for inventory requests').then(function() {
               newModels.forEach(function(newModel) {
                 savePromises.push(newModel.save());
               });
-              Ember.RSVP.all(savePromises, 'Save batch inventory requests').then(function() {
+              all(savePromises, 'Save batch inventory requests').then(function() {
                 this.updateLookupLists();
                 this.afterUpdate();
               }.bind(this));
@@ -208,6 +212,6 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
         this.set('model.status', 'Requested');
       }
     }
-    return Ember.RSVP.resolve();
+    return resolve();
   }
 });

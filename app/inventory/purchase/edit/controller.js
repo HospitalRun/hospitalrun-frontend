@@ -1,9 +1,11 @@
+import { Promise as EmberPromise } from 'rsvp';
+import { alias } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
 
 export default AbstractEditController.extend(UnitTypes, {
-  inventoryController: Ember.inject.controller('inventory'),
+  inventoryController: controller('inventory'),
   cancelAction: 'closeModal',
 
   canEditQuantity: function() {
@@ -15,10 +17,10 @@ export default AbstractEditController.extend(UnitTypes, {
     return true;
   }.property('model.currentQuantity', 'model.originalQuantity'),
 
-  warehouseList: Ember.computed.alias('inventoryController.warehouseList'),
-  aisleLocationList: Ember.computed.alias('inventoryController.aisleLocationList'),
-  inventoryUnitList: Ember.computed.alias('inventoryController.inventoryUnitList.value'),
-  vendorList: Ember.computed.alias('inventoryController.vendorList'),
+  warehouseList: alias('inventoryController.warehouseList'),
+  aisleLocationList: alias('inventoryController.aisleLocationList'),
+  inventoryUnitList: alias('inventoryController.inventoryUnitList.value'),
+  vendorList: alias('inventoryController.vendorList'),
 
   lookupListsToUpdate: [{
     name: 'aisleLocationList', // Name of property containing lookup list
@@ -61,7 +63,7 @@ export default AbstractEditController.extend(UnitTypes, {
     if (isNew) {
       this.set('newPurchase', true);
     }
-    return Ember.RSVP.Promise.resolve();
+    return EmberPromise.resolve();
   },
 
   afterUpdate(record) {

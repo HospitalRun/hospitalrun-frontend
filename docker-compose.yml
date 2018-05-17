@@ -1,10 +1,21 @@
-version: '2'
+version: '2.1'
 services:
   web:
     build: .
     ports:
      - "4200:4200"
+     - "7020:7020"
     depends_on:
-     - "couchdb"
+      couchdb:
+        condition: "service_healthy"
+    volumes:
+      - ./app:/usr/src/app/app
   couchdb:
-    image: "couchdb:1.6"
+    image: "couchdb:1.7.1"
+    ports:
+     - "5984:5984"
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:5984/"]
+        interval: 10s
+        timeout: 90s
+        retries: 9

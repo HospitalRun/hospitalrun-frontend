@@ -1,5 +1,5 @@
+import { isEmpty } from '@ember/utils';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import Ember from 'ember';
 export default AbstractIndexRoute.extend({
   modelName: 'invoice',
   pageTitle: 'Invoice Listing',
@@ -17,7 +17,7 @@ export default AbstractIndexRoute.extend({
     let maxValue = this.get('maxValue');
     let minId = this._getMinPouchId();
     let searchStatus = params.status;
-    if (Ember.isEmpty(searchStatus)) {
+    if (isEmpty(searchStatus)) {
       searchStatus = 'Billed';
     }
 

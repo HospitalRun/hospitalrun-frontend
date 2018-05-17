@@ -7,22 +7,22 @@
   <div class="alert alert-warning" role="alert">
     {{t 'patients.messages.notFoundQuickAdd' model}}
   </div>
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     <div class="row">
-      {{em-input property="friendlyId" label="Id" class="required col-sm-6"}}
-      {{em-input property="firstName" label="First Name" class="required col-sm-6"}}
+      {{form.input property="friendlyId" label="Id" class="required col-sm-6"}}
+      {{form.input property="firstName" label="First Name" class="required col-sm-6"}}
     </div>
     <div class="row">
-      {{em-input property="middleName" label="Middle Name" class="col-sm-6" }}
-      {{em-input property="lastName" label="Last Name" class="required col-sm-6"}}
+      {{form.input property="middleName" label="Middle Name" class="col-sm-6" }}
+      {{form.input property="lastName" label="Last Name" class="required col-sm-6"}}
     </div>
     <div class="row">
-      {{select-or-typeahead property="sex" label="Sex" list=sexList selection=model.sex class="col-sm-6 form-input-group"}}
-      {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now" class="col-sm-6"}}
+      {{select-or-typeahead form=form model=model property="sex" label="Sex" list=sexList selection=model.sex class="col-sm-6 form-input-group"}}
+      {{date-picker model=model property="dateOfBirth" label="Date of Birth" maxDate="now" class="col-sm-6"}}
     </div>
     <div class="row">
-      {{em-input property="phone" label=(t 'patients.labels.phone')class="col-xs-12 col-sm-6"}}
-      {{em-text label=(t 'labels.address') property="address" rows=3  class="col-xs-12 col-sm-6"}}
+      {{form.input property="phone" label=(t 'patients.labels.phone')class="col-xs-12 col-sm-6"}}
+      {{form.text label=(t 'labels.address') property="address" rows=3  class="col-xs-12 col-sm-6"}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}

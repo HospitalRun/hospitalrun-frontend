@@ -21,6 +21,12 @@
   }
 }
 
+.rtl .sidebar-nav {
+  right: 0;
+  left: unset;
+  text-align: right;
+}
+
 .scroll-container {
   position: absolute;
   top: 55px;
@@ -208,7 +214,8 @@
     color: $sidebar_sublink_text;
     font-size: 15px;
 
-    &:hover {
+    &:hover,
+    &.active {
       background: $navy_mid;
       color: $white;
 

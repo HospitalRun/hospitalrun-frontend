@@ -1,17 +1,20 @@
+import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+import Route from '@ember/routing/route';
+import { set, get } from '@ember/object';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-import Ember from 'ember';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
-
-const { get, inject, isEmpty, Route, set } = Ember;
+import { DEFAULT_LANGUAGE } from 'hospitalrun/services/language-preference';
 
 const TRANSITION_AFTER_LOGIN = 'transitionAfterLogin';
 
 let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUserRole, {
-  database: inject.service(),
-  config: inject.service(),
-  session: inject.service(),
+  database: service(),
+  config: service(),
+  session: service(),
+  languagePreference: service(),
   shouldSetupUserRole: true,
 
   actions: {
@@ -104,12 +107,11 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   },
 
   afterModel() {
-    set(this.controllerFor('navigation'), 'allowSearch', false);
+    set(this.controllerFor('application'), 'allowSearch', false);
     $('#apploading').remove();
-    this.get('config.configDB').get('current_user').then((user) => {
-      let language = user.i18n || 'en';
-      this.set('i18n.locale', language);
-    });
+
+    // this enables page reloading support
+    this.get('languagePreference').loadUserLanguagePreference();
   },
 
   renderModal(template) {
@@ -135,6 +137,12 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
     } else {
       this._super();
     }
+
+    this.get('languagePreference').loadUserLanguagePreference();
+  },
+  sessionInvalidated() {
+    this._super();
+    this.get('languagePreference').setApplicationLanguage(DEFAULT_LANGUAGE);
   }
 });
 export default ApplicationRoute;

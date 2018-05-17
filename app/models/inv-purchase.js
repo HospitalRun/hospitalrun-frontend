@@ -1,6 +1,7 @@
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 
@@ -18,14 +19,6 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, NumberFormat, {
   purchaseCost: DS.attr('number'),
   lotNumber: DS.attr('string'),
   dateReceived: DS.attr('date'),
-  costPerUnit: function() {
-    let purchaseCost = this.get('purchaseCost');
-    let quantity = parseInt(this.get('originalQuantity'));
-    if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
-      return 0;
-    }
-    return this._numberFormat(purchaseCost / quantity, true);
-  }.property('purchaseCost', 'originalQuantity'),
   originalQuantity: DS.attr('number'),
   currentQuantity: DS.attr('number'),
   expirationDate: DS.attr('date'),
@@ -39,6 +32,16 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, NumberFormat, {
   distributionUnit: DS.attr('string'),
   invoiceNo: DS.attr('string'),
   quantityGroups: DS.attr({ defaultValue: defaultQuantityGroups }),
+
+  costPerUnit: computed('purchaseCost', 'originalQuantity', function() {
+    let purchaseCost = this.get('purchaseCost');
+    let quantity = parseInt(this.get('originalQuantity'));
+    if (isEmpty(purchaseCost) || isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
+      return 0;
+    }
+    return this._numberFormat(purchaseCost / quantity, true);
+  }),
+
   validations: {
     purchaseCost: {
       numericality: true

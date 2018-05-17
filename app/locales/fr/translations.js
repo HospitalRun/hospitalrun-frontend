@@ -27,21 +27,22 @@ export default {
       labels: {
         alwaysInclude: 'Toujours inclure',
         checkbox: 'Case à cocher',
-        colSpan: 'Nombre de colonne à fusionner',
+        colSpan: 'Nombre de colonnes à fusionner',
         columns: 'Colonnes',
         customForm: 'Formulaire personnalisé',
         dischargeReportFormType: 'Attestation de sortie',
         expenseTo: 'Aux frais de',
         formName: 'Nom du formulaire',
         formType: 'Type du formulaire',
+        header: 'Entête',
         incidentFormType: 'Incident',
-        includeOtherOption: "Inclure d'autre option",
+        includeOtherOption: 'Inclure une autre option',
         labFormType: 'Laboratoire',
         label: 'Label',
         newForm: 'Nouveau formulaire',
         opdReportFormType: 'Rapport de Patient en Consultation Externe',
         operativePlanFormType: 'Plan Opérationnel et Rapport',
-        otherOptionLabel: 'Label d\'autre option',
+        otherOptionLabel: "Label d'autre option",
         patientFormType: 'Patient',
         property: 'Propriété',
         radio: 'Bouton Radio',
@@ -60,28 +61,29 @@ export default {
         editCustomForm: 'Editer le Formulaire Personnalisé',
         fields: 'Champs',
         formSaved: 'Formulaire Enregistré',
+        headerValues: 'Valeur des entêtes',
         newCustomForm: 'Nouveau Formulaire Personnalisé',
         radioValues: 'Valeurs des Boutons Radio'
       }
     },
     header: {
-      editTitle: 'Options d\'Entête',
-      facilityName: 'Nom de l\'établissement',
+      editTitle: "Options d'Entête",
+      facilityName: "Nom de l'établissement",
       headerLabel: 'Entête',
       headerLine1: "Première Ligne d'Entête",
       headerLine2: "Deuxième Ligne d'Entête",
       headerLine3: "Troisième Ligne d'Entête",
       logoURL: 'URL du Logo',
       messages: { headerSaved: 'Entête enregistrée' },
-      newTitle: 'Options d\'Entête',
+      newTitle: "Options d'Entête",
       titles: { optionsSaved: 'Options enregistrées' }
     },
-    loadDb: 'Importer une BD',
+    loadDb: 'Importer une base de données',
     loaddb: {
       displayAlertMessage: 'Veuillez sélectionner le fichier à télécharger.',
       displayAlertTitle: 'Sélectionner le fichier à télécharger.',
-      editTitle: 'Importer une BD',
-      errorDisplayAlertMessage: "La base de données n'a pas pu être importée. L'erreur est: {{error}}",
+      editTitle: 'Importer une base de données',
+      errorDisplayAlertMessage: "La base de données n'a pas pu être importée. L'erreur est : {{error}}",
       errorDisplayAlertTitle: 'Erreur de chargement',
       progressMessage: 'Veuillez patienter durant le chargement de la base de données.',
       progressTitle: 'Chargement de la base de données en cours'
@@ -115,14 +117,14 @@ export default {
       labPricingTypes: 'Types de prix des laboratoires',
       pageTitle: 'Listes de références',
       patientStatusList: 'Liste de statut de patient',
-      physicianList: 'Médécins',
+      physicianList: 'Médecins',
       procedureList: 'Procédures',
       procedureLocations: 'Emplacements des procédures',
       procedurePricingTypes: 'Types de prix des procédures',
       radiologists: 'Radiologistes',
       titles: { deleteLookupValue: '' },
       unitTypes: "Types d'unité",
-      vendorList: 'Fournisseur',
+      vendorList: 'Fournisseurs',
       visitLocationList: 'Emplacements de consultations',
       visitTypes: 'Types de consultations',
       wardPricingTypes: 'Types de prix des services',
@@ -143,11 +145,11 @@ export default {
         addInventoryPurchase: "Ajouter un achat d'inventaire",
         addInventoryRequest: "Ajouter une demande d'inventaire",
         addInvoice: 'Ajouter une facture',
-        addLab: 'Ajouter un test labo',
+        addLab: 'Ajouter un laboratoire',
         addMedication: 'Ajouter un médicament',
         addNote: 'Ajouter une note',
         addOperationReport: "Ajouter un rapport d'opération",
-        addOperativePlan: 'Ajouter un plan ',
+        addOperativePlan: 'Ajouter un plan',
         addPatient: 'Ajouter un patient',
         addPayment: 'Ajouter un paiement',
         addPhoto: 'Ajouter une photo',
@@ -163,8 +165,8 @@ export default {
         appointments: 'Rendez-vous',
         billing: 'Facturation',
         cashier: 'Caissière',
-        completeImaging: 'Completer une imagerie',
-        completeLab: 'Completer un test de laboratoire',
+        completeImaging: 'Compléter une imagerie',
+        completeLab: 'Compléter un test de laboratoire',
         defineUserRoles: "Rôles d'utilisateur",
         deleteAppointment: 'Supprimer un rendez-vous',
         deleteDiagnosis: 'Supprimer un diagnostic',
@@ -184,7 +186,7 @@ export default {
         deleteSocialwork: 'Supprimer un assistant social',
         deleteVisit: 'Supprimer une consultation',
         deleteVitals: 'Supprimer des signes vitaux',
-        dischargePatient: 'Liberer un patient',
+        dischargePatient: 'Libérer un patient',
         editInvoice: 'Modifier la facture',
         fulfillInventory: "Traiter l'inventaire",
         fulfillMedication: 'Traiter une demande de médicaments',
@@ -193,7 +195,7 @@ export default {
         incident: 'Incident',
         inventory: 'Inventaire',
         invoices: 'Factures',
-        labs: 'Test Labo',
+        labs: 'Laboratoires',
         listPaidInvoices: 'Liste des factures réglées',
         loadDb: 'Charger la Base de données',
         manageIncidents: 'Gérer les incidents',
@@ -205,7 +207,7 @@ export default {
         updateConfig: 'Mettre à jour les Configurations',
         visits: 'Consultations'
       },
-      messages: { roleSaved: 'Le rôle {{roleName}}  a été enregistré.' },
+      messages: { roleSaved: 'Le rôle {{roleName}} a été enregistré.' },
       titles: { roleSaved: 'Rôle enregistré' }
     },
     textReplacements: {
@@ -237,7 +239,7 @@ export default {
       followupPrepaymentLabel: 'Suivi du paiement préalable requis',
       messages: { optionsSaved: 'Les options du flux de travail ont été enregistrées' },
       newTitle: 'Options du flux de travail',
-      outpatientImagingLabel: 'Paiement préalable de l\'imagerie par le patient en consulation externe requis',
+      outpatientImagingLabel: "Paiement préalable de l'imagerie par le patient en consulation externe requis",
       outpatientLabLabel: 'Paiement préalable du test de laboratoire par le patient en consultation externe requis',
       outpatientMedicationLabel: 'Paiement préalable des médicaments par le patient en consultation externe requis',
       titles: { optionsSaved: 'Options sauvegardées' },
@@ -270,7 +272,7 @@ export default {
       newButton: '+ nouveau rendez-vous',
       scheduleSurgery: '+ planifier chirurgie'
     },
-    calendarTitle: '',
+    calendarTitle: 'Calendrier des rendez-vous',
     currentScreenTitle: 'Liste des rendez-vous',
     editTitle: 'Modifier le rendez-vous',
     labels: {
@@ -298,7 +300,7 @@ export default {
     alerts: {
       noInvoiceFound: 'Aucune facture trouvée',
       noPricingItems: 'Aucun prix trouvé',
-      noPricingProfiles: 'Aucun profile de prix trouvé'
+      noPricingProfiles: 'Aucun profil de prix trouvé'
     },
     buttons: {
       addOverride: 'Ajouter un dépassement',
@@ -318,7 +320,7 @@ export default {
       setFee: 'Définir les frais'
     },
     messages: {
-      flatDiscountMsg: 'Il existe une remise fixe appliquée à la responsabilité financière du patient d\'un montant de {{currency}}{{discountAmount}}.',
+      flatDiscountMsg: "Il existe une remise fixe appliquée à la responsabilité financière du patient d'un montant de {{currency}}{{discountAmount}}.",
       flatFeeMsg: "Il existe des frais forfaitaires pour le patient d'un montant de {{setFee}}{{currency}}."
     }
   },
@@ -347,8 +349,10 @@ export default {
     newRequestPlus: '+ nouvelle demande',
     newUser: 'Nouvel utilisateur',
     ok: 'Ok',
+    print: 'Imprimer',
     remove: 'Retirer',
     returnButton: 'Retourner',
+    review: 'Réviser',
     search: 'Rechercher',
     showAll: 'Tout afficher',
     showFewer: 'Afficher moins',
@@ -359,8 +363,8 @@ export default {
     customFormManager: { buttons: { addForm: 'Ajouter un formulaire' } },
     dateTimePicker: {
       amHour: '{{hour}}',
-      midnight: 'Midi',
-      noon: 'Minuit',
+      midnight: 'Minuit',
+      noon: 'Midi',
       pmHour: '{{hour}}'
     },
     imageUpload: { messages: { selectValidImageFile: 'Merci de séléctionner une image valide.' } },
@@ -373,7 +377,7 @@ export default {
       buttons: {
         newImaging: 'Nouvelle imagerie',
         newLab: 'Nouveau laboratoire',
-        newMedication: 'Nouvelle médicament'
+        newMedication: 'Nouveau médicament'
       },
       labels: {
         imagingOrderType: 'Imagerie',
@@ -394,12 +398,12 @@ export default {
       how: 'Comment voulez-vous ajouter une photo ?',
       labels: {
         takeAPicture: 'Prendre une photo',
-        uploadAFile: 'Envoyer une fichier'
+        uploadAFile: 'Envoyer un fichier'
       },
       photo: 'Photo',
       preview: 'Prévisualiser',
       takePhoto: 'Prendre la photo',
-      uploadFile: 'Uploader le fichier'
+      uploadFile: 'Importer le fichier'
     },
     upcomingAppointments: {
       labels: {
@@ -417,8 +421,8 @@ export default {
     titles: { addCustomForm: 'Ajouter un formulaire personnalisé' }
   },
   dashboard: {
-    needs_user_setup: "Nous vous recommendons d'ajouter un compte utilisateur",
-    standalone_welcome: "<h4>Thanks for downloading HospitalRun</h4><p>You are running HospitalRun in stand alone mode. This mode allows you to support multiple users on a single, desktop/laptop instance of HospitalRun. This is ideal for:</p><ul><li>Evaluating HospitalRun for an eventual server deployment.</li><li>Using the platform to support a clinic / facility where a single instance is sufficient.</li></ul><p>If you're considering a multi-device deployment of HospitalRun, we're <a href=\"https://github.com/HospitalRun/hospitalrun-frontend/issues/1048\" target=\"_blank\">working on features</a> that will allow you to \"graduate\" from this single instance into a traditional cloud / server-based deployment.</p>",
+    needs_user_setup: "Nous vous recommandons d'ajouter un compte utilisateur",
+    standalone_welcome: "<h4>Merci d'avoir téléchargé HospitalRun</h4><p>HospitalRun s'exécute en mode autonome. Ce mode supporte plusieurs utilisateurs sur une seule instance d'HospitalRun sur PC/ordinateur portable. Idéal pour :</p><ul><li>Evaluer HospitalRun pour un potentiel déploiement sur un serveur.</li><li>Utiliser la plateforme pour une clinique / établissement où une seule instance suffit</li></ul><p>Si vous considérez un déploiement sur plusieurs apperails, nous travaillons <a href=\"https://github.com/HospitalRun/hospitalrun-frontend/issues/1048\" target=\"_blank\">sur des fonctionnalités</a> qui vous permettront de \"migrer\" depuis cette unique instance vers un cloud traditionnel / déploiement basé sur un serveur.</p>",
     title: 'Que voulez-vous faire?'
   },
   dates: {
@@ -479,7 +483,10 @@ export default {
     buttons: { newButton: '+ nouvelle imagerie' },
     labels: {
       addNewVisit: '--Ajouter une nouvelle visite--',
-      radiologist: 'Radiologiste'
+      completedBy: 'Réalisée par',
+      radiologist: 'Radiologiste',
+      requestedNotes: 'Notes requises',
+      resultNotes: 'Notes de résultat'
     },
     messages: { noCompleted: 'Aucun article traité retrouvé.' },
     pageTitle: "Demandes d'imagerie",
@@ -550,7 +557,7 @@ export default {
       noIncidentCategoriesFound: "Aucune catégorie d'incident trouvée",
       noIncidents: 'Aucun incident trouvé',
       saved: "Le rapport d'incident a été sauvegardé",
-      selectExistingPatient: 'Merci de sélectionner un patient existant ou de laisse ce champ vide'
+      selectExistingPatient: 'Merci de sélectionner un patient existant ou de laisser ce champ vide'
     },
     titles: {
       addAttachment: 'Ajouter une pièce jointe',
@@ -567,7 +574,7 @@ export default {
       editAttachment: 'Modifier la pièce jointe',
       editIncident: "Modifier l'incident",
       editIncidentCategory: "Modifier la catégorie d'incident",
-      editNote: 'Modifier la notes',
+      editNote: 'Modifier la note',
       general: 'Informations générales',
       history: 'Historique',
       incidentCategories: "Catégories d'incident",
@@ -607,7 +614,7 @@ export default {
       adjustmentType: "Type d'ajustement",
       aisle: 'Rayon',
       aisleLocation: 'Emplacement du rayon',
-      allInventory: "Toute l'inventaire",
+      allInventory: "Tout l'inventaire",
       allItems: 'Tous les articles',
       availableQuantity: 'Quantité disponible',
       billTo: 'Facturer à',
@@ -615,15 +622,15 @@ export default {
       consumptionRate: "Taux d'utilisation",
       cost: 'Coût',
       costPerUnit: 'Coût par unité',
-      crossReference: 'Reference',
+      crossReference: 'Référence',
       currentQuantity: 'Quantité actuelle',
       dateCompleted: 'Date de traitement',
       dateEffective: "Date d'effet",
       dateEnd: 'Date de fin',
       dateReceived: 'Date de réception',
       dateStart: 'Date de debut',
-      dateTransferred: 'Date  de transfert',
-      daysLeft: 'Nombre de jours restant',
+      dateTransferred: 'Date de transfert',
+      daysLeft: 'Nombre de jours restants',
       deleteItem: "Supprimer l'article",
       deliveryAisle: 'Rayon de livraison',
       deliveryLocation: 'Emplacement de livraison',
@@ -643,9 +650,9 @@ export default {
       inventoryObsolence: 'Inventory Obsolence',
       invoiceItems: 'Articles de facture',
       invoiceLineItem: 'Article de facture',
-      invoiceNumber: 'Numero de facture',
+      invoiceNumber: 'Numéro de facture',
       item: 'Article',
-      itemNumber: "Numero d'article",
+      itemNumber: "Numéro d'article",
       items: 'Articles',
       location: 'Emplacement',
       locations: 'Emplacements',
@@ -671,7 +678,7 @@ export default {
       reorderPoint: 'Point de commande',
       requestedItems: 'Articles demandés',
       returnAdjustmentType: 'Renvoyer',
-      returnToVendorAdjustmentType: 'Renvoyer au vendor',
+      returnToVendorAdjustmentType: 'Renvoyer au vendeur',
       salePricePerUnit: 'Prix de vente unitaire',
       save: 'Enregistrer',
       serialNumber: 'Numéro de série / lot',
@@ -692,9 +699,9 @@ export default {
       xref: 'XRef'
     },
     messages: {
-      adjust: 'Veuillez ajuster les quantités sur le ou les emplacement(s) appropriée(s) pour tenir compte de la différence de {{difference}}.',
+      adjust: 'Veuillez ajuster les quantités sur le ou les emplacement(s) approprié(s) pour tenir compte de la différence de {{difference}}.',
       createRequest: 'Créer une nouvelle demande?',
-      itemNotFound: "L'article d'inventaire <strong>{{item}}</strong> ne pouvait pas être retrouvé.<br>Si vous voulez créer un nouvel article d'inventaire, veuillez saisir les informations ci-dessous. <br>Sinon, appuyez sur le bouton Annuler pour retourner.",
+      itemNotFound: "L'article d'inventaire <strong>{{item}}</strong> n'a pas pu être retrouvé.<br>Si vous voulez créer un nouvel article d'inventaire, veuillez saisir les informations ci-dessous. <br>Sinon, appuyez sur le bouton Annuler pour retourner.",
       loading: 'Chargement des transactions en cours…',
       noItems: 'Aucun article retrouvé.',
       noRequests: 'Aucune demande retrouvée.',
@@ -703,11 +710,11 @@ export default {
       removeItem: 'Etes-vous sûr de vouloir retirer cet article de cette facture?',
       removeItemRequest: 'Etes-vous sûr de vouloir supprimer cet article de cette demande?',
       requestFulfilled: "La demande d'inventaire a été traitée.",
-      requestUpdated: "La demande d'inventaire a été mis à jour.",
+      requestUpdated: "La demande d'inventaire a été mise à jour.",
       warning: "Veuillez remplir les champs obligatoires (marqués d'un *) et corriger les erreurs avant d'ajouter."
     },
     reports: {
-      adjustment: 'Ajustement détaillée',
+      adjustment: 'Ajustement détaillé',
       daysSupply: 'Stock restant (en nombre de jours)',
       expenseDetail: 'Détails des dépenses',
       expenseSum: 'Résumé des dépenses',
@@ -765,7 +772,7 @@ export default {
       quickAddTitle: "Nouvel article d'inventaire",
       removeItem: "Retirer l'article",
       requestFulfilled: 'Demande traitée',
-      requestUpdated: 'Demande mis à jour',
+      requestUpdated: 'Demande mise à jour',
       transfer: 'Transférer les articles',
       warning: 'Attention!!!!!'
     }
@@ -777,6 +784,7 @@ export default {
     address: 'Adresse',
     age: 'Age',
     allDay: 'Toute la journée',
+    allItems: 'Tous les items',
     amount: 'Montant',
     anesthesia: 'Anesthésie',
     assisting: 'Assistant',
@@ -811,7 +819,7 @@ export default {
     endTime: 'Heure de fin',
     excess: 'Excédent',
     expenseTo: 'Frais à',
-    fileLoadSuccessful: 'Téléchargement reussi',
+    fileLoadSuccessful: 'Téléchargement réussi',
     fileName: 'Nom du fichier',
     fileToLoad: 'Téléchargement de fichier',
     from: 'De',
@@ -832,6 +840,7 @@ export default {
     lookupType: 'Type de référence',
     medication: 'Médicament',
     name: 'Nom',
+    newItem: '+ Nouvel item',
     newUser: 'Nouvel utilisateur',
     note: 'Note',
     notes: 'Notes',
@@ -841,7 +850,7 @@ export default {
     patient: 'Patient',
     payments: 'Paiement',
     physician: 'Médecin',
-    prescriber: 'prescripteur',
+    prescriber: 'Prescripteur',
     prescription: 'Ordonnance',
     prescriptionDate: 'Date de prescription',
     price: 'Prix',
@@ -854,19 +863,19 @@ export default {
     requestedBy: 'Demandé par',
     requestedOn: 'Demandé le',
     requests: 'Demandes',
-    result: 'Resultat',
-    results: 'Resultats',
+    result: 'Résultat',
+    results: 'Résultats',
     role: 'Rôle',
     search: 'Recherche',
     sex: 'Sexe',
-    startDate: 'Date de debut',
-    startTime: 'Heure de debut',
+    startDate: 'Date de début',
+    startTime: 'Heure de début',
     status: 'Statut',
     takenBy: 'Pris par',
     to: 'À',
     total: 'Total',
     type: 'Type',
-    userCanAddNewValue: 'Utilisateur peut ajouter de nouvelles valeurs',
+    userCanAddNewValue: 'L\'utilisateur peut ajouter de nouvelles valeurs',
     username: "Nom d'utilisateur",
     value: 'Valeur',
     view: 'Afficher',
@@ -897,20 +906,10 @@ export default {
     requestsTitle: 'Demandes de labo',
     sectionTitle: 'Labos'
   },
-  languages: {
-    en: 'Anglais',
-    fr: 'Français',
-    es: 'Espagnol',
-    de: 'Allemand',
-    ru: 'Russe',
-    'es-co': 'Espagnol (Colombien)',
-    'pt-br': 'Portugais (Brésilien)',
-    tr: 'Turc',
-    ur: 'Ourdou'
-  },
+  languageName: 'Français',
   loading: {
     messages: {
-      '0': "La vitesse maximal du vol de papillon est de 20 kilomètres par heure. Certaines mites peuvent voler jusqu'à 40 kilomètres par heure !",
+      '0': "La vitesse maximale du vol de papillon est de 20 kilomètres par heure. Certains mites peuvent voler jusqu'à 40 kilomètres par heure !",
       '1': 'Les chouettes sont les seuls oiseaux qui peuvent voir la couleur bleue',
       '2': 'Les chats disposent de plus de 100 sons vocaux ; Les chiens seulement 10.',
       '3': 'Les humains utilisent 72 muscles différents pour parler',
@@ -933,7 +932,7 @@ export default {
     },
     messages: {
       error: "Nom d'utilisateur ou mot de passe incorrect.",
-      offlineError: 'Impossible de se connecter hors ligne. Merci de vous connecter et de réésayer',
+      offlineError: 'Impossible de se connecter hors ligne. Merci de vous connecter et de réessayer',
       signIn: 'Veuillez vous connecter'
     }
   },
@@ -953,9 +952,9 @@ export default {
     labels: {
       adjustmentDate: "Date d'ajustement",
       creditToAccount: 'Créditer le compte',
-      quantityDispensed: 'Quantité dispensé',
-      quantityDistributed: 'Quantité distribué',
-      quantityRequested: 'Quantité demandé',
+      quantityDispensed: 'Quantité dispensée',
+      quantityDistributed: 'Quantité distribuée',
+      quantityRequested: 'Quantité demandée',
       quantityToReturn: 'Quantité à retourner',
       refills: 'Renouvellements',
       returnAisle: 'Rayon de retour',
@@ -967,7 +966,7 @@ export default {
     returnMedication: 'Retourner un médicament',
     sectionTitle: 'Médicament',
     titles: {
-      completedMedication: 'Médicament traitée',
+      completedMedication: 'Médicament traité',
       editMedicationRequest: 'Modifier une demande de médicament',
       newMedicationRequest: 'Nouvelle demande de médicament'
     }
@@ -979,14 +978,14 @@ export default {
     delete_plural: 'Voulez-vous vraiment supprimer ces {{name}} ?',
     delete_singular: 'Voulez-vous vraiment supprimer ce {{name}} ?',
     forAuthorizedPersons: 'Ce rapport est destiné uniquement aux personnes autorisées.',
-    newPatientHasToBeCreated: 'Un nouveau patient doit être crée...Veuillez attendre...',
-    noHistoryAvailable: 'Aucune historique disponible.',
+    newPatientHasToBeCreated: 'Un nouveau patient doit être créé...Veuillez patienter...',
+    noHistoryAvailable: 'Aucun historique disponible.',
     noItemsFound: 'Aucun article retrouvé.',
     noNotesAvailable: 'Aucune note clinique supplémentaire disponible pour cette visite.',
     noUsersFound: 'Aucun utilisateur retrouvé.',
     onBehalfOf: 'de la part de',
-    reportError: 'Une erreur est apparue pendant la génération du rapport demandé. Merci de prévenir votre administrateur systême de l\'erreur rencontrée.',
-    requiredFieldsCorrectErrors: 'Veuillez remplir les champs obligatoires (annotés d\'un *) et corriger les erreurs avant de sauvegarder.',
+    reportError: "Une erreur est apparue pendant la génération du rapport demandé. Merci de prévenir votre administrateur système de l'erreur rencontrée.",
+    requiredFieldsCorrectErrors: "Veuillez remplir les champs obligatoires (annotés d'un *) et corriger les erreurs avant de sauvegarder.",
     saveActionException: 'Une erreur est apparue pendant la tentative de sauvegarde: {{message}}',
     sorry: 'Désolé, quelque chose a mal tourné ...',
     userHasBeenSaved: "L'utilisateur a été enregistré.",
@@ -1009,7 +1008,7 @@ export default {
       },
       names: {
         plural: 'Rendez-vous',
-        singular: 'Renvez-vous'
+        singular: 'Rendez-vous'
       }
     },
     attachment: { names: {
@@ -1084,7 +1083,7 @@ export default {
     about: 'À propos de HospitalRun',
     actions: {
       login: 'Connexion',
-      logout: 'Deconnexion',
+      logout: 'Déconnexion',
       selectLanguage: 'Choisir la langue'
     },
     administration: 'Administration',
@@ -1101,11 +1100,11 @@ export default {
       actions: 'Actions',
       addAppointment: 'Ajouter un rendez-vous',
       addressFields: "Champs d'adresse",
-      admittedPatients: 'patients admis',
+      admittedPatients: 'Patients admis',
       appointmentSearch: 'Rechercher un rendez-vous',
       appointmentsCalendar: 'Planning des rendez-vous',
       appointmentsThisWeek: 'Rendez-vous cette semaine',
-      cashier: 'Caisière',
+      cashier: 'Caissière',
       completed: 'Traité',
       currentIncidents: 'Incidents courants',
       customForms: 'Formulaires personnalisés',
@@ -1113,6 +1112,7 @@ export default {
       history: 'Historique',
       incidentCategories: "Catégories d'icindent",
       inventoryReceived: 'Inventaire reçu',
+      inventoryReceivedPlus: '+ Inventaire reçu',
       invoices: 'Factures',
       items: 'Articles',
       loadDB: 'Charger BDD',
@@ -1145,7 +1145,7 @@ export default {
       additionalNotes: 'Notes supplémentaires',
       assistant: 'Assistant',
       caseComplexity: 'Complexité du cas',
-      operationDescription: "Déscription de l'opération",
+      operationDescription: "Description de l'opération",
       preOpPrimaryDiagnosis: 'Premier diagnostic pré-opération',
       preOpSecondaryDiagnosis: 'Second diagnostic pré-opération',
       surgeon: 'Chirurgien',
@@ -1163,10 +1163,10 @@ export default {
     labels: {
       additionalNotes: 'Notes supplémentaires',
       admissionInstructions: "Instructions d'admission",
-      caseComplexity: 'Compléxité du cas',
+      caseComplexity: 'Complexité du cas',
       completedStatus: 'Terminé',
       droppedStatus: 'Annulé',
-      operationDescription: "Déscription d'opération",
+      operationDescription: "Description d'opération",
       plannedStatus: 'Planifié',
       status: 'Statut',
       surgeon: 'Chirurgien'
@@ -1203,7 +1203,7 @@ export default {
     },
     labels: {
       admissionDate: "Date d'admission",
-      admit: 'Admit',
+      admit: 'Admettre',
       bloodType: 'Type sanguin',
       caption: 'Légende',
       civilStatus: 'Statut civil',
@@ -1243,7 +1243,7 @@ export default {
       sexNotEntered: 'Sexe non précisé',
       sources: 'Sources',
       status: 'Statut du patient',
-      totalMontlyExpense: 'Revenue mensuel'
+      totalMontlyExpense: 'Dépenses mensuelles'
     },
     messages: {
       areYouSureDelete: 'Voulez-vous vraiment supprimer {{object}} ?',
@@ -1328,7 +1328,7 @@ export default {
       remarks: 'Remarque :',
       spacer: '__________________________________________'
     },
-    messages: { whereConducted: 'ont été déduis durant mon accouchement' },
+    messages: { whereConducted: 'ont été déduis durant mon séjour' },
     titles: {
       billingStatement: 'Relevé de facture',
       patientMember: 'Patient-membre',
@@ -1409,7 +1409,7 @@ export default {
       newDischargeReport: 'Nouveau rapport de sortie',
       newOPDReport: 'Nouveau rapport du service des patients en consultation externe',
       newProcedure: 'Nouvelle procédure',
-      newVitals: 'Nouveau signes vitaux'
+      newVitals: 'Nouveaux signes vitaux'
     },
     labels: {
       appointment: 'Rendez-vous',
@@ -1444,9 +1444,9 @@ export default {
       checkedOut: 'Le départ de {{patientName}} a été enregistré',
       discharged: 'La sortie de {{patientName}} a été enregistré',
       patientCheckedIn: "L'enregistrement de {{patientName}} a été effectué",
-      patientCreatedAndCheckedIn: "{{patientName}} a été crée et son enregistrment d'entrée a été effectué",
+      patientCreatedAndCheckedIn: "{{patientName}} a été créé et son enregistrment d'entrée a été effectué",
       visitAndPatientSaved: 'Le patient et sa visite ont été sauvegardés',
-      visitSaved: 'La visite a été sauvegardé'
+      visitSaved: 'La visite a été sauvegardée'
     },
     navigation: {
       charges: 'Charges',

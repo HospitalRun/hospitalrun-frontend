@@ -1,4 +1,5 @@
 export default {
+  languageName: 'اردو',
   admin: {
     address: {
       address1Label: 'ایڈریس 1 لیبل',
@@ -874,17 +875,6 @@ export default {
     requestsTitle: 'لیب درخواستیں',
     sectionTitle: 'لیبز'
   },
-  languages: {
-    en: 'انگریزی',
-    fr: 'فرانسیسی',
-    es: 'ہسپانوی',
-    de: 'جرمن',
-    ru: 'روسی',
-    'es-co': 'ہسپانوی (کولمبیا)',
-    'pt-br': 'پرتگالی (برازیل)',
-    tr: 'ترکی',
-    ur: 'اردو'
-  },
   loading: {
     messages: {
       '0': 'سب سے تیز تیتلی پرواز کی رفتار فی گھنٹہ 12 میل ہے. کچھ کیڑے 25 میل فی گھنٹہ کی رفتار سے پرواز کر سکتے ہیں',
@@ -1087,6 +1077,7 @@ export default {
       history: '',
       incidentCategories: '',
       inventoryReceived: 'انوینٹری موصول',
+      inventoryReceivedPlus: '+ انوینٹری موصو',
       invoices: 'رسیدیں',
       items: 'اشیاء',
       loadDB: 'DB لوڈ کریں',

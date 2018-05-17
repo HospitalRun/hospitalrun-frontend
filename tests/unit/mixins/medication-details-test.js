@@ -1,6 +1,6 @@
+import { run } from '@ember/runloop';
 import MedicationDetails from 'hospitalrun/mixins/medication-details';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 import DS from 'ember-data';
 
 moduleFor('mixin:medication-details', 'Unit | Mixin | medication-details', {
@@ -9,11 +9,12 @@ moduleFor('mixin:medication-details', 'Unit | Mixin | medication-details', {
     'ember-validations@validator:local/presence',
     'model:inventory',
     'model:inv-purchase',
-    'model:inv-location'
+    'model:inv-location',
+    'service:session'
   ],
   subject(attrs) {
     let subject;
-    Ember.run(() => {
+    run(() => {
       let Test = DS.Model.extend(MedicationDetails);
       this.register('model:test', Test);
       subject = this.store().createRecord('test', attrs);
@@ -36,7 +37,7 @@ test('getMedicationName', function(assert) {
 
 test('getMedicationName prefer medicationTitle', function(assert) {
   let inventoryItem;
-  Ember.run(() => {
+  run(() => {
     inventoryItem = this.store().createRecord('inventory', {
       name: 'Test Item'
     });
@@ -52,7 +53,7 @@ test('getMedicationName prefer medicationTitle', function(assert) {
 
 test('getMedicationName attribute', function(assert) {
   let inventoryItem;
-  Ember.run(() => {
+  run(() => {
     inventoryItem = this.store().createRecord('inventory', {
       name: 'Test Item'
     });
@@ -63,7 +64,7 @@ test('getMedicationName attribute', function(assert) {
    * We run this twice because if this gets the value from
    * the attribute it does not actually return the value
    */
-  Ember.run(() => medicationDetails.getMedicationName('inventoryItem'));
+  run(() => medicationDetails.getMedicationName('inventoryItem'));
 
   assert.strictEqual(medicationDetails.getMedicationName('inventoryItem'), 'Test Item');
 });
@@ -78,7 +79,7 @@ test('getMedicationPrice', function(assert) {
 
 test('getMedicationPrice prefer priceOfMedication', function(assert) {
   let inventoryItem;
-  Ember.run(() => {
+  run(() => {
     inventoryItem = this.store().createRecord('inventory', {
       name: 'Test Item',
       price: 12.15
@@ -95,7 +96,7 @@ test('getMedicationPrice prefer priceOfMedication', function(assert) {
 
 test('getMedicationPrice attribute', function(assert) {
   let inventoryItem;
-  Ember.run(() => {
+  run(() => {
     inventoryItem = this.store().createRecord('inventory', {
       name: 'Test Item',
       price: 22.33
@@ -108,7 +109,7 @@ test('getMedicationPrice attribute', function(assert) {
    * We run this twice because if this gets the value from
    * the attribute it does not actually return the value
    */
-  Ember.run(() => medicationDetails.getMedicationPrice('inventoryItem'));
+  run(() => medicationDetails.getMedicationPrice('inventoryItem'));
 
   assert.strictEqual(medicationDetails.getMedicationPrice('inventoryItem'), 22.33);
 });

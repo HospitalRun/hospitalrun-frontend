@@ -1,10 +1,13 @@
 import {
   test, moduleForComponent
 }
-from 'ember-qunit';
+  from 'ember-qunit';
 
 moduleForComponent('nav-menu', 'NavMenuComponent', {
-  unit: true
+  unit: true,
+  needs: [
+    'service:session'
+  ]
 });
 
 test('it renders', function(assert) {

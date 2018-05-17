@@ -1,10 +1,6 @@
-import Ember from 'ember';
-
-const {
-  get,
-  Mixin,
-  RSVP
-} = Ember;
+import { get } from '@ember/object';
+import Mixin from '@ember/object/mixin';
+import RSVP from 'rsvp';
 
 export default Mixin.create({
   _checkForErrors(callPromise) {

@@ -1,25 +1,26 @@
+import { inject as service } from '@ember/service';
+import { inject as controller } from '@ember/controller';
+import EmberObject, { computed } from '@ember/object';
+import { isEmpty, compare } from '@ember/utils';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
-
-const {
-  computed,
-  isEmpty
-} = Ember;
 
 export default AbstractEditController.extend({
-  editController: Ember.inject.controller('admin/custom-forms/edit'),
+  editController: controller('admin/custom-forms/edit'),
   cancelAction: 'closeModal',
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
   actions: {
     addValue() {
       let fieldValues = this.get('model.values');
+      let fieldType = this.get('model.type');
       if (isEmpty(fieldValues)) {
         let model = this.get('model');
         fieldValues = [];
         model.set('values', fieldValues);
       }
-      fieldValues.addObject(Ember.Object.create());
+      if (fieldType === 'header' && fieldValues.length < 1 || fieldType != 'header') {
+        fieldValues.addObject(EmberObject.create());
+      }
     },
 
     deleteValue(valueToDelete) {
@@ -38,6 +39,7 @@ export default AbstractEditController.extend({
   },
 
   fieldTypeValues: [
+    'header',
     'checkbox',
     'radio',
     'select',
@@ -54,13 +56,13 @@ export default AbstractEditController.extend({
         value: i18n.t(`admin.customForms.labels.${fieldTypeId}`)
       };
     }).sort(function(a, b) {
-      return Ember.compare(a.value.toString(), b.value.toString());
+      return compare(a.value.toString(), b.value.toString());
     });
   }),
 
   showValues: computed('model.type', function() {
     let type = this.get('model.type');
-    return (type === 'checkbox' || type === 'radio' || type === 'select');
+    return (type === 'checkbox' || type === 'radio' || type === 'select' || type === 'header');
   })
 
 });

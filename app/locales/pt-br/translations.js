@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Portugues (Brasileiro)',
   admin: {
     address: {
       address1Label: 'Rótulo Endereço 1',
@@ -874,17 +875,6 @@ export default {
     requestsTitle: 'Requisições de Laboratório',
     sectionTitle: 'Laboratório'
   },
-  languages: {
-    en: 'Inglês',
-    fr: 'Francês',
-    es: 'Espanhol',
-    de: 'Alemão',
-    ru: 'Russo',
-    'es-co': 'Espanhol (Colombiano)',
-    'pt-br': 'Portugues (Brasileiro)',
-    tr: 'Turco',
-    ur: 'Urdu'
-  },
   loading: {
     messages: {
       '0': 'A velocidade de vôo borboleta superior é de 12 milhas por hora. Alguns meses pode voar 25 milhas por hora!',
@@ -1087,6 +1077,7 @@ export default {
       history: '',
       incidentCategories: '',
       inventoryReceived: 'Inventário Recebido',
+      inventoryReceivedPlus: '+ Inventário Recebido',
       invoices: 'Faturas',
       items: 'Itens',
       loadDB: 'Carregar BD',

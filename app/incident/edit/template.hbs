@@ -1,5 +1,5 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     <div class="row">
       {{#unless model.isNew}}
         <div class="form-group col-sm-2">
@@ -25,24 +25,23 @@
       {{/unless}}
     </div>
     <div class="row">
-
-      {{em-checkbox label=(t 'incident.labels.sentinelEvent') property="sentinelEvent" class="col-sm-3 sentinel-event"}}
-      {{date-picker property="dateOfIncident" label=(t 'incident.labels.incidentDate') class="col-sm-3 required incident-date" showTime=true}}
-      {{select-or-typeahead className="col-sm-3 required incident-department" property="department"
+      {{form.checkbox label=(t 'incident.labels.sentinelEvent') property="sentinelEvent" class="col-sm-3 sentinel-event"}}
+      {{date-picker model=model property="dateOfIncident" label=(t 'incident.labels.incidentDate') class="col-sm-3 required incident-date" showTime=true}}
+      {{select-or-typeahead form=form model=model className="col-sm-3 required incident-department" property="department"
         label=(t 'incident.labels.department') list=incidentDepartmentList
         selection=model.location
       }}
-      {{em-input property="reportedTo" label=(t 'incident.labels.reportedTo') class="col-sm-3 reported-to"}}
+      {{form.input property="reportedTo" label=(t 'incident.labels.reportedTo') class="col-sm-3 reported-to"}}
     </div>
     <div class="row">
-      {{em-select
+      {{form.select
         class="col-sm-4 form-input-group required incident-category"
         label=(t 'incident.labels.category')
         prompt=" "
         property="categoryName"
         content=categoryNameList
       }}
-      {{em-select
+      {{form.select
         class="col-sm-4 form-input-group incident-category-item"
         label=(t 'incident.labels.categoryItem')
         prompt=" "
@@ -51,7 +50,7 @@
         optionLabelPath="item" optionValuePath="item"
       }}
       {{#if canUpdateStatus}}
-        {{em-select label=(t 'incident.labels.status') property="status" content=incidentStatuses class="required form-input-group col-sm-3"}}
+        {{form.select label=(t 'incident.labels.status') property="status" content=incidentStatuses class="required form-input-group col-sm-3"}}
       {{else}}
         <div class="form-group col-sm-3">
           <label class="control-label">{{t 'incident.labels.status'}}</label>
@@ -60,7 +59,7 @@
       {{/if}}
     </div>
     <div class="row">
-      {{patient-typeahead
+      {{patient-typeahead model=model
         property="patientTypeAhead"
         label=(t 'incident.labels.patientImpacted')
         content=patientList
@@ -75,7 +74,7 @@
       {{/if}}
     </div>
     <div class="row">
-      {{expand-text label=(t 'incident.labels.description') property="description" class="required col-sm-12 incident-description" rows=3}}
+      {{expand-text label=(t 'incident.labels.description') property="description" class="required col-sm-12 incident-description" rows=3 form=form}}
     </div>
 
     {{#if canManageIncident}}

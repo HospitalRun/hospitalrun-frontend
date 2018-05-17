@@ -6,10 +6,11 @@
     updateButtonAction=updateButtonAction
     updateButtonClass=updateButtonClass
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
-    {{em-input property="title" label=(t 'incident.labels.title') class="attachment-title"}}
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.input property="title" label=(t 'incident.labels.title') class="attachment-title"}}
     {{#if model.isNew}}
       {{take-photo
+        form=form
         defaultPhotoSource='uploadAFile'
         isImage=model.isImage
         photoFile=model.photoFile

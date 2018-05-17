@@ -1906,8 +1906,8 @@ textarea.input-lg, select[multiple].input-lg {
 .has-feedback {
     position: relative;
     .form-control {
-        padding-right: 42.5px;
-    }
+      padding-right: inherit;
+   }
     .form-control-feedback {
         position: absolute;
         top: 25px;

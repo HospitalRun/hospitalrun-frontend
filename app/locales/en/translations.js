@@ -1,4 +1,5 @@
 export default {
+  languageName: 'English',
   admin: {
     address: {
       address1Label: 'Address 1 Label',
@@ -34,6 +35,7 @@ export default {
         expenseTo: 'Expense To',
         formName: 'Form Name',
         formType: 'Form Type',
+        header: 'Header',
         incidentFormType: 'Incident',
         includeOtherOption: 'Include Other Option',
         labFormType: 'Lab',
@@ -60,6 +62,7 @@ export default {
         editCustomForm: 'Edit Custom Form',
         fields: 'Fields',
         formSaved: 'Form Saved',
+        headerValues: 'Header Line Value',
         newCustomForm: 'New Custom Form',
         radioValues: 'Radio Values'
       }
@@ -592,7 +595,7 @@ export default {
   inventory: {
     edit: {
       cost: 'Cost Per Unit:',
-      delivered: 'Delievered To:',
+      delivered: 'Delivered To:',
       location: 'Location Adjusted:',
       prescription: 'Prescription For:',
       pulled: 'Pulled From:',
@@ -782,6 +785,7 @@ export default {
     address: 'Address',
     age: 'Age',
     allDay: 'All Day',
+    allItems: 'All items',
     amount: 'Amount',
     anesthesia: 'Anesthesia',
     assisting: 'Assisting',
@@ -838,6 +842,7 @@ export default {
     medication: 'Medication',
     name: 'Name',
     newUser: 'New User',
+    newItem: '+ new item',
     note: 'Note',
     notes: 'Notes',
     number: 'Number',
@@ -901,17 +906,6 @@ export default {
     newTitle: 'New Lab Request',
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
-  },
-  languages: {
-    en: 'English',
-    fr: 'French',
-    es: 'Spanish',
-    de: 'German',
-    ru: 'Russian',
-    'es-co': 'Spanish (Colombian)',
-    'pt-br': 'Portuguese (Brazilian)',
-    tr: 'Turkish',
-    ur: 'Urdu'
   },
   loading: {
     messages: {
@@ -1120,6 +1114,7 @@ export default {
       history: 'History',
       incidentCategories: 'Incident Categories',
       inventoryReceived: 'Inventory Received',
+      inventoryReceivedPlus: '+ Inventory Received',
       invoices: 'Invoices',
       items: 'Items',
       loadDB: 'Load DB',

@@ -1,4 +1,8 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import { isEmpty } from '@ember/utils';
+import RSVP from 'rsvp';
+import Service, { inject as service } from '@ember/service';
+import { set, get } from '@ember/object';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
 import OAuthHeaders from 'hospitalrun/mixins/oauth-headers';
@@ -8,18 +12,6 @@ import PouchDBUsers from 'npm:pouchdb-users';
 import PouchDBWorker from 'npm:worker-pouch/client';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
-const {
-  computed: {
-    alias
-  },
-  get,
-  inject,
-  isEmpty,
-  RSVP,
-  Service,
-  set
-} = Ember;
-
 export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   mainDB: null, // Server DB
   oauthHeaders: null,
@@ -28,7 +20,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   usePouchFind: false,
   usersDB: null, // local users database for standAlone mode
 
-  config: inject.service(),
+  config: service(),
   standAlone: alias('config.standAlone'),
 
   createDB(configs) {
@@ -73,7 +65,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
     }
   },
 
- /**
+  /**
   * Given an record type, return back the maximum pouchdb id.  Useful for endkeys.
   * @param {String} type the record type.
   * @returns {String} the max pouch id for the type.
@@ -219,8 +211,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
       if (permissionResult) {
         permissionResult.then(resolve, reject);
       }
-    })
-    .then((permissionResult) => {
+    }).then((permissionResult) => {
       if (permissionResult !== 'granted') {
         throw new Error('We weren\'t granted permission.');
       }
@@ -272,9 +263,9 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   _getNotificationPermissionState() {
     if (navigator.permissions) {
       return navigator.permissions.query({ name: 'notifications' })
-      .then((result) => {
-        return result.state;
-      });
+        .then((result) => {
+          return result.state;
+        });
     }
     return RSVP.resolve(Notification.permission);
   },
@@ -298,7 +289,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   _urlBase64ToUint8Array(base64String) {
     let padding = '='.repeat((4 - base64String.length % 4) % 4);
     let base64 = (base64String + padding)
-      .replace(/\-/g, '+')
+      .replace(/-/g, '+')
       .replace(/_/g, '/');
 
     let rawData = window.atob(base64);
@@ -347,17 +338,17 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
       };
       return new RSVP.Promise((resolve, reject) => {
         return registration.pushManager.subscribe(subscribeOptions)
-        .then((pushSubscription) => {
-          let subInfo = JSON.stringify(pushSubscription);
-          subInfo = JSON.parse(subInfo);
-          return this._sendSubscriptionToServer(subInfo, dbInfo);
-        }).then((savedSubscription) => {
-          let configDB = config.getConfigDB();
-          return configDB.put({
-            _id: 'config_push_subscription',
-            value: savedSubscription.id
-          }).then(resolve, reject);
-        }).catch(reject);
+          .then((pushSubscription) => {
+            let subInfo = JSON.stringify(pushSubscription);
+            subInfo = JSON.parse(subInfo);
+            return this._sendSubscriptionToServer(subInfo, dbInfo);
+          }).then((savedSubscription) => {
+            let configDB = config.getConfigDB();
+            return configDB.put({
+              _id: 'config_push_subscription',
+              value: savedSubscription.id
+            }).then(resolve, reject);
+          }).catch(reject);
       });
     }, 'Subscribe user to push service.');
   },

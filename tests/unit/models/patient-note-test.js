@@ -1,5 +1,5 @@
+import { getOwner } from '@ember/application';
 import { moduleForModel, test } from 'ember-qunit';
-import Ember from 'ember';
 import tHelper from 'ember-i18n/helper';
 import localeConfig from 'ember-i18n/config/en';
 
@@ -7,6 +7,7 @@ moduleForModel('patient-note', 'Unit | Model | patient-note', {
   needs: [
     'ember-validations@validator:local/presence',
     'service:i18n',
+    'service:session',
     'locale:en/translations',
     'locale:en/config',
     'util:i18n/missing-message',
@@ -22,7 +23,7 @@ moduleForModel('patient-note', 'Unit | Model | patient-note', {
 
     // manually inject the i18n service as initialzer does not run
     // in unit test
-    Ember.getOwner(this).inject('model', 'i18n', 'service:i18n');
+    getOwner(this).inject('model', 'i18n', 'service:i18n');
 
     // register t helper
     this.registry.register('helper:t', tHelper);

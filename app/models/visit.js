@@ -1,6 +1,7 @@
+import { isEmpty } from '@ember/utils';
+import { get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import moment from 'moment';
 
 function dateAcceptance(object) {
@@ -9,7 +10,7 @@ function dateAcceptance(object) {
   }
   let startDate = object.get('startDate');
   let endDate = object.get('endDate');
-  if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
+  if (isEmpty(endDate) || isEmpty(startDate)) {
     // Can't validate if empty
     return false;
   } else {
@@ -19,8 +20,6 @@ function dateAcceptance(object) {
   }
   return false;
 }
-
-const { computed, get } = Ember;
 
 const PAYMENT_STATES = {
   CLEAR: 'clear',
@@ -33,7 +32,7 @@ const STATUS_FIELD = 'status';
 
 function paymentStateAcceptance(object) {
   return !Object.keys(PAYMENT_STATES)
-      .some((state) => PAYMENT_STATES[state] === object.get('paymentState'));
+    .some((state) => PAYMENT_STATES[state] === object.get('paymentState'));
 }
 
 export default AbstractModel.extend({
@@ -125,7 +124,7 @@ export default AbstractModel.extend({
     let endDate = get(this, 'endDate');
     let startDate = moment(get(this, 'startDate'));
     let visitDate = startDate.format('l');
-    if (!Ember.isEmpty(endDate) && !startDate.isSame(endDate, 'day')) {
+    if (!isEmpty(endDate) && !startDate.isSame(endDate, 'day')) {
       visitDate += ` - ${moment(endDate).format('l')}`;
     }
     return visitDate;

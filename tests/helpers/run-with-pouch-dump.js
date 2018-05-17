@@ -1,6 +1,9 @@
 /* jshint ignore:start */
+import { registerAsyncHelper } from '@ember/test';
+
+import { Promise as EmberPromise, all } from 'rsvp';
+import { set, get } from '@ember/object';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
-import Ember from 'ember';
 import PouchDB from 'pouchdb';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import PouchDBUsers from 'npm:pouchdb-users';
@@ -8,14 +11,9 @@ import DatabaseService from 'hospitalrun/services/database';
 import ConfigService from 'hospitalrun/services/config';
 import PouchDBWorker from 'npm:worker-pouch/client';
 
-const {
-  get,
-  set
-} = Ember;
-
 function cleanupDatabases(maindb, dbs) {
   return wait().then(function() {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       if (maindb.changesListener) {
         maindb.changesListener.cancel();
         maindb.changesListener.on('complete', function() {
@@ -35,10 +33,10 @@ function destroyDatabases(dbs) {
       return db.destroy();
     }));
   });
-  return Ember.RSVP.all(destroyQueue);
+  return all(destroyQueue);
 }
 
-function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
+async function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   PouchDB.plugin(PouchAdapterMemory);
   PouchDB.plugin(PouchDBUsers);
 
@@ -128,36 +126,29 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   app.__deprecatedInstance__.register('service:config', InMemoryConfigService);
   app.__deprecatedInstance__.register('service:database', InMemoryDatabaseService);
 
-  return new Ember.RSVP.Promise(function(resolve) {
-    promise.then(function() {
-      db.setMaxListeners(35);
-      createPouchViews(db, true, dumpName).then(function() {
-        functionToRun();
-        andThen(function() {
-          let databasesToClean = [
-            configDB,
-            db
-          ];
-          if (window.ELECTRON) {
-            databasesToClean.push(usersDB);
-          }
-          cleanupDatabases(db, databasesToClean).then(function() {
-            configDB = null;
-            db = null;
-            if (window.ELECTRON) {
-              usersDB = null;
-            }
-            resolve();
-          }, function(err) {
-            console.log('error cleaning up dbs:', err);
-          });
-        });
-      });
-    }, function(err) {
-      console.log('error loading db', JSON.stringify(err, null, 2));
-    });
-  });
+  await promise;
+
+  db.setMaxListeners(35);
+  await createPouchViews(db, true, dumpName);
+
+  await functionToRun();
+  await wait();
+
+  let databasesToClean = [
+    configDB,
+    db
+  ];
+  if (window.ELECTRON) {
+    databasesToClean.push(usersDB);
+  }
+  await cleanupDatabases(db, databasesToClean);
+
+  configDB = null;
+  db = null;
+  if (window.ELECTRON) {
+    usersDB = null;
+  }
 }
 
-Ember.Test.registerAsyncHelper('runWithPouchDump', runWithPouchDumpAsyncHelper);
+registerAsyncHelper('runWithPouchDump', runWithPouchDumpAsyncHelper);
 /* jshint ignore:end */

@@ -1,6 +1,7 @@
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import moment from 'moment';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
@@ -30,20 +31,20 @@ export default AbstractModel.extend({
     return `${formattedStart} - ${formattedEnd}`;
   },
 
-  appointmentDate: function() {
+  appointmentDate: computed('startDate', function() {
     let startDate = this.get('startDate');
     return startDate;
-  }.property('startDate'),
+  }),
 
-  displayStatus: function() {
+  displayStatus: computed('status', function() {
     let status = this.get('status');
-    if (Ember.isEmpty(status)) {
+    if (isEmpty(status)) {
       status = 'Scheduled';
     }
     return status;
-  }.property('status'),
+  }),
 
-  formattedAppointmentDate: function() {
+  formattedAppointmentDate: computed('startDate', 'endDate', function() {
     let allDay = this.get('allDay');
     let endDate = moment(this.get('endDate'));
     let dateFormat = '';
@@ -65,7 +66,7 @@ export default AbstractModel.extend({
       formattedDate = this._getDateSpan(startDate, endDate, dateFormat);
     }
     return formattedDate;
-  }.property('startDate', 'endDate'),
+  }),
 
   validations: {
     appointmentDate: {
@@ -98,7 +99,7 @@ export default AbstractModel.extend({
           let allDay = object.get('allDay');
           let startDate = object.get('startDate');
           let endDate = object.get('endDate');
-          if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
+          if (isEmpty(endDate) || isEmpty(startDate)) {
             // force validation to fail
             return true;
           } else {
