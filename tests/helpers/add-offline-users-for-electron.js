@@ -1,4 +1,3 @@
-import { registerAsyncHelper } from '@ember/test';
 import PouchDB from 'pouchdb';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 
@@ -42,18 +41,17 @@ const MOCK_USER_DATA = [{
   }
 }];
 
-export default registerAsyncHelper('addOfflineUsersForElectron', function() {
+async function addOfflineUsersForElectron() {
+  await wait();
   if (window.ELECTRON) {
-    return wait().then(() => {
-      PouchDB.plugin(PouchAdapterMemory);
-      let usersDB = new PouchDB('_users', {
-        adapter: 'memory'
-      });
-      let [, joeUser] = MOCK_USER_DATA; // hradmin already added by run-with-pouch-dump
-      delete joeUser.doc._rev;
-      return usersDB.put(joeUser.doc);
+    PouchDB.plugin(PouchAdapterMemory);
+    let usersDB = new PouchDB('_users', {
+      adapter: 'memory'
     });
-  } else {
-    return wait();
+    let [, joeUser] = MOCK_USER_DATA; // hradmin already added by run-with-pouch-dump
+    delete joeUser.doc._rev;
+    return usersDB.put(joeUser.doc);
   }
-});
+}
+
+export default addOfflineUsersForElectron;

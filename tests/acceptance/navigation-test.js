@@ -1,69 +1,58 @@
-import { run } from '@ember/runloop';
-import { module, test } from 'qunit';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
-module('Acceptance | navigation', {
+moduleForAcceptance('Acceptance | navigation', {
   beforeEach() {
     FakeServer.start();
-    this.application = startApp();
   },
 
   afterEach() {
     FakeServer.stop();
-    run(this.application, 'destroy');
   }
 });
 
 test('about dialog', function(assert) {
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/');
+  return runWithPouchDump('default', async function() {
+    await authenticateUser();
+    await visit('/');
 
     stubRequest('get', '/serverinfo', function(request) {
       request.ok({ 'ok': true });
     });
 
-    click('.settings-trigger');
-    waitToAppear('a:contains(About HospitalRun)');
-    click('a:contains(About HospitalRun)');
+    await click('.settings-trigger');
+    await waitToAppear('a:contains(About HospitalRun)');
+    await click('a:contains(About HospitalRun)');
 
-    waitToAppear('.modal-dialog');
-
-    andThen(() => {
-      assert.equal(find('.modal-title').text(), 'About HospitalRun', 'About dialog is shown');
-    });
+    await waitToAppear('.modal-dialog');
+    assert.dom('.modal-title').hasText('About HospitalRun', 'About dialog is shown');
   });
 });
 
 test('search text clears after search', function(assert) {
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/patients');
+  return runWithPouchDump('default', async function() {
+    await authenticateUser();
+    await visit('/patients');
 
-    andThen(() => {
-      fillIn('.sidebar-nav-search div input', 'fakeSearchText');
-      click('.glyphicon-search');
-      waitToAppear('h1:contains(Search Results)');
-    });
-    andThen(() => {
-      assert.equal(find('.sidebar-nav-search div input').val(), '');
-    });
+    await fillIn('.sidebar-nav-search div input', 'fakeSearchText');
+    await click('.glyphicon-search');
+    await waitToAppear('h1:contains(Search Results)');
+    assert.dom('.sidebar-nav-search div input').hasValue('');
   });
 });
 
 test('search text clears after selecting new nav item', function(assert) {
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/patients');
+  return runWithPouchDump('default', async function() {
+    await authenticateUser();
+    await visit('/patients');
 
-    andThen(() => {
-      fillIn('.sidebar-nav-search div input', 'fakeSearchText');
-      click('a:contains(Inventory)');
-      waitToAppear('h1:contains(Requests)');
-    });
-    andThen(() => {
-      assert.equal(find('.sidebar-nav-search div input').val(), '');
-    });
+    await fillIn('.sidebar-nav-search div input', 'fakeSearchText');
+    await click('a:contains(Inventory)');
+    await waitToAppear('h1:contains(Requests)');
+    assert.dom('.sidebar-nav-search div input').hasValue('');
   });
 });

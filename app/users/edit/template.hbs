@@ -11,7 +11,7 @@
     {{form.input property="displayName" label=(t 'labels.displayName')  class="user-display-name"}}
     {{form.input property="email" type="email" label=(t 'labels.email')  class="user-email"}}
     {{form.input property="password" type="password" label=(t 'labels.password')  class="user-password"}}
-    <div class="form-group has-success">
+    <div class="form-input-group has-success">
       <label class="control-label">{{t 'labels.role'}}</label>
       {{role-select selection=model.roles content=userRoles action=(action (mut model.roles)) class="user-role"}}
     </div>

@@ -72,9 +72,8 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   },
 
   actions: {
-    appointmentTypeChanged(appointmentType) {
+    appointmentTypeChanged() {
       let model = get(this, 'model');
-      set(model, 'appointmentType', appointmentType);
       let isAdmissionAppointment = get(this, 'isAdmissionAppointment');
       set(model, 'allDay', isAdmissionAppointment);
     }

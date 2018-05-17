@@ -2,20 +2,17 @@
   <div class="panel-body">
     {{#em-form model=this submitButton=false as |form|}}
       <div class="row">
-        <div class="form-group col-xs-6">
-          <label class="control-label" for="report-type">{{t 'inventory.reports.reportType'}}</label>
-          {{select-list
-            action=(action (mut reportType))
-            class='form-control'
+          {{form.select
+            class='col-xs-6 form-input-group'
             content=reportTypes
             id='report-type'
             optionValuePath='value'
             optionLabelPath='name'
-            value=reportType
+            property='reportType'
+            label=(t 'inventory.reports.reportType')
           }}
-        </div>
         {{#unless hideLocationFilter}}
-          {{form.select class="col-xs-6" label=(t 'inventory.labels.location')
+          {{form.select class="col-xs-6 form-input-group" label=(t 'inventory.labels.location')
             property="filterLocation" content=warehouseList
             prompt=" "
           }}

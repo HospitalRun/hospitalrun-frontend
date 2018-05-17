@@ -1,4 +1,8 @@
 module.exports = {
+  parserOptions: {
+    'ecmaVersion': 2017,
+  },
+
   env: {
     'embertest': true
   },
@@ -10,23 +14,8 @@ module.exports = {
 
   globals: {
     '$': true,
-    'addOfflineUsersForElectron': true,
-    'attachCustomForm': true,
-    'authenticateUser': true,
-    'checkCustomFormIsDisplayed': true,
-    'checkCustomFormIsFilled': true,
-    'checkCustomFormIsFilledAndReadonly': true,
-    'createCustomFormForType': true,
-    'fillCustomForm': true,
-    'invalidateSession': true,
     'require': true,
-    'runWithPouchDump': true,
-    'select': true,
-    'selectDate': true,
-    'typeAheadFillIn': true,
     'wait': true,
-    'waitToAppear': true,
-    'waitToDisappear': true
   },
 
   rules: {
