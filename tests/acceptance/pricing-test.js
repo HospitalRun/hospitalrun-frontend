@@ -1,8 +1,12 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit(path);
     assert.equal(currentURL(), path);
@@ -24,7 +28,7 @@ test('visiting /pricing', function(assert) {
     'Leg Casting',
     'Gauze pad'
   ];
-  verifyPricingLists('/pricing', includesPrices, [], assert);
+  return verifyPricingLists('/pricing', includesPrices, [], assert);
 });
 
 test('visiting /pricing/imaging', function(assert) {
@@ -36,7 +40,7 @@ test('visiting /pricing/imaging', function(assert) {
   let includesPrices = [
     'Xray Hand'
   ];
-  verifyPricingLists('/pricing/imaging', includesPrices, excludesPrices, assert);
+  return verifyPricingLists('/pricing/imaging', includesPrices, excludesPrices, assert);
 
 });
 
@@ -49,7 +53,7 @@ test('visiting /pricing/lab', function(assert) {
   let includesPrices = [
     'Blood test'
   ];
-  verifyPricingLists('/pricing/lab', includesPrices, excludesPrices, assert);
+  return verifyPricingLists('/pricing/lab', includesPrices, excludesPrices, assert);
 });
 
 test('visiting /pricing/procedure', function(assert) {
@@ -61,7 +65,7 @@ test('visiting /pricing/procedure', function(assert) {
   let includesPrices = [
     'Leg Casting'
   ];
-  verifyPricingLists('/pricing/procedure', includesPrices, excludesPrices, assert);
+  return verifyPricingLists('/pricing/procedure', includesPrices, excludesPrices, assert);
 });
 
 test('visiting /pricing/ward', function(assert) {
@@ -73,11 +77,11 @@ test('visiting /pricing/ward', function(assert) {
   let includesPrices = [
     'Gauze pad'
   ];
-  verifyPricingLists('/pricing/ward', includesPrices, excludesPrices, assert);
+  return verifyPricingLists('/pricing/ward', includesPrices, excludesPrices, assert);
 });
 
 test('create new price', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/pricing');
     await click('button:contains(+ new item)');
@@ -105,7 +109,7 @@ test('create new price', function(assert) {
 });
 
 test('delete price', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/pricing/lab');
     assert.equal(currentURL(), '/pricing/lab');
@@ -125,7 +129,7 @@ test('delete price', function(assert) {
 });
 
 test('create new pricing profile', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/pricing/profiles');
     assert.equal(currentURL(), '/pricing/profiles');
@@ -146,7 +150,7 @@ test('create new pricing profile', function(assert) {
 });
 
 test('delete pricing profile', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/pricing/profiles');
     assert.equal(currentURL(), '/pricing/profiles');
@@ -163,7 +167,7 @@ test('delete pricing profile', function(assert) {
 });
 
 test('Searching pricing', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/pricing');
 

@@ -1,10 +1,14 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | patients');
 
 test('visiting /patients route', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/patients');
     assert.equal(currentURL(), '/patients');
@@ -20,7 +24,7 @@ test('visiting /patients route', function(assert) {
 });
 
 test('View reports tab', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/patients/reports');
 
@@ -47,7 +51,7 @@ reportNames.forEach((reportName) => {
 });
 
 test('View reports tab | Patient Status', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/patients/reports');
     await select('[data-test-selector="select-report-type"] select', 'Patient Status');
@@ -62,7 +66,7 @@ test('View reports tab | Patient Status', function(assert) {
 });
 
 test('Testing admitted patient', function(assert) {
-  runWithPouchDump('patient', async function() {
+  return runWithPouchDump('patient', async function() {
     await authenticateUser();
     await visit('/patients/admitted');
     assert.equal(currentURL(), '/patients/admitted');
@@ -84,7 +88,7 @@ test('Testing admitted patient', function(assert) {
 });
 
 test('Adding a new patient record', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/patients/edit/new');
     assert.equal(currentURL(), '/patients/edit/new');
@@ -102,7 +106,7 @@ test('Adding a new patient record', function(assert) {
 });
 
 test('Delete a patient record', function(assert) {
-  runWithPouchDump('patient', async function() {
+  return runWithPouchDump('patient', async function() {
     await authenticateUser();
     await visit('/patients');
     assert.equal(currentURL(), '/patients', 'Patient listing url is correct');
@@ -124,7 +128,7 @@ test('Delete a patient record', function(assert) {
 });
 
 test('Searching patients', function(assert) {
-  runWithPouchDump('patient', async function() {
+  return runWithPouchDump('patient', async function() {
     await authenticateUser();
     await visit('/patients');
 
@@ -147,7 +151,7 @@ test('Searching patients', function(assert) {
 
 function testSimpleReportForm(reportName) {
   test(`View reports tab | ${reportName} shows start and end dates`, function(assert) {
-    runWithPouchDump('default', async function() {
+    return runWithPouchDump('default', async function() {
       await authenticateUser();
       await visit('/patients/reports');
       await select('[data-test-selector="select-report-type"] select', reportName);
@@ -164,7 +168,7 @@ function testSimpleReportForm(reportName) {
 
 function testExportReportName(reportName) {
   test(`View reports tab | Export reports name for ${reportName} shows report name, start and end dates`, (assert) => {
-    runWithPouchDump('default', async function() {
+    return runWithPouchDump('default', async function() {
       await authenticateUser();
       await visit('/patients/reports');
       await select('[data-test-selector="select-report-type"] select', reportName);

@@ -1,9 +1,14 @@
-import { run } from '@ember/runloop';
 import RSVP from 'rsvp';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
-import startApp from 'hospitalrun/tests/helpers/start-app';
 import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
+
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import addOfflineUsersForElectron from 'hospitalrun/tests/helpers/add-offline-users-for-electron';
+import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 const MOCK_USER_DATA = [{
   'id': 'org.couchdb.user:hradmin',
@@ -64,20 +69,18 @@ function addAllUsers(assert) {
   return RSVP.resolve();
 }
 
-module('Acceptance | users', {
+moduleForAcceptance('Acceptance | users', {
   beforeEach() {
     FakeServer.start();
-    this.application = startApp();
   },
 
   afterEach() {
     FakeServer.stop();
-    run(this.application, 'destroy');
   }
 });
 
 test('visiting /admin/users', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     let role = PREDEFINED_USER_ROLES.findBy('name', 'User Administrator');
     await authenticateUser({
       roles: role.roles,
@@ -97,7 +100,7 @@ test('visiting /admin/users', function(assert) {
 });
 
 test('create new user', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await addAllUsers(assert);
 
@@ -137,7 +140,7 @@ test('create new user', function(assert) {
 });
 
 test('delete user', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await addAllUsers(assert);
 

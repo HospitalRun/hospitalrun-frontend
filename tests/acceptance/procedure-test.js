@@ -1,5 +1,9 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
+import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | procedures');
 
@@ -101,7 +105,7 @@ testWithVisit('Delete procedure', async function(assert) {
 
 function testWithVisit(testLabel, testFunction) {
   test(testLabel, function(assert) {
-    runWithPouchDump('patient', async function() {
+    return runWithPouchDump('patient', async function() {
       await authenticateUser();
       await visit('/patients');
       assert.equal(currentURL(), '/patients', 'Patient url is correct');

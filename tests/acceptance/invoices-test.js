@@ -1,10 +1,15 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import select from 'hospitalrun/tests/helpers/select';
+import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
+import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | invoices');
 
 test('visiting /invoices', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/invoices');
     assert.equal(currentURL(), '/invoices');
@@ -12,7 +17,7 @@ test('visiting /invoices', function(assert) {
 });
 
 test('create invoice', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/invoices/edit/new');
     assert.equal(currentURL(), '/invoices/edit/new');
@@ -29,7 +34,7 @@ test('create invoice', function(assert) {
 });
 
 test('print invoice', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     window.print = function() {}; // Disable browser print dialog.
     await authenticateUser();
     await visit('/invoices');
@@ -45,7 +50,7 @@ test('print invoice', function(assert) {
 
 // test pricing profile
 test('pricing profiles', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/pricing/profiles');
     assert.equal(find('.btn-primary:contains(+ new item)').length, 1, 'We can add a new pricing profile');
@@ -87,7 +92,7 @@ test('pricing profiles', function(assert) {
 });
 
 test('delete invoice', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/invoices');
     assert.equal(currentURL(), '/invoices');
@@ -107,7 +112,7 @@ test('delete invoice', function(assert) {
 });
 
 test('add payment', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/invoices');
     assert.equal(currentURL(), '/invoices');
@@ -127,7 +132,7 @@ test('add payment', function(assert) {
 });
 
 test('add deposit', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/invoices');
     assert.equal(currentURL(), '/invoices');
@@ -145,7 +150,7 @@ test('add deposit', function(assert) {
 });
 
 test('cashier role', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser({
       name: 'cashier@hospitalrun.io',
       roles: ['Cashier', 'user'],
@@ -169,7 +174,7 @@ test('cashier role', function(assert) {
 });
 
 test('Searching invoices', function(assert) {
-  runWithPouchDump('billing', async function() {
+  return runWithPouchDump('billing', async function() {
     await authenticateUser();
     await visit('/invoices');
 

@@ -1,11 +1,15 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser, invalidateSession } from 'hospitalrun/tests/helpers/authenticate-user';
 import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
 
 moduleForAcceptance('Acceptance | roles');
 
 test('visiting /admin/roles', function(assert) {
-  runWithPouchDump('admin', async function() {
+  return runWithPouchDump('admin', async function() {
     await authenticateUser();
     await visit('/admin/roles');
     assert.equal(currentURL(), '/admin/roles');
@@ -44,7 +48,7 @@ test('visiting /admin/roles', function(assert) {
 PREDEFINED_USER_ROLES.forEach((role) => {
   if (role.defaultRoute && role.name !== 'User Administrator') {
     test(`Testing User Role homescreen for ${role.name}`, (assert) =>{
-      runWithPouchDump('default', async function() {
+      return runWithPouchDump('default', async function() {
         await authenticateUser({
           roles: role.roles,
           role: role.name,
