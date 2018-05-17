@@ -17,7 +17,7 @@
       <p class="form-control-static">{{model.quantity}}</p>
     </div>
     <div class="row">
-      {{form.select class="col-sm-4" label=(t 'inventory.labels.adjustmentType')
+      {{form.select class="col-sm-4 form-input-group" label=(t 'inventory.labels.adjustmentType')
         property="transactionType" content=adjustmentTypes
         optionValuePath="type" optionLabelPath="name"
       }}

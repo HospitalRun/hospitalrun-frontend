@@ -44,6 +44,7 @@ export default Component.extend(HospitalRunVersion, ModalHelper, UserSession, Na
 
     search() {
       this.sendAction('search', this.get('searchText'));
+      this.set('searchText', '');
     },
 
     navAction(nav) {

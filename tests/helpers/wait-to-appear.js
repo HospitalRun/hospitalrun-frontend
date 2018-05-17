@@ -1,31 +1,13 @@
-import { registerAsyncHelper } from '@ember/test';
-import { Promise as EmberPromise } from 'rsvp';
-import { later } from '@ember/runloop';
+import { waitUntil } from '@ember/test-helpers';
 
 function isVisible(selector) {
   return $(selector).length > 0;
 }
 
-function checkVisibility(selector, interval, resolve, visibility) {
-  if (isVisible(selector) === visibility) {
-    resolve($(selector));
-  } else {
-    later(null, function() {
-      checkVisibility(selector, interval, resolve, visibility);
-    }, interval);
-  }
+export async function waitToAppear(selector) {
+  await waitUntil(() => isVisible(selector));
 }
 
-function waitToAppear(app, selector, interval = 200) {
-  return new EmberPromise(function(resolve) {
-    checkVisibility(selector, interval, resolve, true);
-  });
+export async function waitToDisappear(selector) {
+  await waitUntil(() => !isVisible(selector));
 }
-
-function waitToDisappear(app, selector, interval = 200) {
-  return new EmberPromise(function(resolve) {
-    checkVisibility(selector, interval, resolve, false);
-  });
-}
-registerAsyncHelper('waitToAppear', waitToAppear);
-registerAsyncHelper('waitToDisappear', waitToDisappear);
