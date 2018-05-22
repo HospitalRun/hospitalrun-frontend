@@ -1,6 +1,5 @@
 import { mapBy, sum } from '@ember/object/computed';
 import { debounce } from '@ember/runloop';
-import { computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import NumberFormat from 'hospitalrun/mixins/number-format';
