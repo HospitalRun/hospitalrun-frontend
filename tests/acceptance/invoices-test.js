@@ -178,19 +178,19 @@ test('Searching invoices', function(assert) {
     await authenticateUser();
     await visit('/invoices');
 
-    await fillIn('[role="search"] input', 'Joe');
+    await fillIn('[role="search"] div input', 'Joe');
     await click('.glyphicon-search');
 
     assert.equal(currentURL(), '/invoices/search/Joe', 'Searched for Joe');
     assert.dom('.invoice-number').exists({ count: 1 }, 'There is one search item');
 
-    await fillIn('[role="search"] input', 'joe');
+    await fillIn('[role="search"] div input', 'joe');
     await click('.glyphicon-search');
 
     assert.equal(currentURL(), '/invoices/search/joe', 'Searched for all lower case joe');
     assert.dom('.invoice-number').exists({ count: 1 }, 'There is one search item');
 
-    await fillIn('[role="search"] input', 'ItemNotFound');
+    await fillIn('[role="search"] div input', 'ItemNotFound');
     await click('.glyphicon-search');
 
     assert.equal(currentURL(), '/invoices/search/ItemNotFound', 'Searched for ItemNotFound');
