@@ -7,7 +7,7 @@
   updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false as |form|}}
     {{expand-text label=(t 'labels.note') property="content" rows=3 class="test-note-content required form-input-group" form=form}}
-    {{form.select class="required form-input-group" label=(t 'labels.visit')
+    {{form.select class="required form-input-group test-note-visit" label=(t 'labels.visit')
       property="visit" content=patientVisitsForSelect
       optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
       prompt=(t 'patients.notes.pleaseSelectAVisit')
