@@ -1,6 +1,7 @@
 import { Promise as EmberPromise } from 'rsvp';
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
+import { computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import moment from 'moment';
@@ -11,6 +12,7 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
   cancelAction: 'closeModal',
   updateAction: 'updateNote',
   moduleController: controller('patients'),
+  applicationController: controller('application'),
   physicianList: alias('moduleController.physicianList'),
   lookupListsToUpdate: [{
     name: 'physicianList',
@@ -24,6 +26,9 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
       return `${this.get('i18n').t('patients.notes.newNote')} ${moment(this.get('model.date')).format('MM/DD/YYYY')} for ${this.get('model.patient.displayName')}`;
     }
   }.property('model.patient.displayName'),
+  showSelectVisit: computed('applicationController.currentPath', function() {
+    return (this.get('applicationController.currentPath') == 'patients.edit');
+  }),
   updateCapability: 'add_note',
   beforeUpdate() {
     this._setNoteType();

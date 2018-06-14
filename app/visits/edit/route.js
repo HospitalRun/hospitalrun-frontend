@@ -72,10 +72,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
   },
 
   actions: {
-    updateNote(model) {
-      if (model.get('visit.id') != this.controller.get('model.id')) {
-        model.get('visit').save();
-      }
+    updateNote() {
       this.controller.send('update', true);
     },
     deletePatientNote(model) {
