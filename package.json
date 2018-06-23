@@ -102,7 +102,7 @@
     "stylelint": "~9.3.0",
     "stylelint-config-concentric": "^2.0.0",
     "stylelint-declaration-use-variable": "1.6.1",
-    "stylelint-scss": "3.0.1",
+    "stylelint-scss": "3.1.1",
     "tosource-polyfill": "^0.3.1",
     "uuid": "^3.0.0",
     "worker-pouch": "2.1.0"
