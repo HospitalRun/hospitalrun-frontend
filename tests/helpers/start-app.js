@@ -3,16 +3,6 @@ import config from '../../config/environment';
 import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 
-import './run-with-pouch-dump';
-import './authenticate-user';
-import './add-offline-users-for-electron';
-import './select';
-import './select-date';
-import './typeahead-fillin';
-import './wait-to-appear';
-
-import './scenarios/custom-forms';
-
 function createTranslationWrapper(original, context) {
   function t(str, data) {
     let result = original.call(context, str, data);

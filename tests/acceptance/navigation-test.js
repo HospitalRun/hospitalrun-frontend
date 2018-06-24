@@ -1,22 +1,22 @@
-import { run } from '@ember/runloop';
-import { module, test } from 'qunit';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
-module('Acceptance | navigation', {
+moduleForAcceptance('Acceptance | navigation', {
   beforeEach() {
     FakeServer.start();
-    this.application = startApp();
   },
 
   afterEach() {
     FakeServer.stop();
-    run(this.application, 'destroy');
   }
 });
 
 test('about dialog', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/');
 
@@ -34,7 +34,7 @@ test('about dialog', function(assert) {
 });
 
 test('search text clears after search', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/patients');
 
@@ -46,7 +46,7 @@ test('search text clears after search', function(assert) {
 });
 
 test('search text clears after selecting new nav item', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/patients');
 

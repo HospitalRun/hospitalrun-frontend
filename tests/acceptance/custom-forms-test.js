@@ -1,5 +1,9 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import { createCustomFormForType } from 'hospitalrun/tests/helpers/scenarios/custom-forms';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | custom forms');
 
@@ -33,7 +37,7 @@ test('crud operations on custom-forms', function(assert) {
     await click('button:contains(Preview)'); // Hide preview to reset it back to being closed.
   }
 
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/admin/custom-forms');
     assert.equal(currentURL(), '/admin/custom-forms', 'Navigated to custom forms index page');
@@ -62,7 +66,7 @@ test('crud operations on custom-forms', function(assert) {
 });
 
 test('switching between pages with custom forms happens without errors', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
 
     await createCustomFormForType('Patient', true);

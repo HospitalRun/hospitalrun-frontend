@@ -19,7 +19,7 @@
 <div class="row">
   {{form.select label=(t 'labels.type') property="inventoryType"
     content=inventoryTypes
-      class="required col-sm-4 test-inv-type"
+      class="required col-sm-4 form-input-group test-inv-type"
       prompt=" "
   }}
   {{form.input property="crossReference" label=(t 'inventory.labels.crossReference') class="col-sm-8 test-inv-cross"}}
@@ -27,7 +27,7 @@
 <div class="row">
   {{form.input property="reorderPoint" label=(t 'inventory.labels.reorderPoint') class="col-sm-3 test-inv-reorder"}}
   {{number-input model=model property="price" label=(t 'inventory.labels.salePricePerUnit') class="col-sm-3 test-inv-price"}}
-  {{form.select label=(t 'inventory.labels.distributionUnit') class="col-sm-3 required test-inv-dist-unit"
+  {{form.select label=(t 'inventory.labels.distributionUnit') class="col-sm-3 required form-input-group test-inv-dist-unit"
     property="distributionUnit"
     content=unitListForSelect
     prompt=" "

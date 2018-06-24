@@ -1,5 +1,5 @@
 /* jshint ignore:start */
-import { registerAsyncHelper } from '@ember/test';
+import { getContext } from '@ember/test-helpers';
 
 import { Promise as EmberPromise, all } from 'rsvp';
 import { set, get } from '@ember/object';
@@ -36,7 +36,7 @@ function destroyDatabases(dbs) {
   return all(destroyQueue);
 }
 
-async function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
+async function runWithPouchDump(dumpName, functionToRun) {
   PouchDB.plugin(PouchAdapterMemory);
   PouchDB.plugin(PouchDBUsers);
 
@@ -123,8 +123,9 @@ async function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     }
   });
 
-  app.__deprecatedInstance__.register('service:config', InMemoryConfigService);
-  app.__deprecatedInstance__.register('service:database', InMemoryDatabaseService);
+  let owner = getContext().application.__deprecatedInstance__;
+  owner.register('service:config', InMemoryConfigService);
+  owner.register('service:database', InMemoryDatabaseService);
 
   await promise;
 
@@ -150,5 +151,6 @@ async function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   }
 }
 
-registerAsyncHelper('runWithPouchDump', runWithPouchDumpAsyncHelper);
+export default runWithPouchDump;
+
 /* jshint ignore:end */

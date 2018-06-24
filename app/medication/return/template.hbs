@@ -1,7 +1,7 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false as |form|}}
     {{#if showPatientMedicationList}}
-      {{form.select class="required" label=(t 'labels.medication')
+      {{form.select class="required form-input-group" label=(t 'labels.medication')
         property="medication" content=patientMedication
         optionValuePath="selectObject" optionLabelPath="selectObject.inventoryItem.name"
         selected=model.medication
@@ -11,7 +11,7 @@
     {{/if}}
     <div class="row">
       {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-6"}}
-      {{form.select class="col-xs-6" label=(t 'labels.visit')
+      {{form.select class="col-xs-6 form-input-group" label=(t 'labels.visit')
         property="visit" content=patientVisitsForSelect
         optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
         selected=model.visit

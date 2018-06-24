@@ -13,7 +13,7 @@
       {{date-picker model=model property="billDate" label=(t 'labels.billDate') class="col-xs-2"}}
       {{#if model.isNew}}
         {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
-        {{form.select class="col-xs-4 required invoice-visit" label=(t 'labels.visit')
+        {{form.select class="col-xs-4 required form-input-group invoice-visit" label=(t 'labels.visit')
             property="visit" content=patientVisitsForSelect
             optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
             selected=model.visit
@@ -33,7 +33,7 @@
         content=pricingProfiles
         optionValuePath="selectObject"
         optionLabelPath="selectObject.name"
-        class="col-xs-3"
+        class="col-xs-3 form-input-group"
         prompt=" "
         selected=model.paymentProfile
       }}
@@ -74,28 +74,28 @@
                       {{if item.showDetails 'glyphicon-minus' 'glyphicon-plus'}}"
                         {{action "toggleDetails" item bubbles=false }}>
                     </span>
-                    <strong>{{input class="form-control" value=item.name }}</strong>
+                    <strong>{{input class="form-control item-name" value=item.name }}</strong>
                   </div>
                 </td>
-                <td class="col-xs-1 text-right">
+                <td class="col-xs-1 text-right item-total">
                   {{number-format item.total}}
                 </td>
                 <td class="col-xs-1">
                   <div class="form-group">
-                    {{input class="form-control text-right" value=item.discount }}
+                    {{input class="form-control text-right item-discount" value=item.discount }}
                   </div>
                 </td>
                 <td class="col-xs-1">
                   <div class="form-group">
-                    {{input class="form-control text-right" value=item.nationalInsurance }}
+                    {{input class="form-control text-right item-national-insurance" value=item.nationalInsurance }}
                   </div>
                 </td>
                 <td class="col-xs-1">
                   <div class="form-group">
-                    {{input class="form-control text-right" value=item.privateInsurance }}
+                    {{input class="form-control text-right item-private-insurance" value=item.privateInsurance }}
                   </div>
                 </td>
-                <td class="col-xs-1 text-right">{{number-format item.amountOwed}}</td>
+                <td class="col-xs-1 text-right item-amount-owed">{{number-format item.amountOwed}}</td>
                 <td class="col-xs-2">
                   {{#if canAddCharge}}
                     <button class="btn btn-default warning" {{action "showDeleteLineItem" item bubbles=false }}>
@@ -122,16 +122,16 @@
                 {{#each item.details as |detail|}}
                   <tr>
                     <td colspan="2" class="col-xs-6 input-group">
-                      {{input class="form-control" value=detail.name }}
+                      {{input class="form-control detail-name" value=detail.name }}
                     </td>
                     <td class="col-xs-1">
                       <div class="form-group">
-                        {{input class="form-control" value=detail.quantity }}
+                        {{input class="form-control detail-quantity" value=detail.quantity }}
                       </div>
                     </td>
                     <td class="col-xs-1">
                       <div class="form-group">
-                        {{input class="form-control" value=detail.price }}
+                        {{input class="form-control detail-price" value=detail.price }}
                       </div>
                     </td>
                     <td class="col-xs-1">
@@ -143,7 +143,7 @@
                         </select>
                       </div>
                     </td>
-                    <td class="col-xs-1 text-right">
+                    <td class="col-xs-1 text-right detail-amount-owed">
                       {{number-format detail.amountOwed}}
                     </td>
                     <td class="col-xs-2">
@@ -161,11 +161,11 @@
               <td>
                 <strong>{{t 'labels.total'}} {{categoryGroup.category}}</strong>
               </td>
-              <td class="text-right">{{number-format categoryGroup.total}}</td>
-              <td class="text-right">{{number-format categoryGroup.discount}}</td>
-              <td class="text-right">{{number-format categoryGroup.nationalInsurance}}</td>
-              <td class="text-right">{{number-format categoryGroup.privateInsurance}}</td>
-              <td class="text-right">{{number-format categoryGroup.amountOwed }}</td>
+              <td class="text-right category-group-total">{{number-format categoryGroup.total}}</td>
+              <td class="text-right category-group-discount">{{number-format categoryGroup.discount}}</td>
+              <td class="text-right category-group-national-insurance">{{number-format categoryGroup.nationalInsurance}}</td>
+              <td class="text-right category-group-private-insurance">{{number-format categoryGroup.privateInsurance}}</td>
+              <td class="text-right category-group-amount-owed">{{number-format categoryGroup.amountOwed }}</td>
               <td></td>
             </tr>
           {{/each}}
@@ -173,11 +173,11 @@
             <td>
               <strong>{{t 'labels.total'}}</strong>
             </td>
-            <td class="text-right">{{number-format model.total}}</td>
-            <td class="text-right">{{number-format model.discount}}</td>
-            <td class="text-right">{{number-format model.nationalInsurance}}</td>
-            <td class="text-right">{{number-format model.privateInsurance}}</td>
-            <td class="text-right">{{number-format model.finalPatientResponsibility}}</td>
+            <td class="text-right total">{{number-format model.total}}</td>
+            <td class="text-right discount">{{number-format model.discount}}</td>
+            <td class="text-right national-insurance">{{number-format model.nationalInsurance}}</td>
+            <td class="text-right private-insurance">{{number-format model.privateInsurance}}</td>
+            <td class="text-right final-patient-responsibility">{{number-format model.finalPatientResponsibility}}</td>
             <td></td>
           </tr>
           <tr>
@@ -185,7 +185,7 @@
               <strong>{{t 'billing.labels.paymentsDeposits'}}</strong>
             </td>
             <td colspan="4"></td>
-            <td class="text-right">-{{number-format model.paidTotal}}</td>
+            <td class="text-right paid-total">-{{number-format model.paidTotal}}</td>
             <td></td>
           </tr>
           <tr>
@@ -193,7 +193,7 @@
               <strong>{{t 'labels.grandTotal'}}</strong>
             </td>
             <td colspan="4"></td>
-            <td class="text-right">{{number-format model.remainingBalance}}</td>
+            <td class="text-right remaining-balance">{{number-format model.remainingBalance}}</td>
             <td></td>
           </tr>
           {{#if model.paymentProfile}}

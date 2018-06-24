@@ -2,6 +2,17 @@ import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import select from 'hospitalrun/tests/helpers/select';
+import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
+import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
+import {
+  createCustomFormForType,
+  attachCustomForm,
+  fillCustomForm,
+  checkCustomFormIsFilledAndReadonly
+} from 'hospitalrun/tests/helpers/scenarios/custom-forms';
 
 const LOCATION = 'Springfield Hospital';
 const EXAMINER = 'Sarah Kearney';
@@ -39,7 +50,7 @@ const opdReportTestCases = {
 moduleForAcceptance('Acceptance | visits');
 
 test('Add admission visit', function(assert) {
-  runWithPouchDump('patient', async function() {
+  return runWithPouchDump('patient', async function() {
     await authenticateUser();
     await addVisit(assert);
     await addAdmissionData(assert);
@@ -52,7 +63,7 @@ test('Add admission visit', function(assert) {
 
 for (let testCase in opdReportTestCases) {
   test(testCase, function(assert) {
-    runWithPouchDump('patient', async function() {
+    return runWithPouchDump('patient', async function() {
       await authenticateUser();
 
       for (let f of (opdReportTestCases[testCase].customForms || [])) {
@@ -70,7 +81,7 @@ for (let testCase in opdReportTestCases) {
 }
 
 test('Edit visit', function(assert) {
-  runWithPouchDump('patient', async function() {
+  return runWithPouchDump('patient', async function() {
     await authenticateUser();
     await visit('/patients');
     assert.equal(currentURL(), '/patients', 'Patient url is correct');
@@ -165,7 +176,7 @@ test('Edit visit', function(assert) {
 });
 
 test('Delete visit', function(assert) {
-  runWithPouchDump('patient', async function() {
+  return runWithPouchDump('patient', async function() {
     await authenticateUser();
     await visit('/patients');
     assert.equal(currentURL(), '/patients', 'Patient url is correct');

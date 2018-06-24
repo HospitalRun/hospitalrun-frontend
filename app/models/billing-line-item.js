@@ -1,6 +1,5 @@
 import { mapBy, sum } from '@ember/object/computed';
 import { debounce } from '@ember/runloop';
-import { computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import NumberFormat from 'hospitalrun/mixins/number-format';
@@ -18,7 +17,7 @@ export default AbstractModel.extend(NumberFormat, {
   /* The individual objects that make up this line item. */
   details: DS.hasMany('line-item-detail', { async: false }),
 
-  amountOwedChanged: computed('discount', 'nationalInsurance', 'privateInsurance', 'total', function() {
+  amountOwedChanged: function() {
     debounce(this, function() {
       let discount = this._getValidNumber(this.get('discount'));
       let nationalInsurance = this._getValidNumber(this.get('nationalInsurance'));
@@ -32,7 +31,7 @@ export default AbstractModel.extend(NumberFormat, {
         this.set('amountOwed', this._numberFormat(amountOwed, true));
       }
     }, 500);
-  }),
+  }.observes('discount', 'nationalInsurance', 'privateInsurance', 'total'),
 
   detailTotals: mapBy('details', 'amountOwed'),
   total: sum('detailTotals'),

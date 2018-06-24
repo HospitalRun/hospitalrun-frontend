@@ -53,7 +53,7 @@
 
             <div class="row">
               {{#if isAdmissionVisit}}
-                {{date-picker model=model property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-4 required"}}
+                {{date-picker model=model property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-4 required test-visit-start"}}
                 {{date-picker model=model property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-4"}}
               {{else}}
                 {{date-picker model=model property="startDate" label=(t "visits.labels.checkInTime") showTime=true class="col-sm-4 required checkin-date"}}

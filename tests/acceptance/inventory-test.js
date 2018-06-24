@@ -1,11 +1,17 @@
 import moment from 'moment';
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import select from 'hospitalrun/tests/helpers/select';
+import selectDate from 'hospitalrun/tests/helpers/select-date';
+import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | inventory');
 
 test('visiting /inventory', function(assert) {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/inventory');
     assert.equal(currentURL(), '/inventory');
@@ -17,7 +23,7 @@ test('visiting /inventory', function(assert) {
 });
 
 test('Adding a new inventory item', (assert) => {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/inventory/edit/new');
     assert.equal(currentURL(), '/inventory/edit/new');
@@ -50,7 +56,7 @@ test('Adding a new inventory item', (assert) => {
 });
 
 test('Items with negative quantites should not be saved', (assert) => {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await authenticateUser();
     await visit('/inventory/edit/new');
     assert.equal(currentURL(), '/inventory/edit/new');
@@ -87,7 +93,7 @@ test('Items with negative quantites should not be saved', (assert) => {
 });
 
 test('Visiting /inventory/barcode', (assert) => {
-  runWithPouchDump('inventory', async function() {
+  return runWithPouchDump('inventory', async function() {
     await authenticateUser();
     await visit('/inventory/listing');
     assert.equal(currentURL(), '/inventory/listing');
@@ -99,7 +105,7 @@ test('Visiting /inventory/barcode', (assert) => {
 });
 
 test('Deleting the last inventory item', (assert) => {
-  runWithPouchDump('inventory', async function() {
+  return runWithPouchDump('inventory', async function() {
     await authenticateUser();
     await visit('/inventory/listing');
     assert.equal(currentURL(), '/inventory/listing');
@@ -116,7 +122,7 @@ test('Deleting the last inventory item', (assert) => {
 });
 
 test('Creating a new inventory request', function(assert) {
-  runWithPouchDump('inventory', async function() {
+  return runWithPouchDump('inventory', async function() {
     await authenticateUser();
     await visit('/inventory/request/new');
     assert.equal(currentURL(), '/inventory/request/new');
@@ -141,7 +147,7 @@ test('Creating a new inventory request', function(assert) {
 });
 
 test('Fulfilling an inventory request', function(assert) {
-  runWithPouchDump('inventory', async function() {
+  return runWithPouchDump('inventory', async function() {
     await authenticateUser();
     await visit('/inventory');
     assert.equal(currentURL(), '/inventory');
@@ -165,7 +171,7 @@ test('Fulfilling an inventory request', function(assert) {
 });
 
 test('Deleting an inventory request', function(assert) {
-  runWithPouchDump('inventory', async function() {
+  return runWithPouchDump('inventory', async function() {
     await authenticateUser();
     await visit('/inventory');
     assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
@@ -183,7 +189,7 @@ test('Deleting an inventory request', function(assert) {
 });
 
 test('User with add_inventory_request and without fulfill_inventory rights should not be able to delete others\' requests', function(assert) {
-  runWithPouchDump('inventory', async function() {
+  return runWithPouchDump('inventory', async function() {
     await authenticateUser({
       name: 'nurse.mgr',
       roles: ['Nurse Manager', 'user'],
@@ -197,7 +203,7 @@ test('User with add_inventory_request and without fulfill_inventory rights shoul
 });
 
 test('Receiving inventory', function(assert) {
-  runWithPouchDump('inventory', async function() {
+  return runWithPouchDump('inventory', async function() {
     await authenticateUser();
     await visit('/inventory/batch/new');
     assert.equal(currentURL(), '/inventory/batch/new');
@@ -220,7 +226,7 @@ test('Receiving inventory', function(assert) {
 });
 
 test('Searching inventory', function(assert) {
-  runWithPouchDump('inventory', async function() {
+  return runWithPouchDump('inventory', async function() {
     await authenticateUser();
     await visit('/inventory');
 
@@ -257,7 +263,7 @@ testSingleDateReportForm('Inventory Valuation');
 
 function testSimpleReportForm(reportName) {
   test(`${reportName} report can be generated`, function(assert) {
-    runWithPouchDump('default', async function() {
+    return runWithPouchDump('default', async function() {
       await authenticateUser();
       await visit('/inventory/reports');
       assert.equal(currentURL(), '/inventory/reports');
@@ -280,7 +286,7 @@ function testSimpleReportForm(reportName) {
 
 function testSingleDateReportForm(reportName) {
   test(`${reportName} report can be generated`, function(assert) {
-    runWithPouchDump('default', async function() {
+    return runWithPouchDump('default', async function() {
       await authenticateUser();
       await visit('/inventory/reports');
       assert.equal(currentURL(), '/inventory/reports');

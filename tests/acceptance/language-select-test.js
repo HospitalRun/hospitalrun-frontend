@@ -1,5 +1,10 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import addOfflineUsersForElectron from 'hospitalrun/tests/helpers/add-offline-users-for-electron';
+import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser, invalidateSession } from 'hospitalrun/tests/helpers/authenticate-user';
 
 import english from 'hospitalrun/locales/en/translations';
 import french from 'hospitalrun/locales/fr/translations';
@@ -8,7 +13,7 @@ import german from 'hospitalrun/locales/de/translations';
 moduleForAcceptance('Acceptance | language dropdown');
 
 test('setting a language preference persists after logout', (assert) => {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await addOfflineUsersForElectron();
 
     await authenticateUser();
@@ -30,7 +35,7 @@ test('setting a language preference persists after logout', (assert) => {
 });
 
 test('different users can have different language preferences on the same browser', (assert) => {
-  runWithPouchDump('default', async function() {
+  return runWithPouchDump('default', async function() {
     await addOfflineUsersForElectron();
 
     await authenticateUser();
