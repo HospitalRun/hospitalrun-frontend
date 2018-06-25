@@ -97,6 +97,8 @@ export default Adapter.extend(CheckForErrors, {
         $and: [{}, { $or: [] }]
       }
     };
+    // filter to only retrieve the specified type of record. relational-pouch may eventually provide
+    // a better way to do this and allow this workaround to be removed
     queryParams.selector.$and[0]._id = {
       '$gt': db.rel.makeDocID({ type: recordTypeName }),
       '$lt': db.rel.makeDocID({ type: recordTypeName, id: {} })
