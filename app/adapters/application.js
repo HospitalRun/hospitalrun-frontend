@@ -94,15 +94,19 @@ export default Adapter.extend(CheckForErrors, {
     let recordTypeName = this.getRecordTypeName(type);
     let queryParams = {
       selector: {
-        $or: []
+        $and: [{}, { $or: [] }]
       }
+    };
+    queryParams.selector.$and[0]._id = {
+      '$gt': db.rel.makeDocID({ type: recordTypeName }),
+      '$lt': db.rel.makeDocID({ type: recordTypeName, id: {} })
     };
     if (query.containsValue && query.containsValue.value) {
       let regexp = new RegExp(query.containsValue.value, 'i');
       query.containsValue.keys.forEach((key) => {
         let subQuery = {};
         subQuery[`data.${key.name}`] = { $regex: regexp };
-        queryParams.selector.$or.push(subQuery);
+        queryParams.selector.$and[1].$or.push(subQuery);
       });
     }
 
