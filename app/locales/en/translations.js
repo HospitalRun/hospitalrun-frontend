@@ -1314,10 +1314,19 @@ export default {
     }
   },
   pricing: {
+    sectionTitle: "Pricing",
     labels: {
       discountAmount: 'Discount Amount',
       discountPercentage: 'Discount Percentage',
       setFee: 'Set Fee'
+    },
+    navigation: {
+      allPricingItems: 'All Pricing Items',
+      imagePricing: 'Imaging Pricing',
+      labPricing: 'Lab Pricing',
+      pricingProfiles: 'Pricing Profiles',
+      procedurePricing: 'Procedure Pricing',
+      wardPricing: 'Ward Pricing'
     }
   },
   print: { invoice: {
