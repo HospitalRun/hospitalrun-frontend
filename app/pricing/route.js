@@ -1,4 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractModuleRoute.extend({
   addCapability: 'add_pricing',
   additionalModels: [{
@@ -16,7 +18,7 @@ export default AbstractModuleRoute.extend({
   }],
   allowSearch: true,
   moduleName: 'pricing',
-  newButtonText: '+ new item',
+  newButtonText: t('buttons.newItem'),
   sectionTitle: 'Pricing',
   subActions: [{
     text: 'All Pricing Items',
