@@ -1,5 +1,4 @@
 export default {
-  languageName: 'Español (Colombiano)',
   admin: {
     address: {
       address1Label: 'Texto direccion 1',
@@ -32,8 +31,10 @@ export default {
         columns: '',
         customForm: '',
         dischargeReportFormType: '',
+        expenseTo: '',
         formName: '',
         formType: '',
+        header: '',
         incidentFormType: '',
         includeOtherOption: '',
         labFormType: '',
@@ -60,6 +61,7 @@ export default {
         editCustomForm: '',
         fields: '',
         formSaved: '',
+        headerValues: '',
         newCustomForm: '',
         radioValues: ''
       }
@@ -162,6 +164,7 @@ export default {
         admitPatient: 'Admitir paciente',
         appointments: 'Citas',
         billing: 'Facturacion',
+        cashier: '',
         completeImaging: 'Completar radiografia',
         completeLab: 'Completar laboratorio',
         defineUserRoles: 'Roles de usuario',
@@ -193,6 +196,7 @@ export default {
         inventory: 'Inventario',
         invoices: 'Facturas',
         labs: 'Laboratorios',
+        listPaidInvoices: '',
         loadDb: 'Cargar base de datos',
         manageIncidents: '',
         medication: 'Medicación',
@@ -205,6 +209,17 @@ export default {
       },
       messages: { roleSaved: 'El {{roleName}} rol ha sido salvado.' },
       titles: { roleSaved: 'Role salvado' }
+    },
+    textReplacements: {
+      createNew: '',
+      existingRepl: '',
+      noMatches: '',
+      pageTitle: '',
+      performExpand: '',
+      possibleExpansions: '',
+      replDesc: '',
+      replaceWith: '',
+      toReplace: ''
     },
     userRoles: 'Roles',
     users: 'Usuarios',
@@ -301,7 +316,12 @@ export default {
       paymentProfile: '',
       paymentsDeposits: '',
       pricingPanelOverrides: '',
-      pricingProfile: ''
+      pricingProfile: '',
+      setFee: ''
+    },
+    messages: {
+      flatDiscountMsg: '',
+      flatFeeMsg: ''
     }
   },
   buttons: {
@@ -329,8 +349,10 @@ export default {
     newRequestPlus: '+ nuevo pedido',
     newUser: 'Nuevo usuario',
     ok: 'Ok',
+    print: '',
     remove: 'Remover',
     returnButton: 'Regresar',
+    review: '',
     search: 'Buscar',
     showAll: '',
     showFewer: '',
@@ -399,7 +421,8 @@ export default {
     titles: { addCustomForm: '' }
   },
   dashboard: {
-    setup: '',
+    needs_user_setup: '',
+    standalone_welcome: '',
     title: 'Que deseas hacer?'
   },
   dates: {
@@ -460,7 +483,10 @@ export default {
     buttons: { newButton: '+ new radiografia' },
     labels: {
       addNewVisit: '--Adicionar nueva visita--',
-      radiologist: 'Radiologo'
+      completedBy: '',
+      radiologist: 'Radiologo',
+      requestedNotes: '',
+      resultNotes: ''
     },
     messages: { noCompleted: 'No de items encontrados.' },
     pageTitle: 'Pedido de radriografia',
@@ -758,6 +784,7 @@ export default {
     address: '',
     age: 'Edad',
     allDay: 'Todo el dia',
+    allItems: '',
     amount: '',
     anesthesia: 'Anestesia',
     assisting: 'Asistencia',
@@ -769,6 +796,7 @@ export default {
     country: '',
     cptcode: 'Codigo CPT',
     creditTo: '',
+    currencySymbol: '',
     date: 'Fecha',
     dateCompleted: 'Fecha completada',
     dateOfBirth: 'Fecha de nacimiento',
@@ -794,6 +822,7 @@ export default {
     fileLoadSuccessful: 'Archivo cargado exitosamente',
     fileName: '',
     fileToLoad: 'Archivo cargado',
+    from: '',
     fulfill: 'Cumplomiento',
     fulfillRequest: 'Pedido de cumplimiento',
     fulfillRequestNow: 'Pedido de cumplimiento ahora',
@@ -811,6 +840,7 @@ export default {
     lookupType: 'Tipo de busqueda',
     medication: 'Medicación',
     name: 'Nombre',
+    newItem: '',
     newUser: 'Nuevo usuario',
     note: '',
     notes: 'Notas',
@@ -842,6 +872,7 @@ export default {
     startTime: 'Hora de inicio',
     status: 'Estado',
     takenBy: '',
+    to: '',
     total: '',
     type: 'Tipo',
     userCanAddNewValue: 'Los usuarios pueden agregar nuevos valores',
@@ -875,6 +906,7 @@ export default {
     requestsTitle: 'Pedido de laboratorio',
     sectionTitle: 'Laboratorios'
   },
+  languageName: 'Español (Colombiano)',
   loading: {
     messages: {
       '0': '',
@@ -900,6 +932,7 @@ export default {
     },
     messages: {
       error: 'Nombre de usuario o clave incorrectos.',
+      offlineError: '',
       signIn: 'por favor ingrese'
     }
   },
@@ -1050,7 +1083,8 @@ export default {
     about: 'Información de HospitalRun',
     actions: {
       login: 'Ingresar',
-      logout: 'Salir'
+      logout: 'Salir',
+      selectLanguage: ''
     },
     administration: 'Administracion',
     billing: 'Facturas',
@@ -1059,6 +1093,7 @@ export default {
     inventory: 'Inventario',
     labs: 'Laboratorio',
     medication: 'Recetas medicas',
+    messages: { logoutFailed: '' },
     patients: 'Pacientes',
     scheduling: '',
     subnav: {
@@ -1069,6 +1104,7 @@ export default {
       appointmentSearch: '',
       appointmentsCalendar: '',
       appointmentsThisWeek: '',
+      cashier: '',
       completed: 'Completado',
       currentIncidents: '',
       customForms: '',
@@ -1081,7 +1117,6 @@ export default {
       items: 'Items',
       loadDB: '',
       lookupLists: 'Lista de busuedas',
-      missedAppointments: '',
       newIncident: '',
       newInvoice: 'Nueva factura',
       newPatient: 'Nuevo paciente',
@@ -1096,12 +1131,14 @@ export default {
       requests: 'Pedidos',
       returnMedication: 'Devolver medicamento',
       scheduleSurgery: '',
+      textReplacements: '',
       theaterSchedule: '',
       "today'sAppointments": '',
       userRoles: 'Roles',
       users: 'Usuarios',
       workflow: ''
-    }
+    },
+    titles: { logoutFailed: '' }
   },
   operationReport: {
     labels: {
@@ -1271,6 +1308,22 @@ export default {
       totalPatientDaysDetailed: '',
       visit: ''
     }
+  },
+  pricing: {
+    labels: {
+      discountAmount: '',
+      discountPercentage: '',
+      setFee: ''
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
   },
   print: { invoice: {
     labels: {

@@ -1,5 +1,4 @@
 export default {
-  languageName: 'Italiano',
   admin: {
     address: {
       address1Label: 'Indirizzo 1 etichetta',
@@ -35,6 +34,7 @@ export default {
         expenseTo: 'Spesa a',
         formName: 'Nome del modulo',
         formType: 'Tipo di modulo',
+        header: '',
         incidentFormType: 'Incidente',
         includeOtherOption: "Includi un'altra opzione",
         labFormType: 'Laboratorio',
@@ -61,6 +61,7 @@ export default {
         editCustomForm: 'Modifica modulo personalizzato',
         fields: 'Campi',
         formSaved: 'Modulo salvato',
+        headerValues: '',
         newCustomForm: 'Nuovo modulo personalizzato',
         radioValues: 'Valori radio'
       }
@@ -212,13 +213,13 @@ export default {
     textReplacements: {
       createNew: 'Crea un nuovo codice breve',
       existingRepl: 'Codici brevi esistenti',
-      replDesc: 'Quando si inserisce testo, questi collegamenti consentono di sostituire una breve sequenza di caratteri con una frase più lunga.',
+      noMatches: "Nessun rimpiazzo corrisponde '{{term}}'",
       pageTitle: 'Shortcodes',
-      toReplace: 'Testo da sostituire',
-      replaceWith: 'Sostituirlo con',
       performExpand: "Premere Invio per sostituire #{{from}} con '{{to}}'",
       possibleExpansions: 'Possibili sostituzioni: {{possible}}',
-      noMatches: "Nessun rimpiazzo corrisponde '{{term}}'"
+      replDesc: 'Quando si inserisce testo, questi collegamenti consentono di sostituire una breve sequenza di caratteri con una frase più lunga.',
+      replaceWith: 'Sostituirlo con',
+      toReplace: 'Testo da sostituire'
     },
     userRoles: 'Ruoli utente',
     users: 'Utenti',
@@ -319,8 +320,8 @@ export default {
       setFee: 'Imposta tariffa'
     },
     messages: {
-      flatFeeMsg: "C'è una tassa piana per la responsabilità finanziaria del paziente di {{currency}} {{setFee}}.",
-      flatDiscountMsg: 'Esiste un importo di sconto piatto applicato alla responsabilità finanziaria del paziente di {{currency}} {{discountAmount}}.'
+      flatDiscountMsg: 'Esiste un importo di sconto piatto applicato alla responsabilità finanziaria del paziente di {{currency}} {{discountAmount}}.',
+      flatFeeMsg: "C'è una tassa piana per la responsabilità finanziaria del paziente di {{currency}} {{setFee}}."
     }
   },
   buttons: {
@@ -421,7 +422,7 @@ export default {
   },
   dashboard: {
     needs_user_setup: 'Si consiglia di impostare un account utente.',
-    standalone_welcome: '<h4> Grazie per aver scaricato HospitalRun </h4> <p> Stai eseguendo HospitalRun in modalità stand-alone. Questa modalità consente di supportare più utenti in un\'unica istanza desktop / laptop di HospitalRun. Questo è ideale per: </li> <li> Valutazione di HospitalRun per un\'eventuale distribuzione del server. </li> <li> Utilizzando la piattaforma per supportare una clinica / un\'istanza dove è sufficiente un\'istanza singola. </Li> </ul> <p> Se stai pensando ad un\'installazione multi-dispositivo di HospitalRun, siamo <a href="https://github.com/HospitalRun/hospitalrun-frontend/issues/1048" target="_blank"> lavorando sulle funzionalità </ a> che ti permetterà di "graduare" da questa singola istanza in una distribuzione tradizionale basata su cloud / server. </p>',
+    standalone_welcome: "<h4> Grazie per aver scaricato HospitalRun </h4> <p> Stai eseguendo HospitalRun in modalità stand-alone. Questa modalità consente di supportare più utenti in un'unica istanza desktop / laptop di HospitalRun. Questo è ideale per: </li> <li> Valutazione di HospitalRun per un'eventuale distribuzione del server. </li> <li> Utilizzando la piattaforma per supportare una clinica / un'istanza dove è sufficiente un'istanza singola. </Li> </ul> <p> Se stai pensando ad un'installazione multi-dispositivo di HospitalRun, siamo <a href=\"https://github.com/HospitalRun/hospitalrun-frontend/issues/1048\" target=\"_blank\"> lavorando sulle funzionalità </ a> che ti permetterà di \"graduare\" da questa singola istanza in una distribuzione tradizionale basata su cloud / server. </p>",
     title: 'Benvenuti in HospitalRun!'
   },
   dates: {
@@ -482,10 +483,10 @@ export default {
     buttons: { newButton: '+ nuove immagini' },
     labels: {
       addNewVisit: '--Aggiungi nuova visita--',
+      completedBy: 'Completato da',
       radiologist: 'Radiologo',
-      resultNotes: 'Note sul risultato',
       requestedNotes: 'Note richieste',
-      completedBy: 'Completato da'
+      resultNotes: 'Note sul risultato'
     },
     messages: { noCompleted: 'Non sono stati trovati elementi completi.' },
     pageTitle: 'Richieste di immagini',
@@ -839,8 +840,8 @@ export default {
     lookupType: 'Tipo di ricerca',
     medication: 'Medicazione',
     name: 'Nome',
-    newUser: 'Nuovo utente',
     newItem: '+ nuovo elemento',
+    newUser: 'Nuovo utente',
     note: 'Nota',
     notes: 'Gli appunti',
     number: 'Numero',
@@ -905,17 +906,7 @@ export default {
     requestsTitle: 'Richieste del laboratorio',
     sectionTitle: 'Labs'
   },
-  languages: {
-    en: 'Inglese',
-    fr: 'Francese',
-    es: 'Spagnolo',
-    de: 'Tedesco',
-    ru: 'Russo',
-    'es-co': 'Spagnolo (Colombiano)',
-    'pt-br': 'Portoghese (Brasiliano)',
-    tr: 'Turco',
-    ur: 'Urdu'
-  },
+  languageName: 'Italiano',
   loading: {
     messages: {
       '0': "La velocità massima di volo della farfalla è di 12 miglia all'ora. Alcune falene possono volare 25 miglia all'ora!",
@@ -1102,9 +1093,7 @@ export default {
     inventory: 'Inventario',
     labs: 'Labs',
     medication: 'Medicazione',
-    messages: {
-      logoutFailed: 'Impossibile disconnettersi in questo momento. Logout non è disponibile quando è offline.'
-    },
+    messages: { logoutFailed: 'Impossibile disconnettersi in questo momento. Logout non è disponibile quando è offline.' },
     patients: 'Pazienti',
     scheduling: 'Programmazione',
     subnav: {
@@ -1123,6 +1112,7 @@ export default {
       history: 'Storia',
       incidentCategories: 'Categorie di incidenti',
       inventoryReceived: 'Inventario ricevuto',
+      inventoryReceivedPlus: '',
       invoices: 'Fatture',
       items: 'Elementi',
       loadDB: 'Carica DB',
@@ -1148,9 +1138,7 @@ export default {
       users: 'Utenti',
       workflow: 'Flusso di lavoro'
     },
-    titles: {
-      logoutFailed: 'Logout non riuscito'
-    }
+    titles: { logoutFailed: 'Logout non riuscito' }
   },
   operationReport: {
     labels: {
@@ -1326,7 +1314,16 @@ export default {
       discountAmount: 'Totale sconto',
       discountPercentage: 'Percentuale di sconto',
       setFee: 'Imposta tariffa'
-    }
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
   },
   print: { invoice: {
     labels: {
@@ -1482,16 +1479,14 @@ export default {
       visitSaved: 'Visita salvata'
     }
   },
-  vitals: {
-    labels: {
-      dateRecorded: 'Data registrata',
-      dbp: 'DBP',
-      heartRate: 'Frequenza cardiaca',
-      height: 'Altezza',
-      respiratoryRate: 'Frequenza respiratoria',
-      sbp: 'SBP',
-      temperature: 'Temperatura',
-      weight: 'Peso'
-    }
-  }
+  vitals: { labels: {
+    dateRecorded: 'Data registrata',
+    dbp: 'DBP',
+    heartRate: 'Frequenza cardiaca',
+    height: 'Altezza',
+    respiratoryRate: 'Frequenza respiratoria',
+    sbp: 'SBP',
+    temperature: 'Temperatura',
+    weight: 'Peso'
+  } }
 };

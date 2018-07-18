@@ -1,5 +1,4 @@
 export default {
-  languageName: '繁體中文',
   admin: {
     address: {
       address1Label: '地址標籤1',
@@ -214,13 +213,13 @@ export default {
     textReplacements: {
       createNew: '新增簡碼',
       existingRepl: '現有簡碼',
-      replDesc: '輸入文字時，這些快捷鍵讓您短的字句變成長的語句.',
+      noMatches: "'{{term}}' 沒有相對應的替代品",
       pageTitle: '簡碼',
-      toReplace: '要取代之文字',
-      replaceWith: '用 ... 來取代',
       performExpand: "按 Enter 來用 '{{to}}' 取代 #{{from}}",
       possibleExpansions: '{{possible}} 可能的替代品',
-      noMatches: "'{{term}}' 沒有相對應的替代品"
+      replDesc: '輸入文字時，這些快捷鍵讓您短的字句變成長的語句.',
+      replaceWith: '用 ... 來取代',
+      toReplace: '要取代之文字'
     },
     userRoles: '用戶角色',
     users: '用戶',
@@ -321,8 +320,8 @@ export default {
       setFee: '設定費用'
     },
     messages: {
-      flatFeeMsg: '患者負責 {{currency}}{{setFee}} 的基本費用.',
-      flatDiscountMsg: '患者負責的基本費用已包含 {{currency}}{{discountAmount}} 的折扣.'
+      flatDiscountMsg: '患者負責的基本費用已包含 {{currency}}{{discountAmount}} 的折扣.',
+      flatFeeMsg: '患者負責 {{currency}}{{setFee}} 的基本費用.'
     }
   },
   buttons: {
@@ -423,7 +422,7 @@ export default {
   },
   dashboard: {
     needs_user_setup: '我們建議您建立使用者帳戶',
-    standalone_welcome: '<h4>感謝您下載 HospitalRun. </h4><p>您正在使用 HospitalRun 的獨立模式. 這個模式支援多個使用者在一台電腦. 這對於下列是理想的:</p><ul><li>評估 HospitalRun 以開發伺服器.</li><li>使用平台來支援僅需單一設備(電腦)的診所.</li></ul><p>如果您\'考慮架構一個數台設備(電腦)的HospitalRun, 我們 <a href="https://github.com/HospitalRun/hospitalrun-frontend/issues/1048" target="_blank">正在試著開發功能</a> 讓您從這單一設置升級到一般的雲端/伺服器設置.</p>',
+    standalone_welcome: "<h4>感謝您下載 HospitalRun. </h4><p>您正在使用 HospitalRun 的獨立模式. 這個模式支援多個使用者在一台電腦. 這對於下列是理想的:</p><ul><li>評估 HospitalRun 以開發伺服器.</li><li>使用平台來支援僅需單一設備(電腦)的診所.</li></ul><p>如果您'考慮架構一個數台設備(電腦)的HospitalRun, 我們 <a href=\"https://github.com/HospitalRun/hospitalrun-frontend/issues/1048\" target=\"_blank\">正在試著開發功能</a> 讓您從這單一設置升級到一般的雲端/伺服器設置.</p>",
     title: '歡迎來到 HospitalRun!'
   },
   dates: {
@@ -484,10 +483,10 @@ export default {
     buttons: { newButton: '+ 新增影像' },
     labels: {
       addNewVisit: '--新增探訪--',
+      completedBy: '完成者',
       radiologist: '放射科醫師',
-      resultNotes: '結果筆記',
       requestedNotes: '要求的筆記',
-      completedBy: '完成者'
+      resultNotes: '結果筆記'
     },
     messages: { noCompleted: '找不到已完成的項目' },
     pageTitle: '影像要求',
@@ -841,8 +840,8 @@ export default {
     lookupType: '查找種類',
     medication: '藥物',
     name: '名稱',
-    newUser: '新增使用者',
     newItem: '+ 新增項目',
+    newUser: '新增使用者',
     note: '筆記',
     notes: '筆記',
     number: '數字',
@@ -907,6 +906,7 @@ export default {
     requestsTitle: '測試要求',
     sectionTitle: '測試'
   },
+  languageName: '繁體中文',
   loading: {
     messages: {
       '0': '飛行最快的蝴蝶可以達到每小時12英里. 有些飛蛾能達到每小時25英里的飛行速度!',
@@ -1093,9 +1093,7 @@ export default {
     inventory: '庫存',
     labs: '測試',
     medication: '藥物',
-    messages: {
-      logoutFailed: '現在無法登出. 離線時無法登出.'
-    },
+    messages: { logoutFailed: '現在無法登出. 離線時無法登出.' },
     patients: '患者',
     scheduling: '調度',
     subnav: {
@@ -1140,9 +1138,7 @@ export default {
       users: '使用者',
       workflow: '工作流程'
     },
-    titles: {
-      logoutFailed: '登出失敗'
-    }
+    titles: { logoutFailed: '登出失敗' }
   },
   operationReport: {
     labels: {
@@ -1318,7 +1314,16 @@ export default {
       discountAmount: '折扣金額',
       discountPercentage: '折扣百分比',
       setFee: '設定費用'
-    }
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
   },
   print: { invoice: {
     labels: {
@@ -1474,16 +1479,14 @@ export default {
       visitSaved: '探訪已儲存'
     }
   },
-  vitals: {
-    labels: {
-      dateRecorded: '紀錄之日期',
-      dbp: '出生年月日',
-      heartRate: '心率',
-      height: '身高',
-      respiratoryRate: '呼吸頻率',
-      sbp: 'SBP',
-      temperature: '體溫',
-      weight: '體重'
-    }
-  }
+  vitals: { labels: {
+    dateRecorded: '紀錄之日期',
+    dbp: '出生年月日',
+    heartRate: '心率',
+    height: '身高',
+    respiratoryRate: '呼吸頻率',
+    sbp: 'SBP',
+    temperature: '體溫',
+    weight: '體重'
+  } }
 };

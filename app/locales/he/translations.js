@@ -1,5 +1,4 @@
 export default {
-  languageName: 'עברית',
   admin: {
     address: {
       address1Label: 'כתובת 1 תווית',
@@ -75,13 +74,9 @@ export default {
       headerLine2: 'שורת כותרת 2',
       headerLine3: 'שורת כותרת 3',
       logoURL: 'כתובת url של לוגו',
-      messages: {
-        headerSaved: 'האפשרויות כותרת נשמרו'
-      },
+      messages: { headerSaved: 'האפשרויות כותרת נשמרו' },
       newTitle: 'אפשרויות כותרת',
-      titles: {
-        optionsSaved: 'אפשרויות הציל'
-      }
+      titles: { optionsSaved: 'אפשרויות הציל' }
     },
     loadDb: 'לטעון DB',
     loaddb: {
@@ -108,15 +103,13 @@ export default {
       countryList: 'מדינות',
       cptCodeList: 'קודי CPT',
       diagnosisList: 'אבחנות',
-      edit: {
-        template: {
-          addTitle: 'הוסף ערך',
-          editTitle: 'עריכת ערך',
-          labelTitle: 'ערך',
-          updateButtonTextAdd: 'להוסיף',
-          updateButtonTextUpdate: 'עדכון'
-        }
-      },
+      edit: { template: {
+        addTitle: 'הוסף ערך',
+        editTitle: 'עריכת ערך',
+        labelTitle: 'ערך',
+        updateButtonTextAdd: 'להוסיף',
+        updateButtonTextUpdate: 'עדכון'
+      } },
       expenseAccountList: 'חשבונות ההוצאות',
       imagingPricingTypes: 'סוגי תמחור הדמיה',
       incidentDepartments: 'תקרית מחלקות',
@@ -129,9 +122,7 @@ export default {
       procedureLocations: 'נהלים מיקומים',
       procedurePricingTypes: 'הליך תמחור סוגים',
       radiologists: 'רדיולוגים',
-      titles: {
-        deleteLookupValue: 'מחיקת הערך'
-      },
+      titles: { deleteLookupValue: 'מחיקת הערך' },
       unitTypes: 'יחידת סוגים',
       vendorList: 'הספק',
       visitLocationList: 'בקרו במקומות',
@@ -216,23 +207,19 @@ export default {
         updateConfig: 'תצורות עדכון',
         visits: 'ביקורים'
       },
-      messages: {
-        roleSaved: 'התפקיד {{roleName}} נשמרה.'
-      },
-      titles: {
-        roleSaved: 'תפקיד הציל'
-      }
+      messages: { roleSaved: 'התפקיד {{roleName}} נשמרה.' },
+      titles: { roleSaved: 'תפקיד הציל' }
     },
     textReplacements: {
       createNew: 'ליצור shortcode חדש',
       existingRepl: 'קיימים בקודי קיצור',
-      replDesc: 'בעת הזנת טקסט, קיצורי דרך אלה מאפשרים לך להחליף סדרה קצרה של תווים עם ביטוי ארוך יותר.',
+      noMatches: 'אין החלפות להתאים "{{המונח}}"',
       pageTitle: 'בקודי קיצור',
-      toReplace: 'טקסט כדי להחליף',
-      replaceWith: 'החלף',
-      performExpand: 'הקש Enter כדי להחליף #{{מ}} \'{{עד}}\'',
+      performExpand: "הקש Enter כדי להחליף #{{מ}} '{{עד}}'",
       possibleExpansions: 'תחליפים אפשריים: {{אפשרי}}',
-      noMatches: 'אין החלפות להתאים "{{המונח}}"'
+      replDesc: 'בעת הזנת טקסט, קיצורי דרך אלה מאפשרים לך להחליף סדרה קצרה של תווים עם ביטוי ארוך יותר.',
+      replaceWith: 'החלף',
+      toReplace: 'טקסט כדי להחליף'
     },
     userRoles: 'תפקידי משתמשים',
     users: 'משתמשים',
@@ -243,25 +230,19 @@ export default {
         initial: 'הראשונית',
         visitType: 'סוג הביקור'
       },
-      titles: {
-        visitForms: 'בקר טפסים'
-      }
+      titles: { visitForms: 'בקר טפסים' }
     },
     workflow: {
       admissionDepositLabel: 'דמי כניסה: הפקדה',
       clinicPrepaymentLabel: 'מרפאת תשלום מראש נדרש',
       editTitle: 'אפשרויות של זרימת עבודה',
       followupPrepaymentLabel: 'עידכון תשלום מראש נדרש',
-      messages: {
-        optionsSaved: 'האפשרויות זרימת העבודה נשמרו'
-      },
+      messages: { optionsSaved: 'האפשרויות זרימת העבודה נשמרו' },
       newTitle: 'אפשרויות של זרימת עבודה',
       outpatientImagingLabel: 'אשפוז הדמיה תשלום מראש נדרש',
       outpatientLabLabel: 'אשפוז מעבדה תשלום מראש נדרש',
       outpatientMedicationLabel: 'אשפוז תרופות תשלום מראש נדרש',
-      titles: {
-        optionsSaved: 'אפשרויות הציל'
-      },
+      titles: { optionsSaved: 'אפשרויות הציל' },
       workflowLabel: 'זרימת עבודה'
     }
   },
@@ -272,9 +253,7 @@ export default {
     warningExclamation: 'אזהרה!!!'
   },
   allergies: {
-    buttons: {
-      addAllergy: 'להוסיף אלרגיה'
-    },
+    buttons: { addAllergy: 'להוסיף אלרגיה' },
     labels: {
       allergyName: 'שם',
       patientAllergy: 'אלרגיות החולה'
@@ -285,12 +264,8 @@ export default {
     }
   },
   application: {
-    messages: {
-      sessionExpired: 'ההפעלה שלך פגה.  אנא התחבר כדי להמשיך.'
-    },
-    titles: {
-      sessionExpired: 'ההפעלה פג'
-    }
+    messages: { sessionExpired: 'ההפעלה שלך פגה.  אנא התחבר כדי להמשיך.' },
+    titles: { sessionExpired: 'ההפעלה פג' }
   },
   appointments: {
     buttons: {
@@ -345,8 +320,8 @@ export default {
       setFee: 'תשלום קבוע'
     },
     messages: {
-      flatFeeMsg: 'יש תשלום קבוע עבור המטופל האחריות הכספית של {{מטבע}} {{setFee}}.',
-      flatDiscountMsg: 'יש כמות הנחה שטוח המוחל על אחריות פיננסית החולה {{מטבע}} {{discountAmount}}.'
+      flatDiscountMsg: 'יש כמות הנחה שטוח המוחל על אחריות פיננסית החולה {{מטבע}} {{discountAmount}}.',
+      flatFeeMsg: 'יש תשלום קבוע עבור המטופל האחריות הכספית של {{מטבע}} {{setFee}}.'
     }
   },
   buttons: {
@@ -361,12 +336,12 @@ export default {
     clear: 'ברור',
     close: 'סגור',
     complete: 'להשלים',
-    delete: 'מחק',
+    'delete': 'מחק',
     dispense: 'מדבקות/ברקודים',
     edit: 'עריכה',
     filter: 'מסנן',
     fulfill: 'למלא',
-    import: 'ייבוא',
+    'import': 'ייבוא',
     loadFile: 'טעינת קובץ',
     newItem: '+ פריט חדש',
     newNote: 'הערה חדשה',
@@ -384,35 +359,19 @@ export default {
     update: 'עדכון'
   },
   components: {
-    chargesByTypeTab: {
-      charges: 'חיובים'
-    },
-    customFormManager: {
-      buttons: {
-        addForm: 'הוסף טופס'
-      }
-    },
+    chargesByTypeTab: { charges: 'חיובים' },
+    customFormManager: { buttons: { addForm: 'הוסף טופס' } },
     dateTimePicker: {
       amHour: '{{שעה}} AM',
       midnight: 'חצות',
       noon: 'בצהריים',
       pmHour: '{{שעה}} PM'
     },
-    imageUpload: {
-      messages: {
-        selectValidImageFile: 'נא בחר קובץ תמונה תקף.'
-      }
-    },
+    imageUpload: { messages: { selectValidImageFile: 'נא בחר קובץ תמונה תקף.' } },
     operativeProcedures: {
-      buttons: {
-        addProcedure: 'להוסיף שגרת'
-      },
-      labels: {
-        procedure: 'הליך'
-      },
-      titles: {
-        procedures: 'נהלים'
-      }
+      buttons: { addProcedure: 'להוסיף שגרת' },
+      labels: { procedure: 'הליך' },
+      titles: { procedures: 'נהלים' }
     },
     patientOrders: {
       buttons: {
@@ -427,21 +386,13 @@ export default {
         orderType: 'טיפוס סדר'
       }
     },
-    priceList: {
-      charges: 'חיובים {{pricingType}}'
-    },
-    quantityCalc: {
-      result: '{{targetUnit}} סה כ: {{מחושב}}'
-    },
+    priceList: { charges: 'חיובים {{pricingType}}' },
+    quantityCalc: { result: '{{targetUnit}} סה כ: {{מחושב}}' },
     quantityConv: {
       conversion: 'מה מכיל 1 {{שם}}?',
       unit: 'יחידה'
     },
-    sortableColumn: {
-      labels: {
-        selectAll: '(בחר הכל)'
-      }
-    },
+    sortableColumn: { labels: { selectAll: '(בחר הכל)' } },
     takePhoto: {
       camera: 'מצלמה',
       how: 'כיצד ברצונך להוסיף תמונה?',
@@ -459,23 +410,15 @@ export default {
         date: 'תאריך',
         location: 'מיקום',
         type: 'סוג',
-        with: 'עם'
+        'with': 'עם'
       },
-      titles: {
-        upcomingAppointments: 'פגישות עתידיות'
-      }
+      titles: { upcomingAppointments: 'פגישות עתידיות' }
     }
   },
   customForms: {
-    buttons: {
-      addForm: 'הוסף טופס'
-    },
-    labels: {
-      formToAdd: 'טופס להוספת'
-    },
-    titles: {
-      addCustomForm: 'הוסף טופס מותאם אישית'
-    }
+    buttons: { addForm: 'הוסף טופס' },
+    labels: { formToAdd: 'טופס להוספת' },
+    titles: { addCustomForm: 'הוסף טופס מותאם אישית' }
   },
   dashboard: {
     needs_user_setup: 'אנו ממליצים להגדיר חשבון משתמש.',
@@ -483,13 +426,13 @@ export default {
     title: 'ברוכים הבאים HospitalRun!'
   },
   dates: {
-    long: '{{שנה}} בן חודשים {{חודשים}} {{בימים}} בימים',
+    'long': '{{שנה}} בן חודשים {{חודשים}} {{בימים}} בימים',
     longOmitDays: 'בן {{שנה}} {{חודשים}} חודשים',
     longOmitDaysPlural: 'שנים {{שנה}} {{חודשים}} חודשים',
     longOmitDaysYears: 'חודשים {{חודשים}}',
     longOmitYears: 'חודשים {{חודשים}} {{בימים}} בימים',
     longPlural: '{{שנים}} שנים חודשים {{חודשים}} {{בימים}} בימים',
-    short: 'y {{שנה}} {{חודשים}} ז יח {{ימים}}',
+    'short': 'y {{שנה}} {{חודשים}} ז יח {{ימים}}',
     shortOmitYears: 'ז {{חודשים}} {{ימים}} d'
   },
   diagnosis: {
@@ -529,9 +472,7 @@ export default {
     tooShort: 'הוא קצר מדי (המינימום הוא {{ספירת}} תווים)',
     wrongLength: 'הוא אורך הלא נכון (צריך להיות תווים {{ספירת}})'
   },
-  headings: {
-    chargedItems: 'פריטים טעון'
-  },
+  headings: { chargedItems: 'פריטים טעון' },
   imaging: {
     alerts: {
       completedMessage: 'הבקשה ההדמיה הושלמה.',
@@ -539,19 +480,15 @@ export default {
       savedMessage: 'הבקשה הדמיה נשמרה.',
       savedTitle: 'הדמיה בקשה הציל'
     },
-    buttons: {
-      newButton: '+ הדמיה חדש'
-    },
+    buttons: { newButton: '+ הדמיה חדש' },
     labels: {
       addNewVisit: '-להוסיף ביקור חדש...',
+      completedBy: 'הושלמה על ידי',
       radiologist: 'רדיולוג',
-      resultNotes: 'תוצאה הערות',
       requestedNotes: 'ביקש הערות',
-      completedBy: 'הושלמה על ידי'
+      resultNotes: 'תוצאה הערות'
     },
-    messages: {
-      noCompleted: 'לא נמצאו פריטים שהושלמו.'
-    },
+    messages: { noCompleted: 'לא נמצאו פריטים שהושלמו.' },
     pageTitle: 'בקשות הדמיה',
     sectionTitle: 'הדמיה',
     titles: {
@@ -566,10 +503,10 @@ export default {
       addForm: '+ הוסף טופס',
       addItem: 'הוסף פריט',
       cancel: 'ביטול',
-      delete: 'מחק',
+      'delete': 'מחק',
       download: 'להורדה',
       edit: 'עריכה',
-      export: 'דוח ייצוא',
+      'export': 'דוח ייצוא',
       generateRep: 'דוח',
       newAttachment: '+ קובץ מצורף חדש',
       newCategory: '+ קטגוריה חדשה',
@@ -782,7 +719,7 @@ export default {
       expenseDetail: 'הוצאות מפורטת',
       expenseSum: 'סיכום הוצאות',
       expiration: 'תאריך תפוגה',
-      export: 'דוח ייצוא',
+      'export': 'דוח ייצוא',
       fields: 'שדות כדי לכלול',
       finance: 'האוצר סיכום',
       generate: 'דוח',
@@ -866,7 +803,7 @@ export default {
     dateOfBirthShort: 'דאב',
     datePaid: 'תאריך תשלום',
     dateRequested: 'התאריך המבוקש',
-    delete: 'מחק',
+    'delete': 'מחק',
     deleteRequest: 'מחיקת הבקשה',
     deleteUser: 'מחיקת משתמש',
     department: 'המחלקה',
@@ -903,8 +840,8 @@ export default {
     lookupType: 'סוג בדיקה',
     medication: 'תרופות',
     name: 'שם',
-    newUser: 'משתמש חדש',
     newItem: '+ פריט חדש',
+    newUser: 'משתמש חדש',
     note: 'הערה',
     notes: 'הערות',
     number: 'מספר',
@@ -943,7 +880,7 @@ export default {
     value: 'ערך',
     view: 'תצוגה',
     visit: 'לבקר',
-    with: 'עם'
+    'with': 'עם'
   },
   labs: {
     alerts: {
@@ -952,9 +889,7 @@ export default {
       requestSavedMessage: 'הבקשה נשמרה.',
       requestSavedTitle: 'הציל את הבקשה'
     },
-    buttons: {
-      newButton: '+ מעבדה חדשה'
-    },
+    buttons: { newButton: '+ מעבדה חדשה' },
     completedTitle: 'מעבדות שהושלמו',
     deleteTitle: 'מחיקת הבקשה',
     editTitle: 'ערוך את הבקשה',
@@ -971,11 +906,23 @@ export default {
     requestsTitle: 'מעבדת בקשות',
     sectionTitle: 'מעבדות'
   },
+  languageName: 'עברית',
   loading: {
-    messages: [',מהירות טיסה פרפר העליונה היא 12 קמ ש. עש כמה יכול לעוף 25 קמ ש!', ',ינשופים הם הציפורים היחיד שיכול לראות את הצבע הכחול.', ',לחתולים יש מעל 100 צלילים; לכלבים יש רק 10.', ',בני האדם להשתמש סך של 72 שרירים שונים בנאום.', ',יותר מ-1,000 שפות מדוברות ביבשת אפריקה.', ',Erythrophobe היא מישהי מסמיקה בקלות.', ',הפוביה הנפוצה ביותר בעולם הוא odynophobia אשר הוא החשש מפני הכאב.', ',הגוף שלך משתמשת השרירים 300 כדי לאזן את עצמה. כשאת עומדת עדיין.', ',צפרדעים מסויימים יכול להיות קפוא אבן ואז הקרת ולהמשיך לחיות.', ',העיניים שלנו הם תמיד באותו גודל מלידה, אבל האף והאוזניים שלנו לא מפסיקות לגדול.', ',הלשון שלך הוא השריר היחיד בגוף מחובר בקצה אחד בלבד.', ',גמלים יש שלושה העפעפיים כדי להגן על עצמם מפני השבה חול.'],
-    progressBar: {
-      progress: '{{progressBarValue}} % ביצוע'
-    }
+    messages: {
+      '0': ',מהירות טיסה פרפר העליונה היא 12 קמ ש. עש כמה יכול לעוף 25 קמ ש!',
+      '1': ',ינשופים הם הציפורים היחיד שיכול לראות את הצבע הכחול.',
+      '2': ',לחתולים יש מעל 100 צלילים; לכלבים יש רק 10.',
+      '3': ',בני האדם להשתמש סך של 72 שרירים שונים בנאום.',
+      '4': ',יותר מ-1,000 שפות מדוברות ביבשת אפריקה.',
+      '5': ',Erythrophobe היא מישהי מסמיקה בקלות.',
+      '6': ',הפוביה הנפוצה ביותר בעולם הוא odynophobia אשר הוא החשש מפני הכאב.',
+      '7': ',הגוף שלך משתמשת השרירים 300 כדי לאזן את עצמה. כשאת עומדת עדיין.',
+      '8': ',צפרדעים מסויימים יכול להיות קפוא אבן ואז הקרת ולהמשיך לחיות.',
+      '9': ',העיניים שלנו הם תמיד באותו גודל מלידה, אבל האף והאוזניים שלנו לא מפסיקות לגדול.',
+      '10': ',הלשון שלך הוא השריר היחיד בגוף מחובר בקצה אחד בלבד.',
+      '11': ',גמלים יש שלושה העפעפיים כדי להגן על עצמם מפני השבה חול.'
+    },
+    progressBar: { progress: '{{progressBarValue}} % ביצוע' }
   },
   login: {
     labels: {
@@ -1014,9 +961,7 @@ export default {
       returnLocation: 'סניף החזרה',
       returnReason: 'להחזיר את הסיבה/הערות'
     },
-    messages: {
-      createNew: 'ליצור בקשה תרופה חדשה?'
-    },
+    messages: { createNew: 'ליצור בקשה תרופה חדשה?' },
     pageTitle: 'בקשות תרופות',
     returnMedication: 'להחזיר את התרופה',
     sectionTitle: 'תרופות',
@@ -1029,7 +974,7 @@ export default {
   messages: {
     createNewRecord: 'יצירת רשומה חדשה?',
     createNewUser: 'ליצור משתמש חדש?',
-    delete: 'האם אתה בטוח שברצונך למחוק את {{שם}}?',
+    'delete': 'האם אתה בטוח שברצונך למחוק את {{שם}}?',
     delete_plural: 'האם אתה בטוח שברצונך למחוק את {{השם}}?',
     delete_singular: 'האם אתה בטוח שברצונך למחוק את {{השם}}?',
     forAuthorizedPersons: 'דו ח זה הוא עבור אנשים מורשים בלבד.',
@@ -1066,18 +1011,14 @@ export default {
         singular: 'פגישה'
       }
     },
-    attachment: {
-      names: {
-        plural: 'קבצים מצורפים',
-        singular: 'קובץ מצורף'
-      }
-    },
-    form: {
-      names: {
-        plural: 'טפסים',
-        singular: 'טופס'
-      }
-    },
+    attachment: { names: {
+      plural: 'קבצים מצורפים',
+      singular: 'קובץ מצורף'
+    } },
+    form: { names: {
+      plural: 'טפסים',
+      singular: 'טופס'
+    } },
     imaging: {
       names: 'הדמיה',
       request: {
@@ -1085,18 +1026,14 @@ export default {
         singular: 'בקשה הדמיה'
       }
     },
-    incident: {
-      names: {
-        plural: 'אירועים',
-        singular: 'תקרית'
-      }
-    },
-    item: {
-      names: {
-        plural: 'פריטים',
-        singular: 'פריט'
-      }
-    },
+    incident: { names: {
+      plural: 'אירועים',
+      singular: 'תקרית'
+    } },
+    item: { names: {
+      plural: 'פריטים',
+      singular: 'פריט'
+    } },
     lab: {
       names: {
         plural: 'מעבדות',
@@ -1117,44 +1054,30 @@ export default {
         singular: 'בקשת תרופה'
       }
     },
-    note: {
-      names: {
-        plural: 'הערות',
-        singular: 'הערה'
-      }
-    },
+    note: { names: {
+      plural: 'הערות',
+      singular: 'הערה'
+    } },
     patient: {
-      labels: {
-        name: 'שם'
-      },
-      names: {
-        singular: 'החולה'
-      }
+      labels: { name: 'שם' },
+      names: { singular: 'החולה' }
     },
-    procedure: {
-      names: {
-        plural: 'נהלים',
-        singular: 'הליך'
-      }
-    },
-    user: {
-      names: {
-        plural: 'משתמשים',
-        singular: 'המשתמש'
-      }
-    },
-    visit: {
-      names: {
-        plural: 'ביקורים',
-        singular: 'לבקר'
-      }
-    },
-    vital: {
-      names: {
-        plural: '. סימנים חיוניים',
-        singular: 'חיוני'
-      }
-    }
+    procedure: { names: {
+      plural: 'נהלים',
+      singular: 'הליך'
+    } },
+    user: { names: {
+      plural: 'משתמשים',
+      singular: 'המשתמש'
+    } },
+    visit: { names: {
+      plural: 'ביקורים',
+      singular: 'לבקר'
+    } },
+    vital: { names: {
+      plural: '. סימנים חיוניים',
+      singular: 'חיוני'
+    } }
   },
   navigation: {
     about: 'אודות HospitalRun',
@@ -1170,15 +1093,13 @@ export default {
     inventory: 'מלאי',
     labs: 'מעבדות',
     medication: 'תרופות',
-    messages: {
-      logoutFailed: 'יכול לא התנתק בשלב זה.  יציאה אינה זמינה בעת במצב לא מקוון.'
-    },
+    messages: { logoutFailed: 'יכול לא התנתק בשלב זה.  יציאה אינה זמינה בעת במצב לא מקוון.' },
     patients: 'חולים',
     scheduling: 'תזמון',
     subnav: {
       actions: 'פעולות',
       addAppointment: 'הוספת מינוי',
-      addressFields: 'שדות \' כתובת \'',
+      addressFields: "שדות ' כתובת '",
       admittedPatients: 'חולים הודה',
       appointmentSearch: 'חיפוש פגישה',
       appointmentsCalendar: 'לוח שנה של פגישות',
@@ -1217,9 +1138,7 @@ export default {
       users: 'משתמשים',
       workflow: 'זרימת עבודה'
     },
-    titles: {
-      logoutFailed: 'יציאה נכשלה'
-    }
+    titles: { logoutFailed: 'יציאה נכשלה' }
   },
   operationReport: {
     labels: {
@@ -1232,9 +1151,7 @@ export default {
       surgeon: 'מנתח',
       surgeryDate: 'תאריך הניתוח'
     },
-    messages: {
-      reportSaved: 'הדו ח הפעולה נשמרה.'
-    },
+    messages: { reportSaved: 'הדו ח הפעולה נשמרה.' },
     titles: {
       editTitle: 'עריכת דוח פעולה',
       newTitle: 'דו ח פעולה חדש',
@@ -1242,9 +1159,7 @@ export default {
     }
   },
   operativePlan: {
-    buttons: {
-      completePlan: 'להשלים את התוכנית'
-    },
+    buttons: { completePlan: 'להשלים את התוכנית' },
     labels: {
       additionalNotes: 'הערות נוספות',
       admissionInstructions: 'הנחיות בעת הקליטה',
@@ -1283,7 +1198,7 @@ export default {
       newPatient: '+ מטופל חדש',
       newPhoto: 'התמונה החדשה',
       newVisit: 'ביקור חדש',
-      patientCheckIn: 'החולה צ\'ק',
+      patientCheckIn: "החולה צ'ק",
       scheduleSurgery: 'ניתוח לוח הזמנים'
     },
     labels: {
@@ -1364,7 +1279,7 @@ export default {
       admissionsDetail: 'פירוט סדרי',
       admissionsSummary: 'הקבלה סיכום',
       admittedPatients: 'חולים הודה',
-      delete: 'למחוק את החולה',
+      'delete': 'למחוק את החולה',
       deleteContact: 'למחוק איש קשר',
       deleteExpense: 'מחיקת חשבון',
       deleteFamilyMember: 'מחק משפחה',
@@ -1378,7 +1293,7 @@ export default {
       expenses: 'הוצאות',
       familyInfo: 'פרטי המשפחה',
       familyInformation: 'פרטי המשפחה',
-      new: 'מטופל חדש',
+      'new': 'מטופל חדש',
       outpatientsForDate: 'חולי החוץ עבור {{visitDate}}',
       patient: 'דיווח המטופל',
       patientListing: 'רישום החולה',
@@ -1399,44 +1314,43 @@ export default {
       discountAmount: 'סכום הנחת',
       discountPercentage: 'הנחה באחוזים',
       setFee: 'תשלום קבוע'
-    }
-  },
-  print: {
-    invoice: {
-      labels: {
-        billedBy: 'החיוב על-ידי:',
-        billedDate: 'תאריך החשבון:',
-        dateAdmitted: 'הודה:',
-        dateDischarged: 'פריקה:',
-        dischargeNotes: 'הערות השחרור:',
-        patientAddress: 'כתובת:',
-        patientAge: 'גיל:',
-        patientId: '# החולה:',
-        patientName: 'שם החולה:',
-        remarks: 'הערות:',
-        spacer: '__________________________________________'
-      },
-      messages: {
-        whereConducted: 'היו שנוכה במהלך הכליאה שלי'
-      },
-      titles: {
-        billingStatement: 'חיוב הצהרה',
-        patientMember: 'החולה-חבר',
-        patients: 'של המטופל',
-        relContact: 'יחסים/צור קשר אין.'
-      }
-    }
-  },
-  procedures: {
-    buttons: {
-      addMedication: 'להוסיף תרופות'
     },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
+  },
+  print: { invoice: {
     labels: {
-      medicationUsed: 'תרופה'
+      billedBy: 'החיוב על-ידי:',
+      billedDate: 'תאריך החשבון:',
+      dateAdmitted: 'הודה:',
+      dateDischarged: 'פריקה:',
+      dischargeNotes: 'הערות השחרור:',
+      patientAddress: 'כתובת:',
+      patientAge: 'גיל:',
+      patientId: '# החולה:',
+      patientName: 'שם החולה:',
+      remarks: 'הערות:',
+      spacer: '__________________________________________'
     },
-    messages: {
-      saved: 'הפרוטוקול נוהל נשמרה.'
-    },
+    messages: { whereConducted: 'היו שנוכה במהלך הכליאה שלי' },
+    titles: {
+      billingStatement: 'חיוב הצהרה',
+      patientMember: 'החולה-חבר',
+      patients: 'של המטופל',
+      relContact: 'יחסים/צור קשר אין.'
+    }
+  } },
+  procedures: {
+    buttons: { addMedication: 'להוסיף תרופות' },
+    labels: { medicationUsed: 'תרופה' },
+    messages: { saved: 'הפרוטוקול נוהל נשמרה.' },
     titles: {
       addChargeItem: 'הוסף פריט תשלום',
       addMedicationUsed: 'להוסיף תרופה',
@@ -1446,7 +1360,7 @@ export default {
       editChargeItem: 'עריכת פריט תשלום',
       editMedicationUsed: 'עריכת תרופה',
       medicationUsed: 'תרופה',
-      new: 'נוהל חדש',
+      'new': 'נוהל חדש',
       saved: 'הליך הציל'
     }
   },
@@ -1481,7 +1395,7 @@ export default {
       visitType: 'סוג הביקור'
     },
     messages: {
-      delete: 'האם אתה בטוח שברצונך למחוק את הדו ח הזה?',
+      'delete': 'האם אתה בטוח שברצונך למחוק את הדו ח הזה?',
       saved: 'הדו ח נשמרה.'
     },
     titles: {
@@ -1522,7 +1436,7 @@ export default {
       noAppointment: 'N',
       ordersDone: 'את ההזמנות',
       ordersNotDone: 'N',
-      patientToCheckIn: 'חולה על הצ\'ק',
+      patientToCheckIn: "חולה על הצ'ק",
       procedure: 'הליך',
       procedureDate: 'הליך תאריך',
       reasonForVisit: 'מטרת ביקורך',
@@ -1561,20 +1475,18 @@ export default {
       discharged: 'החולה שוחררה',
       editVisit: 'לערוך ביקור',
       newVisit: 'ביקור חדש',
-      patientCheckIn: 'החולה צ\'ק',
+      patientCheckIn: "החולה צ'ק",
       visitSaved: 'ביקור הציל'
     }
   },
-  vitals: {
-    labels: {
-      dateRecorded: 'תאריך מוקלט',
-      dbp: 'DBP',
-      heartRate: 'קצב הלב',
-      height: 'גובה',
-      respiratoryRate: 'קצב נשימה',
-      sbp: 'SBP',
-      temperature: 'טמפרטורה',
-      weight: 'משקל'
-    }
-  }
+  vitals: { labels: {
+    dateRecorded: 'תאריך מוקלט',
+    dbp: 'DBP',
+    heartRate: 'קצב הלב',
+    height: 'גובה',
+    respiratoryRate: 'קצב נשימה',
+    sbp: 'SBP',
+    temperature: 'טמפרטורה',
+    weight: 'משקל'
+  } }
 };

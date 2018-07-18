@@ -1,5 +1,4 @@
 export default {
-  languageName: 'English',
   admin: {
     address: {
       address1Label: 'Address 1 Label',
@@ -214,13 +213,13 @@ export default {
     textReplacements: {
       createNew: 'Create a new shortcode',
       existingRepl: 'Existing Shortcodes',
-      replDesc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
+      noMatches: "No replacements match '{{term}}'",
       pageTitle: 'Shortcodes',
-      toReplace: 'Text to replace',
-      replaceWith: 'Replace with',
       performExpand: "Press Enter to replace #{{from}} with '{{to}}'",
       possibleExpansions: 'Possible replacements: {{possible}}',
-      noMatches: "No replacements match '{{term}}'"
+      replDesc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
+      replaceWith: 'Replace with',
+      toReplace: 'Text to replace'
     },
     userRoles: 'User Roles',
     users: 'Users',
@@ -321,8 +320,8 @@ export default {
       setFee: 'Set Fee'
     },
     messages: {
-      flatFeeMsg: 'There is a flat fee for patient financial responsibility of {{currency}}{{setFee}}.',
-      flatDiscountMsg: 'There is a flat discount amount applied to the patient financial responsibility of {{currency}}{{discountAmount}}.'
+      flatDiscountMsg: 'There is a flat discount amount applied to the patient financial responsibility of {{currency}}{{discountAmount}}.',
+      flatFeeMsg: 'There is a flat fee for patient financial responsibility of {{currency}}{{setFee}}.'
     }
   },
   buttons: {
@@ -423,7 +422,7 @@ export default {
   },
   dashboard: {
     needs_user_setup: 'We recommend that you setup a User account.',
-    standalone_welcome: '<h4>Thanks for downloading HospitalRun</h4><p>You are running HospitalRun in stand alone mode. This mode allows you to support multiple users on a single, desktop/laptop instance of HospitalRun. This is ideal for:</p><ul><li>Evaluating HospitalRun for an eventual server deployment.</li><li>Using the platform to support a clinic / facility where a single instance is sufficient.</li></ul><p>If you\'re considering a multi-device deployment of HospitalRun, we\'re <a href="https://github.com/HospitalRun/hospitalrun-frontend/issues/1048" target="_blank">working on features</a> that will allow you to "graduate" from this single instance into a traditional cloud / server-based deployment.</p>',
+    standalone_welcome: "<h4>Thanks for downloading HospitalRun</h4><p>You are running HospitalRun in stand alone mode. This mode allows you to support multiple users on a single, desktop/laptop instance of HospitalRun. This is ideal for:</p><ul><li>Evaluating HospitalRun for an eventual server deployment.</li><li>Using the platform to support a clinic / facility where a single instance is sufficient.</li></ul><p>If you're considering a multi-device deployment of HospitalRun, we're <a href=\"https://github.com/HospitalRun/hospitalrun-frontend/issues/1048\" target=\"_blank\">working on features</a> that will allow you to \"graduate\" from this single instance into a traditional cloud / server-based deployment.</p>",
     title: 'Welcome to HospitalRun!'
   },
   dates: {
@@ -484,10 +483,10 @@ export default {
     buttons: { newButton: '+ new imaging' },
     labels: {
       addNewVisit: '--Add New Visit--',
+      completedBy: 'Completed By',
       radiologist: 'Radiologist',
-      resultNotes: 'Result Notes',
       requestedNotes: 'Requested Notes',
-      completedBy: 'Completed By'
+      resultNotes: 'Result Notes'
     },
     messages: { noCompleted: 'No completed items found.' },
     pageTitle: 'Imaging Requests',
@@ -841,8 +840,8 @@ export default {
     lookupType: 'Lookup Type',
     medication: 'Medication',
     name: 'Name',
-    newUser: 'New User',
     newItem: '+ new item',
+    newUser: 'New User',
     note: 'Note',
     notes: 'Notes',
     number: 'Number',
@@ -907,6 +906,7 @@ export default {
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
   },
+  languageName: 'English',
   loading: {
     messages: {
       '0': 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
@@ -1093,9 +1093,7 @@ export default {
     inventory: 'Inventory',
     labs: 'Labs',
     medication: 'Medication',
-    messages: {
-      logoutFailed: 'Could not logout at this time.  Logout is not available while offline.'
-    },
+    messages: { logoutFailed: 'Could not logout at this time.  Logout is not available while offline.' },
     patients: 'Patients',
     scheduling: 'Scheduling',
     subnav: {
@@ -1140,9 +1138,7 @@ export default {
       users: 'Users',
       workflow: 'Workflow'
     },
-    titles: {
-      logoutFailed: 'Logout Failed'
-    }
+    titles: { logoutFailed: 'Logout Failed' }
   },
   operationReport: {
     labels: {
@@ -1314,7 +1310,6 @@ export default {
     }
   },
   pricing: {
-    sectionTitle: "Pricing",
     labels: {
       discountAmount: 'Discount Amount',
       discountPercentage: 'Discount Percentage',
@@ -1327,7 +1322,8 @@ export default {
       pricingProfiles: 'Pricing Profiles',
       procedurePricing: 'Procedure Pricing',
       wardPricing: 'Ward Pricing'
-    }
+    },
+    sectionTitle: 'Pricing'
   },
   print: { invoice: {
     labels: {
@@ -1483,16 +1479,14 @@ export default {
       visitSaved: 'Visit Saved'
     }
   },
-  vitals: {
-    labels: {
-      dateRecorded: 'Date Recorded',
-      dbp: 'DBP',
-      heartRate: 'Heart Rate',
-      height: 'Height',
-      respiratoryRate: 'Respiratory Rate',
-      sbp: 'SBP',
-      temperature: 'Temperature',
-      weight: 'Weight'
-    }
-  }
+  vitals: { labels: {
+    dateRecorded: 'Date Recorded',
+    dbp: 'DBP',
+    heartRate: 'Heart Rate',
+    height: 'Height',
+    respiratoryRate: 'Respiratory Rate',
+    sbp: 'SBP',
+    temperature: 'Temperature',
+    weight: 'Weight'
+  } }
 };
