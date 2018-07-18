@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: 'Keine Preisprofile gefunden.'
     },
     buttons: {
+      addDeposit: '',
       addOverride: 'Überschreibung hinzufügen',
-      createInvoice: 'Rechnung erstellen?'
+      createInvoice: 'Rechnung erstellen?',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: 'Tatsächliche Gebühren',
       discountAmount: 'Rabattbetrag',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: 'Für die finanzielle Verantwortung des Patienten gilt ein pauschaler Rabatt von {{discountAmount}}{{currency}}',
       flatFeeMsg: 'Es gibt eine Pauschalgebühr für die finanzielle Verantwortung des Patienten über {{setFee}}{{currency}}'
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'Hinzufügen',

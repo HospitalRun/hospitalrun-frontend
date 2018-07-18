@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: ''
     },
     buttons: {
+      addDeposit: '',
       addOverride: '',
-      createInvoice: ''
+      createInvoice: '',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: '',
       discountAmount: '',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: '',
       flatFeeMsg: ''
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'Ekle',

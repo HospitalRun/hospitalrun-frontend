@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: 'Non sono stati trovati profili di prezzo.'
     },
     buttons: {
+      addDeposit: '',
       addOverride: "Aggiungi l'override",
-      createInvoice: 'Creare una fattura?'
+      createInvoice: 'Creare una fattura?',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: 'Spese effettive',
       discountAmount: 'Totale sconto',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: 'Esiste un importo di sconto piatto applicato alla responsabilità finanziaria del paziente di {{currency}} {{discountAmount}}.',
       flatFeeMsg: "C'è una tassa piana per la responsabilità finanziaria del paziente di {{currency}} {{setFee}}."
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'Inserisci',

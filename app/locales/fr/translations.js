@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: 'Aucun profil de prix trouvé'
     },
     buttons: {
+      addDeposit: '',
       addOverride: 'Ajouter un dépassement',
-      createInvoice: 'Créer une facture ?'
+      createInvoice: 'Créer une facture ?',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: 'Frais réels',
       discountAmount: 'Montant de remise',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: "Il existe une remise fixe appliquée à la responsabilité financière du patient d'un montant de {{currency}}{{discountAmount}}.",
       flatFeeMsg: "Il existe des frais forfaitaires pour le patient d'un montant de {{setFee}}{{currency}}."
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'Ajouter',

@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: 'کوئی قیمتوں کے تعیں والی پروفائل نہیں ملی'
     },
     buttons: {
+      addDeposit: '',
       addOverride: 'منسوخ شامل کریں',
-      createInvoice: 'ایک رسید بنائیں؟'
+      createInvoice: 'ایک رسید بنائیں؟',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: 'اصل قیمت',
       discountAmount: 'ڈسکاؤنٹ رقم',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: '',
       flatFeeMsg: ''
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'شامل کریں',
