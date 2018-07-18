@@ -308,6 +308,7 @@ export default {
       createInvoice: 'Δημιουργία τιμολογίου;',
       newInvoice: ''
     },
+    currentScreenTitle: '',
     editInvoice: '',
     invoiceTitle: '',
     labels: {

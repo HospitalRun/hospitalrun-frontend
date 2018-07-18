@@ -308,6 +308,7 @@ export default {
       createInvoice: 'Creare una fattura?',
       newInvoice: ''
     },
+    currentScreenTitle: '',
     editInvoice: '',
     invoiceTitle: '',
     labels: {
