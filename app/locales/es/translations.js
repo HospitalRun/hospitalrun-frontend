@@ -1,5 +1,4 @@
 export default {
-  languageName: 'Español',
   admin: {
     address: {
       address1Label: 'Texto dirección 1',
@@ -32,8 +31,10 @@ export default {
         columns: 'Columnas',
         customForm: 'Formulario personalizado',
         dischargeReportFormType: 'Descartar reporte',
+        expenseTo: '',
         formName: 'Nombre de la forma',
         formType: 'Tipo de forma',
+        header: '',
         incidentFormType: 'Incidente',
         includeOtherOption: 'Incluir otra opción',
         labFormType: 'Tipo de formulario de laboratorio',
@@ -60,6 +61,7 @@ export default {
         editCustomForm: 'Editar formulario personalizado',
         fields: 'Campos',
         formSaved: 'Formulario guardado',
+        headerValues: '',
         newCustomForm: 'Nuevo formulario personalizado',
         radioValues: 'Valores de radio botones'
       }
@@ -162,6 +164,7 @@ export default {
         admitPatient: 'Admitir paciente',
         appointments: 'Citas',
         billing: 'Facturación',
+        cashier: '',
         completeImaging: 'Completar radiografía',
         completeLab: 'Completar laboratorio',
         defineUserRoles: 'Roles de usuario',
@@ -193,6 +196,7 @@ export default {
         inventory: 'Inventario',
         invoices: 'Facturas',
         labs: 'Laboratorios',
+        listPaidInvoices: '',
         loadDb: 'Cargar base de datos',
         manageIncidents: 'Administrar credenciales',
         medication: 'Medicación',
@@ -205,6 +209,17 @@ export default {
       },
       messages: { roleSaved: 'El {{roleName}} rol ha sido guardado.' },
       titles: { roleSaved: 'Rol guardado' }
+    },
+    textReplacements: {
+      createNew: '',
+      existingRepl: '',
+      noMatches: '',
+      pageTitle: '',
+      performExpand: '',
+      possibleExpansions: '',
+      replDesc: '',
+      replaceWith: '',
+      toReplace: ''
     },
     userRoles: 'Roles de usuario',
     users: 'Usuarios',
@@ -301,7 +316,12 @@ export default {
       paymentProfile: 'Perfil de pago',
       paymentsDeposits: 'Pagos / Depósitos',
       pricingPanelOverrides: 'Sustitución de perfiles de pago',
-      pricingProfile: 'Perfil de Pago'
+      pricingProfile: 'Perfil de Pago',
+      setFee: ''
+    },
+    messages: {
+      flatDiscountMsg: '',
+      flatFeeMsg: ''
     }
   },
   buttons: {
@@ -329,8 +349,10 @@ export default {
     newRequestPlus: '+ nuevo pedido',
     newUser: 'Nuevo usuario',
     ok: 'Ok',
+    print: '',
     remove: 'Quitar',
     returnButton: 'Regresar',
+    review: '',
     search: 'Buscar',
     showAll: 'Mostrar todo',
     showFewer: 'Mostrar menos',
@@ -399,7 +421,8 @@ export default {
     titles: { addCustomForm: 'Agregar formulario personalizado' }
   },
   dashboard: {
-    setup: 'Preparación',
+    needs_user_setup: '',
+    standalone_welcome: '',
     title: 'Bienvenido a HospitalRun!'
   },
   dates: {
@@ -460,7 +483,10 @@ export default {
     buttons: { newButton: '+ Nueva radiografía' },
     labels: {
       addNewVisit: '--Agregar nueva visita--',
-      radiologist: 'Radiólogo'
+      completedBy: '',
+      radiologist: 'Radiólogo',
+      requestedNotes: '',
+      resultNotes: ''
     },
     messages: { noCompleted: 'No de elementos encontrados.' },
     pageTitle: 'Pedido de radiografía',
@@ -758,6 +784,7 @@ export default {
     address: 'Dirección',
     age: 'Edad',
     allDay: 'Todo el día',
+    allItems: '',
     amount: 'Monto',
     anesthesia: 'Anestesia',
     assisting: 'Asistencia',
@@ -769,6 +796,7 @@ export default {
     country: 'País',
     cptcode: 'Codigo CPT',
     creditTo: 'Crédito a',
+    currencySymbol: '',
     date: 'Fecha',
     dateCompleted: 'Fecha de finalización',
     dateOfBirth: 'Fecha de nacimiento',
@@ -794,6 +822,7 @@ export default {
     fileLoadSuccessful: 'Archivo cargado exitosamente',
     fileName: 'Nombre del archivo',
     fileToLoad: 'Archivo cargado',
+    from: '',
     fulfill: 'Cumplimiento',
     fulfillRequest: 'Pedido de cumplimiento',
     fulfillRequestNow: 'Pedido de cumplimiento ahora',
@@ -811,6 +840,7 @@ export default {
     lookupType: 'Tipo de búsqueda',
     medication: 'Medicación',
     name: 'Nombre',
+    newItem: '',
     newUser: 'Nuevo usuario',
     note: 'Nota',
     notes: 'Notas',
@@ -842,6 +872,7 @@ export default {
     startTime: 'Hora de inicio',
     status: 'Estado',
     takenBy: 'Tomado por',
+    to: '',
     total: 'Total',
     type: 'Tipo',
     userCanAddNewValue: 'El usuario puede agregar nuevos valores',
@@ -875,6 +906,7 @@ export default {
     requestsTitle: 'Pedido de laboratorio',
     sectionTitle: 'Laboratorios'
   },
+  languageName: 'Español',
   loading: {
     messages: {
       '0': 'La velocidad máxima de vuelo de la mariposa es de 12 millas por hora. ¡Algunas polillas pueden volar 25 millas por hora!',
@@ -900,6 +932,7 @@ export default {
     },
     messages: {
       error: 'Nombre de usuario o clave incorrectos.',
+      offlineError: '',
       signIn: 'por favor ingrese'
     }
   },
@@ -1060,6 +1093,7 @@ export default {
     inventory: 'Inventario',
     labs: 'Laboratorio',
     medication: 'Recetas medicas',
+    messages: { logoutFailed: '' },
     patients: 'Pacientes',
     scheduling: 'Programación',
     subnav: {
@@ -1070,6 +1104,7 @@ export default {
       appointmentSearch: 'Busqueda de citas',
       appointmentsCalendar: 'Calendario de citas',
       appointmentsThisWeek: 'Citas esta semana',
+      cashier: '',
       completed: 'Completado',
       currentIncidents: 'Incidentes actuales',
       customForms: 'Formularios personalizados',
@@ -1082,7 +1117,6 @@ export default {
       items: 'Elementos',
       loadDB: 'Cargar Base de datos',
       lookupLists: 'Lista de busquedas',
-      missedAppointments: 'Citas perdidas',
       newIncident: 'Nuevo incidente',
       newInvoice: 'Nueva factura',
       newPatient: 'Paciente nuevo',
@@ -1097,12 +1131,14 @@ export default {
       requests: 'Pedidos',
       returnMedication: 'Devolver medicamento',
       scheduleSurgery: 'Programar cirugía',
+      textReplacements: '',
       theaterSchedule: 'Horario de cirugía',
       "today'sAppointments": 'Citas de hoy',
       userRoles: 'Roles de usuario',
       users: 'Usuarios',
       workflow: 'Flujo de trabajo'
-    }
+    },
+    titles: { logoutFailed: '' }
   },
   operationReport: {
     labels: {
@@ -1272,6 +1308,22 @@ export default {
       totalPatientDaysDetailed: 'Total de días de pacientes detallado',
       visit: 'Visitar'
     }
+  },
+  pricing: {
+    labels: {
+      discountAmount: '',
+      discountPercentage: '',
+      setFee: ''
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
   },
   print: { invoice: {
     labels: {

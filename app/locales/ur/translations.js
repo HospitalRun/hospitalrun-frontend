@@ -1,5 +1,4 @@
 export default {
-  languageName: 'اردو',
   admin: {
     address: {
       address1Label: 'ایڈریس 1 لیبل',
@@ -32,8 +31,10 @@ export default {
         columns: 'کالم',
         customForm: 'کسٹم فام',
         dischargeReportFormType: '',
+        expenseTo: '',
         formName: 'فارم کا نام',
         formType: 'فارم کی قسم',
+        header: '',
         incidentFormType: '',
         includeOtherOption: 'دیگر آپشن شامل کریں',
         labFormType: '',
@@ -60,6 +61,7 @@ export default {
         editCustomForm: 'کسٹم فارم میں ترمیم کریں',
         fields: 'قطعات',
         formSaved: 'فارم محفوظ ہوگیا',
+        headerValues: '',
         newCustomForm: 'نئے کسٹم فارم',
         radioValues: 'ریڈیو میں قیمتیں'
       }
@@ -162,6 +164,7 @@ export default {
         admitPatient: 'مریض جمع کریں',
         appointments: 'ملاقاتیں',
         billing: 'بلنگ',
+        cashier: '',
         completeImaging: 'مکمل امیجنگ',
         completeLab: 'مکمل لیب',
         defineUserRoles: 'صارف کے کردار کی وضاحت کریں',
@@ -193,6 +196,7 @@ export default {
         inventory: 'انوینٹری',
         invoices: 'رسیدیں',
         labs: 'لیبز',
+        listPaidInvoices: '',
         loadDb: 'لوڈ کریں ڈیٹا بیس',
         manageIncidents: '',
         medication: 'ادویات',
@@ -205,6 +209,17 @@ export default {
       },
       messages: { roleSaved: '{{roleName}} کردار محفوظ ہوگیا ہے.' },
       titles: { roleSaved: 'کردار محفوظ ہوگیا ہے' }
+    },
+    textReplacements: {
+      createNew: '',
+      existingRepl: '',
+      noMatches: '',
+      pageTitle: '',
+      performExpand: '',
+      possibleExpansions: '',
+      replDesc: '',
+      replaceWith: '',
+      toReplace: ''
     },
     userRoles: 'صارف کے کردار',
     users: 'صارفین',
@@ -301,7 +316,12 @@ export default {
       paymentProfile: 'ادائیگی پروفائل',
       paymentsDeposits: 'ادائیگی / جمع کھاتہ',
       pricingPanelOverrides: 'قیمتوں کا تعین پروفائل کی منسوخی',
-      pricingProfile: 'قیمتوں کا تعین پروفائل'
+      pricingProfile: 'قیمتوں کا تعین پروفائل',
+      setFee: ''
+    },
+    messages: {
+      flatDiscountMsg: '',
+      flatFeeMsg: ''
     }
   },
   buttons: {
@@ -329,8 +349,10 @@ export default {
     newRequestPlus: '+ نئی درخواست',
     newUser: 'نیا صارف',
     ok: 'ٹھیک ہے',
+    print: '',
     remove: 'دور کریں',
     returnButton: 'واپسی',
+    review: '',
     search: 'تلاش کریں',
     showAll: 'سارے دکھائیں',
     showFewer: 'کم دکھائیں',
@@ -399,7 +421,8 @@ export default {
     titles: { addCustomForm: 'کسٹم فارم شامل کریں' }
   },
   dashboard: {
-    setup: '',
+    needs_user_setup: '',
+    standalone_welcome: '',
     title: 'آپ کیا کرنا چاہیں گے؟'
   },
   dates: {
@@ -460,7 +483,10 @@ export default {
     buttons: { newButton: '+ نئے امیجنگ' },
     labels: {
       addNewVisit: '--- نیا دورہ شامل کریں ---',
-      radiologist: 'ریڈیولوجسٹ'
+      completedBy: '',
+      radiologist: 'ریڈیولوجسٹ',
+      requestedNotes: '',
+      resultNotes: ''
     },
     messages: { noCompleted: 'کوئی مکمل اشیاء نہیں موجود۔' },
     pageTitle: 'امیجنگ درخواستیں',
@@ -758,6 +784,7 @@ export default {
     address: 'ایڈریس',
     age: 'عمر',
     allDay: 'تمام دن',
+    allItems: '',
     amount: 'رقم',
     anesthesia: 'اینستھیزیا',
     assisting: 'مدد',
@@ -769,6 +796,7 @@ export default {
     country: 'ملک',
     cptcode: 'CPT کوڈ',
     creditTo: 'کرنے کے لئے کریڈٹ',
+    currencySymbol: '',
     date: 'تاریخ',
     dateCompleted: 'تاریخ مکمل',
     dateOfBirth: 'پیدائش کی تاریخ',
@@ -794,6 +822,7 @@ export default {
     fileLoadSuccessful: ' فائل لوڈ کامیابی سے ہو گئ',
     fileName: 'فائل کا نام',
     fileToLoad: ' لوڈ کے لیے فائل',
+    from: '',
     fulfill: 'پورا کریں',
     fulfillRequest: 'درخواست کو پورا کریں',
     fulfillRequestNow: 'ابھی درخواست کو پورا کریں',
@@ -811,6 +840,7 @@ export default {
     lookupType: 'تلاش قسم',
     medication: 'ادویات',
     name: 'نام',
+    newItem: '',
     newUser: 'نیا صارف',
     note: 'نوٹ',
     notes: 'نوٹس',
@@ -842,6 +872,7 @@ export default {
     startTime: 'وقت آغاز',
     status: 'صورتحال',
     takenBy: '',
+    to: '',
     total: 'کل',
     type: 'قسم',
     userCanAddNewValue: 'صارف نئی اقدار کا اضافہ کر سکتے ہیں',
@@ -875,6 +906,7 @@ export default {
     requestsTitle: 'لیب درخواستیں',
     sectionTitle: 'لیبز'
   },
+  languageName: 'اردو',
   loading: {
     messages: {
       '0': 'سب سے تیز تیتلی پرواز کی رفتار فی گھنٹہ 12 میل ہے. کچھ کیڑے 25 میل فی گھنٹہ کی رفتار سے پرواز کر سکتے ہیں',
@@ -900,6 +932,7 @@ export default {
     },
     messages: {
       error: 'یوزر نیم یا پاس ورڈ غلط ہے.',
+      offlineError: '',
       signIn: 'سائن ان کریں'
     }
   },
@@ -1060,6 +1093,7 @@ export default {
     inventory: 'انوینٹری',
     labs: 'لیبز',
     medication: 'ادویات',
+    messages: { logoutFailed: '' },
     patients: 'مریض',
     scheduling: 'اوقات نامہ',
     subnav: {
@@ -1070,6 +1104,7 @@ export default {
       appointmentSearch: ' ملاقاتیں تلاش کریں',
       appointmentsCalendar: 'ملاقاتوں کا کیلنڈر',
       appointmentsThisWeek: 'اس ہفتے کی ملاقاتیں',
+      cashier: '',
       completed: 'مکمل',
       currentIncidents: '',
       customForms: 'کسٹم فام',
@@ -1082,7 +1117,6 @@ export default {
       items: 'اشیاء',
       loadDB: 'DB لوڈ کریں',
       lookupLists: 'تلاش فہرستیں',
-      missedAppointments: 'ضائع شدہ',
       newIncident: '',
       newInvoice: 'نئے رسید',
       newPatient: 'نئے مریض',
@@ -1097,12 +1131,14 @@ export default {
       requests: 'درخواستیں',
       returnMedication: 'واپس دوا',
       scheduleSurgery: 'سرجری اوقات نامہ',
+      textReplacements: '',
       theaterSchedule: 'تھیٹر اوقات نامہ',
       "today'sAppointments": '',
       userRoles: 'صارف کے کردار',
       users: 'صارفین',
       workflow: 'ورک فلو'
-    }
+    },
+    titles: { logoutFailed: '' }
   },
   operationReport: {
     labels: {
@@ -1272,6 +1308,22 @@ export default {
       totalPatientDaysDetailed: 'مریض کے کل دن(تفصیلی) ۔',
       visit: 'دورہ'
     }
+  },
+  pricing: {
+    labels: {
+      discountAmount: '',
+      discountPercentage: '',
+      setFee: ''
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
   },
   print: { invoice: {
     labels: {

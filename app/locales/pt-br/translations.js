@@ -1,5 +1,4 @@
 export default {
-  languageName: 'Portugues (Brasileiro)',
   admin: {
     address: {
       address1Label: 'Rótulo Endereço 1',
@@ -32,8 +31,10 @@ export default {
         columns: '',
         customForm: '',
         dischargeReportFormType: '',
+        expenseTo: '',
         formName: '',
         formType: '',
+        header: '',
         incidentFormType: '',
         includeOtherOption: '',
         labFormType: '',
@@ -60,6 +61,7 @@ export default {
         editCustomForm: '',
         fields: '',
         formSaved: '',
+        headerValues: '',
         newCustomForm: '',
         radioValues: ''
       }
@@ -162,6 +164,7 @@ export default {
         admitPatient: 'Admitir Paciente',
         appointments: 'Compromissos',
         billing: 'Faturamentos',
+        cashier: '',
         completeImaging: 'Imagem Concluída',
         completeLab: 'Laboratório Concluído',
         defineUserRoles: 'Perfis de Usuários',
@@ -193,6 +196,7 @@ export default {
         inventory: 'Inventário',
         invoices: 'Faturas',
         labs: 'Laboratório',
+        listPaidInvoices: '',
         loadDb: 'Carregar Banco de Dados',
         manageIncidents: 'Gerenciar Incidentes',
         medication: 'Medicação',
@@ -205,6 +209,17 @@ export default {
       },
       messages: { roleSaved: 'O perfil {{roleName}} foi salvo.' },
       titles: { roleSaved: 'Perfil Salvo' }
+    },
+    textReplacements: {
+      createNew: '',
+      existingRepl: '',
+      noMatches: '',
+      pageTitle: '',
+      performExpand: '',
+      possibleExpansions: '',
+      replDesc: '',
+      replaceWith: '',
+      toReplace: ''
     },
     userRoles: 'Perfis de Usuários',
     users: 'Usuários',
@@ -301,7 +316,12 @@ export default {
       paymentProfile: 'Perfil de Pagamento',
       paymentsDeposits: 'Pagamentos/Depositos',
       pricingPanelOverrides: 'Substituição e Perfil de Preços',
-      pricingProfile: 'Perfil de Preços'
+      pricingProfile: 'Perfil de Preços',
+      setFee: ''
+    },
+    messages: {
+      flatDiscountMsg: '',
+      flatFeeMsg: ''
     }
   },
   buttons: {
@@ -329,8 +349,10 @@ export default {
     newRequestPlus: '+ nova requisição',
     newUser: 'Novo Usuário',
     ok: 'Ok',
+    print: '',
     remove: 'Remover',
     returnButton: 'Retornar',
+    review: '',
     search: 'Pesquisa',
     showAll: '',
     showFewer: '',
@@ -399,7 +421,8 @@ export default {
     titles: { addCustomForm: 'Adicionar formulário customisado' }
   },
   dashboard: {
-    setup: '',
+    needs_user_setup: '',
+    standalone_welcome: '',
     title: 'O que você gostaria de fazer?'
   },
   dates: {
@@ -460,7 +483,10 @@ export default {
     buttons: { newButton: '+ nova imagem' },
     labels: {
       addNewVisit: '--Adicionar novo visitante--',
-      radiologist: 'Radiologista'
+      completedBy: '',
+      radiologist: 'Radiologista',
+      requestedNotes: '',
+      resultNotes: ''
     },
     messages: { noCompleted: 'Nenhum item completo encontrado.' },
     pageTitle: 'Requisição de imagens',
@@ -758,6 +784,7 @@ export default {
     address: 'Endereço',
     age: 'Idade',
     allDay: 'Todo Dia',
+    allItems: '',
     amount: 'Quantidade',
     anesthesia: 'Anestesia',
     assisting: 'Ajudante',
@@ -769,6 +796,7 @@ export default {
     country: 'País',
     cptcode: 'Código CPT*',
     creditTo: 'Crédito Para',
+    currencySymbol: '',
     date: 'Data',
     dateCompleted: 'Data da Conclusão',
     dateOfBirth: 'Data de Nascimento',
@@ -794,6 +822,7 @@ export default {
     fileLoadSuccessful: 'Arquivo Carregado com Sucesso',
     fileName: '',
     fileToLoad: 'Carregar Arquivo',
+    from: '',
     fulfill: 'Preencha',
     fulfillRequest: 'Preencha a Requisição',
     fulfillRequestNow: 'Preencha a Requisição Agora',
@@ -811,6 +840,7 @@ export default {
     lookupType: 'Tipo de Pesquisa',
     medication: 'Medicação',
     name: 'Nome',
+    newItem: '',
     newUser: 'Novo Usuário',
     note: 'Note',
     notes: 'Notas',
@@ -842,6 +872,7 @@ export default {
     startTime: 'Hora Início',
     status: 'Situação',
     takenBy: '',
+    to: '',
     total: 'Total',
     type: 'Tipo',
     userCanAddNewValue: 'O usuário pode adicionar novos valores',
@@ -875,6 +906,7 @@ export default {
     requestsTitle: 'Requisições de Laboratório',
     sectionTitle: 'Laboratório'
   },
+  languageName: 'Portugues (Brasileiro)',
   loading: {
     messages: {
       '0': 'A velocidade de vôo borboleta superior é de 12 milhas por hora. Alguns meses pode voar 25 milhas por hora!',
@@ -900,6 +932,7 @@ export default {
     },
     messages: {
       error: 'Nome de usuário ou senha está incorreta.',
+      offlineError: '',
       signIn: 'Entrar'
     }
   },
@@ -1060,6 +1093,7 @@ export default {
     inventory: 'Inventário',
     labs: 'Laboratórios',
     medication: 'Medicação',
+    messages: { logoutFailed: '' },
     patients: 'Pacientes',
     scheduling: 'Agenda',
     subnav: {
@@ -1070,6 +1104,7 @@ export default {
       appointmentSearch: 'Pesquisar compromissos',
       appointmentsCalendar: 'Compromissos',
       appointmentsThisWeek: 'Compromissos dessa Semana',
+      cashier: '',
       completed: 'Concluídos',
       currentIncidents: '',
       customForms: 'Formulários customisados',
@@ -1082,7 +1117,6 @@ export default {
       items: 'Itens',
       loadDB: 'Carregar BD',
       lookupLists: 'Listas de Pesquisa',
-      missedAppointments: 'Compromissos Esquecidos',
       newIncident: '',
       newInvoice: 'Nova Fatura',
       newPatient: 'Novo Paciente',
@@ -1097,12 +1131,14 @@ export default {
       requests: 'Requisições',
       returnMedication: 'Retorno de Medicação',
       scheduleSurgery: 'Agendar Cirurgia',
+      textReplacements: '',
       theaterSchedule: 'Agenda de Cirurgias',
       "today'sAppointments": 'Compromissos de Hoje',
       userRoles: 'Perfis de Usuário',
       users: 'Usuários',
       workflow: 'Workflow'
-    }
+    },
+    titles: { logoutFailed: '' }
   },
   operationReport: {
     labels: {
@@ -1272,6 +1308,22 @@ export default {
       totalPatientDaysDetailed: '',
       visit: ''
     }
+  },
+  pricing: {
+    labels: {
+      discountAmount: '',
+      discountPercentage: '',
+      setFee: ''
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
   },
   print: { invoice: {
     labels: {

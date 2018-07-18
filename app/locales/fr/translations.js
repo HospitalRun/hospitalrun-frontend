@@ -875,7 +875,7 @@ export default {
     to: 'À',
     total: 'Total',
     type: 'Type',
-    userCanAddNewValue: 'L\'utilisateur peut ajouter de nouvelles valeurs',
+    userCanAddNewValue: "L'utilisateur peut ajouter de nouvelles valeurs",
     username: "Nom d'utilisateur",
     value: 'Valeur',
     view: 'Afficher',
@@ -1309,11 +1309,22 @@ export default {
       visit: 'Visite'
     }
   },
-  pricing: { labels: {
-    discountAmount: 'Montant de remise',
-    discountPercentage: 'Pourcentage de remise',
-    setFee: 'Définir les frais'
-  } },
+  pricing: {
+    labels: {
+      discountAmount: 'Montant de remise',
+      discountPercentage: 'Pourcentage de remise',
+      setFee: 'Définir les frais'
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
+  },
   print: { invoice: {
     labels: {
       billedBy: 'Facturé par :',

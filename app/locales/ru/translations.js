@@ -1,5 +1,4 @@
 export default {
-  languageName: 'русский',
   admin: {
     address: {
       address1Label: '',
@@ -62,6 +61,7 @@ export default {
         editCustomForm: 'редактировать форму',
         fields: 'поля',
         formSaved: 'форма сохранена',
+        headerValues: '',
         newCustomForm: 'новая форма',
         radioValues: ''
       }
@@ -164,6 +164,7 @@ export default {
         admitPatient: '',
         appointments: '',
         billing: '',
+        cashier: '',
         completeImaging: '',
         completeLab: '',
         defineUserRoles: '',
@@ -195,6 +196,7 @@ export default {
         inventory: '',
         invoices: '',
         labs: '',
+        listPaidInvoices: '',
         loadDb: '',
         manageIncidents: '',
         medication: '',
@@ -207,6 +209,17 @@ export default {
       },
       messages: { roleSaved: '' },
       titles: { roleSaved: '' }
+    },
+    textReplacements: {
+      createNew: '',
+      existingRepl: '',
+      noMatches: '',
+      pageTitle: '',
+      performExpand: '',
+      possibleExpansions: '',
+      replDesc: '',
+      replaceWith: '',
+      toReplace: ''
     },
     userRoles: '',
     users: '',
@@ -303,7 +316,12 @@ export default {
       paymentProfile: '',
       paymentsDeposits: '',
       pricingPanelOverrides: '',
-      pricingProfile: ''
+      pricingProfile: '',
+      setFee: ''
+    },
+    messages: {
+      flatDiscountMsg: '',
+      flatFeeMsg: ''
     }
   },
   buttons: {
@@ -331,8 +349,10 @@ export default {
     newRequestPlus: '',
     newUser: '',
     ok: 'Ок',
+    print: '',
     remove: '',
     returnButton: 'Вернутся',
+    review: '',
     search: '',
     showAll: '',
     showFewer: '',
@@ -401,7 +421,8 @@ export default {
     titles: { addCustomForm: '' }
   },
   dashboard: {
-    setup: '',
+    needs_user_setup: '',
+    standalone_welcome: '',
     title: 'Что вы хотите сделать?'
   },
   dates: {
@@ -462,7 +483,10 @@ export default {
     buttons: { newButton: '+ новый запрос' },
     labels: {
       addNewVisit: '--Добавить новый тип осмотра--',
-      radiologist: 'Радиолог'
+      completedBy: '',
+      radiologist: 'Радиолог',
+      requestedNotes: '',
+      resultNotes: ''
     },
     messages: { noCompleted: 'Не найдено выполненых запросов.' },
     pageTitle: 'Запросы на визуализацию',
@@ -760,6 +784,7 @@ export default {
     address: '',
     age: 'Возраст',
     allDay: '',
+    allItems: '',
     amount: '',
     anesthesia: '',
     assisting: '',
@@ -771,6 +796,7 @@ export default {
     country: '',
     cptcode: '',
     creditTo: '',
+    currencySymbol: '',
     date: '',
     dateCompleted: 'Дата Выполнения',
     dateOfBirth: '',
@@ -796,6 +822,7 @@ export default {
     fileLoadSuccessful: '',
     fileName: '',
     fileToLoad: '',
+    from: '',
     fulfill: 'Отправить',
     fulfillRequest: '',
     fulfillRequestNow: '',
@@ -813,6 +840,7 @@ export default {
     lookupType: '',
     medication: '',
     name: 'Имя',
+    newItem: '',
     newUser: '',
     note: '',
     notes: 'Заметки',
@@ -844,6 +872,7 @@ export default {
     startTime: '',
     status: '',
     takenBy: '',
+    to: '',
     total: '',
     type: '',
     userCanAddNewValue: '',
@@ -877,6 +906,7 @@ export default {
     requestsTitle: '',
     sectionTitle: ''
   },
+  languageName: 'русский',
   loading: {
     messages: {
       '0': '',
@@ -902,6 +932,7 @@ export default {
     },
     messages: {
       error: 'Неверное имя пользователя или пароль.',
+      offlineError: '',
       signIn: 'войдите в систему'
     }
   },
@@ -1062,6 +1093,7 @@ export default {
     inventory: '',
     labs: '',
     medication: '',
+    messages: { logoutFailed: '' },
     patients: '',
     scheduling: '',
     subnav: {
@@ -1072,6 +1104,7 @@ export default {
       appointmentSearch: '',
       appointmentsCalendar: '',
       appointmentsThisWeek: '',
+      cashier: '',
       completed: '',
       currentIncidents: '',
       customForms: '',
@@ -1084,7 +1117,6 @@ export default {
       items: '',
       loadDB: '',
       lookupLists: '',
-      missedAppointments: '',
       newIncident: '',
       newInvoice: '',
       newPatient: '',
@@ -1099,12 +1131,14 @@ export default {
       requests: '',
       returnMedication: '',
       scheduleSurgery: '',
+      textReplacements: '',
       theaterSchedule: '',
       "today'sAppointments": '',
       userRoles: '',
       users: '',
       workflow: ''
-    }
+    },
+    titles: { logoutFailed: '' }
   },
   operationReport: {
     labels: {
@@ -1274,6 +1308,22 @@ export default {
       totalPatientDaysDetailed: '',
       visit: ''
     }
+  },
+  pricing: {
+    labels: {
+      discountAmount: '',
+      discountPercentage: '',
+      setFee: ''
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
   },
   print: { invoice: {
     labels: {

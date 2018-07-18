@@ -1,5 +1,4 @@
 export default {
-  languageName: 'Türk',
   admin: {
     address: {
       address1Label: '',
@@ -32,8 +31,10 @@ export default {
         columns: '',
         customForm: '',
         dischargeReportFormType: '',
+        expenseTo: '',
         formName: '',
         formType: '',
+        header: '',
         incidentFormType: '',
         includeOtherOption: '',
         labFormType: '',
@@ -60,6 +61,7 @@ export default {
         editCustomForm: '',
         fields: '',
         formSaved: '',
+        headerValues: '',
         newCustomForm: '',
         radioValues: ''
       }
@@ -162,6 +164,7 @@ export default {
         admitPatient: '',
         appointments: '',
         billing: '',
+        cashier: '',
         completeImaging: '',
         completeLab: '',
         defineUserRoles: '',
@@ -193,6 +196,7 @@ export default {
         inventory: '',
         invoices: '',
         labs: '',
+        listPaidInvoices: '',
         loadDb: '',
         manageIncidents: '',
         medication: '',
@@ -205,6 +209,17 @@ export default {
       },
       messages: { roleSaved: '' },
       titles: { roleSaved: '' }
+    },
+    textReplacements: {
+      createNew: '',
+      existingRepl: '',
+      noMatches: '',
+      pageTitle: '',
+      performExpand: '',
+      possibleExpansions: '',
+      replDesc: '',
+      replaceWith: '',
+      toReplace: ''
     },
     userRoles: '',
     users: '',
@@ -301,7 +316,12 @@ export default {
       paymentProfile: '',
       paymentsDeposits: '',
       pricingPanelOverrides: '',
-      pricingProfile: ''
+      pricingProfile: '',
+      setFee: ''
+    },
+    messages: {
+      flatDiscountMsg: '',
+      flatFeeMsg: ''
     }
   },
   buttons: {
@@ -329,8 +349,10 @@ export default {
     newRequestPlus: '',
     newUser: '',
     ok: 'Tamam',
+    print: '',
     remove: '',
     returnButton: 'Geri Dön',
+    review: '',
     search: '',
     showAll: '',
     showFewer: '',
@@ -399,7 +421,8 @@ export default {
     titles: { addCustomForm: '' }
   },
   dashboard: {
-    setup: '',
+    needs_user_setup: '',
+    standalone_welcome: '',
     title: 'Ne yapmak istersiniz?'
   },
   dates: {
@@ -460,7 +483,10 @@ export default {
     buttons: { newButton: '+ yeni görüntüleme' },
     labels: {
       addNewVisit: '--Yeni Ziyaret Ekle--',
-      radiologist: 'Radyolog'
+      completedBy: '',
+      radiologist: 'Radyolog',
+      requestedNotes: '',
+      resultNotes: ''
     },
     messages: { noCompleted: 'Tamamlanmayan öğe bulunamadı.' },
     pageTitle: 'Görüntüleme talepleri',
@@ -758,6 +784,7 @@ export default {
     address: '',
     age: 'Yaş',
     allDay: '',
+    allItems: '',
     amount: '',
     anesthesia: '',
     assisting: '',
@@ -769,6 +796,7 @@ export default {
     country: '',
     cptcode: '',
     creditTo: '',
+    currencySymbol: '',
     date: '',
     dateCompleted: 'Bitiş tarihi',
     dateOfBirth: '',
@@ -794,6 +822,7 @@ export default {
     fileLoadSuccessful: '',
     fileName: '',
     fileToLoad: '',
+    from: '',
     fulfill: 'Fulfill',
     fulfillRequest: '',
     fulfillRequestNow: '',
@@ -811,6 +840,7 @@ export default {
     lookupType: '',
     medication: '',
     name: 'Ad',
+    newItem: '',
     newUser: '',
     note: '',
     notes: 'Notlar',
@@ -842,6 +872,7 @@ export default {
     startTime: '',
     status: '',
     takenBy: '',
+    to: '',
     total: '',
     type: '',
     userCanAddNewValue: '',
@@ -875,6 +906,7 @@ export default {
     requestsTitle: '',
     sectionTitle: ''
   },
+  languageName: 'Türk',
   loading: {
     messages: {
       '0': '',
@@ -900,6 +932,7 @@ export default {
     },
     messages: {
       error: 'Kullanıcı adı veya parola hatalı.',
+      offlineError: '',
       signIn: 'GİRİŞ YAPIN'
     }
   },
@@ -1060,6 +1093,7 @@ export default {
     inventory: '',
     labs: '',
     medication: '',
+    messages: { logoutFailed: '' },
     patients: '',
     scheduling: '',
     subnav: {
@@ -1070,6 +1104,7 @@ export default {
       appointmentSearch: '',
       appointmentsCalendar: '',
       appointmentsThisWeek: '',
+      cashier: '',
       completed: '',
       currentIncidents: '',
       customForms: '',
@@ -1082,7 +1117,6 @@ export default {
       items: '',
       loadDB: '',
       lookupLists: '',
-      missedAppointments: '',
       newIncident: '',
       newInvoice: '',
       newPatient: '',
@@ -1097,12 +1131,14 @@ export default {
       requests: '',
       returnMedication: '',
       scheduleSurgery: '',
+      textReplacements: '',
       theaterSchedule: '',
       "today'sAppointments": '',
       userRoles: '',
       users: '',
       workflow: ''
-    }
+    },
+    titles: { logoutFailed: '' }
   },
   operationReport: {
     labels: {
@@ -1272,6 +1308,22 @@ export default {
       totalPatientDaysDetailed: '',
       visit: ''
     }
+  },
+  pricing: {
+    labels: {
+      discountAmount: '',
+      discountPercentage: '',
+      setFee: ''
+    },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
   },
   print: { invoice: {
     labels: {

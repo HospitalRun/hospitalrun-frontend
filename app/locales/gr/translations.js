@@ -1,5 +1,4 @@
 export default {
-  languageName: 'Ελληνικά',
   admin: {
     address: {
       address1Label: 'Ετικέτα Διεύθυνσης 1',
@@ -12,13 +11,9 @@ export default {
       include2Label: 'Συμπεριλάβετε 2 ετικέτες',
       include3Label: 'Συμπεριλάβετε 3 ετικέτες',
       include4Label: 'Συμπεριλάβετε 4 ετικέτες',
-      messages: {
-        addressSaved: 'Οι επιλογές διεύθυνσης αποθηκεύτηκαν'
-      },
+      messages: { addressSaved: 'Οι επιλογές διεύθυνσης αποθηκεύτηκαν' },
       newTitle: 'Επιλογές Διεύθυνσης',
-      titles: {
-        optionsSaved: 'Οι Επιλογές Αποθηκεύτηκαν'
-      }
+      titles: { optionsSaved: 'Οι Επιλογές Αποθηκεύτηκαν' }
     },
     addressOptions: 'Επιλογές Διεύθυνσης',
     customForms: {
@@ -57,9 +52,7 @@ export default {
         textarea: 'Mεγάλο Kείμενο',
         visitFormType: 'Επίσκεψη'
       },
-      messages: {
-        formSaved: 'Η φόρμα {{name}} αποθηκεύτηκε.'
-      },
+      messages: { formSaved: 'Η φόρμα {{name}} αποθηκεύτηκε.' },
       titles: {
         checkboxValues: 'Τιμές Πλαισίου Ελέγχου',
         customForms: 'Προσαρμοσμένες Φόρμες',
@@ -81,13 +74,9 @@ export default {
       headerLine2: 'Επικεφαλίδα Γραμμή 2',
       headerLine3: 'Επικεφαλίδα Γραμμή 3',
       logoURL: 'Διεύθυνση Λογότυπου',
-      messages: {
-        headerSaved: 'Οι επιλογές επικεφαλίδας αποθηκεύτηκαν'
-      },
+      messages: { headerSaved: 'Οι επιλογές επικεφαλίδας αποθηκεύτηκαν' },
       newTitle: 'Επιλογές Επικεφαλίδας',
-      titles: {
-        optionsSaved: 'Οι Επιλογές Αποθηκεύτηκαν'
-      }
+      titles: { optionsSaved: 'Οι Επιλογές Αποθηκεύτηκαν' }
     },
     loadDb: 'Μεταφόρτωση Βάσης',
     loaddb: {
@@ -114,15 +103,13 @@ export default {
       countryList: 'Χώρες',
       cptCodeList: 'Κώδικες CPT',
       diagnosisList: 'Διαγνώσεις',
-      edit: {
-        template: {
-          addTitle: 'Πρoσθήκη Τιμής',
-          editTitle: 'Επεξεργασία τιμής',
-          labelTitle: 'Τιμή',
-          updateButtonTextAdd: 'Πρόσθεση',
-          updateButtonTextUpdate: 'Ενημέρωση'
-        }
-      },
+      edit: { template: {
+        addTitle: 'Πρoσθήκη Τιμής',
+        editTitle: 'Επεξεργασία τιμής',
+        labelTitle: 'Τιμή',
+        updateButtonTextAdd: 'Πρόσθεση',
+        updateButtonTextUpdate: 'Ενημέρωση'
+      } },
       expenseAccountList: 'Λογαριασμοί Εξόδων',
       imagingPricingTypes: 'Τύποι Τιμολόγησης Απεικονίσης',
       incidentDepartments: 'Τμήματα Περιστατικών',
@@ -135,9 +122,7 @@ export default {
       procedureLocations: 'Τοποθεσίες Διαδικασιών',
       procedurePricingTypes: 'Τύποι Τιμολόγησης Διαδικασιών',
       radiologists: 'Ακτινολόγοι',
-      titles: {
-        deleteLookupValue: 'Διαγραφή Τιμής'
-      },
+      titles: { deleteLookupValue: 'Διαγραφή Τιμής' },
       unitTypes: 'Τύποι Μονάδων',
       vendorList: 'Προμηθευτής',
       visitLocationList: 'Τοποθεσίες Επίσκεψης',
@@ -222,23 +207,19 @@ export default {
         updateConfig: 'Ενημέρωση Παραμέτρων',
         visits: 'Επισκέψεις'
       },
-      messages: {
-        roleSaved: 'Ο ρόλος {{rolename}} αποθηκεύτηκε.'
-      },
-      titles: {
-        roleSaved: 'Ο Ρόλος Αποθηκεύτηκε'
-      }
+      messages: { roleSaved: 'Ο ρόλος {{rolename}} αποθηκεύτηκε.' },
+      titles: { roleSaved: 'Ο Ρόλος Αποθηκεύτηκε' }
     },
     textReplacements: {
       createNew: 'Δημιουργία νέου shortcode',
       existingRepl: 'Υφιστάμενα Shortcode',
-      replDesc: 'Κατά την εισαγωγή κειμένου, αυτές οι συντομεύσεις σας επιτρέπουν να αντικαταστήσετε μια σύντομη ακολουθία χαρακτήρων με μια μεγαλύτερη φράση.',
+      noMatches: "Καμμία αντικατάσταση δεν ταιριάζει με '{{term}}'",
       pageTitle: 'Shortcodes',
-      toReplace: 'Κείμενο προς αντικατάσταση',
-      replaceWith: 'Αντικατάσταση με',
       performExpand: "Πατήστε Enter για να αντικαταστήσετε #{{from}} με '{{to}}'",
       possibleExpansions: 'Πιθανές αντικαταστάσεις: {{possible}}',
-      noMatches: "Καμμία αντικατάσταση δεν ταιριάζει με '{{term}}'"
+      replDesc: 'Κατά την εισαγωγή κειμένου, αυτές οι συντομεύσεις σας επιτρέπουν να αντικαταστήσετε μια σύντομη ακολουθία χαρακτήρων με μια μεγαλύτερη φράση.',
+      replaceWith: 'Αντικατάσταση με',
+      toReplace: 'Κείμενο προς αντικατάσταση'
     },
     userRoles: 'Ρόλοι Χρηστών',
     users: 'Χρήστες',
@@ -249,25 +230,19 @@ export default {
         initial: 'Αρχικό',
         visitType: 'Τύπος Επίσκεψης'
       },
-      titles: {
-        visitForms: 'Φόρμες Επίσκεψης'
-      }
+      titles: { visitForms: 'Φόρμες Επίσκεψης' }
     },
     workflow: {
       admissionDepositLabel: 'Απαιτείται κατάθεση εισαγωγής',
       clinicPrepaymentLabel: 'Απαιτείται προπληρωμή κλινικής',
       editTitle: 'Επιλογές Ροής Εργασίας',
       followupPrepaymentLabel: 'Απαιτείται προπληρωμή',
-      messages: {
-        optionsSaved: 'Οι επιλογές ροής εργασίας αποθηκεύτηκαν'
-      },
+      messages: { optionsSaved: 'Οι επιλογές ροής εργασίας αποθηκεύτηκαν' },
       newTitle: 'Επιλογές Ροής Εργασίας',
       outpatientImagingLabel: 'Απαιτείται Προπληρωμή Απεικόνισης Εξωτερικών Ιατρείων',
       outpatientLabLabel: 'Απαιτείται Προπληρωμή Εργαστηρίου Εξωτερικών Ιατρείων',
       outpatientMedicationLabel: 'Απαιτείται Προπληρωμή Φαρμακευτικής Αγωγής Εξωτερικών Ιατρείων',
-      titles: {
-        optionsSaved: 'Οι Επιλογές Αποθηκεύτηκαν'
-      },
+      titles: { optionsSaved: 'Οι Επιλογές Αποθηκεύτηκαν' },
       workflowLabel: 'Ροή Εργασίας'
     }
   },
@@ -278,9 +253,7 @@ export default {
     warningExclamation: 'Προειδοποίηση!!!!'
   },
   allergies: {
-    buttons: {
-      addAllergy: 'Προσθήκη Αλλεργίας'
-    },
+    buttons: { addAllergy: 'Προσθήκη Αλλεργίας' },
     labels: {
       allergyName: 'Όνομα',
       patientAllergy: 'Αλλεργίες Ασθενούς'
@@ -291,12 +264,8 @@ export default {
     }
   },
   application: {
-    messages: {
-      sessionExpired: 'Η συνεδρία σας έληξε. Παρακαλώ συνδεθείτε για να συνεχίσετε.'
-    },
-    titles: {
-      sessionExpired: 'Η Συνεδρία Έληξε'
-    }
+    messages: { sessionExpired: 'Η συνεδρία σας έληξε. Παρακαλώ συνδεθείτε για να συνεχίσετε.' },
+    titles: { sessionExpired: 'Η Συνεδρία Έληξε' }
   },
   appointments: {
     buttons: {
@@ -351,8 +320,8 @@ export default {
       setFee: 'Ορισμός Χρέωσης'
     },
     messages: {
-      flatFeeMsg: 'Σταθερή χρέωση για την οικονομική ευθύνη του ασθενή της τάξης των {{setFee}} {{currency}}.',
-      flatDiscountMsg: 'Σταθερό ποσό έκπτωσης που εφαρμόζεται στην οικονομική ευθύνη του ασθενή της τάξης των {{discountAmount}} {{currency}}.'
+      flatDiscountMsg: 'Σταθερό ποσό έκπτωσης που εφαρμόζεται στην οικονομική ευθύνη του ασθενή της τάξης των {{discountAmount}} {{currency}}.',
+      flatFeeMsg: 'Σταθερή χρέωση για την οικονομική ευθύνη του ασθενή της τάξης των {{setFee}} {{currency}}.'
     }
   },
   buttons: {
@@ -390,35 +359,19 @@ export default {
     update: 'Ενημέρωση'
   },
   components: {
-    chargesByTypeTab: {
-      charges: 'χρεώσεις'
-    },
-    customFormManager: {
-      buttons: {
-        addForm: 'Προσθήκη Φόρμας'
-      }
-    },
+    chargesByTypeTab: { charges: 'χρεώσεις' },
+    customFormManager: { buttons: { addForm: 'Προσθήκη Φόρμας' } },
     dateTimePicker: {
       amHour: '{{hour}} πμ',
       midnight: 'Μεσάνυχτα',
       noon: 'Μεσημέρι',
       pmHour: '{{hour}} μμ'
     },
-    imageUpload: {
-      messages: {
-        selectValidImageFile: 'Παρακαλώ επιλέξτε ένα έγκυρο αρχείο εικόνας.'
-      }
-    },
+    imageUpload: { messages: { selectValidImageFile: 'Παρακαλώ επιλέξτε ένα έγκυρο αρχείο εικόνας.' } },
     operativeProcedures: {
-      buttons: {
-        addProcedure: 'Προσθήκη Διαδικασίας'
-      },
-      labels: {
-        procedure: 'Διαδικασία'
-      },
-      titles: {
-        procedures: 'Διαδικασίες'
-      }
+      buttons: { addProcedure: 'Προσθήκη Διαδικασίας' },
+      labels: { procedure: 'Διαδικασία' },
+      titles: { procedures: 'Διαδικασίες' }
     },
     patientOrders: {
       buttons: {
@@ -433,21 +386,13 @@ export default {
         orderType: 'Τύπος Παραγγελίας'
       }
     },
-    priceList: {
-      charges: '{{pricingType}} χρεώσεις'
-    },
-    quantityCalc: {
-      result: 'Σύνολο {{targetUnit}} : {{calculated}}'
-    },
+    priceList: { charges: '{{pricingType}} χρεώσεις' },
+    quantityCalc: { result: 'Σύνολο {{targetUnit}} : {{calculated}}' },
     quantityConv: {
       conversion: 'Τι περιέχει 1 {{name}};',
       unit: 'Μονάδα'
     },
-    sortableColumn: {
-      labels: {
-        selectAll: '(Επιλογή Όλων)'
-      }
-    },
+    sortableColumn: { labels: { selectAll: '(Επιλογή Όλων)' } },
     takePhoto: {
       camera: 'Κάμερα',
       how: 'Πώς Θέλετε να Προσθέσετε μια Φωτογραφία;',
@@ -467,21 +412,13 @@ export default {
         type: 'Τύπος',
         'with': 'Με'
       },
-      titles: {
-        upcomingAppointments: 'Προσεχή Ραντεβού'
-      }
+      titles: { upcomingAppointments: 'Προσεχή Ραντεβού' }
     }
   },
   customForms: {
-    buttons: {
-      addForm: 'Προσθήκη Φόρμας'
-    },
-    labels: {
-      formToAdd: 'Φόρμα για Προσθήκη'
-    },
-    titles: {
-      addCustomForm: 'Προσθήκη Προσαρμοσμένης Φόρμας'
-    }
+    buttons: { addForm: 'Προσθήκη Φόρμας' },
+    labels: { formToAdd: 'Φόρμα για Προσθήκη' },
+    titles: { addCustomForm: 'Προσθήκη Προσαρμοσμένης Φόρμας' }
   },
   dashboard: {
     needs_user_setup: 'Σας συνιστούμε να δημιουργήσετε λογαριασμό χρήστη.',
@@ -535,9 +472,7 @@ export default {
     tooShort: 'είναι πολύ μικρή (ελάχιστη είναι {{count}} χαρακτήρες)',
     wrongLength: 'έχει λάθος μέγεθος (θα πρέπει να είναι {{count}} χαρακτήρες)'
   },
-  headings: {
-    chargedItems: 'Χρεωμένα Είδη'
-  },
+  headings: { chargedItems: 'Χρεωμένα Είδη' },
   imaging: {
     alerts: {
       completedMessage: 'Το αίτημα απεικόνισης ολοκληρώθηκε.',
@@ -545,19 +480,15 @@ export default {
       savedMessage: 'Το αίτημα απεικόνισης αποθηκεύτηκε.',
       savedTitle: 'Το Αίτημα Απεικόνισης Αποθηκεύτηκε'
     },
-    buttons: {
-      newButton: '+ Νέα Απεικόνιση'
-    },
+    buttons: { newButton: '+ Νέα Απεικόνιση' },
     labels: {
       addNewVisit: '--Προσθήκη Νέας Επίσκεψης--',
+      completedBy: 'Ολοκληρώθηκε από',
       radiologist: 'Ακτινολόγος',
-      resultNotes: 'Σημειώσεις Αποτέλεσμάτος',
       requestedNotes: 'Αιτηθείσες Σημειώσεις',
-      completedBy: 'Ολοκληρώθηκε από'
+      resultNotes: 'Σημειώσεις Αποτέλεσμάτος'
     },
-    messages: {
-      noCompleted: 'Δεν βρέθηκαν ολοκληρωμένα στοιχεία.'
-    },
+    messages: { noCompleted: 'Δεν βρέθηκαν ολοκληρωμένα στοιχεία.' },
     pageTitle: 'Αιτήματα Απεικόνισης',
     sectionTitle: 'Απεικονίσεις',
     titles: {
@@ -909,8 +840,8 @@ export default {
     lookupType: 'Τύπος Αναζήτησης',
     medication: 'Φαρμακευτική Αγωγή',
     name: 'Ονομα',
-    newUser: 'Νέος χρήστης',
     newItem: '+ Νέο Στοιχείο',
+    newUser: 'Νέος χρήστης',
     note: 'Σημείωση',
     notes: 'Σημειώσεις',
     number: 'Αριθμός',
@@ -958,9 +889,7 @@ export default {
       requestSavedMessage: 'Το αίτημα εργαστηρίου αποθηκεύτηκε.',
       requestSavedTitle: 'Το Αίτημα Εργαστηρίου Αποθηκεύτηκε'
     },
-    buttons: {
-      newButton: '+ Νέο Εργαστήριο'
-    },
+    buttons: { newButton: '+ Νέο Εργαστήριο' },
     completedTitle: 'Ολοκληρώμένα Εργαστήρια',
     deleteTitle: 'Διαγραφή Αιτήματος',
     editTitle: 'Επεξεργασία Αιτήματος Εργαστηρίου',
@@ -977,6 +906,7 @@ export default {
     requestsTitle: 'Αιτήματα Εργαστήριου',
     sectionTitle: 'Εργαστήρια'
   },
+  languageName: 'Ελληνικά',
   loading: {
     messages: {
       '0': 'Η μέγιστη ταχύτητα πτήσης μιας πεταλούδα είναι 19 χλμ/ώρα. Μερικοί σκώροι μπορούν να πετάξουν εώς και 40 χλμ/ώρα!',
@@ -992,9 +922,7 @@ export default {
       '10': 'Η γλώσσα σας είναι ο μοναδικός μυς στο σώμα σας που είναι συνδεδεμένος μόνο από το ένα άκρο.',
       '11': 'Οι καμήλες έχουν τρία βλέφαρα που τις προστατεύουν από τις αμμοθύελες.'
     },
-    progressBar: {
-      progress: 'Ολοκληρώθηκε {{progressBarValue}}%'
-    }
+    progressBar: { progress: 'Ολοκληρώθηκε {{progressBarValue}}%' }
   },
   login: {
     labels: {
@@ -1033,9 +961,7 @@ export default {
       returnLocation: 'Τοποθεσία Επιστροφής',
       returnReason: 'Λόγος/Σημειώσεις Επιστροφής'
     },
-    messages: {
-      createNew: 'Δημιουργία νέου αιτήματος φαρμακευτικής αγωγής;'
-    },
+    messages: { createNew: 'Δημιουργία νέου αιτήματος φαρμακευτικής αγωγής;' },
     pageTitle: 'Αιτήματα Φαρμακευτικής Αγωγής',
     returnMedication: 'Επιστροφή Φαρμάκων',
     sectionTitle: 'Φαρμακευτική Αγωγή',
@@ -1085,18 +1011,14 @@ export default {
         singular: 'ραντεβού'
       }
     },
-    attachment: {
-      names: {
-        plural: 'συνημμένα',
-        singular: 'συνημμένο'
-      }
-    },
-    form: {
-      names: {
-        plural: 'φόρμες',
-        singular: 'φόρμα'
-      }
-    },
+    attachment: { names: {
+      plural: 'συνημμένα',
+      singular: 'συνημμένο'
+    } },
+    form: { names: {
+      plural: 'φόρμες',
+      singular: 'φόρμα'
+    } },
     imaging: {
       names: 'απεικονίσεις',
       request: {
@@ -1104,18 +1026,14 @@ export default {
         singular: 'αίτημα απεικόνισης'
       }
     },
-    incident: {
-      names: {
-        plural: 'περιστατικά',
-        singular: 'περιστατικό'
-      }
-    },
-    item: {
-      names: {
-        plural: 'είδη',
-        singular: 'είδος'
-      }
-    },
+    incident: { names: {
+      plural: 'περιστατικά',
+      singular: 'περιστατικό'
+    } },
+    item: { names: {
+      plural: 'είδη',
+      singular: 'είδος'
+    } },
     lab: {
       names: {
         plural: 'εργαστήρια',
@@ -1136,44 +1054,30 @@ export default {
         singular: 'αίτημα φαρμακευτικής αγωγής'
       }
     },
-    note: {
-      names: {
-        plural: 'σημειώσεις',
-        singular: 'σημείωση'
-      }
-    },
+    note: { names: {
+      plural: 'σημειώσεις',
+      singular: 'σημείωση'
+    } },
     patient: {
-      labels: {
-        name: 'Ονομα'
-      },
-      names: {
-        singular: 'Ασθενής'
-      }
+      labels: { name: 'Ονομα' },
+      names: { singular: 'Ασθενής' }
     },
-    procedure: {
-      names: {
-        plural: 'διαδικασίες',
-        singular: 'διαδικασία'
-      }
-    },
-    user: {
-      names: {
-        plural: 'χρήστες',
-        singular: 'χρήστης'
-      }
-    },
-    visit: {
-      names: {
-        plural: 'επισκέψεις',
-        singular: 'επίσκεψη'
-      }
-    },
-    vital: {
-      names: {
-        plural: 'ζωτικοί',
-        singular: 'ζωτικός'
-      }
-    }
+    procedure: { names: {
+      plural: 'διαδικασίες',
+      singular: 'διαδικασία'
+    } },
+    user: { names: {
+      plural: 'χρήστες',
+      singular: 'χρήστης'
+    } },
+    visit: { names: {
+      plural: 'επισκέψεις',
+      singular: 'επίσκεψη'
+    } },
+    vital: { names: {
+      plural: 'ζωτικοί',
+      singular: 'ζωτικός'
+    } }
   },
   navigation: {
     about: 'Σχετικά με το HospitalRun',
@@ -1189,9 +1093,7 @@ export default {
     inventory: 'Αποθεματικό',
     labs: 'Εργαστήρια',
     medication: 'Φαρμακευτική Αγωγή',
-    messages: {
-      logoutFailed: 'Δεν ήταν δυνατή η αποσύνδεση αυτή τη στιγμή. Η αποσύνδεση δεν είναι διαθέσιμη ενώ είστε εκτός σύνδεσης.'
-    },
+    messages: { logoutFailed: 'Δεν ήταν δυνατή η αποσύνδεση αυτή τη στιγμή. Η αποσύνδεση δεν είναι διαθέσιμη ενώ είστε εκτός σύνδεσης.' },
     patients: 'Ασθενείς',
     scheduling: 'Πρόγραμμα',
     subnav: {
@@ -1236,9 +1138,7 @@ export default {
       users: 'Xρήστες',
       workflow: 'Ροή Εργασίας'
     },
-    titles: {
-      logoutFailed: 'Η Αποσύνδεση Απέτυχε'
-    }
+    titles: { logoutFailed: 'Η Αποσύνδεση Απέτυχε' }
   },
   operationReport: {
     labels: {
@@ -1251,9 +1151,7 @@ export default {
       surgeon: 'Χειρουργός',
       surgeryDate: 'Χειρουργική Ημερομηνία'
     },
-    messages: {
-      reportSaved: 'Η αναφορά του χειρουργείου αποθηκεύτηκε.'
-    },
+    messages: { reportSaved: 'Η αναφορά του χειρουργείου αποθηκεύτηκε.' },
     titles: {
       editTitle: 'Επεξεργασία Αναφοράς Χειρουργείου',
       newTitle: 'Νέα Αναφορά Χειρουργείου',
@@ -1261,9 +1159,7 @@ export default {
     }
   },
   operativePlan: {
-    buttons: {
-      completePlan: 'Ολοκλήρωση Προγράμματος'
-    },
+    buttons: { completePlan: 'Ολοκλήρωση Προγράμματος' },
     labels: {
       additionalNotes: 'Επιπρόσθετες Σημειώσεις',
       admissionInstructions: 'Οδηγίες Κατά την Εισαγωγή',
@@ -1418,44 +1314,43 @@ export default {
       discountAmount: 'Ποσό Έκπτωσης',
       discountPercentage: 'Ποσοστό Έκπτωσης',
       setFee: 'Δημιουργία Χρέωσης'
-    }
-  },
-  print: {
-    invoice: {
-      labels: {
-        billedBy: 'Χρέωση από:',
-        billedDate: 'Ημερομηνία Χρέωσης :',
-        dateAdmitted: 'ΕΙΣΗΧΘΗ:',
-        dateDischarged: 'ΑΠΟΧΩΡΗΣΗ:',
-        dischargeNotes: 'Σημειώσεις Αποχώρησης:',
-        patientAddress: 'ΔΙΕΥΘΥΝΣΗ:',
-        patientAge: 'ΗΛΙΚΙΑ:',
-        patientId: 'ΑΣΘΕΝΗΣ #:',
-        patientName: 'ΟΝΟΜΑ ΑΣΘΕΝΟΥΣ:',
-        remarks: 'Παρατηρήσεις:',
-        spacer: '__________________________________________'
-      },
-      messages: {
-        whereConducted: 'παρακρατήθηκαν κατά τη διάρκεια της νοσηλείας μου'
-      },
-      titles: {
-        billingStatement: 'ΔΗΛΩΣΗ ΧΡΕΩΣΗΣ',
-        patientMember: 'Ασθενής-Μέλος',
-        patients: 'ΑΣΘΕΝΟΥΣ',
-        relContact: 'Σχέση/Αρ. Επικοινωνίας'
-      }
-    }
-  },
-  procedures: {
-    buttons: {
-      addMedication: 'Προσθήκη Φαρμακευτικής Αγωγής'
     },
+    navigation: {
+      allPricingItems: '',
+      imagePricing: '',
+      labPricing: '',
+      pricingProfiles: '',
+      procedurePricing: '',
+      wardPricing: ''
+    },
+    sectionTitle: ''
+  },
+  print: { invoice: {
     labels: {
-      medicationUsed: 'Χορηγούμενη Φαρμακευτική Αγωγή'
+      billedBy: 'Χρέωση από:',
+      billedDate: 'Ημερομηνία Χρέωσης :',
+      dateAdmitted: 'ΕΙΣΗΧΘΗ:',
+      dateDischarged: 'ΑΠΟΧΩΡΗΣΗ:',
+      dischargeNotes: 'Σημειώσεις Αποχώρησης:',
+      patientAddress: 'ΔΙΕΥΘΥΝΣΗ:',
+      patientAge: 'ΗΛΙΚΙΑ:',
+      patientId: 'ΑΣΘΕΝΗΣ #:',
+      patientName: 'ΟΝΟΜΑ ΑΣΘΕΝΟΥΣ:',
+      remarks: 'Παρατηρήσεις:',
+      spacer: '__________________________________________'
     },
-    messages: {
-      saved: 'Η διαδικασία αποθηκεύτηκε.'
-    },
+    messages: { whereConducted: 'παρακρατήθηκαν κατά τη διάρκεια της νοσηλείας μου' },
+    titles: {
+      billingStatement: 'ΔΗΛΩΣΗ ΧΡΕΩΣΗΣ',
+      patientMember: 'Ασθενής-Μέλος',
+      patients: 'ΑΣΘΕΝΟΥΣ',
+      relContact: 'Σχέση/Αρ. Επικοινωνίας'
+    }
+  } },
+  procedures: {
+    buttons: { addMedication: 'Προσθήκη Φαρμακευτικής Αγωγής' },
+    labels: { medicationUsed: 'Χορηγούμενη Φαρμακευτική Αγωγή' },
+    messages: { saved: 'Η διαδικασία αποθηκεύτηκε.' },
     titles: {
       addChargeItem: 'Προσθήκη Στοιχείου Χρέωσης',
       addMedicationUsed: 'Προσθήκη Χορηγούμενης Φαρμακευτικής Αγωγής',
@@ -1584,16 +1479,14 @@ export default {
       visitSaved: 'Η Επίσκεψη Αποθηκεύτηκε'
     }
   },
-  vitals: {
-    labels: {
-      dateRecorded: 'Η Ημερομηνία Καταχωρήθηκε',
-      dbp: 'Διαστολική Πίεση',
-      heartRate: 'Παλμός Καρδιάς',
-      height: 'Ύψος',
-      respiratoryRate: 'Ρυθμός Αναπνοής',
-      sbp: 'Συστολική Πίεση',
-      temperature: 'Θερμοκρασία',
-      weight: 'Βάρος'
-    }
-  }
+  vitals: { labels: {
+    dateRecorded: 'Η Ημερομηνία Καταχωρήθηκε',
+    dbp: 'Διαστολική Πίεση',
+    heartRate: 'Παλμός Καρδιάς',
+    height: 'Ύψος',
+    respiratoryRate: 'Ρυθμός Αναπνοής',
+    sbp: 'Συστολική Πίεση',
+    temperature: 'Θερμοκρασία',
+    weight: 'Βάρος'
+  } }
 };
