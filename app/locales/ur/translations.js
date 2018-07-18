@@ -308,6 +308,7 @@ export default {
       createInvoice: 'ایک رسید بنائیں؟',
       newInvoice: ''
     },
+    currentScreenTitle: '',
     editInvoice: '',
     invoiceTitle: '',
     labels: {

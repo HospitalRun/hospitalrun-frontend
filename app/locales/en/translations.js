@@ -308,6 +308,7 @@ export default {
       createInvoice: 'Create an invoice?',
       newInvoice: '+ new invoice'
     },
+    currentScreenTitle: 'Invoices',
     editInvoice: 'Edit Invoice',
     invoiceTitle: 'Invoices',
     labels: {

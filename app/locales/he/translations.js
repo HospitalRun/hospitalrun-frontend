@@ -308,6 +308,7 @@ export default {
       createInvoice: 'ליצור חשבונית?',
       newInvoice: ''
     },
+    currentScreenTitle: '',
     editInvoice: '',
     invoiceTitle: '',
     labels: {

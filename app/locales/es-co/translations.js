@@ -308,6 +308,7 @@ export default {
       createInvoice: '',
       newInvoice: ''
     },
+    currentScreenTitle: '',
     editInvoice: '',
     invoiceTitle: '',
     labels: {

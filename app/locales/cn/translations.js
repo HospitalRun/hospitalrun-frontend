@@ -308,6 +308,7 @@ export default {
       createInvoice: '建立单据?',
       newInvoice: ''
     },
+    currentScreenTitle: '',
     editInvoice: '',
     invoiceTitle: '',
     labels: {
