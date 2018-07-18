@@ -122,7 +122,7 @@ export default {
       procedureLocations: 'Emplacements des procédures',
       procedurePricingTypes: 'Types de prix des procédures',
       radiologists: 'Radiologistes',
-      titles: { deleteLookupValue: '' },
+      titles: { deleteLookupValue: undefined },
       unitTypes: "Types d'unité",
       vendorList: 'Fournisseurs',
       visitLocationList: 'Emplacements de consultations',
@@ -292,7 +292,7 @@ export default {
       appointmentSaved: 'Rendez-vous sauvegardé',
       editSurgicalAppointment: 'Modifier un rendez-vous chirurgical',
       newSurgicalAppointment: 'Nouveau rendez-vous chirurgical',
-      theaterSchedule: ''
+      theaterSchedule: undefined
     },
     todayTitle: "Rendez-vous d'aujourd'hui"
   },
@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'Aucun profil de prix trouvé'
     },
     buttons: {
-      addDeposit: '',
+      addDeposit: undefined,
       addOverride: 'Ajouter un dépassement',
       createInvoice: 'Créer une facture ?',
-      newInvoice: ''
+      newInvoice: undefined
     },
-    currentScreenTitle: '',
-    editInvoice: '',
-    invoiceTitle: '',
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'Frais réels',
       discountAmount: 'Montant de remise',
@@ -329,12 +329,12 @@ export default {
       flatFeeMsg: "Il existe des frais forfaitaires pour le patient d'un montant de {{setFee}}{{currency}}."
     },
     navigation: {
-      allInvoices: '',
-      billed: '',
-      drafts: '',
-      paid: ''
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
     },
-    newInvoice: ''
+    newInvoice: undefined
   },
   buttons: {
     add: 'Ajouter',
@@ -1328,14 +1328,14 @@ export default {
       setFee: 'Définir les frais'
     },
     navigation: {
-      allPricingItems: '',
-      imagePricing: '',
-      labPricing: '',
-      pricingProfiles: '',
-      procedurePricing: '',
-      wardPricing: ''
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
     },
-    sectionTitle: ''
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {
