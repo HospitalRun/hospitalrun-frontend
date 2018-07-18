@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: 'אין תמחור והפרופילים שנמצאו.'
     },
     buttons: {
+      addDeposit: '',
       addOverride: 'הוסף את המעקף',
-      createInvoice: 'ליצור חשבונית?'
+      createInvoice: 'ליצור חשבונית?',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: 'חיובים בפועל',
       discountAmount: 'סכום הנחת',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: 'יש כמות הנחה שטוח המוחל על אחריות פיננסית החולה {{מטבע}} {{discountAmount}}.',
       flatFeeMsg: 'יש תשלום קבוע עבור המטופל האחריות הכספית של {{מטבע}} {{setFee}}.'
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'להוסיף',

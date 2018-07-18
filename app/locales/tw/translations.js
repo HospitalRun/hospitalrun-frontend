@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: '找無定價概況'
     },
     buttons: {
+      addDeposit: '',
       addOverride: '新增覆蓋',
-      createInvoice: '建立單據?'
+      createInvoice: '建立單據?',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: '實際收費',
       discountAmount: '折扣金額',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: '患者負責的基本費用已包含 {{currency}}{{discountAmount}} 的折扣.',
       flatFeeMsg: '患者負責 {{currency}}{{setFee}} 的基本費用.'
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: '新增',

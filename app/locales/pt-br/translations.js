@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: 'Nenhum perfil de preço encontrado.'
     },
     buttons: {
+      addDeposit: '',
       addOverride: 'Adicionar Substituir',
-      createInvoice: 'Criar nova fatura?'
+      createInvoice: 'Criar nova fatura?',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: 'Cobranças Atuais',
       discountAmount: 'Quantidade de Desconto',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: '',
       flatFeeMsg: ''
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'Adicionar',

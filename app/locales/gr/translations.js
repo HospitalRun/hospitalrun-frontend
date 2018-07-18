@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: 'Δεν βρέθηκαν προφίλ τιμολόγησης.'
     },
     buttons: {
+      addDeposit: '',
       addOverride: 'Προσθήκη παράκαμψης',
-      createInvoice: 'Δημιουργία τιμολογίου;'
+      createInvoice: 'Δημιουργία τιμολογίου;',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: 'Πραγματικές χρεώσεις',
       discountAmount: 'Ποσό έκπτωσης',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: 'Σταθερό ποσό έκπτωσης που εφαρμόζεται στην οικονομική ευθύνη του ασθενή της τάξης των {{discountAmount}} {{currency}}.',
       flatFeeMsg: 'Σταθερή χρέωση για την οικονομική ευθύνη του ασθενή της τάξης των {{setFee}} {{currency}}.'
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'Προσθήκη',

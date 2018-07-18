@@ -303,9 +303,13 @@ export default {
       noPricingProfiles: 'No se encontraron perfiles de precio'
     },
     buttons: {
+      addDeposit: '',
       addOverride: 'Agregar anulación',
-      createInvoice: 'Crear factura'
+      createInvoice: 'Crear factura',
+      newInvoice: ''
     },
+    editInvoice: '',
+    invoiceTitle: '',
     labels: {
       actualCharges: 'Cargos actuales',
       discountAmount: 'Monto de descuento',
@@ -322,7 +326,14 @@ export default {
     messages: {
       flatDiscountMsg: '',
       flatFeeMsg: ''
-    }
+    },
+    navigation: {
+      allInvoices: '',
+      billed: '',
+      drafts: '',
+      paid: ''
+    },
+    newInvoice: ''
   },
   buttons: {
     add: 'Agregar',
