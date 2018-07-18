@@ -1,6 +1,7 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
+import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {

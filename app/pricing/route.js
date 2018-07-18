@@ -1,4 +1,5 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
+import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractModuleRoute.extend({
@@ -39,6 +40,6 @@ export default AbstractModuleRoute.extend({
     }, {
       text: this.get('i18n').t('pricing.navigation.pricingProfiles'),
       linkTo: 'pricing.profiles'
-    }]
+    }];
   })
 });
