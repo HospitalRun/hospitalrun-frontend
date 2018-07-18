@@ -302,9 +302,14 @@ export default {
       noPricingItems: 'No pricing items found.',
       noPricingProfiles: 'No pricing profiles found.'
     },
+    editInvoice: 'Edit Invoice',
+    newInvoice: 'New Invoice',
+    invoiceTitle: 'Invoices',
     buttons: {
       addOverride: 'Add Override',
-      createInvoice: 'Create an invoice?'
+      createInvoice: 'Create an invoice?',
+      newInvoice: '+ new invoice',
+      addDeposit: '+ add deposit'
     },
     labels: {
       actualCharges: 'Actual Charges',
@@ -318,6 +323,12 @@ export default {
       pricingPanelOverrides: 'Pricing profile overrides',
       pricingProfile: 'Pricing Profile',
       setFee: 'Set Fee'
+    },
+    navigation: {
+      billed: 'Billed',
+      drafts: 'Drafts',
+      allInvoices: 'All Invoices',
+      paid: 'Paid'
     },
     messages: {
       flatDiscountMsg: 'There is a flat discount amount applied to the patient financial responsibility of {{currency}}{{discountAmount}}.',

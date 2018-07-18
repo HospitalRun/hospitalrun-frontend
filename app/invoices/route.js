@@ -1,21 +1,22 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
+import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
   addCapability: 'add_invoice',
-  currentScreenTitle: 'Invoices',
-  editTitle: 'Edit Invoice',
-  newTitle: 'New Invoice',
+  currentScreenTitle: t('navigation.invoices'),
+  editTitle: t('billing.editInvoice'),
+  newTitle: t('billing.newInvoice'),
   moduleName: 'invoices',
-  newButtonText: '+ new invoice',
-  sectionTitle: 'Invoices',
+  newButtonText: t('billing.buttons.newInvoice'),
+  sectionTitle: t('billing.invoiceTitle'),
 
   additionalButtons: function() {
     if (this.currentUserCan('add_payment')) {
       return [{
         class: 'btn btn-default',
-        buttonText: '+ add deposit',
+        buttonText: this.get('i18n').t('billing.buttons.addDeposit'),
         buttonAction: 'showAddDeposit'
       }];
     }
@@ -57,32 +58,32 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
     }
   },
 
-  subActions: function() {
+  subActions: Ember.computed(function() {
     let actions = [{
-      text: 'Billed',
+      text: this.get('i18n').t('billing.navigation.billed'),
       linkTo: 'invoices.index',
       statusQuery: 'Billed'
     }];
     if (this.currentUserCan('add_invoice')) {
       actions.push({
-        text: 'Drafts',
+        text: this.get('i18n').t('billing.navigation.drafts'),
         linkTo: 'invoices.index',
         statusQuery: 'Draft'
       });
       actions.push({
-        text: 'All Invoices',
+        text: this.get('i18n').t('billing.navigation.allInvoices'),
         linkTo: 'invoices.index',
         statusQuery: 'All'
       });
     }
     if (this.currentUserCan('list_paid_invoices')) {
       actions.push({
-        text: 'Paid',
+        text: this.get('i18n').t('billing.navigation.paid'),
         linkTo: 'invoices.index',
         statusQuery: 'Paid'
       });
     }
     return actions;
-  }.property()
+  }).property()
 
 });
