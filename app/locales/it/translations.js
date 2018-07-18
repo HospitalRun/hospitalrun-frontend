@@ -34,7 +34,7 @@ export default {
         expenseTo: 'Spesa a',
         formName: 'Nome del modulo',
         formType: 'Tipo di modulo',
-        header: '',
+        header: undefined,
         incidentFormType: 'Incidente',
         includeOtherOption: "Includi un'altra opzione",
         labFormType: 'Laboratorio',
@@ -61,7 +61,7 @@ export default {
         editCustomForm: 'Modifica modulo personalizzato',
         fields: 'Campi',
         formSaved: 'Modulo salvato',
-        headerValues: '',
+        headerValues: undefined,
         newCustomForm: 'Nuovo modulo personalizzato',
         radioValues: 'Valori radio'
       }
@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'Non sono stati trovati profili di prezzo.'
     },
     buttons: {
-      addDeposit: '',
+      addDeposit: undefined,
       addOverride: "Aggiungi l'override",
       createInvoice: 'Creare una fattura?',
-      newInvoice: ''
+      newInvoice: undefined
     },
-    currentScreenTitle: '',
-    editInvoice: '',
-    invoiceTitle: '',
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'Spese effettive',
       discountAmount: 'Totale sconto',
@@ -329,12 +329,12 @@ export default {
       flatFeeMsg: "C'è una tassa piana per la responsabilità finanziaria del paziente di {{currency}} {{setFee}}."
     },
     navigation: {
-      allInvoices: '',
-      billed: '',
-      drafts: '',
-      paid: ''
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
     },
-    newInvoice: ''
+    newInvoice: undefined
   },
   buttons: {
     add: 'Inserisci',
@@ -1124,7 +1124,7 @@ export default {
       history: 'Storia',
       incidentCategories: 'Categorie di incidenti',
       inventoryReceived: 'Inventario ricevuto',
-      inventoryReceivedPlus: '',
+      inventoryReceivedPlus: undefined,
       invoices: 'Fatture',
       items: 'Elementi',
       loadDB: 'Carica DB',
@@ -1328,14 +1328,14 @@ export default {
       setFee: 'Imposta tariffa'
     },
     navigation: {
-      allPricingItems: '',
-      imagePricing: '',
-      labPricing: '',
-      pricingProfiles: '',
-      procedurePricing: '',
-      wardPricing: ''
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
     },
-    sectionTitle: ''
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {

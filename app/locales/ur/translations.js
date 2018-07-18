@@ -30,17 +30,17 @@ export default {
         colSpan: 'پھیلاؤ کے کالموں کی تعداد',
         columns: 'کالم',
         customForm: 'کسٹم فام',
-        dischargeReportFormType: '',
-        expenseTo: '',
+        dischargeReportFormType: undefined,
+        expenseTo: undefined,
         formName: 'فارم کا نام',
         formType: 'فارم کی قسم',
-        header: '',
-        incidentFormType: '',
+        header: undefined,
+        incidentFormType: undefined,
         includeOtherOption: 'دیگر آپشن شامل کریں',
-        labFormType: '',
+        labFormType: undefined,
         label: 'لیبل',
         newForm: 'نیا فارم',
-        opdReportFormType: '',
+        opdReportFormType: undefined,
         operativePlanFormType: 'آپریٹو پلان اور رپورٹ',
         otherOptionLabel: 'دیگر آپشن لیبل',
         patientFormType: 'مریض',
@@ -61,22 +61,22 @@ export default {
         editCustomForm: 'کسٹم فارم میں ترمیم کریں',
         fields: 'قطعات',
         formSaved: 'فارم محفوظ ہوگیا',
-        headerValues: '',
+        headerValues: undefined,
         newCustomForm: 'نئے کسٹم فارم',
         radioValues: 'ریڈیو میں قیمتیں'
       }
     },
     header: {
-      editTitle: '',
-      facilityName: '',
-      headerLabel: '',
-      headerLine1: '',
-      headerLine2: '',
-      headerLine3: '',
-      logoURL: '',
-      messages: { headerSaved: '' },
-      newTitle: '',
-      titles: { optionsSaved: '' }
+      editTitle: undefined,
+      facilityName: undefined,
+      headerLabel: undefined,
+      headerLine1: undefined,
+      headerLine2: undefined,
+      headerLine3: undefined,
+      logoURL: undefined,
+      messages: { headerSaved: undefined },
+      newTitle: undefined,
+      titles: { optionsSaved: undefined }
     },
     loadDb: 'DB لوڈ کریں',
     loaddb: {
@@ -112,7 +112,7 @@ export default {
       } },
       expenseAccountList: 'اخراجات اکاؤنٹس',
       imagingPricingTypes: 'امیجنگ قیمتوں کا تعین کی اقسام',
-      incidentDepartments: '',
+      incidentDepartments: undefined,
       inventoryTypes: 'انوینٹری کی اقسا م',
       labPricingTypes: 'لیب کی قیمتوں کا تعین کی اقسام',
       pageTitle: 'تلاش فہرستیں',
@@ -139,8 +139,8 @@ export default {
         addCharge: 'چارج شامل کریں',
         addDiagnosis: 'تشخیص کے لئے شامل کریں',
         addImaging: 'امیجنگ کا اضافہ کریں',
-        addIncident: '',
-        addIncidentCategory: '',
+        addIncident: undefined,
+        addIncidentCategory: undefined,
         addInventoryItem: 'انوینٹری آئٹم شامل کریں',
         addInventoryPurchase: 'انوینٹری کی خریداری شامل کریں',
         addInventoryRequest: 'انوینٹری کی درخواست شامل کریں',
@@ -164,15 +164,15 @@ export default {
         admitPatient: 'مریض جمع کریں',
         appointments: 'ملاقاتیں',
         billing: 'بلنگ',
-        cashier: '',
+        cashier: undefined,
         completeImaging: 'مکمل امیجنگ',
         completeLab: 'مکمل لیب',
         defineUserRoles: 'صارف کے کردار کی وضاحت کریں',
         deleteAppointment: 'ملاقات حذف کریں',
         deleteDiagnosis: 'تشخیس حذف کریں',
         deleteImaging: 'امیجنگ حذف کریں',
-        deleteIncident: '',
-        deleteIncidentCategory: '',
+        deleteIncident: undefined,
+        deleteIncidentCategory: undefined,
         deleteInventoryItem: 'حذف انوینٹری آئٹم',
         deleteInvoice: 'رسید کو حذف کریں',
         deleteLab: 'لیب حذف کریں',
@@ -190,15 +190,15 @@ export default {
         editInvoice: 'رسید میں ترمیم کریں',
         fulfillInventory: 'انوینٹری پورا کریں',
         fulfillMedication: 'ادویات پورا کریں',
-        generateIncidentReport: '',
+        generateIncidentReport: undefined,
         imaging: 'امیجنگ',
-        incident: '',
+        incident: undefined,
         inventory: 'انوینٹری',
         invoices: 'رسیدیں',
         labs: 'لیبز',
-        listPaidInvoices: '',
+        listPaidInvoices: undefined,
         loadDb: 'لوڈ کریں ڈیٹا بیس',
-        manageIncidents: '',
+        manageIncidents: undefined,
         medication: 'ادویات',
         overrideInvoice: 'رسید کو منسوخ کردے',
         patientReports: 'مریض کی رپورٹیں',
@@ -211,15 +211,15 @@ export default {
       titles: { roleSaved: 'کردار محفوظ ہوگیا ہے' }
     },
     textReplacements: {
-      createNew: '',
-      existingRepl: '',
-      noMatches: '',
-      pageTitle: '',
-      performExpand: '',
-      possibleExpansions: '',
-      replDesc: '',
-      replaceWith: '',
-      toReplace: ''
+      createNew: undefined,
+      existingRepl: undefined,
+      noMatches: undefined,
+      pageTitle: undefined,
+      performExpand: undefined,
+      possibleExpansions: undefined,
+      replDesc: undefined,
+      replaceWith: undefined,
+      toReplace: undefined
     },
     userRoles: 'صارف کے کردار',
     users: 'صارفین',
@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'کوئی قیمتوں کے تعیں والی پروفائل نہیں ملی'
     },
     buttons: {
-      addDeposit: '',
+      addDeposit: undefined,
       addOverride: 'منسوخ شامل کریں',
       createInvoice: 'ایک رسید بنائیں؟',
-      newInvoice: ''
+      newInvoice: undefined
     },
-    currentScreenTitle: '',
-    editInvoice: '',
-    invoiceTitle: '',
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'اصل قیمت',
       discountAmount: 'ڈسکاؤنٹ رقم',
@@ -322,19 +322,19 @@ export default {
       paymentsDeposits: 'ادائیگی / جمع کھاتہ',
       pricingPanelOverrides: 'قیمتوں کا تعین پروفائل کی منسوخی',
       pricingProfile: 'قیمتوں کا تعین پروفائل',
-      setFee: ''
+      setFee: undefined
     },
     messages: {
-      flatDiscountMsg: '',
-      flatFeeMsg: ''
+      flatDiscountMsg: undefined,
+      flatFeeMsg: undefined
     },
     navigation: {
-      allInvoices: '',
-      billed: '',
-      drafts: '',
-      paid: ''
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
     },
-    newInvoice: ''
+    newInvoice: undefined
   },
   buttons: {
     add: 'شامل کریں',
@@ -361,10 +361,10 @@ export default {
     newRequestPlus: '+ نئی درخواست',
     newUser: 'نیا صارف',
     ok: 'ٹھیک ہے',
-    print: '',
+    print: undefined,
     remove: 'دور کریں',
     returnButton: 'واپسی',
-    review: '',
+    review: undefined,
     search: 'تلاش کریں',
     showAll: 'سارے دکھائیں',
     showFewer: 'کم دکھائیں',
@@ -379,7 +379,7 @@ export default {
       noon: 'دوپہر',
       pmHour: '{{hour}} PM'
     },
-    imageUpload: { messages: { selectValidImageFile: '' } },
+    imageUpload: { messages: { selectValidImageFile: undefined } },
     operativeProcedures: {
       buttons: { addProcedure: 'ضابطے شامل کریں' },
       labels: { procedure: 'طریقہ کار' },
@@ -409,8 +409,8 @@ export default {
       camera: 'کیمرہ',
       how: 'آپ ایک تصویر کو کس طرح شامل کرنا چاہتے ہیں؟',
       labels: {
-        takeAPicture: '',
-        uploadAFile: ''
+        takeAPicture: undefined,
+        uploadAFile: undefined
       },
       photo: 'تصویر',
       preview: 'پیش نظارہ',
@@ -433,8 +433,8 @@ export default {
     titles: { addCustomForm: 'کسٹم فارم شامل کریں' }
   },
   dashboard: {
-    needs_user_setup: '',
-    standalone_welcome: '',
+    needs_user_setup: undefined,
+    standalone_welcome: undefined,
     title: 'آپ کیا کرنا چاہیں گے؟'
   },
   dates: {
@@ -495,10 +495,10 @@ export default {
     buttons: { newButton: '+ نئے امیجنگ' },
     labels: {
       addNewVisit: '--- نیا دورہ شامل کریں ---',
-      completedBy: '',
+      completedBy: undefined,
       radiologist: 'ریڈیولوجسٹ',
-      requestedNotes: '',
-      resultNotes: ''
+      requestedNotes: undefined,
+      resultNotes: undefined
     },
     messages: { noCompleted: 'کوئی مکمل اشیاء نہیں موجود۔' },
     pageTitle: 'امیجنگ درخواستیں',
@@ -511,96 +511,96 @@ export default {
   },
   incident: {
     buttons: {
-      add: '',
-      addForm: '',
-      addItem: '',
-      cancel: '',
-      'delete': '',
-      download: '',
-      edit: '',
-      'export': '',
-      generateRep: '',
-      newAttachment: '',
-      newCategory: '',
-      newIncident: '',
-      newNote: ''
+      add: undefined,
+      addForm: undefined,
+      addItem: undefined,
+      cancel: undefined,
+      'delete': undefined,
+      download: undefined,
+      edit: undefined,
+      'export': undefined,
+      generateRep: undefined,
+      newAttachment: undefined,
+      newCategory: undefined,
+      newIncident: undefined,
+      newNote: undefined
     },
     labels: {
-      actions: '',
-      addedBy: '',
-      category: '',
-      categoryItem: '',
-      date: '',
-      dateRecorded: '',
-      department: '',
-      description: '',
-      endDate: '',
-      givenBy: '',
-      howToAddAttachment: '',
-      incidentDate: '',
-      incidentId: '',
-      item: '',
-      lastUpdated: '',
-      note: '',
-      patientId: '',
-      patientImpacted: '',
-      reportType: '',
-      reportedBy: '',
-      reportedDate: '',
-      reportedTo: '',
-      sentinelEvent: '',
-      startDate: '',
-      status: '',
-      statusActive: '',
-      statusClosed: '',
-      statusFollowup: '',
-      statusReported: '',
-      title: '',
-      total: '',
-      updatedBy: ''
+      actions: undefined,
+      addedBy: undefined,
+      category: undefined,
+      categoryItem: undefined,
+      date: undefined,
+      dateRecorded: undefined,
+      department: undefined,
+      description: undefined,
+      endDate: undefined,
+      givenBy: undefined,
+      howToAddAttachment: undefined,
+      incidentDate: undefined,
+      incidentId: undefined,
+      item: undefined,
+      lastUpdated: undefined,
+      note: undefined,
+      patientId: undefined,
+      patientImpacted: undefined,
+      reportType: undefined,
+      reportedBy: undefined,
+      reportedDate: undefined,
+      reportedTo: undefined,
+      sentinelEvent: undefined,
+      startDate: undefined,
+      status: undefined,
+      statusActive: undefined,
+      statusClosed: undefined,
+      statusFollowup: undefined,
+      statusReported: undefined,
+      title: undefined,
+      total: undefined,
+      updatedBy: undefined
     },
     messages: {
-      attachmentFileRequired: '',
-      createNew: '',
-      createNewIncidentCategory: '',
-      fillIn: '',
-      incidentCategorySaved: '',
-      noClosedIncidents: '',
-      noIncidentCategoriesFound: '',
-      noIncidents: '',
-      saved: '',
-      selectExistingPatient: ''
+      attachmentFileRequired: undefined,
+      createNew: undefined,
+      createNewIncidentCategory: undefined,
+      fillIn: undefined,
+      incidentCategorySaved: undefined,
+      noClosedIncidents: undefined,
+      noIncidentCategoriesFound: undefined,
+      noIncidents: undefined,
+      saved: undefined,
+      selectExistingPatient: undefined
     },
     titles: {
-      addAttachment: '',
-      addCategoryItem: '',
-      addNote: '',
-      attachments: '',
-      closed: '',
-      current: '',
-      deleteAttachment: '',
-      deleteIncident: '',
-      deleteIncidentCategory: '',
-      deleteItem: '',
-      deleteNote: '',
-      editAttachment: '',
-      editIncident: '',
-      editIncidentCategory: '',
-      editNote: '',
-      general: '',
-      history: '',
-      incidentCategories: '',
-      incidentCategoryItem: '',
-      incidentCategoryName: '',
-      incidentCategorySaved: '',
-      incidentSaved: '',
-      incidents: '',
-      incidentsByCategory: '',
-      incidentsByDepartment: '',
-      newIncident: '',
-      newIncidentCategory: '',
-      notes: '',
-      reports: ''
+      addAttachment: undefined,
+      addCategoryItem: undefined,
+      addNote: undefined,
+      attachments: undefined,
+      closed: undefined,
+      current: undefined,
+      deleteAttachment: undefined,
+      deleteIncident: undefined,
+      deleteIncidentCategory: undefined,
+      deleteItem: undefined,
+      deleteNote: undefined,
+      editAttachment: undefined,
+      editIncident: undefined,
+      editIncidentCategory: undefined,
+      editNote: undefined,
+      general: undefined,
+      history: undefined,
+      incidentCategories: undefined,
+      incidentCategoryItem: undefined,
+      incidentCategoryName: undefined,
+      incidentCategorySaved: undefined,
+      incidentSaved: undefined,
+      incidents: undefined,
+      incidentsByCategory: undefined,
+      incidentsByDepartment: undefined,
+      newIncident: undefined,
+      newIncidentCategory: undefined,
+      notes: undefined,
+      reports: undefined
     }
   },
   inventory: {
@@ -619,7 +619,7 @@ export default {
     labels: {
       action: 'عمل',
       add: 'شامل کریں',
-      addAdjustmentType: '',
+      addAdjustmentType: undefined,
       adjust: 'درست کریں',
       adjustmentDate: 'درستگی کی تاریخ',
       adjustmentFor: 'درستگی براۓ',
@@ -686,11 +686,11 @@ export default {
       rank: 'درجہ',
       reason: 'وجہ',
       remove: 'دور کریں',
-      removeAdjustmentType: '',
+      removeAdjustmentType: undefined,
       reorderPoint: ' پوائنٹ پھر ترتیب کریں',
       requestedItems: 'درخواست کی گئی اشیاء',
-      returnAdjustmentType: '',
-      returnToVendorAdjustmentType: '',
+      returnAdjustmentType: undefined,
+      returnToVendorAdjustmentType: undefined,
       salePricePerUnit: 'فی یونٹ فروخت کی قیمت',
       save: 'محفوظ کریں',
       serialNumber: 'سیریل / لوٹ نمبر',
@@ -707,7 +707,7 @@ export default {
       unitCost: 'یونٹ کی لاگت',
       vendor: 'وینڈر',
       vendorItemNumber: 'وینڈر آئٹم نمبر',
-      writeOffAdjustmentType: '',
+      writeOffAdjustmentType: undefined,
       xref: 'XRef'
     },
     messages: {
@@ -796,7 +796,7 @@ export default {
     address: 'ایڈریس',
     age: 'عمر',
     allDay: 'تمام دن',
-    allItems: '',
+    allItems: undefined,
     amount: 'رقم',
     anesthesia: 'اینستھیزیا',
     assisting: 'مدد',
@@ -808,7 +808,7 @@ export default {
     country: 'ملک',
     cptcode: 'CPT کوڈ',
     creditTo: 'کرنے کے لئے کریڈٹ',
-    currencySymbol: '',
+    currencySymbol: undefined,
     date: 'تاریخ',
     dateCompleted: 'تاریخ مکمل',
     dateOfBirth: 'پیدائش کی تاریخ',
@@ -834,7 +834,7 @@ export default {
     fileLoadSuccessful: ' فائل لوڈ کامیابی سے ہو گئ',
     fileName: 'فائل کا نام',
     fileToLoad: ' لوڈ کے لیے فائل',
-    from: '',
+    from: undefined,
     fulfill: 'پورا کریں',
     fulfillRequest: 'درخواست کو پورا کریں',
     fulfillRequestNow: 'ابھی درخواست کو پورا کریں',
@@ -852,7 +852,7 @@ export default {
     lookupType: 'تلاش قسم',
     medication: 'ادویات',
     name: 'نام',
-    newItem: '',
+    newItem: undefined,
     newUser: 'نیا صارف',
     note: 'نوٹ',
     notes: 'نوٹس',
@@ -866,7 +866,7 @@ export default {
     prescription: 'نسخے',
     prescriptionDate: 'نسخے تاریخ',
     price: 'قیمت',
-    print: '',
+    print: undefined,
     procedures: 'طریقہ کار',
     provider: 'مھیا کرنے والا',
     pullFrom: 'سے کھیںچو',
@@ -883,14 +883,14 @@ export default {
     startDate: 'شروع کرنے کی تاریخ',
     startTime: 'وقت آغاز',
     status: 'صورتحال',
-    takenBy: '',
-    to: '',
+    takenBy: undefined,
+    to: undefined,
     total: 'کل',
     type: 'قسم',
     userCanAddNewValue: 'صارف نئی اقدار کا اضافہ کر سکتے ہیں',
     username: 'یوزر نیم',
     value: 'قدر',
-    view: '',
+    view: undefined,
     visit: 'دورہ',
     'with': 'ساتھ'
   },
@@ -944,7 +944,7 @@ export default {
     },
     messages: {
       error: 'یوزر نیم یا پاس ورڈ غلط ہے.',
-      offlineError: '',
+      offlineError: undefined,
       signIn: 'سائن ان کریں'
     }
   },
@@ -986,9 +986,9 @@ export default {
   messages: {
     createNewRecord: 'ایک نیا ریکارڈ بنائیں؟',
     createNewUser: 'ایک نیا صارف بنائیں؟',
-    'delete': '',
-    delete_plural: '',
-    delete_singular: '',
+    'delete': undefined,
+    delete_plural: undefined,
+    delete_singular: undefined,
     forAuthorizedPersons: 'یہ رپورٹ صرف مجاز افراد کے لئے ہے.',
     newPatientHasToBeCreated: 'ایک نیا مریض بنایا جانا ضروری ہے ... براہ کرم انتظار کریں ...',
     noHistoryAvailable: 'کوئی سرگزشت دستیاب نہیں',
@@ -1006,89 +1006,89 @@ export default {
   models: {
     appointment: {
       labels: {
-        allDay: '',
-        appointmentDate: '',
-        appointmentType: '',
-        endDate: '',
-        location: '',
-        notes: '',
-        patient: '',
-        provider: '',
-        startDate: '',
-        status: '',
-        type: ''
+        allDay: undefined,
+        appointmentDate: undefined,
+        appointmentType: undefined,
+        endDate: undefined,
+        location: undefined,
+        notes: undefined,
+        patient: undefined,
+        provider: undefined,
+        startDate: undefined,
+        status: undefined,
+        type: undefined
       },
       names: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       }
     },
     attachment: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     form: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     imaging: {
-      names: '',
+      names: undefined,
       request: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       }
     },
     incident: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     item: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     lab: {
       names: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       },
       request: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       }
     },
     medication: {
       names: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       },
       request: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       }
     },
     note: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     patient: {
-      labels: { name: '' },
-      names: { singular: '' }
+      labels: { name: undefined },
+      names: { singular: undefined }
     },
     procedure: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     user: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     visit: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     vital: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } }
   },
   navigation: {
@@ -1101,11 +1101,11 @@ export default {
     administration: 'انتظامیہ',
     billing: 'بلنگ',
     imaging: 'امیجنگ',
-    incident: '',
+    incident: undefined,
     inventory: 'انوینٹری',
     labs: 'لیبز',
     medication: 'ادویات',
-    messages: { logoutFailed: '' },
+    messages: { logoutFailed: undefined },
     patients: 'مریض',
     scheduling: 'اوقات نامہ',
     subnav: {
@@ -1116,20 +1116,20 @@ export default {
       appointmentSearch: ' ملاقاتیں تلاش کریں',
       appointmentsCalendar: 'ملاقاتوں کا کیلنڈر',
       appointmentsThisWeek: 'اس ہفتے کی ملاقاتیں',
-      cashier: '',
+      cashier: undefined,
       completed: 'مکمل',
-      currentIncidents: '',
+      currentIncidents: undefined,
       customForms: 'کسٹم فام',
       dispense: 'تقسیم',
-      history: '',
-      incidentCategories: '',
+      history: undefined,
+      incidentCategories: undefined,
       inventoryReceived: 'انوینٹری موصول',
       inventoryReceivedPlus: '+ انوینٹری موصو',
       invoices: 'رسیدیں',
       items: 'اشیاء',
       loadDB: 'DB لوڈ کریں',
       lookupLists: 'تلاش فہرستیں',
-      newIncident: '',
+      newIncident: undefined,
       newInvoice: 'نئے رسید',
       newPatient: 'نئے مریض',
       newRequest: 'نئی درخواست',
@@ -1138,19 +1138,19 @@ export default {
       patientListing: 'مریض کی فہرست سازی',
       priceProfiles: 'قیمت پروفائلز',
       prices: 'قیمتیں',
-      printHeader: '',
+      printHeader: undefined,
       reports: 'رپورٹس',
       requests: 'درخواستیں',
       returnMedication: 'واپس دوا',
       scheduleSurgery: 'سرجری اوقات نامہ',
-      textReplacements: '',
+      textReplacements: undefined,
       theaterSchedule: 'تھیٹر اوقات نامہ',
-      "today'sAppointments": '',
+      "today'sAppointments": undefined,
       userRoles: 'صارف کے کردار',
       users: 'صارفین',
       workflow: 'ورک فلو'
     },
-    titles: { logoutFailed: '' }
+    titles: { logoutFailed: undefined }
   },
   operationReport: {
     labels: {
@@ -1201,7 +1201,7 @@ export default {
       addFamilyMember: 'خاندان کا فرد شامل کریں',
       addOperativePlan: 'آپریٹو پلان میں شامل کریں',
       backToPatients: 'مریض کی فہرست پر واپس جائیں',
-      download: '',
+      download: undefined,
       editOperativePlan: 'موجودہ آپریٹو پلان',
       newAppointment: 'نئی ملاقات',
       newImaging: 'نئی امیجنگ',
@@ -1217,7 +1217,7 @@ export default {
       admissionDate: 'داخلے کی تاریخ',
       admit: 'داخل کریں',
       bloodType: 'خون کی قسم',
-      caption: '',
+      caption: undefined,
       civilStatus: 'سول حیثیت',
       clinic: 'کلینک کی جگہ',
       contacts: 'رابطے',
@@ -1240,8 +1240,8 @@ export default {
       parent: 'والدین / سرپرست',
       patientDays: 'مریض کے دن',
       patientType: 'مریضوں کی اقسام',
-      patientTypeCharity: '',
-      patientTypePrivate: '',
+      patientTypeCharity: undefined,
+      patientTypePrivate: undefined,
       phone: 'فون',
       placeOfBirth: 'جائے پیدائش',
       primaryDiagnosis: 'بنیادی تشخیص',
@@ -1263,7 +1263,7 @@ export default {
       deletingPatient: 'مریض اور سارے متعلقہ ریکارڈز حذف کیا جا رہا ہے',
       noPatientsFound: 'کوئی مریض نہیں ملا۔',
       notFoundQuickAdd: ' مریض نہیں مل سکا۔ اگر آپ کو ایک نیا مریض بنانا چاہتے ہیں تو ذیل میں معلومات درج کیجے۔ ورنہ واپس جانے کے کیے منسوخ کا بٹن دبائیں۔ <strong>{{patientFullName}}</strong> ',
-      photoFileRequired: '',
+      photoFileRequired: undefined,
       savedPatient: ' کے لئے مریض کا ریکارڈ محفوظ ہوگیا ہے۔ {{displayName}} '
     },
     navigation: {
@@ -1323,19 +1323,19 @@ export default {
   },
   pricing: {
     labels: {
-      discountAmount: '',
-      discountPercentage: '',
-      setFee: ''
+      discountAmount: undefined,
+      discountPercentage: undefined,
+      setFee: undefined
     },
     navigation: {
-      allPricingItems: '',
-      imagePricing: '',
-      labPricing: '',
-      pricingProfiles: '',
-      procedurePricing: '',
-      wardPricing: ''
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
     },
-    sectionTitle: ''
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {
@@ -1378,44 +1378,44 @@ export default {
   },
   reports: {
     labels: {
-      admissionDate: '',
-      allProcedures: '',
-      completedBy: '',
-      dischargeDate: '',
-      examiner: '',
-      images: '',
-      labs: '',
-      location: '',
-      medications: '',
-      nextAppointment: '',
-      nextAppointments: '',
+      admissionDate: undefined,
+      allProcedures: undefined,
+      completedBy: undefined,
+      dischargeDate: undefined,
+      examiner: undefined,
+      images: undefined,
+      labs: undefined,
+      location: undefined,
+      medications: undefined,
+      nextAppointment: undefined,
+      nextAppointments: undefined,
       notes: {
-        author: '',
-        date: '',
-        title: ''
+        author: undefined,
+        date: undefined,
+        title: undefined
       },
       operativePlan: {
-        description: '',
-        instructions: '',
-        procedures: '',
-        title: ''
+        description: undefined,
+        instructions: undefined,
+        procedures: undefined,
+        title: undefined
       },
-      primaryDiagnosis: '',
-      procedures: '',
-      secondaryDiagnosis: '',
-      visitDate: '',
-      visitType: ''
+      primaryDiagnosis: undefined,
+      procedures: undefined,
+      secondaryDiagnosis: undefined,
+      visitDate: undefined,
+      visitType: undefined
     },
     messages: {
-      'delete': '',
-      saved: ''
+      'delete': undefined,
+      saved: undefined
     },
     titles: {
-      dischargeReport: '',
-      newDischargeReport: '',
-      newOPDReport: '',
-      opdReport: '',
-      saved: ''
+      dischargeReport: undefined,
+      newDischargeReport: undefined,
+      newOPDReport: undefined,
+      opdReport: undefined,
+      saved: undefined
     }
   },
   user: {
@@ -1429,8 +1429,8 @@ export default {
       checkOut: 'چیک آٹ',
       discharge: 'فارغ کر دیں',
       newAppointment: 'نئی ملاقات',
-      newDischargeReport: '',
-      newOPDReport: '',
+      newDischargeReport: undefined,
+      newOPDReport: undefined,
       newProcedure: 'نئے طریقہ کار',
       newVitals: 'نئے vitals'
     },
@@ -1452,7 +1452,7 @@ export default {
       procedure: 'ضابطے',
       procedureDate: 'ضابطے کی تاریخ',
       reasonForVisit: 'دورے کی وجہ',
-      reportType: '',
+      reportType: undefined,
       status: 'دورہ کی صورتحال',
       statusAdmitted: 'داخل کر دیا گیا',
       statusCheckedIn: 'چیک ان کر دیا گیا',
@@ -1476,7 +1476,7 @@ export default {
       notes: 'نوٹس',
       orders: 'آرڈرز',
       procedures: 'طریقہ کار',
-      reports: '',
+      reports: undefined,
       vitals: 'Vitals'
     },
     titles: {

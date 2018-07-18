@@ -31,10 +31,10 @@ export default {
         columns: 'Columnas',
         customForm: 'Formulario personalizado',
         dischargeReportFormType: 'Descartar reporte',
-        expenseTo: '',
+        expenseTo: undefined,
         formName: 'Nombre de la forma',
         formType: 'Tipo de forma',
-        header: '',
+        header: undefined,
         incidentFormType: 'Incidente',
         includeOtherOption: 'Incluir otra opción',
         labFormType: 'Tipo de formulario de laboratorio',
@@ -61,7 +61,7 @@ export default {
         editCustomForm: 'Editar formulario personalizado',
         fields: 'Campos',
         formSaved: 'Formulario guardado',
-        headerValues: '',
+        headerValues: undefined,
         newCustomForm: 'Nuevo formulario personalizado',
         radioValues: 'Valores de radio botones'
       }
@@ -164,7 +164,7 @@ export default {
         admitPatient: 'Admitir paciente',
         appointments: 'Citas',
         billing: 'Facturación',
-        cashier: '',
+        cashier: undefined,
         completeImaging: 'Completar radiografía',
         completeLab: 'Completar laboratorio',
         defineUserRoles: 'Roles de usuario',
@@ -196,7 +196,7 @@ export default {
         inventory: 'Inventario',
         invoices: 'Facturas',
         labs: 'Laboratorios',
-        listPaidInvoices: '',
+        listPaidInvoices: undefined,
         loadDb: 'Cargar base de datos',
         manageIncidents: 'Administrar credenciales',
         medication: 'Medicación',
@@ -211,15 +211,15 @@ export default {
       titles: { roleSaved: 'Rol guardado' }
     },
     textReplacements: {
-      createNew: '',
-      existingRepl: '',
-      noMatches: '',
-      pageTitle: '',
-      performExpand: '',
-      possibleExpansions: '',
-      replDesc: '',
-      replaceWith: '',
-      toReplace: ''
+      createNew: undefined,
+      existingRepl: undefined,
+      noMatches: undefined,
+      pageTitle: undefined,
+      performExpand: undefined,
+      possibleExpansions: undefined,
+      replDesc: undefined,
+      replaceWith: undefined,
+      toReplace: undefined
     },
     userRoles: 'Roles de usuario',
     users: 'Usuarios',
@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'No se encontraron perfiles de precio'
     },
     buttons: {
-      addDeposit: '',
+      addDeposit: undefined,
       addOverride: 'Agregar anulación',
       createInvoice: 'Crear factura',
-      newInvoice: ''
+      newInvoice: undefined
     },
-    currentScreenTitle: '',
-    editInvoice: '',
-    invoiceTitle: '',
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'Cargos actuales',
       discountAmount: 'Monto de descuento',
@@ -322,19 +322,19 @@ export default {
       paymentsDeposits: 'Pagos / Depósitos',
       pricingPanelOverrides: 'Sustitución de perfiles de pago',
       pricingProfile: 'Perfil de Pago',
-      setFee: ''
+      setFee: undefined
     },
     messages: {
-      flatDiscountMsg: '',
-      flatFeeMsg: ''
+      flatDiscountMsg: undefined,
+      flatFeeMsg: undefined
     },
     navigation: {
-      allInvoices: '',
-      billed: '',
-      drafts: '',
-      paid: ''
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
     },
-    newInvoice: ''
+    newInvoice: undefined
   },
   buttons: {
     add: 'Agregar',
@@ -361,10 +361,10 @@ export default {
     newRequestPlus: '+ nuevo pedido',
     newUser: 'Nuevo usuario',
     ok: 'Ok',
-    print: '',
+    print: undefined,
     remove: 'Quitar',
     returnButton: 'Regresar',
-    review: '',
+    review: undefined,
     search: 'Buscar',
     showAll: 'Mostrar todo',
     showFewer: 'Mostrar menos',
@@ -433,8 +433,8 @@ export default {
     titles: { addCustomForm: 'Agregar formulario personalizado' }
   },
   dashboard: {
-    needs_user_setup: '',
-    standalone_welcome: '',
+    needs_user_setup: undefined,
+    standalone_welcome: undefined,
     title: 'Bienvenido a HospitalRun!'
   },
   dates: {
@@ -495,10 +495,10 @@ export default {
     buttons: { newButton: '+ Nueva radiografía' },
     labels: {
       addNewVisit: '--Agregar nueva visita--',
-      completedBy: '',
+      completedBy: undefined,
       radiologist: 'Radiólogo',
-      requestedNotes: '',
-      resultNotes: ''
+      requestedNotes: undefined,
+      resultNotes: undefined
     },
     messages: { noCompleted: 'No de elementos encontrados.' },
     pageTitle: 'Pedido de radiografía',
@@ -796,7 +796,7 @@ export default {
     address: 'Dirección',
     age: 'Edad',
     allDay: 'Todo el día',
-    allItems: '',
+    allItems: undefined,
     amount: 'Monto',
     anesthesia: 'Anestesia',
     assisting: 'Asistencia',
@@ -808,7 +808,7 @@ export default {
     country: 'País',
     cptcode: 'Codigo CPT',
     creditTo: 'Crédito a',
-    currencySymbol: '',
+    currencySymbol: undefined,
     date: 'Fecha',
     dateCompleted: 'Fecha de finalización',
     dateOfBirth: 'Fecha de nacimiento',
@@ -834,7 +834,7 @@ export default {
     fileLoadSuccessful: 'Archivo cargado exitosamente',
     fileName: 'Nombre del archivo',
     fileToLoad: 'Archivo cargado',
-    from: '',
+    from: undefined,
     fulfill: 'Cumplimiento',
     fulfillRequest: 'Pedido de cumplimiento',
     fulfillRequestNow: 'Pedido de cumplimiento ahora',
@@ -852,7 +852,7 @@ export default {
     lookupType: 'Tipo de búsqueda',
     medication: 'Medicación',
     name: 'Nombre',
-    newItem: '',
+    newItem: undefined,
     newUser: 'Nuevo usuario',
     note: 'Nota',
     notes: 'Notas',
@@ -884,7 +884,7 @@ export default {
     startTime: 'Hora de inicio',
     status: 'Estado',
     takenBy: 'Tomado por',
-    to: '',
+    to: undefined,
     total: 'Total',
     type: 'Tipo',
     userCanAddNewValue: 'El usuario puede agregar nuevos valores',
@@ -944,7 +944,7 @@ export default {
     },
     messages: {
       error: 'Nombre de usuario o clave incorrectos.',
-      offlineError: '',
+      offlineError: undefined,
       signIn: 'por favor ingrese'
     }
   },
@@ -1105,7 +1105,7 @@ export default {
     inventory: 'Inventario',
     labs: 'Laboratorio',
     medication: 'Recetas medicas',
-    messages: { logoutFailed: '' },
+    messages: { logoutFailed: undefined },
     patients: 'Pacientes',
     scheduling: 'Programación',
     subnav: {
@@ -1116,7 +1116,7 @@ export default {
       appointmentSearch: 'Busqueda de citas',
       appointmentsCalendar: 'Calendario de citas',
       appointmentsThisWeek: 'Citas esta semana',
-      cashier: '',
+      cashier: undefined,
       completed: 'Completado',
       currentIncidents: 'Incidentes actuales',
       customForms: 'Formularios personalizados',
@@ -1143,14 +1143,14 @@ export default {
       requests: 'Pedidos',
       returnMedication: 'Devolver medicamento',
       scheduleSurgery: 'Programar cirugía',
-      textReplacements: '',
+      textReplacements: undefined,
       theaterSchedule: 'Horario de cirugía',
       "today'sAppointments": 'Citas de hoy',
       userRoles: 'Roles de usuario',
       users: 'Usuarios',
       workflow: 'Flujo de trabajo'
     },
-    titles: { logoutFailed: '' }
+    titles: { logoutFailed: undefined }
   },
   operationReport: {
     labels: {
@@ -1323,19 +1323,19 @@ export default {
   },
   pricing: {
     labels: {
-      discountAmount: '',
-      discountPercentage: '',
-      setFee: ''
+      discountAmount: undefined,
+      discountPercentage: undefined,
+      setFee: undefined
     },
     navigation: {
-      allPricingItems: '',
-      imagePricing: '',
-      labPricing: '',
-      pricingProfiles: '',
-      procedurePricing: '',
-      wardPricing: ''
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
     },
-    sectionTitle: ''
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {

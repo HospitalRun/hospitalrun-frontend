@@ -34,7 +34,7 @@ export default {
         expenseTo: 'Expense To',
         formName: 'Form Name',
         formType: 'Form Type',
-        header: '',
+        header: undefined,
         incidentFormType: 'Incident',
         includeOtherOption: 'Include Other Option',
         labFormType: 'Lab',
@@ -61,7 +61,7 @@ export default {
         editCustomForm: 'Edit Custom Form',
         fields: 'Fields',
         formSaved: 'Form Saved',
-        headerValues: '',
+        headerValues: undefined,
         newCustomForm: 'New Custom Form',
         radioValues: 'Radio Values'
       }
@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'No pricing profiles found.'
     },
     buttons: {
-      addDeposit: '',
+      addDeposit: undefined,
       addOverride: 'Add Override',
       createInvoice: 'Create an invoice?',
-      newInvoice: ''
+      newInvoice: undefined
     },
-    currentScreenTitle: '',
-    editInvoice: '',
-    invoiceTitle: '',
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'Actual Charges',
       discountAmount: 'Discount Amount',
@@ -329,12 +329,12 @@ export default {
       flatFeeMsg: 'There is a flat fee for patient financial responsibility of {{currency}}{{setFee}}.'
     },
     navigation: {
-      allInvoices: '',
-      billed: '',
-      drafts: '',
-      paid: ''
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
     },
-    newInvoice: ''
+    newInvoice: undefined
   },
   buttons: {
     add: 'Add',
@@ -1328,14 +1328,14 @@ export default {
       setFee: 'Set Fee'
     },
     navigation: {
-      allPricingItems: '',
-      imagePricing: '',
-      labPricing: '',
-      pricingProfiles: '',
-      procedurePricing: '',
-      wardPricing: ''
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
     },
-    sectionTitle: ''
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {

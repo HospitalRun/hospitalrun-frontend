@@ -19,64 +19,64 @@ export default {
     customForms: {
       buttons: {
         addField: 'Adicionar Campo',
-        moveDown: '',
-        moveUp: '',
-        newForm: '',
+        moveDown: undefined,
+        moveUp: undefined,
+        newForm: undefined,
         preview: 'Visualizar'
       },
       labels: {
-        alwaysInclude: '',
-        checkbox: '',
-        colSpan: '',
-        columns: '',
-        customForm: '',
-        dischargeReportFormType: '',
-        expenseTo: '',
-        formName: '',
-        formType: '',
-        header: '',
-        incidentFormType: '',
-        includeOtherOption: '',
-        labFormType: '',
-        label: '',
-        newForm: '',
-        opdReportFormType: '',
-        operativePlanFormType: '',
-        otherOptionLabel: '',
-        patientFormType: '',
-        property: '',
-        radio: '',
-        select: '',
-        socialworkFormType: '',
-        text: '',
-        textarea: '',
-        visitFormType: ''
+        alwaysInclude: undefined,
+        checkbox: undefined,
+        colSpan: undefined,
+        columns: undefined,
+        customForm: undefined,
+        dischargeReportFormType: undefined,
+        expenseTo: undefined,
+        formName: undefined,
+        formType: undefined,
+        header: undefined,
+        incidentFormType: undefined,
+        includeOtherOption: undefined,
+        labFormType: undefined,
+        label: undefined,
+        newForm: undefined,
+        opdReportFormType: undefined,
+        operativePlanFormType: undefined,
+        otherOptionLabel: undefined,
+        patientFormType: undefined,
+        property: undefined,
+        radio: undefined,
+        select: undefined,
+        socialworkFormType: undefined,
+        text: undefined,
+        textarea: undefined,
+        visitFormType: undefined
       },
-      messages: { formSaved: '' },
+      messages: { formSaved: undefined },
       titles: {
-        checkboxValues: '',
-        customForms: '',
-        deleteForm: '',
-        dropDownValues: '',
-        editCustomForm: '',
-        fields: '',
-        formSaved: '',
-        headerValues: '',
-        newCustomForm: '',
-        radioValues: ''
+        checkboxValues: undefined,
+        customForms: undefined,
+        deleteForm: undefined,
+        dropDownValues: undefined,
+        editCustomForm: undefined,
+        fields: undefined,
+        formSaved: undefined,
+        headerValues: undefined,
+        newCustomForm: undefined,
+        radioValues: undefined
       }
     },
     header: {
-      editTitle: '',
-      facilityName: '',
-      headerLabel: '',
-      headerLine1: '',
-      headerLine2: '',
-      headerLine3: '',
-      logoURL: '',
-      messages: { headerSaved: '' },
-      newTitle: '',
-      titles: { optionsSaved: '' }
+      editTitle: undefined,
+      facilityName: undefined,
+      headerLabel: undefined,
+      headerLine1: undefined,
+      headerLine2: undefined,
+      headerLine3: undefined,
+      logoURL: undefined,
+      messages: { headerSaved: undefined },
+      newTitle: undefined,
+      titles: { optionsSaved: undefined }
     },
     loadDb: 'Carregar DB',
     loaddb: {
@@ -112,7 +112,7 @@ export default {
       } },
       expenseAccountList: 'Contas de Despesas',
       imagingPricingTypes: 'Tipos de Preço Imagem',
-      incidentDepartments: '',
+      incidentDepartments: undefined,
       inventoryTypes: 'Tipos de Inventário',
       labPricingTypes: 'Tipos de Preço Laboratório',
       pageTitle: 'Listas de Pesquisa',
@@ -122,7 +122,7 @@ export default {
       procedureLocations: 'Localização de Procedimentos',
       procedurePricingTypes: 'Tipos de Preço Procedimento',
       radiologists: 'Radiologista',
-      titles: { deleteLookupValue: '' },
+      titles: { deleteLookupValue: undefined },
       unitTypes: 'Tipos de Unidade',
       vendorList: 'Fornecedor',
       visitLocationList: 'Localização dos Visitantes',
@@ -135,7 +135,7 @@ export default {
       capability: {
         addAllergy: 'Adicionar Alergia',
         addAppointment: 'Adicionar Compromissos',
-        addBillingDiagnosis: '',
+        addBillingDiagnosis: undefined,
         addCharge: 'Adicionar Cobrança',
         addDiagnosis: 'Adicionar Diagnóstico',
         addImaging: 'Adicionar Imagem',
@@ -148,7 +148,7 @@ export default {
         addLab: 'Adicionar Laboratório',
         addMedication: 'Adicionar Medicação',
         addNote: 'Adicionar Nota',
-        addOperationReport: '',
+        addOperationReport: undefined,
         addOperativePlan: 'Adicionar Plano Operativo',
         addPatient: 'Adicionar Paciente',
         addPayment: 'Adicionar Pagamentos',
@@ -164,20 +164,20 @@ export default {
         admitPatient: 'Admitir Paciente',
         appointments: 'Compromissos',
         billing: 'Faturamentos',
-        cashier: '',
+        cashier: undefined,
         completeImaging: 'Imagem Concluída',
         completeLab: 'Laboratório Concluído',
         defineUserRoles: 'Perfis de Usuários',
         deleteAppointment: 'Excluir Compromisso',
         deleteDiagnosis: 'Excluir Diagnóstico',
         deleteImaging: 'Excluir Imagem',
-        deleteIncident: '',
-        deleteIncidentCategory: '',
+        deleteIncident: undefined,
+        deleteIncidentCategory: undefined,
         deleteInventoryItem: 'Excluir Item de Inventário',
         deleteInvoice: 'Excluir Fatura',
         deleteLab: 'Excluir Laboratório',
         deleteMedication: 'Excluir Medicação',
-        deleteNote: '',
+        deleteNote: undefined,
         deletePatient: 'Excluir Paciente',
         deletePhoto: 'Excluir Paciente',
         deletePricing: 'Excluir Preço',
@@ -190,13 +190,13 @@ export default {
         editInvoice: 'Editar Fatura',
         fulfillInventory: 'Preencher Inventário',
         fulfillMedication: 'Preencher Medicação',
-        generateIncidentReport: '',
+        generateIncidentReport: undefined,
         imaging: 'Imagem',
         incident: 'Incidente',
         inventory: 'Inventário',
         invoices: 'Faturas',
         labs: 'Laboratório',
-        listPaidInvoices: '',
+        listPaidInvoices: undefined,
         loadDb: 'Carregar Banco de Dados',
         manageIncidents: 'Gerenciar Incidentes',
         medication: 'Medicação',
@@ -211,26 +211,26 @@ export default {
       titles: { roleSaved: 'Perfil Salvo' }
     },
     textReplacements: {
-      createNew: '',
-      existingRepl: '',
-      noMatches: '',
-      pageTitle: '',
-      performExpand: '',
-      possibleExpansions: '',
-      replDesc: '',
-      replaceWith: '',
-      toReplace: ''
+      createNew: undefined,
+      existingRepl: undefined,
+      noMatches: undefined,
+      pageTitle: undefined,
+      performExpand: undefined,
+      possibleExpansions: undefined,
+      replDesc: undefined,
+      replaceWith: undefined,
+      toReplace: undefined
     },
     userRoles: 'Perfis de Usuários',
     users: 'Usuários',
     visitForms: {
       labels: {
-        followup: '',
-        form: '',
-        initial: '',
-        visitType: ''
+        followup: undefined,
+        form: undefined,
+        initial: undefined,
+        visitType: undefined
       },
-      titles: { visitForms: '' }
+      titles: { visitForms: undefined }
     },
     workflow: {
       admissionDepositLabel: 'Depósito de Admissão é exigido',
@@ -247,10 +247,10 @@ export default {
     }
   },
   alerts: {
-    errorExclamation: '',
+    errorExclamation: undefined,
     pleaseWait: 'Por Favor Aguarde',
-    reportError: '',
-    warningExclamation: ''
+    reportError: undefined,
+    warningExclamation: undefined
   },
   allergies: {
     buttons: { addAllergy: 'Adicionar alergia' },
@@ -280,7 +280,7 @@ export default {
       selectedStartingDate: 'Mostrar Compromisso em ou após'
     },
     messages: {
-      appointmentSaved: '',
+      appointmentSaved: undefined,
       endTimeLaterThanStart: 'Por favor, selecione um horário de término mais tarde do que a hora de início.'
     },
     missed: 'Compromissos Esquecidos',
@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'Nenhum perfil de preço encontrado.'
     },
     buttons: {
-      addDeposit: '',
+      addDeposit: undefined,
       addOverride: 'Adicionar Substituir',
       createInvoice: 'Criar nova fatura?',
-      newInvoice: ''
+      newInvoice: undefined
     },
-    currentScreenTitle: '',
-    editInvoice: '',
-    invoiceTitle: '',
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'Cobranças Atuais',
       discountAmount: 'Quantidade de Desconto',
@@ -322,19 +322,19 @@ export default {
       paymentsDeposits: 'Pagamentos/Depositos',
       pricingPanelOverrides: 'Substituição e Perfil de Preços',
       pricingProfile: 'Perfil de Preços',
-      setFee: ''
+      setFee: undefined
     },
     messages: {
-      flatDiscountMsg: '',
-      flatFeeMsg: ''
+      flatDiscountMsg: undefined,
+      flatFeeMsg: undefined
     },
     navigation: {
-      allInvoices: '',
-      billed: '',
-      drafts: '',
-      paid: ''
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
     },
-    newInvoice: ''
+    newInvoice: undefined
   },
   buttons: {
     add: 'Adicionar',
@@ -361,41 +361,41 @@ export default {
     newRequestPlus: '+ nova requisição',
     newUser: 'Novo Usuário',
     ok: 'Ok',
-    print: '',
+    print: undefined,
     remove: 'Remover',
     returnButton: 'Retornar',
-    review: '',
+    review: undefined,
     search: 'Pesquisa',
-    showAll: '',
-    showFewer: '',
+    showAll: undefined,
+    showFewer: undefined,
     update: 'Atualizar'
   },
   components: {
     chargesByTypeTab: { charges: 'cobranças' },
-    customFormManager: { buttons: { addForm: '' } },
+    customFormManager: { buttons: { addForm: undefined } },
     dateTimePicker: {
       amHour: '{{hour}} AM',
       midnight: 'Meia-noite',
       noon: 'Meio-dia',
       pmHour: '{{hour}} PM'
     },
-    imageUpload: { messages: { selectValidImageFile: '' } },
+    imageUpload: { messages: { selectValidImageFile: undefined } },
     operativeProcedures: {
-      buttons: { addProcedure: '' },
-      labels: { procedure: '' },
-      titles: { procedures: '' }
+      buttons: { addProcedure: undefined },
+      labels: { procedure: undefined },
+      titles: { procedures: undefined }
     },
     patientOrders: {
       buttons: {
-        newImaging: '',
-        newLab: '',
-        newMedication: ''
+        newImaging: undefined,
+        newLab: undefined,
+        newMedication: undefined
       },
       labels: {
-        imagingOrderType: '',
-        labOrderType: '',
-        medicationOrderType: '',
-        orderType: ''
+        imagingOrderType: undefined,
+        labOrderType: undefined,
+        medicationOrderType: undefined,
+        orderType: undefined
       }
     },
     priceList: { charges: 'cobranças de {{pricingType}}' },
@@ -404,13 +404,13 @@ export default {
       conversion: 'O que significa contém 1 {{name}}?',
       unit: 'Unidade'
     },
-    sortableColumn: { labels: { selectAll: '' } },
+    sortableColumn: { labels: { selectAll: undefined } },
     takePhoto: {
       camera: 'Câmera',
       how: 'Como você quer adicionar um Foto?',
       labels: {
-        takeAPicture: '',
-        uploadAFile: ''
+        takeAPicture: undefined,
+        uploadAFile: undefined
       },
       photo: 'foto',
       preview: 'pré visualização',
@@ -419,12 +419,12 @@ export default {
     },
     upcomingAppointments: {
       labels: {
-        date: '',
-        location: '',
-        type: '',
-        'with': ''
+        date: undefined,
+        location: undefined,
+        type: undefined,
+        'with': undefined
       },
-      titles: { upcomingAppointments: '' }
+      titles: { upcomingAppointments: undefined }
     }
   },
   customForms: {
@@ -433,8 +433,8 @@ export default {
     titles: { addCustomForm: 'Adicionar formulário customisado' }
   },
   dashboard: {
-    needs_user_setup: '',
-    standalone_welcome: '',
+    needs_user_setup: undefined,
+    standalone_welcome: undefined,
     title: 'O que você gostaria de fazer?'
   },
   dates: {
@@ -495,10 +495,10 @@ export default {
     buttons: { newButton: '+ nova imagem' },
     labels: {
       addNewVisit: '--Adicionar novo visitante--',
-      completedBy: '',
+      completedBy: undefined,
       radiologist: 'Radiologista',
-      requestedNotes: '',
-      resultNotes: ''
+      requestedNotes: undefined,
+      resultNotes: undefined
     },
     messages: { noCompleted: 'Nenhum item completo encontrado.' },
     pageTitle: 'Requisição de imagens',
@@ -511,96 +511,96 @@ export default {
   },
   incident: {
     buttons: {
-      add: '',
-      addForm: '',
-      addItem: '',
-      cancel: '',
-      'delete': '',
-      download: '',
-      edit: '',
-      'export': '',
-      generateRep: '',
-      newAttachment: '',
-      newCategory: '',
-      newIncident: '',
-      newNote: ''
+      add: undefined,
+      addForm: undefined,
+      addItem: undefined,
+      cancel: undefined,
+      'delete': undefined,
+      download: undefined,
+      edit: undefined,
+      'export': undefined,
+      generateRep: undefined,
+      newAttachment: undefined,
+      newCategory: undefined,
+      newIncident: undefined,
+      newNote: undefined
     },
     labels: {
-      actions: '',
-      addedBy: '',
-      category: '',
-      categoryItem: '',
-      date: '',
-      dateRecorded: '',
-      department: '',
-      description: '',
-      endDate: '',
-      givenBy: '',
-      howToAddAttachment: '',
-      incidentDate: '',
-      incidentId: '',
-      item: '',
-      lastUpdated: '',
-      note: '',
-      patientId: '',
-      patientImpacted: '',
-      reportType: '',
-      reportedBy: '',
-      reportedDate: '',
-      reportedTo: '',
-      sentinelEvent: '',
-      startDate: '',
-      status: '',
-      statusActive: '',
-      statusClosed: '',
-      statusFollowup: '',
-      statusReported: '',
-      title: '',
-      total: '',
-      updatedBy: ''
+      actions: undefined,
+      addedBy: undefined,
+      category: undefined,
+      categoryItem: undefined,
+      date: undefined,
+      dateRecorded: undefined,
+      department: undefined,
+      description: undefined,
+      endDate: undefined,
+      givenBy: undefined,
+      howToAddAttachment: undefined,
+      incidentDate: undefined,
+      incidentId: undefined,
+      item: undefined,
+      lastUpdated: undefined,
+      note: undefined,
+      patientId: undefined,
+      patientImpacted: undefined,
+      reportType: undefined,
+      reportedBy: undefined,
+      reportedDate: undefined,
+      reportedTo: undefined,
+      sentinelEvent: undefined,
+      startDate: undefined,
+      status: undefined,
+      statusActive: undefined,
+      statusClosed: undefined,
+      statusFollowup: undefined,
+      statusReported: undefined,
+      title: undefined,
+      total: undefined,
+      updatedBy: undefined
     },
     messages: {
-      attachmentFileRequired: '',
-      createNew: '',
-      createNewIncidentCategory: '',
-      fillIn: '',
-      incidentCategorySaved: '',
-      noClosedIncidents: '',
-      noIncidentCategoriesFound: '',
-      noIncidents: '',
-      saved: '',
-      selectExistingPatient: ''
+      attachmentFileRequired: undefined,
+      createNew: undefined,
+      createNewIncidentCategory: undefined,
+      fillIn: undefined,
+      incidentCategorySaved: undefined,
+      noClosedIncidents: undefined,
+      noIncidentCategoriesFound: undefined,
+      noIncidents: undefined,
+      saved: undefined,
+      selectExistingPatient: undefined
     },
     titles: {
-      addAttachment: '',
-      addCategoryItem: '',
-      addNote: '',
-      attachments: '',
-      closed: '',
-      current: '',
-      deleteAttachment: '',
-      deleteIncident: '',
-      deleteIncidentCategory: '',
-      deleteItem: '',
-      deleteNote: '',
-      editAttachment: '',
-      editIncident: '',
-      editIncidentCategory: '',
-      editNote: '',
-      general: '',
-      history: '',
-      incidentCategories: '',
-      incidentCategoryItem: '',
-      incidentCategoryName: '',
-      incidentCategorySaved: '',
-      incidentSaved: '',
-      incidents: '',
-      incidentsByCategory: '',
-      incidentsByDepartment: '',
-      newIncident: '',
-      newIncidentCategory: '',
-      notes: '',
-      reports: ''
+      addAttachment: undefined,
+      addCategoryItem: undefined,
+      addNote: undefined,
+      attachments: undefined,
+      closed: undefined,
+      current: undefined,
+      deleteAttachment: undefined,
+      deleteIncident: undefined,
+      deleteIncidentCategory: undefined,
+      deleteItem: undefined,
+      deleteNote: undefined,
+      editAttachment: undefined,
+      editIncident: undefined,
+      editIncidentCategory: undefined,
+      editNote: undefined,
+      general: undefined,
+      history: undefined,
+      incidentCategories: undefined,
+      incidentCategoryItem: undefined,
+      incidentCategoryName: undefined,
+      incidentCategorySaved: undefined,
+      incidentSaved: undefined,
+      incidents: undefined,
+      incidentsByCategory: undefined,
+      incidentsByDepartment: undefined,
+      newIncident: undefined,
+      newIncidentCategory: undefined,
+      notes: undefined,
+      reports: undefined
     }
   },
   inventory: {
@@ -619,7 +619,7 @@ export default {
     labels: {
       action: 'Ação',
       add: 'Adicionar',
-      addAdjustmentType: '',
+      addAdjustmentType: undefined,
       adjust: 'Ajustar',
       adjustmentDate: 'Data de Ajuste',
       adjustmentFor: 'Ajuste Para',
@@ -628,7 +628,7 @@ export default {
       aisleLocation: 'Localização do Corredor',
       allInventory: 'Todo Inventário',
       allItems: 'Todos os Itens',
-      availableQuantity: '',
+      availableQuantity: undefined,
       billTo: 'Conta Para',
       consumePurchases: 'Compras para Consumo',
       consumptionRate: 'Taxa de Consumo',
@@ -686,11 +686,11 @@ export default {
       rank: 'Classificação',
       reason: 'Motivo',
       remove: 'Remover',
-      removeAdjustmentType: '',
+      removeAdjustmentType: undefined,
       reorderPoint: 'Ponto de Reabastecimento',
       requestedItems: 'Itens Solicitados',
-      returnAdjustmentType: '',
-      returnToVendorAdjustmentType: '',
+      returnAdjustmentType: undefined,
+      returnToVendorAdjustmentType: undefined,
       salePricePerUnit: 'Preço de Venda por Unidade',
       save: 'Salvar',
       serialNumber: 'Lote/Número de Série',
@@ -707,7 +707,7 @@ export default {
       unitCost: 'Preço Unitário',
       vendor: 'Fornecedor',
       vendorItemNumber: 'Número de Item do Fornecedor',
-      writeOffAdjustmentType: '',
+      writeOffAdjustmentType: undefined,
       xref: 'RefX'
     },
     messages: {
@@ -769,8 +769,8 @@ export default {
       stockTransferSum: 'Sumário de Tranferências de Estoque',
       stockUsageDetail: 'Uso de Estoque Detalhado',
       stockUsageSum: 'Sumário de Uso de Estoque',
-      titleDateRange: '',
-      titleSingleDate: ''
+      titleDateRange: undefined,
+      titleSingleDate: undefined
     },
     titles: {
       addPurchase: 'Adicionar Compra',
@@ -796,7 +796,7 @@ export default {
     address: 'Endereço',
     age: 'Idade',
     allDay: 'Todo Dia',
-    allItems: '',
+    allItems: undefined,
     amount: 'Quantidade',
     anesthesia: 'Anestesia',
     assisting: 'Ajudante',
@@ -808,7 +808,7 @@ export default {
     country: 'País',
     cptcode: 'Código CPT*',
     creditTo: 'Crédito Para',
-    currencySymbol: '',
+    currencySymbol: undefined,
     date: 'Data',
     dateCompleted: 'Data da Conclusão',
     dateOfBirth: 'Data de Nascimento',
@@ -832,9 +832,9 @@ export default {
     excess: 'Excesso',
     expenseTo: 'Despesa Para',
     fileLoadSuccessful: 'Arquivo Carregado com Sucesso',
-    fileName: '',
+    fileName: undefined,
     fileToLoad: 'Carregar Arquivo',
-    from: '',
+    from: undefined,
     fulfill: 'Preencha',
     fulfillRequest: 'Preencha a Requisição',
     fulfillRequestNow: 'Preencha a Requisição Agora',
@@ -852,7 +852,7 @@ export default {
     lookupType: 'Tipo de Pesquisa',
     medication: 'Medicação',
     name: 'Nome',
-    newItem: '',
+    newItem: undefined,
     newUser: 'Novo Usuário',
     note: 'Note',
     notes: 'Notas',
@@ -866,7 +866,7 @@ export default {
     prescription: 'Prescrição',
     prescriptionDate: 'Data da Prescrição',
     price: 'Preço',
-    print: '',
+    print: undefined,
     procedures: 'Procedimentos',
     provider: 'Fornecedor',
     pullFrom: 'Puxar De',
@@ -883,14 +883,14 @@ export default {
     startDate: 'Data de Início',
     startTime: 'Hora Início',
     status: 'Situação',
-    takenBy: '',
-    to: '',
+    takenBy: undefined,
+    to: undefined,
     total: 'Total',
     type: 'Tipo',
     userCanAddNewValue: 'O usuário pode adicionar novos valores',
     username: 'Usuário',
     value: 'Valor',
-    view: '',
+    view: undefined,
     visit: 'Visita',
     'with': 'Com'
   },
@@ -944,7 +944,7 @@ export default {
     },
     messages: {
       error: 'Nome de usuário ou senha está incorreta.',
-      offlineError: '',
+      offlineError: undefined,
       signIn: 'Entrar'
     }
   },
@@ -986,9 +986,9 @@ export default {
   messages: {
     createNewRecord: 'Criar uma nova gravação?',
     createNewUser: 'Criar um novo usuário?',
-    'delete': '',
-    delete_plural: '',
-    delete_singular: '',
+    'delete': undefined,
+    delete_plural: undefined,
+    delete_singular: undefined,
     forAuthorizedPersons: 'Este relatório é somente para pessoas autorizadas.',
     newPatientHasToBeCreated: 'Um novo paciente precisa ser criado... Por favor aguarde...',
     noHistoryAvailable: 'Histórico não disponível.',
@@ -996,9 +996,9 @@ export default {
     noNotesAvailable: 'Nenhuma nota clinica adicional está diponível para essa visita.',
     noUsersFound: 'Nenhum usuário encontrado.',
     onBehalfOf: 'em nome de',
-    reportError: '',
-    requiredFieldsCorrectErrors: '',
-    saveActionException: '',
+    reportError: undefined,
+    requiredFieldsCorrectErrors: undefined,
+    saveActionException: undefined,
     sorry: 'Desculpe, algo deu errado...',
     userHasBeenSaved: 'O usuário foi salvo.',
     userSaved: 'Usuário Salvo'
@@ -1006,89 +1006,89 @@ export default {
   models: {
     appointment: {
       labels: {
-        allDay: '',
-        appointmentDate: '',
-        appointmentType: '',
-        endDate: '',
-        location: '',
-        notes: '',
-        patient: '',
-        provider: '',
-        startDate: '',
-        status: '',
-        type: ''
+        allDay: undefined,
+        appointmentDate: undefined,
+        appointmentType: undefined,
+        endDate: undefined,
+        location: undefined,
+        notes: undefined,
+        patient: undefined,
+        provider: undefined,
+        startDate: undefined,
+        status: undefined,
+        type: undefined
       },
       names: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       }
     },
     attachment: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     form: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     imaging: {
-      names: '',
+      names: undefined,
       request: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       }
     },
     incident: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     item: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     lab: {
       names: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       },
       request: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       }
     },
     medication: {
       names: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       },
       request: {
-        plural: '',
-        singular: ''
+        plural: undefined,
+        singular: undefined
       }
     },
     note: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     patient: {
-      labels: { name: '' },
-      names: { singular: '' }
+      labels: { name: undefined },
+      names: { singular: undefined }
     },
     procedure: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     user: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     visit: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } },
     vital: { names: {
-      plural: '',
-      singular: ''
+      plural: undefined,
+      singular: undefined
     } }
   },
   navigation: {
@@ -1105,7 +1105,7 @@ export default {
     inventory: 'Inventário',
     labs: 'Laboratórios',
     medication: 'Medicação',
-    messages: { logoutFailed: '' },
+    messages: { logoutFailed: undefined },
     patients: 'Pacientes',
     scheduling: 'Agenda',
     subnav: {
@@ -1116,20 +1116,20 @@ export default {
       appointmentSearch: 'Pesquisar compromissos',
       appointmentsCalendar: 'Compromissos',
       appointmentsThisWeek: 'Compromissos dessa Semana',
-      cashier: '',
+      cashier: undefined,
       completed: 'Concluídos',
-      currentIncidents: '',
+      currentIncidents: undefined,
       customForms: 'Formulários customisados',
       dispense: 'Dispensar',
-      history: '',
-      incidentCategories: '',
+      history: undefined,
+      incidentCategories: undefined,
       inventoryReceived: 'Inventário Recebido',
       inventoryReceivedPlus: '+ Inventário Recebido',
       invoices: 'Faturas',
       items: 'Itens',
       loadDB: 'Carregar BD',
       lookupLists: 'Listas de Pesquisa',
-      newIncident: '',
+      newIncident: undefined,
       newInvoice: 'Nova Fatura',
       newPatient: 'Novo Paciente',
       newRequest: 'Nova Requisição',
@@ -1138,19 +1138,19 @@ export default {
       patientListing: 'Lista de Pacientes',
       priceProfiles: 'Perfis de Preços',
       prices: 'Preços',
-      printHeader: '',
+      printHeader: undefined,
       reports: 'Relatórios',
       requests: 'Requisições',
       returnMedication: 'Retorno de Medicação',
       scheduleSurgery: 'Agendar Cirurgia',
-      textReplacements: '',
+      textReplacements: undefined,
       theaterSchedule: 'Agenda de Cirurgias',
       "today'sAppointments": 'Compromissos de Hoje',
       userRoles: 'Perfis de Usuário',
       users: 'Usuários',
       workflow: 'Workflow'
     },
-    titles: { logoutFailed: '' }
+    titles: { logoutFailed: undefined }
   },
   operationReport: {
     labels: {
@@ -1199,10 +1199,10 @@ export default {
       addContact: 'Adicionar Contato',
       addExpense: 'Adicionar Despesa',
       addFamilyMember: 'Adicionar Membro Familiar',
-      addOperativePlan: '',
+      addOperativePlan: undefined,
       backToPatients: 'Voltar para Lista de Pacientes',
-      download: '',
-      editOperativePlan: '',
+      download: undefined,
+      editOperativePlan: undefined,
       newAppointment: 'Novo Compromisso',
       newImaging: 'Nova Imagem',
       newLab: 'Novo Laboratório',
@@ -1210,17 +1210,17 @@ export default {
       newPatient: '+ novo paciente',
       newPhoto: 'Nova Foto',
       newVisit: 'Nova Visita',
-      patientCheckIn: '',
-      scheduleSurgery: ''
+      patientCheckIn: undefined,
+      scheduleSurgery: undefined
     },
     labels: {
       admissionDate: 'Data de Admissão',
       admit: 'Admitir',
       bloodType: 'Tipo Sanguíneo',
-      caption: '',
+      caption: undefined,
       civilStatus: 'Estado Civil',
       clinic: 'Site(Filial) da Clínica',
-      contacts: '',
+      contacts: undefined,
       cost: 'Custo',
       dateOfBirth: 'Data de Nascimento',
       dateProcessed: 'Data de Processamento',
@@ -1236,7 +1236,7 @@ export default {
       middleName: 'Nome do meio',
       monthlyCost: 'Custo Mensal',
       occupation: 'Ocupação',
-      operativePlan: '',
+      operativePlan: undefined,
       parent: 'Responsável Legal',
       patientDays: 'Dias do Paciente',
       patientType: 'Tipo de Paciente',
@@ -1252,7 +1252,7 @@ export default {
       religion: 'Religião',
       secondaryDiagnosis: 'Diagnósticos Secundários',
       sex: 'Sexo',
-      sexNotEntered: '',
+      sexNotEntered: undefined,
       sources: 'Fontes',
       status: 'Situação do Paciente',
       totalMontlyExpense: 'Total de Despesas Mensais'
@@ -1260,10 +1260,10 @@ export default {
     messages: {
       areYouSureDelete: 'Você tem certeza que deseja excluir este(a) {{object}}?',
       createNewPatient: 'Criar novos registro de paciente?',
-      deletingPatient: '',
+      deletingPatient: undefined,
       noPatientsFound: 'Nenhum paciente encontrado.',
       notFoundQuickAdd: 'O paciente <strong>{{patientFullName}}</strong> não pode ser encontrato.  Se você deseja cadastras um novo paciente, preencha as informações abaixo.  Caso contrário clique em Cancelar para voltar.',
-      photoFileRequired: '',
+      photoFileRequired: undefined,
       savedPatient: 'O registro de paciente para {{displayName}} foi salvo.'
     },
     navigation: {
@@ -1285,57 +1285,57 @@ export default {
       updateNote: 'Atualizando Nota de'
     },
     titles: {
-      addContact: '',
+      addContact: undefined,
       addPhoto: 'Adicionar Foto',
       additionalContacts: 'Contatos Adicionais',
-      admissionsDetail: '',
-      admissionsSummary: '',
-      admittedPatients: '',
+      admissionsDetail: undefined,
+      admissionsSummary: undefined,
+      admittedPatients: undefined,
       'delete': 'Excluir Paciente',
       deleteContact: 'Excluir Contato',
       deleteExpense: 'Excluir Despesa',
       deleteFamilyMember: 'Excluir Membro Familiar',
-      deletePatientRecord: '',
+      deletePatientRecord: undefined,
       deletePhoto: 'Excluir Foto',
-      diagnosticTesting: '',
-      dischargesDetail: '',
-      dischargesSummary: '',
+      diagnosticTesting: undefined,
+      dischargesDetail: undefined,
+      dischargesSummary: undefined,
       edit: 'Editar Paciente',
       editPhoto: 'Editar Foto',
       expenses: 'Despesas',
       familyInfo: 'Informação Familiar',
       familyInformation: 'Informação Familiar',
       'new': 'Novo Paciente',
-      outpatientsForDate: '',
+      outpatientsForDate: undefined,
       patient: 'Relatório de Paciente',
       patientListing: 'Lista de Pacientes',
-      patientReport: '',
-      patientStatus: '',
-      proceduresDetail: '',
-      proceduresSummary: '',
+      patientReport: undefined,
+      patientStatus: undefined,
+      proceduresDetail: undefined,
+      proceduresSummary: undefined,
       savedPatient: 'Paciente Salvo',
       socialWork: 'Despesa',
-      todaysOutpatients: '',
-      totalPatientDays: '',
-      totalPatientDaysDetailed: '',
-      visit: ''
+      todaysOutpatients: undefined,
+      totalPatientDays: undefined,
+      totalPatientDaysDetailed: undefined,
+      visit: undefined
     }
   },
   pricing: {
     labels: {
-      discountAmount: '',
-      discountPercentage: '',
-      setFee: ''
+      discountAmount: undefined,
+      discountPercentage: undefined,
+      setFee: undefined
     },
     navigation: {
-      allPricingItems: '',
-      imagePricing: '',
-      labPricing: '',
-      pricingProfiles: '',
-      procedurePricing: '',
-      wardPricing: ''
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
     },
-    sectionTitle: ''
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {
@@ -1378,44 +1378,44 @@ export default {
   },
   reports: {
     labels: {
-      admissionDate: '',
-      allProcedures: '',
-      completedBy: '',
-      dischargeDate: '',
-      examiner: '',
-      images: '',
-      labs: '',
-      location: '',
-      medications: '',
-      nextAppointment: '',
-      nextAppointments: '',
+      admissionDate: undefined,
+      allProcedures: undefined,
+      completedBy: undefined,
+      dischargeDate: undefined,
+      examiner: undefined,
+      images: undefined,
+      labs: undefined,
+      location: undefined,
+      medications: undefined,
+      nextAppointment: undefined,
+      nextAppointments: undefined,
       notes: {
-        author: '',
-        date: '',
-        title: ''
+        author: undefined,
+        date: undefined,
+        title: undefined
       },
       operativePlan: {
-        description: '',
-        instructions: '',
-        procedures: '',
-        title: ''
+        description: undefined,
+        instructions: undefined,
+        procedures: undefined,
+        title: undefined
       },
-      primaryDiagnosis: '',
-      procedures: '',
-      secondaryDiagnosis: '',
-      visitDate: '',
-      visitType: ''
+      primaryDiagnosis: undefined,
+      procedures: undefined,
+      secondaryDiagnosis: undefined,
+      visitDate: undefined,
+      visitType: undefined
     },
     messages: {
-      'delete': '',
-      saved: ''
+      'delete': undefined,
+      saved: undefined
     },
     titles: {
-      dischargeReport: '',
-      newDischargeReport: '',
-      newOPDReport: '',
-      opdReport: '',
-      saved: ''
+      dischargeReport: undefined,
+      newDischargeReport: undefined,
+      newOPDReport: undefined,
+      opdReport: undefined,
+      saved: undefined
     }
   },
   user: {
@@ -1426,55 +1426,55 @@ export default {
     buttons: {
       addDiagnosis: 'Adicionar Diagnóstico',
       checkIn: 'Entrada',
-      checkOut: '',
-      discharge: '',
+      checkOut: undefined,
+      discharge: undefined,
       newAppointment: 'Novo Compromisso',
-      newDischargeReport: '',
-      newOPDReport: '',
+      newDischargeReport: undefined,
+      newOPDReport: undefined,
       newProcedure: 'Novo Procedimento',
       newVitals: 'Novos Sinais Vitais'
     },
     labels: {
-      appointment: '',
+      appointment: undefined,
       authoredBy: 'Autorizado Por',
-      checkInTime: '',
-      checkOutTime: '',
-      createNewPatient: '',
+      checkInTime: undefined,
+      checkOutTime: undefined,
+      createNewPatient: undefined,
       diagnosis: 'Diagnósticos',
       examiner: 'Examinador',
       finalDiagnosis: 'Diagnósticos de Finais/Faturamento',
-      haveAppointment: '',
-      haveDoneOrders: '',
-      noAppointment: '',
-      ordersDone: '',
-      ordersNotDone: '',
-      patientToCheckIn: '',
+      haveAppointment: undefined,
+      haveDoneOrders: undefined,
+      noAppointment: undefined,
+      ordersDone: undefined,
+      ordersNotDone: undefined,
+      patientToCheckIn: undefined,
       procedure: 'Procedimentos',
-      procedureDate: '',
-      reasonForVisit: '',
+      procedureDate: undefined,
+      reasonForVisit: undefined,
       reportType: 'Tipo do relatório',
       status: 'Situação de Visita',
-      statusAdmitted: '',
-      statusCheckedIn: '',
-      statusCheckedOut: '',
-      statusDischarged: '',
-      visitDate: '',
+      statusAdmitted: undefined,
+      statusCheckedIn: undefined,
+      statusCheckedOut: undefined,
+      statusDischarged: undefined,
+      visitDate: undefined,
       visitInformation: 'Imformação de Visita',
       visitType: 'Tipo de Visita'
     },
     messages: {
-      checkOut: '',
-      checkedOut: '',
-      discharged: '',
-      patientCheckedIn: '',
-      patientCreatedAndCheckedIn: '',
+      checkOut: undefined,
+      checkedOut: undefined,
+      discharged: undefined,
+      patientCheckedIn: undefined,
+      patientCreatedAndCheckedIn: undefined,
       visitAndPatientSaved: 'Os registros de visita e paciente foram salvos.',
       visitSaved: 'O registro de visita foi salvo.'
     },
     navigation: {
-      charges: '',
+      charges: undefined,
       notes: 'Notas',
-      orders: '',
+      orders: undefined,
       procedures: 'Procedimentos',
       reports: 'Relatórios',
       vitals: 'Sinais Vitais'
@@ -1482,9 +1482,9 @@ export default {
     titles: {
       additionalDiagnoses: 'Diagnósticos Adicionais',
       checkOut: 'Saída de Paciente',
-      checkedIn: '',
-      checkedOut: '',
-      discharged: '',
+      checkedIn: undefined,
+      checkedOut: undefined,
+      discharged: undefined,
       editVisit: 'Editar Visita',
       newVisit: 'Nova Visita',
       patientCheckIn: 'Entrada de Paciente',
