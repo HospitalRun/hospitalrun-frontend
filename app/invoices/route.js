@@ -6,7 +6,7 @@ import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
   addCapability: 'add_invoice',
-  currentScreenTitle: t('navigation.invoices'),
+  currentScreenTitle: 'Invoices',
   editTitle: t('billing.editInvoice'),
   newTitle: t('billing.newInvoice'),
   moduleName: 'invoices',
