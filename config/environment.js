@@ -53,8 +53,7 @@ module.exports = function(environment) {
   }
 
   ENV.i18n = {
-    defaultLocale: 'en',
-    defaultFallback: true
+    defaultLocale: 'en'
   };
 
   ENV.manifest = {
