@@ -1,5 +1,5 @@
 /* jshint ignore:start */
-import { registerAsyncHelper } from '@ember/test';
+import { getContext } from '@ember/test-helpers';
 
 import { Promise as EmberPromise, all } from 'rsvp';
 import { set, get } from '@ember/object';
@@ -36,7 +36,7 @@ function destroyDatabases(dbs) {
   return all(destroyQueue);
 }
 
-function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
+async function runWithPouchDump(dumpName, functionToRun) {
   PouchDB.plugin(PouchAdapterMemory);
   PouchDB.plugin(PouchDBUsers);
 
@@ -123,39 +123,34 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     }
   });
 
-  app.__deprecatedInstance__.register('service:config', InMemoryConfigService);
-  app.__deprecatedInstance__.register('service:database', InMemoryDatabaseService);
+  let owner = getContext().application.__deprecatedInstance__;
+  owner.register('service:config', InMemoryConfigService);
+  owner.register('service:database', InMemoryDatabaseService);
 
-  return new EmberPromise(function(resolve) {
-    promise.then(function() {
-      db.setMaxListeners(35);
-      createPouchViews(db, true, dumpName).then(function() {
-        functionToRun();
-        andThen(function() {
-          let databasesToClean = [
-            configDB,
-            db
-          ];
-          if (window.ELECTRON) {
-            databasesToClean.push(usersDB);
-          }
-          cleanupDatabases(db, databasesToClean).then(function() {
-            configDB = null;
-            db = null;
-            if (window.ELECTRON) {
-              usersDB = null;
-            }
-            resolve();
-          }, function(err) {
-            console.log('error cleaning up dbs:', err);
-          });
-        });
-      });
-    }, function(err) {
-      console.log('error loading db', JSON.stringify(err, null, 2));
-    });
-  });
+  await promise;
+
+  db.setMaxListeners(35);
+  await createPouchViews(db, true, dumpName);
+
+  await functionToRun();
+  await wait();
+
+  let databasesToClean = [
+    configDB,
+    db
+  ];
+  if (window.ELECTRON) {
+    databasesToClean.push(usersDB);
+  }
+  await cleanupDatabases(db, databasesToClean);
+
+  configDB = null;
+  db = null;
+  if (window.ELECTRON) {
+    usersDB = null;
+  }
 }
 
-registerAsyncHelper('runWithPouchDump', runWithPouchDumpAsyncHelper);
+export default runWithPouchDump;
+
 /* jshint ignore:end */

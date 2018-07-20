@@ -10,27 +10,25 @@
 <div class="row">
   <div class="col-xs-3">
     <div class="form-group required {{quantityClass}} test-inv-quantity">
-      {{#if firstQuantity}}
-        <label class="control-label">{{t 'labels.quantity'}}</label>
-      {{/if}}
-      {{input type="text" value=quantity class="form-control"}}
+      {{form.input
+        model=this
+        property='quantity'
+        label=(if firstQuantity (t 'labels.quantity'))
+      }}
       <span class="help-block">{{quantityHelp}}</span>
     </div>
   </div>
-
   <div class="col-xs-3">
     <div class="form-group required {{unitClass}}">
-      {{#if firstQuantity}}
-        <label class="control-label">{{t 'components.quantityConv.unit'}}</label>
-      {{/if}}
-      {{select-list
-        class='form-control test-inv-unit'
-        content=unitList
-        value=unit
-        action=(action (mut unit))
-        prompt=" "
+      {{form.select
+        model=this
+        class='form-input-group test-inv-unit required'
+        content=unitListHash
+        property='unit'
+        prompt=' '
+        label=(if firstQuantity (t 'components.quantityConv.unit') '')
       }}
-      <span class="help-block">{{unitHelp}}</span>
     </div>
+    <span class="help-block">{{unitHelp}}</span>
   </div>
 </div>

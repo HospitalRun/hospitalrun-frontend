@@ -50,7 +50,7 @@
             model=model
             property=(concat propertyPrefix field.property)
             content=field.values
-            class=field.displayClassNames
+            class=(concat 'form-input-group ' field.displayClassNames)
             prompt=field.prompt
             optionValuePath="label"
             optionLabelPath="label"

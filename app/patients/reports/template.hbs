@@ -2,21 +2,19 @@
   <div class="panel-body">
     {{#em-form model=this submitButton=false as |form|}}
       <div class="row" data-test-selector="select-report-type">
-        <div class="form-group col-xs-6">
-          <label class="control-label" for="report-type">{{t 'inventory.reports.reportType'}}</label>
-          {{select-list
-            action=(action (mut reportType))
-            class='form-control'
-            content=reportTypes
-            id='report-type'
-            optionValuePath='value'
-            optionLabelPath='name'
-            value=reportType
-          }}
-        </div>
+        {{form.select
+          class='form-input-group col-xs-6'
+          content=reportTypes
+          id='report-type'
+          optionValuePath='value'
+          optionLabelPath='name'
+          property='reportType'
+          label=(t 'inventory.reports.reportType')
+        }}
       </div>
       {{#if isStatusReport}}
         {{form.select property="status" label="Patient Status"
+          class="form-input-group"
           content=statusList
           prompt=" "
         }}
@@ -32,21 +30,21 @@
       {{/if}}
       {{#if isVisitReport}}
         <div class="row">
-          {{form.select class="col-sm-6" label="Visit Type"
+          {{form.select class="col-sm-6 form-input-group" label="Visit Type"
             property="visitType" content=visitTypes
             prompt=" "
           }}
-          {{form.select class="col-sm-6" label="Examiner"
+          {{form.select class="col-sm-6 form-input-group" label="Examiner"
             property="examiner" content=physicianList
             prompt=" "
           }}
         </div>
         <div class="row">
-          {{form.select class="col-sm-6" label="Location"
+          {{form.select class="col-sm-6 form-input-group" label="Location"
             property="location" content=locationList
             prompt=" "
           }}
-          {{form.select class="col-sm-6" label="Clinic"
+          {{form.select class="col-sm-6 form-input-group" label="Clinic"
             property="clinic" content=clinicList
             prompt=" "
           }}

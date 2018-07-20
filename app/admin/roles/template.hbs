@@ -2,7 +2,7 @@
   <div class="panel panel-primary">
     <div class="panel-body">
       {{#em-form model=this submitButton=false as |form|}}
-        <div class="form-group has-success">
+        <div class="form-input-group has-success">
           <label class="control-label">{{t 'labels.role'}}</label>
           <select onchange={{action "selectRole" value="target.value"}} class="form-control role-select">
             <option disabled selected={{is-not selectedRole}}>

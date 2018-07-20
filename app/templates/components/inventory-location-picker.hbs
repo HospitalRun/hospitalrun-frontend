@@ -1,6 +1,6 @@
 {{#each locationPickers as |locationPicker|}}
   <div class="form-group">
     <label class="control-label">{{locationPicker.label}}</label>
-    {{location-select locationPicker=locationPicker }}
+    {{location-select form=form locationPicker=locationPicker }}
   </div>
 {{/each}}

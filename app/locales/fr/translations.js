@@ -122,7 +122,7 @@ export default {
       procedureLocations: 'Emplacements des procédures',
       procedurePricingTypes: 'Types de prix des procédures',
       radiologists: 'Radiologistes',
-      titles: { deleteLookupValue: '' },
+      titles: { deleteLookupValue: undefined },
       unitTypes: "Types d'unité",
       vendorList: 'Fournisseurs',
       visitLocationList: 'Emplacements de consultations',
@@ -292,7 +292,7 @@ export default {
       appointmentSaved: 'Rendez-vous sauvegardé',
       editSurgicalAppointment: 'Modifier un rendez-vous chirurgical',
       newSurgicalAppointment: 'Nouveau rendez-vous chirurgical',
-      theaterSchedule: ''
+      theaterSchedule: undefined
     },
     todayTitle: "Rendez-vous d'aujourd'hui"
   },
@@ -303,9 +303,14 @@ export default {
       noPricingProfiles: 'Aucun profil de prix trouvé'
     },
     buttons: {
+      addDeposit: undefined,
       addOverride: 'Ajouter un dépassement',
-      createInvoice: 'Créer une facture ?'
+      createInvoice: 'Créer une facture ?',
+      newInvoice: undefined
     },
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'Frais réels',
       discountAmount: 'Montant de remise',
@@ -322,7 +327,14 @@ export default {
     messages: {
       flatDiscountMsg: "Il existe une remise fixe appliquée à la responsabilité financière du patient d'un montant de {{currency}}{{discountAmount}}.",
       flatFeeMsg: "Il existe des frais forfaitaires pour le patient d'un montant de {{setFee}}{{currency}}."
-    }
+    },
+    navigation: {
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
+    },
+    newInvoice: undefined
   },
   buttons: {
     add: 'Ajouter',
@@ -875,7 +887,7 @@ export default {
     to: 'À',
     total: 'Total',
     type: 'Type',
-    userCanAddNewValue: 'L\'utilisateur peut ajouter de nouvelles valeurs',
+    userCanAddNewValue: "L'utilisateur peut ajouter de nouvelles valeurs",
     username: "Nom d'utilisateur",
     value: 'Valeur',
     view: 'Afficher',
@@ -1309,11 +1321,22 @@ export default {
       visit: 'Visite'
     }
   },
-  pricing: { labels: {
-    discountAmount: 'Montant de remise',
-    discountPercentage: 'Pourcentage de remise',
-    setFee: 'Définir les frais'
-  } },
+  pricing: {
+    labels: {
+      discountAmount: 'Montant de remise',
+      discountPercentage: 'Pourcentage de remise',
+      setFee: 'Définir les frais'
+    },
+    navigation: {
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
+    },
+    sectionTitle: undefined
+  },
   print: { invoice: {
     labels: {
       billedBy: 'Facturé par :',
