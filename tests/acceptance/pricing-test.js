@@ -174,7 +174,7 @@ test('Searching pricing', function(assert) {
     await fillIn('[role="search"] div input', 'Xray Hand');
     await click('.glyphicon-search');
     assert.equal(currentURL(), '/pricing/search/Xray%20Hand', 'Searched for Name: Xray Hand');
-    assert.equal(find('button:contains(Delete)').length, 3, 'There are 3 search items');
+    assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
 
     await fillIn('[role="search"] div input', 'Blood');
     await click('.glyphicon-search');
@@ -184,17 +184,22 @@ test('Searching pricing', function(assert) {
     await fillIn('[role="search"] div input', 'Leg');
     await click('.glyphicon-search');
     assert.equal(currentURL(), '/pricing/search/Leg', 'Searched for Name: Leg');
-    assert.equal(find('button:contains(Delete)').length, 2, 'There are 2 search items');
+    assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
 
     await fillIn('[role="search"] div input', 'Gauze');
     await click('.glyphicon-search');
     assert.equal(currentURL(), '/pricing/search/Gauze', 'Searched for Name: Gauze');
-    assert.equal(find('button:contains(Delete)').length, 2, 'There are 2 search items');
+    assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
 
     await fillIn('[role="search"] div input', 'xray');
     await click('.glyphicon-search');
     assert.equal(currentURL(), '/pricing/search/xray', 'Searched for all lower case xray');
-    assert.equal(find('button:contains(Delete)').length, 3, 'There is one search item');
+    assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+
+    await fillIn('[role="search"] div input', 'd');
+    await click('.glyphicon-search');
+    assert.equal(currentURL(), '/pricing/search/d', 'Searched for the letter d');
+    assert.equal(find('button:contains(Delete)').length, 3, 'There are three search items');
 
     await fillIn('[role="search"] div input', 'ItemNotFound');
     await click('.glyphicon-search');

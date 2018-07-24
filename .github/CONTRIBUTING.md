@@ -176,12 +176,12 @@ If you know a language other than English and would like to help translate this 
 ### Run script to populate missing translation terms
 ```npm run translation-sync```
 
-After this step, you may see some file changes due to mismatches in translations of different languages. This script will take the English translation as the standard and populate the missing translations in other languages with empty string.
+After this step, you may see some file changes due to mismatches in translations of different languages. This script will take the English translation as the standard and populate the missing translations in other languages with undefined.
 
 ### Edit the translation file of your language
 The translation files are in `app/locales/<language>/translations.json`
 
-Open the translation file of your language then search for the string ```''```. Afterwards you fill in the quotation with the translated terms and save the file.
+Open the translation file of your language then search for ```undefined```. Replace undefined with the translated term surrounded by single quotes ```'``` and save the file.
 
 ### Submit the pull request
 Follow GitHub's guide to submit a pull request to the project. If you have trouble with this please post in Issues or contact a developer.
