@@ -22,7 +22,7 @@ export default Controller.extend({
       }
       $.get('/dymo/BarcodeAsImage.label', function(labelXml) {
         let barcodeAsImageLabel = dymo.label.framework.openLabelXml(labelXml);
-        let pngBase64 = barcodeUri.substr('data:image/png;base64,'.length)
+        let pngBase64 = barcodeUri.substr('data:image/png;base64,'.length);
         barcodeAsImageLabel.setObjectText('Image', pngBase64);
         barcodeAsImageLabel.print(selectedPrinter);
       }, 'text');
