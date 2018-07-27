@@ -1,8 +1,22 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const MergeTrees = require('broccoli-merge-trees');
+const path = require('path');
+const Funnel = require('broccoli-funnel');
+
 
 module.exports = function(defaults) {
+
+  let vendorTree = new Funnel('vendor');
+  let bootStrapTree = new Funnel(
+    path.dirname(require.resolve('bootstrap/dist/js/bootstrap.js')),
+    {
+      files: ['bootstrap.js'],
+      destDir: 'bootstrap'
+    }
+  );
+
   let app = new EmberApp(defaults, {
     babel: {
       optional: ['es6.spec.symbols']
@@ -14,6 +28,9 @@ module.exports = function(defaults) {
       options: {
         exclude: ['**/service-worker.js']
       }
+    },
+    trees: {
+      vendor: new MergeTrees([vendorTree, bootStrapTree])
     }
   });
 
@@ -29,9 +46,7 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
-  app.import('bower_components/bootstrap/dist/js/bootstrap.js');
-  app.import('bower_components/JsBarcode/CODE128.js');
-  app.import('bower_components/JsBarcode/JsBarcode.js');
+  app.import('vendor/bootstrap/bootstrap.js');
   app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
   app.import('bower_components/typeahead.js/dist/typeahead.bundle.js');
   app.import('bower_components/pikaday/pikaday.js');

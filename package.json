@@ -34,6 +34,7 @@
   ],
   "license": "GPL-3.0",
   "devDependencies": {
+    "bootstrap": "~3.3.5",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
     "broccoli-serviceworker": "0.1.6",
@@ -48,6 +49,7 @@
     "ember-cli-active-link-wrapper": "0.3.2",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-babel": "^6.10.0",
+    "ember-cli-barcode": "maxwondercorn/ember-cli-barcode#0.2.0",
     "ember-cli-content-security-policy": "0.6.0",
     "ember-cli-dependency-checker": "^3.0.0",
     "ember-cli-deprecation-workflow": "0.2.4",
@@ -104,10 +106,12 @@
     "stylelint-declaration-use-variable": "1.7.0",
     "stylelint-scss": "3.2.0",
     "tosource-polyfill": "^0.3.1",
+    "typeahead": "twitter/typeahead.js#v0.11.1",
     "uuid": "^3.0.0",
     "worker-pouch": "2.1.0"
   },
   "dependencies": {
+    "broccoli-funnel": "^2.0.1",
     "electron-compile": "^6.4.2",
     "electron-localshortcut": "^3.0.4",
     "electron-protocol-serve": "^1.3.0",
