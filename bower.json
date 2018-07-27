@@ -1,8 +1,6 @@
 {
   "name": "hospitalrun",
   "dependencies": {
-    "JsBarcode": "https://github.com/HospitalRun/JsBarcode.git",
-    "bootstrap": "~3.3.5",
     "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
     "idb.filesystem": "https://github.com/ebidel/idb.filesystem.js.git#~0.0.6",
     "octicons": "~2.4.1",
@@ -11,7 +9,8 @@
     "pouchdb-load": "^1.4.0",
     "pretender": "~0.10.0",
     "fullcalendar": "^3.0.0",
-    "fullcalendar-scheduler": "^1.4.0"
+    "fullcalendar-scheduler": "^1.4.0",
+    "JsBarcode": "3.8.0"
   },
   "devDependencies": {
     "timekeeper": "^1.0.0",
