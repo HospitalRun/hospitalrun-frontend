@@ -1,24 +1,17 @@
+import { inject as controller } from '@ember/controller';
+import { isEmpty } from '@ember/utils';
+import { alias } from '@ember/object/computed';
+import { set, get, computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AppointmentStatuses from 'hospitalrun/mixins/appointment-statuses';
-import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-
-const {
-  computed,
-  computed: {
-    alias
-  },
-  get,
-  inject,
-  set
-} = Ember;
 
 export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodule, VisitTypes, {
   findPatientVisits: false,
   updateCapability: 'add_appointment',
 
-  appointmentsController: inject.controller('appointments'),
+  appointmentsController: controller('appointments'),
   physicianList: alias('appointmentsController.physicianList'),
   surgeryLocationList: alias('appointmentsController.surgeryLocationList'),
   visitLocationList: alias('appointmentsController.locationList'),
@@ -26,7 +19,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
 
   cancelAction: computed('model.returnTo', function() {
     let returnTo = get(this, 'model.returnTo');
-    if (Ember.isEmpty(returnTo)) {
+    if (isEmpty(returnTo)) {
       return this._super();
     } else {
       return 'returnTo';
@@ -79,9 +72,8 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   },
 
   actions: {
-    appointmentTypeChanged(appointmentType) {
+    appointmentTypeChanged() {
       let model = get(this, 'model');
-      set(model, 'appointmentType', appointmentType);
       let isAdmissionAppointment = get(this, 'isAdmissionAppointment');
       set(model, 'allDay', isAdmissionAppointment);
     }

@@ -2,7 +2,8 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('line-item-detail', 'Unit | Model | line-item-detail', {
   needs: [
-    'model:pricing'
+    'model:pricing',
+    'service:session'
   ]
 });
 

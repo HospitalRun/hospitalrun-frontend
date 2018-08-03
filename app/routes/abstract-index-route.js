@@ -1,12 +1,13 @@
+import { Promise as EmberPromise } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { isEmpty } from '@ember/utils';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 
-const { isEmpty } = Ember;
-
-export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRouteMixin, {
-  database: Ember.inject.service(),
+export default Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRouteMixin, {
+  database: service(),
   filterParams: null,
   firstKey: null,
   hideNewButton: false,
@@ -54,7 +55,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   },
 
   model(params) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let filterParams = this._getFilterParams(params);
       let modelName = this.get('modelName');
       let itemsPerPage = this.get('itemsPerPage');

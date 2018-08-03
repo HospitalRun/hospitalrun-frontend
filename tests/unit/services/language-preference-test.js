@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { reject } from 'rsvp';
+import Service from '@ember/service';
 import { moduleFor, test } from 'ember-qunit';
 import { DEFAULT_LANGUAGE } from 'hospitalrun/services/language-preference';
 import sinon from 'sinon';
@@ -17,7 +18,7 @@ const configDb = {};
 
 const currentUser = sinon.stub();
 
-const config = Ember.Service.extend({
+const config = Service.extend({
   getCurrentUser() {
     return currentUser();
   },
@@ -34,7 +35,7 @@ moduleFor('service:language-preference', 'Unit | Service | Language preference',
 
     this.register('service:config', config);
     this.inject.service('config');
-    this.register('service:i18n', Ember.Service.extend({}));
+    this.register('service:i18n', Service.extend({}));
     this.inject.service('i18n');
   },
   afterEach() {
@@ -75,7 +76,7 @@ test('loadUserLanguagePreference should return default language if there are no 
 });
 
 test('loadUserLanguagePreference sinon test should return default language if there are no preferences', function(assert) {
-  configDb.get.withArgs('preferences').returns(Ember.RSVP.reject('no preferences'));
+  configDb.get.withArgs('preferences').returns(reject('no preferences'));
 
   currentUser.returns({ name: 'testuser.ts' });
 
@@ -119,7 +120,7 @@ test("saveUserLanguagePreference should update preferences when user doesn't exi
 
 test("saveUserLanguagePreference should create preferences when they doesn't exist", function(assert) {
   currentUser.returns({ name: 'no-such-user@test.ts' });
-  configDb.get.withArgs('preferences').returns(Ember.RSVP.reject('no preferences'));
+  configDb.get.withArgs('preferences').rejects('no preferences');
 
   let expectedPreferences = {
     _id: 'preferences',

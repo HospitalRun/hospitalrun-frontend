@@ -1,5 +1,4 @@
 export default {
-  languageName: 'Español',
   admin: {
     address: {
       address1Label: 'Texto dirección 1',
@@ -30,10 +29,12 @@ export default {
         checkbox: 'checkbox',
         colSpan: 'Número de columnas a extender',
         columns: 'Columnas',
-        customForm: 'Forma personalizada',
+        customForm: 'Formulario personalizado',
         dischargeReportFormType: 'Descartar reporte',
+        expenseTo: undefined,
         formName: 'Nombre de la forma',
         formType: 'Tipo de forma',
+        header: undefined,
         incidentFormType: 'Incidente',
         includeOtherOption: 'Incluir otra opción',
         labFormType: 'Tipo de formulario de laboratorio',
@@ -55,11 +56,12 @@ export default {
       titles: {
         checkboxValues: 'Valores de checkbox',
         customForms: 'Formularios personalizados',
-        deleteForm: 'Eliminas formulario personalizado',
+        deleteForm: 'Eliminar formulario personalizado',
         dropDownValues: 'Valores de lista desplegable',
         editCustomForm: 'Editar formulario personalizado',
         fields: 'Campos',
         formSaved: 'Formulario guardado',
+        headerValues: undefined,
         newCustomForm: 'Nuevo formulario personalizado',
         radioValues: 'Valores de radio botones'
       }
@@ -108,9 +110,9 @@ export default {
         updateButtonTextAdd: 'Agregar',
         updateButtonTextUpdate: 'Actualizar'
       } },
-      expenseAccountList: 'Cuentas de gastos',
+      expenseAccountList: 'Lista de gastos',
       imagingPricingTypes: 'Tipos de precios de radiografías',
-      incidentDepartments: 'Departamentos de incidencias',
+      incidentDepartments: 'Departamentos de incidentes',
       inventoryTypes: 'Tipos de inventarios',
       labPricingTypes: 'Precios de laboratorio',
       pageTitle: 'Listas de búsqueda',
@@ -162,6 +164,7 @@ export default {
         admitPatient: 'Admitir paciente',
         appointments: 'Citas',
         billing: 'Facturación',
+        cashier: undefined,
         completeImaging: 'Completar radiografía',
         completeLab: 'Completar laboratorio',
         defineUserRoles: 'Roles de usuario',
@@ -183,7 +186,7 @@ export default {
         deleteSocialwork: 'Eliminar trabajo social',
         deleteVisit: 'Eliminar visita',
         deleteVitals: 'Eliminar órgano vital',
-        dischargePatient: 'Descartar paciente',
+        dischargePatient: 'Dar de alta al paciente',
         editInvoice: 'Editar factura',
         fulfillInventory: 'Cumplimiento de inventario',
         fulfillMedication: 'Cumplir la medicación',
@@ -193,6 +196,7 @@ export default {
         inventory: 'Inventario',
         invoices: 'Facturas',
         labs: 'Laboratorios',
+        listPaidInvoices: undefined,
         loadDb: 'Cargar base de datos',
         manageIncidents: 'Administrar credenciales',
         medication: 'Medicación',
@@ -205,6 +209,17 @@ export default {
       },
       messages: { roleSaved: 'El {{roleName}} rol ha sido guardado.' },
       titles: { roleSaved: 'Rol guardado' }
+    },
+    textReplacements: {
+      createNew: undefined,
+      existingRepl: undefined,
+      noMatches: undefined,
+      pageTitle: undefined,
+      performExpand: undefined,
+      possibleExpansions: undefined,
+      replDesc: undefined,
+      replaceWith: undefined,
+      toReplace: undefined
     },
     userRoles: 'Roles de usuario',
     users: 'Usuarios',
@@ -288,21 +303,38 @@ export default {
       noPricingProfiles: 'No se encontraron perfiles de precio'
     },
     buttons: {
+      addDeposit: undefined,
       addOverride: 'Agregar anulación',
-      createInvoice: 'Crear factura'
+      createInvoice: 'Crear factura',
+      newInvoice: undefined
     },
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'Cargos actuales',
       discountAmount: 'Monto de descuento',
       discountPercentage: 'Porcentaje de descuento',
       externalInvoiceNumber: 'No. de factura externa',
       hmoCom: 'HMO/COM',
-      insurance: 'Seguro',
+      insurance: 'Seguro médico',
       paymentProfile: 'Perfil de pago',
       paymentsDeposits: 'Pagos / Depósitos',
       pricingPanelOverrides: 'Sustitución de perfiles de pago',
-      pricingProfile: 'Perfil de Pago'
-    }
+      pricingProfile: 'Perfil de Pago',
+      setFee: undefined
+    },
+    messages: {
+      flatDiscountMsg: undefined,
+      flatFeeMsg: undefined
+    },
+    navigation: {
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
+    },
+    newInvoice: undefined
   },
   buttons: {
     add: 'Agregar',
@@ -315,7 +347,7 @@ export default {
     cancel: 'Cancelar',
     clear: 'Limpiar',
     close: 'Cerrar',
-    complete: 'Completado',
+    complete: 'Completar',
     'delete': 'Eliminar',
     dispense: 'Repartir',
     edit: 'Editar',
@@ -329,8 +361,10 @@ export default {
     newRequestPlus: '+ nuevo pedido',
     newUser: 'Nuevo usuario',
     ok: 'Ok',
+    print: undefined,
     remove: 'Quitar',
     returnButton: 'Regresar',
+    review: undefined,
     search: 'Buscar',
     showAll: 'Mostrar todo',
     showFewer: 'Mostrar menos',
@@ -399,8 +433,9 @@ export default {
     titles: { addCustomForm: 'Agregar formulario personalizado' }
   },
   dashboard: {
-    setup: 'Preparación',
-    title: 'Que deseas hacer?'
+    needs_user_setup: undefined,
+    standalone_welcome: undefined,
+    title: 'Bienvenido a HospitalRun!'
   },
   dates: {
     'long': '{{years}} año {{months}} meses {{days}} días',
@@ -439,8 +474,8 @@ export default {
     invalidNumber: 'No es un numero valido',
     lessThan: 'Menor que {{count}}',
     lessThanOrEqualTo: 'Menor o igual a {{count}}',
-    notANumber: 'No es un numero',
-    notAnInteger: 'No es un entero',
+    notANumber: 'No es un número',
+    notAnInteger: 'No es un número entero',
     odd: 'Debe ser impar',
     otherThan: 'Debe ser diferente a {{count}}',
     present: 'Debe estar en blanco',
@@ -460,7 +495,10 @@ export default {
     buttons: { newButton: '+ Nueva radiografía' },
     labels: {
       addNewVisit: '--Agregar nueva visita--',
-      radiologist: 'Radiólogo'
+      completedBy: undefined,
+      radiologist: 'Radiólogo',
+      requestedNotes: undefined,
+      resultNotes: undefined
     },
     messages: { noCompleted: 'No de elementos encontrados.' },
     pageTitle: 'Pedido de radiografía',
@@ -496,7 +534,7 @@ export default {
       dateRecorded: 'Fecha guardada',
       department: 'Departamento',
       description: 'Descripción',
-      endDate: 'Fecha de fin',
+      endDate: 'Fecha de finalización',
       givenBy: 'Dado por',
       howToAddAttachment: 'Como adjuntar archivos',
       incidentDate: 'Fecha de Incidente',
@@ -510,16 +548,16 @@ export default {
       reportedBy: 'Reportado por',
       reportedDate: 'Fecha de reporte',
       reportedTo: 'Reportado a',
-      sentinelEvent: 'Evento sentinel',
+      sentinelEvent: 'Evento centinela',
       startDate: 'Fecha de inicio',
       status: 'Estatus',
       statusActive: 'Activo',
       statusClosed: 'Inactivo',
-      statusFollowup: 'Seguir',
+      statusFollowup: 'Seguimiento',
       statusReported: 'Reportado',
-      title: 'Titulo',
+      title: 'Título',
       total: 'Total',
-      updatedBy: 'Subir por'
+      updatedBy: 'Actualizado por'
     },
     messages: {
       attachmentFileRequired: 'Es necesario subir un archivo',
@@ -598,10 +636,10 @@ export default {
       costPerUnit: 'Costo por Unidad',
       crossReference: 'Referencia cruzada',
       currentQuantity: 'Cantidad actual',
-      dateCompleted: 'Fecha completado',
+      dateCompleted: 'Fecha de finalización',
       dateEffective: 'Fecha efectiva',
       dateEnd: 'Fecha final',
-      dateReceived: 'Fecha de recibido',
+      dateReceived: 'Fecha de recepción',
       dateStart: 'Fecha inicial',
       dateTransferred: 'Fecha de transferencia',
       daysLeft: 'Dias restantes',
@@ -711,8 +749,8 @@ export default {
         consumed: 'Consumado',
         consumedGik: 'GiK Consumido',
         consumedGikTotal: 'Total GiK Consumido',
-        consumedPuchases: 'Total de lo comprado consumido',
-        consumedPurchasesTotal: 'Total de lo comprado consumido',
+        consumedPuchases: 'Compras consumidas',
+        consumedPurchasesTotal: 'Total de compras consumidas',
         consumedTotal: 'Total consumido',
         errInFinSum: 'Error en _generateFinancialSummaryReport: ',
         errInFindPur: 'Error en _findInventoryItemsByPurchase: ',
@@ -758,6 +796,7 @@ export default {
     address: 'Dirección',
     age: 'Edad',
     allDay: 'Todo el día',
+    allItems: undefined,
     amount: 'Monto',
     anesthesia: 'Anestesia',
     assisting: 'Asistencia',
@@ -766,11 +805,12 @@ export default {
     billTo: 'Facturar a',
     category: 'Categoria',
     completed: 'Completado',
-    country: 'Pais',
+    country: 'País',
     cptcode: 'Codigo CPT',
     creditTo: 'Crédito a',
+    currencySymbol: undefined,
     date: 'Fecha',
-    dateCompleted: 'Fecha completada',
+    dateCompleted: 'Fecha de finalización',
     dateOfBirth: 'Fecha de nacimiento',
     dateOfBirthShort: 'FDN',
     datePaid: 'Fecha de pago',
@@ -794,6 +834,7 @@ export default {
     fileLoadSuccessful: 'Archivo cargado exitosamente',
     fileName: 'Nombre del archivo',
     fileToLoad: 'Archivo cargado',
+    from: undefined,
     fulfill: 'Cumplimiento',
     fulfillRequest: 'Pedido de cumplimiento',
     fulfillRequestNow: 'Pedido de cumplimiento ahora',
@@ -811,11 +852,12 @@ export default {
     lookupType: 'Tipo de búsqueda',
     medication: 'Medicación',
     name: 'Nombre',
+    newItem: undefined,
     newUser: 'Nuevo usuario',
     note: 'Nota',
     notes: 'Notas',
-    number: 'Numero',
-    on: 'on',
+    number: 'Número',
+    on: 'Encendido',
     password: 'Contraseña',
     patient: 'Paciente',
     payments: 'Pagos',
@@ -837,11 +879,12 @@ export default {
     results: 'Resultados',
     role: 'Rol',
     search: 'Buscar',
-    sex: 'Genero',
+    sex: 'Sexo',
     startDate: 'Fecha de inicio',
     startTime: 'Hora de inicio',
     status: 'Estado',
     takenBy: 'Tomado por',
+    to: undefined,
     total: 'Total',
     type: 'Tipo',
     userCanAddNewValue: 'El usuario puede agregar nuevos valores',
@@ -875,6 +918,7 @@ export default {
     requestsTitle: 'Pedido de laboratorio',
     sectionTitle: 'Laboratorios'
   },
+  languageName: 'Español',
   loading: {
     messages: {
       '0': 'La velocidad máxima de vuelo de la mariposa es de 12 millas por hora. ¡Algunas polillas pueden volar 25 millas por hora!',
@@ -900,6 +944,7 @@ export default {
     },
     messages: {
       error: 'Nombre de usuario o clave incorrectos.',
+      offlineError: undefined,
       signIn: 'por favor ingrese'
     }
   },
@@ -1060,6 +1105,7 @@ export default {
     inventory: 'Inventario',
     labs: 'Laboratorio',
     medication: 'Recetas medicas',
+    messages: { logoutFailed: undefined },
     patients: 'Pacientes',
     scheduling: 'Programación',
     subnav: {
@@ -1070,22 +1116,22 @@ export default {
       appointmentSearch: 'Busqueda de citas',
       appointmentsCalendar: 'Calendario de citas',
       appointmentsThisWeek: 'Citas esta semana',
+      cashier: undefined,
       completed: 'Completado',
       currentIncidents: 'Incidentes actuales',
       customForms: 'Formularios personalizados',
-      dispense: 'Dispense',
+      dispense: 'Dispensar',
       history: 'Historial',
       incidentCategories: 'Categorias de Incidente',
       inventoryReceived: 'Inventario recibido',
       inventoryReceivedPlus: '+ Inventario recibido',
       invoices: 'Facturas',
-      items: 'Items',
+      items: 'Elementos',
       loadDB: 'Cargar Base de datos',
       lookupLists: 'Lista de busquedas',
-      missedAppointments: 'Citas perdidas',
       newIncident: 'Nuevo incidente',
       newInvoice: 'Nueva factura',
-      newPatient: 'Nuevo paciente',
+      newPatient: 'Paciente nuevo',
       newRequest: 'Nuevo pedido',
       newUser: 'Nuevo usuario',
       outpatient: 'Paciente externo',
@@ -1097,12 +1143,14 @@ export default {
       requests: 'Pedidos',
       returnMedication: 'Devolver medicamento',
       scheduleSurgery: 'Programar cirugía',
+      textReplacements: undefined,
       theaterSchedule: 'Horario de cirugía',
       "today'sAppointments": 'Citas de hoy',
       userRoles: 'Roles de usuario',
       users: 'Usuarios',
       workflow: 'Flujo de trabajo'
-    }
+    },
+    titles: { logoutFailed: undefined }
   },
   operationReport: {
     labels: {
@@ -1159,7 +1207,7 @@ export default {
       newImaging: 'Nueva radiografía',
       newLab: 'Nuevo laboratorio',
       newMedication: 'Nueva medicación',
-      newPatient: 'Nuevo paciente',
+      newPatient: 'Paciente nuevo',
       newPhoto: 'Nueva foto',
       newVisit: 'Nueva visita',
       patientCheckIn: 'Registro de paciente',
@@ -1171,19 +1219,19 @@ export default {
       bloodType: 'Tipo de sangre',
       caption: 'Titulo',
       civilStatus: 'Estado civil',
-      clinic: 'Clinica',
+      clinic: 'Clínica',
       contacts: 'Contactos',
       cost: 'Costo',
       dateOfBirth: 'Fecha de nacimiento',
       dateProcessed: 'Fecha de procesamiento',
       dischargeDate: 'Fecha de alta',
       dob: 'DOB',
-      education: 'Educación',
+      education: 'Nivel de Educación',
       email: 'Correo Electrónico',
       externalPatientId: 'Id de paciente externo',
       firstName: 'Primer nombre',
       income: 'Ingresos',
-      insurance: 'Aseguranza',
+      insurance: 'Seguro médico',
       lastName: 'Apellido',
       middleName: 'Segundo nombre',
       monthlyCost: 'Costo mensual',
@@ -1210,7 +1258,7 @@ export default {
       totalMontlyExpense: 'Total de gastos mensuales'
     },
     messages: {
-      areYouSureDelete: 'Esta seguro que desea eliminar este {{object}}?',
+      areYouSureDelete: 'Está seguro que desea eliminar este {{object}}?',
       createNewPatient: 'Crear nuevo registro de paciente?',
       deletingPatient: 'Eliminar paciente y todos los registros asociados',
       noPatientsFound: 'No se encontró paciente',
@@ -1219,7 +1267,7 @@ export default {
       savedPatient: 'El registro para el paciente: {{displayName}} ha sido exitoso'
     },
     navigation: {
-      appointments: 'Equipo',
+      appointments: 'Citas',
       general: 'General',
       history: 'Historial',
       imaging: 'Radiografia',
@@ -1237,7 +1285,7 @@ export default {
       updateNote: 'Actualizar nota desde'
     },
     titles: {
-      addContact: 'Agregar contrato',
+      addContact: 'Agregar contacto',
       addPhoto: 'Agregar fotografía',
       additionalContacts: 'Contactos adicionales',
       admissionsDetail: 'Detalles de la admisión',
@@ -1257,7 +1305,7 @@ export default {
       expenses: 'Gastos',
       familyInfo: 'Info familiar',
       familyInformation: 'Información familiar',
-      'new': 'Nuevo paciente',
+      'new': 'Paciente Nuevo',
       outpatientsForDate: 'Pacientes externos para {{visitDate}}',
       patient: 'Reporte de paciente',
       patientListing: 'Listado de paciente',
@@ -1272,6 +1320,22 @@ export default {
       totalPatientDaysDetailed: 'Total de días de pacientes detallado',
       visit: 'Visitar'
     }
+  },
+  pricing: {
+    labels: {
+      discountAmount: undefined,
+      discountPercentage: undefined,
+      setFee: undefined
+    },
+    navigation: {
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
+    },
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {
@@ -1393,7 +1457,7 @@ export default {
       statusAdmitted: 'Admitido',
       statusCheckedIn: 'Registrado',
       statusCheckedOut: 'Pagar e irse',
-      statusDischarged: 'Pagado',
+      statusDischarged: 'Dado de alta',
       visitDate: 'Fecha de visita',
       visitInformation: 'Información de visita',
       visitType: 'Tipo de visita'
@@ -1401,7 +1465,7 @@ export default {
     messages: {
       checkOut: 'Pagar e irse',
       checkedOut: 'Pago y se fue',
-      discharged: 'Pagado',
+      discharged: 'Dado de alta',
       patientCheckedIn: 'Registrado',
       patientCreatedAndCheckedIn: 'Creado y registrado',
       visitAndPatientSaved: 'Paciente y visita registrado',
@@ -1420,7 +1484,7 @@ export default {
       checkOut: 'Pagar e irse',
       checkedIn: 'Registrado',
       checkedOut: 'Pago y se fue',
-      discharged: 'Pagado',
+      discharged: 'Dado de alta',
       editVisit: 'Editar visita',
       newVisit: 'Nueva visita',
       patientCheckIn: 'Registro de paciente',
@@ -1429,11 +1493,11 @@ export default {
   },
   vitals: { labels: {
     dateRecorded: 'Fecha de guardado',
-    dbp: 'DBP',
+    dbp: 'PAD',
     heartRate: 'Ritmo cardiaco',
     height: 'Altura',
     respiratoryRate: 'Ritmo respiratorio',
-    sbp: 'SBP',
+    sbp: 'PAS',
     temperature: 'Temperatura',
     weight: 'Peso'
   } }

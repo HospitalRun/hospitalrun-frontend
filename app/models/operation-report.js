@@ -1,11 +1,7 @@
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
-
-const {
-  get,
-  isEmpty
-} = Ember;
 
 function defaultProcedures() {
   return [];

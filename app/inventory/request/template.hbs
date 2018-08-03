@@ -73,7 +73,7 @@
       <div class="row">
         {{date-picker model=model property="dateCompleted" label=(t 'labels.dateCompleted') class="col-sm-4"}}
       </div>
-      {{inventory-location-picker label=(t 'inventory.labels.pullFrom') quantityRequested=model.quantity
+      {{inventory-location-picker form=form label=(t 'inventory.labels.pullFrom') quantityRequested=model.quantity
         locationList=model.inventoryItem.availableLocations
         selectedLocations=model.inventoryLocations class="inventory-location"
       }}

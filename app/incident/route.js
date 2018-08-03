@@ -10,6 +10,9 @@ export default AbstractModuleRoute.extend({
     name: 'incidentCategoryList',
     findArgs: ['inc-category']
   }],
+  allowSearch: false,
+  editTitle: t('incidents.titles.editIncident'),
+  newTitle: t('incidents.titles.newIncident'),
   moduleName: 'incident',
   newButtonText: t('incident.buttons.newIncident'),
   sectionTitle: t('incident.titles.incidents')

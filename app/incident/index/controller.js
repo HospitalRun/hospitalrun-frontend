@@ -1,24 +1,17 @@
+import { inject as controller } from '@ember/controller';
+import { alias } from '@ember/object/computed';
+import { get, computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
-import Ember from 'ember';
 import FilterList from 'hospitalrun/mixins/filter-list';
 import UserSession from 'hospitalrun/mixins/user-session';
-
-const {
-  computed,
-  computed: {
-    alias
-  },
-  get,
-  inject,
-  isEmpty
-} = Ember;
 
 export default AbstractPagedController.extend(FilterList, UserSession, {
   addPermission: 'add_incident',
   deletePermission: 'delete_incident',
   startKey: [],
 
-  incidentController: inject.controller('incident'),
+  incidentController: controller('incident'),
   departmentNames: alias('incidentController.incidentDepartmentList.value'),
 
   categoryItems: computed('model.@each.categoryItem', function() {

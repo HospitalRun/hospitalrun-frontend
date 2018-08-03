@@ -1,14 +1,14 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false as |form|}}
     {{#unless model.selectPatient}}
-      {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+      {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=model.id disablePatientLink=model.isNew class="clickable"}}
     {{/unless}}
     <div class="row">
       {{#if model.selectPatient}}
         {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-6 required test-patient-input"}}
       {{/if}}
       {{#if model.isNew}}
-        {{form.select class="col-xs-4 required test-add-visit" label=(t 'labels.visit')
+        {{form.select class="col-xs-4 required form-input-group test-add-visit" label=(t 'labels.visit')
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
           prompt=(t 'labels.addNewOutpatientVisit')
@@ -65,7 +65,7 @@
       {{/unless}}
       {{#if isFulfilling}}
         {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'labels.billTo') list=expenseAccountList selection=model.expenseAccount }}
-        {{inventory-location-picker label=(t 'labels.pullFrom') quantityRequested=model.quantity
+        {{inventory-location-picker form=form label=(t 'labels.pullFrom') quantityRequested=model.quantity
           locationList= model.inventoryItem.availableLocations
           selectedLocations=model.inventoryLocations class="inventory-location"
         }}

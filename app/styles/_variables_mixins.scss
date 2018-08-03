@@ -64,6 +64,11 @@ $inactive-sort-indicator: rgba($navy_drk2,.3);
   color: $navy_mid2;
   font-size: 28px;
   font-weight: 600;
+
+  .rtl & {
+    float: right;
+    text-align: right;
+  }
 }
 
 // layout

@@ -1,5 +1,5 @@
+import EmberObject from '@ember/object';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import Ember from 'ember';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 export default AbstractIndexRoute.extend(ModalHelper, {
   category: null,
@@ -13,7 +13,7 @@ export default AbstractIndexRoute.extend(ModalHelper, {
 
     deleteItem(item) {
       let message = 'Are you sure you want to delete this profile?';
-      let model = Ember.Object.create({
+      let model = EmberObject.create({
         itemToDelete: item
       });
       let title = 'Delete Profile';

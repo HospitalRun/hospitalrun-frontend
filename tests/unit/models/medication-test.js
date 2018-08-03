@@ -7,7 +7,8 @@ moduleForModel('medication', 'Unit | Model | medication', {
     'ember-validations@validator:local/presence',
     'model:inventory',
     'model:patient',
-    'model:visit'
+    'model:visit',
+    'service:session'
   ]
 });
 

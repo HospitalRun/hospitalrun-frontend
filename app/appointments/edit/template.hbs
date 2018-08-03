@@ -3,7 +3,7 @@
     {{#if model.selectPatient}}
       {{patient-typeahead model=model property="patientTypeAhead" label=(t 'models.patient.names.singular') content=patientList selection=selectedPatient class="required test-patient-input"}}
     {{else}}
-      {{patient-summary patient=model.patient returnTo='appointments.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+      {{patient-summary patient=model.patient returnTo='appointments.edit' returnToContext=model.id disablePatientLink=model.isNew class="clickable"}}
     {{/if}}
     <div class="row">
       {{#if isAdmissionAppointment}}
@@ -28,18 +28,16 @@
       </div>
     {{else}}
       <div class="row">
-        <div class="form-input-group col-sm-6 required test-appointment-type">
-          <label class="control-label" for="startTime">{{t 'models.appointment.labels.type'}}</label>
-          {{select-list
-            content=visitTypes
-            optionLabelPath='value'
-            optionValuePath='id'
-            value=model.appointmentType
-            class='form-control'
-            id='appointmentType'
-            action=(action 'appointmentTypeChanged')
-          }}
-        </div>
+        {{form.select
+          content=visitTypes
+          optionLabelPath='value'
+          optionValuePath='id'
+          property='appointmentType'
+          class='form-input-group col-sm-6 required test-appointment-type'
+          label=(t 'models.appointment.labels.type')
+          id='appointmentType'
+          action=(action 'appointmentTypeChanged')
+        }}
         {{select-or-typeahead className="col-sm-6 test-appointment-with" form=form model=model property="provider"
           label=(t 'models.appointment.labels.provider') list=physicianList
           selection=model.provider

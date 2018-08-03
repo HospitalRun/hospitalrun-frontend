@@ -1,34 +1,42 @@
+import { alias } from '@ember/object/computed';
+import { isArray } from '@ember/array';
+import { isEmpty } from '@ember/utils';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
-import Ember from 'ember';
+import { computed } from '@ember/object';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
+export const LAB_STATUS_COMPLETED = 'Completed';
+
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-  labsController: Ember.inject.controller('labs'),
+  labsController: controller('labs'),
   chargePricingCategory: 'Lab',
   chargeRoute: 'labs.charge',
   selectedLabType: null,
 
-  canComplete: function() {
+  canComplete: computed('selectedLabType.[]', 'model.labTypeName', 'isCompleted', function() {
     let isNew = this.get('model.isNew');
     let labTypeName = this.get('model.labTypeName');
     let selectedLabType = this.get('selectedLabType');
-    if (isNew && (Ember.isEmpty(labTypeName) || (Ember.isArray(selectedLabType) && selectedLabType.length > 1))) {
+    let isAlreadyCompleted = this.get('isCompleted');
+
+    if (isNew && (isEmpty(labTypeName) || (isArray(selectedLabType) && selectedLabType.length > 1))) {
       return false;
-    } else {
-      return this.currentUserCan('complete_lab');
     }
-  }.property('selectedLabType.[]', 'model.labTypeName'),
+
+    return this.currentUserCan('complete_lab') && !isAlreadyCompleted;
+  }),
 
   actions: {
     completeLab() {
-      this.set('model.status', 'Completed');
+      this.set('model.status', LAB_STATUS_COMPLETED);
       this.get('model').validate().then(function() {
         if (this.get('model.isValid')) {
           this.set('model.labDate', new Date());
           this.send('update');
         }
-      }.bind(this)).catch(Ember.K);
+      }.bind(this)).catch(function() {});
     },
 
     /**
@@ -38,12 +46,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       if (this.get('model.isNew')) {
         let newLab = this.get('model');
         let selectedLabType = this.get('selectedLabType');
-        if (Ember.isEmpty(this.get('model.status'))) {
+        if (isEmpty(this.get('model.status'))) {
           this.set('model.status', 'Requested');
         }
         this.set('model.requestedBy', newLab.getUserName());
         this.set('model.requestedDate', new Date());
-        if (Ember.isEmpty(selectedLabType)) {
+        if (isEmpty(selectedLabType)) {
           this.saveNewPricing(this.get('model.labTypeName'), 'Lab', 'model.labType').then(function() {
             this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
               this.saveModel();
@@ -51,7 +59,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
           }.bind(this));
         } else {
           this.getSelectedPricing('selectedLabType').then(function(pricingRecords) {
-            if (Ember.isArray(pricingRecords)) {
+            if (isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'labType', 'labs', 'Lab');
             } else {
               this.set('model.labType', pricingRecords);
@@ -82,7 +90,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }.property('canComplete', 'model.isValid'),
 
   pricingTypeForObjectType: 'Lab Procedure',
-  pricingTypes: Ember.computed.alias('labsController.labPricingTypes'),
+  pricingTypes: alias('labsController.labPricingTypes'),
 
   pricingList: null, // This gets filled in by the route
 
@@ -91,7 +99,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   afterUpdate(saveResponse, multipleRecords) {
     let i18n = this.get('i18n');
     let afterDialogAction, alertMessage, alertTitle;
-    if (this.get('model.status') === 'Completed') {
+    if (this.get('model.status') === LAB_STATUS_COMPLETED) {
       alertTitle = i18n.t('labs.alerts.requestCompletedTitle');
       alertMessage = i18n.t('labs.alerts.requestCompletedMessage');
     } else {
@@ -103,6 +111,13 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
     this.set('model.selectPatient', false);
-  }
+  },
 
+  isCompleted: computed('model.status', function() {
+    return (this.get('model.status') === LAB_STATUS_COMPLETED);
+  }),
+
+  showUpdateButton: computed('isCompleted', function() {
+    return this.get('isCompleted') ? false : this._super();
+  })
 });

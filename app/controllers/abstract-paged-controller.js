@@ -1,8 +1,10 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import Controller from '@ember/controller';
 import PaginationProps from 'hospitalrun/mixins/pagination-props';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSession, {
+export default Controller.extend(PaginationProps, ProgressDialog, UserSession, {
   addPermission: null,
   deletePermission: null,
   nextStartKey: null,
@@ -32,21 +34,21 @@ export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSess
   }.property('canAdd', 'canEdit', 'canDelete'),
 
   disablePreviousPage: function() {
-    return (Ember.isEmpty(this.get('previousStartKey')));
+    return isEmpty(this.get('previousStartKey'));
   }.property('previousStartKey'),
 
   disableNextPage: function() {
-    return (Ember.isEmpty(this.get('nextStartKey')));
+    return isEmpty(this.get('nextStartKey'));
   }.property('nextStartKey'),
 
   showPagination: function() {
-    return (!Ember.isEmpty(this.get('previousStartKey')) || !Ember.isEmpty(this.get('nextStartKey')));
+    return !isEmpty(this.get('previousStartKey')) || !isEmpty(this.get('nextStartKey'));
   }.property('nextStartKey', 'previousStartKey'),
 
-  hasRecords: Ember.computed('model.length', {
+  hasRecords: computed('model.length', {
     get() {
       let model = this.get('model');
-      if (!Ember.isEmpty(model)) {
+      if (!isEmpty(model)) {
         return (model.get('length') > 0);
       } else {
         return false;

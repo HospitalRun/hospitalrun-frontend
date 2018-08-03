@@ -1,5 +1,4 @@
 export default {
-  languageName: 'Deutsche',
   admin: {
     address: {
       address1Label: 'Adresse 1 Kennzeichen',
@@ -214,13 +213,13 @@ export default {
     textReplacements: {
       createNew: 'Neues Kürzel erstellen',
       existingRepl: 'Bestehende Kürzel',
-      replDesc: 'Wenn Text eingegeben wird, ermöglichen diese Shortcuts das Ersetzen von kurzen Zeichenketten mit längeren Sätzen.',
+      noMatches: "Keine Ersetzungen stimmen mit '{{term}}' überein",
       pageTitle: 'Kürzel',
-      toReplace: 'Zu ersetzender Text',
-      replaceWith: 'Ersetzen mit',
       performExpand: "Enter drücken, um #{{from}} mit '{{to}}' zu ersetzen",
       possibleExpansions: 'Mögliche Ersetzungen: {{possible}}',
-      noMatches: "Keine Ersetzungen stimmen mit '{{term}}' überein"
+      replDesc: 'Wenn Text eingegeben wird, ermöglichen diese Shortcuts das Ersetzen von kurzen Zeichenketten mit längeren Sätzen.',
+      replaceWith: 'Ersetzen mit',
+      toReplace: 'Zu ersetzender Text'
     },
     userRoles: 'Nutzerrollen',
     users: 'Benutzer',
@@ -304,9 +303,14 @@ export default {
       noPricingProfiles: 'Keine Preisprofile gefunden.'
     },
     buttons: {
+      addDeposit: undefined,
       addOverride: 'Überschreibung hinzufügen',
-      createInvoice: 'Rechnung erstellen?'
+      createInvoice: 'Rechnung erstellen?',
+      newInvoice: undefined
     },
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: 'Tatsächliche Gebühren',
       discountAmount: 'Rabattbetrag',
@@ -321,9 +325,16 @@ export default {
       setFee: 'Festgelegte Gebühren'
     },
     messages: {
-      flatFeeMsg: 'Es gibt eine Pauschalgebühr für die finanzielle Verantwortung des Patienten über {{setFee}}{{currency}}',
-      flatDiscountMsg: 'Für die finanzielle Verantwortung des Patienten gilt ein pauschaler Rabatt von {{discountAmount}}{{currency}}'
-    }
+      flatDiscountMsg: 'Für die finanzielle Verantwortung des Patienten gilt ein pauschaler Rabatt von {{discountAmount}}{{currency}}',
+      flatFeeMsg: 'Es gibt eine Pauschalgebühr für die finanzielle Verantwortung des Patienten über {{setFee}}{{currency}}'
+    },
+    navigation: {
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
+    },
+    newInvoice: undefined
   },
   buttons: {
     add: 'Hinzufügen',
@@ -484,7 +495,10 @@ export default {
     buttons: { newButton: '+ Neue Bildgebung' },
     labels: {
       addNewVisit: '--Neue Visite hinzufügen--',
-      radiologist: 'Radiologe'
+      completedBy: undefined,
+      radiologist: 'Radiologe',
+      requestedNotes: undefined,
+      resultNotes: undefined
     },
     messages: { noCompleted: 'Keine erledigten Einträge gefunden.' },
     pageTitle: 'Anfrage zur Bildgebung',
@@ -838,8 +852,8 @@ export default {
     lookupType: 'Nachschlagebereich',
     medication: 'Medikation',
     name: 'Name',
-    newUser: 'Neuer Benutzer',
     newItem: '+ neues Element',
+    newUser: 'Neuer Benutzer',
     note: 'Notiz',
     notes: 'Notizen',
     number: 'Nummer',
@@ -904,17 +918,7 @@ export default {
     requestsTitle: 'Laborbericht',
     sectionTitle: 'Labore'
   },
-  languages: {
-    en: 'Englisch',
-    fr: 'Französisch',
-    es: 'Spanisch',
-    de: 'Deutsch',
-    ru: 'Russisch',
-    'es-co': 'Spanisch (Kolumbianisch)',
-    'pt-br': 'Portugiesisch (Brasilianer)',
-    tr: 'Türkisch',
-    ur: 'Urdu'
-  },
+  languageName: 'Deutsch',
   loading: {
     messages: {
       '0': 'Die höchste Schmetterlingsfluggeschwindigkeit beträgt 12 Meilen pro Stunde. Einige Motten können 25 Meilen pro Stunde fliegen!',
@@ -1101,9 +1105,7 @@ export default {
     inventory: 'Inventar',
     labs: 'Labore',
     medication: 'Medikation',
-    messages: {
-      logoutFailed: 'Sie konnten nicht ausgeloggt werden. Ausloggen ist offline nicht möglich.'
-    },
+    messages: { logoutFailed: 'Sie konnten nicht ausgeloggt werden. Ausloggen ist offline nicht möglich.' },
     patients: 'Patienten',
     scheduling: 'Planung',
     subnav: {
@@ -1148,9 +1150,7 @@ export default {
       users: 'Benutzer',
       workflow: 'Workflow'
     },
-    titles: {
-      logoutFailed: 'Ausloggen gescheitert'
-    }
+    titles: { logoutFailed: 'Ausloggen gescheitert' }
   },
   operationReport: {
     labels: {
@@ -1326,7 +1326,16 @@ export default {
       discountAmount: 'Rabattbetrag',
       discountPercentage: 'Rabattprozentsatz',
       setFee: 'Festgelegte Gebühren'
-    }
+    },
+    navigation: {
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
+    },
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {
@@ -1482,16 +1491,14 @@ export default {
       visitSaved: 'Visite gespeichert'
     }
   },
-  vitals: {
-    labels: {
-      dateRecorded: 'Aufnahmedatum',
-      dbp: 'Diastolischer Blutdruck',
-      heartRate: 'Puls',
-      height: 'Größe',
-      respiratoryRate: 'Atemfrequenz',
-      sbp: 'Systolischer Blutdruck',
-      temperature: 'Temperatur',
-      weight: 'Gewicht'
-    }
-  }
+  vitals: { labels: {
+    dateRecorded: 'Aufnahmedatum',
+    dbp: 'Diastolischer Blutdruck',
+    heartRate: 'Puls',
+    height: 'Größe',
+    respiratoryRate: 'Atemfrequenz',
+    sbp: 'Systolischer Blutdruck',
+    temperature: 'Temperatur',
+    weight: 'Gewicht'
+  } }
 };

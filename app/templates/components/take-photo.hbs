@@ -1,31 +1,28 @@
 {{#if canCaptureVideo}}
-  <div class="form-group">
-    <label class="control-label" for="photo-source">{{sourceChooserLabel}}</label>
-    {{select-list
-      action=(action 'photoSourceChange')
-      class='form-control'
+    {{form.select
+      model=this
+      class='form-input-group'
       content=photoSources
       id='photo-source'
       optionLabelPath="label"
       optionValuePath="value"
-      value=photoSource
+      property='photoSource'
+      label=sourceChooserLabel
+      action=(action 'photoSourceChange')
     }}
-  </div>
-  {{#if showCameraSelect}}
-    <div class="form-group">
-      <label class="control-label" for="camera">{{t 'components.takePhoto.camera'}}</label>
-      {{select-list
+    {{#if showCameraSelect}}
+      {{form.select
+          model=this
           action=(action 'cameraChange')
-          class='form-control'
+          class='form-input-group'
           content=videoSources
           id='camera'
           label=(t 'components.takePhoto.camera')
           optionLabelPath="label"
           optionValuePath="id"
-          value=selectedCamera
+          property='selectedCamera'
       }}
-    </div>
-  {{/if}}
+    {{/if}}
   <div class="camera panel panel-success">
     <div class="panel-body">
       <div class="col-sm-4">

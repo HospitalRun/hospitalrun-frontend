@@ -3,11 +3,11 @@
     {{#if model.selectPatient}}
       {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="required test-patient-name"}}
     {{else}}
-      {{patient-summary patient=model.patient returnTo='labs.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+      {{patient-summary patient=model.patient returnTo='labs.edit' returnToContext=model.id disablePatientLink=model.isNew class="clickable"}}
     {{/if}}
     {{#if model.isNew}}
       <div class="row">
-        {{form.select class="col-xs-3 required test-visit-type" label=(t 'labels.visit')
+        {{form.select class="col-xs-3 required form-input-group test-visit-type" label=(t 'labels.visit')
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
           prompt=(t 'labs.labels.addNewVisit')
@@ -41,8 +41,27 @@
     {{/if}}
     {{#if canComplete}}
       {{form.input property="result" label=(t 'labels.result') class="test-result-input"}}
+    {{else}}
+      {{#if isCompleted}}
+        <div class="row">
+          <div class="form-group col-xs-3">
+            <label>{{t 'labels.result'}}</label>
+            <p class="form-control-static">{{model.result}}</p>
+          </div>
+        </div>
+      {{/if}}
     {{/if}}
-    {{expand-text property="notes" label=(t 'labels.notes') rows=3 form=form}}
-    {{custom-form-manager model=model formType="lab"}}
+
+    {{#if isCompleted}}
+      <div class="row">
+        <div class="form-group col-xs-3">
+          <label>{{t 'labels.notes'}}</label>
+          <p class="form-control-static">{{model.notes}}</p>
+        </div>
+      </div>
+    {{else}}
+      {{expand-text property="notes" label=(t 'labels.notes') rows=3 form=form class="js-lab-notes"}}
+    {{/if}}
+    {{custom-form-manager model=model formType="lab" rapidForm=form isReadonly=isCompleted}}
   {{/em-form}}
 {{/edit-panel}}

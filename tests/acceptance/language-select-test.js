@@ -1,5 +1,10 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import addOfflineUsersForElectron from 'hospitalrun/tests/helpers/add-offline-users-for-electron';
+import select from 'hospitalrun/tests/helpers/select';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser, invalidateSession } from 'hospitalrun/tests/helpers/authenticate-user';
 
 import english from 'hospitalrun/locales/en/translations';
 import french from 'hospitalrun/locales/fr/translations';
@@ -8,122 +13,69 @@ import german from 'hospitalrun/locales/de/translations';
 moduleForAcceptance('Acceptance | language dropdown');
 
 test('setting a language preference persists after logout', (assert) => {
-  runWithPouchDump('default', () => {
-    addOfflineUsersForElectron();
+  return runWithPouchDump('default', async function() {
+    await addOfflineUsersForElectron();
 
-    andThen(() => {
-      authenticateUser();
-      visit('/');
-    });
+    await authenticateUser();
+    await visit('/');
+    assert.dom('.view-current-title').hasText(english.dashboard.title, 'Title is in English after first log in');
 
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), english.dashboard.title, 'Title is NOT in English after first log in');
-    });
+    await click('a.settings-trigger');
+    await waitToAppear('.settings-nav');
+    await select('.language-select', 'Français');
+    assert.dom('.view-current-title').hasText(french.dashboard.title, 'Title is in French after language change');
 
-    andThen(() => {
-      click('a.settings-trigger');
-      waitToAppear('.settings-nav');
-      select('.language-select', 'Français');
-    });
+    await invalidateSession();
+    await visit('/login');
 
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), french.dashboard.title, 'Title is NOT in French after language change');
-    });
-
-    andThen(() => {
-      invalidateSession();
-      visit('/login');
-    });
-
-    andThen(() => {
-      authenticateUser();
-      visit('/');
-    });
-
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), french.dashboard.title, 'Title is NOT in French after 2nd login');
-    });
+    await authenticateUser();
+    await visit('/');
+    assert.dom('.view-current-title').hasText(french.dashboard.title, 'Title is in French after 2nd login');
   });
 });
 
 test('different users can have different language preferences on the same browser', (assert) => {
-  runWithPouchDump('default', () => {
-    addOfflineUsersForElectron();
+  return runWithPouchDump('default', async function() {
+    await addOfflineUsersForElectron();
 
-    andThen(() => {
-      authenticateUser();
-      visit('/');
-    });
+    await authenticateUser();
+    await visit('/');
+    assert.dom('.view-current-title').hasText(english.dashboard.title, 'Title is in English after first log in');
 
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), english.dashboard.title, 'Title is NOT in English after first log in');
-    });
+    await click('a.settings-trigger');
+    await waitToAppear('.settings-nav');
+    await select('.language-select', 'Français');
+    assert.dom('.view-current-title').hasText(french.dashboard.title, 'Title is in French after language change');
 
-    andThen(() => {
-      click('a.settings-trigger');
-      waitToAppear('.settings-nav');
-      select('.language-select', 'Français');
-    });
+    await invalidateSession();
+    await visit('/login');
 
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), french.dashboard.title, 'Title is NOT in French after language change');
+    await authenticateUser({
+      name: 'doctor@hospitalrun.io'
     });
+    await visit('/');
+    assert.dom('.view-current-title').hasText(english.dashboard.title, 'Title is in English for another user');
 
-    andThen(() => {
-      invalidateSession();
-      visit('/login');
-    });
+    await click('a.settings-trigger');
+    await waitToAppear('.settings-nav');
+    await select('.language-select', 'Deutsch');
+    assert.dom('.view-current-title').hasText(german.dashboard.title, 'Title is in German after language change');
 
-    andThen(() => {
-      authenticateUser({
-        name: 'doctor@hospitalrun.io'
-      });
-      visit('/');
-    });
+    await invalidateSession();
+    await visit('/login');
 
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), english.dashboard.title, 'Title is NOT in English for another user');
-    });
+    await authenticateUser();
+    await visit('/');
+    assert.dom('.view-current-title').hasText(french.dashboard.title, 'Title is in French after 2nd login');
 
-    andThen(() => {
-      click('a.settings-trigger');
-      waitToAppear('.settings-nav');
-      select('.language-select', 'Deutsch');
-    });
+    await invalidateSession();
+    await visit('/login');
 
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), german.dashboard.title, 'Title is NOT in German after language change');
+    await authenticateUser({
+      name: 'doctor@hospitalrun.io'
     });
-
-    andThen(() => {
-      invalidateSession();
-      visit('/login');
-    });
-
-    andThen(() => {
-      authenticateUser();
-      visit('/');
-    });
-
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), french.dashboard.title, 'Title is NOT in French after 2nd login');
-    });
-
-    andThen(() => {
-      invalidateSession();
-      visit('/login');
-    });
-
-    andThen(() => {
-      authenticateUser({
-        name: 'doctor@hospitalrun.io'
-      });
-      visit('/');
-    });
-
-    andThen(() => {
-      assert.equal(find('.view-current-title').text(), german.dashboard.title, 'Title is NOT in German after 2nd login');
-    });
+    await visit('/');
+    assert.dom('.view-current-title').hasText(german.dashboard.title, 'Title is in German after 2nd login');
   });
 });
 

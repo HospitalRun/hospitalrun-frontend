@@ -1,6 +1,7 @@
 // Derived from https://raw.githubusercontent.com/edgycircle/ember-pikaday/master/addon/helpers/pikaday.js
-import Ember from 'ember';
 import moment from 'moment';
+
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 
 function triggerNativeEvent(element, eventName) {
   if (document.createEvent) {
@@ -12,15 +13,11 @@ function triggerNativeEvent(element, eventName) {
   }
 }
 
-Ember.Test.registerAsyncHelper('selectDate', function(app, selector, date) {
-  return new Ember.RSVP.Promise(function(resolve) {
-    click(selector);
-    waitToAppear('.pika-single:not(.is-hidden)').then(function() {
-      fillIn(selector, moment(date).format('l'));
-      andThen(function() {
-        triggerNativeEvent(app.$(selector)[0], 'change');
-        resolve();
-      });
-    });
-  });
-});
+async function selectDate(selector, date) {
+  await click(selector);
+  await waitToAppear('.pika-single:not(.is-hidden)');
+  await fillIn(selector, moment(date).format('l'));
+  triggerNativeEvent($(selector)[0], 'change');
+}
+
+export default selectDate;

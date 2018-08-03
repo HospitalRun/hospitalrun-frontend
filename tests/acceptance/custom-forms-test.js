@@ -1,5 +1,9 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
+import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
+import { createCustomFormForType } from 'hospitalrun/tests/helpers/scenarios/custom-forms';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | custom forms');
 
@@ -9,139 +13,74 @@ test('crud operations on custom-forms', function(assert) {
   let toppings =  ['Cheese', 'Pepperoni', 'Mushrooms'];
   let header = ['______________________________'];
 
-  function addField(fieldType, label, values) {
-    click('button:contains(Add Field)');
-    waitToAppear('.modal-dialog');
-    andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Add Value', 'Add Value modal displays.');
-      select('.custom-field-select', fieldType);
-      fillIn('.custom-field-label input', label);
-      fillIn('.custom-field-colspan input', '1');
+  async function verifyPreview() {
+    await click('button:contains(Preview)');
+    await waitToAppear('.form-preview');
+    assert.equal(find('.form-preview label:contains(Create a Pizza)').length, 1, 'Found Create a Pizza Label');
+    assert.equal(find(`.form-preview label:contains(${header})`).length, 1, `Found ${header} Label`);
+    assert.equal(find('.form-preview label:contains(Pizza Toppings)').length, 1, 'Found Pizza Toppings Label');
+    toppings.forEach((topping) => {
+      assert.equal(find(`.form-preview label:contains(${topping}):has(input[type=checkbox])`).length, 1, `Found ${topping} checkbox`);
     });
-    if (values) {
-      click('button:contains(Add Value)');
-      andThen(function() {
-        fillIn('.custom-field-value:last', 'Delete Me');
-      });
-      andThen(function() {
-        assert.equal(find('.custom-field-value:contains(Delete Me)').length, 0, 'Field value successfully added');
-      });
-      andThen(function() {
-        click('button.delete-field-value');
-      });
-      andThen(function() {
-        assert.equal(find('.custom-field-value:contains(Delete Me)').length, 0, 'Field value successfully deleted');
-        values.forEach(function(value) {
-          click('button:contains(Add Value)');
-          andThen(function() {
-            fillIn('.custom-field-value:last', value);
-          });
-        });
-      });
-    }
-    andThen(function() {
-      click('.modal-footer button:contains(Add)');
+    assert.equal(find('.form-preview label:contains(Pizza Crust)').length, 1, 'Found Pizza Toppings Label');
+    crusts.forEach((crust) => {
+      assert.equal(find(`.form-preview option:contains(${crust})`).length, 1, `Found ${crust} option`);
     });
+    assert.equal(find('.form-preview label:contains(Dessert)').length, 1, 'Found Pizza Toppings Label');
+    desserts.forEach((dessert) => {
+      assert.equal(find(`.form-preview label:contains(${dessert}):has(input[type=radio])`).length, 1, `Found ${dessert} radio option`);
+    });
+    assert.equal(find('.form-preview label:contains(Beverage)').length, 1, 'Found Beverage Label');
+    assert.dom('.form-preview input[id*=beverage]').exists({ count: 1 }, 'Found Beverage input');
+    assert.equal(find('.form-preview label:contains(Special Instructions)').length, 1, 'Found Special Instructions Label');
+    assert.dom('.form-preview textarea[id*=specialInstructions]').exists({ count: 1 }, 'Found special instructions textarea');
+    await click('button:contains(Preview)'); // Hide preview to reset it back to being closed.
   }
 
-  function verifyPreview() {
-    click('button:contains(Preview)');
-    waitToAppear('.form-preview');
-    andThen(function() {
-      assert.equal(find('.form-preview label:contains(Create a Pizza)').length, 1, 'Found Create a Pizza Label');
-      assert.equal(find(`.form-preview label:contains(${header})`).length, 1, `Found ${header} Label`);
-      assert.equal(find('.form-preview label:contains(Pizza Toppings)').length, 1, 'Found Pizza Toppings Label');
-      toppings.forEach((topping) => {
-        assert.equal(find(`.form-preview label:contains(${topping}):has(input[type=checkbox])`).length, 1, `Found ${topping} checkbox`);
-      });
-      assert.equal(find('.form-preview label:contains(Pizza Crust)').length, 1, 'Found Pizza Toppings Label');
-      crusts.forEach((crust) => {
-        assert.equal(find(`.form-preview option:contains(${crust})`).length, 1, `Found ${crust} option`);
-      });
-      assert.equal(find('.form-preview label:contains(Dessert)').length, 1, 'Found Pizza Toppings Label');
-      desserts.forEach((dessert) => {
-        assert.equal(find(`.form-preview label:contains(${dessert}):has(input[type=radio])`).length, 1, `Found ${dessert} radio option`);
-      });
-      assert.equal(find('.form-preview label:contains(Beverage)').length, 1, 'Found Beverage Label');
-      assert.equal(find('.form-preview input[id*=beverage]').length, 1, 'Found Beverage input');
-      assert.equal(find('.form-preview label:contains(Special Instructions)').length, 1, 'Found Special Instructions Label');
-      assert.equal(find('.form-preview textarea[id*=specialInstructions]').length, 1, 'Found special instructions textarea');
-      click('button:contains(Preview)'); // Hide preview to reset it back to being closed.
-    });
-  }
+  return runWithPouchDump('default', async function() {
+    await authenticateUser();
+    await visit('/admin/custom-forms');
+    assert.equal(currentURL(), '/admin/custom-forms', 'Navigated to custom forms index page');
+    assert.dom('.custom-form-name').doesNotExist('No custom forms appears in the listing.');
 
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/admin/custom-forms');
-    andThen(function() {
-      assert.equal(currentURL(), '/admin/custom-forms', 'Navigated to custom forms index page');
-      assert.equal(find('.custom-form-name').length, 0, 'No custom forms appears in the listing.');
-      click('button:contains(new form)');
-    });
-    andThen(function() {
-      assert.equal(find('.view-current-title').text(), 'New Custom Form', 'New custom form edit page displays');
-      assert.equal(currentURL(), '/admin/custom-forms/edit/new', 'Navigated to create new custom form');
-      fillIn('.custom-form-name input', 'Test Custom Form');
-      fillIn('.custom-form-columns input', '2');
-      select('.custom-form-type', 'Visit');
-      click('.panel-footer button:contains(Add)');
-      waitToAppear('.modal-dialog');
-    });
-    andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Form Saved', 'Form is saved');
-      addField('Header', 'Create a Pizza', header);
-    });
-    andThen(function() {
-      addField('Checkbox', 'Pizza Toppings', toppings);
-    });
-    andThen(function() {
-      addField('Dropdown', 'Pizza Crust', crusts);
-    });
-    andThen(function() {
-      addField('Radio', 'Dessert', desserts);
-    });
-    andThen(function() {
-      addField('Text', 'Beverage');
-    });
-    andThen(function() {
-      addField('Large Text', 'Special Instructions');
-    });
-    andThen(function() {
-      click('button:contains(Update)');
-      waitToAppear('.modal-dialog');
-    });
-    andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Form Saved', 'Form is updated');
-      verifyPreview(1);
-    });
-    andThen(function() {
-      click('button:contains(Return)');
-      waitToAppear('.view-current-title:contains(Custom Forms)');
-    });
-    andThen(function() {
-      assert.equal(find('.custom-form-name:contains(Test Custom Form)').length, 1, 'Custom form appears in listing.');
-      click('button:contains(Edit)');
-      waitToAppear('button:contains(Preview)');
-    });
-    andThen(function() {
-      assert.equal(find('.view-current-title').text(), 'Edit Custom Form', 'Custom form edit page displays');
-      verifyPreview(2);
-    });
-    andThen(function() {
-      click('button:contains(Return)');
-      waitToAppear('.view-current-title:contains(Custom Forms)');
-    });
-    andThen(function() {
-      click('button:contains(Delete)');
-      waitToAppear('.modal-dialog');
-    });
-    andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Delete Custom Form', 'Delete confirmation displays');
-      click('.modal-footer button:contains(Ok)');
-    });
-    andThen(function() {
-      assert.equal(find('.custom-form-name').length, 0, 'Deleted custom form disappears from custom form listing.');
-    });
+    await createCustomFormForType('Visit', false, assert);
+    await verifyPreview();
+    await click('button:contains(Return)');
+    await waitToAppear('.view-current-title:contains(Custom Forms)');
+    assert.equal(find('.custom-form-name:contains(Test Custom Form)').length, 1, 'Custom form appears in listing.');
 
+    await click('button:contains(Edit)');
+    await waitToAppear('button:contains(Preview)');
+    assert.dom('.view-current-title').hasText('Edit Custom Form', 'Custom form edit page displays');
+
+    await verifyPreview();
+    await click('button:contains(Return)');
+    await waitToAppear('.view-current-title:contains(Custom Forms)');
+    await click('button:contains(Delete)');
+    await waitToAppear('.modal-dialog');
+    assert.dom('.modal-title').hasText('Delete Custom Form', 'Delete confirmation displays');
+
+    await click('.modal-footer button:contains(Ok)');
+    assert.dom('.custom-form-name').doesNotExist('Deleted custom form disappears from custom form listing.');
+  });
+});
+
+test('switching between pages with custom forms happens without errors', function(assert) {
+  return runWithPouchDump('default', async function() {
+    await authenticateUser();
+
+    await createCustomFormForType('Patient', true);
+    await createCustomFormForType('Lab', true);
+
+    await visit('/patients/edit/new');
+    await waitToAppear('h4');
+    assert.dom('h4').hasText(
+      'Test Custom Form for Patient included',
+      'Patient custom form is displayed'
+    );
+
+    await visit('/labs/edit/new');
+    await waitToAppear('h4');
+    assert.dom('h4').hasText('Test Custom Form for Lab included', 'Lab custom form is displayed');
   });
 });

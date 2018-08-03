@@ -1,18 +1,16 @@
+import { alias } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
+import EmberObject, { computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
-
-const {
-  computed,
-  isEmpty
-} = Ember;
 
 const IMAGING_PRICING_TYPE = 'Imaging Procedure';
 const LAB_PRICING_TYPE = 'Lab Procedure';
 
 export default AbstractEditController.extend(ReturnTo, {
-  pricingController: Ember.inject.controller('pricing'),
+  pricingController: controller('pricing'),
 
   actions: {
     addOverride(override) {
@@ -55,7 +53,7 @@ export default AbstractEditController.extend(ReturnTo, {
     },
     showDeleteOverride(overrideToDelete) {
       let message = 'Are you sure you want to delete this override?';
-      let model = Ember.Object.create({
+      let model = EmberObject.create({
         overrideToDelete
       });
       let title = 'Delete Override';
@@ -69,9 +67,9 @@ export default AbstractEditController.extend(ReturnTo, {
     'Procedure',
     'Ward'
   ].map(SelectValues.selectValuesMap),
-  expenseAccountList: computed.alias('pricingController.expenseAccountList'),
-  procedurePricingTypes: computed.alias('pricingController.procedurePricingTypes'),
-  wardPricingTypes: computed.alias('pricingController.wardPricingTypes'),
+  expenseAccountList: alias('pricingController.expenseAccountList'),
+  procedurePricingTypes: alias('pricingController.procedurePricingTypes'),
+  wardPricingTypes: alias('pricingController.wardPricingTypes'),
 
   lookupListsToUpdate: computed('model.category', function() {
     let category = this.get('model.category').toLowerCase();

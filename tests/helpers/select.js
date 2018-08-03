@@ -1,12 +1,13 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import $ from 'jquery';
 
-Ember.Test.registerAsyncHelper('select', function(app, selector, ...texts) {
-  let $options = app.testHelpers.findWithAssert(`${selector} option`);
+async function select(selector, ...texts) {
+  let $options = findWithAssert(`${selector} option`);
 
   $options.each(function() {
-    let $option = Ember.$(this);
+    let $option = $(this);
 
-    Ember.run(() => {
+    run(() => {
       this.selected = texts.some((text) => $option.is(`:contains('${text}')`));
       if (this.selected) {
         $option.trigger('change');
@@ -14,5 +15,7 @@ Ember.Test.registerAsyncHelper('select', function(app, selector, ...texts) {
     });
   });
 
-  return app.testHelpers.wait();
-});
+  await wait();
+}
+
+export default select;
