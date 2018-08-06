@@ -1,5 +1,4 @@
 export default {
-  languageName: '简体中文',
   admin: {
     address: {
       address1Label: '地址标签1',
@@ -214,13 +213,13 @@ export default {
     textReplacements: {
       createNew: '新增简码',
       existingRepl: '現有简码',
-      replDesc: '输入文字時，这些快捷键让您短的字句变成长的语句.',
+      noMatches: "'{{term}}' 沒有相對应的替代品",
       pageTitle: '简码',
-      toReplace: '要取代之文字',
-      replaceWith: '用 ... 来取代',
       performExpand: "按 Enter 来用 '{{to}}' 取代 #{{from}}",
       possibleExpansions: '{{possible}} 可能的替代品',
-      noMatches: "'{{term}}' 沒有相對应的替代品"
+      replDesc: '输入文字時，这些快捷键让您短的字句变成长的语句.',
+      replaceWith: '用 ... 来取代',
+      toReplace: '要取代之文字'
     },
     userRoles: '用戶角色',
     users: '用戶',
@@ -304,9 +303,14 @@ export default {
       noPricingProfiles: '找无定价概况'
     },
     buttons: {
+      addDeposit: undefined,
       addOverride: '新增覆盖',
-      createInvoice: '建立单据?'
+      createInvoice: '建立单据?',
+      newInvoice: undefined
     },
+    currentScreenTitle: undefined,
+    editInvoice: undefined,
+    invoiceTitle: undefined,
     labels: {
       actualCharges: '实际收费',
       discountAmount: '折扣金额',
@@ -321,9 +325,16 @@ export default {
       setFee: '设定费用'
     },
     messages: {
-      flatFeeMsg: '患者负责 {{currency}}{{setFee}} 的基本费用.',
-      flatDiscountMsg: '患者负责的基本费用已包含 {{currency}}{{discountAmount}} 的折扣.'
-    }
+      flatDiscountMsg: '患者负责的基本费用已包含 {{currency}}{{discountAmount}} 的折扣.',
+      flatFeeMsg: '患者负责 {{currency}}{{setFee}} 的基本费用.'
+    },
+    navigation: {
+      allInvoices: undefined,
+      billed: undefined,
+      drafts: undefined,
+      paid: undefined
+    },
+    newInvoice: undefined
   },
   buttons: {
     add: '新增',
@@ -423,7 +434,7 @@ export default {
   },
   dashboard: {
     needs_user_setup: '我们建议您建立使用者帐户',
-    standalone_welcome: '<h4>感謝您下载 HospitalRun. </h4><p>您正在使用 HospitalRun 的独立模式. 这个模式支援多个使用者在一台电脑. 这對于下列是理想的:</p><ul><li>评估 HospitalRun 以开发伺服器.</li><li>使用平台来支援仅需单一设備(电脑)的诊所.</li></ul><p>如果您\'考虑架构一个数台设備(电脑)的HospitalRun, 我们 <a href="https://github.com/HospitalRun/hospitalrun-frontend/issues/1048" target="_blank">正在试着开发功能</a> 让您从这单一设置升级到一般的雲端/伺服器设置.</p>',
+    standalone_welcome: "<h4>感謝您下载 HospitalRun. </h4><p>您正在使用 HospitalRun 的独立模式. 这个模式支援多个使用者在一台电脑. 这對于下列是理想的:</p><ul><li>评估 HospitalRun 以开发伺服器.</li><li>使用平台来支援仅需单一设備(电脑)的诊所.</li></ul><p>如果您'考虑架构一个数台设備(电脑)的HospitalRun, 我们 <a href=\"https://github.com/HospitalRun/hospitalrun-frontend/issues/1048\" target=\"_blank\">正在试着开发功能</a> 让您从这单一设置升级到一般的雲端/伺服器设置.</p>",
     title: '欢迎来到 HospitalRun!'
   },
   dates: {
@@ -484,10 +495,10 @@ export default {
     buttons: { newButton: '+ 新增影像' },
     labels: {
       addNewVisit: '--新增探访--',
+      completedBy: '完成者',
       radiologist: '放射科医师',
-      resultNotes: '结果笔记',
       requestedNotes: '要求的笔记',
-      completedBy: '完成者'
+      resultNotes: '结果笔记'
     },
     messages: { noCompleted: '找不到已完成的项目' },
     pageTitle: '影像要求',
@@ -841,8 +852,8 @@ export default {
     lookupType: '查找种类',
     medication: '药物',
     name: '名称',
-    newUser: '新增使用者',
     newItem: '+ 新增项目',
+    newUser: '新增使用者',
     note: '笔记',
     notes: '笔记',
     number: '数字',
@@ -907,6 +918,7 @@ export default {
     requestsTitle: '测试要求',
     sectionTitle: '测试'
   },
+  languageName: '简体中文',
   loading: {
     messages: {
       '0': '飞行最快的蝴蝶可以达到每小時12英里. 有些飞蛾能达到每小時25英里的飞行速度!',
@@ -1093,9 +1105,7 @@ export default {
     inventory: '库存',
     labs: '测试',
     medication: '药物',
-    messages: {
-      logoutFailed: '現在无法登出. 离线時无法登出.'
-    },
+    messages: { logoutFailed: '現在无法登出. 离线時无法登出.' },
     patients: '患者',
     scheduling: '调度',
     subnav: {
@@ -1140,9 +1150,7 @@ export default {
       users: '使用者',
       workflow: '工作流程'
     },
-    titles: {
-      logoutFailed: '登出失敗'
-    }
+    titles: { logoutFailed: '登出失敗' }
   },
   operationReport: {
     labels: {
@@ -1318,7 +1326,16 @@ export default {
       discountAmount: '折扣金额',
       discountPercentage: '折扣百分比',
       setFee: '设定费用'
-    }
+    },
+    navigation: {
+      allPricingItems: undefined,
+      imagePricing: undefined,
+      labPricing: undefined,
+      pricingProfiles: undefined,
+      procedurePricing: undefined,
+      wardPricing: undefined
+    },
+    sectionTitle: undefined
   },
   print: { invoice: {
     labels: {
@@ -1474,16 +1491,14 @@ export default {
       visitSaved: '探访已储存'
     }
   },
-  vitals: {
-    labels: {
-      dateRecorded: '纪录之日期',
-      dbp: '出生年月日',
-      heartRate: '心率',
-      height: '身高',
-      respiratoryRate: '呼吸频率',
-      sbp: 'SBP',
-      temperature: '体溫',
-      weight: '体重'
-    }
-  }
+  vitals: { labels: {
+    dateRecorded: '纪录之日期',
+    dbp: '出生年月日',
+    heartRate: '心率',
+    height: '身高',
+    respiratoryRate: '呼吸频率',
+    sbp: 'SBP',
+    temperature: '体溫',
+    weight: '体重'
+  } }
 };
