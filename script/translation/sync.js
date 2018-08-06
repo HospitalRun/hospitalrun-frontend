@@ -87,6 +87,6 @@ function emptySameType(obj) {
   } else if (obj.constructor === Array) {
     return [];
   } else {
-    return '';
+    return undefined;
   }
 }
