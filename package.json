@@ -80,7 +80,7 @@
     "ember-pouch": "4.3.0",
     "ember-radio-buttons": "^4.0.1",
     "ember-rapid-forms": "^1.2.5",
-    "ember-resolver": "^4.0.0",
+    "ember-resolver": "^5.0.1",
     "ember-simple-auth": "^1.5.1",
     "ember-sinon-qunit": "3.2.0",
     "ember-source": "2.18.2",
