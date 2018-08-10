@@ -5,12 +5,10 @@ import DS from 'ember-data';
 
 moduleFor('controller:abstract-paged-controller', 'Unit | Controller | abstract-paged-controller', {
   needs: [
+    'service:metrics',
     'service:session'
   ],
   unit: true,
-  needs: [
-    'service:metrics'
-  ],
   testModel(attrs) {
     return run(() => {
       this.register('model:test', DS.Model);
