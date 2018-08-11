@@ -89,7 +89,7 @@
     "eslint-plugin-ember": "^5.1.0",
     "eslint-plugin-ember-suave": "^1.0.0",
     "express": "^4.8.5",
-    "hospitalrun-dblisteners": "1.0.0-beta",
+    "hospitalrun-dblisteners": "1.0.1",
     "hospitalrun-server-routes": "1.0.0-beta",
     "loader.js": "^4.2.3",
     "minimatch": "^3.0.2",
