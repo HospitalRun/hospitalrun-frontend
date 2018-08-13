@@ -34,7 +34,7 @@
   ],
   "license": "GPL-3.0",
   "devDependencies": {
-    "broccoli-asset-rev": "^2.4.5",
+    "broccoli-asset-rev": "^3.0.0",
     "broccoli-export-text": "0.0.2",
     "broccoli-serviceworker": "0.1.6",
     "csv-parse": "^2.0.0",
