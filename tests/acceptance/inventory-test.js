@@ -49,6 +49,16 @@ test('Adding a new inventory item', (assert) => {
     findWithAssert('button:contains(Update)');
     findWithAssert('button:contains(Return)');
 
+    await click('button:contains(Add Purchase)');
+    await waitToAppear('.modal-dialog');
+    await fillIn('.test-inv-quantity div div input', 18);
+    await fillIn('.test-inv-cost div input', 2);
+    await fillIn('.test-vendor div span input:eq(1)', 'fakeVendor');
+    await click('.modal-footer .btn-primary');
+    assert.dom('div.alert.alert-danger.alert-dismissible').doesNotExist('Quantity error does not appear');
+    assert.dom($('.test-location-quantity')[0]).hasText('1018', 'Location quantity is correct after new purchase');
+    assert.dom('.test-inv-quantity p').hasText('1018', 'Item total quantity is correct after new purchase');
+
     await click('button:contains(Return)');
     assert.equal(currentURL(), '/inventory/listing');
     assert.dom('tr').exists({ count: 2 }, 'One item is listed');
