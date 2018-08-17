@@ -1,14 +1,3 @@
 {
-  "name": "hospitalrun",
-  "dependencies": {
-    "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
-    "idb.filesystem": "https://github.com/ebidel/idb.filesystem.js.git#~0.0.6",
-    "octicons": "~2.4.1",
-    "pouchdb-load": "^1.4.0",
-    "pretender": "~0.10.0"
-  },
-  "devDependencies": {
-    "timekeeper": "^1.0.0",
-    "webrtc-adapter": "^3.1.3"
-  }
+  "name": "hospitalrun"
 }

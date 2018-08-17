@@ -6,7 +6,7 @@ const path = require('path');
 const Funnel = require('broccoli-funnel');
 
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
 
   let vendorTree = new Funnel('vendor');
   let bootStrapTree = new Funnel(
@@ -34,9 +34,9 @@ module.exports = function(defaults) {
   );
 
   let filerTree = new Funnel(
-    path.dirname(require.resolve('filer/dist/filer.js')),
+    path.dirname(require.resolve('filer.js/dist/filer.min.js')),
     {
-      files: ['filer.js'],
+      files: ['filer.min.js'],
       destDir: 'filer'
     }
   );
@@ -46,6 +46,30 @@ module.exports = function(defaults) {
     {
       files: ['idb.filesystem.min.js'],
       destDir: 'idb.filesystem.js'
+    }
+  );
+
+  let pouchTree = new Funnel(
+    path.dirname(require.resolve('pouchdb-load/dist/pouchdb.load.js')),
+    {
+      files: ['pouchdb.load.js'],
+      destDir: 'pouchdb-load'
+    }
+  );
+
+  let webtrcTree = new Funnel(
+    path.dirname(require.resolve('webrtc-adapter/out/adapter.js')),
+    {
+      files: ['adapter.js'],
+      destDir: 'webrtc-adapter'
+    }
+  );
+
+  let timekeeperTree = new Funnel(
+    path.dirname(require.resolve('timekeeper/lib/timekeeper.js')),
+    {
+      files: ['timekeeper.js'],
+      destDir: 'timekeeper'
     }
   );
 
@@ -62,7 +86,17 @@ module.exports = function(defaults) {
       }
     },
     trees: {
-      vendor: new MergeTrees([vendorTree, bootStrapTree, typeaheadTree, pikadayTree, filerTree, fsTree])
+      vendor: new MergeTrees([
+        vendorTree,
+        bootStrapTree,
+        typeaheadTree,
+        pikadayTree,
+        filerTree,
+        fsTree,
+        pouchTree,
+        webtrcTree,
+        timekeeperTree
+      ])
     }
   });
 
@@ -80,17 +114,17 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
   app.import('vendor/bootstrap/bootstrap.js');
   app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
-  app.import('vendor/typeahead/typeahead.bundle.min.js')
+  app.import('vendor/typeahead/typeahead.bundle.min.js');
   app.import('vendor/pikaday/css/pikaday.css');
   app.import('vendor/pikaday/pikaday.js');
-  app.import('vendor/filer/filer.js');
-  app.import('vendor/idb.filesystem/idb.filesystem.min.js');
+  app.import('vendor/filer/filer.min.js');
+  app.import('vendor/idb.filesystem.js/idb.filesystem.min.js');
   app.import('vendor/octicons/octicons/octicons.css');
-  app.import('bower_components/pouchdb-load/dist/pouchdb.load.js');
-  app.import('bower_components/webrtc-adapter/release/adapter.js');
+  app.import('vendor/pouchdb-load/pouchdb.load.js');
+  app.import('vendor/webrtc-adapter/adapter.js');
 
   if (EmberApp.env() !== 'production') {
-    app.import('bower_components/timekeeper/lib/timekeeper.js', { type: 'test' });
+    app.import('vendor/timekeeper/timekeeper.js', {type: 'test'});
   }
 
   return app.toTree();
