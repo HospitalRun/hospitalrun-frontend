@@ -31,7 +31,23 @@ module.exports = function(defaults) {
       files: ['pikaday.js', '/css/pikaday.css'],
       destDir: 'pikaday'
     }
-  )
+  );
+
+  let filerTree = new Funnel(
+    path.dirname(require.resolve('filer/dist/filer.js')),
+    {
+      files: ['filer.js'],
+      destDir: 'filer'
+    }
+  );
+
+  let fsTree = new Funnel(
+    path.dirname(require.resolve('idb.filesystem.js/dist/idb.filesystem.min.js')),
+    {
+      files: ['idb.filesystem.min.js'],
+      destDir: 'idb.filesystem.js'
+    }
+  );
 
   let app = new EmberApp(defaults, {
     babel: {
@@ -46,7 +62,7 @@ module.exports = function(defaults) {
       }
     },
     trees: {
-      vendor: new MergeTrees([vendorTree, bootStrapTree, typeaheadTree, pikadayTree])
+      vendor: new MergeTrees([vendorTree, bootStrapTree, typeaheadTree, pikadayTree, filerTree, fsTree])
     }
   });
 
@@ -66,9 +82,9 @@ module.exports = function(defaults) {
   app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
   app.import('vendor/typeahead/typeahead.bundle.min.js')
   app.import('vendor/pikaday/css/pikaday.css');
-  app.import('vendor/pikaday/pikaday.js')
-  app.import('bower_components/filer.js/src/filer.js');
-  app.import('bower_components/idb.filesystem/dist/idb.filesystem.min.js');
+  app.import('vendor/pikaday/pikaday.js');
+  app.import('vendor/filer/filer.js');
+  app.import('vendor/idb.filesystem/idb.filesystem.min.js');
   app.import('vendor/octicons/octicons/octicons.css');
   app.import('bower_components/pouchdb-load/dist/pouchdb.load.js');
   app.import('bower_components/webrtc-adapter/release/adapter.js');

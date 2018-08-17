@@ -116,6 +116,8 @@
     "electron-localshortcut": "^3.0.4",
     "electron-protocol-serve": "^1.3.0",
     "electron-squirrel-startup": "^1.0.0",
+    "filer": "^0.0.44",
+    "idb.filesystem.js": "^0.0.8",
     "pikaday": "^1.7.0"
   },
   "ember-addon": {
