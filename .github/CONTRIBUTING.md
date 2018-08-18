@@ -78,7 +78,7 @@ In addition, these are descriptions of some extra folders and files in use in th
 
 ### Pod directories
 
-This project uses a folder structure called [Pods](http://cball.me/organize-your-ember-app-with-pods/) that is better suited for a large scale Ember application.
+This project uses a folder structure called [Pods](https://www.programwitherik.com/ember-pods/) that is better suited for a large scale Ember application.
 
 The basic folder structure for Ember puts controllers, routes and templates in three different directories. The Pods approach organizes the folders in correlation to the application routes and keeps all three files in the same folder for each view. 
 
