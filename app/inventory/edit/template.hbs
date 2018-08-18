@@ -72,7 +72,7 @@
             <tr>
               <td>{{location.location}}</td>
               <td>{{location.aisleLocation}}</td>
-              <td>{{location.quantity}}</td>
+              <td class="test-location-quantity">{{location.quantity}}</td>
               {{#if canAdjustLocation}}
                 <td>
                   <button class="btn btn-primary neutral" {{action "showAdjustment" location}}>{{t 'inventory.labels.adjust'}}</button>

@@ -8,7 +8,7 @@
   {{form.input property="name" label=(t 'labels.name') class="required  col-sm-6 test-inv-name"}}
   {{inventory/rank-select property="rank" form=form}}
   {{#unless model.isNew}}
-    <div class="form-group col-sm-2">
+    <div class="form-group col-sm-2 test-inv-quantity">
       <label>{{t 'labels.quantity'}}</label>
       <p class="form-control-static">{{model.quantity}}</p>
     </div>
