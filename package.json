@@ -84,7 +84,7 @@
     "ember-sinon-qunit": "3.2.0",
     "ember-source": "2.18.2",
     "ember-truth-helpers": "2.0.0",
-    "ember-validations": "2.0.0-alpha.5",
+    "ember-validations": "HospitalRun/ember-validations#2.0.0",
     "eslint-plugin-ember": "^5.1.0",
     "eslint-plugin-ember-suave": "^1.0.0",
     "express": "^4.8.5",
