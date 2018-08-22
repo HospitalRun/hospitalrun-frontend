@@ -121,7 +121,7 @@ If you would like to load sample data, you can do so by navigating to **Load DB*
 ![Load DB screenshot](screenshots/load-db.png)
 
 
-Click on ***Choose File*** and select the file **sample-data.txt** which is included in root directory of the repo at [sample-data.txt](sample-data.txt).
+Click on ***Choose File*** and select the file **sample-data.txt** which is included in the root directory of the repo at [sample-data.txt](sample-data.txt).
 Next, click on ***Load File***.  When the database load is complete a message will appear indicating if the load was successful.
 
 ## Testing
