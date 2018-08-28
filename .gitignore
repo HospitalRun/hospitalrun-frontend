@@ -36,8 +36,6 @@ newrelic.js
 
 /async-disk-cache
 c9-couch.js
-
-.python-version
 # ember-try
 .node_modules.ember-try/
 bower.json.ember-try
