@@ -20,6 +20,7 @@ module.exports = {
     'Bloodhound': true,
     'dymo': true,
     'Filer': true,
+    'goog': true,
     'logDebug': true,
     'Pikaday': true,
     'PouchDB': true,
