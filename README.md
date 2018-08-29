@@ -61,7 +61,7 @@ bower install
             1. HospitalRun currently does not fully support CouchDB 2.x, but you are welcome to try using it.  Most functionality should work but currently creating and/or editing users does not work in CouchDB 2.x.  See https://github.com/HospitalRun/hospitalrun-frontend/issues/953 for more details.
             2. If you have just installed CouchDB and have no admin user, please run `./script/initcouch2.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password `test`.
             3. If you already have a CouchDB admin user, please run `./script/initcouch2.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
-7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from a unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
+7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from an unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
 8. Verify that CouchDB is running by visiting: http://127.0.0.1:5984/_utils/#login
    and logging in with the with the credentials you just created from steps 6 and 7.
    - If the page returns an error or 404:
@@ -115,13 +115,24 @@ Is your server (still) running? Is CouchDB running? If not, that's probably the 
 
 Try a browser refresh `cmd + r`.
 
+**ERR! stack python2: command not found**
+
+`npm install` requires Python 2 to build some dependencies.
+Make sure `python2` is accessible from the current working directory.
+
+If you're using [pyenv](https://github.com/pyenv/pyenv), you can run the following to override the Python version used in the current working directory:
+```
+$ pyenv install 2.7.15
+$ pyenv local 2.7.15
+```
+
 ## Loading sample data
 If you would like to load sample data, you can do so by navigating to **Load DB** under the Administration menu.  You should see the following screen:
 
 ![Load DB screenshot](screenshots/load-db.png)
 
 
-Click on ***Choose File*** and select the file **sample-data.txt** which is included in root directory of the repo at [sample-data.txt](sample-data.txt).
+Click on ***Choose File*** and select the file **sample-data.txt** which is included in the root directory of the repo at [sample-data.txt](sample-data.txt).
 Next, click on ***Load File***.  When the database load is complete a message will appear indicating if the load was successful.
 
 ## Testing

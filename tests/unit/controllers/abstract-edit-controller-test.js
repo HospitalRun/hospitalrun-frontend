@@ -10,6 +10,7 @@ moduleFor('controller:abstract-edit-controller', 'Unit | Controller | abstract-e
     'service:i18n',
     'service:session',
     'service:lookupLists',
+    'service:metrics',
     'locale:en/translations',
     'locale:en/config',
     'util:i18n/missing-message',
