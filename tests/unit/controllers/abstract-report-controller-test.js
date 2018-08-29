@@ -9,6 +9,7 @@ import { moduleFor, test } from 'ember-qunit';
 moduleFor('controller:abstract-report-controller', 'Unit | Controller | abstract-report-controller', {
   needs: [
     'service:i18n',
+    'service:metrics',
     'locale:en/translations',
     'locale:en/config',
     'util:i18n/missing-message',

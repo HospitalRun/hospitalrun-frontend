@@ -61,7 +61,7 @@ export default AbstractEditController.extend(FriendlyId, InventoryLocations, Inv
       return previousValue + parseInt(location.get('quantity'));
     }, 0);
     return total;
-  }.property('model.locations'),
+  }.property('model.locations.@each.quantity'),
 
   /**
    * Check to see if the total quantity by location matches the quantity calculated on the item
