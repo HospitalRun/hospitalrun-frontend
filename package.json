@@ -47,7 +47,7 @@
     "ember-cli": "2.17.1",
     "ember-cli-active-link-wrapper": "0.3.2",
     "ember-cli-app-version": "^3.0.0",
-    "ember-cli-babel": "^6.10.0",
+    "ember-cli-babel": "^7.1.0",
     "ember-cli-content-security-policy": "0.6.0",
     "ember-cli-dependency-checker": "^3.0.0",
     "ember-cli-eslint": "^4.2.2",
