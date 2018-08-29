@@ -121,5 +121,12 @@
   },
   "config": {
     "forge": "./ember-electron/electron-forge-config.js"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "ember-data",
+      "ember-source",
+      "ember-cli"
+    ]
   }
 }
