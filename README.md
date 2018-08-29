@@ -115,6 +115,17 @@ Is your server (still) running? Is CouchDB running? If not, that's probably the 
 
 Try a browser refresh `cmd + r`.
 
+**ERR! stack python2: command not found**
+
+`npm install` requires Python 2 to build some dependencies.
+Make sure `python2` is accessible from the current working directory.
+
+If you're using [pyenv](https://github.com/pyenv/pyenv), you can run the following to override the Python version used in the current working directory:
+```
+$ pyenv install 2.7.15
+$ pyenv local 2.7.15
+```
+
 ## Loading sample data
 If you would like to load sample data, you can do so by navigating to **Load DB** under the Administration menu.  You should see the following screen:
 

@@ -5,6 +5,7 @@ import DS from 'ember-data';
 
 moduleFor('controller:abstract-paged-controller', 'Unit | Controller | abstract-paged-controller', {
   needs: [
+    'service:metrics',
     'service:session'
   ],
   unit: true,
