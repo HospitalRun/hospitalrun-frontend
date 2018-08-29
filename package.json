@@ -100,7 +100,7 @@
     "pouchdb-users": "^1.0.3",
     "qunit-dom": "^0.7.0",
     "stylelint": "~9.4.0",
-    "stylelint-config-concentric": "^2.0.1",
+    "stylelint-config-concentric": "^2.0.2",
     "stylelint-declaration-use-variable": "1.7.0",
     "stylelint-scss": "3.2.0",
     "tosource-polyfill": "^0.3.1",
