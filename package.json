@@ -120,7 +120,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
     "idb.filesystem.js": "^0.0.8",
-    "pikaday": "^1.7.0",
+    "pikaday": "https://github.com/owenmead/Pikaday.git#1.5.1",
     "pouchdb-load": "^1.4.6"
   },
   "ember-addon": {
