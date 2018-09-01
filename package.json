@@ -41,18 +41,16 @@
     "csv-parse": "^2.0.0",
     "devtron": "^1.4.0",
     "electron-forge": "^5.1.1",
-    "electron-prebuilt-compile": "1.8.4",
+    "electron-prebuilt-compile": "2.0.2",
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.12",
     "ember-cli": "2.17.1",
     "ember-cli-active-link-wrapper": "0.3.2",
     "ember-cli-app-version": "^3.0.0",
-    "ember-cli-babel": "^6.10.0",
     "ember-cli-barcode": "maxwondercorn/ember-cli-barcode#0.2.0",
     "ember-cli-content-security-policy": "0.6.0",
     "ember-cli-dependency-checker": "^3.0.0",
-    "ember-cli-deprecation-workflow": "0.2.4",
     "ember-cli-eslint": "^4.2.2",
     "ember-cli-fake-server": "0.5.0",
     "ember-cli-htmlbars": "^3.0.0",
@@ -79,6 +77,7 @@
     "ember-inspector": "^3.0.0",
     "ember-keyboard": "3.0.2",
     "ember-load-initializers": "^1.0.0",
+    "ember-metrics": "^0.12.1",
     "ember-pouch": "4.3.0",
     "ember-radio-buttons": "^4.0.1",
     "ember-rapid-forms": "^1.2.5",
@@ -86,12 +85,12 @@
     "ember-simple-auth": "^1.5.1",
     "ember-sinon-qunit": "3.2.0",
     "ember-source": "2.18.2",
-    "ember-truth-helpers": "2.0.0",
-    "ember-validations": "2.0.0-alpha.5",
+    "ember-truth-helpers": "2.1.0",
+    "ember-validations": "HospitalRun/ember-validations#v2.0.2",
     "eslint-plugin-ember": "^5.1.0",
     "eslint-plugin-ember-suave": "^1.0.0",
     "express": "^4.8.5",
-    "hospitalrun-dblisteners": "1.0.1",
+    "hospitalrun-dblisteners": "1.0.4",
     "hospitalrun-server-routes": "1.0.0-beta",
     "loader.js": "^4.2.3",
     "minimatch": "^3.0.2",
@@ -102,7 +101,7 @@
     "pouchdb-users": "^1.0.3",
     "qunit-dom": "^0.7.0",
     "stylelint": "~9.4.0",
-    "stylelint-config-concentric": "^2.0.0",
+    "stylelint-config-concentric": "^2.0.2",
     "stylelint-declaration-use-variable": "1.7.0",
     "stylelint-scss": "3.2.0",
     "timekeeper": "1.0.0",
@@ -114,6 +113,7 @@
   },
   "dependencies": {
     "broccoli-funnel": "^2.0.1",
+    "ember-cli-babel": "^6.17.0",
     "electron-compile": "^6.4.2",
     "electron-localshortcut": "^3.0.4",
     "electron-protocol-serve": "^1.3.0",
@@ -121,7 +121,8 @@
     "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
     "idb.filesystem.js": "^0.0.8",
     "pikaday": "https://github.com/owenmead/Pikaday.git#1.5.1",
-    "pouchdb-load": "^1.4.6"
+    "pouchdb-load": "^1.4.6",
+    "sw-offline-google-analytics": "0.0.25"
   },
   "ember-addon": {
     "paths": [
@@ -130,5 +131,12 @@
   },
   "config": {
     "forge": "./ember-electron/electron-forge-config.js"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "ember-data",
+      "ember-source",
+      "ember-cli"
+    ]
   }
 }
