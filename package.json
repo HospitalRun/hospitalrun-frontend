@@ -40,7 +40,7 @@
     "csv-parse": "^2.0.0",
     "devtron": "^1.4.0",
     "electron-forge": "^5.1.1",
-    "electron-prebuilt-compile": "1.8.4",
+    "electron-prebuilt-compile": "2.0.2",
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.12",
@@ -84,7 +84,7 @@
     "ember-simple-auth": "^1.5.1",
     "ember-sinon-qunit": "3.2.0",
     "ember-source": "2.18.2",
-    "ember-truth-helpers": "2.0.0",
+    "ember-truth-helpers": "2.1.0",
     "ember-validations": "HospitalRun/ember-validations#v2.0.2",
     "eslint-plugin-ember": "^5.1.0",
     "eslint-plugin-ember-suave": "^1.0.0",
@@ -100,7 +100,7 @@
     "pouchdb-users": "^1.0.3",
     "qunit-dom": "^0.7.0",
     "stylelint": "~9.4.0",
-    "stylelint-config-concentric": "^2.0.0",
+    "stylelint-config-concentric": "^2.0.2",
     "stylelint-declaration-use-variable": "1.7.0",
     "stylelint-scss": "3.2.0",
     "tosource-polyfill": "^0.3.1",
@@ -121,5 +121,12 @@
   },
   "config": {
     "forge": "./ember-electron/electron-forge-config.js"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "ember-data",
+      "ember-source",
+      "ember-cli"
+    ]
   }
 }
