@@ -74,7 +74,7 @@
     "ember-fullcalendar": "1.8.0",
     "ember-i18n": "5.0.2",
     "ember-inspector": "^3.0.0",
-    "ember-keyboard": "3.0.2",
+    "ember-keyboard": "4.0.0",
     "ember-load-initializers": "^1.0.0",
     "ember-metrics": "^0.12.1",
     "ember-pouch": "4.3.0",
