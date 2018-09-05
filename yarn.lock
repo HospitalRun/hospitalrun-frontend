@@ -5382,9 +5382,9 @@ ember-concurrency-test-waiter@0.3.1:
   dependencies:
     ember-cli-babel "^6.6.0"
 
-ember-concurrency@0.8.18:
-  version "0.8.18"
-  resolved "https://registry.yarnpkg.com/ember-concurrency/-/ember-concurrency-0.8.18.tgz#20a9ac4ced6496ea4ebe52e88f4524a473871396"
+ember-concurrency@0.8.20:
+  version "0.8.20"
+  resolved "https://registry.yarnpkg.com/ember-concurrency/-/ember-concurrency-0.8.20.tgz#2c4f84ed3eb86cd0c7be9c2d21dd23f560757ac7"
   dependencies:
     babel-core "^6.24.1"
     ember-cli-babel "^6.8.2"
@@ -14183,7 +14183,7 @@ styled_string@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/styled_string/-/styled_string-0.0.1.tgz#d22782bd81295459bc4f1df18c4bad8e94dd124a"
 
-stylelint-config-concentric@^2.0.1:
+stylelint-config-concentric@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/stylelint-config-concentric/-/stylelint-config-concentric-2.0.2.tgz#8262b677cacb3b5c3f6e6d391c456332891d1556"
   dependencies:
