@@ -85,6 +85,9 @@ module.exports = function (defaults) {
         exclude: ['**/service-worker.js']
       }
     },
+    'ember-cli-barcode': {
+      include: 'code128'
+    },
     trees: {
       vendor: new MergeTrees([
         vendorTree,
