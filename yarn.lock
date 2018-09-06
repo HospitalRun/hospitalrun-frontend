@@ -6683,9 +6683,9 @@ filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
 
-"filer.js@https://github.com/ebidel/filer.js.git#0.4.3":
-  version "0.0.0"
-  resolved "https://github.com/ebidel/filer.js.git#c6e22c95dcca9ad979d13016c75e3f3cd35bb0e6"
+filer.js@0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/filer.js/-/filer.js-0.4.4.tgz#4dadb6efac0689111f0f1e20a7b346b9504bfeeb"
 
 filesize@^3.1.3:
   version "3.5.6"

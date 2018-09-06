@@ -91,7 +91,7 @@
     "ember-validations": "HospitalRun/ember-validations#v2.0.2",
     "eslint-plugin-ember": "^5.1.0",
     "eslint-plugin-ember-suave": "^1.0.0",
-    "filer.js": "https://github.com/ebidel/filer.js.git#0.4.3",
+    "filer.js": "0.4.4",
     "hospitalrun-dblisteners": "1.0.4",
     "hospitalrun-server-routes": "1.0.0-beta",
     "idb.filesystem.js": "^0.0.8",
