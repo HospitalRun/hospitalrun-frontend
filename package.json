@@ -98,7 +98,7 @@
     "pouchdb-adapter-memory": "6.4.0",
     "pouchdb-list": "^4.0.0",
     "pouchdb-users": "^1.0.3",
-    "qunit-dom": "^0.7.0",
+    "qunit-dom": "^0.8.0",
     "stylelint": "~9.4.0",
     "stylelint-config-concentric": "^2.0.2",
     "stylelint-declaration-use-variable": "1.7.0",
