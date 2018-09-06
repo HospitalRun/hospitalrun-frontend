@@ -4996,9 +4996,9 @@ ember-cli-babel@^6.17.0:
     ember-cli-version-checker "^2.1.2"
     semver "^5.5.0"
 
-ember-cli-barcode@maxwondercorn/ember-cli-barcode#0.2.0:
-  version "0.2.0"
-  resolved "https://codeload.github.com/maxwondercorn/ember-cli-barcode/tar.gz/6cb9c964dc10177c0681693fc4b3fdf3f7ce7b9b"
+ember-cli-barcode@0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/ember-cli-barcode/-/ember-cli-barcode-0.2.3.tgz#3a9552ec2834638bb1caa27b6786a22eb85510ec"
   dependencies:
     broccoli-funnel "^2.0.1"
     broccoli-merge-trees "^3.0.0"
@@ -6452,7 +6452,7 @@ express@^4.10.7, express@^4.12.3:
     utils-merge "1.0.0"
     vary "~1.1.0"
 
-express@^4.14.0, express@^4.8.5:
+express@^4.14.0:
   version "4.16.3"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.3.tgz#6af8a502350db3246ecc4becf6b5a34d22f7ed53"
   dependencies:
@@ -6683,9 +6683,9 @@ filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
 
-"filer.js@https://github.com/ebidel/filer.js.git#~0.4.3":
-  version "0.4.5"
-  resolved "https://github.com/ebidel/filer.js.git#53d0deb58b36881ccd4c128400cc4aaa75d24d4a"
+"filer.js@https://github.com/ebidel/filer.js.git#0.4.3":
+  version "0.0.0"
+  resolved "https://github.com/ebidel/filer.js.git#c6e22c95dcca9ad979d13016c75e3f3cd35bb0e6"
 
 filesize@^3.1.3:
   version "3.5.6"

@@ -5,14 +5,10 @@
 printf "\nInstalling ember-cli...\n"
 npm install -g ember-cli@latest
 
-printf "Installing bower...\n"
-npm install -g bower
 
 printf "Installing node dependecies...\n"
 npm install
 
-printf "Installing bower components...\n"
-bower install
 
 printf "Setting up CouchDB for cloud9 workspace...\n"
 sudo su couchdb -c 'touch /var/log/couchdb/couchdb.stdout'
