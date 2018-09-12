@@ -14,19 +14,19 @@ export default AbstractModel.extend({
 
   validations: {
     temperature: {
-      numericality: true
+      numericality: { allowBlank: true }
     },
     sbp: {
-      numericality: true
+      numericality: { allowBlank: true }
     },
     dbp: {
-      numericality: true
+      numericality: { allowBlank: true }
     },
     heartRate: {
-      numericality: true
+      numericality: { allowBlank: true }
     },
     respiratoryRate: {
-      numericality: true
+      numericality: { allowBlank: true }
     }
   }
 });
