@@ -18,7 +18,7 @@ module.exports = function (defaults) {
   );
 
   let typeaheadTree = new Funnel(
-    path.dirname(require.resolve('typeahead/dist/typeahead.bundle.min.js')),
+    path.dirname(require.resolve('typeahead.js/dist/typeahead.bundle.min.js')),
     {
       files: ['typeahead.bundle.min.js'],
       destDir: 'typeahead'
@@ -26,7 +26,7 @@ module.exports = function (defaults) {
   );
 
   let pikadayTree = new Funnel(
-    path.dirname(require.resolve('pikaday/pikaday.js')),
+    path.dirname(require.resolve('pikaday-time/pikaday.js')),
     {
       files: ['pikaday.js', '/css/pikaday.css'],
       destDir: 'pikaday'
