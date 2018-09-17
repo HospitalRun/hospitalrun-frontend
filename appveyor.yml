@@ -30,7 +30,7 @@ install:
 test_script:
   - npm build
   - npm test
-  - npm test-electron
+  - npm electron-test
 # Set build version format here instead of in the admin panel.
 build: off
 version: "{build}"
