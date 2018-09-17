@@ -1,0 +1,34 @@
+# Fix line endings in Windows. (runs before repo cloning)
+init:
+  - git config --global core.autocrlf true
+
+clone_depth: 1
+
+platform:
+  - x64
+
+cache:
+  - node_modules -> package.json
+  - '%APPDATA%\npm-cache'
+
+branches:
+  only:
+    - master
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Let's try to get things working
+  # Install Node 6 ---------------------------------------------------------
+  - ps: Install-Product node 6 x64
+  # Typical npm stuff ------------------------------------------------------
+  - npm version
+  # Installation, deps -----------------------------------------------------
+  - npm install --no-optional --no-color --no-progress
+
+test_script:
+  - npm build
+  - npm test
+  - npm test-electron
+# Set build version format here instead of in the admin panel.
+build: off
+version: "{build}"
