@@ -5007,9 +5007,9 @@ ember-cli-babel@^6.17.0:
     ember-cli-version-checker "^2.1.2"
     semver "^5.5.0"
 
-ember-cli-barcode@0.2.3:
+ember-cli-barcode@donaldwasserman/ember-cli-barcode#master:
   version "0.2.3"
-  resolved "https://registry.yarnpkg.com/ember-cli-barcode/-/ember-cli-barcode-0.2.3.tgz#3a9552ec2834638bb1caa27b6786a22eb85510ec"
+  resolved "https://codeload.github.com/donaldwasserman/ember-cli-barcode/tar.gz/e21b295cc656b25d9c560ac53841237fdaddebcb"
   dependencies:
     broccoli-funnel "^2.0.1"
     broccoli-merge-trees "^3.0.0"
@@ -11226,9 +11226,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-"pikaday@https://github.com/owenmead/Pikaday.git#1.5.1":
+pikaday-time@owenmead/Pikaday#1.5.1:
   version "1.5.1"
-  resolved "https://github.com/owenmead/Pikaday.git#1f6b20ed7e07bf686e69319ef515770bca071657"
+  resolved "https://codeload.github.com/owenmead/Pikaday/tar.gz/1f6b20ed7e07bf686e69319ef515770bca071657"
   optionalDependencies:
     moment "2.x"
 
@@ -13346,6 +13346,12 @@ rsvp@~3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.2.1.tgz#07cb4a5df25add9e826ebc67dcc9fd89db27d84a"
 
+rtcpeerconnection-shim@^1.2.14:
+  version "1.2.14"
+  resolved "https://registry.yarnpkg.com/rtcpeerconnection-shim/-/rtcpeerconnection-shim-1.2.14.tgz#67903d6f7b7bf508d6d1e4791de3e3b49c3754c0"
+  dependencies:
+    sdp "^2.6.0"
+
 run-async@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
@@ -13503,9 +13509,9 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-sdp@^1.5.0:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/sdp/-/sdp-1.5.4.tgz#8e038f6ddb14bd765ae1f4b5216e12094511e0d0"
+sdp@^2.6.0, sdp@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.9.0.tgz#2eed2d9c0b26c81ff87593107895c68d6fb9a0a6"
 
 secure-random@^1.1.1:
   version "1.1.1"
@@ -15269,7 +15275,7 @@ type-is@~1.6.15, type-is@~1.6.16:
     media-typer "0.3.0"
     mime-types "~2.1.18"
 
-typeahead@twitter/typeahead.js#v0.11.1:
+typeahead.js@twitter/typeahead.js#v0.11.1:
   version "0.11.1"
   resolved "https://codeload.github.com/twitter/typeahead.js/tar.gz/588440f66559714280628a4f9799f0c4eb880a4a"
   dependencies:
@@ -15773,11 +15779,12 @@ webidl-conversions@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-2.0.1.tgz#3bf8258f7d318c7443c36f2e169402a1a6703506"
 
-webrtc-adapter@^3.1.3:
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-3.4.3.tgz#b636062eee9a6ef158acd0d8501b678434b56f16"
+webrtc-adapter@^6.4.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-6.4.0.tgz#5c67d2126a718abeaca9fbf8e5b8fd99f99225c4"
   dependencies:
-    sdp "^1.5.0"
+    rtcpeerconnection-shim "^1.2.14"
+    sdp "^2.9.0"
 
 websocket-driver@>=0.5.1:
   version "0.6.5"
