@@ -1,6 +1,8 @@
 import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
+import { computed } from '@ember/object';
+
 export default Component.extend({
   i18n: service(),
   cancelAction: 'cancel',
@@ -13,14 +15,14 @@ export default Component.extend({
   updateButtonClass: '',
   updateButtonText: '',
   cancelButtonText: '',
-  cancelBtnText: function() {
+  cancelBtnText: computed('cancelButtonText', function() {
     let cancelText = this.get('cancelButtonText');
     if (isEmpty(cancelText)) {
       return this.get('i18n').t('buttons.cancel');
     } else {
       return cancelText;
     }
-  }.property('cancelButtonText'),
+  }),
   actions: {
     cancelAction() {
       this.sendAction('cancelAction');

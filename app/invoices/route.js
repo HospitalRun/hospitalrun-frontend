@@ -1,7 +1,7 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
-import Ember from 'ember';
+import { computed } from '@ember/object';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
@@ -13,7 +13,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
   newButtonText: t('billing.buttons.newInvoice'),
   sectionTitle: t('billing.invoiceTitle'),
 
-  additionalButtons: function() {
+  additionalButtons: computed(function() {
     if (this.currentUserCan('add_payment')) {
       return [{
         class: 'btn btn-default',
@@ -21,7 +21,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
         buttonAction: 'showAddDeposit'
       }];
     }
-  }.property(),
+  }),
 
   additionalModels: [{
     name: 'billingCategoryList',
@@ -59,7 +59,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
     }
   },
 
-  subActions: Ember.computed(function() {
+  subActions: computed(function() {
     let actions = [{
       text: this.get('i18n').t('billing.navigation.billed'),
       linkTo: 'invoices.index',
@@ -85,6 +85,6 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
       });
     }
     return actions;
-  }).property()
+  })
 
 });

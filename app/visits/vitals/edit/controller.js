@@ -1,5 +1,6 @@
 import { Promise as EmberPromise } from 'rsvp';
 import { inject as controller } from '@ember/controller';
+import { computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 
 export default AbstractEditController.extend({
@@ -11,13 +12,13 @@ export default AbstractEditController.extend({
 
   temperatureLabel: 'Temperature (\xb0C)',
 
-  title: function() {
+  title: computed('model.isNew', function() {
     let isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Vitals';
     }
     return 'Edit Vitals';
-  }.property('model.isNew'),
+  }),
 
   updateCapability: 'add_vitals',
 

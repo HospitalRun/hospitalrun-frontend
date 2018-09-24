@@ -19,7 +19,7 @@ export default Component.extend({
     return listArray.map((value) => ({ id: value, value }));
   }),
 
-  unitClass: function() {
+  unitClass: computed('targetUnit', 'unit', function() {
     let selectedUnit = this.get('unit');
     let targetUnit = this.get('targetUnit');
     let unitClass = 'has-success';
@@ -34,9 +34,9 @@ export default Component.extend({
     }
     this.get('parentView').updateCurrentUnit(selectedUnit, this.get('index'));
     return unitClass;
-  }.property('targetUnit', 'unit'),
+  }),
 
-  quantityClass: function() {
+  quantityClass: computed('quantity', 'targetUnit', function() {
     let quantity = this.get('quantity');
     let quantityClass = 'has-success';
     let targetUnit = this.get('targetUnit');
@@ -53,5 +53,5 @@ export default Component.extend({
       this.get('parentView').calculateTotal();
     });
     return quantityClass;
-  }.property('quantity', 'targetUnit')
+  })
 });

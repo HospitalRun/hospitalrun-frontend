@@ -1,16 +1,18 @@
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
+import { computed } from '@ember/object';
+
 export default AbstractPagedController.extend(PatientVisits, {
   addPermission: 'add_patient',
   deletePermission: 'delete_patient',
-  canAdmitPatient: function() {
+  canAdmitPatient: computed(function() {
     return this.currentUserCan('admit_patient');
-  }.property(),
+  }),
 
-  canDischargePatient: function() {
+  canDischargePatient: computed(function() {
     return this.currentUserCan('discharge_patient');
-  }.property(),
+  }),
 
   startKey: [],
   actions: {
