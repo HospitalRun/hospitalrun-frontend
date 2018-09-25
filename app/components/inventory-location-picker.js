@@ -1,6 +1,6 @@
 import { scheduleOnce } from '@ember/runloop';
 import { alias } from '@ember/object/computed';
-import EmberObject, { defineProperty } from '@ember/object';
+import EmberObject, { defineProperty, computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import Component from '@ember/component';
 import SelectValues from 'hospitalrun/utils/select-values';
@@ -71,7 +71,7 @@ export default Component.extend({
     this.set('calculatedLocationPickers', locationPickers);
   },
 
-  locationPickers: function() {
+  locationPickers: computed('calculatedLocationPickers', 'locationList', 'quantityRequested', function() {
     let locationList = this.get('locationList');
     let locationPickers = [];
     let quantityRequested = this.get('quantityRequested');
@@ -90,5 +90,5 @@ export default Component.extend({
     scheduleOnce('afterRender', this, this.locationChange);
     this.set('doingSetup', false);
     return this.get('calculatedLocationPickers');
-  }.property('calculatedLocationPickers', 'locationList', 'quantityRequested')
+  })
 });

@@ -2,6 +2,8 @@ import { once } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import TypeAhead from 'hospitalrun/components/type-ahead';
+import { computed } from '@ember/object';
+
 export default TypeAhead.extend({
   classNameBindings: ['haveInventoryItems'],
   displayKey: 'name',
@@ -23,21 +25,21 @@ export default TypeAhead.extend({
     return returnObj;
   },
 
-  haveInventoryItems: function() {
+  haveInventoryItems: computed('content', function() {
     let content = this.get('content');
     if (!isEmpty(content) && content.length > 0) {
       return 'have-inventory-items';
     }
-  }.property('content'),
+  }),
 
-  mappedContent: function() {
+  mappedContent: computed('content', function() {
     let content = this.get('content');
     let mapped = [];
     if (content) {
       mapped = content.map(this._mapInventoryItems.bind(this));
     }
     return mapped;
-  }.property('content'),
+  }),
 
   contentChanged: function() {
     let bloodhound = this.get('bloodhound');

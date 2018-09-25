@@ -5,13 +5,16 @@ import AppointmentIndexController from 'hospitalrun/appointments/index/controlle
 import AppointmentStatuses from 'hospitalrun/mixins/appointment-statuses';
 import SelectValues from 'hospitalrun/utils/select-values';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
+import { computed } from '@ember/object';
+
 export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes, {
   appointmentsController: controller('appointments'),
   appointmentType: null,
   physicians: alias('appointmentsController.physicianList.value'),
-  physicianList: function() {
+
+  physicianList: computed('physicians', function() {
     return SelectValues.selectValues(this.get('physicians'), true);
-  }.property('physicians'),
+  }),
 
   provider: null,
   queryParams: ['appointmentType', 'provider', 'status', 'startKey', 'startDate'],

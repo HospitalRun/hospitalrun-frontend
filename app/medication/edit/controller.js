@@ -1,4 +1,5 @@
 import { Promise as EmberPromise, resolve } from 'rsvp';
+import { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
@@ -13,36 +14,36 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   medicationController: controller('medication'),
   expenseAccountList: alias('medicationController.expenseAccountList'),
 
-  canFulfill: function() {
+  canFulfill: computed(function() {
     return this.currentUserCan('fulfill_medication');
-  }.property(),
+  }),
 
-  isFulfilled: function() {
+  isFulfilled: computed('model.status', function() {
     let status = this.get('model.status');
     return (status === 'Fulfilled');
-  }.property('model.status'),
+  }),
 
-  isFulfilling: function() {
+  isFulfilling: computed('canFulfill', 'model.isRequested', 'model.shouldFulfillRequest', function() {
     let canFulfill = this.get('canFulfill');
     let isRequested = this.get('model.isRequested');
     let fulfillRequest = this.get('model.shouldFulfillRequest');
     let isFulfilling = canFulfill && (isRequested || fulfillRequest);
     this.get('model').set('isFulfilling', isFulfilling);
     return isFulfilling;
-  }.property('canFulfill', 'model.isRequested', 'model.shouldFulfillRequest'),
+  }),
 
-  isFulfilledOrRequested: function() {
+  isFulfilledOrRequested: computed('isFulfilled', 'model.isRequested', function() {
     return (this.get('isFulfilled') || this.get('model.isRequested'));
-  }.property('isFulfilled', 'model.isRequested'),
+  }),
 
-  prescriptionClass: function() {
+  prescriptionClass: computed('model.quantity', function() {
     let quantity = this.get('model.quantity');
     if (isEmpty(quantity)) {
       return 'required test-medication-prescription';
     }
-  }.property('model.quantity'),
+  }),
 
-  quantityClass: function() {
+  quantityClass: computed('isFulfilling', 'model.prescription', function() {
     let prescription = this.get('model.prescription');
     let returnClass = 'col-xs-3';
     let isFulfilling = this.get('isFulfilling');
@@ -50,9 +51,9 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
       returnClass += ' required';
     }
     return `${returnClass} test-quantity-input`;
-  }.property('isFulfilling', 'model.prescription'),
+  }),
 
-  quantityLabel: function() {
+  quantityLabel: computed('isFulfilled', function() {
     let i18n = this.get('i18n');
     let returnLabel = i18n.t('medication.labels.quantityRequested');
     let isFulfilled = this.get('isFulfilled');
@@ -63,7 +64,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
       returnLabel = i18n.t('medication.labels.quantityDistributed');
     }
     return returnLabel;
-  }.property('isFulfilled'),
+  }),
 
   medicationList: [],
   updateCapability: 'add_medication',
@@ -147,16 +148,16 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
     }
   },
 
-  showUpdateButton: function() {
+  showUpdateButton: computed('updateCapability', 'isFulfilled', function() {
     let isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
       return false;
     } else {
       return this._super();
     }
-  }.property('updateCapability', 'isFulfilled'),
+  }),
 
-  updateButtonText: function() {
+  updateButtonText: computed('model.isNew', 'isFulfilling', 'model.hideFulfillRequest', function() {
     let i18n = this.get('i18n');
     if (this.get('model.hideFulfillRequest')) {
       return i18n.t('buttons.dispense');
@@ -165,6 +166,6 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
     }
     return this._super();
 
-  }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest')
+  })
 
 });

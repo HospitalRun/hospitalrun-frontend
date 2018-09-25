@@ -4,6 +4,8 @@ import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import { translationMacro as t } from 'ember-i18n';
+import { computed } from '@ember/object';
+
 export default AbstractEditController.extend(AdjustmentTypes, {
   inventoryController: controller('inventory'),
 
@@ -17,11 +19,11 @@ export default AbstractEditController.extend(AdjustmentTypes, {
     });
   }.observes('transactionType'),
 
-  updateButtonText: function() {
+  updateButtonText: computed('model.transactionType', function() {
     let transactionType = this.get('model.transactionType');
     let adjustmentType = this.get('adjustmentTypes').findBy('type', transactionType);
     return adjustmentType.name;
-  }.property('model.transactionType'),
+  }),
 
   updateButtonAction: 'adjust',
 

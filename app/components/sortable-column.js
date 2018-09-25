@@ -1,5 +1,7 @@
 import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import Component from '@ember/component';
+
 export default Component.extend({
   classNames: ['sortable-column'],
   tagName: 'th',
@@ -13,11 +15,11 @@ export default Component.extend({
   sortKey: null,
   filtered: false,
 
-  sorted: function() {
+  sorted: computed('sortBy', 'sortKey', function() {
     let sortBy = this.get('sortBy');
     let sortKey = this.get('sortKey');
     return sortBy === sortKey;
-  }.property('sortBy', 'sortKey'),
+  }),
 
   actions: {
     sort() {

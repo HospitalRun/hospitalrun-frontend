@@ -47,70 +47,70 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     return (!this.get('model.isNew') && this.currentUserCan('add_billing_diagnosis'));
   }),
 
-  canAddImaging: function() {
+  canAddImaging: computed(function() {
     return this.currentUserCan('add_imaging');
-  }.property(),
+  }),
 
-  canAddLab: function() {
+  canAddLab: computed(function() {
     return this.currentUserCan('add_lab');
-  }.property(),
+  }),
 
-  canAddMedication: function() {
+  canAddMedication: computed(function() {
     return this.currentUserCan('add_medication');
-  }.property(),
+  }),
 
-  canAddPhoto: function() {
+  canAddPhoto: computed(function() {
     let isFileSystemEnabled = this.get('isFileSystemEnabled');
     return (this.currentUserCan('add_photo') && isFileSystemEnabled);
-  }.property(),
+  }),
 
-  canAddProcedure: function() {
+  canAddProcedure: computed(function() {
     return this.currentUserCan('add_procedure');
-  }.property(),
+  }),
 
-  canAddVitals: function() {
+  canAddVitals: computed(function() {
     return this.currentUserCan('add_vitals');
-  }.property(),
+  }),
 
   canAddReport: computed('hasReport', function() {
     return this.currentUserCan('add_report') && !this.get('hasReport');
   }),
 
-  canDeleteImaging: function() {
+  canDeleteImaging: computed(function() {
     return this.currentUserCan('delete_imaging');
-  }.property(),
+  }),
 
-  canDeleteLab: function() {
+  canDeleteLab: computed(function() {
     return this.currentUserCan('delete_lab');
-  }.property(),
+  }),
 
-  canDeleteMedication: function() {
+  canDeleteMedication: computed(function() {
     return this.currentUserCan('delete_medication');
-  }.property(),
+  }),
 
-  canDeletePhoto: function() {
+  canDeletePhoto: computed(function() {
     return this.currentUserCan('delete_photo');
-  }.property(),
+  }),
 
-  canDeleteProcedure: function() {
+  canDeleteProcedure: computed(function() {
     return this.currentUserCan('delete_procedure');
-  }.property(),
+  }),
 
-  canDeleteVitals: function() {
+  canDeleteVitals: computed(function() {
     return this.currentUserCan('delete_vitals');
-  }.property(),
+  }),
 
-  canDeleteReport: function() {
+  canDeleteReport: computed(function() {
     return this.currentUserCan('delete_report');
-  }.property(),
+  }),
 
-  isAdmissionVisit: function() {
+  isAdmissionVisit: computed('model.visitType', function() {
     let visitType = this.get('model.visitType');
     let isAdmission = (visitType === 'Admission');
     return isAdmission;
-  }.property('model.visitType'),
+  }),
 
-  cancelAction: function() {
+  cancelAction: computed('model.returnTo', 'model.returnToPatient', function() {
     let returnTo = this.get('model.returnTo');
     if (!isEmpty(returnTo)) {
       return 'returnTo';
@@ -119,7 +119,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     } else {
       return this._super();
     }
-  }.property('model.returnTo', 'model.returnToPatient'),
+  }),
 
   allowAddAllergy: not('model.isNew'),
   allowAddDiagnosis: not('model.isNew'),
@@ -170,7 +170,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     }
   }),
 
-  validVisitTypes: function() {
+  validVisitTypes: computed('visitTypes', 'model.outPatient', function() {
     let outPatient = this.get('model.outPatient');
     let visitTypes = this.get('visitTypes');
     if (outPatient === true) {
@@ -179,7 +179,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
       });
     }
     return visitTypes;
-  }.property('visitTypes', 'model.outPatient'),
+  }),
 
   _addChildObject(route, afterTransition) {
     let options = {
@@ -263,9 +263,9 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     });
   },
 
-  haveAdditionalDiagnoses: function() {
+  haveAdditionalDiagnoses: computed('model.additionalDiagnoses.[]', function() {
     return !isEmpty(this.get('model.additionalDiagnoses'));
-  }.property('model.additionalDiagnoses.[]'),
+  }),
 
   afterUpdate(visit) {
     this.updatePatientVisitFlags(visit).then(this._finishAfterUpdate.bind(this));

@@ -1,6 +1,8 @@
 import { isEmpty } from '@ember/utils';
 import Mixin from '@ember/object/mixin';
 import SelectValues from 'hospitalrun/utils/select-values';
+import { computed } from '@ember/object';
+
 export default Mixin.create({
   defaultVisitTypes: [
     'Admission',
@@ -24,11 +26,11 @@ export default Mixin.create({
     return visitList;
   },
 
-  visitTypes: function() {
+  visitTypes: computed('visitTypesList', 'defaultVisitTypes', function() {
     return this._getVisitTypes();
-  }.property('visitTypesList', 'defaultVisitTypes').volatile(),
+  }),
 
-  visitTypesWithEmpty: function() {
+  visitTypesWithEmpty: computed('visitTypesList', 'defaultVisitTypes', function() {
     return this._getVisitTypes(true);
-  }.property('visitTypesList', 'defaultVisitTypes').volatile()
+  })
 });

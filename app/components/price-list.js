@@ -1,7 +1,9 @@
+import { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
+
 export default Component.extend(ChargeActions, {
   attributeBindings: ['tabId:id', 'role'],
   charges: alias('model.charges'),
@@ -14,12 +16,12 @@ export default Component.extend(ChargeActions, {
   role: 'tab',
   setChargeQuantityAction: 'setChargeQuantity',
 
-  active: function() {
+  active: computed(function() {
     let index = this.get('index');
     return (index === 0);
-  }.property(),
+  }),
 
-  pricingListByType: function() {
+  pricingListByType: computed('pricingType', 'pricingList', function() {
     let pricingList = this.get('pricingList');
     let pricingType = this.get('pricingType');
     let rows = [];
@@ -41,10 +43,10 @@ export default Component.extend(ChargeActions, {
 
     }
     return rows;
-  }.property('pricingType', 'pricingList'),
+  }),
 
-  tabId: function() {
+  tabId: computed('pricingType', function() {
     return this.get('pricingType').toLowerCase().dasherize();
-  }.property('pricingType')
+  })
 
 });

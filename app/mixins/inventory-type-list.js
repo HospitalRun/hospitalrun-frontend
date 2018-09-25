@@ -1,13 +1,15 @@
 import { isEmpty } from '@ember/utils';
 import Mixin from '@ember/object/mixin';
 import SelectValues from 'hospitalrun/utils/select-values';
+import { computed } from '@ember/object';
+
 export default Mixin.create({
   defaultInventoryTypes: [
     'Medication',
     'Supply'
   ],
 
-  inventoryTypes: function() {
+  inventoryTypes: computed('inventoryTypeList', 'defaultInventoryTypes', function() {
     let defaultInventoryTypes = this.get('defaultInventoryTypes');
     let inventoryTypeList = this.get('inventoryTypeList');
     let typeList;
@@ -18,5 +20,5 @@ export default Mixin.create({
     }
     typeList = SelectValues.selectValues(typeList);
     return typeList;
-  }.property('inventoryTypeList', 'defaultInventoryTypes')
+  })
 });

@@ -1,7 +1,7 @@
 import { isEmpty } from '@ember/utils';
 import { Promise as EmberPromise, resolve } from 'rsvp';
 import Route from '@ember/routing/route';
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
 export default Route.extend(AuthenticatedRouteMixin, {
@@ -28,10 +28,10 @@ export default Route.extend(AuthenticatedRouteMixin, {
     }.bind(this));
   },
 
-  idParam: function() {
+  idParam: computed('modelName', function() {
     let modelName = get(this, 'modelName');
     return `${modelName}_id`;
-  }.property('modelName'),
+  }),
 
   /**
    * Override this function to generate an id for a new record

@@ -1,7 +1,9 @@
 import { isEmpty } from '@ember/utils';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 import Component from '@ember/component';
+
 export default Component.extend({
   computedPhotoUrl: null,
   filesystem: service(),
@@ -10,7 +12,7 @@ export default Component.extend({
   photo: null,
   url: alias('photo.url'),
 
-  photoUrl: function() {
+  photoUrl: computed('computedPhotoUrl', 'fileName', 'url', function() {
     let computedPhotoUrl = this.get('computedPhotoUrl');
     let fileName = this.get('fileName');
     let filesystem = this.get('filesystem');
@@ -26,5 +28,5 @@ export default Component.extend({
       }.bind(this));
     }
     return url;
-  }.property('computedPhotoUrl', 'fileName', 'url')
+  })
 });

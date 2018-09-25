@@ -17,9 +17,9 @@ export default AbstractEditController.extend(FriendlyId, InventoryLocations, Inv
   savingNewItem: false,
   sequenceView: 'inventory_by_friendly_id',
 
-  canAddPurchase: function() {
+  canAddPurchase: computed(function() {
     return this.currentUserCan('add_inventory_purchase');
-  }.property(),
+  }),
 
   canAdjustLocation() {
     return this.currentUserCan('adjust_inventory_location');
@@ -46,42 +46,42 @@ export default AbstractEditController.extend(FriendlyId, InventoryLocations, Inv
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
-  canEditQuantity: function() {
+  canEditQuantity: computed('model.isNew', function() {
     return (this.get('model.isNew'));
-  }.property('model.isNew'),
+  }),
 
-  haveTransactions: function() {
+  haveTransactions: computed('transactions.[]', function() {
     let transactions = this.get('transactions');
     return transactions !== null;
-  }.property('transactions.[]'),
+  }),
 
-  locationQuantityTotal: function() {
+  locationQuantityTotal: computed('model.locations.@each.quantity', function() {
     let locations = this.get('model.locations');
     let total = locations.reduce(function(previousValue, location) {
       return previousValue + parseInt(location.get('quantity'));
     }, 0);
     return total;
-  }.property('model.locations.@each.quantity'),
+  }),
 
   /**
    * Check to see if the total quantity by location matches the quantity calculated on the item
    * @return {boolean} true if there is a discrepency;otherwise false.
    */
-  quantityDiscrepency: function() {
+  quantityDiscrepency: computed('locationQuantityTotal', 'model.quantity', function() {
     let locationQuantityTotal = this.get('locationQuantityTotal');
     let quantity = this.get('model.quantity');
     return !isEmpty(locationQuantityTotal) && !isEmpty(quantity) && locationQuantityTotal !== quantity;
-  }.property('locationQuantityTotal', 'model.quantity'),
+  }),
 
   /**
    * Get the difference in quantity between the total quantity by location and the quantity on the item.
    * @return {int} the difference.
    */
-  quantityDifferential: function() {
+  quantityDifferential: computed('locationQuantityTotal', 'model.quantity', function() {
     let locationQuantityTotal = this.get('locationQuantityTotal');
     let quantity = this.get('model.quantity');
     return Math.abs(locationQuantityTotal - quantity);
-  }.property('locationQuantityTotal', 'model.quantity'),
+  }),
 
   originalQuantityUpdated: function() {
     let isNew = this.get('model.isNew');
@@ -96,10 +96,10 @@ export default AbstractEditController.extend(FriendlyId, InventoryLocations, Inv
     return `inventory_${inventoryType}`;
   }),
 
-  showTransactions: function() {
+  showTransactions: computed('transactions.[]', function() {
     let transactions = this.get('transactions');
     return !isEmpty(transactions);
-  }.property('transactions.[]'),
+  }),
 
   transactions: null,
 

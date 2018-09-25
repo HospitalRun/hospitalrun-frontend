@@ -1,4 +1,6 @@
 import Component from '@ember/component';
+import { computed } from '@ember/object';
+
 export default Component.extend({
   attributeBindings: ['role'],
   classNameBindings: ['active'],
@@ -7,17 +9,17 @@ export default Component.extend({
   role: 'presentation',
   tagName: 'li',
 
-  active: function() {
+  active: computed(function() {
     let index = this.get('index');
     return (index === 0);
-  }.property(),
+  }),
 
-  tabId: function() {
+  tabId: computed('pricingType', function() {
     return this.get('pricingType').toLowerCase().dasherize();
-  }.property('pricingType'),
+  }),
 
-  tabHref: function() {
+  tabHref: computed('tabId', function() {
     let tabId = this.get('tabId');
     return `#${tabId}`;
-  }.property('tabId')
+  })
 });

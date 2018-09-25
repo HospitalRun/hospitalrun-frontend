@@ -1,4 +1,4 @@
-import EmberObject from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { alias } from '@ember/object/computed';
 import Controller, { inject as controller } from '@ember/controller';
@@ -27,7 +27,7 @@ export default Controller.extend(BillingCategories, IsUpdateDisabled, {
     }
   },
 
-  billingCategories: function() {
+  billingCategories: computed('billingCategoryList', 'defaultBillingCategories', function() {
     let defaultBillingCategories = this.get('defaultBillingCategories');
     let billingCategoryList = this.get('billingCategoryList');
     if (isEmpty(billingCategoryList)) {
@@ -35,6 +35,6 @@ export default Controller.extend(BillingCategories, IsUpdateDisabled, {
     } else {
       return billingCategoryList;
     }
-  }.property('billingCategoryList', 'defaultBillingCategories')
+  })
 
 });

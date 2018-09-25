@@ -16,34 +16,34 @@ export default Controller.extend(PaginationProps, ProgressDialog, UserSession, {
   sortDesc: false,
   sortKey: null,
 
-  canAdd: function() {
+  canAdd: computed(function() {
     return this.currentUserCan(this.get('addPermission'));
-  }.property(),
+  }),
 
-  canDelete: function() {
+  canDelete: computed(function() {
     return this.currentUserCan(this.get('deletePermission'));
-  }.property(),
+  }),
 
-  canEdit: function() {
+  canEdit: computed(function() {
     // Default to using add permission
     return this.currentUserCan(this.get('addPermission'));
-  }.property(),
+  }),
 
-  showActions: function() {
+  showActions: computed('canAdd', 'canEdit', 'canDelete', function() {
     return (this.get('canAdd') || this.get('canEdit') || this.get('canDelete'));
-  }.property('canAdd', 'canEdit', 'canDelete'),
+  }),
 
-  disablePreviousPage: function() {
+  disablePreviousPage: computed('previousStartKey', function() {
     return isEmpty(this.get('previousStartKey'));
-  }.property('previousStartKey'),
+  }),
 
-  disableNextPage: function() {
+  disableNextPage: computed('nextStartKey', function() {
     return isEmpty(this.get('nextStartKey'));
-  }.property('nextStartKey'),
+  }),
 
-  showPagination: function() {
+  showPagination: computed('nextStartKey', 'previousStartKey', function() {
     return !isEmpty(this.get('previousStartKey')) || !isEmpty(this.get('nextStartKey'));
-  }.property('nextStartKey', 'previousStartKey'),
+  }),
 
   hasRecords: computed('model.length', {
     get() {
