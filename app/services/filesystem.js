@@ -1,6 +1,6 @@
 import { Promise as EmberPromise } from 'rsvp';
 import { isEmpty } from '@ember/utils';
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 export default Service.extend({
   config: service(),
@@ -208,10 +208,10 @@ export default Service.extend({
   /**
    * Property to determine if file system API is available.
    */
-  isFileSystemEnabled: function() {
+  isFileSystemEnabled: computed('filer', function() {
     let filer = this.get('filer');
     return !(isEmpty(filer));
-  }.property('filer'),
+  }),
 
   /**
    * Get filesystem url from specified path.

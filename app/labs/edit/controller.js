@@ -75,7 +75,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
   },
 
-  additionalButtons: function() {
+  additionalButtons: computed('canComplete', 'model.isValid', function() {
     let canComplete = this.get('canComplete');
     let isValid = this.get('model.isValid');
     let i18n = this.get('i18n');
@@ -87,7 +87,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         buttonText: i18n.t('buttons.complete')
       }];
     }
-  }.property('canComplete', 'model.isValid'),
+  }),
 
   pricingTypeForObjectType: 'Lab Procedure',
   pricingTypes: alias('labsController.labPricingTypes'),

@@ -5,6 +5,7 @@ import {
   allSettled,
   resolve
 } from 'rsvp';
+import { computed } from '@ember/object';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import UserSession from 'hospitalrun/mixins/user-session';
@@ -21,28 +22,28 @@ export default Route.extend(UserSession, AuthenticatedRouteMixin, {
   sectionTitle: null,
   subActions: null,
 
-  editPath: function() {
+  editPath: computed('moduleName', function() {
     let module = this.get('moduleName');
     return `${module}.edit`;
-  }.property('moduleName'),
+  }),
 
-  deletePath: function() {
+  deletePath: computed('moduleName', function() {
     let module = this.get('moduleName');
     return `${module}.delete`;
-  }.property('moduleName'),
+  }),
 
-  newButtonAction: function() {
+  newButtonAction: computed(function() {
     if (this.currentUserCan(this.get('addCapability'))) {
       return 'newItem';
     } else {
       return null;
     }
-  }.property(),
+  }),
 
-  searchRoute: function() {
+  searchRoute: computed('moduleName', function() {
     let module = this.get('moduleName');
     return `/${module}/search`;
-  }.property('moduleName'),
+  }),
 
   actions: {
     allItems() {

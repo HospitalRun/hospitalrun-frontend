@@ -3,7 +3,7 @@ import { isArray, A } from '@ember/array';
 import Controller from '@ember/controller';
 import { isEmpty } from '@ember/utils';
 import RSVP, { Promise as EmberPromise } from 'rsvp';
-import { set, get } from '@ember/object';
+import { set, get, computed } from '@ember/object';
 import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
@@ -13,7 +13,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
 
-  cancelButtonText: function() {
+  cancelButtonText: computed('model.hasDirtyAttributes', function() {
     let i18n = get(this, 'i18n');
     let hasDirtyAttributes = get(this, 'model.hasDirtyAttributes');
     if (hasDirtyAttributes) {
@@ -21,9 +21,9 @@ export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, 
     } else {
       return i18n.t('buttons.returnButton');
     }
-  }.property('model.hasDirtyAttributes'),
+  }),
 
-  disabledAction: function() {
+  disabledAction: computed('model.isValid', function() {
     let model = get(this, 'model');
     if (model.validate) {
       model.validate().catch(function() {});
@@ -32,11 +32,11 @@ export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, 
     if (!isValid) {
       return 'showDisabledDialog';
     }
-  }.property('model.isValid'),
+  }),
 
-  isNewOrDeleted: function() {
+  isNewOrDeleted: computed('model.isNew', 'model.isDeleted', function() {
     return get(this, 'model.isNew') || get(this, 'model.isDeleted');
-  }.property('model.isNew', 'model.isDeleted'),
+  }),
 
   lookupLists: service(),
   /**
@@ -50,20 +50,20 @@ export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, 
   lookupListsLastUpdate: null,
   lookupListsToUpdate: null,
 
-  showUpdateButton: function() {
+  showUpdateButton: computed('updateCapability', function() {
     let updateButtonCapability = get(this, 'updateCapability');
     return this.currentUserCan(updateButtonCapability);
-  }.property('updateCapability'),
+  }),
 
   updateButtonAction: 'update',
-  updateButtonText: function() {
+  updateButtonText: computed('model.isNew', function() {
     let i18n = get(this, 'i18n');
     if (get(this, 'model.isNew')) {
       return i18n.t('buttons.add');
     } else {
       return i18n.t('buttons.update');
     }
-  }.property('model.isNew'),
+  }),
   updateCapability: null,
 
   /* Silently update and then fire the specified action. */

@@ -1,13 +1,15 @@
 import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import { translationMacro as t } from 'ember-i18n';
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
+
 export default AbstractModuleRoute.extend({
   addCapability: 'add_medication',
   moduleName: 'medication',
   newButtonText: t('medication.buttons.newButton'),
   sectionTitle: t('medication.sectionTitle'),
 
-  additionalButtons: function() {
+  additionalButtons: computed(function() {
     let i18n = this.get('i18n');
     let additionalButtons = [];
     if (this.currentUserCan('fulfill_medication')) {
@@ -29,7 +31,7 @@ export default AbstractModuleRoute.extend({
     if (!isEmpty(additionalButtons)) {
       return additionalButtons;
     }
-  }.property(),
+  }),
 
   additionalModels: [{
     name: 'aisleLocationList',

@@ -2,6 +2,7 @@ import { once } from '@ember/runloop';
 import { set } from '@ember/object';
 import Component from '@ember/component';
 import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   quantityGroups: [],
@@ -25,16 +26,16 @@ export default Component.extend({
     }
   },
 
-  showTotal: function() {
+  showTotal: computed('calculated', function() {
     let calculated = this.get('calculated');
     let quantityGroups = this.get('quantityGroups');
     if (quantityGroups.length > 1 && !isEmpty(calculated) && !isNaN(calculated)) {
       return true;
     }
     return false;
-  }.property('calculated'),
+  }),
 
-  currentQuantityGroups: function() {
+  currentQuantityGroups: computed('quantityGroups', 'targetUnit', function() {
     let firstQuantityObject;
     let quantityGroups = this.get('quantityGroups');
     let targetUnit = this.get('targetUnit');
@@ -48,7 +49,7 @@ export default Component.extend({
       }
     }
     return quantityGroups;
-  }.property('quantityGroups', 'targetUnit'),
+  }),
 
   calculateTotal() {
     let quantityGroups = this.get('quantityGroups');

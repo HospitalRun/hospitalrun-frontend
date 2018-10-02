@@ -1,6 +1,8 @@
 import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import PatientName from 'hospitalrun/mixins/patient-name';
 import TypeAhead from 'hospitalrun/components/type-ahead';
+
 export default TypeAhead.extend(PatientName, {
   displayKey: 'name',
   selectedAction: 'selectedPatientChanged',
@@ -24,13 +26,12 @@ export default TypeAhead.extend(PatientName, {
     }
   }.observes('content.[]'),
 
-  mappedContent: function() {
+  mappedContent: computed('content', function() {
     let content = this.get('content');
     let mapped = [];
     if (content) {
       mapped = content.map(this._mapPatient.bind(this));
     }
     return mapped;
-  }.property('content')
-
+  })
 });

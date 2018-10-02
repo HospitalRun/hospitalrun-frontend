@@ -1,4 +1,4 @@
-import { defineProperty } from '@ember/object';
+import { defineProperty, computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { isEmpty } from '@ember/utils';
 import EmInput from 'ember-rapid-forms/components/em-input';
@@ -19,14 +19,14 @@ export default EmInput.extend(PikadayComponent, {
     }
   },
 
-  format: function() {
+  format: computed('showTime', function() {
     let showTime = this.get('showTime');
     if (showTime) {
       return 'l h:mm A';
     } else {
       return 'l';
     }
-  }.property('showTime'),
+  }),
 
   showTimeChanged: function() {
     let picker = this.get('_picker');

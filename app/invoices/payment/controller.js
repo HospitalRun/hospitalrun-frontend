@@ -1,4 +1,5 @@
 import { resolve } from 'rsvp';
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
@@ -18,16 +19,16 @@ export default AbstractEditController.extend(PatientSubmodule, {
     this.displayAlert(title, message);
   },
 
-  currentPatient: function() {
+  currentPatient: computed('model.isNew', 'model.paymentType', 'model.invoice.patient', function() {
     let type = this.get('model.paymentType');
     if (type === 'Deposit') {
       return this.get('model.patient');
     } else {
       return this.get('model.invoice.patient');
     }
-  }.property('model.patient', 'model.paymentType', 'model.invoice.patient'),
+  }),
 
-  title: function() {
+  title: computed('model.isNew', 'model.paymentType', function() {
     let isNew = this.get('model.isNew');
     let type = this.get('model.paymentType');
     if (isNew) {
@@ -35,13 +36,13 @@ export default AbstractEditController.extend(PatientSubmodule, {
     } else {
       return `Edit ${type}`;
     }
-  }.property('model.isNew', 'model.paymentType'),
+  }),
 
-  selectPatient: function() {
+  selectPatient: computed('model.isNew', 'model.paymentType', function() {
     let isNew = this.get('model.isNew');
     let type = this.get('model.paymentType');
     return (isNew && type === 'Deposit');
-  }.property('model.isNew', 'model.paymentType'),
+  }),
 
   beforeUpdate() {
     if (this.get('model.isNew')) {

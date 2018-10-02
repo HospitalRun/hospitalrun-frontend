@@ -1,5 +1,5 @@
 import { all, resolve } from 'rsvp';
-import EmberObject from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
@@ -16,7 +16,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   aisleLocationList: alias('inventoryController.aisleLocationList'),
   expenseAccountList: alias('inventoryController.expenseAccountList'),
 
-  inventoryList: function() {
+  inventoryList: computed('inventoryItems.[]', function() {
     let inventoryItems = this.get('inventoryItems');
     if (!isEmpty(inventoryItems)) {
       let mappedItems = inventoryItems.map(function(item) {
@@ -24,7 +24,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       });
       return mappedItems;
     }
-  }.property('inventoryItems.[]'),
+  }),
 
   lookupListsToUpdate: [{
     name: 'expenseAccountList', // Name of property containing lookup list
@@ -40,12 +40,12 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
-  canFulfill: function() {
+  canFulfill: computed('model.requestedItems.[]', function() {
     let requestedItems = this.get('model.requestedItems');
     return isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
-  }.property('model.requestedItems.[]'),
+  }),
 
-  isFulfilling: function() {
+  isFulfilling: computed('isRequested', 'model.shouldFulfillRequest', function() {
     let canFulfill = this.get('canFulfill');
     let isRequested = this.get('isRequested');
     let fulfillRequest = this.get('model.shouldFulfillRequest');
@@ -58,35 +58,35 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       this.set('model.dateCompleted');
     }
     return isFulfilling;
-  }.property('isRequested', 'model.shouldFulfillRequest'),
+  }),
 
-  isRequested: function() {
+  isRequested: computed('model.status', function() {
     let status = this.get('model.status');
     return (status === 'Requested');
-  }.property('model.status'),
+  }),
 
-  quantityLabel: function() {
+  quantityLabel: computed('selectedInventoryItem', function() {
     let selectedInventoryItem = this.get('selectedInventoryItem');
     if (isEmpty(selectedInventoryItem)) {
       return this.get('i18n').t('labels.quantity').toString();
     } else {
       return this.get('i18n').t('inventory.labels.quantity', { unit: selectedInventoryItem.distributionUnit }).toString();
     }
-  }.property('selectedInventoryItem'),
+  }),
 
-  showRequestedItems: function() {
+  showRequestedItems: computed('model.requestedItems.[]', function() {
     let requestedItems = this.get('model.requestedItems');
     return !isEmpty(requestedItems);
-  }.property('model.requestedItems.[]'),
+  }),
 
   updateViaFulfillRequest: false,
 
-  updateButtonText: function() {
+  updateButtonText: computed('model.isNew', 'isFulfilling', function() {
     if (this.get('isFulfilling')) {
       return this.get('i18n').t('buttons.fulfill');
     }
     return this._super();
-  }.property('model.isNew', 'isFulfilling'),
+  }),
 
   updateCapability: 'add_inventory_request',
 

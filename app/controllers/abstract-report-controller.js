@@ -1,4 +1,4 @@
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import Controller from '@ember/controller';
 import DateFormat from 'hospitalrun/mixins/date-format';
@@ -191,28 +191,28 @@ export default Controller.extend(DateFormat, ModalHelper, NumberFormat, Paginati
 
   },
 
-  currentReportRows: function() {
+  currentReportRows: computed('reportRows.[]', 'offset', 'limit', function() {
     let limit = this.get('limit');
     let offset = this.get('offset');
     let reportRows = this.get('reportRows');
     return reportRows.slice(offset, offset + limit);
-  }.property('reportRows.[]', 'offset', 'limit'),
+  }),
 
-  disablePreviousPage: function() {
+  disablePreviousPage: computed('offset', function() {
     return (this.get('offset') === 0);
-  }.property('offset'),
+  }),
 
-  disableNextPage: function() {
+  disableNextPage: computed('offset', 'limit', 'reportRows.length', function() {
     let limit = this.get('limit');
     let length = this.get('reportRows.length');
     let offset = this.get('offset');
     return ((offset + limit) >= length);
-  }.property('offset', 'limit', 'reportRows.length'),
+  }),
 
-  showPagination: function() {
+  showPagination: computed('reportRows.length', function() {
     let length = this.get('reportRows.length');
     let limit = this.get('limit');
     return (length > limit);
-  }.property('reportRows.length')
+  })
 
 });

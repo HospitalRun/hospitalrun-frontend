@@ -8,6 +8,7 @@ import moment from 'moment';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import UserSession from 'hospitalrun/mixins/user-session';
+
 export default AbstractEditController.extend(IsUpdateDisabled, UserSession, PatientSubmodule, PatientNotes, {
   cancelAction: 'closeModal',
   updateAction: 'updateNote',
@@ -19,13 +20,13 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
     property: 'model.attribution',
     id: 'physician_list'
   }],
-  title: function() {
+  title: computed('model.patient.displayName', function() {
     if (this.get('model.isNew')) {
       return `${this.get('i18n').t('patients.notes.newNote')} ${this.get('model.patient.displayName')}`;
     } else {
       return `${this.get('i18n').t('patients.notes.newNote')} ${moment(this.get('model.date')).format('MM/DD/YYYY')} for ${this.get('model.patient.displayName')}`;
     }
-  }.property('model.patient.displayName'),
+  }),
   showSelectVisit: computed('applicationController.currentPath', function() {
     return (this.get('applicationController.currentPath') == 'patients.edit');
   }),
