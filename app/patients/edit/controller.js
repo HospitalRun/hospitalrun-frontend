@@ -22,70 +22,70 @@ import PatientVisits from 'hospitalrun/mixins/patient-visits';
 
 export default AbstractEditController.extend(AllergyActions, BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, PatientVisits, {
 
-  canAddAppointment: function() {
+  canAddAppointment: computed(function() {
     return this.currentUserCan('add_appointment');
-  }.property(),
+  }),
 
-  canAddContact: function() {
+  canAddContact: computed(function() {
     return this.currentUserCan('add_patient');
-  }.property(),
+  }),
 
-  canAddImaging: function() {
+  canAddImaging: computed(function() {
     return this.currentUserCan('add_imaging');
-  }.property(),
+  }),
 
-  canAddLab: function() {
+  canAddLab: computed(function() {
     return this.currentUserCan('add_lab');
-  }.property(),
+  }),
 
-  canAddMedication: function() {
+  canAddMedication: computed(function() {
     return this.currentUserCan('add_medication');
-  }.property(),
+  }),
 
-  canAddPhoto: function() {
+  canAddPhoto: computed(function() {
     let isFileSystemEnabled = this.get('isFileSystemEnabled');
     return (this.currentUserCan('add_photo') && isFileSystemEnabled);
-  }.property(),
+  }),
 
-  canAddSocialWork: function() {
+  canAddSocialWork: computed(function() {
     return this.currentUserCan('add_socialwork');
-  }.property(),
+  }),
 
-  canAddVisit: function() {
+  canAddVisit: computed(function() {
     return this.currentUserCan('add_visit');
-  }.property(),
+  }),
 
-  canDeleteAppointment: function() {
+  canDeleteAppointment: computed(function() {
     return this.currentUserCan('delete_appointment');
-  }.property(),
+  }),
 
-  canDeleteContact: function() {
+  canDeleteContact: computed(function() {
     return this.currentUserCan('add_patient');
-  }.property(),
+  }),
 
-  canDeleteImaging: function() {
+  canDeleteImaging: computed(function() {
     return this.currentUserCan('delete_imaging');
-  }.property(),
+  }),
 
-  canDeleteLab: function() {
+  canDeleteLab: computed(function() {
     return this.currentUserCan('delete_lab');
-  }.property(),
+  }),
 
-  canDeleteMedication: function() {
+  canDeleteMedication: computed(function() {
     return this.currentUserCan('delete_medication');
-  }.property(),
+  }),
 
-  canDeletePhoto: function() {
+  canDeletePhoto: computed(function() {
     return this.currentUserCan('delete_photo');
-  }.property(),
+  }),
 
-  canDeleteSocialWork: function() {
+  canDeleteSocialWork: computed(function() {
     return this.currentUserCan('delete_socialwork');
-  }.property(),
+  }),
 
-  canDeleteVisit: function() {
+  canDeleteVisit: computed(function() {
     return this.currentUserCan('delete_visit');
-  }.property(),
+  }),
 
   patientTypes: computed(function() {
     let i18n = get(this, 'i18n');
@@ -121,15 +121,15 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
   sexList: alias('patientController.sexList'),
   statusList: alias('patientController.statusList'),
 
-  haveAdditionalContacts: function() {
+  haveAdditionalContacts: computed('model.additionalContacts', function() {
     let additionalContacts = this.get('model.additionalContacts');
     return !isEmpty(additionalContacts);
-  }.property('model.additionalContacts'),
+  }),
 
-  haveAddressOptions: function() {
+  haveAddressOptions: computed('addressOptions', function() {
     let addressOptions = this.get('addressOptions');
     return !isEmpty(addressOptions);
-  }.property('addressOptions'),
+  }),
 
   lookupListsToUpdate: [{
     name: 'countryList',
@@ -149,30 +149,30 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     id: 'patient_status_list'
   }],
 
-  patientImaging: function() {
+  patientImaging: computed('model.visits.[].imaging', function() {
     return this.getVisitCollection('imaging');
-  }.property('model.visits.[].imaging'),
+  }),
 
-  patientLabs: function() {
+  patientLabs: computed('model.visits.[].labs', function() {
     return this.getVisitCollection('labs');
-  }.property('model.visits.[].labs'),
+  }),
 
-  patientMedications: function() {
+  patientMedications: computed('model.visits.[].medication', function() {
     return this.getVisitCollection('medication');
-  }.property('model.visits.[].medication'),
+  }),
 
-  patientProcedures: function() {
+  patientProcedures: computed('model.visits.[].procedures', 'model.operationReports.[].procedures', function() {
     let visits = this.get('model.visits');
     let operationReports = get(this, 'model.operationReports');
     return this._getPatientProcedures(operationReports, visits);
-  }.property('model.visits.[].procedures', 'model.operationReports.[].procedures'),
+  }),
 
-  showExpenseTotal: function() {
+  showExpenseTotal: computed('model.expenses.[]', function() {
     let expenses = this.get('model.expenses');
     return !isEmpty(expenses);
-  }.property('model.expenses.[]'),
+  }),
 
-  totalExpenses: function() {
+  totalExpenses: computed('model.expenses.@each.cost', function() {
     let expenses = this.get('model.expenses');
     if (!isEmpty(expenses)) {
       let total = expenses.reduce(function(previousValue, expense) {
@@ -182,7 +182,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
       }, 0);
       return total;
     }
-  }.property('model.expenses.@each.cost'),
+  }),
 
   updateCapability: 'add_patient',
 

@@ -1,5 +1,5 @@
 import { all } from 'rsvp';
-import EmberObject from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
@@ -7,6 +7,7 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import InventoryId from 'hospitalrun/mixins/inventory-id';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations';
 import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractEditController.extend(InventoryId, InventoryLocations, {
   doingUpdate: false,
   inventoryController: controller('inventory'),
@@ -23,7 +24,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, {
     'vendorItemNo'
   ],
 
-  inventoryList: function() {
+  inventoryList: computed('inventoryItems.[]', function() {
     let inventoryItems = this.get('inventoryItems');
     if (!isEmpty(inventoryItems)) {
       let mappedItems = inventoryItems.map(function(item) {
@@ -31,7 +32,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, {
       });
       return mappedItems;
     }
-  }.property('inventoryItems.[]'),
+  }),
 
   lookupListsToUpdate: [{
     name: 'aisleLocationList', // Name of property containing lookup list
@@ -47,16 +48,16 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, {
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
-  showDistributionUnit: function() {
+  showDistributionUnit: computed('model.inventoryItemTypeAhead', 'model.inventoryItem', function() {
     return this._haveValidInventoryItem();
-  }.property('model.inventoryItemTypeAhead', 'model.inventoryItem'),
+  }),
 
-  showInvoiceItems: function() {
+  showInvoiceItems: computed('model.invoiceItems.[]', function() {
     let invoiceItems = this.get('model.invoiceItems');
     return !isEmpty(invoiceItems);
-  }.property('model.invoiceItems.[]'),
+  }),
 
-  totalReceived: function() {
+  totalReceived: computed('model.invoiceItems.[].purchaseCost', 'model.isValid', 'model.purchaseCost', function() {
     let invoiceItems = this.get('model.invoiceItems');
     let total = 0;
     if (!isEmpty('invoiceItems')) {
@@ -69,7 +70,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, {
       total += Number(purchaseCost);
     }
     return total;
-  }.property('model.invoiceItems.[].purchaseCost', 'model.isValid', 'model.purchaseCost'),
+  }),
 
   updateButtonText: t('inventory.labels.save'),
 

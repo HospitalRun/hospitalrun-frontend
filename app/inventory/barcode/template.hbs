@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-body">
-    <img src={{barcodeUri}}>
+    {{bar-code value=model.id tagName="img" id=(concat "barcode-" model.id) options=(hash displayValue=true text=model.name)}}
   </div>
 </div>
 

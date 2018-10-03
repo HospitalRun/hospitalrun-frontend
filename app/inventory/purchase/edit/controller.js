@@ -3,19 +3,20 @@ import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
+import { computed } from '@ember/object';
 
 export default AbstractEditController.extend(UnitTypes, {
   inventoryController: controller('inventory'),
   cancelAction: 'closeModal',
 
-  canEditQuantity: function() {
+  canEditQuantity: computed('model.currentQuantity', 'model.originalQuantity', function() {
     let originalQuantity = this.get('model.originalQuantity');
     let currentQuantity = this.get('model.currentQuantity');
     if (currentQuantity < originalQuantity) {
       return false;
     }
     return true;
-  }.property('model.currentQuantity', 'model.originalQuantity'),
+  }),
 
   warehouseList: alias('inventoryController.warehouseList'),
   aisleLocationList: alias('inventoryController.aisleLocationList'),
@@ -42,14 +43,14 @@ export default AbstractEditController.extend(UnitTypes, {
 
   updateCapability: 'add_inventory_purchase',
 
-  title: function() {
+  title: computed('model.isNew', function() {
     let i18n = this.get('i18n');
     let isNew = this.get('model.isNew');
     if (isNew) {
       return i18n.t('inventory.titles.addPurchase');
     }
     return i18n.t('inventory.titles.editPurchase');
-  }.property('model.isNew'),
+  }),
 
   beforeUpdate() {
     let isNew = this.get('model.isNew');

@@ -26,9 +26,7 @@ npm cache clean -f
 npm install -g n
 sudo n stable
 npm install -g ember-cli@latest
-npm install -g bower
 npm install
-bower install
 
 sudo su couchdb -c /usr/bin/couchdb &
 sleep 5

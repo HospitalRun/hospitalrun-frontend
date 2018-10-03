@@ -1,15 +1,17 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from 'hospitalrun/mixins/user-session';
 import { translationMacro as t } from 'ember-i18n';
+import { computed } from '@ember/object';
+
 export default AbstractIndexRoute.extend(UserSession, {
   modelName: 'inventory',
-  newButtonAction: function() {
+  newButtonAction: computed(function() {
     if (this.currentUserCan('add_inventory_item')) {
       return 'newItem';
     } else {
       return null;
     }
-  }.property(),
+  }),
   newButtonText: t('buttons.newItem'),
   pageTitle: t('inventory.labels.items'),
 
