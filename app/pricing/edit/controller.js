@@ -19,23 +19,6 @@ export default AbstractEditController.extend(ReturnTo, {
       this.send('update', true);
       this.send('closeModal');
     },
-    categoryChanged(category) {
-      let model = this.get('model');
-      let pricingType = model.get('pricingType');
-      model.set('category', category);
-      if (!isEmpty(category)) {
-        if (category === 'Imaging') {
-          model.set('pricingType', IMAGING_PRICING_TYPE);
-        } else if (category === 'Lab') {
-          model.set('pricingType', LAB_PRICING_TYPE);
-        } else {
-          let pricingTypeValues = this.get('pricingTypes.value');
-          if (isEmpty(pricingTypeValues) || !pricingTypeValues.includes(pricingType)) {
-            model.set('pricingType');
-          }
-        }
-      }
-    },
     deleteOverride(model) {
       let { overrideToDelete } = model;
       let pricingOverrides = this.get('model.pricingOverrides');
@@ -100,9 +83,15 @@ export default AbstractEditController.extend(ReturnTo, {
   showPricingType: computed('model.category', function() {
     let model = this.get('model');
     let category = model.get('category');
-    if (category === 'Imaging' || category === 'Lab') {
+
+    if (category === 'Imaging') {
+      model.set('pricingType', IMAGING_PRICING_TYPE);
+      return false;
+    } else if (category === 'Lab') {
+      model.set('pricingType', LAB_PRICING_TYPE);
       return false;
     } else {
+      model.set('pricingType');
       return true;
     }
   }),

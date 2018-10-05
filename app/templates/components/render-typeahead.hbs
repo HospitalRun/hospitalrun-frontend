@@ -1,3 +1,4 @@
+
 {{#if usePricingTypeAhead}}
   {{pricing-typeahead class=className property=property model=model
     label=label content=content
@@ -6,6 +7,6 @@
 {{else}}
   {{type-ahead class=className property=property model=model
     label=label content=content
-    selection=selection setOnBlur=setOnBlur hint=hint
+    selection=selection setOnBlur=setOnBlur hint=hint disabled=disabled
   }}
 {{/if}}

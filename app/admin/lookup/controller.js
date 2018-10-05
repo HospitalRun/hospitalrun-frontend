@@ -113,18 +113,6 @@ export default Controller.extend(BillingCategories, EKMixin,
           inventory: 'inventoryType'
         }
       }, {
-        name: this.get('i18n').t('admin.lookup.imagingPricingTypes'),
-        value: 'imaging_pricing_types',
-        models: {
-          pricing: 'pricingType'
-        }
-      }, {
-        name: this.get('i18n').t('admin.lookup.labPricingTypes'),
-        value: 'lab_pricing_types',
-        models: {
-          pricing: 'pricingType'
-        }
-      }, {
         name: this.get('i18n').t('admin.lookup.patientStatusList'),
         value: 'patient_status_list',
         models: {
