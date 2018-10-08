@@ -14,7 +14,7 @@
         property='category'
         label=(t 'labels.category')
       }}
-      {{#if showPricingType}}
+      {{#if pricingTypeEditable}}
         {{select-or-typeahead form=form model=model
           property="pricingType" label=(t 'labels.type')
           list=pricingTypes

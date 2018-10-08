@@ -19,11 +19,6 @@ export default Controller.extend(BillingCategories, EKMixin,
     fileSystem: service('filesystem'),
     lookupLists: service(),
 
-    canEditValues: computed('model.lookupType', function() {
-      let lookupType = this.get('model.lookupType');
-      return (lookupType !== 'imaging_pricing_types' && lookupType !== 'lab_pricing_types');
-    }),
-
     lookupTypes: computed(function() {
       return [{
         name: this.get('i18n').t('admin.lookup.anesthesiaTypes'),
@@ -259,18 +254,6 @@ export default Controller.extend(BillingCategories, EKMixin,
       switch (lookupType) {
         case 'inventory_types': {
           if (value === 'Medication') {
-            return false;
-          }
-          break;
-        }
-        case 'lab_pricing_types': {
-          if (value === 'Lab Procedure') {
-            return false;
-          }
-          break;
-        }
-        case 'imaging_pricing_types': {
-          if (value === 'Imaging Procedure') {
             return false;
           }
           break;
