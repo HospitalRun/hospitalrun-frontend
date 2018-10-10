@@ -14,25 +14,13 @@
         property='category'
         label=(t 'labels.category')
       }}
-      {{#if pricingTypeEditable}}
-        {{select-or-typeahead form=form model=model
-          property="pricingType" label=(t 'labels.type')
-          list=pricingTypes
-          selection=model.pricingType
-          className="col-xs-4 price-type form-input-group"
-          prompt=" "
-          disabled=false
-        }}
-      {{else}}
-        {{select-or-typeahead form=form model=model
-          property="pricingType" label=(t 'labels.type')
-          list=pricingTypes
-          selection=model.pricingType
-          className="col-xs-4 price-type form-input-group"
-          prompt=" "
-          disabled=true
-        }}
-      {{/if}}
+      {{select-or-typeahead form=form model=model
+        property="pricingType" label=(t 'labels.type')
+        list=pricingTypes
+        className="col-xs-4 price-type form-input-group"
+        prompt=" "
+        disabled=(not pricingTypeEditable)
+      }}
     </div>
     <div class="panel">
       <div class="panel-heading">
