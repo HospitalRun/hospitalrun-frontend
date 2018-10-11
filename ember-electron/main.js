@@ -1,10 +1,8 @@
+/* eslint-env node */
 const { app, BrowserWindow, protocol } = require('electron');
 const { dirname, join, resolve } = require('path');
 const protocolServe = require('electron-protocol-serve');
-const electronLocalshortcut = require('electron-localshortcut');
 
-const autoUpdater = require('./auto-updater');
-const emberAppLocation = 'serve://dist';
 let mainWindow = null;
 
 // Registering a protocol & schema to serve our Ember application
@@ -12,110 +10,61 @@ protocol.registerStandardSchemes(['serve'], { secure: true });
 protocolServe({
   cwd: join(__dirname || resolve(dirname('')), '..', 'ember'),
   app,
-  protocol
+  protocol,
 });
 
-/*
-crashReporter.start({
-  productName: 'HospitalRun',
-  companyName: 'HospitalRun',
-  submitURL: 'https://webhooks.hospitalrun.io/crash',
-  autoSubmit: true
-});*/
+// Uncomment the lines below to enable Electron's crash reporter
+// For more information, see http://electron.atom.io/docs/api/crash-reporter/
+// electron.crashReporter.start({
+//     productName: 'YourName',
+//     companyName: 'YourCompany',
+//     submitURL: 'https://your-domain.com/url-to-submit',
+//     autoSubmit: true
+// });
 
-function initialize() {
-  let shouldQuit = makeSingleInstance();
-  if (shouldQuit) {
-    return app.quit();
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
   }
+});
 
-  function createWindow() {
+app.on('ready', () => {
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+  });
 
-    mainWindow = new BrowserWindow({
-      width: 1080,
-      minWidth: 680,
-      height: 840,
-      backgroundThrottling: false
-    });
+  // If you want to open up dev tools programmatically, call
+  // mainWindow.openDevTools();
 
-    electronLocalshortcut.register(mainWindow, 'Ctrl+D', () => {
-      // mainWindow.openDevTools();
-      mainWindow.webContents.openDevTools();
-    });
+  const emberAppLocation = 'serve://dist';
 
-    // Load the ember application using our custom protocol/scheme
+  // Load the ember application using our custom protocol/scheme
+  mainWindow.loadURL(emberAppLocation);
+
+  // If a loading operation goes wrong, we'll send Electron back to
+  // Ember App entry point
+  mainWindow.webContents.on('did-fail-load', () => {
     mainWindow.loadURL(emberAppLocation);
-
-    // If a loading operation goes wrong, we'll send Electron back to
-    // Ember App entry point
-    mainWindow.webContents.on('did-fail-load', () => {
-      mainWindow.loadURL(emberAppLocation);
-    });
-
-    mainWindow.webContents.on('crashed', () => {
-      console.log('Your Ember app (or other code) in the main window has crashed.');
-      console.log('This is a serious issue that needs to be handled and/or debugged.');
-    });
-
-    mainWindow.on('closed', () => {
-      electronLocalshortcut.unregisterAll(mainWindow);
-      mainWindow = null;
-    });
-
-    mainWindow.on('unresponsive', () => {
-      console.log('Your Ember app (or other code) has made the window unresponsive.');
-    });
-
-    mainWindow.on('responsive', () => {
-      console.log('The main window has become responsive again.');
-    });
-  }
-
-  app.on('window-all-closed', () => {
-    app.quit();
-    electronLocalshortcut.unregisterAll(mainWindow);
   });
 
-  app.on('ready', () => {
-    createWindow();
-    autoUpdater.initialize();
+  mainWindow.webContents.on('crashed', () => {
+    console.log('Your Ember app (or other code) in the main window has crashed.');
+    console.log('This is a serious issue that needs to be handled and/or debugged.');
   });
-}
 
-// Handle Squirrel on Windows startup events
-switch (process.argv[1]) {
-  case '--squirrel-install':
-    autoUpdater.createShortcut(function() {
-      app.quit();
-    });
-    break;
-  case '--squirrel-uninstall':
-    autoUpdater.removeShortcut(function() {
-      app.quit();
-    });
-    break;
-  case '--squirrel-obsolete':
-  case '--squirrel-updated':
-    app.quit();
-    break;
-  default:
-    initialize();
-}
-
-function makeSingleInstance() {
-  if (process.mas) {
-    return false;
-  }
-
-  return app.makeSingleInstance(function() {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) {
-        mainWindow.restore();
-      }
-      mainWindow.focus();
-    }
+  mainWindow.on('unresponsive', () => {
+    console.log('Your Ember app (or other code) has made the window unresponsive.');
   });
-}
+
+  mainWindow.on('responsive', () => {
+    console.log('The main window has become responsive again.');
+  });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+});
 
 // Handle an unhandled error in the main thread
 //

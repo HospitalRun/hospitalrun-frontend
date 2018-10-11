@@ -25,9 +25,9 @@ install:
   - ps: Install-Product node 8 x64
   # Typical npm stuff ------------------------------------------------------
   - yarn install
+  - yarn build
 
 test_script:
-  - yarn build
   # - npm test
   - yarn run electron-test
 # Set build version format here instead of in the admin panel.

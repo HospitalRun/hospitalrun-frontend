@@ -34,6 +34,9 @@
   ],
   "license": "GPL-3.0",
   "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "bootstrap": "~3.3.5",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
@@ -129,7 +132,36 @@
     ]
   },
   "config": {
-    "forge": "./ember-electron/electron-forge-config.js"
+    "forge": {
+      "make_targets": {
+        "win32": [
+          "squirrel"
+        ],
+        "darwin": [
+          "zip"
+        ],
+        "linux": [
+          "deb",
+          "rpm"
+        ]
+      },
+      "electronPackagerConfig": {
+        "packageManager": "yarn"
+      },
+      "electronWinstallerConfig": {
+        "name": "hospitalrun"
+      },
+      "electronInstallerDebian": {},
+      "electronInstallerRedhat": {},
+      "github_repository": {
+        "owner": "",
+        "name": ""
+      },
+      "windowsStoreConfig": {
+        "packageName": "",
+        "name": "hospitalrun"
+      }
+    }
   },
   "greenkeeper": {
     "ignore": [
