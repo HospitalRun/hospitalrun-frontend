@@ -36,12 +36,12 @@ To install the frontend please do the following:
 1. Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 2. Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions 6.0.0 and higher should work. We recommend that you use the most-recent "Active LTS" version of Node.js.
 3. Make sure you have yarn installed [Yarn](https://yarnpkg.com/)
-4. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`.
+4. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `yarn global add ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
 5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run 
 
 ```
-npm install
+yarn install
 ```
 
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
@@ -71,7 +71,7 @@ npm install
 ## Running the application
 To start the frontend please do the following:
 
-- Start the server by running `npm start` in the repo folder.  If `npm start` doesn't work for you, try `ember serve` as an alternative.
+- Start the server by running `yarn start` in the repo folder.  If `yarn start` doesn't work for you, try `ember serve` as an alternative.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Running with Docker
@@ -102,7 +102,7 @@ If you are not running with Docker toolbox, please do the following:
 ### Troubleshooting your local environment
 Always make sure to `git pull` and get the latest from master.
 
-The app will usually tell you when something needs to happen (i.e. if you try to `npm start` and npm is out of date, it will tell you to run `npm update`. But If you run into problems you can't resolve, feel free to open an issue, or ask for help in the [HospitalRun Slack channel](https://hospitalrun.slack.com/) (you can request an invite [here](https://hospitalrun-slackin.herokuapp.com/)).
+The app will usually tell you when something needs to happen (i.e. if you try to `yarn start` and npm is out of date, it will tell you to run `yarn update`. But If you run into problems you can't resolve, feel free to open an issue, or ask for help in the [HospitalRun Slack channel](https://hospitalrun.slack.com/) (you can request an invite [here](https://hospitalrun-slackin.herokuapp.com/)).
 
 Otherwise, here are some tips for common issues:
 
@@ -116,7 +116,7 @@ Try a browser refresh `cmd + r`.
 
 **ERR! stack python2: command not found**
 
-`npm install` requires Python 2 to build some dependencies.
+`yarn install` requires Python 2 to build some dependencies.
 Make sure `python2` is accessible from the current working directory.
 
 If you're using [pyenv](https://github.com/pyenv/pyenv), you can run the following to override the Python version used in the current working directory:
