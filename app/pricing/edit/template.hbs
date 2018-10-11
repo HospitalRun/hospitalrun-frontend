@@ -12,15 +12,22 @@
         optionValuePath='value'
         optionLabelPath='id'
         property='category'
+        action=(action 'categoryChanged')
         label=(t 'labels.category')
       }}
-      {{select-or-typeahead form=form model=model
-        property="pricingType" label=(t 'labels.type')
-        list=pricingTypes
-        className="col-xs-4 price-type form-input-group"
-        prompt=" "
-        disabled=(not pricingTypeEditable)
-      }}
+      {{#if pricingTypeEditable}}
+        {{select-or-typeahead form=form model=model
+          property="pricingType" label=(t 'labels.type')
+          list=pricingTypes
+          className="col-xs-4 price-type form-input-group"
+          prompt=" "
+        }}
+      {{else}}
+        <div class="col-xs-4 price-type form-input-group">
+          <label class="control-label">{{t 'labels.type'}}</label>
+          <p class="form-control-static">{{model.pricingType}}</p>
+        </div>
+      {{/if}}
     </div>
     <div class="panel">
       <div class="panel-heading">
