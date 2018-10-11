@@ -22,7 +22,7 @@ branches:
 install:
   # Let's try to get things working
   # Install Node 6 ---------------------------------------------------------
-  - ps: Install-Product node 7 x64
+  - ps: Install-Product node 8 x64
   # Typical npm stuff ------------------------------------------------------
   - yarn install
 
