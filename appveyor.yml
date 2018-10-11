@@ -29,7 +29,7 @@ install:
 test_script:
   - yarn build
   # - npm test
-  - yarn run-script electron-test
+  - yarn run electron-test
 # Set build version format here instead of in the admin panel.
 build: off
 version: "{build}"
