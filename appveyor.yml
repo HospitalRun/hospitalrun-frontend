@@ -10,6 +10,7 @@ platform:
 cache:
   - node_modules -> package.json
   - '%APPDATA%\npm-cache'
+  - "%LOCALAPPDATA%\\Yarn"
 
 branches:
   only:
@@ -23,9 +24,7 @@ install:
   # Install Node 6 ---------------------------------------------------------
   - ps: Install-Product node 6 x64
   # Typical npm stuff ------------------------------------------------------
-  - npm version
-  # Installation, deps -----------------------------------------------------
-  - npm install --no-optional --no-color --no-progress
+  - yarn install
 
 test_script:
   - npm build
