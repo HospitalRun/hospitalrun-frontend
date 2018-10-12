@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="form-signin" role="form" {{action 'authenticate' on='submit'}}>
+  <form class="form-signin" role="form">
     <div class="signin-logo">
       {{partial "components/logo-dark-svg"}}
     </div>
@@ -19,8 +19,12 @@
         {{input id='password' type='password' value=password placeholder=(t 'login.labels.password') class='form-control'}}
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block" type="submit">{{t 'login.labels.signIn'}}</button>
-
+      <button {{action "authenticate"}} class="btn btn-lg btn-primary btn-block" type="submit">{{t 'login.labels.signIn'}}</button>
+      
+      {{#if useGoogleAuth}}
+        <button {{action "authenticateGoogle"}} class="btn btn-lg btn-google-sign-in btn-primary" >{{t 'login.labels.signInGoogle'}}</button>
+      {{/if}}
     </div>
+
   </form>
 </div> {{!-- /container --}}

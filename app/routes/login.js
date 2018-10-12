@@ -25,9 +25,7 @@ export default Route.extend(UnauthenticatedRouteMixin, {
         });
       } else {
         return get(this, 'config').useGoogleAuth().then((useGoogleAuth) => {
-          if (useGoogleAuth) {
-            window.location.replace('/auth/google');
-          }
+          this.controllerFor('login').set('useGoogleAuth', useGoogleAuth);
         });
       }
     }

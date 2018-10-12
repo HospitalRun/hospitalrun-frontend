@@ -33,4 +33,23 @@
   font-weight: 300;
 }
 
-.form-signin-heading::first-letter { text-transform: uppercase; }
+.btn-google-sign-in {
+  margin-top: 15px;
+  background: #4285f4;
+  width: 100%;
+  color: $white;
+
+  &:hover,
+  &:focus {
+    background-color: #2268f1;
+  }
+
+  &:active,
+  &.active {
+    background-color: #5491f5;
+  }
+}
+
+.form-signin-heading::first-letter {
+  text-transform: uppercase;
+}

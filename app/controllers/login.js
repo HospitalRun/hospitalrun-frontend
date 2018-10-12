@@ -7,6 +7,7 @@ let LoginController = Controller.extend({
   errorMessage: null,
   identification: null,
   password: null,
+  useGoogleAuth: null,
 
   actions: {
     authenticate() {
@@ -23,6 +24,10 @@ let LoginController = Controller.extend({
           this.set('offlineError', false);
         }
       });
+    },
+
+    authenticateGoogle() {
+      window.location.replace('/auth/google');
     }
   }
 });

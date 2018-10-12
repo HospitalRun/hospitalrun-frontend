@@ -940,7 +940,8 @@ export default {
     labels: {
       password: 'Password',
       signIn: 'Sign in',
-      username: 'Username'
+      username: 'Username',
+      signInGoogle: 'Sign in with Google'
     },
     messages: {
       error: 'Username or password is incorrect.',
