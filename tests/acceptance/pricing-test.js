@@ -135,7 +135,7 @@ test('verify behavior of Category control and Pricing Type field', function(asse
     await click('button:contains(Delete)');
     await waitToAppear('.modal-dialog');
     await click('button:contains(Delete):last');
-    
+
     // test that changing Category sets proper Pricing Type depending on which Category selected
     await visit('/pricing/ward');
     await click('button:contains(+ new item)');
