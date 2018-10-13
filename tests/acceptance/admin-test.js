@@ -23,7 +23,7 @@ test('visiting /admin', function(assert) {
   });
 });
 
-test('add new lookup value', function(assert) {
+test('add, edit new lookup value', function(assert) {
   return runWithPouchDump('admin', async function() {
     await authenticateUser();
     await visit('/admin');
@@ -38,6 +38,16 @@ test('add new lookup value', function(assert) {
     await click('button:contains(Add):last');
     await waitToAppear('td.lookup-type-value:contains(Dr Smith)');
     assert.equal(find('td.lookup-type-value:contains(Dr Smith)').length, 1, 'Added lookup type is added to list');
+    await waitToAppear('.modal-dialog');
+    await click('button:contains(Ok)');
+
+    await click('button:contains(Edit)');
+    await fillIn('.lookup-type-value input', 'Dr Smith2');
+    await click('button:contains(Update):last');
+    await waitToAppear('.modal-dialog');
+    await click('button:contains(Ok)');
+    assert.equal(find('td.lookup-type-value').length, 1, 'Still only one lookup type in the list');
+    assert.equal(find('td.lookup-type-value:contains(Dr Smith2)').length, 1, 'Lookup type changed due to edit operation');
   });
 });
 

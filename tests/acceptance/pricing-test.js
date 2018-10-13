@@ -105,6 +105,58 @@ test('create new price', function(assert) {
     await click('button:contains(Add):last');
     await waitToAppear('.override-profile');
     assert.dom('.override-profile').hasText('Half off', 'Pricing override saved');
+
+    await click('button:contains(Delete)');
+    await waitToAppear('.modal-dialog');
+    await click('button:contains(Ok)');
+    assert.dom('.override-profile').doesNotExist('Pricing override deleted');
+  });
+});
+
+test('verify behavior of Category control and Pricing Type field', function(assert) {
+  return runWithPouchDump('default', async function() {
+
+    // go to /pricing/lab, add item and confirm Pricing Type is 'Lab Procedure' (bug fixed in PR #1526)
+    await authenticateUser();
+    await visit('/pricing/lab');
+    await click('button:contains(+ new item)');
+    assert.equal(currentURL(), '/pricing/edit/newLab');
+    await fillIn('.price-name input', 'Test Lab Item');
+    await fillIn('.price-amount input', 10);
+    await fillIn('.price-department input', 'Test Expense Acct');
+    await click('button:contains(Add):last');
+
+    await waitToAppear('.modal-dialog');
+    assert.dom('.modal-title').hasText('Pricing Item Saved', 'Pricing Item saved');
+    await click('button:contains(Return)');
+
+    assert.dom('td:nth-child(4)').hasText('Lab Procedure');
+
+    await click('button:contains(Delete)');
+    await waitToAppear('.modal-dialog');
+    await click('button:contains(Delete):last');
+    
+    // test that changing Category sets proper Pricing Type depending on which Category selected
+    await visit('/pricing/ward');
+    await click('button:contains(+ new item)');
+    assert.equal(currentURL(), '/pricing/edit/newWard');
+
+    await fillIn('.price-name input', 'Test Ward Item');
+    await fillIn('.price-amount input', 10);
+    await fillIn('.price-department input', 'Test Expense Acct');
+
+    await fillIn('.price-type input', 'fake price type');
+    await select('.price-category', 'Procedure');
+    assert.dom('.price-type input').hasText('', 'Changing Category to "Procedure" sets Pricing Type to ""');
+
+    await select('.price-category', 'Imaging');
+    await click('button:contains(Add):last');
+
+    await waitToAppear('.modal-dialog');
+    assert.dom('.modal-title').hasText('Pricing Item Saved', 'Pricing Item saved');
+    await click('button:contains(Return)');
+
+    assert.dom('td:nth-child(4)').hasText('Imaging Procedure');
   });
 });
 
