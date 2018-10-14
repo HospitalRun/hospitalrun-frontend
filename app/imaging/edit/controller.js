@@ -11,7 +11,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   imagingController: controller('imaging'),
 
   chargePricingCategory: 'Imaging',
-  chargeRoute: 'imaging.charge',
   selectedImagingType: null,
 
   canComplete: computed('selectedImagingType.[]', 'model.imagingTypeName', function() {
@@ -93,7 +92,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     id: 'radiologists'
   }],
 
-  pricingTypeForObjectType: 'Imaging Procedure',
   pricingTypes: alias('imagingController.imagingPricingTypes'),
 
   pricingList: null, // This gets filled in by the route

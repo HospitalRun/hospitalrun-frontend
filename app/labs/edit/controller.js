@@ -12,7 +12,6 @@ export const LAB_STATUS_COMPLETED = 'Completed';
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   labsController: controller('labs'),
   chargePricingCategory: 'Lab',
-  chargeRoute: 'labs.charge',
   selectedLabType: null,
 
   canComplete: computed('selectedLabType.[]', 'model.labTypeName', 'isCompleted', function() {
@@ -89,7 +88,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
   }),
 
-  pricingTypeForObjectType: 'Lab Procedure',
   pricingTypes: alias('labsController.labPricingTypes'),
 
   pricingList: null, // This gets filled in by the route
