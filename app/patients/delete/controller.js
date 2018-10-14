@@ -97,14 +97,18 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   },
 
   deleteInvoicesTask: task(function* (patientInvoices) {
+    let pendingTasks = [];
     let invoices = yield patientInvoices;
-    let lineItems = yield all(invoices.mapBy('lineItems'));
-    let lineItemDetails = yield all(lineItems.mapBy('details'));
-    return yield all([
-      this.deleteMany(invoices),
-      this.deleteMany(lineItems),
-      this.deleteMany(lineItemDetails)
-    ]);
+    let lineItems = invoices.mapBy('lineItems');
+    pendingTasks.push(this.deleteMany(invoices));
+    lineItems.forEach((item) => {
+      let itemDetails = item.mapBy('details');
+      pendingTasks.push(this.deleteMany(item));
+      itemDetails.forEach((detail) => {
+        pendingTasks.push(this.deleteMany(detail));
+      });
+    });
+    return yield all(pendingTasks);
   }).group('deleting'),
 
   deleteActionTask: task(function* (patient) {

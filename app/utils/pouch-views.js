@@ -376,6 +376,12 @@ let designDocs = [{
   ),
   version: 1
 }, {
+  name: 'invoice_by_visit',
+  function: generateView('invoice',
+    'emit(doc.data.visit);'
+  ),
+  version: 1
+}, {
   name: 'invoice_by_status',
   function: generateView('invoice',
     `${generateDateForView('billDate')}
