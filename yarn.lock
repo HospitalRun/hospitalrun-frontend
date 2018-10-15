@@ -5100,9 +5100,12 @@ ember-cli-import-polyfill@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/ember-cli-import-polyfill/-/ember-cli-import-polyfill-0.2.0.tgz#c1a08a8affb45c97b675926272fe78cf4ca166f2"
 
-ember-cli-inject-live-reload@^1.4.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-inject-live-reload/-/ember-cli-inject-live-reload-1.6.1.tgz#82b8f5be454815a75e7f6d42c9ce0bc883a914a3"
+ember-cli-inject-live-reload@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-inject-live-reload/-/ember-cli-inject-live-reload-2.0.0.tgz#6808b46f17a9625861f66c3b86aff169001cd65d"
+  dependencies:
+    clean-base-url "^1.0.0"
+    ember-cli-version-checker "^2.1.2"
 
 ember-cli-is-package-missing@^1.0.0:
   version "1.0.0"
