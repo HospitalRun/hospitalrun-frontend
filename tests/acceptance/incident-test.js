@@ -6,6 +6,7 @@ import select from 'hospitalrun/tests/helpers/select';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
 import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
+import selectDate from 'hospitalrun/tests/helpers/select-date';
 
 const DATE_FORMAT = 'l';
 const DATE_TIME_FORMAT = 'l h:mm A';
@@ -206,6 +207,32 @@ test('Incident deletion', function(assert) {
     assert.dom('.incident-row').doesNotExist('Incident diappears from list');
   });
 });
+
+testSimpleReportForm('Incidents By Department');
+testSimpleReportForm('Incidents By Category');
+
+function testSimpleReportForm(reportName) {
+  test(`${reportName} report can be generated`, function(assert) {
+    return runWithPouchDump('default', async function() {
+      await authenticateUser();
+      await visit('/incident/reports');
+      assert.equal(currentURL(), '/incident/reports');
+
+      let startDate = moment('2015-10-01');
+      let endDate = moment('2015-10-31');
+      await selectDate('.test-start-date input', startDate.toDate());
+      await selectDate('.test-end-date input', endDate.toDate());
+      await select('#report-type', `${reportName}`);
+      await click('button:contains(Generate Report)');
+      await waitToAppear('.panel-title');
+
+      let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
+      assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
+      let exportLink = findWithAssert('a:contains(Export Report)');
+      assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
+    });
+  });
+}
 
 async function addItem(assert, itemName) {
   await click('button:contains(Add Item)');
