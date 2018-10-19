@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* jshint node:true */
 'use strict';
 
@@ -10,4 +11,10 @@ module.exports = {
     'nested-interactive': false,
     'bare-strings':true
   }
+=======
+'use strict';
+
+module.exports = {
+  extends: 'recommended'
+>>>>>>> 9af0cff7... message
 };

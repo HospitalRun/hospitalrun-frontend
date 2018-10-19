@@ -3,19 +3,25 @@
 /.vscode
 
 # compiled output
+<<<<<<< HEAD
 /dist
 /tmp
 /electron-out
+=======
+/dist/
+/tmp/
+>>>>>>> 9af0cff7... message
 
 # dependencies
-/node_modules
-/bower_components
+/bower_components/
+/node_modules/
 
 # misc
 /.sass-cache
 /connect.lock
-/coverage/*
+/coverage/
 /libpeerconnection.log
+<<<<<<< HEAD
 .DS_Store
 Thumbs.db
 npm-debug.log*
@@ -23,6 +29,11 @@ yarn-error.log
 testem.log
 /nbproject/private/
 nbproject/project.properties
+=======
+/npm-debug.log*
+/testem.log
+/yarn-error.log
+>>>>>>> 9af0cff7... message
 
 nbproject/project.xml
 
@@ -39,6 +50,6 @@ c9-couch.js
 
 .python-version
 # ember-try
-.node_modules.ember-try/
-bower.json.ember-try
-package.json.ember-try
+/.node_modules.ember-try/
+/bower.json.ember-try
+/package.json.ember-try
