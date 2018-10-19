@@ -3,14 +3,10 @@
 /.vscode
 
 # compiled output
-<<<<<<< HEAD
+
 /dist
 /tmp
 /electron-out
-=======
-/dist/
-/tmp/
->>>>>>> 9af0cff7... message
 
 # dependencies
 /bower_components/
@@ -21,7 +17,6 @@
 /connect.lock
 /coverage/
 /libpeerconnection.log
-<<<<<<< HEAD
 .DS_Store
 Thumbs.db
 npm-debug.log*
@@ -29,11 +24,7 @@ yarn-error.log
 testem.log
 /nbproject/private/
 nbproject/project.properties
-=======
-/npm-debug.log*
-/testem.log
-/yarn-error.log
->>>>>>> 9af0cff7... message
+
 
 nbproject/project.xml
 

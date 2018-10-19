@@ -28,7 +28,7 @@
     "stylelint": "stylelint 'app/styles/**/*.scss'"
   },
   "engines": {
-    "node": "6.* || 8.* || >= 10.*"
+    "node": "^4.5 || 6.* || 7.* || 8.* || >= 10.*"
   },
   "contributors": [
     "Joel Worrall",
@@ -87,6 +87,7 @@
     "ember-radio-buttons": "^4.0.1",
     "ember-rapid-forms": "^1.2.5",
     "ember-resolver": "^5.0.1",
+    "ember-cli-shims":"^1.2.0",
     "ember-simple-auth": "^1.5.1",
     "ember-sinon-qunit": "3.2.0",
     "ember-source": "~3.5.0",

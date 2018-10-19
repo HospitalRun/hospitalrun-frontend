@@ -20,7 +20,6 @@ cache:
 
 before_install:
   - npm config set spin false
-<<<<<<< HEAD
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1024x768x24"
   - yarn global add greenkeeper-lockfile@1
 
@@ -39,13 +38,3 @@ env:
   matrix:
   - COMMAND=test
   - CXX=g++-4.8 COMMAND=electron-test
-
-
-
-=======
-
-script:
-  - npm run lint:hbs
-  - npm run lint:js
-  - npm test
->>>>>>> 9af0cff7... message
