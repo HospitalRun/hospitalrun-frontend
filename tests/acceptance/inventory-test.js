@@ -5,7 +5,7 @@ import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
 import selectDate from 'hospitalrun/tests/helpers/select-date';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
-import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
 import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | inventory');
@@ -99,6 +99,38 @@ test('Items with negative quantites should not be saved', (assert) => {
       'not a valid number',
       'Error message should be present for invalid quantities'
     );
+  });
+});
+
+test('Transfer or Delete location should update inventory item', (assert) => {
+  return runWithPouchDump('inventory', async function() {
+    await authenticateUser();
+    await visit('/inventory/listing');
+    assert.equal(currentURL(), '/inventory/listing');
+
+    await click('button:contains(Edit)');
+    await click('button:contains(Transfer)');
+
+    await waitToAppear('.modal-dialog');
+    await typeAheadFillIn('.test-transfer-location', 'newLocation');
+    await fillIn('.test-adjustment-quantity input', 1000);
+    await click('button:contains(Transfer):last');
+    await waitToDisappear('.modal-dialog');
+
+    await click('button:contains(Return)');
+
+
+
+    assert.dom('tr .btn').exists({count: 4});
+    await click('button:contains(Edit)');
+
+    await click('button:contains(Delete)');
+    await waitToAppear('.modal-dialog');
+    await click('button:contains(Delete):last');
+    await waitToDisappear('.modal-dialog');
+
+    await click('button:contains(Return)');
+    assert.dom('tr .btn').exists({count: 4});
   });
 });
 
