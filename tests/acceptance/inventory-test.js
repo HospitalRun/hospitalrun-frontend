@@ -119,9 +119,9 @@ test('Transfer or Delete location should update inventory item', (assert) => {
     await click('button:contains(Return)');
 
     // verify new location appears correctly along with default location
-    assert.dom('tr .btn').exists({count: 4});
+    assert.dom('tr .btn').exists({ count: 4 });
     await click('button:contains(Edit)');
-    assert.dom('.test-location-quantity').exists({count: 2});
+    assert.dom('.test-location-quantity').exists({ count: 2 });
     assert.equal(find('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
     assert.equal(find('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
 
@@ -133,9 +133,9 @@ test('Transfer or Delete location should update inventory item', (assert) => {
     await click('button:contains(Return)');
 
     // verify default location is gone and new location w/ all units is still there
-    assert.dom('tr .btn').exists({count: 4});
+    assert.dom('tr .btn').exists({ count: 4 });
     await click('button:contains(Edit)');
-    assert.dom('.test-location-quantity').exists({count: 1});
+    assert.dom('.test-location-quantity').exists({ count: 1 });
     assert.equal(find('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
     assert.equal(find('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
   });
