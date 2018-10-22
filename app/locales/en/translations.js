@@ -1465,6 +1465,7 @@ export default {
     messages: {
       checkOut: 'Are you sure you wish to check out {{patientName}}?',
       checkedOut: '{{patientName}} has been checked out.',
+      deletingVisit: 'Deleting visit and all associated records',
       discharged: '{{patientName}} has been discharged.',
       patientCheckedIn: '{{patientName}} has been checked in.',
       patientCreatedAndCheckedIn: '{{patientName}} has been created and checked in.',
@@ -1484,6 +1485,8 @@ export default {
       checkOut: 'Patient Check Out',
       checkedIn: 'Patient Checked In',
       checkedOut: 'Patient Checked Out',
+      delete: 'Delete Visit',
+      deleteVisitRecord: 'Delete Visit Record',
       discharged: 'Patient Discharged',
       editVisit: 'Edit Visit',
       newVisit: 'New Visit',

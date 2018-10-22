@@ -7,11 +7,9 @@ import { translationMacro as t } from 'ember-i18n';
 import { task, taskGroup, all } from 'ember-concurrency';
 
 export default AbstractDeleteController.extend(PouchDbMixin, ProgressDialog, CascadingDeletions, {
-
-  // these should be added to translations
-  title: 'Delete Visit',
-  progressTitle: t('Delete Visit Record'),
-  progressMessage: t('Deleting visit and all associated records'),
+  title: t('visits.titles.delete'),
+  progressTitle: t('visits.titles.deleteVisitRecord'),
+  progressMessage: t('visits.messages.deletingVisit'),
   deleting: taskGroup(),
 
   deleteVisit() {
