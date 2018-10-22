@@ -1,49 +1,19 @@
-import { isEmpty } from '@ember/utils';
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import PatientVisitsMixin from 'hospitalrun/mixins/patient-visits';
 import PatientAppointmentsMixin from 'hospitalrun/mixins/patient-appointments';
 import PatientInvoicesMixin from 'hospitalrun/mixins/patient-invoices';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
+import CascadingDeletions from 'hospitalrun/mixins/cascading-deletion';
 import { translationMacro as t } from 'ember-i18n';
 import { task, taskGroup, all } from 'ember-concurrency';
 
-export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoicesMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, {
+export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoicesMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, CascadingDeletions, {
   title: t('patients.titles.delete'),
   progressTitle: t('patients.titles.deletePatientRecord'),
   progressMessage: t('patients.messages.deletingPatient'),
   deleting: taskGroup(),
 
-  deleteMany(manyArray) {
-    return this.get('deleteManyTask').perform(manyArray);
-  },
-
-  deleteManyTask: task(function* (manyArray) {
-    if (!manyArray) {
-      return;
-    }
-    let resolvedArray = yield manyArray;
-    if (isEmpty(resolvedArray)) {
-      // empty array: no records to delete
-      return;
-    }
-    let deleteRecordTask = this.get('deleteRecordTask');
-    let archivePromises = [];
-    resolvedArray.forEach((recordToDelete) => {
-      archivePromises.push(deleteRecordTask.perform(recordToDelete));
-    });
-    return yield all(archivePromises, 'async array deletion');
-  }).group('deleting'),
-
-  deleteRecordTask: task(function* (recordToDelete) {
-    recordToDelete.set('archived', true);
-    yield recordToDelete.save();
-    return yield recordToDelete.unloadRecord();
-  }).group('deleting'),
-
-  // Override delete action on controller; we must delete
-  // all related records before deleting patient record
-  // otherwise errors will occur
   deletePatient() {
     return this.get('deletePatientTask').perform();
   },
@@ -70,46 +40,11 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   deleteVisitsTask: task(function* (visits) {
     let pendingTasks = [];
     visits.forEach((visit) => {
-      let labs = visit.get('labs');
-      let procedures = visit.get('procedures');
-      let imaging =  visit.get('imaging');
-      let procCharges = procedures.get('charges');
-      let labCharges = labs.get('charges');
-      let imagingCharges = imaging.get('charges');
-      let visitCharges = visit.get('charges');
-      pendingTasks.push(this.deleteMany(labs));
-      pendingTasks.push(this.deleteMany(labCharges));
-      pendingTasks.push(this.deleteMany(visit.get('patientNotes')));
-      pendingTasks.push(this.deleteMany(visit.get('vitals')));
-      pendingTasks.push(this.deleteMany(procedures));
-      pendingTasks.push(this.deleteMany(procCharges));
-      pendingTasks.push(this.deleteMany(visit.get('medication')));
-      pendingTasks.push(this.deleteMany(imaging));
-      pendingTasks.push(this.deleteMany(imagingCharges));
-      pendingTasks.push(this.deleteMany(visitCharges));
+      pendingTasks.push(deleteVisitTask(visit));
     });
     yield all(pendingTasks);
-    return yield this.deleteMany(visits);
-  }).group('deleting'),
-
-  deleteInvoices(patientInvoices) {
-    return this.get('deleteInvoicesTask').perform(patientInvoices);
-  },
-
-  deleteInvoicesTask: task(function* (patientInvoices) {
-    let pendingTasks = [];
-    let invoices = yield patientInvoices;
-    let lineItems = invoices.mapBy('lineItems');
-    pendingTasks.push(this.deleteMany(invoices));
-    lineItems.forEach((item) => {
-      let itemDetails = item.mapBy('details');
-      pendingTasks.push(this.deleteMany(item));
-      itemDetails.forEach((detail) => {
-        pendingTasks.push(this.deleteMany(detail));
-      });
-    });
-    return yield all(pendingTasks);
-  }).group('deleting'),
+    // don't have to deleteMany(visits) because it will happen in deleteVisitTask
+  }),
 
   deleteActionTask: task(function* (patient) {
     // delete related records without modal dialogs
