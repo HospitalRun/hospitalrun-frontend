@@ -70,7 +70,7 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     let maxValue = get(this, 'maxValue');
     return new RSVP.Promise(function(resolve, reject) {
       if (isEmpty(filterStartDate)) {
-        reject();
+        reject('Start date cannot be an empty value.');
       }
       findParams.options.startkey =  [filterStartDate.getTime(), null];
 
