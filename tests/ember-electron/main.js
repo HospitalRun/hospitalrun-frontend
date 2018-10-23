@@ -1,10 +1,17 @@
 /* eslint-env node */
-const { app, BrowserWindow, protocol } = require('electron');
+/* onst { app, BrowserWindow, protocol } = require('electron');
 const { dirname, resolve, basename } = require('path');
 const fs = require('fs');
 const url = require('url');
 const protocolServe = require('electron-protocol-serve');
 const tmp = require('tmp');
+*/
+import { app, BrowserWindow, protocol } from 'electron';
+import { dirname, resolve, basename } from 'path';
+import fs from 'fs';
+import url from 'url';
+import protocolServe from 'electron-protocol-serve';
+import tmp from 'tmp';
 
 let mainWindow = null;
 

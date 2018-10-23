@@ -1,7 +1,8 @@
 /* jshint undef: false */
 /* eslint-env node */
 
-const { app, BrowserWindow }  = require('electron');
+//const { app, BrowserWindow }  = require('electron');
+import { app, BrowserWindow } from 'electron';
 
 let mainWindow = null;
 

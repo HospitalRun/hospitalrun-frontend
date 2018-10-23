@@ -4,11 +4,11 @@
       <h1 class="view-current-title">{{currentScreenTitle}}</h1>
       <div class="view-action-buttons">
         {{#if newButtonAction}}
-          <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
+          <button class="btn btn-primary" onclick={{action newButtonAction}}>{{newButtonText}}</button>
         {{/if}}
         {{#if additionalButtons}}
           {{#each additionalButtons as |button|}}
-            <button class={{button.class}} {{action button.buttonAction}}>
+            <button class={{button.class}} onclick={{action button.buttonAction}}>
               {{#if buttonIcon}}<span class={{button.buttonIcon}}></span>{{/if}}
               {{button.buttonText}}
             </button>

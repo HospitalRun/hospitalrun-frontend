@@ -10,13 +10,13 @@
       </div>
       <div class="modal-footer">
         {{#unless hideCancelButton}}
-          <button class="btn btn-default warning" {{action "cancelAction"}}>{{cancelBtnText}}</button>
+          <button class="btn btn-default warning" onclick={{action "cancelAction"}}>{{cancelBtnText}}</button>
         {{/unless}}
         {{#unless hideUpdateButton}}
-          <button class="btn btn-primary on-white {{updateButtonClass}}" {{action "updateAction" }} disabled={{isUpdateDisabled}}>{{ updateButtonText }}</button>
+          <button class="btn btn-primary on-white {{updateButtonClass}}" onclick={{action "updateAction" }} disabled={{isUpdateDisabled}}>{{ updateButtonText }}</button>
         {{/unless}}
         {{#each additionalButtons as |button|}}
-            <button class="{{button.class}}" {{action 'fireButtonAction' button.buttonAction}}>
+            <button class="{{button.class}}" onclick={{action 'fireButtonAction' button.buttonAction}}>
               {{#if button.buttonIcon}}
                 <span class="{{button.buttonIcon}}"></span>
               {{/if}}

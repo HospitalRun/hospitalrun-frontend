@@ -7,11 +7,11 @@
       {{#if editPanelProps.cancelButtonText}}
         <button class="btn btn-default warning" {{action 'cancel'}}>{{editPanelProps.cancelButtonText}}</button>
       {{else}}
-        <button class="btn btn-default warning" {{action 'cancel'}}>{{t 'buttons.cancel'}}</button>
+        <button class="btn btn-default warning" onclick={{action 'cancel'}}>{{t 'buttons.cancel'}}</button>
       {{/if}}
     {{/unless}}
     {{#if editPanelProps.showUpdateButton}}
-      <button class="btn btn-primary on-white {{if editPanelProps.disabledAction 'disabled-btn'}}" {{action editPanelProps.actionForUpdateButton}}>
+      <button class="btn btn-primary on-white {{if editPanelProps.disabledAction 'disabled-btn'}}" onclick={{action editPanelProps.actionForUpdateButton}}>
         {{#if editPanelProps.updateButtonIcon}}
           <span class="{{editPanelProps.updateButtonIcon}}"></span>
         {{/if}}
@@ -19,7 +19,7 @@
       </button>
     {{/if}}
     {{#each editPanelProps.additionalButtons as |button|}}
-      <button class="{{button.class}}" {{action 'fireButtonAction' button.buttonAction}}>
+      <button class="{{button.class}}" onclick={{action 'fireButtonAction' button.buttonAction}}>
         {{#if button.buttonIcon}}
           <span class="{{button.buttonIcon}}"></span>
         {{/if}}
