@@ -34,7 +34,7 @@ Contributions are welcome via pull requests and issues.  Please see our [contrib
 To install the frontend please do the following:
 
 1. Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
-2. Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions 6.0.0 and higher should work. We recommend that you use the most-recent "Active LTS" version of Node.js.
+2. Make sure you have installed [Node.js](https://nodejs.org/en/download/). Version 6.14.3 and higher versions of node 6.X.X are supported.
 3. Make sure you have yarn installed [Yarn](https://yarnpkg.com/)
 4. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `yarn global add ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
