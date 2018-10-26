@@ -63,21 +63,23 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   _findIncidentsByDate() {
     let filterEndDate = get(this, 'endDate');
     let filterStartDate = get(this, 'startDate');
+
     let findParams = {
       options: {},
       mapReduce: 'incident_by_date'
     };
-    let maxValue = get(this, 'maxValue');
-    return new RSVP.Promise(function(resolve, reject) {
-      if (isEmpty(filterStartDate)) {
-        reject('Start date cannot be an empty value.');
-      }
-      findParams.options.startkey =  [filterStartDate.getTime(), null];
 
-      if (!isEmpty(filterEndDate)) {
-        filterEndDate = moment(filterEndDate).endOf('day').toDate();
-        findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
+    let maxValue = get(this, 'maxValue');
+
+    return new RSVP.Promise(function(resolve, reject) {
+      if (isEmpty(filterStartDate) || isEmpty(filterEndDate)) {
+        reject('Start or End date cannot be an empty value.');
       }
+
+      findParams.options.startkey =  [filterStartDate.getTime(), null];
+      filterEndDate = moment(filterEndDate).endOf('day').toDate();
+      findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
+
       return this.store.query('incident', findParams).then(resolve, reject);
     }.bind(this));
   },
@@ -145,6 +147,12 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
 
   actions: {
     generateReport() {
+
+      if (isEmpty(get(this, 'endDate'))) {
+        let now = new Date();
+        this.set('endDate', now);
+      }
+
       let reportRows = get(this, 'reportRows');
       let reportType = get(this, 'reportType');
       reportRows.clear();
