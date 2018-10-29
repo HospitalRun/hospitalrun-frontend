@@ -1,4 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import { computed } from '@ember/object';
+
 export default AbstractEditController.extend({
   actions: {
     cancel() {
@@ -11,12 +13,12 @@ export default AbstractEditController.extend({
     this.displayAlert('Pricing Profile Saved', message, 'refreshProfiles');
   },
 
-  title: function() {
+  title: computed('model.isNew', function() {
     let isNew = this.get('model.isNew');
     if (isNew) {
       return 'New Pricing Profile';
     } else {
       return 'Edit Pricing Profile';
     }
-  }.property('model.isNew')
+  })
 });

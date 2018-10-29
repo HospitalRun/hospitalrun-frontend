@@ -1,5 +1,7 @@
 import { isEmpty } from '@ember/utils';
 import Mixin from '@ember/object/mixin';
+import { computed } from '@ember/object';
+
 export default Mixin.create({
   getDisplayLocationName(location, aisleLocation) {
     let locationName = this.formatLocationName(location, aisleLocation);
@@ -23,9 +25,9 @@ export default Mixin.create({
     return locationName;
   },
 
-  locationName: function() {
+  locationName: computed('location', 'aisleLocation', function() {
     let aisleLocation = this.get('aisleLocation');
     let location = this.get('location');
     return this.getDisplayLocationName(location, aisleLocation);
-  }.property('location', 'aisleLocation')
+  })
 });

@@ -35,14 +35,13 @@ To install the frontend please do the following:
 
 1. Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 2. Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions 6.0.0 and higher should work. We recommend that you use the most-recent "Active LTS" version of Node.js.
-3. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`.
+3. Make sure you have yarn installed [Yarn](https://yarnpkg.com/)
+4. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `yarn global add ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
-4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`.
 5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run 
 
 ```
-npm install
-bower install
+yarn install
 ```
 
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
@@ -61,7 +60,7 @@ bower install
             1. HospitalRun currently does not fully support CouchDB 2.x, but you are welcome to try using it.  Most functionality should work but currently creating and/or editing users does not work in CouchDB 2.x.  See https://github.com/HospitalRun/hospitalrun-frontend/issues/953 for more details.
             2. If you have just installed CouchDB and have no admin user, please run `./script/initcouch2.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password `test`.
             3. If you already have a CouchDB admin user, please run `./script/initcouch2.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
-7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from a unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
+7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from an unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
 8. Verify that CouchDB is running by visiting: http://127.0.0.1:5984/_utils/#login
    and logging in with the with the credentials you just created from steps 6 and 7.
    - If the page returns an error or 404:
@@ -72,7 +71,7 @@ bower install
 ## Running the application
 To start the frontend please do the following:
 
-- Start the server by running `npm start` in the repo folder.  If `npm start` doesn't work for you, try `ember serve` as an alternative.
+- Start the server by running `yarn start` in the repo folder.  If `yarn start` doesn't work for you, try `ember serve` as an alternative.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Running with Docker
@@ -103,7 +102,7 @@ If you are not running with Docker toolbox, please do the following:
 ### Troubleshooting your local environment
 Always make sure to `git pull` and get the latest from master.
 
-The app will usually tell you when something needs to happen (i.e. if you try to `npm start` and npm is out of date, it will tell you to run `npm update`. But If you run into problems you can't resolve, feel free to open an issue, or ask for help in the [HospitalRun Slack channel](https://hospitalrun.slack.com/) (you can request an invite [here](https://hospitalrun-slackin.herokuapp.com/)).
+The app will usually tell you when something needs to happen (i.e. if you try to `yarn start` and npm is out of date, it will tell you to run `yarn update`. But If you run into problems you can't resolve, feel free to open an issue, or ask for help in the [HospitalRun Slack channel](https://hospitalrun.slack.com/) (you can request an invite [here](https://hospitalrun-slackin.herokuapp.com/)).
 
 Otherwise, here are some tips for common issues:
 
@@ -115,13 +114,24 @@ Is your server (still) running? Is CouchDB running? If not, that's probably the 
 
 Try a browser refresh `cmd + r`.
 
+**ERR! stack python2: command not found**
+
+`yarn install` requires Python 2 to build some dependencies.
+Make sure `python2` is accessible from the current working directory.
+
+If you're using [pyenv](https://github.com/pyenv/pyenv), you can run the following to override the Python version used in the current working directory:
+```
+$ pyenv install 2.7.15
+$ pyenv local 2.7.15
+```
+
 ## Loading sample data
 If you would like to load sample data, you can do so by navigating to **Load DB** under the Administration menu.  You should see the following screen:
 
 ![Load DB screenshot](screenshots/load-db.png)
 
 
-Click on ***Choose File*** and select the file **sample-data.txt** which is included in root directory of the repo at [sample-data.txt](sample-data.txt).
+Click on ***Choose File*** and select the file **sample-data.txt** which is included in the root directory of the repo at [sample-data.txt](sample-data.txt).
 Next, click on ***Load File***.  When the database load is complete a message will appear indicating if the load was successful.
 
 ## Testing

@@ -3,6 +3,7 @@ import { Promise as EmberPromise } from 'rsvp';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import { inject as controller } from '@ember/controller';
+import { computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 
 export default AbstractEditController.extend({
@@ -15,13 +16,13 @@ export default AbstractEditController.extend({
   selectedItem: null,
   updateCapability: 'add_charge',
 
-  title: function() {
+  title: computed('model.isNew', function() {
     let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('procedures.titles.addChargeItem');
     }
     return this.get('i18n').t('procedures.titles.editChargeItem');
-  }.property('model.isNew'),
+  }),
 
   beforeUpdate() {
     this.set('newCharge', this.get('model.isNew'));

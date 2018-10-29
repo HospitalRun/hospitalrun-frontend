@@ -269,20 +269,20 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }];
   }),
 
-  isDischargeReport: function() {
+  isDischargeReport: computed('reportType', function() {
     let reportType = this.get('reportType');
     return (reportType.toLowerCase().indexOf('discharges') > -1);
-  }.property('reportType'),
+  }),
 
-  isStatusReport: function() {
+  isStatusReport: computed('reportType', function() {
     let reportType = this.get('reportType');
     return reportType === 'status';
-  }.property('reportType'),
+  }),
 
-  isVisitReport: function() {
+  isVisitReport: computed('reportType', function() {
     let reportType = this.get('reportType');
     return (reportType === 'visit');
-  }.property('reportType'),
+  }),
 
   _addContactToList(phone, email, prefix, contactList) {
     let contactArray = [];

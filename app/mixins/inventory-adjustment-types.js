@@ -1,7 +1,8 @@
 import Mixin from '@ember/object/mixin';
+import { computed } from '@ember/object';
 
 export default Mixin.create({
-  adjustmentTypes: function() {
+  adjustmentTypes: computed(function() {
     let i18n = this.get('i18n');
     return [
       {
@@ -25,5 +26,5 @@ export default Mixin.create({
         type: 'Write Off'
       }
     ];
-  }.property()
+  })
 });

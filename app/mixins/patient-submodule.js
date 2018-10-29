@@ -107,7 +107,7 @@ export default Mixin.create(PatientVisits, {
     }.bind(this), reject);
   },
 
-  cancelAction: function() {
+  cancelAction: computed('model.returnToPatient', 'model.returnToVisit', function() {
     let returnToPatient = this.get('model.returnToPatient');
     let returnToVisit = this.get('model.returnToVisit');
     if (!isEmpty(returnToVisit)) {
@@ -117,7 +117,7 @@ export default Mixin.create(PatientVisits, {
     } else {
       return 'returnToAllItems';
     }
-  }.property('model.returnToPatient', 'model.returnToVisit'),
+  }),
 
   createNewVisit(newVisitType) {
     return new EmberPromise(function(resolve, reject) {
@@ -174,7 +174,7 @@ export default Mixin.create(PatientVisits, {
 
   patientSelected(/* patient */) {},
 
-  patientVisits: function() {
+  patientVisits: computed('model.patient.id', 'newVisitAdded', function() {
     let patient = this.get('model.patient');
     let visitPromise;
 
@@ -186,7 +186,7 @@ export default Mixin.create(PatientVisits, {
     return DS.PromiseArray.create({
       promise: visitPromise
     });
-  }.property('model.patient.id', 'newVisitAdded'),
+  }),
 
   patientProcedures: computed('patientVisits.[]', function() {
     let patient = get(this, 'model.patient');
@@ -199,13 +199,13 @@ export default Mixin.create(PatientVisits, {
     });
   }),
 
-  patientVisitsForSelect: function() {
+  patientVisitsForSelect: computed('patientVisits.[]', function() {
     return DS.PromiseArray.create({
       promise: this.get('patientVisits').then(function(patientVisits) {
         return patientVisits.map(SelectValues.selectObjectMap);
       })
     });
-  }.property('patientVisits.[]'),
+  }),
 
   /**
    * Removes the specified child from the current visit object and then saves the visit.

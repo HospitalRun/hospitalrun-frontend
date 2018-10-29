@@ -1,5 +1,6 @@
 import { later } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
 import { translationMacro as t } from 'ember-i18n';
@@ -56,13 +57,13 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     }
   }.observes('patientVisits'),
 
-  showPatientMedicationList: function() {
+  showPatientMedicationList: computed('patientMedicationList', 'model.patient', 'model.visit', function() {
     let patientMedicationList = this.get('patientMedicationList');
     this.get('patientMedication'); // Request patient medication be updated
     return !isEmpty(patientMedicationList);
-  }.property('patientMedicationList', 'model.patient', 'model.visit'),
+  }),
 
-  patientMedication: function() {
+  patientMedication: computed('setNewMedicationList', 'model.patient', 'model.visit', function() {
     let setNewMedicationList = this.get('setNewMedicationList');
     let visit = this.get('model.visit');
     if (setNewMedicationList) {
@@ -76,7 +77,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       }.bind(this));
     }
     return this.get('patientMedicationList');
-  }.property('setNewMedicationList', 'model.patient', 'model.visit'),
+  }),
 
   _finishUpdate() {
     let aisle = this.get('model.deliveryAisle');

@@ -34,7 +34,7 @@ export default SelectOrTypeahead.extend({
     }));
   }.on('init'),
 
-  checkboxRows: function() {
+  checkboxRows: computed('content', 'checkboxesPerRow', function() {
     let checkboxRows = [];
     let checkboxesPerRow = this.get('checkboxesPerRow');
     let content = this.get('content');
@@ -44,7 +44,7 @@ export default SelectOrTypeahead.extend({
       checkboxRows.push(checkBoxRowValues);
     }
     return checkboxRows;
-  }.property('content', 'checkboxesPerRow'),
+  }),
 
   actions: {
     checkboxChanged(value, checked) {

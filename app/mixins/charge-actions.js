@@ -2,6 +2,8 @@ import { isArray } from '@ember/array';
 import { alias } from '@ember/object/computed';
 import { isEmpty } from '@ember/utils';
 import EmberObject from '@ember/object';
+import { computed } from '@ember/object';
+
 import {
   Promise as EmberPromise,
   all,
@@ -83,22 +85,9 @@ export default Mixin.create({
     }
   },
 
-  canAddCharge: function() {
+  canAddCharge: computed(function() {
     return this.currentUserCan('add_charge');
-  }.property(),
-
-  /**
-   * Returns pricing list without object types
-   * Used for labs and imaging where the labs and imaging types are
-   * directly in the price list.
-   */
-  chargesPricingList: function() {
-    let pricingList = this.get('pricingList');
-    let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
-    return pricingList.filter(function(item) {
-      return (item.type !== pricingTypeForObjectType);
-    });
-  }.property('pricingList', 'pricingTypeForObjectType'),
+  }),
 
   chargeRoute: null,
 
@@ -114,23 +103,22 @@ export default Mixin.create({
    * Used for labs and imaging where the labs and imaging types are
    * directly in the price list.
    */
-  objectTypeList: function() {
+  objectTypeList: computed('pricingList', 'pricingTypeForObjectType', 'pricingTypeValues', function() {
     let pricingList = this.get('pricingList');
-    let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
     let userCanAddPricingTypes = this.get('userCanAddPricingTypes');
     let returnList = EmberObject.create({
       value: [],
       userCanAdd: userCanAddPricingTypes
     });
     if (!isEmpty(pricingList)) {
-      returnList.set('value', pricingList.filterBy('pricingType', pricingTypeForObjectType));
+      returnList.set('value', pricingList);
     }
     return returnList;
-  }.property('pricingList', 'pricingTypeForObjectType', 'pricingTypeValues'),
+  }),
 
   organizeByType: alias('pricingTypes.organizeByType'),
 
-  pricingTypeList: function() {
+  pricingTypeList: computed('pricingTypeValues', 'pricingTypeForObjectType', 'pricingList', function() {
     let pricingList = this.get('pricingList');
     let pricingTypeValues = this.get('pricingTypeValues');
     let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
@@ -145,7 +133,7 @@ export default Mixin.create({
       pricingTypeValues = pricingTypeValues.sortBy('name');
       return pricingTypeValues;
     }
-  }.property('pricingTypeValues', 'pricingTypeForObjectType', 'pricingList'),
+  }),
 
   pricingTypeValues: alias('pricingTypes.value'),
 
@@ -238,7 +226,7 @@ export default Mixin.create({
     }
   },
 
-  showAddCharge: function() {
+  showAddCharge: computed('canAddCharge', 'organizeByType', function() {
     let canAddCharge = this.get('canAddCharge');
     let organizeByType = this.get('organizeByType');
     if (canAddCharge) {
@@ -246,9 +234,9 @@ export default Mixin.create({
     } else {
       return false;
     }
-  }.property('canAddCharge', 'organizeByType'),
+  }),
 
-  showEditCharges: function() {
+  showEditCharges: computed('canAddCharge', 'organizeByType', function() {
     let canAddCharge = this.get('canAddCharge');
     let organizeByType = this.get('organizeByType');
     if (canAddCharge) {
@@ -256,21 +244,21 @@ export default Mixin.create({
     } else {
       return false;
     }
-  }.property('canAddCharge', 'organizeByType'),
+  }),
 
-  showPricingTypeTabs: function() {
+  showPricingTypeTabs: computed('pricingTypeList', function() {
     let pricingTypeList = this.get('pricingTypeList');
     return !isEmpty(pricingTypeList) && pricingTypeList.get('length') > 1;
-  }.property('pricingTypeList'),
+  }),
 
-  userCanAddPricingTypes: function() {
+  userCanAddPricingTypes: computed('pricingTypes', function() {
     let pricingTypes = this.get('pricingTypes');
     if (isEmpty(pricingTypes)) {
       return true;
     } else {
       return pricingTypes.get('userCanAdd');
     }
-  }.property('pricingTypes'),
+  }),
 
   /**
    * When using organizeByType charges need to be mapped over from the price lists

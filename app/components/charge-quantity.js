@@ -2,6 +2,8 @@ import { isEmpty } from '@ember/utils';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
+import { computed } from '@ember/object';
+
 export default Component.extend({
   i18n: service(),
   classNames: ['col-xs-2', 'form-group'],
@@ -14,15 +16,15 @@ export default Component.extend({
     this.quantitySelected = alias(`model.${this.get('pricingItem.id')}`);
   },
 
-  hasError: function() {
+  hasError: computed('quantitySelected', function() {
     let quantitySelected = this.get('quantitySelected');
     return !isEmpty(quantitySelected) && isNaN(quantitySelected);
-  }.property('quantitySelected'),
+  }),
 
-  quantityHelp: function() {
+  quantityHelp: computed('hasError', function() {
     if (this.get('hasError')) {
       return this.get('i18n').t('errors.invalidNumber');
     }
-  }.property('hasError')
+  })
 
 });

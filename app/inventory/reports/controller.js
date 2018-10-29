@@ -189,12 +189,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     }];
   }),
 
-  hideLocationFilter: function() {
+  hideLocationFilter: computed('reportType', function() {
     let reportType = this.get('reportType');
     return (reportType === 'summaryFinance');
-  }.property('reportType'),
+  }),
 
-  includeDate: function() {
+  includeDate: computed('reportType', function() {
     let reportType = this.get('reportType');
     if (!isEmpty(reportType) && reportType.indexOf('detailed') === 0) {
       this.set('reportColumns.date.include', true);
@@ -204,9 +204,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       return false;
     }
 
-  }.property('reportType'),
+  }),
 
-  includeDaysLeft: function() {
+  includeDaysLeft: computed('reportType', function() {
     let reportType = this.get('reportType');
     if (reportType === 'daysLeft') {
       this.set('reportColumns.consumedPerDay.include', true);
@@ -218,9 +218,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       return false;
     }
 
-  }.property('reportType'),
+  }),
 
-  includeCostFields: function() {
+  includeCostFields: computed('reportType', function() {
     let reportType = this.get('reportType');
     if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer' || reportType === 'daysLeft') {
       this.set('reportColumns.total.include', false);
@@ -231,9 +231,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       this.set('reportColumns.unitcost.include', true);
       return true;
     }
-  }.property('reportType'),
+  }),
 
-  includeExpenseAccount: function() {
+  includeExpenseAccount: computed('reportType', function() {
     let reportType = this.get('reportType');
     switch (reportType) {
       case 'detailedAdjustment':
@@ -250,9 +250,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         return false;
       }
     }
-  }.property('reportType'),
+  }),
 
-  includeTransactionType: function() {
+  includeTransactionType: computed('reportType', function() {
     let reportType = this.get('reportType');
     if (reportType === 'detailedAdjustment') {
       this.set('reportColumns.transactionType.include', true);
@@ -261,9 +261,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       this.set('reportColumns.transactionType.include', false);
       return false;
     }
-  }.property('reportType'),
+  }),
 
-  showEffectiveDate: function() {
+  showEffectiveDate: computed('reportType', function() {
     let reportType = this.get('reportType');
     if (reportType === 'valuation' || reportType === 'byLocation') {
       this.set('startDate', null);
@@ -277,12 +277,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       }
       return false;
     }
-  }.property('reportType'),
+  }),
 
-  useFieldPicker: function() {
+  useFieldPicker: computed('reportType', function() {
     let reportType = this.get('reportType');
     return (reportType !== 'expiration' && reportType !== 'summaryFinance');
-  }.property('reportType'),
+  }),
 
   _addAisleColumn(locations) {
     if (!isEmpty(locations)) {

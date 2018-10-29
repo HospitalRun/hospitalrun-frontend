@@ -2,6 +2,7 @@ import { alias } from '@ember/object/computed';
 import { isArray } from '@ember/array';
 import { isEmpty } from '@ember/utils';
 import { inject as controller } from '@ember/controller';
+import { computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
@@ -10,10 +11,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   imagingController: controller('imaging'),
 
   chargePricingCategory: 'Imaging',
-  chargeRoute: 'imaging.charge',
   selectedImagingType: null,
 
-  canComplete: function() {
+  canComplete: computed('selectedImagingType.[]', 'model.imagingTypeName', function() {
     let isNew = this.get('model.isNew');
     let imagingTypeName = this.get('model.imagingTypeName');
     let selectedImagingType = this.get('selectedImagingType');
@@ -22,7 +22,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     } else {
       return this.currentUserCan('complete_imaging');
     }
-  }.property('selectedImagingType.[]', 'model.imagingTypeName'),
+  }),
 
   actions: {
     completeImaging() {
@@ -72,7 +72,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
   },
 
-  additionalButtons: function() {
+  additionalButtons: computed('canComplete', 'model.isValid', function() {
     let i18n = this.get('i18n');
     let canComplete = this.get('canComplete');
     let isValid = this.get('model.isValid');
@@ -84,7 +84,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         buttonText: i18n.t('buttons.complete')
       }];
     }
-  }.property('canComplete', 'model.isValid'),
+  }),
 
   lookupListsToUpdate: [{
     name: 'radiologistList',
@@ -92,7 +92,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     id: 'radiologists'
   }],
 
-  pricingTypeForObjectType: 'Imaging Procedure',
   pricingTypes: alias('imagingController.imagingPricingTypes'),
 
   pricingList: null, // This gets filled in by the route

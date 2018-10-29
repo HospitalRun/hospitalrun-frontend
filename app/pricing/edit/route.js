@@ -14,11 +14,21 @@ export default AbstractEditRoute.extend({
 
   getNewData(params) {
     let newCategory = params.pricing_id.substr(3);
+    let newPricingType = null;
+
     if (isEmpty(newCategory)) {
       newCategory = 'Imaging';
     }
+
+    if (newCategory === 'Lab') {
+      newPricingType = 'Lab Procedure';
+    } else if (newCategory === 'Imaging') {
+      newPricingType = 'Imaging Procedure';
+    }
+
     return resolve({
-      category: newCategory
+      category: newCategory,
+      pricingType: newPricingType
     });
   },
 

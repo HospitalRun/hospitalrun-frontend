@@ -1,5 +1,5 @@
 import { merge } from '@ember/polyfills';
-import EmberObject, { set } from '@ember/object';
+import EmberObject, { set, computed } from '@ember/object';
 import {
   all,
   allSettled,
@@ -26,7 +26,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   updateCapability: 'add_invoice',
   wardCharges: [],
 
-  additionalButtons: function() {
+  additionalButtons: computed('model.isValid', 'model.status', function() {
     let buttons = [];
     let isValid = this.get('model.isValid');
     let status = this.get('model.status');
@@ -46,17 +46,17 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     });
     return buttons;
 
-  }.property('model.isValid', 'model.status'),
+  }),
 
-  canAddCharge: function() {
+  canAddCharge: computed(function() {
     return this.currentUserCan('add_charge');
-  }.property(),
+  }),
 
-  canAddPayment: function() {
+  canAddPayment: computed(function() {
     return this.currentUserCan('add_payment');
-  }.property(),
+  }),
 
-  pharmacyExpenseAccount: function() {
+  pharmacyExpenseAccount: computed('expenseAccountList.value', function() {
     let expenseAccountList = this.get('expenseAccountList');
     if (!isEmpty(expenseAccountList)) {
       let account = expenseAccountList.find(function(value) {
@@ -66,7 +66,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       });
       return account;
     }
-  }.property('expenseAccountList.value'),
+  }),
 
   actions: {
     addItemCharge(lineItem) {

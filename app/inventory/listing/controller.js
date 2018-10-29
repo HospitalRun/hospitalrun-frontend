@@ -1,17 +1,19 @@
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
 import UserSession from 'hospitalrun/mixins/user-session';
+import { computed } from '@ember/object';
+
 export default AbstractPagedController.extend(UserSession, {
-  canAddItem: function() {
+  canAddItem: computed(function() {
     return this.currentUserCan('add_inventory_item');
-  }.property(),
+  }),
 
-  canAddPurchase: function() {
+  canAddPurchase: computed(function() {
     return this.currentUserCan('add_inventory_purchase');
-  }.property(),
+  }),
 
-  canDeleteItem: function() {
+  canDeleteItem: computed(function() {
     return this.currentUserCan('delete_inventory_item');
-  }.property(),
+  }),
 
   startKey: []
 });
