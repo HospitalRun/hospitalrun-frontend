@@ -80,7 +80,7 @@ test('Creating a new appointment', function(assert) {
   });
 });
 
-test('Test for appointment validation issue #1484', function(assert) {
+test('Verify fix for appointment validation issue #1484', function(assert) {
   return runWithPouchDump('appointments', async function() {
     let today = moment().startOf('day');
     let tomorrow =  moment(today).add(24, 'hours');
@@ -100,9 +100,8 @@ test('Test for appointment validation issue #1484', function(assert) {
     // set start date later than end date
     await fillIn('.test-appointment-start input', dayAfterTomorrow.format(DATE_FORMAT));
 
-    // confirm error condition exists.
-    pauseTest();
-
+    assert.equal(find('.help-block:first:contains(Please select a start date earlier than the end date)').length, 1, 'Start date validation error appears');
+    assert.equal(find('.help-block:last:contains(Please select an end date later than the start date)').length, 1, 'End date validation error appears');
   });
 });
 
