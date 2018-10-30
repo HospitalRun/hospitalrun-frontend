@@ -80,6 +80,32 @@ test('Creating a new appointment', function(assert) {
   });
 });
 
+test('Test for appointment validation issue #1484', function(assert) {
+  return runWithPouchDump('appointments', async function() {
+    let today = moment().startOf('day');
+    let tomorrow =  moment(today).add(24, 'hours');
+    let dayAfterTomorrow = moment(tomorrow).add(24, 'hours');
+
+    await authenticateUser();
+    await visit('/appointments/edit/new');
+
+    assert.equal(currentURL(), '/appointments/edit/new');
+    findWithAssert('button:contains(Cancel)');
+    findWithAssert('button:contains(Add)');
+
+    // set end date later than start date
+    await fillIn('.test-appointment-start input', today.format(DATE_FORMAT));
+    await fillIn('.test-appointment-end input', tomorrow.format(DATE_FORMAT));
+
+    // set start date later than end date
+    await fillIn('.test-appointment-start input', dayAfterTomorrow.format(DATE_FORMAT));
+
+    // confirm error condition exists.
+    pauseTest();
+
+  });
+});
+
 test('Creating a new appointment from patient screen', function(assert) {
   return runWithPouchDump('appointments', async function() {
     let today = moment().startOf('day');
