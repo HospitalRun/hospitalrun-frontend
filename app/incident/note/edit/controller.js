@@ -14,9 +14,9 @@ export default AbstractEditController.extend({
     let intl = get(this, 'intl');
     let isNew = get(this, 'model.isNew');
     if (isNew) {
-      return i18n.t('incident.titles.addNote');
+      return intl.t('incident.titles.addNote');
     }
-    return i18n.t('incident.titles.editNote');
+    return intl.t('incident.titles.editNote');
   }),
 
   afterUpdate(note) {

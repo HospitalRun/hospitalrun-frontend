@@ -3,13 +3,13 @@ import { computed } from '@ember/object';
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import moment from 'moment';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AppointmentIndexRoute.extend(DateFormat, {
   editReturn: 'appointments.search',
   filterParams: ['appointmentType', 'provider', 'status'],
   modelName: 'appointment',
-  pageTitle: computed('i18n.locale', () => {
+  pageTitle: computed('intl.locale', () => {
     return t('appointments.searchTitle');
   }),
 

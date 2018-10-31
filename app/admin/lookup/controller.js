@@ -287,8 +287,8 @@ export default Controller.extend(BillingCategories, EKMixin,
           });
           lookupValues.sort();
           let intl = get(this, 'intl');
-          let message = i18n.t('admin.lookup.alertImportListSaveMessage');
-          let title = i18n.t('admin.lookup.alertImportListSaveTitle');
+          let message = intl.t('admin.lookup.alertImportListSaveMessage');
+          let title = intl.t('admin.lookup.alertImportListSaveTitle');
           lookupTypeList.save().then(() => {
             let lookupLists = get(this, 'lookupLists');
             lookupLists.resetLookupList(get(lookupTypeList, 'id'));
@@ -321,8 +321,8 @@ export default Controller.extend(BillingCategories, EKMixin,
       },
       confirmDeleteValue(value) {
         let intl = this.get('intl');
-        let title = i18n.t('admin.lookup.titles.deleteLookupValue');
-        let message = i18n.t('messages.delete', { name: value });
+        let title = intl.t('admin.lookup.titles.deleteLookupValue');
+        let message = intl.t('messages.delete', { name: value });
         this.displayConfirm(title, message, 'deleteValue', EmberObject.create({
           valueToDelete: value
         }));

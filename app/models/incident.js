@@ -86,7 +86,7 @@ export default AbstractModel.extend(IncidentStatuses, {
         }
         if (!isValid) {
           let intl = get(this, 'intl');
-          return i18n.t('incident.messages.selectExistingPatient').toString();
+          return intl.t('incident.messages.selectExistingPatient').toString();
         }
       })
     }

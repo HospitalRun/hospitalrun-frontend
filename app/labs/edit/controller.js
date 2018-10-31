@@ -83,7 +83,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         buttonAction: 'completeLab',
         buttonIcon: 'glyphicon glyphicon-ok',
         class: 'btn btn-primary on-white',
-        buttonText: i18n.t('buttons.complete')
+        buttonText: intl.t('buttons.complete')
       }];
     }
   }),
@@ -98,11 +98,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     let intl = this.get('intl');
     let afterDialogAction, alertMessage, alertTitle;
     if (this.get('model.status') === LAB_STATUS_COMPLETED) {
-      alertTitle = i18n.t('labs.alerts.requestCompletedTitle');
-      alertMessage = i18n.t('labs.alerts.requestCompletedMessage');
+      alertTitle = intl.t('labs.alerts.requestCompletedTitle');
+      alertMessage = intl.t('labs.alerts.requestCompletedMessage');
     } else {
-      alertTitle = i18n.t('labs.alerts.requestSavedTitle');
-      alertMessage = i18n.t('labs.alerts.requestSavedMessage');
+      alertTitle = intl.t('labs.alerts.requestSavedTitle');
+      alertMessage = intl.t('labs.alerts.requestSavedMessage');
     }
     if (multipleRecords) {
       afterDialogAction = this.get('cancelAction');

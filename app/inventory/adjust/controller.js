@@ -3,7 +3,7 @@ import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 import { computed } from '@ember/object';
 
 export default AbstractEditController.extend(AdjustmentTypes, {

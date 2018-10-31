@@ -1,4 +1,4 @@
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 export default AbstractDeleteController.extend(PatientSubmodule, {

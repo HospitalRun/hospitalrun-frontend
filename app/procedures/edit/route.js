@@ -4,7 +4,7 @@ import { get } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, {
   editTitle: t('procedures.titles.edit'),

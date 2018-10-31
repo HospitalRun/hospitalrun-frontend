@@ -1,6 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import PatientId from 'hospitalrun/mixins/patient-id';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractModuleRoute.extend(PatientId, {
   addCapability: 'add_patient',

@@ -19,7 +19,7 @@ export default Mixin.create({
     return STATUS_VALUES.map((status) => {
       return {
         id: status,
-        value: i18n.t(`operativePlan.labels.${status}Status`)
+        value: intl.t(`operativePlan.labels.${status}Status`)
       };
     }).sort(function(a, b) {
       return compare(a.value.toString(), b.value.toString());

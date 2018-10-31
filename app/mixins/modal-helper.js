@@ -13,7 +13,7 @@ export default Mixin.create({
   displayAlert(title, message, okAction, okContext, cancelAction) {
     let intl = this.get('intl');
     let modalOptions = EmberObject.extend({
-      updateButtonText: i18n.t('buttons.ok')
+      updateButtonText: intl.t('buttons.ok')
     });
 
     let modalOptionsCreated = modalOptions.create({
@@ -42,7 +42,7 @@ export default Mixin.create({
     model.set('title', title);
     model.set('message', message);
     model.set('updateButtonAction', 'confirm');
-    model.set('updateButtonText', i18n.t('buttons.ok'));
+    model.set('updateButtonText', intl.t('buttons.ok'));
     this.send('openModal', 'dialog', model);
   }
 });

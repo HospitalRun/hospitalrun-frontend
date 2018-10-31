@@ -80,9 +80,9 @@ export default AbstractModel.extend({
     let hasAppointment = get(this, 'hasAppointment');
     let intl = get(this, 'intl');
     if (hasAppointment === true) {
-      return i18n.t('visits.labels.haveAppointment');
+      return intl.t('visits.labels.haveAppointment');
     } else {
-      return i18n.t('visits.labels.noAppointment');
+      return intl.t('visits.labels.noAppointment');
     }
   }),
 
@@ -106,9 +106,9 @@ export default AbstractModel.extend({
     let imaging = get(this, 'imaging');
     let labs = get(this, 'labs');
     if (imaging.isAny(STATUS_FIELD, REQUESTED_STATUS) || labs.isAny(STATUS_FIELD, REQUESTED_STATUS)) {
-      return i18n.t('visits.labels.ordersNotDone');
+      return intl.t('visits.labels.ordersNotDone');
     } else {
-      return i18n.t('visits.labels.haveDoneOrders');
+      return intl.t('visits.labels.haveDoneOrders');
     }
   }),
 

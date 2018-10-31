@@ -23,7 +23,7 @@ export default AbstractEditController.extend({
         class: 'btn btn-default warning',
         buttonAction: 'deleteDiagnosis',
         buttonIcon: 'octicon octicon-x',
-        buttonText: i8n.t('buttons.delete')
+        buttonText: intl.t('buttons.delete')
       }];
     }
   }),
@@ -36,9 +36,9 @@ export default AbstractEditController.extend({
     let intl = this.get('intl');
     let isNew = this.get('model.isNew');
     if (isNew) {
-      return i8n.t('diagnosis.titles.addDiagnosis');
+      return intl.t('diagnosis.titles.addDiagnosis');
     } else {
-      return i8n.t('diagnosis.titles.editDiagnosis');
+      return intl.t('diagnosis.titles.editDiagnosis');
     }
   }),
 

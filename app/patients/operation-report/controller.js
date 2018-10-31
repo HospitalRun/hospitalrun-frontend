@@ -23,8 +23,8 @@ export default OperativePlanController.extend({
 
   _finishAfterUpdate() {
     let intl = get(this, 'intl');
-    let updateMessage = i18n.t('operationReport.messages.reportSaved');
-    let updateTitle = i18n.t('operationReport.titles.reportSaved');
+    let updateMessage = intl.t('operationReport.messages.reportSaved');
+    let updateTitle = intl.t('operationReport.titles.reportSaved');
     this.displayAlert(updateTitle, updateMessage);
   },
 

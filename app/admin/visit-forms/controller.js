@@ -32,7 +32,7 @@ export default AbstractEditController.extend(VisitTypes, {
     return visitTemplateIds.map((currentId) => {
       return {
         id: currentId,
-        value: i18n.t(`admin.visitForms.labels.${currentId}`)
+        value: intl.t(`admin.visitForms.labels.${currentId}`)
       };
     });
   }),

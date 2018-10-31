@@ -22,15 +22,15 @@ export default Controller.extend(FilterList, ModalHelper, PatientVisits, SelectV
   hasAppointmentLabels: computed(function() {
     let intl = this.get('intl');
     return [
-      i18n.t('visits.labels.haveAppointment'),
-      i18n.t('visits.labels.noAppointment')
+      intl.t('visits.labels.haveAppointment'),
+      intl.t('visits.labels.noAppointment')
     ];
   }),
   doneOrdersValues: computed(function() {
     let intl = this.get('intl');
     return [
-      i18n.t('visits.labels.ordersNotDone'),
-      i18n.t('visits.labels.haveDoneOrders')
+      intl.t('visits.labels.ordersNotDone'),
+      intl.t('visits.labels.haveDoneOrders')
     ];
   }),
   locationList: map('patientController.locationList.value', SelectValues.selectValuesMap).volatile(),
@@ -72,8 +72,8 @@ export default Controller.extend(FilterList, ModalHelper, PatientVisits, SelectV
     checkOut(visit) {
       let intl = this.get('intl');
       let patientDetails = { patientName: visit.get('patient.displayName') };
-      let confirmMessage =  i18n.t('visits.messages.checkOut', patientDetails);
-      this.displayConfirm(i18n.t('visits.titles.checkOut'), confirmMessage,
+      let confirmMessage =  intl.t('visits.messages.checkOut', patientDetails);
+      this.displayConfirm(intl.t('visits.titles.checkOut'), confirmMessage,
         'finishCheckOut', visit);
     },
 

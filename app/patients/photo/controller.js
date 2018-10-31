@@ -3,7 +3,7 @@ import { isEmpty } from '@ember/utils';
 import RSVP from 'rsvp';
 import EmberObject, { set, get, computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractEditController.extend({
   addAction: 'addPhoto',

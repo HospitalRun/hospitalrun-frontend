@@ -1,7 +1,7 @@
 import { resolve } from 'rsvp';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';

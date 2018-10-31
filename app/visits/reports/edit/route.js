@@ -2,7 +2,7 @@ import { inject as service } from '@ember/service';
 import EmberObject, { set, get } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 
 export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {

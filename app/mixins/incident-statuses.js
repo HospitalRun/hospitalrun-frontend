@@ -10,6 +10,6 @@ export default Mixin.create({
   statusList: [ACTIVE, CLOSED, FOLLOW_UP, REPORTED],
   getLocalizedStatus(status) {
     let intl = get(this, 'intl');
-    return i18n.t(`incident.labels.status${status}`);
+    return intl.t(`incident.labels.status${status}`);
   }
 });

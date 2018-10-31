@@ -24,9 +24,9 @@ export default Component.extend(FilterList, UserSession, {
   orderTypeFilters: computed(function() {
     let intl = this.get('intl');
     return [
-      i18n.t('components.patientOrders.labels.imagingOrderType').toString(),
-      i18n.t('components.patientOrders.labels.labOrderType').toString(),
-      i18n.t('components.patientOrders.labels.medicationOrderType').toString()
+      intl.t('components.patientOrders.labels.imagingOrderType').toString(),
+      intl.t('components.patientOrders.labels.labOrderType').toString(),
+      intl.t('components.patientOrders.labels.medicationOrderType').toString()
     ];
   }),
 
@@ -69,21 +69,21 @@ export default Component.extend(FilterList, UserSession, {
     let medication = this.get('visit.medication');
     let orderList = new A();
     orderList.addObjects(imaging.map((item) => {
-      item.set('orderType', i18n.t('components.patientOrders.labels.imagingOrderType'));
+      item.set('orderType', intl.t('components.patientOrders.labels.imagingOrderType'));
       item.set('name', item.get('imagingType.name'));
       item.set('dateProcessed', item.get('imagingDate'));
       this._setPermissions(item, 'canAddImaging', 'canDeleteImaging');
       return item;
     }));
     orderList.addObjects(labs.map((item) => {
-      item.set('orderType', i18n.t('components.patientOrders.labels.labOrderType'));
+      item.set('orderType', intl.t('components.patientOrders.labels.labOrderType'));
       item.set('name', item.get('labType.name'));
       item.set('dateProcessed', item.get('labDate'));
       this._setPermissions(item, 'canAddLab', 'canDeleteLab');
       return item;
     }));
     orderList.addObjects(medication.map((item) => {
-      item.set('orderType', i18n.t('components.patientOrders.labels.medicationOrderType'));
+      item.set('orderType', intl.t('components.patientOrders.labels.medicationOrderType'));
       item.set('name', item.get('medicationName'));
       item.set('dateProcessed', item.get('prescriptionDate'));
       item.set('result', '');

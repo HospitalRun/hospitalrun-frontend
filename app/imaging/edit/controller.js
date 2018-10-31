@@ -81,7 +81,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         buttonAction: 'completeImaging',
         buttonIcon: 'glyphicon glyphicon-ok',
         class: 'btn btn-primary on-white',
-        buttonText: i18n.t('buttons.complete')
+        buttonText: intl.t('buttons.complete')
       }];
     }
   }),
@@ -107,11 +107,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       alertTitle,
       alertMessage;
     if (this.get('model.status') === 'Completed') {
-      alertTitle = i18n.t('imaging.alerts.completedTitle');
-      alertMessage = i18n.t('imaging.alerts.completedMessage');
+      alertTitle = intl.t('imaging.alerts.completedTitle');
+      alertMessage = intl.t('imaging.alerts.completedMessage');
     } else {
-      alertTitle = i18n.t('imaging.alerts.savedTitle');
-      alertMessage = i18n.t('imaging.alerts.savedMessage');
+      alertTitle = intl.t('imaging.alerts.savedTitle');
+      alertMessage = intl.t('imaging.alerts.savedMessage');
     }
     if (multipleRecords) {
       afterDialogAction = this.get('cancelAction');

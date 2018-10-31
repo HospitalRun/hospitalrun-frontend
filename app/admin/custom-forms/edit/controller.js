@@ -60,7 +60,7 @@ export default AbstractEditController.extend({
     let intl = this.get('intl');
     let formName = this.get('model.name');
     if (isEmpty(formName)) {
-      return i18n.t('admin.customForms.labels.newForm');
+      return intl.t('admin.customForms.labels.newForm');
     } else {
       return formName;
     }
@@ -83,7 +83,7 @@ export default AbstractEditController.extend({
     return formTypeValues.map((formTypeId) => {
       return {
         id: formTypeId,
-        value: i18n.t(`admin.customForms.labels.${formTypeId}FormType`)
+        value: intl.t(`admin.customForms.labels.${formTypeId}FormType`)
       };
     }).sort(function(a, b) {
       return compare(a.value.toString(), b.value.toString());
@@ -96,7 +96,7 @@ export default AbstractEditController.extend({
 
   fieldTypeLabel(fieldType) {
     let intl = this.get('intl');
-    return i18n.t(`admin.customForms.labels.${fieldType}`);
+    return intl.t(`admin.customForms.labels.${fieldType}`);
   },
 
   _addNewField(field) {

@@ -11,9 +11,9 @@ export default Controller.extend(IsUpdateDisabled, {
   updateButtonText: computed('model.isNew', function() {
     let intl = this.get('intl');
     if (this.get('model.isNew')) {
-      return i18n.t('buttons.add');
+      return intl.t('buttons.add');
     } else {
-      return i18n.t('buttons.update');
+      return intl.t('buttons.update');
     }
   }),
 

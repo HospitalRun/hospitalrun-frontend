@@ -2,7 +2,7 @@ import EmberObject, { computed } from '@ember/object';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractIndexRoute.extend(ModalHelper, UserSession, {
   newButtonAction: computed(function() {
@@ -14,7 +14,7 @@ export default AbstractIndexRoute.extend(ModalHelper, UserSession, {
   }),
   newButtonText: t('admin.customForms.buttons.newForm'),
 
-  pageTitle: computed('i18n.locale', () => {
+  pageTitle: computed('intl.locale', () => {
     return t('admin.customForms.titles.customForms');
   }),
   model() {
@@ -28,8 +28,8 @@ export default AbstractIndexRoute.extend(ModalHelper, UserSession, {
       let model = EmberObject.create({
         itemToDelete: item
       });
-      let message = i18n.t('messages.delete', { name: item.get('name') });
-      let title = i18n.t('admin.customForms.titles.deleteForm');
+      let message = intl.t('messages.delete', { name: item.get('name') });
+      let title = intl.t('admin.customForms.titles.deleteForm');
       this.displayConfirm(title, message, 'deleteCustomForm', model);
     },
 

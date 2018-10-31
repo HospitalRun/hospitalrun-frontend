@@ -4,7 +4,7 @@ import { isEmpty } from '@ember/utils';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import moment from 'moment';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractIndexRoute.extend(DateFormat, {
   database: service(),
@@ -18,10 +18,10 @@ export default AbstractIndexRoute.extend(DateFormat, {
     let intl = this.get('intl');
     let showingTodaysPatients = this.get('showingTodaysPatients');
     if (showingTodaysPatients) {
-      return i18n.t('patients.titles.todaysOutpatients');
+      return intl.t('patients.titles.todaysOutpatients');
     } else {
       let selectedVisitDate = this._dateFormat(this.get('selectedVisitDate'));
-      return i18n.t('patients.titles.outpatientsForDate', { visitDate: selectedVisitDate });
+      return intl.t('patients.titles.outpatientsForDate', { visitDate: selectedVisitDate });
     }
   }),
 

@@ -1,10 +1,10 @@
 import { computed } from '@ember/object';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 
 export default AbstractIndexRoute.extend({
   modelName: 'medication',
-  pageTitle: computed('i18n.locale', () => {
+  pageTitle: computed('intl.locale', () => {
     return t('medication.pageTitle');
   }),
   searchStatus: 'Requested',

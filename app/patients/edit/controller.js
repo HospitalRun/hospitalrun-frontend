@@ -94,7 +94,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
       'Private'
     ];
     return types.map((type) => {
-      return i18n.t(`patients.labels.patientType${type}`);
+      return intl.t(`patients.labels.patientType${type}`);
     });
   }),
 

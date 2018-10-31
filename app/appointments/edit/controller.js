@@ -66,8 +66,8 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     let patientInfo = {
       patient: get(model, 'patient.displayName')
     };
-    let message = i18n.t('appointments.messages.appointmentSaved', patientInfo);
-    let title = i18n.t('appointments.titles.appointmentSaved');
+    let message = intl.t('appointments.messages.appointmentSaved', patientInfo);
+    let title = intl.t('appointments.titles.appointmentSaved');
     this.displayAlert(title, message);
   },
 

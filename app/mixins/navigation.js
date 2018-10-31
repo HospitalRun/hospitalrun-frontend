@@ -362,26 +362,26 @@ export default Mixin.create({
   ],
 
   // Navigation items get mapped localizations
-  localizedNavItems: computed('navItems.[]', 'i18n.locale', function() {
+  localizedNavItems: computed('navItems.[]', 'intl.locale', function() {
     let localizationPrefix = 'navigation.';
     // Supports unlocalized keys for now, otherwise we would get:
     // "Missing translation: key.etc.path"
     let translationOrOriginal = (translation, original) => {
       // Check for typeof string, because if it's found in localization,
-      // i18n will return a SafeString object, not a string
+      // intl will return a SafeString object, not a string
       return typeof translation === 'string' ? original : translation;
     };
     let intl = get(this, 'intl');
     let navItems = get(this, 'navItems');
     return navItems.map((nav) => {
       let sectionKey = localizationPrefix + camelize(nav.title).toLowerCase();
-      let navTranslated = i18n.t(sectionKey);
+      let navTranslated = intl.t(sectionKey);
 
       set(nav, 'localizedTitle', translationOrOriginal(navTranslated, nav.title));
       // Map all of the sub navs, too
       set(nav, 'subnav', nav.subnav.map((sub) => {
         let subItemKey = `${localizationPrefix}subnav.${camelize(sub.title)}`;
-        let subTranslated = i18n.t(subItemKey);
+        let subTranslated = intl.t(subItemKey);
         set(sub, 'localizedTitle', translationOrOriginal(subTranslated, sub.title));
         return sub;
       }));

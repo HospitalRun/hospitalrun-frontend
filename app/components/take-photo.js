@@ -33,7 +33,7 @@ export default Component.extend({
     let intl = get(this, 'intl');
     return FILE_SOURCES.map((source) => {
       return {
-        label: i18n.t(`components.takePhoto.labels.${source}`),
+        label: intl.t(`components.takePhoto.labels.${source}`),
         value: source
       };
     });
@@ -43,7 +43,7 @@ export default Component.extend({
     let intl = get(this, 'intl');
     let sourceLabel = get(this, 'sourceLabel');
     if (isEmpty(sourceLabel)) {
-      return i18n.t('components.takePhoto.how');
+      return intl.t('components.takePhoto.how');
     } else {
       return sourceLabel;
     }

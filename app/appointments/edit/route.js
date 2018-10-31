@@ -5,7 +5,7 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractEditRoute.extend(AddToPatientRoute, PatientListRoute, {
 
@@ -38,9 +38,9 @@ export default AbstractEditRoute.extend(AddToPatientRoute, PatientListRoute, {
       let intl = get(this, 'intl');
       let isNew = get(model, 'isNew');
       if (isNew) {
-        return i18n.t('appointments.titles.newSurgicalAppointment');
+        return intl.t('appointments.titles.newSurgicalAppointment');
       } else {
-        return i18n.t('appointments.titles.editSurgicalAppointment');
+        return intl.t('appointments.titles.editSurgicalAppointment');
       }
     } else {
       return this._super(model);

@@ -35,8 +35,8 @@ export default Component.extend(HospitalRunVersion, ModalHelper, UserSession, Na
       if (session.get('isAuthenticated')) {
         session.invalidate().catch(() => {
           let intl = this.get('intl');
-          let message = i18n.t('navigation.messages.logoutFailed');
-          let title = i18n.t('navigation.titles.logoutFailed');
+          let message = intl.t('navigation.messages.logoutFailed');
+          let title = intl.t('navigation.titles.logoutFailed');
           this.displayAlert(title, message);
         });
       }

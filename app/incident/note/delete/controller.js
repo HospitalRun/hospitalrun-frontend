@@ -1,7 +1,7 @@
 import { inject as controller } from '@ember/controller';
 import { get } from '@ember/object';
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractDeleteController.extend({
   afterDeleteAction: 'notifyNoteDelete',

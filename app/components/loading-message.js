@@ -1,7 +1,7 @@
 import { isEmpty } from '@ember/utils';
 import { later, cancel } from '@ember/runloop';
 import Component from '@ember/component';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 export default Component.extend({
   tagName: 'span',
   showLoadingMessages: false,

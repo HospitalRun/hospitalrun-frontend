@@ -28,9 +28,9 @@ export default AbstractEditController.extend({
     let intl = get(this, 'intl');
     let isNew = get(model, 'isNew');
     if (!isNew) {
-      return i18n.t('allergies.titles.editAllergy');
+      return intl.t('allergies.titles.editAllergy');
     } else {
-      return i18n.t('allergies.titles.addAllergy');
+      return intl.t('allergies.titles.addAllergy');
     }
   }),
 

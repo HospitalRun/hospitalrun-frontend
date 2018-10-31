@@ -3,7 +3,7 @@ import EmberObject, { get } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 import UserSession from 'hospitalrun/mixins/user-session';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractEditRoute.extend(PatientListRoute, UserSession, {
   editTitle: t('incident.titles.editIncident'),

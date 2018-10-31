@@ -28,11 +28,11 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     let status = this.get('model.status');
     if (status === VisitStatus.ADMITTED) {
       buttonProps.buttonAction = 'discharge';
-      buttonProps.buttonText = i18n.t('visits.buttons.discharge');
+      buttonProps.buttonText = intl.t('visits.buttons.discharge');
       return [buttonProps];
     } else if (status === VisitStatus.CHECKED_IN) {
       buttonProps.buttonAction = 'checkout';
-      buttonProps.buttonText = i18n.t('visits.buttons.checkOut');
+      buttonProps.buttonText = intl.t('visits.buttons.checkOut');
       return [buttonProps];
     }
   }),
@@ -164,7 +164,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
   updateButtonText: computed('model.{checkIn,isNew}', function() {
     let intl = this.get('intl');
     if (this.get('model.checkIn')) {
-      return i18n.t('visits.buttons.checkIn');
+      return intl.t('visits.buttons.checkIn');
     } else {
       return this._super();
     }
@@ -198,26 +198,26 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     let addedNewPatient = this.get('addedNewPatient');
     let checkIn = this.get('model.checkIn');
     let intl = this.get('intl');
-    let updateMesage = i18n.t('visits.messages.visitSaved');
-    let updateTitle = i18n.t('visits.titles.visitSaved');
+    let updateMesage = intl.t('visits.messages.visitSaved');
+    let updateTitle = intl.t('visits.titles.visitSaved');
     if (checkIn === true) {
       let model = this.get('model');
       model.set('checkIn');
       this.send('setSectionHeader', {
-        currentScreenTitle: i18n.t('visits.titles.editVisit')
+        currentScreenTitle: intl.t('visits.titles.editVisit')
       });
     }
 
     if (checkIn) {
-      updateTitle = i18n.t('visits.titles.checkedIn');
+      updateTitle = intl.t('visits.titles.checkedIn');
       let patientDetails = {
         patientName: this.get('model.patient.displayName')
       };
       if (addedNewPatient === true) {
         this.set('addedNewPatient');
-        updateMesage = i18n.t('visits.messages.patientCreatedAndCheckedIn', patientDetails);
+        updateMesage = intl.t('visits.messages.patientCreatedAndCheckedIn', patientDetails);
       } else {
-        updateMesage = i18n.t('visits.messages.patientCheckedIn', patientDetails);
+        updateMesage = intl.t('visits.messages.patientCheckedIn', patientDetails);
       }
     }
     this.displayAlert(updateTitle, updateMesage);

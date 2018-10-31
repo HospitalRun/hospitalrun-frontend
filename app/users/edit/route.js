@@ -1,7 +1,7 @@
 import { resolve } from 'rsvp';
 import { set } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 
 export default AbstractEditRoute.extend({
   editTitle: t('labels.editUser'),

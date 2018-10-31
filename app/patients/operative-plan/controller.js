@@ -47,7 +47,7 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
         class: 'btn btn-primary on-white',
         buttonAction: 'completePlan',
         buttonIcon: 'octicon octicon-check',
-        buttonText: i18n.t('operativePlan.buttons.completePlan')
+        buttonText: intl.t('operativePlan.buttons.completePlan')
       }];
     }
   }),
@@ -107,8 +107,8 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
     operationReport.save().then((newReport) => {
       patient.save().then(()=> {
         let intl = get(this, 'intl');
-        let updateMessage = i18n.t('operativePlan.messages.planCompleted');
-        let updateTitle = i18n.t('operativePlan.titles.planCompleted');
+        let updateMessage = intl.t('operativePlan.messages.planCompleted');
+        let updateTitle = intl.t('operativePlan.titles.planCompleted');
         this.displayAlert(updateTitle, updateMessage, 'showOperationReport', newReport, 'ok');
       });
     });
@@ -120,8 +120,8 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
       this._createOperationReport();
     } else {
       let intl = get(this, 'intl');
-      let updateMessage = i18n.t('operativePlan.messages.planSaved');
-      let updateTitle = i18n.t('operativePlan.titles.planSaved');
+      let updateMessage = intl.t('operativePlan.messages.planSaved');
+      let updateTitle = intl.t('operativePlan.titles.planSaved');
       this.displayAlert(updateTitle, updateMessage);
     }
   },

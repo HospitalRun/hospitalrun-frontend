@@ -18,7 +18,7 @@ export default Mixin.create({
     return fieldTypeValues.map((fieldTypeId) => {
       return {
         id: fieldTypeId,
-        value: i18n.t(`admin.customForms.labels.${fieldTypeId}`)
+        value: intl.t(`admin.customForms.labels.${fieldTypeId}`)
       };
     }).sort(function(a, b) {
       return compare(a.value.toString(), b.value.toString());

@@ -1,6 +1,6 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from 'hospitalrun/mixins/user-session';
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 import { computed } from '@ember/object';
 
 export default AbstractIndexRoute.extend(UserSession, {

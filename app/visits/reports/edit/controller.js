@@ -31,7 +31,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
         class: 'btn btn-primary on-white',
         buttonAction: 'printReport',
         buttonIcon: 'octicon octicon-check',
-        buttonText: i18n.t('labels.print')
+        buttonText: intl.t('labels.print')
       }];
     }
   }),

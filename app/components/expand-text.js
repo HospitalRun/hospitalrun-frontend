@@ -106,15 +106,15 @@ export default Component.extend({
 
       if (possibleSwaps.length === 1) {
         let swapTo = possibleSwaps[0].to;
-        result = i18n.t('admin.textReplacements.performExpand', { from: activeSite.term, to: swapTo });
+        result = intl.t('admin.textReplacements.performExpand', { from: activeSite.term, to: swapTo });
       } else if (possibleSwaps.length > 1) {
         let possible = possibleSwaps
           .map((swap) => {
             return swap.from;
           }).join(', ');
-        result = i18n.t('admin.textReplacements.possibleExpansions', { possible });
+        result = intl.t('admin.textReplacements.possibleExpansions', { possible });
       } else {
-        result = i18n.t('admin.textReplacements.noMatches', { term: activeSite.term });
+        result = intl.t('admin.textReplacements.noMatches', { term: activeSite.term });
       }
     }
 

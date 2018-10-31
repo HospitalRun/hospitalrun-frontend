@@ -57,25 +57,25 @@ export default Mixin.create({
     let intl = this.get('intl');
     if (shortFormat) {
       if (years > 0) {
-        formatString = i18n.t('dates.short', options);
+        formatString = intl.t('dates.short', options);
       } else {
-        formatString = i18n.t('dates.shortOmitYears', options);
+        formatString = intl.t('dates.shortOmitYears', options);
       }
     } else if (omitDays) {
       if (years > 1) {
-        formatString = i18n.t('dates.longOmitDaysPlural', options);
+        formatString = intl.t('dates.longOmitDaysPlural', options);
       } else if (years === 1) {
-        formatString = i18n.t('dates.longOmitDays', options);
+        formatString = intl.t('dates.longOmitDays', options);
       } else {
-        formatString = i18n.t('dates.longOmitDaysYears', options);
+        formatString = intl.t('dates.longOmitDaysYears', options);
       }
     } else {
       if (years > 1) {
-        formatString = i18n.t('dates.longPlural', options);
+        formatString = intl.t('dates.longPlural', options);
       } else if (years === 1) {
-        formatString = i18n.t('dates.long', options);
+        formatString = intl.t('dates.long', options);
       } else {
-        formatString = i18n.t('dates.longOmitYears', options);
+        formatString = intl.t('dates.longOmitYears', options);
       }
     }
     return formatString;

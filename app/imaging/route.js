@@ -1,4 +1,4 @@
-import { translationMacro as t } from 'ember-i18n';
+import { translationMacro as t } from 'ember-intl';
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 export default AbstractModuleRoute.extend({
   addCapability: 'add_imaging',

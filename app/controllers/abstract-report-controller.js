@@ -117,7 +117,7 @@ export default Controller.extend(DateFormat, ModalHelper, NumberFormat, Paginati
   _notifyReportError(errorMessage) {
     let intl = this.get('intl');
     this.closeProgressModal();
-    this.displayAlert(i18n.t('alerts.reportError'), i18n.t('messages.reportError'));
+    this.displayAlert(intl.t('alerts.reportError'), intl.t('messages.reportError'));
     throw new Error(errorMessage);
   },
 
