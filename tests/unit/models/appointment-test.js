@@ -1,4 +1,5 @@
 import { moduleForModel } from 'ember-qunit';
+import { run } from '@ember/runloop';
 import moment from 'moment';
 
 import {
@@ -23,31 +24,39 @@ let today = moment().startOf('day').toDate();
 let tomorrow =  moment().startOf('day').add(24, 'hours').toDate();
 
 testValidPropertyValues('startDate', [today], function(subject) {
-  Ember.run(() => { subject.set('endDate', tomorrow) });
+  run(() => {
+    subject.set('endDate', tomorrow);
+  });
 });
 
 testInvalidPropertyValues('startDate', [tomorrow], function(subject) {
-  Ember.run(() => { subject.set('endDate', today) });
+  run(() => {
+    subject.set('endDate', today);
+  });
 });
 
 testValidPropertyValues('endDate', [tomorrow], function(subject) {
-  Ember.run(() => { subject.set('startDate', today) });
+  run(() => {
+    subject.set('startDate', today);
+  });
 });
 
 testInvalidPropertyValues('endDate', [today], function(subject) {
-  Ember.run(() => { subject.set('startDate', tomorrow) });
+  run(() => {
+    subject.set('startDate', tomorrow);
+  });
 });
 
 testInvalidPropertyValues('startDate', [today], function(subject) {
-  Ember.run(() => {
-  	subject.set('allDay', false);
+  run(() => {
+    subject.set('allDay', false);
     subject.set('endDate', today);
   });
 });
 
 testValidPropertyValues('startDate', [today], function(subject) {
-  Ember.run(() => {
-  	subject.set('allDay', true);
+  run(() => {
+    subject.set('allDay', true);
     subject.set('endDate', today);
   });
 });
