@@ -1,0 +1,1620 @@
+{
+  "admin": {
+    "address": {
+      "address1Label": "地址标签1",
+      "address2Label": "地址标签2",
+      "address3Label": "地址标签3",
+      "address4Label": "地址标签4",
+      "addressLabel": "地址",
+      "editTitle": "地址选项",
+      "include1Label": "包括标签1",
+      "include2Label": "包括标签2",
+      "include3Label": "包括标签3",
+      "include4Label": "包括标签4",
+      "messages": {
+        "addressSaved": "地址选项已成功储存"
+      },
+      "newTitle": "地址选项",
+      "titles": {
+        "optionsSaved": "选项已成功储存"
+      }
+    },
+    "addressOptions": "地址选项",
+    "customForms": {
+      "buttons": {
+        "addField": "新增栏位",
+        "moveDown": "往上移",
+        "moveUp": "往下移",
+        "newForm": "＋ 新表格",
+        "preview": "预览"
+      },
+      "labels": {
+        "alwaysInclude": "总是包括",
+        "checkbox": "选项欄",
+        "colSpan": "欲展开之列数目",
+        "columns": "列",
+        "customForm": "自订表格",
+        "dischargeReportFormType": "出院报告",
+        "expenseTo": "支付者",
+        "formName": "表格名称",
+        "formType": "表格种类",
+        "header": "标题",
+        "incidentFormType": "事件",
+        "includeOtherOption": "包括其他选项",
+        "labFormType": "试验",
+        "label": "标签",
+        "newForm": "新增表格",
+        "opdReportFormType": "门诊病人报告",
+        "operativePlanFormType": "手术计画与报告",
+        "otherOptionLabel": "其他选项标签",
+        "patientFormType": "病患",
+        "property": "属性",
+        "radio": "单选按钮",
+        "select": "复选单",
+        "socialworkFormType": "社区服务",
+        "text": "文字",
+        "textarea": "放大文字",
+        "visitFormType": "探访"
+      },
+      "messages": {
+        "formSaved": "{name}表格已成功储存"
+      },
+      "titles": {
+        "checkboxValues": "选项欄资料",
+        "customForms": "自订表格",
+        "deleteForm": "删除自订表格",
+        "dropDownValues": "复选单资料",
+        "editCustomForm": "编辑自订表格",
+        "fields": "栏位",
+        "formSaved": "表格成功储存",
+        "headerValues": "标题文字",
+        "newCustomForm": "新增自订表格",
+        "radioValues": "单选按钮资料"
+      }
+    },
+    "header": {
+      "editTitle": "标题选项",
+      "facilityName": "设施名称",
+      "headerLabel": "标题",
+      "headerLine1": "标题第1行",
+      "headerLine2": "标题第2行",
+      "headerLine3": "标题第3行",
+      "logoURL": "商标网址",
+      "messages": {
+        "headerSaved": "标题选项已成功储存"
+      },
+      "newTitle": "标题选项",
+      "titles": {
+        "optionsSaved": "选项已成功储存"
+      }
+    },
+    "loadDb": "启动数据库",
+    "loaddb": {
+      "displayAlertMessage": "请选择要开启的档案",
+      "displayAlertTitle": "选择开启档案",
+      "editTitle": "启动数据库",
+      "errorDisplayAlertMessage": "无法启动数据库。问题：{error}",
+      "errorDisplayAlertTitle": "启动时发生错误",
+      "progressMessage": "请等待数据库启动",
+      "progressTitle": "正在启动数据库"
+    },
+    "lookup": {
+      "aisleLocationList": "库存通道位置",
+      "alertImportListMessage": "请选择要汇入的档案.",
+      "alertImportListSaveMessage": "查找列表已成功汇入",
+      "alertImportListSaveTitle": "名单成功汇入",
+      "alertImportListTitle": "请选择要汇入的档案",
+      "alertImportListUpdateMessage": "查找列表已成功储存",
+      "alertImportListUpdateTitle": "名单已储存",
+      "anesthesiaTypes": "麻醉种类",
+      "anesthesiologists": "麻醉师",
+      "billingCategories": "建筑类别",
+      "clinicList": "诊所地点",
+      "countryList": "国家",
+      "cptCodeList": "CPT 编码",
+      "diagnosisList": "诊断",
+      "edit": {
+        "template": {
+          "addTitle": "新增数值",
+          "editTitle": "编辑数值",
+          "labelTitle": "数值",
+          "updateButtonTextAdd": "增加",
+          "updateButtonTextUpdate": "编辑"
+        }
+      },
+      "expenseAccountList": "费用帐户",
+      "imagingPricingTypes": "影像价目类别",
+      "incidentDepartments": "事件部门",
+      "inventoryTypes": "库存类型",
+      "labPricingTypes": "试验定价类型",
+      "pageTitle": "查找列表",
+      "patientStatusList": "病患状态表",
+      "physicianList": "医师",
+      "procedureList": "程序",
+      "procedureLocations": "程序地点",
+      "procedurePricingTypes": "程序定价类型",
+      "radiologists": "放射科医生",
+      "titles": {
+        "deleteLookupValue": "删除数值"
+      },
+      "unitTypes": "单位类型",
+      "vendorList": "供应商",
+      "visitLocationList": "探访地点",
+      "visitTypes": "探访类型",
+      "wardPricingTypes": "病房定价类型",
+      "warehouseList": "库存地点"
+    },
+    "lookupLists": "查找列表",
+    "roles": {
+      "capability": {
+        "addAllergy": "新增过敏",
+        "addAppointment": "新增预约",
+        "addBillingDiagnosis": "增加计费诊断",
+        "addCharge": "增加收费",
+        "addDiagnosis": "增加诊断",
+        "addImaging": "增加影像",
+        "addIncident": "增加事件",
+        "addIncidentCategory": "增加事件种类",
+        "addInventoryItem": "增加库存项目",
+        "addInventoryPurchase": "增加库存购买",
+        "addInventoryRequest": "增加库存请求",
+        "addInvoice": "增加单据",
+        "addLab": "增加测试",
+        "addMedication": "增加药物",
+        "addNote": "增加笔记",
+        "addOperationReport": "增加程序报告",
+        "addOperativePlan": "增加程序类型",
+        "addPatient": "增加病患",
+        "addPayment": "新增付款",
+        "addPhoto": "增加照片",
+        "addPricing": "新增价錢",
+        "addPricingProfile": "新增定价概况",
+        "addProcedure": "新增程序",
+        "addSocialwork": "新增社区工作",
+        "addVisit": "新增探访",
+        "addVitals": "新增命脉资料",
+        "adjustInventoryLocation": "调整库存位置",
+        "admin": "行政",
+        "admitPatient": "接纳病患",
+        "appointments": "预约",
+        "billing": "计费",
+        "cashier": "出纳员",
+        "completeImaging": "完成影像",
+        "completeLab": "完成测试",
+        "defineUserRoles": "定义用戶角色",
+        "deleteAppointment": "删除预约",
+        "deleteDiagnosis": "删除诊断",
+        "deleteImaging": "删除影像",
+        "deleteIncident": "删除事件",
+        "deleteIncidentCategory": "删除事件类型",
+        "deleteInventoryItem": "删除库存项目",
+        "deleteInvoice": "删除单据",
+        "deleteLab": "删除测试",
+        "deleteMedication": "删除药物",
+        "deleteNote": "删除笔记",
+        "deletePatient": "删除病患",
+        "deletePhoto": "删除照片",
+        "deletePricing": "删除定价",
+        "deletePricingProfile": "删除定价概况",
+        "deleteProcedure": "删除程序",
+        "deleteSocialwork": "删除社会工作",
+        "deleteVisit": "删除拜访",
+        "deleteVitals": "删除命脉资料",
+        "dischargePatient": "让病患出院",
+        "editInvoice": "编辑单据",
+        "fulfillInventory": "滿足库存",
+        "fulfillMedication": "滿足药物",
+        "generateIncidentReport": "生成事件报告",
+        "imaging": "影像",
+        "incident": "事件",
+        "inventory": "库存",
+        "invoices": "单据",
+        "labs": "测试",
+        "listPaidInvoices": "显示付清单据",
+        "loadDb": "载入数据庫",
+        "manageIncidents": "管理事件",
+        "medication": "药物",
+        "overrideInvoice": "覆盖单据",
+        "patientReports": "病患报告",
+        "patients": "病患",
+        "pricing": "价錢",
+        "updateConfig": "更新设置",
+        "visits": "探访"
+      },
+      "messages": {
+        "roleSaved": "{roleName}任务已成功储存"
+      },
+      "titles": {
+        "roleSaved": "任务已成功储存"
+      }
+    },
+    "textReplacements": {
+      "createNew": "新增简码",
+      "existingRepl": "現有简码",
+      "noMatches": "'{term}' 沒有相對应的替代品",
+      "pageTitle": "简码",
+      "performExpand": "按 Enter 来用 '{to}' 取代 #{from}",
+      "possibleExpansions": "{possible} 可能的替代品",
+      "replDesc": "输入文字時，这些快捷键让您短的字句变成长的语句.",
+      "replaceWith": "用 ... 来取代",
+      "toReplace": "要取代之文字"
+    },
+    "userRoles": "用戶角色",
+    "users": "用戶",
+    "visitForms": {
+      "labels": {
+        "followup": "跟进",
+        "form": "表格",
+        "initial": "初始",
+        "visitType": "探访类型"
+      },
+      "titles": {
+        "visitForms": "探访表格"
+      }
+    },
+    "workflow": {
+      "admissionDepositLabel": "需要入院押金",
+      "clinicPrepaymentLabel": "需要诊所付款",
+      "editTitle": "流程选项",
+      "followupPrepaymentLabel": "需要跟进付款",
+      "messages": {
+        "optionsSaved": "流程选项已成功储存"
+      },
+      "newTitle": "流程选项",
+      "outpatientImagingLabel": "需要门诊病人影像付款",
+      "outpatientLabLabel": "需要门诊病人测试付款",
+      "outpatientMedicationLabel": "需要门诊病人药物付款",
+      "titles": {
+        "optionsSaved": "选项已储存"
+      },
+      "workflowLabel": "流程"
+    }
+  },
+  "alerts": {
+    "errorExclamation": "发生错误!!!",
+    "pleaseWait": "请稍候",
+    "reportError": "生成报告時发生错误",
+    "warningExclamation": "注意!!!"
+  },
+  "allergies": {
+    "buttons": {
+      "addAllergy": "新增过敏"
+    },
+    "labels": {
+      "allergyName": "名称",
+      "patientAllergy": "患者过敏"
+    },
+    "titles": {
+      "addAllergy": "新增过敏",
+      "editAllergy": "编辑过敏"
+    }
+  },
+  "application": {
+    "messages": {
+      "sessionExpired": "请重新登入"
+    },
+    "titles": {
+      "sessionExpired": "会话过期"
+    }
+  },
+  "appointments": {
+    "buttons": {
+      "newButton": "+ 新增预约",
+      "scheduleSurgery": "+ 预约手术"
+    },
+    "calendarTitle": "预约行事历",
+    "currentScreenTitle": "预约列表",
+    "editTitle": "更改预约",
+    "labels": {
+      "noLocation": "无地点",
+      "selectedStartingDate": "显示在 ... 之后的预约"
+    },
+    "messages": {
+      "appointmentSaved": "{patient}的预约已成功储存",
+      "endTimeLaterThanStart": "请选择一个开始时间之后的结束时间"
+    },
+    "missed": "错过的预约",
+    "newTitle": "新增预约",
+    "searchTitle": "搜寻预约",
+    "sectionTitle": "预约",
+    "thisWeek": "本周预约",
+    "titles": {
+      "appointmentSaved": "预约已储存",
+      "editSurgicalAppointment": "更改手术预约",
+      "newSurgicalAppointment": "新增手术预约",
+      "theaterSchedule": "手术室时间表"
+    },
+    "todayTitle": "本日预约"
+  },
+  "billing": {
+    "alerts": {
+      "noInvoiceFound": "找无单据",
+      "noPricingItems": "找无定价项目",
+      "noPricingProfiles": "找无定价概况"
+    },
+    "buttons": {
+      "addDeposit": "",
+      "addOverride": "新增覆盖",
+      "createInvoice": "建立单据?",
+      "newInvoice": ""
+    },
+    "currentScreenTitle": "",
+    "editInvoice": "",
+    "invoiceTitle": "",
+    "labels": {
+      "actualCharges": "实际收费",
+      "discountAmount": "折扣金额",
+      "discountPercentage": "折扣百分比",
+      "externalInvoiceNumber": "外部收据 #",
+      "hmoCom": "HMO/COM",
+      "insurance": "国家保险",
+      "paymentProfile": "付款资料",
+      "paymentsDeposits": "付款/存款",
+      "pricingPanelOverrides": "定价资料覆盖",
+      "pricingProfile": "定价资料",
+      "setFee": "设定费用"
+    },
+    "messages": {
+      "flatDiscountMsg": "患者负责的基本费用已包含 {currency}{discountAmount} 的折扣.",
+      "flatFeeMsg": "患者负责 {currency}{setFee} 的基本费用."
+    },
+    "navigation": {
+      "allInvoices": "",
+      "billed": "",
+      "drafts": "",
+      "paid": ""
+    },
+    "newInvoice": ""
+  },
+  "buttons": {
+    "add": "新增",
+    "addItem": "新增项目",
+    "addLineItem": "新增订单项目",
+    "addValue": "新增数值",
+    "addVisit": "新增探访",
+    "allRequests": "全部要求",
+    "barcode": "条码",
+    "cancel": "取消",
+    "clear": "清除",
+    "close": "关",
+    "complete": "完成",
+    "delete": "删除",
+    "dispense": "分发",
+    "edit": "编辑",
+    "filter": "筛选",
+    "fulfill": "履行",
+    "import": "输入",
+    "loadFile": "载入档案",
+    "newItem": "+ 新增项目",
+    "newNote": "新增笔记",
+    "newRequest": "新增要求",
+    "newRequestPlus": "+ 新增要求",
+    "newUser": "新增使用者",
+    "ok": "Ok",
+    "print": "列印",
+    "remove": "移除",
+    "returnButton": "返回",
+    "review": "检阅",
+    "search": "搜寻",
+    "showAll": "显示全部",
+    "showFewer": "显示部分",
+    "update": "更新"
+  },
+  "components": {
+    "chargesByTypeTab": {
+      "charges": "收费"
+    },
+    "customFormManager": {
+      "buttons": {
+        "addForm": "新增表格"
+      }
+    },
+    "dateTimePicker": {
+      "amHour": "上午{hour}",
+      "midnight": "午夜",
+      "noon": "中午",
+      "pmHour": "下午{hour}"
+    },
+    "imageUpload": {
+      "messages": {
+        "selectValidImageFile": "请选择一个有效的照片"
+      }
+    },
+    "operativeProcedures": {
+      "buttons": {
+        "addProcedure": "新增程序"
+      },
+      "labels": {
+        "procedure": "程序"
+      },
+      "titles": {
+        "procedures": "程序"
+      }
+    },
+    "patientOrders": {
+      "buttons": {
+        "newImaging": "新增影像",
+        "newLab": "新增测试",
+        "newMedication": "新增药物"
+      },
+      "labels": {
+        "imagingOrderType": "影像",
+        "labOrderType": "测试",
+        "medicationOrderType": "药物",
+        "orderType": "订購类型"
+      }
+    },
+    "priceList": {
+      "charges": "{pricingType} 收费"
+    },
+    "quantityCalc": {
+      "result": "{targetUnit} 总和：{calculated}"
+    },
+    "quantityConv": {
+      "conversion": "一个 {name} 含有?",
+      "unit": "单位"
+    },
+    "sortableColumn": {
+      "labels": {
+        "selectAll": "(全选)"
+      }
+    },
+    "takePhoto": {
+      "camera": "相机",
+      "how": "想如何加入相片",
+      "labels": {
+        "takeAPicture": "拍張照片",
+        "uploadAFile": "上传档案"
+      },
+      "photo": "照片",
+      "preview": "预览",
+      "takePhoto": "拍照片",
+      "uploadFile": "上传档案"
+    },
+    "upcomingAppointments": {
+      "labels": {
+        "date": "日期",
+        "location": "地点",
+        "type": "种类",
+        "with": "与"
+      },
+      "titles": {
+        "upcomingAppointments": "将来预约"
+      }
+    }
+  },
+  "customForms": {
+    "buttons": {
+      "addForm": "加入表格"
+    },
+    "labels": {
+      "formToAdd": "要加入之表格"
+    },
+    "titles": {
+      "addCustomForm": "加入自订表格"
+    }
+  },
+  "dashboard": {
+    "needs_user_setup": "我们建议您建立使用者帐户",
+    "standalone_welcome": "<h4>感謝您下载 HospitalRun. </h4><p>您正在使用 HospitalRun 的独立模式. 这个模式支援多个使用者在一台电脑. 这對于下列是理想的:</p><ul><li>评估 HospitalRun 以开发伺服器.</li><li>使用平台来支援仅需单一设備(电脑)的诊所.</li></ul><p>如果您'考虑架构一个数台设備(电脑)的HospitalRun, 我们 <a href=\"https://github.com/HospitalRun/hospitalrun-frontend/issues/1048\" target=\"_blank\">正在试着开发功能</a> 让您从这单一设置升级到一般的雲端/伺服器设置.</p>",
+    "title": "欢迎来到 HospitalRun!"
+  },
+  "dates": {
+    "long": "{years} 年 {months} 月 {days} 日",
+    "longOmitDays": "{years} 年 {months} 月",
+    "longOmitDaysPlural": "{years} 年 {months} 月",
+    "longOmitDaysYears": "{months} 月",
+    "longOmitYears": "{months} 月 {days} 日",
+    "longPlural": "{years} 年 {months} 月 {days} 日",
+    "short": "{years}年 {months}月 {days}日",
+    "shortOmitYears": "{months}月 {days}日"
+  },
+  "diagnosis": {
+    "labels": {
+      "activeDiagnosis": "現行诊断",
+      "date": "日期",
+      "diagnosis": "诊断",
+      "secondaryDiagnosis": "次要诊断"
+    },
+    "titles": {
+      "addDiagnosis": "新增诊断",
+      "editDiagnosis": "编辑诊断"
+    }
+  },
+  "errors": {
+    "accepted": "必须要接受",
+    "blank": "不能空白",
+    "confirmation": "不符合 {attribute}",
+    "empty": "不能空白",
+    "equalTo": "必须等于 {count}",
+    "even": "必须是偶数",
+    "exclusion": "已保存",
+    "greaterThan": "必须大于 {count}",
+    "greaterThanOrEqualTo": "必须大于或等于 {count}",
+    "inclusion": "不在名单內",
+    "invalid": "不符合要求",
+    "invalidNumber": "不是有效数字",
+    "lessThan": "必须小于 {count}",
+    "lessThanOrEqualTo": "必须小于或等于 {count}",
+    "notANumber": "不是一个数字",
+    "notAnInteger": "必须是一个整数",
+    "odd": "必须是奇数",
+    "otherThan": "不能等于 {count}",
+    "present": "必须是空白",
+    "result": "请先输入一个结果",
+    "tooLong": "字数太长 (不能超过 {count} 字数)",
+    "tooShort": "字数太短 (不能低于 {count} 字数)",
+    "wrongLength": "字数不對 (必须等于 {count} 字数)"
+  },
+  "headings": {
+    "chargedItems": "收费项目"
+  },
+  "imaging": {
+    "alerts": {
+      "completedMessage": "影像要求已完成",
+      "completedTitle": "影像要求完成",
+      "savedMessage": "影像要求已储存",
+      "savedTitle": "影像要求已储存"
+    },
+    "buttons": {
+      "newButton": "+ 新增影像"
+    },
+    "labels": {
+      "addNewVisit": "--新增探访--",
+      "completedBy": "完成者",
+      "radiologist": "放射科医师",
+      "requestedNotes": "要求的笔记",
+      "resultNotes": "结果笔记"
+    },
+    "messages": {
+      "noCompleted": "找不到已完成的项目"
+    },
+    "pageTitle": "影像要求",
+    "sectionTitle": "影像",
+    "titles": {
+      "completedImaging": "已完成影像",
+      "editTitle": "编辑影像要求",
+      "newTitle": "新增影像要求"
+    }
+  },
+  "incident": {
+    "buttons": {
+      "add": "新增",
+      "addForm": "+ 新增表格",
+      "addItem": "新增表格",
+      "cancel": "取消",
+      "delete": "删除",
+      "download": "下载",
+      "edit": "编辑",
+      "export": "输出报告",
+      "generateRep": "生成报告",
+      "newAttachment": "+ 新增附件",
+      "newCategory": "+ 新增类型",
+      "newIncident": "+ 新增事件",
+      "newNote": "+ 新增笔记"
+    },
+    "labels": {
+      "actions": "作用",
+      "addedBy": "由...添加",
+      "category": "类型",
+      "categoryItem": "类型表格",
+      "date": "日期",
+      "dateRecorded": "纪录日期",
+      "department": "部门",
+      "description": "事件描述",
+      "endDate": "结束日期",
+      "givenBy": "由...提供",
+      "howToAddAttachment": "您想如何增加附件?",
+      "incidentDate": "事件日期",
+      "incidentId": "事件 ID",
+      "item": "项目",
+      "lastUpdated": "上一次更新",
+      "note": "笔记",
+      "patientId": "患者 Id",
+      "patientImpacted": "影響患者",
+      "reportType": "报告种类",
+      "reportedBy": "由...报告",
+      "reportedDate": "报告日期",
+      "reportedTo": "事件已报告给 (Full Name)",
+      "sentinelEvent": "突发事件",
+      "startDate": "开始日期",
+      "status": "状态",
+      "statusActive": "現行",
+      "statusClosed": "完成",
+      "statusFollowup": "跟进",
+      "statusReported": "已报告",
+      "title": "标题",
+      "total": "总和",
+      "updatedBy": "由...更新"
+    },
+    "messages": {
+      "attachmentFileRequired": "储存附件前请先上传档案或拍張照片",
+      "createNew": "新增事件?",
+      "createNewIncidentCategory": "新增事件类型?",
+      "fillIn": "填入上述选项以计算分数",
+      "incidentCategorySaved": "{name} 类型已成功储存.",
+      "noClosedIncidents": "找不到已完成的事件.",
+      "noIncidentCategoriesFound": "找不到事件类型.",
+      "noIncidents": "找不到事件.",
+      "saved": "事件报告已成功储存.",
+      "selectExistingPatient": "请选择一个現有的患者或不要填写此字段."
+    },
+    "titles": {
+      "addAttachment": "加入附件",
+      "addCategoryItem": "加入类型项目",
+      "addNote": "加入笔记",
+      "attachments": "附件",
+      "closed": "已完成事件",
+      "current": "當前",
+      "deleteAttachment": "删除附件",
+      "deleteIncident": "删除事件",
+      "deleteIncidentCategory": "删除事件类型",
+      "deleteItem": "删除项目",
+      "deleteNote": "删除笔记",
+      "editAttachment": "编辑附件",
+      "editIncident": "编辑事件",
+      "editIncidentCategory": "编辑事件类型",
+      "editNote": "编辑笔记",
+      "general": "一般信息",
+      "history": "历史",
+      "incidentCategories": "事件类型",
+      "incidentCategoryItem": "事件类型项目",
+      "incidentCategoryName": "事件类型名称",
+      "incidentCategorySaved": "事件类型已储存",
+      "incidentSaved": "事件已储存",
+      "incidents": "事件",
+      "incidentsByCategory": "按类型显示事件",
+      "incidentsByDepartment": "按部门显示事件",
+      "newIncident": "新增事件",
+      "newIncidentCategory": "新增事件类型",
+      "notes": "笔记",
+      "reports": "报告"
+    }
+  },
+  "inventory": {
+    "edit": {
+      "cost": "单位价:",
+      "delivered": "传递给:",
+      "location": "调整地点:",
+      "prescription": "处方给:",
+      "pulled": "来源:",
+      "quantity": "完成数量:",
+      "reason": "原因:",
+      "returned": "患者给回:",
+      "transferredFrom": "从...转来:",
+      "transferredTo": "转去:"
+    },
+    "labels": {
+      "action": "行动",
+      "add": "加入",
+      "addAdjustmentType": "加入",
+      "adjust": "调整",
+      "adjustmentDate": "调整日期",
+      "adjustmentFor": "为...调整",
+      "adjustmentType": "调整种类",
+      "aisle": "通道",
+      "aisleLocation": "通道地点",
+      "allInventory": "全部清单",
+      "allItems": "全部项目",
+      "availableQuantity": "{quantity} 可用",
+      "billTo": "记帐到",
+      "consumePurchases": "消费购买",
+      "consumptionRate": "消费率",
+      "cost": "费用",
+      "costPerUnit": "单位价",
+      "crossReference": "交叉引用",
+      "currentQuantity": "現前数量",
+      "dateCompleted": "完成日期",
+      "dateEffective": "生效日期",
+      "dateEnd": "结束日期",
+      "dateReceived": "收到日期",
+      "dateStart": "开始日期",
+      "dateTransferred": "转移日期",
+      "daysLeft": "剩余天数",
+      "deleteItem": "删除项目",
+      "deliveryAisle": "发送通道",
+      "deliveryLocation": "发送地点",
+      "details": "细节",
+      "distributionUnit": "分配单位",
+      "editItem": "编辑项目",
+      "expense": "记帐到",
+      "expirationDate": "截止日期",
+      "fulfillRequest": "实现需求",
+      "fulfillRequestNow": "現在实现需求",
+      "gift": "礼物",
+      "giftInKindNo": "N",
+      "giftInKindYes": "Y",
+      "giftUsage": "礼物用途",
+      "inventoryConsumed": "库存消耗",
+      "inventoryItem": "库存项目",
+      "inventoryObsolence": "库存报废",
+      "invoiceItems": "单据项目",
+      "invoiceLineItem": "单据单項",
+      "invoiceNumber": "单据号码",
+      "item": "项目",
+      "itemNumber": "项目号码",
+      "items": "项目",
+      "location": "地点",
+      "locations": "地点",
+      "markAsConsumed": "标记为已消耗",
+      "name": "名称",
+      "newItem": "新增项目",
+      "originalQuantity": "原本数量",
+      "print": "列印",
+      "printBarcode": "列印条码",
+      "printer": "列印机",
+      "pullFrom": "从...拉入",
+      "purchaseCost": "购买价格",
+      "purchaseInfo": "购买资料",
+      "purchases": "购买",
+      "quantity": "数目 ({unit})",
+      "quantityAvailable": "可提供之数目",
+      "quantityOnHand": "現有数目",
+      "quantityRequested": "要求数目",
+      "rank": "级別",
+      "reason": "原因",
+      "remove": "移除",
+      "removeAdjustmentType": "移除",
+      "reorderPoint": "订貨點",
+      "requestedItems": "要求项目",
+      "returnAdjustmentType": "退回",
+      "returnToVendorAdjustmentType": "退回给供应商",
+      "salePricePerUnit": "銷售单位价",
+      "save": "储存",
+      "serialNumber": "序列号",
+      "total": "总和",
+      "totalCost": "总价码",
+      "totalReceived": "总收入: {total}",
+      "transaction": "交易",
+      "transactions": "交易",
+      "transfer": "调动",
+      "transferFrom": "从...调动",
+      "transferTo": "调动到目的地",
+      "transferToAisle": "调动到通道地点",
+      "unit": "单位",
+      "unitCost": "单位价",
+      "vendor": "供应商",
+      "vendorItemNumber": "供应商项目編号",
+      "writeOffAdjustmentType": "注销",
+      "xref": "外部参照"
+    },
+    "messages": {
+      "adjust": "请调整适当地区的数目以解释误差 {difference}.",
+      "createRequest": "加入新需求？",
+      "itemNotFound": "找不到库存项目 <strong>{item}</strong>.<br>如果要加入新的库存项目, 请填入以下资料.<br>或选择取消以返回.",
+      "loading": "载入交易...",
+      "noItems": "找无项目.",
+      "noRequests": "找无要求.",
+      "purchaseSaved": "库存购买已成功储存.",
+      "quantity": "总数目 <strong>({quantity})</strong> 不吻合地点的总数目 <strong>({locationQuantity})</strong>.",
+      "removeItem": "确定要从库存中移除此项目？",
+      "removeItemRequest": "确定要从要求中移除此项目？",
+      "requestFulfilled": "库存要求已完成.",
+      "requestUpdated": "库存要求已更新.",
+      "warning": "加入前请填入必要的栏位 (有 * 标註) 並更正错误."
+    },
+    "reports": {
+      "adjustment": "详细的调整",
+      "daysSupply": "库存能支援天数",
+      "expenseDetail": "详细的费用",
+      "expenseSum": "费用概要",
+      "expiration": "截止日期",
+      "export": "输出报告",
+      "fields": "要包括之栏位",
+      "finance": "财政概要",
+      "generate": "生成报告",
+      "invLocation": "按地点显示库存",
+      "invValuation": "库存计价",
+      "purchaseDetail": "购买详细资料",
+      "purchaseSum": "购买概要",
+      "reportType": "报告种类",
+      "rows": {
+        "adjustments": "调整",
+        "adjustmentsTotal": "总调整",
+        "balanceBegin": "初期结余",
+        "balanceEnd": "最終结余",
+        "category": "类别",
+        "consumed": "已消耗",
+        "consumedGik": "已消耗GiK",
+        "consumedGikTotal": "已消耗GiK总和",
+        "consumedPuchases": "已消耗购买",
+        "consumedPurchasesTotal": "已消耗购买总和",
+        "consumedTotal": "已消耗总和",
+        "errInFinSum": "生成财政概况报告時发生错误: ",
+        "errInFindPur": "依购买搜寻库存项目時发生错误: ",
+        "errInFindReq": "依要求搜寻库存项目時发生错误: ",
+        "expensesFor": "...的费用: ",
+        "noAccount": "(沒有帐户)",
+        "subtotal": "小计: ",
+        "subtotalFor": "小计：{category} - {account}: ",
+        "total": "总和: ",
+        "totalFor": "{var}总和: ",
+        "totalPurchases": "购买总和",
+        "transfer1": "{quantity}来自{location}",
+        "trasnfer2": "从: {source} 到: {target}"
+      },
+      "stockTransferDetail": "库存传递详细资料",
+      "stockTransferSum": "库存传递概要",
+      "stockUsageDetail": "详细库存使用资料",
+      "stockUsageSum": "库存使用概要",
+      "titleDateRange": "{name} 报告 {startDate} - {endDate}",
+      "titleSingleDate": "{name} 报告 {date}"
+    },
+    "titles": {
+      "addPurchase": "加入购买",
+      "addRequest": "新增需求",
+      "adjustment": "调整",
+      "editPurchase": "编辑购买",
+      "editRequest": "编辑需求",
+      "inventoryItem": "新增库存项目",
+      "inventoryReport": "库存报告",
+      "purchaseSaved": "库存购买已储存",
+      "quickAddTitle": "新增库存项目",
+      "removeItem": "移除项目",
+      "requestFulfilled": "需求已滿足",
+      "requestUpdated": "需求已更新",
+      "transfer": "搬迁项目",
+      "warning": "警告!!!!!"
+    }
+  },
+  "labels": {
+    "action": "行动",
+    "actions": "行动",
+    "addNewOutpatientVisit": "--加入门诊病人探访--",
+    "address": "地址",
+    "age": "年龄",
+    "allDay": "整天",
+    "allItems": "所有项目",
+    "amount": "数目",
+    "anesthesia": "麻醉",
+    "assisting": "助理",
+    "balanceDue": "余額到期",
+    "billDate": "收费日期",
+    "billTo": "跟...收费",
+    "category": "类别",
+    "completed": "已完成",
+    "country": "国家",
+    "cptcode": "CPT 代码",
+    "creditTo": "归于",
+    "currencySymbol": "$",
+    "date": "日期",
+    "dateCompleted": "完成日期",
+    "dateOfBirth": "出生年月日",
+    "dateOfBirthShort": "生日",
+    "datePaid": "付款日期",
+    "dateRequested": "要求的日期",
+    "delete": "删除",
+    "deleteRequest": "删除要求",
+    "deleteUser": "删除使用者",
+    "department": "部门",
+    "description": "描述",
+    "discount": "折扣",
+    "displayName": "显示名称",
+    "docRead": "已讀文件",
+    "docWritten": "已填文件",
+    "edit": "编辑",
+    "editUser": "编辑使用者",
+    "email": "电子邮件",
+    "endDate": "结束日期",
+    "endTime": "结束时间",
+    "excess": "过量",
+    "expenseTo": "由...付费",
+    "fileLoadSuccessful": "成功载入档案",
+    "fileName": "档案名称",
+    "fileToLoad": "档案载入",
+    "from": "来自",
+    "fulfill": "实现",
+    "fulfillRequest": "实现需求",
+    "fulfillRequestNow": "現在实现需求",
+    "fulfilled": "已实现",
+    "grandTotal": "累计",
+    "id": "Id",
+    "imageOrders": "图像订制",
+    "imagingType": "影像种类",
+    "importFile": "载入档案",
+    "invoiceId": "单据ID",
+    "labOrders": "指定试验",
+    "lineItems": "订单项目",
+    "loading": "正在载入",
+    "location": "地点",
+    "lookupType": "查找种类",
+    "medication": "药物",
+    "name": "名称",
+    "newItem": "+ 新增项目",
+    "newUser": "新增使用者",
+    "note": "笔记",
+    "notes": "笔记",
+    "number": "数字",
+    "on": "上",
+    "password": "密码",
+    "patient": "患者",
+    "payments": "付款",
+    "physician": "医师",
+    "prescriber": "处方师",
+    "prescription": "处方",
+    "prescriptionDate": "处方日期",
+    "price": "价格",
+    "print": "列印",
+    "procedures": "程序",
+    "provider": "提供者",
+    "pullFrom": "从...拉入",
+    "quantity": "数目",
+    "remarks": "备注",
+    "requestedBy": "要求者",
+    "requestedOn": "要求的日期",
+    "requests": "要求",
+    "result": "结果",
+    "results": "结果",
+    "role": "角色(任务)",
+    "search": "搜寻",
+    "sex": "性別",
+    "startDate": "开始日期",
+    "startTime": "开始时间",
+    "status": "状态",
+    "takenBy": "由...采取",
+    "to": "给",
+    "total": "总和",
+    "type": "种类",
+    "userCanAddNewValue": "使用者可加入数值",
+    "username": "用戶名",
+    "value": "数值",
+    "view": "检视",
+    "visit": "探访",
+    "with": "与"
+  },
+  "labs": {
+    "alerts": {
+      "requestCompletedMessage": "测试要求已完成.",
+      "requestCompletedTitle": "测试要求已完成",
+      "requestSavedMessage": "测试要求已储存.",
+      "requestSavedTitle": "测试要求已储存"
+    },
+    "buttons": {
+      "newButton": "+ 新增测试"
+    },
+    "completedTitle": "已完成的测试",
+    "deleteTitle": "删除要求",
+    "editTitle": "编辑测试要求",
+    "labels": {
+      "addNewVisit": "--加入新探访--",
+      "labType": "测试种类"
+    },
+    "messages": {
+      "createNewRecord": "加入新纪录?",
+      "noCompleted": "找无已完成的项目.",
+      "noItemsFound": "找无测试."
+    },
+    "newTitle": "新增测试要求",
+    "requestsTitle": "测试要求",
+    "sectionTitle": "测试"
+  },
+  "languageName": "简体中文",
+  "loading": {
+    "messages": {
+      "0": "飞行最快的蝴蝶可以达到每小時12英里. 有些飞蛾能达到每小時25英里的飞行速度!",
+      "1": "貓头鹰是唯一能识別蓝色的鸟类.",
+      "2": "貓可以发出超过一百种声音，狗只能发出十种.",
+      "3": "人类說话時运用了72个不同的肌肉.",
+      "4": "非洲上的语言超过一千种.",
+      "5": "Erythrophobe 这个詞形容一个容易脸红的人.",
+      "6": "世上最常见的恐惧症是怕痛的恐惧.",
+      "7": "當您站立不动的時候，您的身体运用了300个肌肉来平衡自己.",
+      "8": "特定青蛙能在被结冻又解冻后继续生存.",
+      "9": "人体的眼睛从出生就保持同样的大小, 但鼻子和耳朵會一直持续成长.",
+      "10": "舌头是您体內唯一仅附在最后端的肌肉.",
+      "11": "骆驼有三个眼皮来防护风吹砂."
+    },
+    "progressBar": {
+      "progress": "{progressBarValue}% 完成"
+    }
+  },
+  "login": {
+    "labels": {
+      "password": "密码",
+      "signIn": "登入",
+      "username": "用戶名"
+    },
+    "messages": {
+      "error": "用戶名或密码不正確.",
+      "offlineError": "离线時无法登入. 请连上网路后再试.",
+      "signIn": "请登入"
+    }
+  },
+  "medication": {
+    "alerts": {
+      "fulfilledTitle": "药物要求完成",
+      "returnedMessage": "药物已标记为退還.",
+      "returnedTitle": "退還药物",
+      "savedMessage": "药物纪录已储存.",
+      "savedTitle": "药物要求已储存"
+    },
+    "buttons": {
+      "dispenseMedication": "发放配药",
+      "newButton": "+ 新增要求",
+      "returnMedication": "退還药物"
+    },
+    "labels": {
+      "adjustmentDate": "调整日期",
+      "creditToAccount": "归于...帐户",
+      "quantityDispensed": "分配数量",
+      "quantityDistributed": "分发数量",
+      "quantityRequested": "要求数量",
+      "quantityToReturn": "要還的数量",
+      "refills": "充值",
+      "returnAisle": "退還通道",
+      "returnLocation": "退還地点",
+      "returnReason": "退還原因/备注"
+    },
+    "messages": {
+      "createNew": "新增药物要求?"
+    },
+    "pageTitle": "药物要求",
+    "returnMedication": "退還药物",
+    "sectionTitle": "药物",
+    "titles": {
+      "completedMedication": "完成药物",
+      "editMedicationRequest": "编辑药物要求",
+      "newMedicationRequest": "新增药物要求"
+    }
+  },
+  "messages": {
+    "createNewRecord": "建立新纪录?",
+    "createNewUser": "建立新使用者?",
+    "delete": "确定要删除 {name}?",
+    "delete_plural": "确定要删除这些 {name}?",
+    "delete_singular": "确定要删除 {name}?",
+    "forAuthorizedPersons": "这报告只提供给特定授权人.",
+    "newPatientHasToBeCreated": "必须建立一个新的患者...请稍候..",
+    "noHistoryAvailable": "沒有历史.",
+    "noItemsFound": "找无项目.",
+    "noNotesAvailable": "沒有其他的其他的临床报告可提供给此次探访.",
+    "noUsersFound": "找无使用者.",
+    "onBehalfOf": "代表",
+    "reportError": "生成报告時发生错误. 请通报错误给系統管理员.",
+    "requiredFieldsCorrectErrors": "加入前请填入必要的栏位 (有 * 标註) 並更正错误.",
+    "saveActionException": "尝试储存時发生错误: {message}",
+    "sorry": "抱歉，发生错误...",
+    "userHasBeenSaved": "使用者已储存.",
+    "userSaved": "使用者已储存"
+  },
+  "models": {
+    "appointment": {
+      "labels": {
+        "allDay": "整天",
+        "appointmentDate": "日期",
+        "appointmentType": "种类",
+        "endDate": "结束日期",
+        "location": "地点",
+        "notes": "笔记",
+        "patient": "患者",
+        "provider": "与",
+        "startDate": "开始日期",
+        "status": "状态",
+        "type": "种类"
+      },
+      "names": {
+        "plural": "预约",
+        "singular": "预约"
+      }
+    },
+    "attachment": {
+      "names": {
+        "plural": "附件",
+        "singular": "附件"
+      }
+    },
+    "form": {
+      "names": {
+        "plural": "表格",
+        "singular": "表格"
+      }
+    },
+    "imaging": {
+      "names": "影像",
+      "request": {
+        "plural": "影像要求",
+        "singular": "影像要求"
+      }
+    },
+    "incident": {
+      "names": {
+        "plural": "事件",
+        "singular": "事件"
+      }
+    },
+    "item": {
+      "names": {
+        "plural": "项目",
+        "singular": "项目"
+      }
+    },
+    "lab": {
+      "names": {
+        "plural": "测试",
+        "singular": "测试"
+      },
+      "request": {
+        "plural": "测试要求",
+        "singular": "测试要求"
+      }
+    },
+    "medication": {
+      "names": {
+        "plural": "药物",
+        "singular": "药物"
+      },
+      "request": {
+        "plural": "药物要求",
+        "singular": "药物要求"
+      }
+    },
+    "note": {
+      "names": {
+        "plural": "笔记",
+        "singular": "笔记"
+      }
+    },
+    "patient": {
+      "labels": {
+        "name": "名称"
+      },
+      "names": {
+        "singular": "患者"
+      }
+    },
+    "procedure": {
+      "names": {
+        "plural": "程序",
+        "singular": "程序"
+      }
+    },
+    "user": {
+      "names": {
+        "plural": "使用者",
+        "singular": "使用者"
+      }
+    },
+    "visit": {
+      "names": {
+        "plural": "探访",
+        "singular": "探访"
+      }
+    },
+    "vital": {
+      "names": {
+        "plural": "命脉资料",
+        "singular": "命脉资料"
+      }
+    }
+  },
+  "navigation": {
+    "about": "关于HospitalRun",
+    "actions": {
+      "login": "登入",
+      "logout": "登出",
+      "selectLanguage": "选择语言"
+    },
+    "administration": "行政",
+    "billing": "计费",
+    "imaging": "影像",
+    "incident": "事件",
+    "inventory": "库存",
+    "labs": "测试",
+    "medication": "药物",
+    "messages": {
+      "logoutFailed": "現在无法登出. 离线時无法登出."
+    },
+    "patients": "患者",
+    "scheduling": "调度",
+    "subnav": {
+      "actions": "动作",
+      "addAppointment": "新增预约",
+      "addressFields": "地址栏位",
+      "admittedPatients": "收入患者",
+      "appointmentSearch": "搜寻预约",
+      "appointmentsCalendar": "预约行事曆",
+      "appointmentsThisWeek": "本周预约",
+      "cashier": "收銀员",
+      "completed": "已完成",
+      "currentIncidents": "現行事件",
+      "customForms": "自订表格",
+      "dispense": "配药",
+      "history": "历史",
+      "incidentCategories": "事件类别",
+      "inventoryReceived": "收到的库存",
+      "inventoryReceivedPlus": "+ 收到的库存",
+      "invoices": "清单",
+      "items": "项目",
+      "loadDB": "启动数据库",
+      "lookupLists": "查找列表",
+      "newIncident": "新增事件",
+      "newInvoice": "新增清单",
+      "newPatient": "新增患者",
+      "newRequest": "新增要求",
+      "newUser": "新增使用者",
+      "outpatient": "门诊病人",
+      "patientListing": "患者名单",
+      "priceProfiles": "价格概况",
+      "prices": "价格",
+      "printHeader": "列印标题",
+      "reports": "报告",
+      "requests": "要求",
+      "returnMedication": "退還药物",
+      "scheduleSurgery": "排定手术",
+      "textReplacements": "短代码",
+      "theaterSchedule": "手术室时间表",
+      "today'sAppointments": "本日预约",
+      "userRoles": "使用者角色(任务)",
+      "users": "使用者",
+      "workflow": "工作流程"
+    },
+    "titles": {
+      "logoutFailed": "登出失敗"
+    }
+  },
+  "operationReport": {
+    "labels": {
+      "additionalNotes": "其他备注",
+      "assistant": "助理",
+      "caseComplexity": "案件复杂度",
+      "operationDescription": "程序描述",
+      "preOpPrimaryDiagnosis": "程序前主要诊断",
+      "preOpSecondaryDiagnosis": "程序前次要诊断",
+      "surgeon": "手术师",
+      "surgeryDate": "手术日期"
+    },
+    "messages": {
+      "reportSaved": "程序报告已成功储存."
+    },
+    "titles": {
+      "editTitle": "编辑程序报告",
+      "newTitle": "新增程序报告",
+      "reportSaved": "报告已储存"
+    }
+  },
+  "operativePlan": {
+    "buttons": {
+      "completePlan": "完成计划"
+    },
+    "labels": {
+      "additionalNotes": "其他备注",
+      "admissionInstructions": "入院后指导",
+      "caseComplexity": "案件复杂度",
+      "completedStatus": "已完成",
+      "droppedStatus": "被取消",
+      "operationDescription": "程序描述",
+      "plannedStatus": "已计划",
+      "status": "状态",
+      "surgeon": "手术师"
+    },
+    "messages": {
+      "planCompleted": "程序计划已完成. 您将被导向程序报告.",
+      "planSaved": "程序计划已储存."
+    },
+    "titles": {
+      "editTitle": "编辑程序计划",
+      "newTitle": "新增程序计划",
+      "planCompleted": "计划已完成",
+      "planSaved": "计划已储存"
+    }
+  },
+  "patients": {
+    "buttons": {
+      "addContact": "新增联络人",
+      "addExpense": "新增费用",
+      "addFamilyMember": "新增家庭成员",
+      "addOperativePlan": "新增程序计划",
+      "backToPatients": "回到患者名单",
+      "download": "下载",
+      "editOperativePlan": "現有程序计划",
+      "newAppointment": "新增预约",
+      "newImaging": "新增影像",
+      "newLab": "新增测试",
+      "newMedication": "新增药物",
+      "newPatient": "+ 新增患者",
+      "newPhoto": "新增照片",
+      "newVisit": "新增探访",
+      "patientCheckIn": "患者登记",
+      "scheduleSurgery": "安排手术时间"
+    },
+    "labels": {
+      "admissionDate": "入院日期",
+      "admit": "收入患者",
+      "bloodType": "血型",
+      "caption": "說明",
+      "civilStatus": "公民身份",
+      "clinic": "诊所地点",
+      "contacts": "联络人",
+      "cost": "费用",
+      "dateOfBirth": "出生年月日",
+      "dateProcessed": "处理日期",
+      "dischargeDate": "出院日期",
+      "dob": "生日",
+      "education": "學歷",
+      "email": "电子邮件",
+      "externalPatientId": "外部患者 Id",
+      "firstName": "名",
+      "income": "收入",
+      "insurance": "保险",
+      "lastName": "姓",
+      "middleName": "中间名",
+      "monthlyCost": "月费",
+      "occupation": "职业",
+      "operativePlan": "程序计划",
+      "parent": "家长/监护人",
+      "patientDays": "患者天数",
+      "patientType": "患者类型",
+      "patientTypeCharity": "慈善机构",
+      "patientTypePrivate": "私人",
+      "phone": "电话",
+      "placeOfBirth": "出生地点",
+      "primaryDiagnosis": "主要诊断",
+      "referredBy": "由...推荐",
+      "referredDate": "推荐日期",
+      "relationship": "与患者的关係",
+      "relationships": "关係",
+      "religion": "宗教",
+      "secondaryDiagnosis": "次要诊断",
+      "sex": "性別",
+      "sexNotEntered": "性別空白",
+      "sources": "来源",
+      "status": "患者状态",
+      "totalMontlyExpense": "总共月费"
+    },
+    "messages": {
+      "areYouSureDelete": "确定要删除 {object}?",
+      "createNewPatient": "建立新的患者报告?",
+      "deletingPatient": "正在删除患者与其所拥有的资料",
+      "noPatientsFound": "找无患者.",
+      "notFoundQuickAdd": "找不到患者 <strong>{patientFullName}</strong>. 若您想建立新患者, 请填入以下资料. 或选择取消以返回.",
+      "photoFileRequired": "储存照片前请先上传档案或拍張照片.",
+      "savedPatient": "患者的 {displayName} 资料已成功储存."
+    },
+    "navigation": {
+      "appointments": "预约",
+      "general": "取消",
+      "history": "历史",
+      "imaging": "影像",
+      "labs": "测试",
+      "medication": "药物",
+      "photos": "照片",
+      "socialWork": "社区工作",
+      "visits": "探访"
+    },
+    "notes": {
+      "newNote": "为...新增备注",
+      "onBehalfOfCopy": "代表",
+      "onBehalfOfLabel": "代表",
+      "pleaseSelectAVisit": "请选择一个探访",
+      "updateNote": "从...更新资料"
+    },
+    "titles": {
+      "addContact": "新增联络人",
+      "addPhoto": "新增照片",
+      "additionalContacts": "其他联络人",
+      "admissionsDetail": "入院细节",
+      "admissionsSummary": "入院概要",
+      "admittedPatients": "入院患者",
+      "delete": "删除患者",
+      "deleteContact": "删除联络人",
+      "deleteExpense": "删除费用",
+      "deleteFamilyMember": "删除家庭成员",
+      "deletePatientRecord": "删除患者纪录",
+      "deletePhoto": "删除照片",
+      "diagnosticTesting": "诊断测试",
+      "dischargesDetail": "出院细节",
+      "dischargesSummary": "出院概要",
+      "edit": "编辑患者",
+      "editPhoto": "编辑照片",
+      "expenses": "费用",
+      "familyInfo": "家庭资料",
+      "familyInformation": "家庭资料",
+      "new": "新增患者",
+      "outpatientsForDate": "{visitDate} 的门诊病人",
+      "patient": "患者报告",
+      "patientListing": "患者名单",
+      "patientReport": "患者报告",
+      "patientStatus": "患者状态",
+      "proceduresDetail": "程序细节",
+      "proceduresSummary": "程序概要",
+      "savedPatient": "患者已储存",
+      "socialWork": "费用",
+      "todaysOutpatients": "擁本日门诊病人",
+      "totalPatientDays": "总和患者天数",
+      "totalPatientDaysDetailed": "总和患者天数(细节)",
+      "visit": "探访"
+    }
+  },
+  "pricing": {
+    "labels": {
+      "discountAmount": "折扣金额",
+      "discountPercentage": "折扣百分比",
+      "setFee": "设定费用"
+    },
+    "navigation": {
+      "allPricingItems": "",
+      "imagePricing": "",
+      "labPricing": "",
+      "pricingProfiles": "",
+      "procedurePricing": "",
+      "wardPricing": ""
+    },
+    "sectionTitle": ""
+  },
+  "print": {
+    "invoice": {
+      "labels": {
+        "billedBy": "由...收费:",
+        "billedDate": "收费日期:",
+        "dateAdmitted": "入院:",
+        "dateDischarged": "出院:",
+        "dischargeNotes": "出院备注:",
+        "patientAddress": "地址:",
+        "patientAge": "年龄:",
+        "patientId": "患者 #:",
+        "patientName": "患者姓名:",
+        "remarks": "备注:",
+        "spacer": "__________________________________________"
+      },
+      "messages": {
+        "whereConducted": "接产中扣了..."
+      },
+      "titles": {
+        "billingStatement": "帐单",
+        "patientMember": "患者成员",
+        "patients": "患者",
+        "relContact": "关係/联络电话"
+      }
+    }
+  },
+  "procedures": {
+    "buttons": {
+      "addMedication": "新增药物"
+    },
+    "labels": {
+      "medicationUsed": "使用之药物"
+    },
+    "messages": {
+      "saved": "程序纪录已储存."
+    },
+    "titles": {
+      "addChargeItem": "新增收费项目",
+      "addMedicationUsed": "新增使用药物",
+      "deleteChargeItem": "删除收费项目",
+      "deleteMedicationUsed": "新增使用药物",
+      "edit": "编辑程序",
+      "editChargeItem": "编辑收费项目",
+      "editMedicationUsed": "编辑使用药物",
+      "medicationUsed": "使用药物",
+      "new": "新增程序",
+      "saved": "程序已储存"
+    }
+  },
+  "reports": {
+    "labels": {
+      "admissionDate": "入院日期",
+      "allProcedures": "已完成所有程序",
+      "completedBy": "由...完成",
+      "dischargeDate": "出院日期",
+      "examiner": "审查者",
+      "images": "照片",
+      "labs": "测试",
+      "location": "探访地点",
+      "medications": "药物",
+      "nextAppointment": "下个预约",
+      "nextAppointments": "下个预约",
+      "notes": {
+        "author": "作者",
+        "date": "日期",
+        "title": "备注"
+      },
+      "operativePlan": {
+        "description": "程序描述",
+        "instructions": "入院后指导",
+        "procedures": "已计划程序",
+        "title": "程序计划"
+      },
+      "primaryDiagnosis": "主要诊断",
+      "procedures": "程序",
+      "secondaryDiagnosis": "次要诊断",
+      "visitDate": "探访日期",
+      "visitType": "探访类别"
+    },
+    "messages": {
+      "delete": "确定要删除此报告?",
+      "saved": "报告已成功储存."
+    },
+    "titles": {
+      "dischargeReport": "出院报告",
+      "newDischargeReport": "新增出院报告",
+      "newOPDReport": "新增OPD报告",
+      "opdReport": "OPD报告",
+      "saved": "报告已储存"
+    }
+  },
+  "user": {
+    "plusNewUser": "+ 新增使用者",
+    "usersPageTile": "使用者名单"
+  },
+  "visits": {
+    "buttons": {
+      "addDiagnosis": "新增诊断",
+      "checkIn": "报到",
+      "checkOut": "退房",
+      "discharge": "出院",
+      "newAppointment": "新增预约",
+      "newDischargeReport": "新增出院报告",
+      "newOPDReport": "新增OPD报告",
+      "newProcedure": "新增程序",
+      "newVitals": "新增命脉资料"
+    },
+    "labels": {
+      "appointment": "预约",
+      "authoredBy": "由...創作",
+      "checkInTime": "报到",
+      "checkOutTime": "退房",
+      "createNewPatient": "建立新患者",
+      "diagnosis": "诊断",
+      "examiner": "审查者",
+      "finalDiagnosis": "最后诊断",
+      "haveAppointment": "Y",
+      "haveDoneOrders": "Y",
+      "noAppointment": "N",
+      "ordersDone": "已完成订单",
+      "ordersNotDone": "N",
+      "patientToCheckIn": "要报到之患者",
+      "procedure": "程序",
+      "procedureDate": "程序日期",
+      "reasonForVisit": "探访原因",
+      "reportType": "报告类型",
+      "status": "探访状态",
+      "statusAdmitted": "收入医院",
+      "statusCheckedIn": "已报到",
+      "statusCheckedOut": "已离開",
+      "statusDischarged": "已出院",
+      "visitDate": "探访日期",
+      "visitInformation": "探访资料",
+      "visitType": "探访类型"
+    },
+    "messages": {
+      "checkOut": "确定要把 {patientName} 退房?",
+      "checkedOut": "{patientName} 已被准許离開.",
+      "discharged": "{patientName} 已出院.",
+      "patientCheckedIn": "{patientName} 已报到.",
+      "patientCreatedAndCheckedIn": "{patientName} 已建立並报到.",
+      "visitAndPatientSaved": "探访与患者纪录已储存.",
+      "visitSaved": "探访纪录已储存."
+    },
+    "navigation": {
+      "charges": "收费",
+      "notes": "备注",
+      "orders": "订購",
+      "procedures": "程序",
+      "reports": "报告",
+      "vitals": "命脉资料"
+    },
+    "titles": {
+      "additionalDiagnoses": "其他诊断",
+      "checkOut": "患者离開",
+      "checkedIn": "患者报到",
+      "checkedOut": "患者退房",
+      "discharged": "患者出院",
+      "editVisit": "编辑探访",
+      "newVisit": "新增探访",
+      "patientCheckIn": "患者报到",
+      "visitSaved": "探访已储存"
+    }
+  },
+  "vitals": {
+    "labels": {
+      "dateRecorded": "纪录之日期",
+      "dbp": "出生年月日",
+      "heartRate": "心率",
+      "height": "身高",
+      "respiratoryRate": "呼吸频率",
+      "sbp": "SBP",
+      "temperature": "体溫",
+      "weight": "体重"
+    }
+  }
+}
