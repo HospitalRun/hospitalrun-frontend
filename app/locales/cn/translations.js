@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: '找无定价概况'
     },
     buttons: {
-      addDeposit: undefined,
+      addDeposit: "",
       addOverride: '新增覆盖',
       createInvoice: '建立单据?',
-      newInvoice: undefined
+      newInvoice: ""
     },
-    currentScreenTitle: undefined,
-    editInvoice: undefined,
-    invoiceTitle: undefined,
+    currentScreenTitle: "",
+    editInvoice: "",
+    invoiceTitle: "",
     labels: {
       actualCharges: '实际收费',
       discountAmount: '折扣金额',
@@ -329,12 +329,12 @@ export default {
       flatFeeMsg: '患者负责 {{currency}}{{setFee}} 的基本费用.'
     },
     navigation: {
-      allInvoices: undefined,
-      billed: undefined,
-      drafts: undefined,
-      paid: undefined
+      allInvoices: "",
+      billed: "",
+      drafts: "",
+      paid: ""
     },
-    newInvoice: undefined
+    newInvoice: ""
   },
   buttons: {
     add: '新增',
@@ -1328,14 +1328,14 @@ export default {
       setFee: '设定费用'
     },
     navigation: {
-      allPricingItems: undefined,
-      imagePricing: undefined,
-      labPricing: undefined,
-      pricingProfiles: undefined,
-      procedurePricing: undefined,
-      wardPricing: undefined
+      allPricingItems: "",
+      imagePricing: "",
+      labPricing: "",
+      pricingProfiles: "",
+      procedurePricing: "",
+      wardPricing: ""
     },
-    sectionTitle: undefined
+    sectionTitle: ""
   },
   print: { invoice: {
     labels: {

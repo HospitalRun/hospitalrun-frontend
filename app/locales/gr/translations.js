@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'Δεν βρέθηκαν προφίλ τιμολόγησης.'
     },
     buttons: {
-      addDeposit: undefined,
+      addDeposit: "",
       addOverride: 'Προσθήκη παράκαμψης',
       createInvoice: 'Δημιουργία τιμολογίου;',
-      newInvoice: undefined
+      newInvoice: ""
     },
-    currentScreenTitle: undefined,
-    editInvoice: undefined,
-    invoiceTitle: undefined,
+    currentScreenTitle: "",
+    editInvoice: "",
+    invoiceTitle: "",
     labels: {
       actualCharges: 'Πραγματικές χρεώσεις',
       discountAmount: 'Ποσό έκπτωσης',
@@ -329,12 +329,12 @@ export default {
       flatFeeMsg: 'Σταθερή χρέωση για την οικονομική ευθύνη του ασθενή της τάξης των {{setFee}} {{currency}}.'
     },
     navigation: {
-      allInvoices: undefined,
-      billed: undefined,
-      drafts: undefined,
-      paid: undefined
+      allInvoices: "",
+      billed: "",
+      drafts: "",
+      paid: ""
     },
-    newInvoice: undefined
+    newInvoice: ""
   },
   buttons: {
     add: 'Προσθήκη',
@@ -1328,14 +1328,14 @@ export default {
       setFee: 'Δημιουργία Χρέωσης'
     },
     navigation: {
-      allPricingItems: undefined,
-      imagePricing: undefined,
-      labPricing: undefined,
-      pricingProfiles: undefined,
-      procedurePricing: undefined,
-      wardPricing: undefined
+      allPricingItems: "",
+      imagePricing: "",
+      labPricing: "",
+      pricingProfiles: "",
+      procedurePricing: "",
+      wardPricing: ""
     },
-    sectionTitle: undefined
+    sectionTitle: ""
   },
   print: { invoice: {
     labels: {

@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'Keine Preisprofile gefunden.'
     },
     buttons: {
-      addDeposit: undefined,
+      addDeposit: "",
       addOverride: 'Überschreibung hinzufügen',
       createInvoice: 'Rechnung erstellen?',
-      newInvoice: undefined
+      newInvoice: ""
     },
-    currentScreenTitle: undefined,
-    editInvoice: undefined,
-    invoiceTitle: undefined,
+    currentScreenTitle: "",
+    editInvoice: "",
+    invoiceTitle: "",
     labels: {
       actualCharges: 'Tatsächliche Gebühren',
       discountAmount: 'Rabattbetrag',
@@ -329,12 +329,12 @@ export default {
       flatFeeMsg: 'Es gibt eine Pauschalgebühr für die finanzielle Verantwortung des Patienten über {{setFee}}{{currency}}'
     },
     navigation: {
-      allInvoices: undefined,
-      billed: undefined,
-      drafts: undefined,
-      paid: undefined
+      allInvoices: "",
+      billed: "",
+      drafts: "",
+      paid: ""
     },
-    newInvoice: undefined
+    newInvoice: ""
   },
   buttons: {
     add: 'Hinzufügen',
@@ -495,10 +495,10 @@ export default {
     buttons: { newButton: '+ Neue Bildgebung' },
     labels: {
       addNewVisit: '--Neue Visite hinzufügen--',
-      completedBy: undefined,
+      completedBy: "",
       radiologist: 'Radiologe',
-      requestedNotes: undefined,
-      resultNotes: undefined
+      requestedNotes: "",
+      resultNotes: ""
     },
     messages: { noCompleted: 'Keine erledigten Einträge gefunden.' },
     pageTitle: 'Anfrage zur Bildgebung',
@@ -1328,14 +1328,14 @@ export default {
       setFee: 'Festgelegte Gebühren'
     },
     navigation: {
-      allPricingItems: undefined,
-      imagePricing: undefined,
-      labPricing: undefined,
-      pricingProfiles: undefined,
-      procedurePricing: undefined,
-      wardPricing: undefined
+      allPricingItems: "",
+      imagePricing: "",
+      labPricing: "",
+      pricingProfiles: "",
+      procedurePricing: "",
+      wardPricing: ""
     },
-    sectionTitle: undefined
+    sectionTitle: ""
   },
   print: { invoice: {
     labels: {

@@ -303,14 +303,14 @@ export default {
       noPricingProfiles: 'אין תמחור והפרופילים שנמצאו.'
     },
     buttons: {
-      addDeposit: undefined,
+      addDeposit: "",
       addOverride: 'הוסף את המעקף',
       createInvoice: 'ליצור חשבונית?',
-      newInvoice: undefined
+      newInvoice: ""
     },
-    currentScreenTitle: undefined,
-    editInvoice: undefined,
-    invoiceTitle: undefined,
+    currentScreenTitle: "",
+    editInvoice: "",
+    invoiceTitle: "",
     labels: {
       actualCharges: 'חיובים בפועל',
       discountAmount: 'סכום הנחת',
@@ -329,12 +329,12 @@ export default {
       flatFeeMsg: 'יש תשלום קבוע עבור המטופל האחריות הכספית של {{מטבע}} {{setFee}}.'
     },
     navigation: {
-      allInvoices: undefined,
-      billed: undefined,
-      drafts: undefined,
-      paid: undefined
+      allInvoices: "",
+      billed: "",
+      drafts: "",
+      paid: ""
     },
-    newInvoice: undefined
+    newInvoice: ""
   },
   buttons: {
     add: 'להוסיף',
@@ -1328,14 +1328,14 @@ export default {
       setFee: 'תשלום קבוע'
     },
     navigation: {
-      allPricingItems: undefined,
-      imagePricing: undefined,
-      labPricing: undefined,
-      pricingProfiles: undefined,
-      procedurePricing: undefined,
-      wardPricing: undefined
+      allPricingItems: "",
+      imagePricing: "",
+      labPricing: "",
+      pricingProfiles: "",
+      procedurePricing: "",
+      wardPricing: ""
     },
-    sectionTitle: undefined
+    sectionTitle: ""
   },
   print: { invoice: {
     labels: {
