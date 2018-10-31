@@ -257,19 +257,34 @@ test('Searching inventory', function(assert) {
   });
 });
 
-testSimpleReportForm('Detailed Adjustment');
-testSimpleReportForm('Detailed Purchase');
-testSimpleReportForm('Detailed Stock Usage');
-testSimpleReportForm('Detailed Stock Transfer');
-testSimpleReportForm('Detailed Expenses');
-testSimpleReportForm('Expiration Date');
-testSimpleReportForm('Summary Expenses');
-testSimpleReportForm('Summary Purchase');
-testSimpleReportForm('Summary Stock Usage');
-testSimpleReportForm('Summary Stock Transfer');
-testSimpleReportForm('Finance Summary');
-testSingleDateReportForm('Inventory By Location');
-testSingleDateReportForm('Inventory Valuation');
+const startAndEndDateReportTypes = [
+  'Days Supply Left In Stock',
+  'Detailed Adjustment',
+  'Detailed Purchase',
+  'Detailed Stock Usage',
+  'Detailed Stock Transfer',
+  'Detailed Expenses',
+  'Expiration Date',
+  'Summary Expenses',
+  'Summary Purchase',
+  'Summary Stock Usage',
+  'Summary Stock Transfer',
+  'Finance Summary'
+];
+
+const singleDateReportTypes = [
+  'Inventory By Location',
+  'Inventory Valuation'
+];
+
+startAndEndDateReportTypes.forEach((reportName) => {
+  testSimpleReportForm(reportName);
+  testReportWithEmptyEndDate(reportName);
+});
+
+singleDateReportTypes.forEach((reportName) => {
+  testSingleDateReportForm(reportName);
+});
 
 function testSimpleReportForm(reportName) {
   test(`${reportName} report can be generated`, function(assert) {
@@ -294,18 +309,48 @@ function testSimpleReportForm(reportName) {
   });
 }
 
+async function generateReport(reportName, startDate, endDate) {
+  await authenticateUser();
+  await visit('/inventory/reports');
+
+  if (startDate) {
+    await selectDate('.test-start-date input', moment(startDate).toDate());
+  }
+
+  if (endDate) {
+    await selectDate('.test-end-date input', moment(endDate).toDate());
+  }
+
+  await select('#report-type', `${reportName}`);
+  await click('button:contains(Generate Report)');
+  await waitToAppear('.panel-title');
+}
+
+function testReportWithEmptyEndDate(reportName) {
+  test(`${reportName} report can be generated with empty end date`, function(assert) {
+    return runWithPouchDump('default', async function() {
+
+      let startDate = '12/11/2016';
+      let endDate = new Date();
+      await generateReport(reportName, startDate, null);
+      assert.equal(currentURL(), '/inventory/reports');
+
+      let reportTitle = `${reportName} Report ${moment(startDate).format('l')} - ${moment(endDate).format('l')}`;
+      assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
+      let exportLink = findWithAssert('a:contains(Export Report)');
+      assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
+    });
+  });
+}
+
 function testSingleDateReportForm(reportName) {
   test(`${reportName} report can be generated`, function(assert) {
     return runWithPouchDump('default', async function() {
-      await authenticateUser();
-      await visit('/inventory/reports');
+      let startDate = new Date();
+      await generateReport(reportName, null, null);
+
       assert.equal(currentURL(), '/inventory/reports');
-
-      await select('#report-type', `${reportName}`);
-      await click('button:contains(Generate Report)');
-      await waitToAppear('.panel-title');
-
-      let reportTitle = `${reportName} Report ${moment().format('l')}`;
+      let reportTitle = `${reportName} Report ${moment(startDate).format('l')}`;
       assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
       let exportLink = findWithAssert('a:contains(Export Report)');
       assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);

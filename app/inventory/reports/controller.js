@@ -1295,6 +1295,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   actions: {
     generateReport() {
       let endDate = this.get('endDate');
+      if (isEmpty(endDate)) {
+        let now = new Date();
+        this.set('endDate', now);
+      }
+
       let reportRows = this.get('reportRows');
       let reportType = this.get('reportType');
       let startDate = this.get('startDate');
