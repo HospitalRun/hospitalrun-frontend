@@ -24,7 +24,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
       buttonIcon: 'glyphicon glyphicon-log-out',
       class: 'btn btn-primary on-white'
     };
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let status = this.get('model.status');
     if (status === VisitStatus.ADMITTED) {
       buttonProps.buttonAction = 'discharge';
@@ -162,7 +162,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
   }),
 
   updateButtonText: computed('model.{checkIn,isNew}', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (this.get('model.checkIn')) {
       return i18n.t('visits.buttons.checkIn');
     } else {
@@ -197,7 +197,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
   _finishAfterUpdate() {
     let addedNewPatient = this.get('addedNewPatient');
     let checkIn = this.get('model.checkIn');
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let updateMesage = i18n.t('visits.messages.visitSaved');
     let updateTitle = i18n.t('visits.titles.visitSaved');
     if (checkIn === true) {
@@ -535,11 +535,11 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     showDeletePhoto(photo) {
       this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deletePhoto',
-        title: this.get('i18n').t('patients.titles.deletePhoto'),
-        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
+        title: this.get('intl').t('patients.titles.deletePhoto'),
+        message: this.get('intl').t('patients.titles.deletePhoto', { object: 'photo' }),
         photoToDelete: photo,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
     },
 
@@ -567,7 +567,7 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
         message: 'Are you sure you want to delete this note?',
         noteToDelete: note,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
     },
 

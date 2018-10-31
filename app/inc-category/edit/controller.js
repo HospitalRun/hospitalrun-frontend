@@ -5,7 +5,7 @@ export default AbstractEditController.extend({
   updateCapability: 'add_incident_category',
 
   afterUpdate(record) {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let message = i18n.t('incident.messages.incidentCategorySaved', { name: get(record, 'incidentCategoryName') });
     let title = i18n.t('incident.titles.incidentCategorySaved');
     this.displayAlert(title, message);
@@ -33,7 +33,7 @@ export default AbstractEditController.extend({
     },
 
     showDeleteItem(item) {
-      let i18n = get(this, 'i18n');
+      let intl = get(this, 'intl');
       let modelName = i18n.t('models.item.names.singular');
       let message = i18n.t('messages.delete_singular', { name: modelName });
       let title = i18n.t('incident.titles.deleteItem');

@@ -62,7 +62,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   }),
 
   afterUpdate(model) {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let patientInfo = {
       patient: get(model, 'patient.displayName')
     };

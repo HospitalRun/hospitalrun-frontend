@@ -20,14 +20,14 @@ export default Controller.extend(FilterList, ModalHelper, PatientVisits, SelectV
     return this.currentUserCan('add_visit');
   }),
   hasAppointmentLabels: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return [
       i18n.t('visits.labels.haveAppointment'),
       i18n.t('visits.labels.noAppointment')
     ];
   }),
   doneOrdersValues: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return [
       i18n.t('visits.labels.ordersNotDone'),
       i18n.t('visits.labels.haveDoneOrders')
@@ -70,7 +70,7 @@ export default Controller.extend(FilterList, ModalHelper, PatientVisits, SelectV
   startKey: [],
   actions: {
     checkOut(visit) {
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       let patientDetails = { patientName: visit.get('patient.displayName') };
       let confirmMessage =  i18n.t('visits.messages.checkOut', patientDetails);
       this.displayConfirm(i18n.t('visits.titles.checkOut'), confirmMessage,

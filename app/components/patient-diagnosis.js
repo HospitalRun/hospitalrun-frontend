@@ -13,7 +13,7 @@ const DIAGNOSIS_KEYS = [
 ];
 
 export default Component.extend(PatientDiagnosis, UserSession, {
-  i18n: service(),
+  intl: service(),
   allowAddDiagnosis: false,
   diagnosisContainer: null,
   diagnosisProperty: null,
@@ -76,5 +76,4 @@ export default Component.extend(PatientDiagnosis, UserSession, {
       this.sendAction('showAddDiagnosisAction');
     }
   }
-
 });

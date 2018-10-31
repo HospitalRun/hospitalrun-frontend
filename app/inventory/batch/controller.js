@@ -105,7 +105,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, {
         throw Error('invalid');
       }
     }.bind(this)).catch(function() {
-      this.displayAlert(this.get('i18n').t('inventory.titles.warning'), this.get('i18n').t('inventory.messages.warning'));
+      this.displayAlert(this.get('intl').t('inventory.titles.warning'), this.get('intl').t('inventory.messages.warning'));
     }.bind(this));
   },
 
@@ -197,7 +197,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, {
         }.bind(this));
         all(inventorySaves).then(function() {
           this.updateLookupLists();
-          this.displayAlert(this.get('i18n').t('inventory.titles.purchaseSaved'), this.get('i18n').t('inventory.messages.purchaseSaved'), 'allItems');
+          this.displayAlert(this.get('intl').t('inventory.titles.purchaseSaved'), this.get('intl').t('inventory.messages.purchaseSaved'), 'allItems');
         }.bind(this));
       }.bind(this));
     }.bind(this));
@@ -225,11 +225,11 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, {
     },
 
     showRemoveItem(item) {
-      let message = this.get('i18n').t('inventory.messages.removeItem');
+      let message = this.get('intl').t('inventory.messages.removeItem');
       let model = EmberObject.create({
         itemToRemove: item
       });
-      let title = this.get('i18n').t('inventory.titles.removeItem');
+      let title = this.get('intl').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },
 

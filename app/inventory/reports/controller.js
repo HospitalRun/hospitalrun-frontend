@@ -17,7 +17,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   effectiveDate: null,
   endDate: null,
   expenseCategories: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return [i18n.t('inventory.labels.inventoryConsumed'), i18n.t('inventory.labels.giftUsage'), i18n.t('inventory.labels.inventoryObsolence')];
   }),
   expenseMap: null,
@@ -31,7 +31,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   database: service(),
   warehouseList: map('inventoryController.warehouseList.value', SelectValues.selectValuesMap),
   reportColumns: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return {
       date: {
         label: i18n.t('labels.date'),
@@ -143,7 +143,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     };
   }),
   reportTypes: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return [{
       name: i18n.t('inventory.reports.daysSupply'),
       value: 'daysLeft'
@@ -477,7 +477,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   _finishExpenseReport(reportType) {
     let expenseCategories = this.get('expenseCategories');
     let expenseMap = this.get('expenseMap');
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     expenseCategories.forEach(function(category) {
       let categoryTotal = 0;
       let expenseAccountName, totalLabel;
@@ -520,7 +520,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     let locationSummary = this.get('locationSummary');
     let parentLocation = '';
     let parentCount = 0;
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     locationSummary = locationSummary.sortBy('name');
     locationSummary.forEach(function(location) {
       parentLocation = this._getWarehouseLocationName(location.name);
@@ -577,7 +577,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         }
       }.bind(this));
       this._getInventoryItems(inventoryIds).then(function(inventoryMap) {
-        let i18n = this.get('i18n');
+        let intl = this.get('intl');
         purchaseDocs.forEach(function(purchase) {
           let { currentQuantity } = purchase;
           let expirationDate = new Date(purchase.expirationDate);
@@ -617,7 +617,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     this._calculateBeginningBalance(reportTimes).then(function(beginningBalance) {
       this._generateSummaries(reportTimes).then(function(inventoryAdjustment) {
         let i = this._numberFormat(beginningBalance + inventoryAdjustment);
-        let i18n = this.get('i18n');
+        let intl = this.get('intl');
         if ((beginningBalance + inventoryAdjustment) < 0) {
           this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', `(${i})`]);
         } else {
@@ -629,7 +629,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         this._setReportTitle();
         this.closeProgressModal();
       }.bind(this), function(err) {
-        this._notifyReportError(this.get('i18n').t('inventory.reports.rows.errInFinSum') + err);
+        this._notifyReportError(this.get('intl').t('inventory.reports.rows.errInFinSum') + err);
       }.bind(this));
     }.bind(this));
   },
@@ -637,7 +637,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   _generateSummaries(reportTimes) {
     return new EmberPromise(function(resolve, reject) {
       let adjustedValue = 0;
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       /*
       cycle through each purchase and request from the beginning of time until startTime
       to determine the total value of inventory as of that date/time.
@@ -759,7 +759,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         endTime: reportTimes.startTime
       };
       let beginningBalance = 0;
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       /*
       cycle through each purchase and request from the beginning of time until startTime
       to determine the total value of inventory as of that date/time.
@@ -828,7 +828,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     let locationSummary = this.get('locationSummary');
     let reportType = this.get('reportType');
     let reportTimes = this._getDateQueryParams();
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (reportType === 'daysLeft') {
       let endDate = this.get('endDate');
       let startDate = this.get('startDate');

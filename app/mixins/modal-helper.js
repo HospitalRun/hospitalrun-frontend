@@ -11,7 +11,7 @@ export default Mixin.create({
    * @param cancelAction string containing the optional action to fire when the cancel button is clicked or the escape button is pressed.
    */
   displayAlert(title, message, okAction, okContext, cancelAction) {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let modalOptions = EmberObject.extend({
       updateButtonText: i18n.t('buttons.ok')
     });
@@ -34,7 +34,7 @@ export default Mixin.create({
   },
 
   displayConfirm(title, message, confirmAction, model) {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (isEmpty(model)) {
       model = EmberObject.create();
     }

@@ -9,7 +9,7 @@ export default AbstractEditController.extend({
   updateCapability: 'update_config',
 
   afterUpdate() {
-    this.displayAlert(this.get('i18n').t('admin.customForms.titles.formSaved'), this.get('i18n').t('admin.customForms.messages.formSaved', this.get('model')));
+    this.displayAlert(this.get('intl').t('admin.customForms.titles.formSaved'), this.get('intl').t('admin.customForms.messages.formSaved', this.get('model')));
   },
 
   actions: {
@@ -57,7 +57,7 @@ export default AbstractEditController.extend({
   },
 
   formName: computed('model.name', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let formName = this.get('model.name');
     if (isEmpty(formName)) {
       return i18n.t('admin.customForms.labels.newForm');
@@ -78,7 +78,7 @@ export default AbstractEditController.extend({
   ],
 
   formTypes: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let formTypeValues = this.get('formTypeValues');
     return formTypeValues.map((formTypeId) => {
       return {
@@ -95,7 +95,7 @@ export default AbstractEditController.extend({
   }),
 
   fieldTypeLabel(fieldType) {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return i18n.t(`admin.customForms.labels.${fieldType}`);
   },
 

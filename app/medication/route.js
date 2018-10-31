@@ -10,7 +10,7 @@ export default AbstractModuleRoute.extend({
   sectionTitle: t('medication.sectionTitle'),
 
   additionalButtons: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let additionalButtons = [];
     if (this.currentUserCan('fulfill_medication')) {
       additionalButtons.push({

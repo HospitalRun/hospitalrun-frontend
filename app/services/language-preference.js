@@ -9,7 +9,7 @@ import { walkConfigs, setRTL } from '../utils/locale-utils';
 export const DEFAULT_LANGUAGE = config.i18n.defaultLocale || 'en';
 
 export default Service.extend({
-  i18n: service(),
+  intl: service(),
   config: service(),
 
   loadUserLanguagePreference() {

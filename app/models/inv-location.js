@@ -15,12 +15,12 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
   quantity: DS.attr('number'),
   location: DS.attr('string'),
   aisleLocation: DS.attr('string'),
-  i18n: service(),
+  intl: service(),
 
   locationNameWithQuantity: computed('locationName', 'quantity', function() {
     let quantity = this.get('quantity');
     let locationName = this.get('locationName');
-    return `${locationName} (${this.get('i18n').t(
+    return `${locationName} (${this.get('intl').t(
       'inventory.labels.availableQuantity',
       { quantity }
     )})`;

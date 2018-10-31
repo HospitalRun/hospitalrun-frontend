@@ -11,7 +11,7 @@ export default AbstractEditController.extend({
   editController: controller('incident/edit'),
 
   title: computed('model.isNew', function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let isNew = get(this, 'model.isNew');
     if (isNew) {
       return i18n.t('incident.titles.addNote');

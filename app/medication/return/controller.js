@@ -98,7 +98,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   actions: {
     doneFulfillRequest() {
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       this.updateLookupLists();
       this.displayAlert(i18n.t('medication.alerts.returnedTitle'), i18n.t('medication.alerts.returnedMessage'), 'allItems');
     },

@@ -50,7 +50,7 @@ export default AppointmentIndexRoute.extend({
     };
     let location =  get(appointment, 'location');
     if (isEmpty(location)) {
-      let i18n = get(this, 'i18n');
+      let intl = get(this, 'intl');
       location = i18n.t('appointments.labels.noLocation').toString();
     }
     event.resourceId = location.toLowerCase();

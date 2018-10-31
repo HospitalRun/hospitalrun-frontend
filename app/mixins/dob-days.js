@@ -54,7 +54,7 @@ export default Mixin.create({
       days,
       months
     };
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (shortFormat) {
       if (years > 0) {
         formatString = i18n.t('dates.short', options);

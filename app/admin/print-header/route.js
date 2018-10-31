@@ -19,8 +19,8 @@ export default AbstractEditRoute.extend({
           let newConfig = store.push(store.normalize('option', {
             id: 'print_header',
             value: {
-              facilityName: this.get('i18n').t('admin.header.facilityName'),
-              headerLine1: this.get('i18n').t('admin.header.headerLine1')
+              facilityName: this.get('intl').t('admin.header.facilityName'),
+              headerLine1: this.get('intl').t('admin.header.headerLine1')
             }
           }));
           resolve(newConfig);

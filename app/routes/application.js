@@ -27,7 +27,7 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
 
     error(reason, transition) {
       if (reason instanceof UnauthorizedError) {
-        let i18n = this.get('i18n');
+        let intl = this.get('intl');
         let message = i18n.t('application.messages.sessionExpired');
         let session = get(this, 'session');
         let title = i18n.t('application.titles.sessionExpired');

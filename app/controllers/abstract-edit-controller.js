@@ -14,7 +14,7 @@ export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, 
   cancelAction: 'allItems',
 
   cancelButtonText: computed('model.hasDirtyAttributes', function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let hasDirtyAttributes = get(this, 'model.hasDirtyAttributes');
     if (hasDirtyAttributes) {
       return i18n.t('buttons.cancel');
@@ -57,7 +57,7 @@ export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, 
 
   updateButtonAction: 'update',
   updateButtonText: computed('model.isNew', function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     if (get(this, 'model.isNew')) {
       return i18n.t('buttons.add');
     } else {
@@ -120,7 +120,7 @@ export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, 
 
   _handleError(err) {
     if (!err.ignore) {
-      let i18n = get(this, 'i18n');
+      let intl = get(this, 'intl');
       let errorDetails = err;
       if (!errorDetails.message) {
         errorDetails.message =  err.toString();
@@ -150,7 +150,7 @@ export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, 
     },
 
     showDisabledDialog() {
-      let i18n = get(this, 'i18n');
+      let intl = get(this, 'intl');
       this.displayAlert(
         i18n.t('alerts.warningExclamation'),
         i18n.t('messages.requiredFieldsCorrectErrors')

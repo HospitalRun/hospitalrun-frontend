@@ -7,7 +7,7 @@ import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 
 export default Component.extend({
-  i18n: service(),
+  intl: service(),
   dateTimePickerDate: null,
   datePickerClass: '',
   endDate: alias('model.endDate'),
@@ -35,7 +35,7 @@ export default Component.extend({
   hourList: computed(function() {
     let hour;
     let hourList = [];
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     for (hour = 0; hour < 24; hour++) {
       let hourText;
       let hourProp = {
@@ -133,5 +133,4 @@ export default Component.extend({
       model.validate().catch(function() {});
     });
   }
-
 });

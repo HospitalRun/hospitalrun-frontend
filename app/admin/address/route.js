@@ -29,7 +29,7 @@ export default AbstractEditRoute.extend({
     return this.get('store').normalize('option', {
       id: 'address_options',
       value: {
-        address1Label: this.get('i18n').t('admin.address.addressLabel'),
+        address1Label: this.get('intl').t('admin.address.addressLabel'),
         address1Include: true
       }
     });

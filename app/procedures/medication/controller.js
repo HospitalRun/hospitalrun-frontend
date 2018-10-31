@@ -15,9 +15,9 @@ export default AbstractEditController.extend({
   title: computed('model.isNew', function() {
     let isNew = this.get('model.isNew');
     if (isNew) {
-      return this.get('i18n').t('procedures.titles.addMedicationUsed');
+      return this.get('intl').t('procedures.titles.addMedicationUsed');
     }
-    return this.get('i18n').t('procedures.titles.editMedicationUsed');
+    return this.get('intl').t('procedures.titles.editMedicationUsed');
   }),
 
   beforeUpdate() {

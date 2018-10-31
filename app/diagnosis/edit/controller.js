@@ -16,7 +16,7 @@ export default AbstractEditController.extend({
   }],
 
   additionalButtons: computed('model.isNew', function() {
-    let i8n = this.get('i18n');
+    let intl = this.get('intl');
     let isNew = this.get('model.isNew');
     if (!isNew) {
       return [{
@@ -33,7 +33,7 @@ export default AbstractEditController.extend({
   }),
 
   title: computed('model.isNew', function() {
-    let i8n = this.get('i18n');
+    let intl = this.get('intl');
     let isNew = this.get('model.isNew');
     if (isNew) {
       return i8n.t('diagnosis.titles.addDiagnosis');

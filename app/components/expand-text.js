@@ -5,9 +5,8 @@ import { computed } from '@ember/object';
 import textExpansion from '../utils/text-expansion';
 
 export default Component.extend({
-  i18n: service(),
+  intl: service(),
   store: service(),
-
   userText: '',
 
   didInsertElement() {
@@ -100,7 +99,7 @@ export default Component.extend({
   expansionText: computed('possibleSwaps', 'activeExpansionSite', 'userText', function() {
     let result = '';
 
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let possibleSwaps = this.get('possibleSwaps');
     if (possibleSwaps) {
       let activeSite = this.get('activeExpansionSite');

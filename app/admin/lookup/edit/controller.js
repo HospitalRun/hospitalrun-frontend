@@ -9,7 +9,7 @@ export default Controller.extend(IsUpdateDisabled, {
 
   updateButtonAction: 'update',
   updateButtonText: computed('model.isNew', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (this.get('model.isNew')) {
       return i18n.t('buttons.add');
     } else {

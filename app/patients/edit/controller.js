@@ -88,7 +88,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
   }),
 
   patientTypes: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let types = [
       'Charity',
       'Private'
@@ -405,33 +405,33 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     showDeleteContact(contact) {
       this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deleteContact',
-        title: this.get('i18n').t('patients.titles.deleteContact'),
-        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'contact' }),
+        title: this.get('intl').t('patients.titles.deleteContact'),
+        message: this.get('intl').t('patients.titles.deletePhoto', { object: 'contact' }),
         contactToDelete: contact,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
     },
 
     showDeleteExpense(expense) {
       this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deleteExpense',
-        title: this.get('i18n').t('patients.titles.deleteExpense'),
-        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'expense' }),
+        title: this.get('intl').t('patients.titles.deleteExpense'),
+        message: this.get('intl').t('patients.titles.deletePhoto', { object: 'expense' }),
         expenseToDelete: expense,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
     },
 
     showDeleteFamily(familyInfo) {
       this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deleteFamily',
-        title: this.get('i18n').t('patients.titles.deleteFamilyMember'),
-        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'family member' }),
+        title: this.get('intl').t('patients.titles.deleteFamilyMember'),
+        message: this.get('intl').t('patients.titles.deletePhoto', { object: 'family member' }),
         familyToDelete: familyInfo,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
 
     },
@@ -451,11 +451,11 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     showDeletePhoto(photo) {
       this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deletePhoto',
-        title: this.get('i18n').t('patients.titles.deletePhoto'),
-        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
+        title: this.get('intl').t('patients.titles.deletePhoto'),
+        message: this.get('intl').t('patients.titles.deletePhoto', { object: 'photo' }),
         photoToDelete: photo,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
     },
 
@@ -592,7 +592,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
   afterUpdate(record) {
     this._updateSequence(record).then(() => {
       $('.message').show();
-      $('.message').text(this.get('i18n').t('patients.messages.savedPatient', record));
+      $('.message').text(this.get('intl').t('patients.messages.savedPatient', record));
       $('.message').delay(3000).fadeOut(100);
     });
   }

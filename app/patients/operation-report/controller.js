@@ -22,7 +22,7 @@ export default OperativePlanController.extend({
   diagnosisList: alias('patientController.diagnosisList'),
 
   _finishAfterUpdate() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let updateMessage = i18n.t('operationReport.messages.reportSaved');
     let updateTitle = i18n.t('operationReport.titles.reportSaved');
     this.displayAlert(updateTitle, updateMessage);

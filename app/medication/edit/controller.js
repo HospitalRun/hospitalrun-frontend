@@ -54,7 +54,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   }),
 
   quantityLabel: computed('isFulfilled', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let returnLabel = i18n.t('medication.labels.quantityRequested');
     let isFulfilled = this.get('isFulfilled');
     let isFulfilling = this.get('isFulfilling');
@@ -70,7 +70,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   updateCapability: 'add_medication',
 
   afterUpdate() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let alertTitle, alertMessage;
     let isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
@@ -158,7 +158,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   }),
 
   updateButtonText: computed('model.isNew', 'isFulfilling', 'model.hideFulfillRequest', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (this.get('model.hideFulfillRequest')) {
       return i18n.t('buttons.dispense');
     } else if (this.get('isFulfilling')) {

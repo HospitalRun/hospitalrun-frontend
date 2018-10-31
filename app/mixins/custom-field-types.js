@@ -13,7 +13,7 @@ export default Mixin.create({
   ],
 
   fieldTypes: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let fieldTypeValues = this.get('fieldTypeValues');
     return fieldTypeValues.map((fieldTypeId) => {
       return {

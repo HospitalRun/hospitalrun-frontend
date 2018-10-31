@@ -14,7 +14,7 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   }),
 
   departmentReportColumns: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return {
       department: {
         label: i18n.t('incident.labels.department'),
@@ -30,7 +30,7 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     };
   }),
   incidentCategoryReportColumns: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return {
       incidentCategory: {
         label: i18n.t('incident.labels.category'),
@@ -47,7 +47,7 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   }),
 
   reportTypes: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return [{
       name: i18n.t('incident.titles.incidentsByDepartment'),
       value: 'department'

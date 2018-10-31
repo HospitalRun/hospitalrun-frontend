@@ -17,7 +17,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
     if (this.currentUserCan('add_payment')) {
       return [{
         class: 'btn btn-default',
-        buttonText: this.get('i18n').t('billing.buttons.addDeposit'),
+        buttonText: this.get('intl').t('billing.buttons.addDeposit'),
         buttonAction: 'showAddDeposit'
       }];
     }
@@ -61,25 +61,25 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
 
   subActions: computed(function() {
     let actions = [{
-      text: this.get('i18n').t('billing.navigation.billed'),
+      text: this.get('intl').t('billing.navigation.billed'),
       linkTo: 'invoices.index',
       statusQuery: 'Billed'
     }];
     if (this.currentUserCan('add_invoice')) {
       actions.push({
-        text: this.get('i18n').t('billing.navigation.drafts'),
+        text: this.get('intl').t('billing.navigation.drafts'),
         linkTo: 'invoices.index',
         statusQuery: 'Draft'
       });
       actions.push({
-        text: this.get('i18n').t('billing.navigation.allInvoices'),
+        text: this.get('intl').t('billing.navigation.allInvoices'),
         linkTo: 'invoices.index',
         statusQuery: 'All'
       });
     }
     if (this.currentUserCan('list_paid_invoices')) {
       actions.push({
-        text: this.get('i18n').t('billing.navigation.paid'),
+        text: this.get('intl').t('billing.navigation.paid'),
         linkTo: 'invoices.index',
         statusQuery: 'Paid'
       });

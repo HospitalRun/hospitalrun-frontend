@@ -77,7 +77,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   additionalButtons: computed('canComplete', 'model.isValid', function() {
     let canComplete = this.get('canComplete');
     let isValid = this.get('model.isValid');
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (isValid && canComplete) {
       return [{
         buttonAction: 'completeLab',
@@ -95,7 +95,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_lab',
 
   afterUpdate(saveResponse, multipleRecords) {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let afterDialogAction, alertMessage, alertTitle;
     if (this.get('model.status') === LAB_STATUS_COMPLETED) {
       alertTitle = i18n.t('labs.alerts.requestCompletedTitle');

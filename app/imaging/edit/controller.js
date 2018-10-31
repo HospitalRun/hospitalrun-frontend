@@ -73,7 +73,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   },
 
   additionalButtons: computed('canComplete', 'model.isValid', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let canComplete = this.get('canComplete');
     let isValid = this.get('model.isValid');
     if (isValid && canComplete) {
@@ -101,7 +101,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_imaging',
 
   afterUpdate(saveResponse, multipleRecords) {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     this.updateLookupLists();
     let afterDialogAction,
       alertTitle,

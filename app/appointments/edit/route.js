@@ -35,7 +35,7 @@ export default AbstractEditRoute.extend(AddToPatientRoute, PatientListRoute, {
   getScreenTitle(model) {
     let appointmentType = get(model, 'appointmentType');
     if (appointmentType === 'Surgery') {
-      let i18n = get(this, 'i18n');
+      let intl = get(this, 'intl');
       let isNew = get(model, 'isNew');
       if (isNew) {
         return i18n.t('appointments.titles.newSurgicalAppointment');

@@ -20,8 +20,9 @@ export default Component.extend(FilterList, UserSession, {
   showDeleteMedicationAction: 'showDeleteMedication',
   sortKey: null,
   sortDesc: false,
+
   orderTypeFilters: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return [
       i18n.t('components.patientOrders.labels.imagingOrderType').toString(),
       i18n.t('components.patientOrders.labels.labOrderType').toString(),
@@ -62,7 +63,7 @@ export default Component.extend(FilterList, UserSession, {
   }),
 
   orderList: computed('visit.imaging.[]', 'visit.labs.[]', 'visit.medication.[]', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let imaging = this.get('visit.imaging');
     let labs = this.get('visit.labs');
     let medication = this.get('visit.medication');
@@ -116,7 +117,7 @@ export default Component.extend(FilterList, UserSession, {
     return filteredList;
   }),
 
-  i18n: service(),
+  intl: service(),
   visit: null,
 
   _setPermissions(item, editPerm, deletePerm) {
@@ -167,5 +168,4 @@ export default Component.extend(FilterList, UserSession, {
       });
     }
   }
-
 });

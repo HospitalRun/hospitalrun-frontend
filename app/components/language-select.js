@@ -4,12 +4,12 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 
 export default Component.extend({
-  i18n: service(),
+  intl: service(),
   languagePreference: service(),
   selectedLanguage: alias('i18n.locale'),
 
   languageOptions: computed('i18n.locale', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     // Hacking around the fact that i18n
     // has no support for t(key, locale).
     let currentLocale = i18n.get('locale');

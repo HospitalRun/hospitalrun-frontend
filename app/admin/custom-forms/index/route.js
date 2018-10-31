@@ -24,7 +24,7 @@ export default AbstractIndexRoute.extend(ModalHelper, UserSession, {
 
   actions: {
     deleteItem(item) {
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       let model = EmberObject.create({
         itemToDelete: item
       });

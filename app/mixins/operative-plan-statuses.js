@@ -14,7 +14,7 @@ const STATUS_VALUES = [
 
 export default Mixin.create({
   planStatuses: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
 
     return STATUS_VALUES.map((status) => {
       return {

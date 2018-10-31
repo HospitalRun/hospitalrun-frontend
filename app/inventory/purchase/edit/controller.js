@@ -44,7 +44,7 @@ export default AbstractEditController.extend(UnitTypes, {
   updateCapability: 'add_inventory_purchase',
 
   title: computed('model.isNew', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let isNew = this.get('model.isNew');
     if (isNew) {
       return i18n.t('inventory.titles.addPurchase');

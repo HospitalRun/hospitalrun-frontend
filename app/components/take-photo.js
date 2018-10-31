@@ -23,15 +23,14 @@ export default Component.extend({
   video: null,
   videoSources: null,
   width: 200,
-
-  i18n: service(),
+  intl: service(),
 
   canCaptureVideo: computed(function() {
     return navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
   }),
 
   photoSources: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return FILE_SOURCES.map((source) => {
       return {
         label: i18n.t(`components.takePhoto.labels.${source}`),
@@ -41,7 +40,7 @@ export default Component.extend({
   }),
 
   sourceChooserLabel: computed('sourceLabel', function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let sourceLabel = get(this, 'sourceLabel');
     if (isEmpty(sourceLabel)) {
       return i18n.t('components.takePhoto.how');
@@ -243,5 +242,4 @@ export default Component.extend({
       set(this, 'isImage', true);
     }
   }
-
 });

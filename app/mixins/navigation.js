@@ -371,7 +371,7 @@ export default Mixin.create({
       // i18n will return a SafeString object, not a string
       return typeof translation === 'string' ? original : translation;
     };
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let navItems = get(this, 'navItems');
     return navItems.map((nav) => {
       let sectionKey = localizationPrefix + camelize(nav.title).toLowerCase();

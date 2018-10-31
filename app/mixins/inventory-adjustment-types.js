@@ -3,7 +3,7 @@ import { computed } from '@ember/object';
 
 export default Mixin.create({
   adjustmentTypes: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return [
       {
         name: i18n.t('inventory.labels.addAdjustmentType').toString(),

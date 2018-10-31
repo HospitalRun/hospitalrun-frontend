@@ -9,7 +9,7 @@ export const REPORTED = 'Reported';
 export default Mixin.create({
   statusList: [ACTIVE, CLOSED, FOLLOW_UP, REPORTED],
   getLocalizedStatus(status) {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return i18n.t(`incident.labels.status${status}`);
   }
 });

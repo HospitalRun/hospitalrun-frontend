@@ -24,7 +24,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   patientDetails: {},
 
   admissionReportColumns: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return {
       sex: {
         label: i18n.t('labels.sex'),
@@ -40,7 +40,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     };
   }),
   admissionDetailReportColumns: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return {
       id: {
         label: i18n.t('labels.id'),
@@ -73,7 +73,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     };
   }),
   diagnosticReportColumns: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return {
       type: {
         label: i18n.t('labels.type'),
@@ -89,7 +89,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     };
   }),
   procedureDetailReportColumns: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return {
       id: {
         label: i18n.t('labels.id'),
@@ -115,7 +115,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     };
   }),
   reportColumns: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return {
       visitDate: {
         label: i18n.t('visits.labels.visitDate'),
@@ -200,7 +200,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     };
   }),
   statusReportColumns: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return {
       id: {
         label: i18n.t('labels.id'),
@@ -232,7 +232,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     };
   }),
   reportTypes: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return [{
       name: i18n.t('patients.titles.admissionsDetail'),
       value: 'detailedAdmissions'
@@ -550,7 +550,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     let detailedReport = false;
     let reportColumns;
     let patientBySex = {};
-    let sexNotEnteredLabel = this.get('i18n').t('patients.labels.sexNotEntered');
+    let sexNotEnteredLabel = this.get('intl').t('patients.labels.sexNotEntered');
 
     if (reportType.indexOf('detailed') > -1) {
       detailedReport = true;
