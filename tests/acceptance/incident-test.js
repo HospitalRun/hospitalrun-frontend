@@ -208,24 +208,48 @@ test('Incident deletion', function(assert) {
   });
 });
 
-testSimpleReportForm('Incidents By Department');
-testSimpleReportForm('Incidents By Category');
+testSimpleReportForm('Incidents By Department', '2015-10-01', '2015-10-31');
+testSimpleReportForm('Incidents By Category', '2015-10-01', '2015-10-31');
+testEmptyEndDate('Incidents By Department', '2015-10-01');
+testEmptyEndDate('Incidents By Category', '2015-10-01');
 
-function testSimpleReportForm(reportName) {
+function testSimpleReportForm(reportName, start, end) {
   test(`${reportName} report can be generated`, function(assert) {
     return runWithPouchDump('default', async function() {
       await authenticateUser();
       await visit('/incident/reports');
       assert.equal(currentURL(), '/incident/reports');
 
-      let startDate = moment('2015-10-01');
-      let endDate = moment('2015-10-31');
+      let startDate = moment(start);
+      let endDate = moment(end);
       await selectDate('.test-start-date input', startDate.toDate());
       await selectDate('.test-end-date input', endDate.toDate());
       await select('#report-type', `${reportName}`);
       await click('button:contains(Generate Report)');
       await waitToAppear('.panel-title');
 
+      let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
+      assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
+      let exportLink = findWithAssert('a:contains(Export Report)');
+      assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
+    });
+  });
+}
+
+function testEmptyEndDate(reportName, start) {
+  test(`${reportName} report can be generated with no end date`, function(assert) {
+    return runWithPouchDump('default', async function() {
+      await authenticateUser();
+      await visit('/incident/reports');
+      assert.equal(currentURL(), '/incident/reports');
+
+      let startDate = moment(start);
+      await selectDate('.test-start-date input', startDate.toDate());
+      await select('#report-type', `${reportName}`);
+      await click('button:contains(Generate Report)');
+      await waitToAppear('.panel-title');
+
+      let endDate = moment(new Date());
       let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
       assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
       let exportLink = findWithAssert('a:contains(Export Report)');
