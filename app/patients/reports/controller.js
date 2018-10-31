@@ -855,6 +855,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   actions: {
     generateReport() {
+      if (isEmpty(this.get('endDate'))) {
+        let now = new Date();
+        this.set('endDate', now);
+      }
+
       if (this._validateDates()) {
         let reportRows = this.get('reportRows');
         let reportType = this.get('reportType');
