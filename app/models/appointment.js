@@ -26,7 +26,6 @@ function dateAcceptance(object) {
       }
     }
   }
-  // patient is properly selected; don't do any further validation
   return false;
 }
 
