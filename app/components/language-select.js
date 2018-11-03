@@ -10,17 +10,12 @@ export default Component.extend({
 
   languageOptions: computed('intl.locale', function() {
     let intl = this.get('intl');
-    // Hacking around the fact that intl
-    // has no support for t(key, locale).
-    let currentLocale = intl.get('locale');
-    let options = intl.get('locales').map((item) => {
-      intl.set('locale', item);
+    let options = intl.get('locales').map((locale) => {
       return {
-        id: item,
-        name: intl.t('languageName')
+        id: locale,
+        name: intl.lookup('languageName', locale)
       };
     });
-    intl.set('locale', currentLocale);
     return options;
   }),
 
