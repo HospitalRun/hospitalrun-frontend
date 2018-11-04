@@ -1,7 +1,7 @@
 import Controller, { inject as controller } from '@ember/controller';
 import { alias } from '@ember/object/computed';
 import { get } from '@ember/object';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default Controller.extend({
   showUpdateButton: true,

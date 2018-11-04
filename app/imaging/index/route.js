@@ -1,5 +1,5 @@
 import { computed } from '@ember/object';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 
 export default AbstractIndexRoute.extend({

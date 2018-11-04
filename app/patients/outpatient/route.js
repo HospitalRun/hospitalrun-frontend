@@ -4,7 +4,7 @@ import { isEmpty } from '@ember/utils';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import moment from 'moment';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractIndexRoute.extend(DateFormat, {
   database: service(),

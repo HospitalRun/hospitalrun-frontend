@@ -1,6 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import UserSession from 'hospitalrun/mixins/user-session';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractModuleRoute.extend(UserSession, {
   addCapability: 'add_appointment',

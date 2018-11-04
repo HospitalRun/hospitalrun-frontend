@@ -2,7 +2,7 @@ import { alias } from '@ember/object/computed';
 import Controller, { inject as controller } from '@ember/controller';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import SelectValues from 'hospitalrun/utils/select-values';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import { computed } from '@ember/object';
 
 export default Controller.extend(IsUpdateDisabled, {

@@ -5,7 +5,7 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractEditRoute.extend(PatientVisits, PouchDbMixin, PatientNotes, {
   customForms: service(),

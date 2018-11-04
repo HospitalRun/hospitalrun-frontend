@@ -1,6 +1,6 @@
 import { computed } from '@ember/object';
 import AppointmenCalendarRoute from 'hospitalrun/appointments/calendar/route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AppointmenCalendarRoute.extend({
   editReturn: 'appointments.theater',

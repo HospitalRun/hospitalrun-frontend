@@ -1,5 +1,5 @@
 import InventoryEditController from 'hospitalrun/inventory/edit/controller';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 export default InventoryEditController.extend({
   title: t('inventory.titles.inventoryItem'),
 

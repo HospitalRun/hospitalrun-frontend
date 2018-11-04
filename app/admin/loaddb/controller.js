@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 export default Controller.extend(ModalHelper, ProgressDialog, {

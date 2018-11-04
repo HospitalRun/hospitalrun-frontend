@@ -2,7 +2,7 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { get, computed } from '@ember/object';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import UserSession from 'hospitalrun/mixins/user-session';
 
 const DIAGNOSIS_KEYS = [

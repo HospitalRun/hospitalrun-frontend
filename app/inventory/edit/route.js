@@ -1,6 +1,6 @@
 import { resolve } from 'rsvp';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import InventoryId from 'hospitalrun/mixins/inventory-id';
 export default AbstractEditRoute.extend(InventoryId, {
   editTitle: t('inventory.labels.editItem'),

@@ -1,6 +1,6 @@
 import { Promise as EmberPromise } from 'rsvp';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
 export default AbstractEditRoute.extend({

@@ -1,7 +1,7 @@
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 export default AbstractEditController.extend({
   inventoryController: controller('inventory'),
 

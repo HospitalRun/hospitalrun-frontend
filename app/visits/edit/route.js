@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import EmberObject, { set, get } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';

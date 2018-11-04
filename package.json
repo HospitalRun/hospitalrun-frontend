@@ -80,6 +80,7 @@
     "ember-intl": "^3.5.0",
     "ember-keyboard": "4.0.0",
     "ember-load-initializers": "^1.0.0",
+    "ember-macro-helpers": "^2.0.1",
     "ember-metrics": "^0.12.1",
     "ember-pouch": "4.3.0",
     "ember-radio-buttons": "^4.0.1",

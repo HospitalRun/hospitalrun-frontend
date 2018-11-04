@@ -1,7 +1,7 @@
 import { isEmpty } from '@ember/utils';
 import EmberObject, { computed, get } from '@ember/object';
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AppointmentIndexRoute.extend({
   dateIntervalEnd: null,

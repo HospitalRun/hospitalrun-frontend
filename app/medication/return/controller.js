@@ -3,7 +3,7 @@ import { isEmpty } from '@ember/utils';
 import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!

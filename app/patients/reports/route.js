@@ -1,7 +1,7 @@
 import { resolve } from 'rsvp';
 import EmberObject, { computed } from '@ember/object';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractIndexRoute.extend({
   pageTitle: computed('intl.locale', () => {

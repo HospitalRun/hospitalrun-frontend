@@ -1,7 +1,7 @@
 import { computed } from '@ember/object';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import moment from 'moment';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractIndexRoute.extend({
   editReturn: 'appointments.index',

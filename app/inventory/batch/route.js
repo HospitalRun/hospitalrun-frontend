@@ -1,6 +1,6 @@
 import { resolve } from 'rsvp';
 import InventoryRequestRoute from 'hospitalrun/inventory/request/route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 export default InventoryRequestRoute.extend({
   editTitle: t('navigation.subnav.inventoryReceived'),
   modelName: 'inventory-batch',

@@ -1,5 +1,5 @@
 import { resolve } from 'rsvp';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';

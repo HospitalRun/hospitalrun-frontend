@@ -1,5 +1,5 @@
 import { resolve } from 'rsvp';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import MedicationEditRoute from '../edit/route';
 
 export default MedicationEditRoute.extend({

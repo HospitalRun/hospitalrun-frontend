@@ -1,6 +1,6 @@
 import { isEmpty } from '@ember/utils';
 import { computed } from '@ember/object';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 
 export default AbstractModuleRoute.extend({

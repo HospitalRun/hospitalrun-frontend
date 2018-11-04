@@ -1,5 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractEditRoute.extend({
   editTitle: t('incident.titles.editIncidentCategory'),

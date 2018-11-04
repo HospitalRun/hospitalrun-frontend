@@ -2,7 +2,7 @@ import EmberObject, { computed } from '@ember/object';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractIndexRoute.extend(ModalHelper, UserSession, {
   newButtonAction: computed(function() {

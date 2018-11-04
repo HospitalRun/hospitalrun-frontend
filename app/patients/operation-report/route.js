@@ -1,5 +1,5 @@
 import OperativePlanRoute from 'hospitalrun/patients/operative-plan/route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default OperativePlanRoute.extend({
   editTitle: t('operationReport.titles.editTitle'),

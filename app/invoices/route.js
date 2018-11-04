@@ -2,7 +2,7 @@ import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 import { computed } from '@ember/object';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
   addCapability: 'add_invoice',

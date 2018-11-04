@@ -1,6 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import Ember from 'ember';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractModuleRoute.extend({
   addCapability: 'add_pricing',

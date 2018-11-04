@@ -5,7 +5,7 @@ import {
 } from 'rsvp';
 import { alias } from '@ember/object/computed';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 export default AbstractEditRoute.extend({
   hideNewButton: true,
   editTitle: t('admin.visitForms.titles.visitForms'),

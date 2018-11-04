@@ -5,7 +5,7 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
-import { translationMacro as t } from 'ember-intl';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractEditRoute.extend(AddToPatientRoute, PatientListRoute, {
 
