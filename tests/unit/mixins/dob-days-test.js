@@ -3,29 +3,39 @@ import { getOwner } from '@ember/application';
 import DOBDays from 'hospitalrun/mixins/dob-days';
 import { moduleFor, test } from 'ember-qunit';
 import DS from 'ember-data';
-import tHelper from 'ember-i18n/helper';
-import localeConfig from 'ember-i18n/config/en';
 import moment from 'moment';
 
 moduleFor('mixin:dob-days', 'Unit | Mixin | dob-days', {
   needs: [
-    'service:i18n',
-    'locale:en/translations',
-    'locale:en/config',
-    'util:i18n/missing-message',
-    'util:i18n/compile-template',
-    'config:environment'
+    'config:environment',
+    'service:intl',
+    'ember-intl@adapter:default',
+    'cldr:cn',
+    'cldr:de',
+    'cldr:en',
+    'cldr:es',
+    'cldr:gr',
+    'cldr:hi',
+    'cldr:pt',
+    'cldr:th',
+    'cldr:tw',
+    'cldr:de',
+    'cldr:es',
+    'cldr:fr',
+    'cldr:he',
+    'cldr:it',
+    'cldr:ru',
+    'cldr:tr',
+    'cldr:ur',
+    'translation:en',
+    'util:intl/missing-message'
   ],
   beforeEach() {
     // set the locale and the config
-    this.container.lookup('service:i18n').set('locale', 'en');
-    this.registry.register('locale:en/config', localeConfig);
+    this.container.lookup('service:intl').set('locale', 'en');
 
-    // Inject i18n as the intializer does not run in unit test
-    getOwner(this).inject('model', 'i18n', 'service:i18n');
-
-    // register t helper
-    this.registry.register('helper:t', tHelper);
+    // Inject intl as the intializer does not run in unit test
+    getOwner(this).inject('model', 'intl', 'service:intl');
 
     // eslint-disable-next-line no-undef
     timekeeper.freeze(new Date(1481784419830));
