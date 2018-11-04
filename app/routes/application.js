@@ -81,6 +81,11 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
     }
   },
 
+  beforeModel() {
+    let intl = this.get('intl');
+    intl.setLocale('en');
+  },
+
   model(params, transition) {
     let session = get(this, 'session');
     let isAuthenticated = session && get(session, 'isAuthenticated');
