@@ -16,6 +16,7 @@ test('patient notes crud testing', function(assert) {
     await fillIn('.test-first-name input', 'John');
     await fillIn('.test-last-name input', 'Doe');
     await click('.panel-footer button:contains(Add)');
+
     await waitToAppear('.message:contains(The patient record for John Doe has been saved)');
     assert.dom('.message').hasText('The patient record for John Doe has been saved.');
 

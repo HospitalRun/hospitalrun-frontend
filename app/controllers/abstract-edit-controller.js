@@ -16,6 +16,7 @@ export default Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, 
   cancelButtonText: computed('model.hasDirtyAttributes', function() {
     let intl = get(this, 'intl');
     let hasDirtyAttributes = get(this, 'model.hasDirtyAttributes');
+
     if (hasDirtyAttributes) {
       return intl.t('buttons.cancel');
     } else {
