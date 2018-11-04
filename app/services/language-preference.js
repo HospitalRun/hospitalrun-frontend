@@ -6,7 +6,7 @@ import Ember from 'ember';
 import config from '../config/environment';
 import { walkConfigs, setRTL } from '../utils/locale-utils';
 
-export const DEFAULT_LANGUAGE = config.i18n.defaultLocale || 'en';
+export const DEFAULT_LANGUAGE = config.intl.defaultLocale || 'en';
 
 export default Service.extend({
   intl: service(),

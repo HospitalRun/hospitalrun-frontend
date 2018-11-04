@@ -83,7 +83,7 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
 
   beforeModel() {
     let intl = this.get('intl');
-    intl.setLocale('en');
+    intl.setLocale(DEFAULT_LANGUAGE);
   },
 
   model(params, transition) {
