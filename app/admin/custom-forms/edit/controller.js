@@ -9,7 +9,10 @@ export default AbstractEditController.extend({
   updateCapability: 'update_config',
 
   afterUpdate() {
-    this.displayAlert(this.get('intl').t('admin.customForms.titles.formSaved'), this.get('intl').t('admin.customForms.messages.formSaved', this.get('model')));
+    this.displayAlert(
+      this.get('intl').t('admin.customForms.titles.formSaved'),
+      this.get('intl').t('admin.customForms.messages.formSaved', { name: this.get('model.shortDisplayName') })
+    );
   },
 
   actions: {

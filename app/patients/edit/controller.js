@@ -592,7 +592,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
   afterUpdate(record) {
     this._updateSequence(record).then(() => {
       $('.message').show();
-      $('.message').text(this.get('intl').t('patients.messages.savedPatient', record));
+      $('.message').text(this.get('intl').t('patients.messages.savedPatient', { displayName: record.get('shortDisplayName') }));
       $('.message').delay(3000).fadeOut(100);
     });
   }
