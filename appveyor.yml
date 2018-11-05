@@ -18,7 +18,7 @@ branches:
     - dev
 
 install:
-  - ps: Install-Product node 6 x64
+  - ps: Install-Product node 6.14.3 x64
   - npm version
   - npm install --no-color --no-progress
 
