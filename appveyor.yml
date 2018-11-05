@@ -1,29 +1,51 @@
 # Fix line endings in Windows. (runs before repo cloning)
 init:
   - git config --global core.autocrlf true
+
 clone_depth: 1
+
 platform:
   - x64
-cache:
-  - node_modules -> package.json
-  - '%APPDATA%\npm-cache'
-  - "%LOCALAPPDATA%\\Yarn"
+
+# cache:
+#   - node_modules -> package.json
+#   - '%APPDATA%\npm-cache'
+
 branches:
   only:
     - master
     - production
     - dev
-# Install scripts. (runs after repo cloning)
+
 install:
-  # Let's try to get things working
-  # Install Node 6 ---------------------------------------------------------
-  - ps: Install-Product node 6.14.3 x64
-  # Typical npm stuff ------------------------------------------------------
-  - yarn install
-  - yarn build
+  - ps: Install-Product node 6 x64
+  - npm version
+  - npm install --no-color --no-progress
+
+build_script:
+  - npm run-script ember-electron
+
 test_script:
-  # - npm test
-  - yarn run electron-test
-# Set build version format here instead of in the admin panel.
-build: off
+  - npm build
+  - npm test
+  - npm run-script electron-test
+
+artifacts:
+  - path: electron-out\make\squirrel.windows\ia32
+    name: HospitalRunElectronWin32
+
+  - path: electron-out\make\squirrel.windows\x64
+    name: HospitalRunElectronWin64
+
+# deploy:
+#  provider: S3
+#  access_key_id: $(ARTIFACTS_ACCESS)
+#  secret_access_key: $(ARTIFACTS_SECRET)
+#  bucket: $(ARTIFACTS_BUCKET)
+#  region: eu-west-1
+#  unzip: true|false (disabled by default)
+#  set_public: true|false (disabled by default)
+#  folder:
+#  artifact: HospitalRunElectron32, HospitalRunElectron64
+
 version: "{build}"
