@@ -1,7 +1,7 @@
 import { isEmpty } from '@ember/utils';
 import { Promise as EmberPromise } from 'rsvp';
 import Mixin from '@ember/object/mixin';
-import uuid from 'npm:uuid';
+import uuid from 'uuid';
 export default Mixin.create({
   aisleToFind: null,
   locationToFind: null,

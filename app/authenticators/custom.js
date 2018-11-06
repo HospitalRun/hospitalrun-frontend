@@ -3,7 +3,7 @@ import { alias } from '@ember/object/computed';
 import { get } from '@ember/object';
 import RSVP from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
-import crypto from 'npm:crypto';
+import crypto from 'crypto';
 import MapOauthParams from 'hospitalrun/mixins/map-oauth-params';
 import OAuthHeaders from 'hospitalrun/mixins/oauth-headers';
 

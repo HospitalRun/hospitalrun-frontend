@@ -8,7 +8,7 @@ import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
-import uuid from 'npm:uuid';
+import uuid from 'uuid';
 
 export default AbstractEditRoute.extend(AddToPatientRoute, FulfillRequest, InventoryLocations, PatientListRoute, {
   editTitle: t('medication.titles.editMedicationRequest'),

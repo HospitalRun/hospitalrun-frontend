@@ -5,11 +5,11 @@ import { Promise as EmberPromise, all } from 'rsvp';
 import { set, get } from '@ember/object';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import PouchDB from 'pouchdb';
-import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
-import PouchDBUsers from 'npm:pouchdb-users';
+import PouchAdapterMemory from 'pouchdb-adapter-memory';
+import PouchDBUsers from 'pouchdb-users';
 import DatabaseService from 'hospitalrun/services/database';
 import ConfigService from 'hospitalrun/services/config';
-import PouchDBWorker from 'npm:worker-pouch/client';
+import PouchDBWorker from 'worker-pouch/client';
 
 function cleanupDatabases(maindb, dbs) {
   return wait().then(function() {

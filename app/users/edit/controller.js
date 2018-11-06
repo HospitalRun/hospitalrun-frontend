@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import UserRoles from 'hospitalrun/mixins/user-roles';
-import uuid from 'npm:uuid';
+import uuid from 'uuid';
 
 export default AbstractEditController.extend(UserRoles, {
   config: service(),
