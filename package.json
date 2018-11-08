@@ -99,6 +99,7 @@
     "loader.js": "^4.2.3",
     "minimatch": "^3.0.2",
     "nano": "6.4.4",
+    "pbkdf2": "^3.0.17",
     "pikaday-time": "owenmead/Pikaday#1.5.1",
     "pouchdb": "6.3.4",
     "pouchdb-adapter-memory": "6.4.0",

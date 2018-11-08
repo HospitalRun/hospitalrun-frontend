@@ -3,7 +3,7 @@ import { alias } from '@ember/object/computed';
 import { get } from '@ember/object';
 import RSVP from 'rsvp';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
-import crypto from 'crypto';
+import { pbkdf2 } from 'pbkdf2';
 import MapOauthParams from 'hospitalrun/mixins/map-oauth-params';
 import OAuthHeaders from 'hospitalrun/mixins/oauth-headers';
 
@@ -154,7 +154,7 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
 
   // Based on https://github.com/hoodiehq/hoodie-account-server-api/blob/master/lib/utils/validate-password.js
   _checkPassword(password, salt, iterations, derivedKey, callback) {
-    crypto.pbkdf2(password, salt, iterations, 20, 'sha1', function(error, derivedKeyCheck) {
+    pbkdf2(password, salt, iterations, 20, 'sha1', function(error, derivedKeyCheck) {
       if (error) {
         return callback(error);
       }
