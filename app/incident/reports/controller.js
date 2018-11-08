@@ -72,10 +72,6 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     let maxValue = get(this, 'maxValue');
 
     return new RSVP.Promise(function(resolve, reject) {
-      if (isEmpty(filterStartDate) || isEmpty(filterEndDate)) {
-        reject('Start or End date cannot be an empty value.');
-      }
-
       findParams.options.startkey =  [filterStartDate.getTime(), null];
       filterEndDate = moment(filterEndDate).endOf('day').toDate();
       findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
@@ -145,28 +141,51 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     return types;
   },
 
-  actions: {
-    generateReport() {
+  _validateDates() {
+    let alertMessage;
+    let isValid = true;
+    let startDate = this.get('startDate');
+    let endDate = this.get('endDate');
 
-      if (isEmpty(get(this, 'endDate'))) {
+    if (isEmpty(startDate)) {
+      alertMessage = 'Please enter a start date.';
+      isValid = false;
+    } else {
+      if (isEmpty(endDate)) {
         let now = new Date();
         this.set('endDate', now);
+        endDate = this.get('endDate');
       }
 
-      let reportRows = get(this, 'reportRows');
-      let reportType = get(this, 'reportType');
-      reportRows.clear();
-      this.showProgressModal();
-      switch (reportType) {
-        case 'department':
-        case 'incidentCategory': {
-          this._findIncidentsByDate().then((incidents) => {
-            this._generateByDepartmentOrByIncidentCategoryReport(incidents, reportType);
-          }).catch((ex) => {
-            console.log('Error:', ex);
-            this.closeProgressModal();
-          });
-          break;
+      if (endDate.getTime() < startDate.getTime()) {
+        alertMessage = 'Please enter an end date after the start date.';
+        isValid = false;
+      }
+    }
+    if (!isValid) {
+      this.displayAlert('Error Generating Report', alertMessage);
+    }
+    return isValid;
+  },
+
+  actions: {
+    generateReport() {
+      if (this._validateDates()) {
+        let reportRows = get(this, 'reportRows');
+        let reportType = get(this, 'reportType');
+        reportRows.clear();
+        this.showProgressModal();
+        switch (reportType) {
+          case 'department':
+          case 'incidentCategory': {
+            this._findIncidentsByDate().then((incidents) => {
+              this._generateByDepartmentOrByIncidentCategoryReport(incidents, reportType);
+            }).catch((ex) => {
+              console.log('Error:', ex);
+              this.closeProgressModal();
+            });
+            break;
+          }
         }
       }
     }
