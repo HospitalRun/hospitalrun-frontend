@@ -50,6 +50,8 @@ reportNames.forEach((reportName) => {
   testSimpleReportForm(reportName);
   testExportReportName(reportName);
   testReportWithEmptyEndDate(reportName);
+  testReportWithEmptyStartDate(reportName);
+  testReportWithEmptyEndDateBeforeStartDate(reportName);
 });
 
 test('View reports tab | Patient Status', function(assert) {
@@ -177,22 +179,43 @@ async function generateReport(reportName, startDate, endDate) {
   await fillIn('[data-test-selector="select-report-end-date"] input', endDate);
 
   await click('button:contains(Generate Report)');
-  await waitToAppear('.panel-title');
 }
 
+function testReportWithEmptyStartDate(reportName) {
+  test('View reports tab | Report with empty start date should display an error', (assert) => {
+    return runWithPouchDump('default', async function() {
+      await generateReport(reportName, '', '');
+      await waitToAppear('.modal-dialog');
+      assert.dom('.modal-title').hasText('Error Generating Report', 'Error Generating Report');
+      assert.dom('.modal-body').hasText('Please enter a start date.');
+    });
+  });
+}
+
+function testReportWithEmptyEndDateBeforeStartDate(reportName) {
+  test('View reports tab | Report with end date before start date should display an error', (assert) => {
+    return runWithPouchDump('default', async function() {
+      let endDate = '12/10/2016';
+      let startDate = '12/11/2016';
+      await generateReport(reportName, startDate, endDate);
+      await waitToAppear('.modal-dialog');
+      assert.dom('.modal-title').hasText('Error Generating Report', 'Error Generating Report');
+      assert.dom('.modal-body').hasText('Please enter an end date after the start date.');
+    });
+  });
+}
 function testReportWithEmptyEndDate(reportName) {
   test('View reports tab | Report with empty end date should show the current date', (assert) => {
     return runWithPouchDump('default', async function() {
       let startDate = '12/11/2016';
       await generateReport(reportName, startDate, '');
-
+      await waitToAppear('.panel-title');
       let endDate = moment(new Date());
       let reportTitle = `${reportName} Report ${moment(startDate).format('l')} - ${endDate.format('l')}`;
       assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
       let exportLink = findWithAssert('a:contains(Export Report)');
       assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
     });
-
   });
 }
 
@@ -200,6 +223,7 @@ function testExportReportName(reportName) {
   test(`View reports tab | Export reports name for ${reportName} shows report name, start and end dates`, (assert) => {
     return runWithPouchDump('default', async function() {
       await generateReport(reportName, '12/11/2016', '12/31/2016');
+      await waitToAppear('.panel-title');
       assert.equal(currentURL(), '/patients/reports');
 
       let exportReportButton = findWithAssert('a:contains(Export Report)');
