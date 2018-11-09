@@ -53,7 +53,7 @@
     "ember-cli-barcode": "donaldwasserman/ember-cli-barcode#master",
     "ember-cli-content-security-policy": "0.6.0",
     "ember-cli-dependency-checker": "^3.0.0",
-    "ember-cli-eslint": "^4.2.2",
+    "ember-cli-eslint": "^5.0.0",
     "ember-cli-fake-server": "0.5.0",
     "ember-cli-htmlbars": "^3.0.0",
     "ember-cli-htmlbars-inline-precompile": "^1.0.2",
