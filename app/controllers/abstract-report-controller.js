@@ -167,6 +167,34 @@ export default Controller.extend(DateFormat, ModalHelper, NumberFormat, Paginati
     }
   },
 
+  _validateDateInputs() {
+    let isValid = true;
+    let startDate = this.get('startDate');
+    let endDate = this.get('endDate');
+    let alertMessage;
+
+    if (isEmpty(startDate)) {
+      alertMessage = 'Please enter a start date.';
+      isValid = false;
+    } else {
+      if (isEmpty(endDate)) {
+        let now = new Date();
+        this.set('endDate', now);
+        endDate = this.get('endDate');
+      }
+
+      if (endDate.getTime() < startDate.getTime()) {
+        alertMessage = 'Please enter an end date after the start date.';
+        isValid = false;
+      }
+
+    }
+    if (!isValid) {
+      this.displayAlert('Error Generating Report', alertMessage);
+    }
+    return isValid;
+  },
+
   actions: {
     firstPage() {
       this.set('offset', 0);

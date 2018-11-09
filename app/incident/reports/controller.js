@@ -142,30 +142,7 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   },
 
   _validateDates() {
-    let alertMessage;
-    let isValid = true;
-    let startDate = this.get('startDate');
-    let endDate = this.get('endDate');
-
-    if (isEmpty(startDate)) {
-      alertMessage = 'Please enter a start date.';
-      isValid = false;
-    } else {
-      if (isEmpty(endDate)) {
-        let now = new Date();
-        this.set('endDate', now);
-        endDate = this.get('endDate');
-      }
-
-      if (endDate.getTime() < startDate.getTime()) {
-        alertMessage = 'Please enter an end date after the start date.';
-        isValid = false;
-      }
-    }
-    if (!isValid) {
-      this.displayAlert('Error Generating Report', alertMessage);
-    }
-    return isValid;
+    return this._validateDateInputs();
   },
 
   actions: {

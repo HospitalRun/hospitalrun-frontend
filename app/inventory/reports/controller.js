@@ -1293,35 +1293,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _validateDates() {
-    let alertMessage;
-    let endDate = this.get('endDate');
-    let isValid = true;
     let reportType = this.get('reportType');
-    let startDate = this.get('startDate');
     if (reportType === 'byLocation' || reportType === 'valuation') {
       return true;
     }
 
-    if (isEmpty(startDate)) {
-      alertMessage = 'Please enter a start date.';
-      isValid = false;
-    } else {
-      if (isEmpty(endDate)) {
-        let now = new Date();
-        this.set('endDate', now);
-        endDate = this.get('endDate');
-      }
-
-      if (endDate.getTime() < startDate.getTime()) {
-        alertMessage = 'Please enter an end date after the start date.';
-        isValid = false;
-      }
-
-    }
-    if (!isValid) {
-      this.displayAlert('Error Generating Report', alertMessage);
-    }
-    return isValid;
+    return this._validateDateInputs();
   },
 
   actions: {

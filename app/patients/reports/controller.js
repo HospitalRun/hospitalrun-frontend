@@ -832,11 +832,8 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _validateDates() {
-    let alertMessage;
     let endDate = this.get('endDate');
-    let isValid = true;
     let reportType = this.get('reportType');
-    let startDate = this.get('startDate');
     if (reportType === 'status') {
       if (isEmpty(endDate)) {
         let now = new Date();
@@ -845,26 +842,8 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
       return true;
     }
-    if (isEmpty(startDate)) {
-      alertMessage = 'Please enter a start date.';
-      isValid = false;
-    } else {
-      if (isEmpty(endDate)) {
-        let now = new Date();
-        this.set('endDate', now);
-        endDate = this.get('endDate');
-      }
 
-      if (endDate.getTime() < startDate.getTime()) {
-        alertMessage = 'Please enter an end date after the start date.';
-        isValid = false;
-      }
-
-    }
-    if (!isValid) {
-      this.displayAlert('Error Generating Report', alertMessage);
-    }
-    return isValid;
+    return this._validateDateInputs();
   },
 
   actions: {
