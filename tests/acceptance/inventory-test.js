@@ -280,6 +280,7 @@ const singleDateReportTypes = [
 startAndEndDateReportTypes.forEach((reportName) => {
   testSimpleReportForm(reportName);
   testReportWithEmptyEndDate(reportName);
+  testReportWithEmptyEndDateBeforeStartDate(reportName);
 });
 
 singleDateReportTypes.forEach((reportName) => {
@@ -300,7 +301,6 @@ function testSimpleReportForm(reportName) {
       await select('#report-type', `${reportName}`);
       await click('button:contains(Generate Report)');
       await waitToAppear('.panel-title');
-
       let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
       assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
       let exportLink = findWithAssert('a:contains(Export Report)');
@@ -323,7 +323,19 @@ async function generateReport(reportName, startDate, endDate) {
 
   await select('#report-type', `${reportName}`);
   await click('button:contains(Generate Report)');
-  await waitToAppear('.panel-title');
+}
+
+function testReportWithEmptyEndDateBeforeStartDate(reportName) {
+  test('${reportName} report with end date before start date should display an error', (assert) => {
+    return runWithPouchDump('default', async function() {
+      let endDate = '12/10/2016';
+      let startDate = '12/11/2016';
+      await generateReport(reportName, startDate, endDate);
+      await waitToAppear('.modal-dialog');
+      assert.dom('.modal-title').hasText('Error Generating Report', 'Error Generating Report');
+      assert.dom('.modal-body').hasText('Please enter an end date after the start date.');
+    });
+  });
 }
 
 function testReportWithEmptyEndDate(reportName) {
@@ -333,8 +345,8 @@ function testReportWithEmptyEndDate(reportName) {
       let startDate = '12/11/2016';
       let endDate = new Date();
       await generateReport(reportName, startDate, null);
+      await waitToAppear('.panel-title');
       assert.equal(currentURL(), '/inventory/reports');
-
       let reportTitle = `${reportName} Report ${moment(startDate).format('l')} - ${moment(endDate).format('l')}`;
       assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
       let exportLink = findWithAssert('a:contains(Export Report)');
@@ -348,7 +360,7 @@ function testSingleDateReportForm(reportName) {
     return runWithPouchDump('default', async function() {
       let startDate = new Date();
       await generateReport(reportName, null, null);
-
+      await waitToAppear('.panel-title');
       assert.equal(currentURL(), '/inventory/reports');
       let reportTitle = `${reportName} Report ${moment(startDate).format('l')}`;
       assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
