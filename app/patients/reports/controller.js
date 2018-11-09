@@ -276,7 +276,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   isStatusReport: computed('reportType', function() {
     let reportType = this.get('reportType');
-    return reportType === 'status';
+    if (reportType === 'status') {
+      this.set('startDate', null);
+      this.set('endDate', null);
+      return true;
+    }
+
+    return false;
   }),
 
   isVisitReport: computed('reportType', function() {
