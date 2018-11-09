@@ -12,12 +12,12 @@ RUN apk update && apk add \
   wget
 
 # install global npm dependencies
-RUN npm install -g ember-cli@latest
+RUN yarn global add ember-cli@latest
 
 # use changes to package.json to force Docker not to use the cache
 # when we change our application's nodejs dependencies:
 COPY package*.json /tmp/
-RUN cd /tmp && npm install
+RUN cd /tmp && yarn install --silent
 RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app
 
 # setup folders
@@ -34,4 +34,4 @@ RUN sed -i -e "s/localhost:5984/couchdb:5984/g" ./script/server.js
 
 EXPOSE 4200
 
-ENTRYPOINT ./script/initcouch.sh && npm start
+ENTRYPOINT ./script/initcouch.sh && yarn start
