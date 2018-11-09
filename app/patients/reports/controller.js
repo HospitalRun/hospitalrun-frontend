@@ -832,14 +832,8 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _validateDates() {
-    let endDate = this.get('endDate');
     let reportType = this.get('reportType');
     if (reportType === 'status') {
-      if (isEmpty(endDate)) {
-        let now = new Date();
-        this.set('endDate', now);
-        endDate = this.get('endDate');
-      }
       return true;
     }
 
