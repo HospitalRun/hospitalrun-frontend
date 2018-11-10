@@ -1,22 +1,17 @@
-import { moduleForModel } from 'ember-qunit';
+import { module } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
 import {
   testValidPropertyValues,
   testInvalidPropertyValues
 } from '../../helpers/validate-properties';
 
-moduleForModel('appointment', 'Unit | Model | appointment', {
-  needs: [
-    'ember-validations@validator:local/acceptance',
-    'ember-validations@validator:local/presence',
-    'model:patient',
-    'model:visit',
-    'service:session'
-  ]
+module('Unit | Model | appointment', function(hooks) {
+  setupTest(hooks);
+
+  testValidPropertyValues('appointmentType', ['test']);
+  testInvalidPropertyValues('appointmentType', [undefined]);
+
+  testValidPropertyValues('startDate', ['test']);
+  testInvalidPropertyValues('startDate', [undefined]);
 });
-
-testValidPropertyValues('appointmentType', ['test']);
-testInvalidPropertyValues('appointmentType', [undefined]);
-
-testValidPropertyValues('startDate', ['test']);
-testInvalidPropertyValues('startDate', [undefined]);

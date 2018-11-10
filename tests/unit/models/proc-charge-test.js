@@ -1,66 +1,58 @@
 import { run } from '@ember/runloop';
-import { moduleForModel, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleForModel('proc-charge', 'Unit | Model | proc-charge', {
-  needs: [
-    'ember-validations@validator:local/presence',
-    'ember-validations@validator:local/numericality',
-    'ember-validations@validator:local/acceptance',
-    'model:inventory',
-    'model:inv-purchase',
-    'model:inv-location',
-    'model:pricing',
-    'service:session'
-  ]
-});
+module('Unit | Model | proc-charge', function(hooks) {
+  setupTest(hooks);
 
-test('medicationCharge', function(assert) {
-  let medication = run(() => this.store().createRecord('inventory'));
-  let procCharge = this.subject({
-    newMedicationCharge: 11,
-    medication
+  test('medicationCharge', function(assert) {
+    let medication = run(() => this.owner.lookup('service:store').createRecord('inventory'));
+    let procCharge = run(() => this.owner.lookup('service:store').createRecord('proc-charge', {
+      newMedicationCharge: 11,
+      medication
+    }));
+
+    assert.strictEqual(procCharge.get('medicationCharge'), true);
   });
 
-  assert.strictEqual(procCharge.get('medicationCharge'), true);
-});
+  test('medicationCharge both empty', function(assert) {
+    let procCharge = run(() => this.owner.lookup('service:store').createRecord('proc-charge'));
 
-test('medicationCharge both empty', function(assert) {
-  let procCharge = this.subject();
-
-  assert.strictEqual(procCharge.get('medicationCharge'), false);
-});
-
-test('medicationChange empty medication', function(assert) {
-  let procCharge = this.subject({
-    newMedicationCharge: 12
+    assert.strictEqual(procCharge.get('medicationCharge'), false);
   });
 
-  assert.strictEqual(procCharge.get('medicationCharge'), true);
-});
+  test('medicationChange empty medication', function(assert) {
+    let procCharge = run(() => this.owner.lookup('service:store').createRecord('proc-charge', {
+      newMedicationCharge: 12
+    }));
 
-test('medicationCharge empty newMedicationCharge', function(assert) {
-  let medication = run(() => this.store().createRecord('inventory'));
-  let procCharge = this.subject({ medication });
+    assert.strictEqual(procCharge.get('medicationCharge'), true);
+  });
 
-  assert.strictEqual(procCharge.get('medicationCharge'), true);
-});
+  test('medicationCharge empty newMedicationCharge', function(assert) {
+    let medication = run(() => this.owner.lookup('service:store').createRecord('inventory'));
+    let procCharge = run(() => this.owner.lookup('service:store').createRecord('proc-charge', { medication }));
 
-test('medicationName', function(assert) {
-  let medication = run(() => this.store().createRecord('inventory', {
-    name: 'Test Item',
-    price: 12.5
-  }));
-  let procCharge = this.subject({ medication });
+    assert.strictEqual(procCharge.get('medicationCharge'), true);
+  });
 
-  assert.strictEqual(procCharge.get('medicationName'), 'Test Item');
-});
+  test('medicationName', function(assert) {
+    let medication = run(() => this.owner.lookup('service:store').createRecord('inventory', {
+      name: 'Test Item',
+      price: 12.5
+    }));
+    let procCharge = run(() => this.owner.lookup('service:store').createRecord('proc-charge', { medication }));
 
-test('medicationPrice', function(assert) {
-  let medication = run(() => this.store().createRecord('inventory', {
-    name: 'Testing',
-    price: 133.59
-  }));
-  let procCharge = this.subject({ medication });
+    assert.strictEqual(procCharge.get('medicationName'), 'Test Item');
+  });
 
-  assert.strictEqual(procCharge.get('medicationPrice'), 133.59);
+  test('medicationPrice', function(assert) {
+    let medication = run(() => this.owner.lookup('service:store').createRecord('inventory', {
+      name: 'Testing',
+      price: 133.59
+    }));
+    let procCharge = run(() => this.owner.lookup('service:store').createRecord('proc-charge', { medication }));
+
+    assert.strictEqual(procCharge.get('medicationPrice'), 133.59);
+  });
 });

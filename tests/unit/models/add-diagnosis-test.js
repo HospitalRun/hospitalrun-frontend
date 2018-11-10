@@ -1,15 +1,13 @@
-import { moduleForModel } from 'ember-qunit';
+import { module } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import {
   testValidPropertyValues,
   testInvalidPropertyValues
 } from '../../helpers/validate-properties';
 
-moduleForModel('add-diagnosis', 'Unit | Model | add-diagnosis', {
-  // Specify the other units that are required for this test.
-  needs: [
-    'ember-validations@validator:local/presence'
-  ]
-});
+module('Unit | Model | add-diagnosis', function(hooks) {
+  setupTest(hooks);
 
-testValidPropertyValues('diagnosis', ['test']);
-testInvalidPropertyValues('diagnosis', [undefined]);
+  testValidPropertyValues('diagnosis', ['test']);
+  testInvalidPropertyValues('diagnosis', [undefined]);
+});
