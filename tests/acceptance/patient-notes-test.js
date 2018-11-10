@@ -1,3 +1,4 @@
+import { click, fillIn, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -35,7 +36,7 @@ module('Acceptance | patient notes', function(hooks) {
 
       await click('button:contains(Ok)');
       await click('[data-test-selector=notes-tab]');
-      assert.equal(find('button:contains(New Note)').length, 1, 'New Note button in visible');
+      assert.equal(findAll('button:contains(New Note)').length, 1, 'New Note button in visible');
 
       await click('button:contains(New Note)');
       await waitToAppear('.modal-dialog');
@@ -46,7 +47,7 @@ module('Acceptance | patient notes', function(hooks) {
       await click('.modal-footer button:contains(Add)');
       await waitToDisappear('.modal-dialog');
       await waitToAppear('#visit-notes table tr td:contains(This is a note.)');
-      assert.equal(find('#visit-notes table tr td:contains(This is a note.)').length, 1, 'Successfully added note.');
+      assert.equal(findAll('#visit-notes table tr td:contains(This is a note.)').length, 1, 'Successfully added note.');
 
       await click('#visit-notes table tr td button:contains(Edit)');
       await waitToAppear('.modal-dialog');
@@ -54,7 +55,7 @@ module('Acceptance | patient notes', function(hooks) {
       await click('.modal-footer button:contains(Update)');
       await waitToDisappear('.modal-dialog');
       await waitToAppear('#visit-notes table tr td:contains(This is an updated note.)');
-      assert.equal(find('#visit-notes table tr td:contains(This is an updated note.)').length, 1, 'Successfully updated note.');
+      assert.equal(findAll('#visit-notes table tr td:contains(This is an updated note.)').length, 1, 'Successfully updated note.');
 
       await click('#visit-notes table tr td button:contains(Delete)');
       await waitToAppear('.modal-dialog');
@@ -62,7 +63,7 @@ module('Acceptance | patient notes', function(hooks) {
 
       await click('.modal-footer button:contains(Ok)');
       await waitToDisappear('.modal-dialog');
-      assert.equal(find('#visit-notes table tr td:contains(This is an updated note.)').length, 0, 'Successfully deleted note.');
+      assert.equal(findAll('#visit-notes table tr td:contains(This is an updated note.)').length, 0, 'Successfully deleted note.');
     });
   });
 
@@ -121,14 +122,14 @@ module('Acceptance | patient notes', function(hooks) {
       await click('.ph-visit-type:contains(Admission)');
       await click('[data-test-selector=notes-tab]');
       await waitToAppear('#visit-notes table');
-      assert.equal(find('#visit-notes table tr td:contains(This is a note.)').length, 0, 'Note is not attached to the "Admission" visit.');
+      assert.equal(findAll('#visit-notes table tr td:contains(This is a note.)').length, 0, 'Note is not attached to the "Admission" visit.');
       await click('button:contains(Return)');
 
       await waitToAppear('.ph-visit-type');
       await click('.ph-visit-type:contains(Lab)');
       await click('[data-test-selector=notes-tab]');
       await waitToAppear('#visit-notes table');
-      assert.equal(find('#visit-notes table tr td:contains(This is a note.)').length, 1, 'Note is attached to the "Lab" visit.');
+      assert.equal(findAll('#visit-notes table tr td:contains(This is a note.)').length, 1, 'Note is attached to the "Lab" visit.');
     });
   });
 });

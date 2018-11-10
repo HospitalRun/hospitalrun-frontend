@@ -1,3 +1,4 @@
+import { click, fillIn, find, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -40,7 +41,7 @@ module('Acceptance | invoices', function(hooks) {
       await authenticateUser();
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
-      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for printing');
+      assert.equal(findAll('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for printing');
 
       await click('button:contains(Edit)');
       await waitToAppear('button:contains(Print)');
@@ -54,7 +55,7 @@ module('Acceptance | invoices', function(hooks) {
     return runWithPouchDump('billing', async function() {
       await authenticateUser();
       await visit('/pricing/profiles');
-      assert.equal(find('.btn-primary:contains(+ new item)').length, 1, 'We can add a new pricing profile');
+      assert.equal(findAll('.btn-primary:contains(+ new item)').length, 1, 'We can add a new pricing profile');
 
       await click('button:contains(+ new item)');
       await waitToAppear('h4:contains(New Pricing Profile)');
@@ -86,7 +87,7 @@ module('Acceptance | invoices', function(hooks) {
 
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
-      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for modifying');
+      assert.equal(findAll('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for modifying');
 
       await click('button:contains(Edit)');
     });
@@ -97,7 +98,7 @@ module('Acceptance | invoices', function(hooks) {
       await authenticateUser();
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
-      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is displayed for deletion');
+      assert.equal(findAll('.invoice-number:contains(inv00001)').length, 1, 'Invoice is displayed for deletion');
 
       await click('button:contains(Delete)');
       await waitToAppear('.modal-dialog');
@@ -108,7 +109,7 @@ module('Acceptance | invoices', function(hooks) {
 
       await click('button:contains(Delete):last');
       await waitToDisappear('.invoice-number:contains(inv00001)');
-      assert.equal(find('.invoice-number:contains(inv00001)').length, 0, 'Invoice is deleted');
+      assert.equal(findAll('.invoice-number:contains(inv00001)').length, 0, 'Invoice is deleted');
     });
   });
 
@@ -162,12 +163,12 @@ module('Acceptance | invoices', function(hooks) {
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
       assert.dom('.primary-section-link').exists({ count: 2 }, 'Should have 2 navigations');
-      assert.equal(find('.primary-section-link:contains(Scheduling)').length, 1, 'should see Scheduling navigation');
-      assert.equal(find('.primary-section-link:contains(Billing)').length, 1,  'should see Billing navigation');
+      assert.equal(findAll('.primary-section-link:contains(Scheduling)').length, 1, 'should see Scheduling navigation');
+      assert.equal(findAll('.primary-section-link:contains(Billing)').length, 1,  'should see Billing navigation');
 
-      assert.equal(find('li:contains(Billed)').length, 1, 'should see Billed selection');
-      assert.equal(find('li:contains(Drafts)').length, 1, 'should see Drafts selection');
-      assert.equal(find('li:contains(All Invoices)').length, 1, 'should see All Invoices selection');
+      assert.equal(findAll('li:contains(Billed)').length, 1, 'should see Billed selection');
+      assert.equal(findAll('li:contains(Drafts)').length, 1, 'should see Drafts selection');
+      assert.equal(findAll('li:contains(All Invoices)').length, 1, 'should see All Invoices selection');
 
       await click('a:contains(Billing)');
       assert.dom('.category-sub-item').exists({ count: 2 }, 'Should have 2 sub navigations');
@@ -220,7 +221,7 @@ module('Acceptance | invoices', function(hooks) {
       await waitToDisappear('.modal-dialog');
 
       // topmost detail showing should now be the blank one we added at beginning of this test
-      assert.equal(find('.detail-quantity').val(), '', 'First line item detail no longer appears.');
+      assert.equal(find('.detail-quantity').value, '', 'First line item detail no longer appears.');
     });
   });
 
@@ -239,7 +240,7 @@ module('Acceptance | invoices', function(hooks) {
       assert.dom('.modal-title').hasText('Delete Line Item', 'Delete Line Item modal displays');
       await click('.modal-footer button:contains(Ok)');
       await waitToDisappear('.modal-dialog');
-      assert.equal(find('.item-name').val(), 'Pharmacy', 'First line item no longer appears.');
+      assert.equal(find('.item-name').value, 'Pharmacy', 'First line item no longer appears.');
     });
   });
 
@@ -254,11 +255,11 @@ module('Acceptance | invoices', function(hooks) {
       await select('.invoice-visit', '(Admission)');
 
       // first item, discounts and details
-      await fillIn('.item-discount:eq(0)', '1');
-      await fillIn('.item-national-insurance:eq(0)', '2');
-      await fillIn('.item-private-insurance:eq(0)', '3');
+      await fillIn(find('.item-discount'), '1');
+      await fillIn(find('.item-national-insurance'), '2');
+      await fillIn(find('.item-private-insurance'), '3');
       await click('.glyphicon-plus');
-      await fillIn('.detail-price:eq(0)', '3');
+      await fillIn(find('.detail-price'), '3');
       await click('button:contains(Add Charge)');
       await fillIn($('.detail-quantity:eq(1)'), '60');
       await fillIn($('.detail-price:eq(1)'), '4');

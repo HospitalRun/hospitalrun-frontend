@@ -1,3 +1,4 @@
+import { click, fillIn, find, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import moment from 'moment';
@@ -136,7 +137,7 @@ module('Acceptance | appointments', function(hooks) {
       await select('.test-appointment-type', 'Clinic');
 
       assert.dom('.test-appointment-date input').hasValue(today.format(DATE_FORMAT), 'Single date field found');
-      assert.equal(find('.appointment-all-day').val(), '', 'All day appointment was turned off');
+      assert.equal(find('.appointment-all-day').value, '', 'All day appointment was turned off');
     });
   });
 
@@ -171,7 +172,7 @@ module('Acceptance | appointments', function(hooks) {
 
       await click('button:contains(Return)');
       assert.equal(currentURL(), '/appointments');
-      assert.equal(find('button:contains(Check In)').length, 0, 'Check In button no longer appears');
+      assert.equal(findAll('button:contains(Check In)').length, 0, 'Check In button no longer appears');
       findWithAssert('button:contains(Edit)');
       findWithAssert('button:contains(Delete)');
     });

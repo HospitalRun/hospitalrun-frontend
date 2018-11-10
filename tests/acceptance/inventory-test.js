@@ -1,3 +1,4 @@
+import { click, fillIn, findAll, currentURL, visit } from '@ember/test-helpers';
 import moment from 'moment';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
@@ -54,7 +55,7 @@ module('Acceptance | inventory', function(hooks) {
       await waitToAppear('.modal-dialog');
       await fillIn('.test-inv-quantity div div input', 18);
       await fillIn('.test-inv-cost div input', 2);
-      await fillIn('.test-vendor div span input:eq(1)', 'fakeVendor');
+      await fillIn(findAll('.test-vendor div span input')[1], 'fakeVendor');
       await click('.modal-footer .btn-primary');
       assert.dom('div.alert.alert-danger.alert-dismissible').doesNotExist('Quantity error does not appear');
       assert.dom($('.test-location-quantity')[0]).hasText('1018', 'Location quantity is correct after new purchase');
@@ -123,8 +124,8 @@ module('Acceptance | inventory', function(hooks) {
       assert.dom('tr .btn').exists({ count: 4 });
       await click('button:contains(Edit)');
       assert.dom('.test-location-quantity').exists({ count: 2 });
-      assert.equal(find('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
-      assert.equal(find('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
+      assert.equal(findAll('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
+      assert.equal(findAll('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
 
       // delete default location
       await click('button:contains(Delete)');
@@ -137,8 +138,8 @@ module('Acceptance | inventory', function(hooks) {
       assert.dom('tr .btn').exists({ count: 4 });
       await click('button:contains(Edit)');
       assert.dom('.test-location-quantity').exists({ count: 1 });
-      assert.equal(find('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
-      assert.equal(find('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
+      assert.equal(findAll('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
+      assert.equal(findAll('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
     });
   });
 
@@ -201,7 +202,7 @@ module('Acceptance | inventory', function(hooks) {
       await authenticateUser();
       await visit('/inventory');
       assert.equal(currentURL(), '/inventory');
-      let tableRows = find('tr').length;
+      let tableRows = findAll('tr').length;
       assert.equal(tableRows, 2, 'One request not fulfilled');
 
       await click('button:contains(Fulfill)');
@@ -225,7 +226,7 @@ module('Acceptance | inventory', function(hooks) {
       await authenticateUser();
       await visit('/inventory');
       assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one request');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one request');
 
       await click('button:contains(Delete)');
       await waitToAppear('.modal-dialog');
@@ -234,7 +235,7 @@ module('Acceptance | inventory', function(hooks) {
       await click('.modal-content button:contains(Delete)');
       await waitToAppear('.panel-body .alert-info');
       assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
-      assert.equal(find('button:contains(Delete)').length, 0, 'Request was deleted');
+      assert.equal(findAll('button:contains(Delete)').length, 0, 'Request was deleted');
     });
   });
 
@@ -248,7 +249,7 @@ module('Acceptance | inventory', function(hooks) {
       await visit('/inventory');
 
       assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
-      assert.equal(find('button:contains(Delete)').length, 0, 'User doesn\'t see Delete button');
+      assert.equal(findAll('button:contains(Delete)').length, 0, 'User doesn\'t see Delete button');
     });
   });
 
@@ -283,17 +284,17 @@ module('Acceptance | inventory', function(hooks) {
       await fillIn('[role="search"] div input', 'Biogesic');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/inventory/search/Biogesic', 'Searched for Biogesic');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'biogesic');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/inventory/search/biogesic', 'Searched with all lower case ');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'ItemNotFound');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/inventory/search/ItemNotFound', 'Searched for ItemNotFound');
-      assert.equal(find('button:contains(Delete)').length, 0, 'There is no search result');
+      assert.equal(findAll('button:contains(Delete)').length, 0, 'There is no search result');
     });
   });
 

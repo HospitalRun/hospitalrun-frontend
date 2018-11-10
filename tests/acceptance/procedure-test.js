@@ -1,3 +1,4 @@
+import { click, fillIn, findAll, currentURL, find, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -17,8 +18,8 @@ module('Acceptance | procedures', function(hooks) {
     await typeAheadFillIn('.procedure-physician', 'Dr Jones');
     await updateProcedure(assert, 'Add');
     await click('button:contains(Return)');
-    assert.equal(find('#visit-procedures tr').length, 3, 'Two procedure are listed for the visit');
-    assert.equal(find(`#visit-procedures td:contains(${procedureDesc})`).length, 1, 'New procedure description is listed for the visit');
+    assert.equal(findAll('#visit-procedures tr').length, 3, 'Two procedure are listed for the visit');
+    assert.equal(findAll(`#visit-procedures td:contains(${procedureDesc})`).length, 1, 'New procedure description is listed for the visit');
   });
 
   testWithVisit('Edit procedure', async function(assert) {
@@ -34,7 +35,7 @@ module('Acceptance | procedures', function(hooks) {
     await click('.modal-footer button:contains(Add)');
     await waitToDisappear('.modal-dialog');
     await waitToAppear('td.charge-item-name:contains(Gauze pad)');
-    assert.equal(find('td.charge-item-name:contains(Gauze pad)').length, 1, 'New charge item appears');
+    assert.equal(findAll('td.charge-item-name:contains(Gauze pad)').length, 1, 'New charge item appears');
 
     await click('.charge-items tr:last button:contains(Edit)');
     await waitToAppear('.modal-dialog');
@@ -44,9 +45,9 @@ module('Acceptance | procedures', function(hooks) {
     await click('.modal-footer button:contains(Update)');
     await waitToAppear('td.charge-item-name:contains(Gauze padding)');
     await waitToDisappear('.modal-dialog');
-    assert.equal(find('td.charge-item-name:contains(Gauze padding)').length, 1, 'Updated charge item appears');
+    assert.equal(findAll('td.charge-item-name:contains(Gauze padding)').length, 1, 'Updated charge item appears');
     assert.dom('.medication-charges tr').exists({ count: 2 }, 'One medication charge exists');
-    assert.equal(find('.medication-charges button:contains(Add Medication)').length, 1, 'Add medication button exists');
+    assert.equal(findAll('.medication-charges button:contains(Add Medication)').length, 1, 'Add medication button exists');
 
     await click('button:contains(Add Medication)');
     await waitToAppear('.modal-dialog');
@@ -57,7 +58,7 @@ module('Acceptance | procedures', function(hooks) {
     await click('.modal-footer button:contains(Add)');
     await waitToDisappear('.modal-dialog');
     await updateProcedure(assert, 'Update');
-    assert.equal(find('.medication-charges td:contains(Cefazolin 500mg vial)').length, 2, 'Two medication charges exists');
+    assert.equal(findAll('.medication-charges td:contains(Cefazolin 500mg vial)').length, 2, 'Two medication charges exists');
 
     await click('.medication-charges button:contains(Edit):first');
     await waitToAppear('.modal-dialog');
@@ -67,7 +68,7 @@ module('Acceptance | procedures', function(hooks) {
     await click('.modal-footer button:contains(Update)');
     await waitToDisappear('.modal-dialog');
     await waitToAppear('.medication-charge-quantity:contains(2)');
-    assert.equal(find('.medication-charge-quantity:first').text(), '2', 'Updated medication quantity appears');
+    assert.equal(find('.medication-charge-quantity:first').textContent, '2', 'Updated medication quantity appears');
 
     await updateProcedure(assert, 'Update');
     await click('.charge-items tr:last button:contains(Delete)');

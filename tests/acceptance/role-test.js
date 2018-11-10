@@ -1,3 +1,4 @@
+import { click, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';

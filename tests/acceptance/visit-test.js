@@ -1,3 +1,4 @@
+import { click, fillIn, findAll, currentURL, find, visit } from '@ember/test-helpers';
 import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 import { module, test } from 'qunit';
@@ -102,7 +103,7 @@ module('Acceptance | visits', function(hooks) {
       await fillIn('.test-allergy input', 'Oatmeal');
       await click('.modal-footer button:contains(Add)');
       await waitToDisappear('.modal-dialog');
-      assert.equal(find('a.allergy-button:contains(Oatmeal)').length, 1, 'New allergy appears');
+      assert.equal(findAll('a.allergy-button:contains(Oatmeal)').length, 1, 'New allergy appears');
 
       await click('a:contains(Add Diagnosis)');
       await waitToAppear('.modal-dialog');
@@ -111,7 +112,7 @@ module('Acceptance | visits', function(hooks) {
       await fillIn('.diagnosis-text input', 'Broken Arm');
       await click('.modal-footer button:contains(Add)');
       await waitToAppear('a.primary-diagnosis');
-      assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 1, 'New primary diagnosis appears');
+      assert.equal(findAll('a.primary-diagnosis:contains(Broken Arm)').length, 1, 'New primary diagnosis appears');
 
       await click('button:contains(New Medication)');
       assert.equal(currentURL(), '/medication/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'New medication url is correct');
@@ -140,7 +141,7 @@ module('Acceptance | visits', function(hooks) {
       await fillIn('.respiratory-rate-text input', '34.56');
       await click('.modal-footer button:contains(Add)');
       await waitToAppear('#visit-vitals tr:last td:contains(34.56)');
-      assert.equal(find('#visit-vitals tr:last td:contains(34.56)').length, 7, 'New vitals appears');
+      assert.equal(findAll('#visit-vitals tr:last td:contains(34.56)').length, 7, 'New vitals appears');
 
       await click('button:contains(Add Item)');
       await waitToAppear('.modal-dialog');
@@ -154,7 +155,7 @@ module('Acceptance | visits', function(hooks) {
       await click('a.primary-diagnosis:contains(Broken Arm)');
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Edit Diagnosis', 'Edit Diagnosis modal appears');
-      assert.equal(find('.modal-footer button:contains(Delete)').length, 1, 'Delete button appears');
+      assert.equal(findAll('.modal-footer button:contains(Delete)').length, 1, 'Delete button appears');
 
       await click('.modal-footer button:contains(Delete)');
       await waitToDisappear('.modal-dialog');
@@ -170,8 +171,8 @@ module('Acceptance | visits', function(hooks) {
 
       await click('.modal-footer button:contains(Ok)');
       await waitToDisappear('.modal-dialog');
-      assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 0, 'New primary diagnosis is deleted');
-      assert.equal(find('#visit-vitals tr:last td:contains(34.56)').length, 0, 'Vital is deleted');
+      assert.equal(findAll('a.primary-diagnosis:contains(Broken Arm)').length, 0, 'New primary diagnosis is deleted');
+      assert.equal(findAll('#visit-vitals tr:last td:contains(34.56)').length, 0, 'Vital is deleted');
       assert.dom('td.charge-item-name').doesNotExist('Charge item is deleted');
     });
   });
@@ -324,7 +325,7 @@ module('Acceptance | visits', function(hooks) {
     assert.dom('.patient-id .ps-info-data').hasText(PATIENT_ID, 'Patient ID is displayed');
     assert.dom('.patient-name .ps-info-data').hasText(PATIENT, 'Patient First Name & Last Name is displayed');
     assert.dom('.test-visit-date .test-visit-date-label').hasText('Date of Visit:', 'Visit date label displayed');
-    assert.ok(!isEmpty(find('.test-visit-date .test-visit-date-data').text()), 'Visit date is displayed');
+    assert.ok(!isEmpty(find('.test-visit-date .test-visit-date-data').textContent), 'Visit date is displayed');
     findWithAssert('.test-visit-type .test-visit-type-label:contains(Visit Type)');
     assert.dom('.test-visit-type .test-visit-type-data').hasText('Clinic', 'Visit Type is displayed');
     findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
@@ -334,11 +335,11 @@ module('Acceptance | visits', function(hooks) {
     findWithAssert(`.primary-diagnosis:contains(${PRIMARY_DIAGNOSIS})`);
     findWithAssert(`.secondary-diagnosis:contains(${SECONDARY_DIAGNOSIS})`);
     findWithAssert('.test-opd-procedure .test-opd-procedure-label:contains(Procedures)');
-    assert.ok(find('.test-opd-procedure .test-opd-procedure-data').text().indexOf(OPD_PROCEDURE_DESCRIPTION) > -1, 'OPD Procedure is displayed');
+    assert.ok(find('.test-opd-procedure .test-opd-procedure-data').textContent.indexOf(OPD_PROCEDURE_DESCRIPTION) > -1, 'OPD Procedure is displayed');
     findWithAssert('.test-labs .test-labs-label:contains(Labs)');
-    assert.ok(find('.test-labs .test-labs-data').text().indexOf(LAB_TYPE) > -1, 'Lab request is displayed');
+    assert.ok(find('.test-labs .test-labs-data').textContent.indexOf(LAB_TYPE) > -1, 'Lab request is displayed');
     findWithAssert('.test-images .test-images-label:contains(Images)');
-    assert.ok(find('.test-images .test-images-data').text().indexOf(IMAGING_TYPE) > -1, 'Image request is displayed');
+    assert.ok(find('.test-images .test-images-data').textContent.indexOf(IMAGING_TYPE) > -1, 'Image request is displayed');
     findWithAssert('.test-operative-plan .test-operative-plan-label:contains(Operative Plan)');
     findWithAssert('.test-operative-plan .test-operative-plan-description-label:contains(Operation Description:)');
     assert.dom('.test-operative-plan .test-operative-plan-description-data').hasText(OPERATION_DESCRIPTION);
@@ -354,7 +355,7 @@ module('Acceptance | visits', function(hooks) {
     assert.dom('.test-visit-date .test-visit-date-label').hasText('Admission Date:', 'Visit date label displays as admission');
     assert.dom('.test-visit-date .test-visit-discharge-date-label').hasText('Discharge Date:', 'Discharge date label displays');
     findWithAssert('.test-notes .test-notes-label:contains(Notes)');
-    assert.ok(find('.test-notes .test-notes-data').text().indexOf(NOTE_CONTENT) > -1, 'Notes are displayed');
+    assert.ok(find('.test-notes .test-notes-data').textContent.indexOf(NOTE_CONTENT) > -1, 'Notes are displayed');
   }
 
   async function saveReport(assert, type) {

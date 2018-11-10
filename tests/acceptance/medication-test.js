@@ -1,3 +1,4 @@
+import { click, fillIn, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -128,7 +129,7 @@ module('Acceptance | medication', function(hooks) {
       await click('.glyphicon-search');
 
       assert.equal(currentURL(), '/medication/search/hradmin', 'Searched for Prescriber: hradmin');
-      assert.notEqual(find('.clickable').length, 0, 'There are one or more search item');
+      assert.notEqual(findAll('.clickable').length, 0, 'There are one or more search item');
 
       await fillIn('[role="search"] div input', '60 Biogesic Pills');
       await click('.glyphicon-search');

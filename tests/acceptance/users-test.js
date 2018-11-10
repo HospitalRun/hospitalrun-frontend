@@ -1,3 +1,4 @@
+import { click, fillIn, findAll, currentURL, find, visit } from '@ember/test-helpers';
 import RSVP from 'rsvp';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
@@ -93,10 +94,10 @@ module('Acceptance | users', function(hooks) {
       await addAllUsers(assert);
       await visit('/'); // Default home page for User Administrator is admin/users
       assert.equal(currentURL(), '/admin/users', 'User Administrator initial page displays');
-      assert.equal(find('td.user-display-name:first').text(), 'HospitalRun Administrator');
-      assert.equal(find('td.user-name:first').text(), 'hradmin');
-      assert.equal(find('td.user-email:first').text(), 'hradmin@hospitalrun.io');
-      assert.equal(find('td.user-role:first').text(), 'System Administrator');
+      assert.equal(find('td.user-display-name:first').textContent, 'HospitalRun Administrator');
+      assert.equal(find('td.user-name:first').textContent, 'hradmin');
+      assert.equal(find('td.user-email:first').textContent, 'hradmin@hospitalrun.io');
+      assert.equal(find('td.user-role:first').textContent, 'System Administrator');
     });
   });
 
@@ -175,7 +176,7 @@ module('Acceptance | users', function(hooks) {
       assert.dom('.alert').hasText('Are you sure you wish to delete ?', 'User is displayed for deletion');
 
       await click('button:contains(Delete):last');
-      assert.equal(find('.user-email:contains(joe@donuts.com)').length, 0, 'User disappears from user list');
+      assert.equal(findAll('.user-email:contains(joe@donuts.com)').length, 0, 'User disappears from user list');
     });
   });
 });

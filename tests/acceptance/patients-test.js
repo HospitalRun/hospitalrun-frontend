@@ -1,3 +1,4 @@
+import { click, fillIn, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -111,7 +112,7 @@ module('Acceptance | patients', function(hooks) {
       await authenticateUser();
       await visit('/patients');
       assert.equal(currentURL(), '/patients', 'Patient listing url is correct');
-      assert.equal(find('tr.clickable td:contains(Joe)').length, 1, 'One patient exists to delete.');
+      assert.equal(findAll('tr.clickable td:contains(Joe)').length, 1, 'One patient exists to delete.');
 
       await click('tr.clickable button:contains(Delete)');
       await waitToAppear('.modal-dialog');
@@ -124,7 +125,7 @@ module('Acceptance | patients', function(hooks) {
       await click('.modal-footer button:contains(Delete)');
       await waitToDisappear('.modal-dialog');
       await waitToDisappear('tr.clickable td:contains(Joe)');
-      assert.equal(find('tr.clickable td:contains(Joe)').length, 0, 'Patient has been successfully deleted.');
+      assert.equal(findAll('tr.clickable td:contains(Joe)').length, 0, 'Patient has been successfully deleted.');
     });
   });
 
@@ -136,17 +137,17 @@ module('Acceptance | patients', function(hooks) {
       await fillIn('[role="search"] div input', 'Joe');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/patients/search/Joe', 'Searched for Joe');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'joe');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/patients/search/joe', 'Searched for all lower case joe');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'ItemNotFound');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/patients/search/ItemNotFound', 'Searched for ItemNotFound');
-      assert.equal(find('button:contains(Delete)').length, 0, 'There is no search result');
+      assert.equal(findAll('button:contains(Delete)').length, 0, 'There is no search result');
     });
   });
 

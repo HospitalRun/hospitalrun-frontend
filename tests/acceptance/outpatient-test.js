@@ -1,3 +1,4 @@
+import { click, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import moment from 'moment';
@@ -36,7 +37,7 @@ module('Acceptance | outpatient', function(hooks) {
 
       await click('button:contains(Return)');
       assert.equal(currentURL(), '/patients/outpatient', 'Returned to Outpatient');
-      assert.equal(find('.outpatient-list td:contains(Joe Bagadonuts)').length, 1, 'Checked in patient appears in list');
+      assert.equal(findAll('.outpatient-list td:contains(Joe Bagadonuts)').length, 1, 'Checked in patient appears in list');
 
       await click('button:contains(Check Out)');
       await waitToAppear('.modal-dialog');
@@ -47,7 +48,7 @@ module('Acceptance | outpatient', function(hooks) {
       assert.dom('.modal-title').hasText('Patient Checked Out', 'Patient has been checked out confirmation');
 
       await click('button:contains(Ok)');
-      assert.equal(find('.outpatient-list td:contains(Joe Bagadonuts)').length, 0, 'Checked out patient no longer appears');
+      assert.equal(findAll('.outpatient-list td:contains(Joe Bagadonuts)').length, 0, 'Checked out patient no longer appears');
     });
   });
 
@@ -86,7 +87,7 @@ module('Acceptance | outpatient', function(hooks) {
 
       await click('button:contains(Return)');
       assert.equal(currentURL(), '/patients/outpatient', 'Returned to Outpatient');
-      assert.equal(find('.outpatient-list td:contains(Jane Bagadonuts)').length, 0, 'Checked in patient does not appears in list because of date');
+      assert.equal(findAll('.outpatient-list td:contains(Jane Bagadonuts)').length, 0, 'Checked in patient does not appears in list because of date');
 
       await selectDate('.outpatient-date input', visitDate.toDate());
       await click('button:contains(Search)');
@@ -97,19 +98,19 @@ module('Acceptance | outpatient', function(hooks) {
       );
 
       await waitToAppear('.outpatient-list td:contains(Jane Bagadonuts)');
-      assert.equal(find('.outpatient-list td:contains(Jane Bagadonuts)').length, 1, 'Checked in patient appears with date filtered.');
+      assert.equal(findAll('.outpatient-list td:contains(Jane Bagadonuts)').length, 1, 'Checked in patient appears with date filtered.');
 
       await select('.outpatient-location', 'Hospital');
       await click('button:contains(Search)');
-      assert.equal(find('.outpatient-list td:contains(Jane Bagadonuts)').length, 0, 'Checked in patient does not appear because different location.');
+      assert.equal(findAll('.outpatient-list td:contains(Jane Bagadonuts)').length, 0, 'Checked in patient does not appear because different location.');
       findWithAssert(`.outpatient-location option:contains(${visitLocation})`);
 
       await select('.outpatient-location', visitLocation);
       await click('button:contains(Search)');
-      assert.equal(find('.outpatient-list td:contains(Jane Bagadonuts)').length, 1, 'Checked in patient appears with date and location filtered.');
+      assert.equal(findAll('.outpatient-list td:contains(Jane Bagadonuts)').length, 1, 'Checked in patient appears with date and location filtered.');
 
       await visit('/patients');
-      assert.equal(find('tr:last td:contains(Jane)').length, 1, 'New patient appears in patient listing.');
+      assert.equal(findAll('tr:last td:contains(Jane)').length, 1, 'New patient appears in patient listing.');
 
       await click('tr:last td button:contains(Check Out)');
       await waitToAppear('.view-current-title:contains(Edit Visit)');
@@ -126,7 +127,7 @@ module('Acceptance | outpatient', function(hooks) {
       assert.dom('.checkout-date input').hasValue(checkoutDate.format('l h:mm A'), 'Check Out date properly set');
 
       await visit('/patients/outpatient');
-      assert.equal(find('.outpatient-list td:contains(Jane Bagadonuts)').length, 0, 'Checked out patient no longer appears');
+      assert.equal(findAll('.outpatient-list td:contains(Jane Bagadonuts)').length, 0, 'Checked out patient no longer appears');
     });
   });
 });

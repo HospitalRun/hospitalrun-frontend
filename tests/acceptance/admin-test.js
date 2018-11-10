@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { visit, click, fillIn, findAll, currentURL, find } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
@@ -16,7 +17,7 @@ module('Acceptance | admin', function(hooks) {
 
       await select('.lookup-type', 'Visit Types');
       assert.dom('h3.panel-title').hasText('Visit Types', 'Visit Types header is displayed');
-      assert.equal(find('td.lookup-type-value:first').text(), 'Admission', 'Admission visit type displays');
+      assert.equal(find('td.lookup-type-value:first').textContent, 'Admission', 'Admission visit type displays');
 
       await click('button:contains(Update)');
       await waitToAppear('.modal-dialog');
@@ -38,7 +39,7 @@ module('Acceptance | admin', function(hooks) {
       await fillIn('.lookup-type-value input', 'Dr Smith');
       await click('button:contains(Add):last');
       await waitToAppear('td.lookup-type-value:contains(Dr Smith)');
-      assert.equal(find('td.lookup-type-value:contains(Dr Smith)').length, 1, 'Added lookup type is added to list');
+      assert.equal(findAll('td.lookup-type-value:contains(Dr Smith)').length, 1, 'Added lookup type is added to list');
       await waitToAppear('.modal-dialog');
       await click('button:contains(Ok)');
 
@@ -47,8 +48,8 @@ module('Acceptance | admin', function(hooks) {
       await click('button:contains(Update):last');
       await waitToAppear('.modal-dialog');
       await click('button:contains(Ok)');
-      assert.equal(find('td.lookup-type-value').length, 1, 'Still only one lookup type in the list');
-      assert.equal(find('td.lookup-type-value:contains(Dr Smith2)').length, 1, 'Lookup type changed due to edit operation');
+      assert.equal(findAll('td.lookup-type-value').length, 1, 'Still only one lookup type in the list');
+      assert.equal(findAll('td.lookup-type-value:contains(Dr Smith2)').length, 1, 'Lookup type changed due to edit operation');
     });
   });
 
@@ -59,14 +60,14 @@ module('Acceptance | admin', function(hooks) {
       assert.equal(currentURL(), '/admin');
 
       await select('.lookup-type', 'Anesthesia Types');
-      assert.equal(find('td.lookup-type-value:contains(Epidural)').length, 1, 'Have lookup type to delete from list');
+      assert.equal(findAll('td.lookup-type-value:contains(Epidural)').length, 1, 'Have lookup type to delete from list');
 
       await click('button:contains(Delete)');
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Delete Value', 'Delete value modal is displayed');
 
       await click('.modal-footer button:contains(Ok)');
-      assert.equal(find('td.lookup-type-value:contains(Epidural)').length, 0, 'Deleted lookup type is removed from the list');
+      assert.equal(findAll('td.lookup-type-value:contains(Epidural)').length, 0, 'Deleted lookup type is removed from the list');
     });
   });
 
@@ -115,7 +116,7 @@ module('Acceptance | admin', function(hooks) {
       });
       await click('button:contains(Update)');
       await waitToAppear('.modal-dialog');
-      assert.equal(find('.modal-title').text(), 'Options Saved', 'Workflow Options Saved');
+      assert.equal(find('.modal-title').textContent, 'Options Saved', 'Workflow Options Saved');
       verifyAll(checked);
     }
 

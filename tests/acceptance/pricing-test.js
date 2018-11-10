@@ -1,3 +1,4 @@
+import { click, fillIn, findAll, currentURL, find, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -11,10 +12,10 @@ function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
     await visit(path);
     assert.equal(currentURL(), path);
     includesPrices.forEach(function(priceName) {
-      assert.equal(find(`.price-name:contains(${priceName})`).length, 1, `${priceName} displays`);
+      assert.equal(findAll(`.price-name:contains(${priceName})`).length, 1, `${priceName} displays`);
     });
     excludesPrices.forEach(function(priceName) {
-      assert.equal(find(`.price-name:contains(${priceName})`).length, 0, `${priceName} is not present`);
+      assert.equal(findAll(`.price-name:contains(${priceName})`).length, 0, `${priceName} is not present`);
     });
   });
 }
@@ -166,7 +167,7 @@ module('Acceptance | pricing', function(hooks) {
       await authenticateUser();
       await visit('/pricing/lab');
       assert.equal(currentURL(), '/pricing/lab');
-      assert.equal(find('.price-name:contains(Blood test)').length, 1, 'Price exists to delete');
+      assert.equal(findAll('.price-name:contains(Blood test)').length, 1, 'Price exists to delete');
 
       await click('button:contains(Delete)');
       await waitToAppear('.modal-dialog');
@@ -177,7 +178,7 @@ module('Acceptance | pricing', function(hooks) {
 
       await click('button:contains(Delete):last');
       await waitToDisappear('.price-name:contains(Blood test)');
-      assert.equal(find('.price-name:contains(Blood test)').length, 0, 'Price disappears from price list');
+      assert.equal(findAll('.price-name:contains(Blood test)').length, 0, 'Price disappears from price list');
     });
   });
 
@@ -198,7 +199,7 @@ module('Acceptance | pricing', function(hooks) {
       await waitToAppear('.modal-title:contains(Pricing Profile Saved)');
       await click('button:contains(Ok)');
       await waitToAppear('.pricing-profile-name:contains(Quarter Off)');
-      assert.equal(find('.pricing-profile-name:contains(Quarter Off)').text(), 'Quarter Off', 'New price profile displays');
+      assert.equal(find('.pricing-profile-name:contains(Quarter Off)').textContent, 'Quarter Off', 'New price profile displays');
     });
   });
 
@@ -207,7 +208,7 @@ module('Acceptance | pricing', function(hooks) {
       await authenticateUser();
       await visit('/pricing/profiles');
       assert.equal(currentURL(), '/pricing/profiles');
-      assert.equal(find('.pricing-profile-name:contains(Half off)').length, 1, 'Pricing profile exists to delete');
+      assert.equal(findAll('.pricing-profile-name:contains(Half off)').length, 1, 'Pricing profile exists to delete');
 
       await click('button:contains(Delete)');
       await waitToAppear('.modal-dialog');
@@ -215,7 +216,7 @@ module('Acceptance | pricing', function(hooks) {
 
       await click('button:contains(Ok)');
       await waitToDisappear('.pricing-profile-name:contains(Half off)');
-      assert.equal(find('.pricing-profile-name:contains(Half off)').length, 0, 'Pricing profile disappears from list');
+      assert.equal(findAll('.pricing-profile-name:contains(Half off)').length, 0, 'Pricing profile disappears from list');
     });
   });
 
@@ -227,32 +228,32 @@ module('Acceptance | pricing', function(hooks) {
       await fillIn('[role="search"] div input', 'Xray Hand');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/pricing/search/Xray%20Hand', 'Searched for Name: Xray Hand');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'Blood');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/pricing/search/Blood', 'Searched for Name: Blood');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'Leg');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/pricing/search/Leg', 'Searched for Name: Leg');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'Gauze');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/pricing/search/Gauze', 'Searched for Name: Gauze');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'xray');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/pricing/search/xray', 'Searched for all lower case xray');
-      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'd');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/pricing/search/d', 'Searched for the letter d');
-      assert.equal(find('button:contains(Delete)').length, 3, 'There are three search items');
+      assert.equal(findAll('button:contains(Delete)').length, 3, 'There are three search items');
 
       await fillIn('[role="search"] div input', 'ItemNotFound');
       await click('.glyphicon-search');
