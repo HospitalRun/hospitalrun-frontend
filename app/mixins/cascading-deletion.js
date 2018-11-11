@@ -34,6 +34,7 @@ export default Mixin.create({
   deleteVisitTask: task(function* () {
     let visit = this.get('model');
     let invoices = yield this.getVisitInvoices(visit);
+    let deleteRecordTask = this.get('deleteRecordTask');
 
     let pendingTasks = [];
     let labs = visit.get('labs');
@@ -56,7 +57,7 @@ export default Mixin.create({
     pendingTasks.push(this.deleteInvoices(invoices));
 
     yield all(pendingTasks);
-    return yield visit.destroyRecord();
+    return yield deleteRecordTask.perform(visit);
   }).group('deleting'),
 
   deleteInvoices(invoices) {

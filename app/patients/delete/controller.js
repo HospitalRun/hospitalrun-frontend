@@ -24,13 +24,16 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     let invoices = yield this.getPatientInvoices(patient);
     let appointments = yield this.getPatientAppointments(patient);
     let payments = yield patient.get('payments');
+    let deleteRecordTask = this.get('deleteRecordTask');
+
     yield all([
       this.deleteVisits(visits),
       this.deleteInvoices(invoices),
       this.deleteMany(appointments),
       this.deleteMany(payments)
     ]);
-    return yield patient.destroyRecord();
+
+    return yield deleteRecordTask.perform(patient);
   }).group('deleting'),
 
   deleteVisits(visits) {
@@ -38,6 +41,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   },
 
   deleteVisitsTask: task(function* (visits) {
+    let deleteVisitTask = this.get('deleteVisitTask');
     let pendingTasks = [];
     visits.forEach((visit) => {
       pendingTasks.push(deleteVisitTask(visit));
