@@ -17,9 +17,9 @@ module('Acceptance | admin', function(hooks) {
 
       await select('.lookup-type', 'Visit Types');
       assert.dom('h3.panel-title').hasText('Visit Types', 'Visit Types header is displayed');
-      assert.equal(find('td.lookup-type-value:first').textContent, 'Admission', 'Admission visit type displays');
+      assert.dom('td.lookup-type-value:first-child').hasText('Admission', 'Admission visit type displays');
 
-      await click('button:contains(Update)');
+      await click($('button:contains(Update)').get(0));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('List Saved', 'Lookup list is saved');
     });
@@ -32,24 +32,24 @@ module('Acceptance | admin', function(hooks) {
       assert.equal(currentURL(), '/admin');
 
       await select('.lookup-type', 'Anesthesiologists');
-      await click('button:contains(Add Value)');
+      await click($('button:contains(Add Value)').get(0));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Add Value', 'Add value modal is displayed');
 
       await fillIn('.lookup-type-value input', 'Dr Smith');
-      await click('button:contains(Add):last');
-      await waitToAppear('td.lookup-type-value:contains(Dr Smith)');
-      assert.equal(findAll('td.lookup-type-value:contains(Dr Smith)').length, 1, 'Added lookup type is added to list');
+      await click($('button:contains(Add):last').get(0));
+      await waitToAppear($('td.lookup-type-value:contains(Dr Smith)').get(0));
+      assert.equal($('td.lookup-type-value:contains(Dr Smith)').length, 1, 'Added lookup type is added to list');
       await waitToAppear('.modal-dialog');
-      await click('button:contains(Ok)');
+      await click($('button:contains(Ok)').get(0));
 
-      await click('button:contains(Edit)');
+      await click($('button:contains(Edit)').get(0));
       await fillIn('.lookup-type-value input', 'Dr Smith2');
-      await click('button:contains(Update):last');
+      await click($('button:contains(Update):last').get(0));
       await waitToAppear('.modal-dialog');
-      await click('button:contains(Ok)');
-      assert.equal(findAll('td.lookup-type-value').length, 1, 'Still only one lookup type in the list');
-      assert.equal(findAll('td.lookup-type-value:contains(Dr Smith2)').length, 1, 'Lookup type changed due to edit operation');
+      await click($('button:contains(Ok)').get(0));
+      assert.equal($('td.lookup-type-value').length, 1, 'Still only one lookup type in the list');
+      assert.equal($('td.lookup-type-value:contains(Dr Smith2)').length, 1, 'Lookup type changed due to edit operation');
     });
   });
 
@@ -60,14 +60,14 @@ module('Acceptance | admin', function(hooks) {
       assert.equal(currentURL(), '/admin');
 
       await select('.lookup-type', 'Anesthesia Types');
-      assert.equal(findAll('td.lookup-type-value:contains(Epidural)').length, 1, 'Have lookup type to delete from list');
+      assert.equal($('td.lookup-type-value:contains(Epidural)').length, 1, 'Have lookup type to delete from list');
 
-      await click('button:contains(Delete)');
+      await click($('button:contains(Delete)').get(0));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Delete Value', 'Delete value modal is displayed');
 
-      await click('.modal-footer button:contains(Ok)');
-      assert.equal(findAll('td.lookup-type-value:contains(Epidural)').length, 0, 'Deleted lookup type is removed from the list');
+      await click($('.modal-footer button:contains(Ok)').get(0));
+      assert.equal($('td.lookup-type-value:contains(Epidural)').length, 0, 'Deleted lookup type is removed from the list');
     });
   });
 
@@ -78,7 +78,7 @@ module('Acceptance | admin', function(hooks) {
       assert.equal(currentURL(), '/admin/address');
 
       await fillIn('input', 'Address Label');
-      await click('button:contains(Update)');
+      await click($('button:contains(Update)').get(0));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Options Saved', 'Address Options Saved');
     });
@@ -91,7 +91,7 @@ module('Acceptance | admin', function(hooks) {
       assert.equal(currentURL(), '/admin/print-header');
 
       await fillIn('input', 'Print Header Label');
-      await click('button:contains(Update)');
+      await click($('button:contains(Update)').get(0));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Options Saved', 'Header Options Saved');
     });
@@ -114,9 +114,9 @@ module('Acceptance | admin', function(hooks) {
       Array.prototype.slice.call(document.querySelectorAll(selector)).forEach((node) => {
         node.checked = checked;
       });
-      await click('button:contains(Update)');
+      await click($('button:contains(Update)').get(0));
       await waitToAppear('.modal-dialog');
-      assert.equal(find('.modal-title').textContent, 'Options Saved', 'Workflow Options Saved');
+      assert.dom('.modal-title').hasText('Options Saved', 'Workflow Options Saved');
       verifyAll(checked);
     }
 
