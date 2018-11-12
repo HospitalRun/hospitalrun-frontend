@@ -1,9 +1,9 @@
 import $ from 'jquery';
 
 /**
- * Utilities for working with ember-i18n locales
+ * Utilities for working with ember-intl locales
  *
- * Pulled from ember-i18n internals, which do not expose these functions directly
+ * Pulled from ember-intl internals, which do not expose these functions directly
  */
 
 /**
@@ -15,7 +15,7 @@ function walkConfigs(id, owner) {
     return appConfig;
   }
 
-  let addonConfig = owner.factoryFor(`ember-i18n@config:${id}`);
+  let addonConfig = owner.factoryFor(`ember-intl@config:${id}`);
   if (addonConfig) {
     return addonConfig;
   }

@@ -50,6 +50,7 @@ test('test appointment for today', function(assert) {
     assert.dom('.appointment-date').doesNotExist('should have 0 appointment today');
     await visit('/appointments/edit/new');
     assert.equal(currentURL(), '/appointments/edit/new');
+
     findWithAssert('button:contains(Cancel)');
     findWithAssert('button:contains(Add)');
 

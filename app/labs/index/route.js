@@ -1,5 +1,5 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractIndexRoute.extend({
   modelName: 'lab',

@@ -17,8 +17,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   effectiveDate: null,
   endDate: null,
   expenseCategories: computed(function() {
-    let i18n = this.get('i18n');
-    return [i18n.t('inventory.labels.inventoryConsumed'), i18n.t('inventory.labels.giftUsage'), i18n.t('inventory.labels.inventoryObsolence')];
+    let intl = this.get('intl');
+    return [intl.t('inventory.labels.inventoryConsumed'), intl.t('inventory.labels.giftUsage'), intl.t('inventory.labels.inventoryObsolence')];
   }),
   expenseMap: null,
   filterLocation: null,
@@ -31,160 +31,160 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   database: service(),
   warehouseList: map('inventoryController.warehouseList.value', SelectValues.selectValuesMap),
   reportColumns: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return {
       date: {
-        label: i18n.t('labels.date'),
+        label: intl.t('labels.date'),
         include: true,
         property: 'date'
       },
       id: {
-        label: i18n.t('labels.id'),
+        label: intl.t('labels.id'),
         include: true,
         property: 'inventoryItem.friendlyId'
       },
       name: {
-        label: i18n.t('inventory.labels.name'),
+        label: intl.t('inventory.labels.name'),
         include: true,
         property: 'inventoryItem.name'
       },
       transactionType: {
-        label: i18n.t('inventory.labels.adjustmentType'),
+        label: intl.t('inventory.labels.adjustmentType'),
         include: false,
         property: 'transactionType'
       },
       expenseAccount: {
-        label: i18n.t('inventory.labels.expense'),
+        label: intl.t('inventory.labels.expense'),
         include: false,
         property: 'expenseAccount'
       },
       description: {
-        label: i18n.t('labels.description'),
+        label: intl.t('labels.description'),
         include: false,
         property: 'inventoryItem.description'
       },
       type: {
-        label: i18n.t('labels.type'),
+        label: intl.t('labels.type'),
         include: true,
         property: 'inventoryItem.inventoryType'
       },
       xref: {
-        label: i18n.t('inventory.labels.crossReference'),
+        label: intl.t('inventory.labels.crossReference'),
         include: false,
         property: 'inventoryItem.crossReference'
       },
       reorder: {
-        label: i18n.t('inventory.labels.reorderPoint'),
+        label: intl.t('inventory.labels.reorderPoint'),
         include: false,
         property: 'inventoryItem.reorderPoint',
         format: '_numberFormat'
       },
       price: {
-        label: i18n.t('inventory.labels.salePricePerUnit'),
+        label: intl.t('inventory.labels.salePricePerUnit'),
         include: false,
         property: 'inventoryItem.price',
         format: '_numberFormat'
       },
       quantity: {
-        label: i18n.t('labels.quantity'),
+        label: intl.t('labels.quantity'),
         include: true,
         property: 'quantity',
         format: '_numberFormat'
       },
       consumedPerDay: {
-        label: i18n.t('inventory.labels.consumptionRate'),
+        label: intl.t('inventory.labels.consumptionRate'),
         include: false,
         property: 'consumedPerDay'
       },
       daysLeft: {
-        label: i18n.t('inventory.labels.daysLeft'),
+        label: intl.t('inventory.labels.daysLeft'),
         include: false,
         property: 'daysLeft'
       },
       unit: {
-        label: i18n.t('inventory.labels.distributionUnit'),
+        label: intl.t('inventory.labels.distributionUnit'),
         include: true,
         property: 'inventoryItem.distributionUnit'
       },
       unitcost: {
-        label: i18n.t('inventory.labels.unitCost'),
+        label: intl.t('inventory.labels.unitCost'),
         include: true,
         property: 'unitCost',
         format: '_numberFormat'
       },
       total: {
-        label: i18n.t('inventory.labels.totalCost'),
+        label: intl.t('inventory.labels.totalCost'),
         include: true,
         property: 'totalCost',
         format: '_numberFormat'
       },
       gift: {
-        label: i18n.t('inventory.labels.gift'),
+        label: intl.t('inventory.labels.gift'),
         include: true,
         property: 'giftInKind'
       },
       locations: {
-        label: i18n.t('inventory.labels.locations'),
+        label: intl.t('inventory.labels.locations'),
         include: true,
         property: 'locations',
         format: '_addLocationColumn'
       },
       aisle: {
-        label: i18n.t('inventory.labels.aisle'),
+        label: intl.t('inventory.labels.aisle'),
         include: false,
         property: 'locations',
         format: '_addAisleColumn'
       },
       vendor: {
-        label: i18n.t('inventory.labels.vendor'),
+        label: intl.t('inventory.labels.vendor'),
         include: false,
         property: 'vendors'
       }
     };
   }),
   reportTypes: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     return [{
-      name: i18n.t('inventory.reports.daysSupply'),
+      name: intl.t('inventory.reports.daysSupply'),
       value: 'daysLeft'
     }, {
-      name: i18n.t('inventory.reports.adjustment'),
+      name: intl.t('inventory.reports.adjustment'),
       value: 'detailedAdjustment'
     }, {
-      name: i18n.t('inventory.reports.purchaseDetail'),
+      name: intl.t('inventory.reports.purchaseDetail'),
       value: 'detailedPurchase'
     }, {
-      name: i18n.t('inventory.reports.stockUsageDetail'),
+      name: intl.t('inventory.reports.stockUsageDetail'),
       value: 'detailedUsage'
     }, {
-      name: i18n.t('inventory.reports.stockTransferDetail'),
+      name: intl.t('inventory.reports.stockTransferDetail'),
       value: 'detailedTransfer'
     }, {
-      name: i18n.t('inventory.reports.expenseDetail'),
+      name: intl.t('inventory.reports.expenseDetail'),
       value: 'detailedExpense'
     }, {
-      name: i18n.t('inventory.reports.expiration'),
+      name: intl.t('inventory.reports.expiration'),
       value: 'expiration'
     }, {
-      name: i18n.t('inventory.reports.invLocation'),
+      name: intl.t('inventory.reports.invLocation'),
       value: 'byLocation'
     }, {
-      name: i18n.t('inventory.reports.invValuation'),
+      name: intl.t('inventory.reports.invValuation'),
       value: 'valuation'
     }, {
-      name: i18n.t('inventory.reports.expenseSum'),
+      name: intl.t('inventory.reports.expenseSum'),
       value: 'summaryExpense'
     }, {
-      name: i18n.t('inventory.reports.purchaseSum'),
+      name: intl.t('inventory.reports.purchaseSum'),
       value: 'summaryPurchase'
     }, {
-      name: i18n.t('inventory.reports.stockUsageSum'),
+      name: intl.t('inventory.reports.stockUsageSum'),
       value: 'summaryUsage'
     }, {
-      name: i18n.t('inventory.reports.stockTransferSum'),
+      name: intl.t('inventory.reports.stockTransferSum'),
       value: 'summaryTransfer'
     }, {
-      name: i18n.t('inventory.reports.finance'),
+      name: intl.t('inventory.reports.finance'),
       value: 'summaryFinance'
     }];
   }),
@@ -477,13 +477,13 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   _finishExpenseReport(reportType) {
     let expenseCategories = this.get('expenseCategories');
     let expenseMap = this.get('expenseMap');
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     expenseCategories.forEach(function(category) {
       let categoryTotal = 0;
       let expenseAccountName, totalLabel;
       this._addReportRow({
         inventoryItem: {
-          name: i18n.t('inventory.reports.rows.expensesFor') + category
+          name: intl.t('inventory.reports.rows.expensesFor') + category
         }
       });
       expenseMap[category].expenseAccounts.forEach(function(expenseAccount) {
@@ -493,24 +493,24 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           }.bind(this));
         }
         if (isEmpty(expenseAccount.name)) {
-          expenseAccountName = i18n.t('inventory.reports.rows.noAccount');
+          expenseAccountName = intl.t('inventory.reports.rows.noAccount');
         } else {
           expenseAccountName = expenseAccount.name;
         }
-        totalLabel = i18n.t('inventory.reports.rows.subtotalFor', { category, account: expenseAccountName });
+        totalLabel = intl.t('inventory.reports.rows.subtotalFor', { category, account: expenseAccountName });
         this._addReportRow({
           totalCost: totalLabel + this._numberFormat(expenseAccount.total)
         }, true);
         categoryTotal += expenseAccount.total;
       }.bind(this));
-      totalLabel = i18n.t('inventory.reports.rows.totalFor', { var: category });
+      totalLabel = intl.t('inventory.reports.rows.totalFor', { var: category });
       this._addReportRow({
         totalCost: totalLabel + this._numberFormat(categoryTotal)
       }, true);
       this.incrementProperty('grandCost', categoryTotal);
     }.bind(this));
     this._addReportRow({
-      totalCost: i18n.t('inventory.reports.rows.total') + this._numberFormat(this.get('grandCost'))
+      totalCost: intl.t('inventory.reports.rows.total') + this._numberFormat(this.get('grandCost'))
     }, true);
   },
 
@@ -520,11 +520,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     let locationSummary = this.get('locationSummary');
     let parentLocation = '';
     let parentCount = 0;
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     locationSummary = locationSummary.sortBy('name');
     locationSummary.forEach(function(location) {
       parentLocation = this._getWarehouseLocationName(location.name);
-      let label = i18n.t('inventory.reports.rows.totalFor', { var: currentLocation });
+      let label = intl.t('inventory.reports.rows.totalFor', { var: currentLocation });
       if (currentLocation !== parentLocation) {
         this._addTotalsRow(label, locationCost, parentCount);
         parentCount = 0;
@@ -553,7 +553,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       }
     }.bind(this));
     if (parentCount > 0) {
-      this._addTotalsRow(i18n.t('inventory.reports.rows.totalFor', { var: parentLocation }), locationCost, parentCount);
+      this._addTotalsRow(intl.t('inventory.reports.rows.totalFor', { var: parentLocation }), locationCost, parentCount);
     }
   },
 
@@ -577,7 +577,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         }
       }.bind(this));
       this._getInventoryItems(inventoryIds).then(function(inventoryMap) {
-        let i18n = this.get('i18n');
+        let intl = this.get('intl');
         purchaseDocs.forEach(function(purchase) {
           let { currentQuantity } = purchase;
           let expirationDate = new Date(purchase.expirationDate);
@@ -595,11 +595,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           }
         }.bind(this));
         reportRows.addObject([
-          '', '', i18n.t('inventory.reports.rows.total') + grandQuantity, '', ''
+          '', '', intl.t('inventory.reports.rows.total') + grandQuantity, '', ''
         ]);
         this.set('showReportResults', true);
         this.set('reportHeaders',
-          [i18n.t('labels.id'), i18n.t('labels.name'), i18n.t('inventory.labels.currentQuantity'), i18n.t('inventory.labels.distributionUnit'), i18n.t('inventory.labels.expirationDate'), i18n.t('inventory.labels.location')]);
+          [intl.t('labels.id'), intl.t('labels.name'), intl.t('inventory.labels.currentQuantity'), intl.t('inventory.labels.distributionUnit'), intl.t('inventory.labels.expirationDate'), intl.t('inventory.labels.location')]);
         this._generateExport();
         this._setReportTitle();
         this.closeProgressModal();
@@ -617,19 +617,19 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     this._calculateBeginningBalance(reportTimes).then(function(beginningBalance) {
       this._generateSummaries(reportTimes).then(function(inventoryAdjustment) {
         let i = this._numberFormat(beginningBalance + inventoryAdjustment);
-        let i18n = this.get('i18n');
+        let intl = this.get('intl');
         if ((beginningBalance + inventoryAdjustment) < 0) {
-          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', `(${i})`]);
+          this.get('reportRows').addObject([intl.t('inventory.reports.rows.balanceEnd'), '', `(${i})`]);
         } else {
-          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', i]);
+          this.get('reportRows').addObject([intl.t('inventory.reports.rows.balanceEnd'), '', i]);
         }
         this.set('showReportResults', true);
-        this.set('reportHeaders', [i18n.t('inventory.reports.rows.category'), i18n.t('labels.type'), i18n.t('inventory.labels.total')]);
+        this.set('reportHeaders', [intl.t('inventory.reports.rows.category'), intl.t('labels.type'), intl.t('inventory.labels.total')]);
         this._generateExport();
         this._setReportTitle();
         this.closeProgressModal();
       }.bind(this), function(err) {
-        this._notifyReportError(this.get('i18n').t('inventory.reports.rows.errInFinSum') + err);
+        this._notifyReportError(this.get('intl').t('inventory.reports.rows.errInFinSum') + err);
       }.bind(this));
     }.bind(this));
   },
@@ -637,7 +637,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   _generateSummaries(reportTimes) {
     return new EmberPromise(function(resolve, reject) {
       let adjustedValue = 0;
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       /*
       cycle through each purchase and request from the beginning of time until startTime
       to determine the total value of inventory as of that date/time.
@@ -683,21 +683,21 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           // write the purchase rows
           if (Object.keys(purchaseSummary).length > 0) {
             let purchaseTotal = 0;
-            this.get('reportRows').addObject([i18n.t('inventory.labels.purchases'), '', '']);
+            this.get('reportRows').addObject([intl.t('inventory.labels.purchases'), '', '']);
             Object.keys(purchaseSummary).forEach(function(key) {
               let i = this._getValidNumber(purchaseSummary[key]);
               purchaseTotal += i;
               this.get('reportRows').addObject(['', key, this._numberFormat(i)]);
             }.bind(this));
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.totalPurchases'), '', this._numberFormat(purchaseTotal)]);
+            this.get('reportRows').addObject([intl.t('inventory.reports.rows.totalPurchases'), '', this._numberFormat(purchaseTotal)]);
             adjustedValue += purchaseTotal;
           }
           // write the consumed rows
           if (Object.keys(consumed).length > 0 || Object.keys(gikConsumed).length > 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed'), '', '']);
+            this.get('reportRows').addObject([intl.t('inventory.reports.rows.consumed'), '', '']);
             let overallValue = 0;
             if (Object.keys(consumed).length > 0) {
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedPuchases'), '', '']);
+              this.get('reportRows').addObject([intl.t('inventory.reports.rows.consumedPuchases'), '', '']);
               let consumedTotal = 0;
               Object.keys(consumed).forEach(function(key) {
                 let i = this._getValidNumber(consumed[key]);
@@ -705,10 +705,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 this.get('reportRows').addObject(['', key, `(${this._numberFormat(i)})`]);
               }.bind(this));
               overallValue += consumedTotal;
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedPurchasesTotal'), '', `(${this._numberFormat(consumedTotal)})`]);
+              this.get('reportRows').addObject([intl.t('inventory.reports.rows.consumedPurchasesTotal'), '', `(${this._numberFormat(consumedTotal)})`]);
             }
             if (Object.keys(gikConsumed).length > 0) {
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGik'), '', '']);
+              this.get('reportRows').addObject([intl.t('inventory.reports.rows.consumedGik'), '', '']);
               let gikTotal = 0;
               Object.keys(gikConsumed).forEach(function(key) {
                 let i = this._getValidNumber(gikConsumed[key]);
@@ -716,14 +716,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 this.get('reportRows').addObject(['', key, `(${this._numberFormat(i)})`]);
               }.bind(this));
               overallValue += gikTotal;
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGikTotal'), '', `(${this._numberFormat(gikTotal)})`]);
+              this.get('reportRows').addObject([intl.t('inventory.reports.rows.consumedGikTotal'), '', `(${this._numberFormat(gikTotal)})`]);
             }
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedTotal'), '', `(${this._numberFormat(overallValue)})`]);
+            this.get('reportRows').addObject([intl.t('inventory.reports.rows.consumedTotal'), '', `(${this._numberFormat(overallValue)})`]);
             adjustedValue -= overallValue;
           }
           // write the adjustment rows
           let adjustmentTotal = 0;
-          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustments'), '', '']);
+          this.get('reportRows').addObject([intl.t('inventory.reports.rows.adjustments'), '', '']);
           Object.keys(adjustments).forEach(function(adjustmentT) {
             if (Object.keys(adjustments[adjustmentT]).length > 0) {
               this.get('reportRows').addObject([adjustmentT, '', '']);
@@ -740,9 +740,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
           }.bind(this));
           if (adjustmentTotal < 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', `(${this._numberFormat(adjustmentTotal)})`]);
+            this.get('reportRows').addObject([intl.t('inventory.reports.rows.adjustmentsTotal'), '', `(${this._numberFormat(adjustmentTotal)})`]);
           } else {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', this._numberFormat(adjustmentTotal)]);
+            this.get('reportRows').addObject([intl.t('inventory.reports.rows.adjustmentsTotal'), '', this._numberFormat(adjustmentTotal)]);
           }
 
           adjustedValue += adjustmentTotal;
@@ -759,7 +759,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         endTime: reportTimes.startTime
       };
       let beginningBalance = 0;
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       /*
       cycle through each purchase and request from the beginning of time until startTime
       to determine the total value of inventory as of that date/time.
@@ -810,9 +810,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
           }.bind(this));
           if (beginningBalance < 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', `(${this._numberFormat(beginningBalance)})`]);
+            this.get('reportRows').addObject([intl.t('inventory.reports.rows.balanceBegin'), '', `(${this._numberFormat(beginningBalance)})`]);
           } else {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', this._numberFormat(beginningBalance)]);
+            this.get('reportRows').addObject([intl.t('inventory.reports.rows.balanceBegin'), '', this._numberFormat(beginningBalance)]);
           }
           resolve(beginningBalance);
         }.bind(this), reject);
@@ -828,7 +828,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     let locationSummary = this.get('locationSummary');
     let reportType = this.get('reportType');
     let reportTimes = this._getDateQueryParams();
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (reportType === 'daysLeft') {
       let endDate = this.get('endDate');
       let startDate = this.get('startDate');
@@ -973,11 +973,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     locations = request.locationsAffected.map(function(location) {
                       if (reportType === 'detailedTransfer') {
                         return {
-                          name: i18n.t('inventory.reports.rows.transfer2', { source: location.name, target: deliveryLocation }).toString()
+                          name: intl.t('inventory.reports.rows.transfer2', { source: location.name, target: deliveryLocation }).toString()
                         };
                       } else {
                         return {
-                          name: i18n.t('inventory.reports.rows.transfer1', { quantity: num, location: location.name }).toString()
+                          name: intl.t('inventory.reports.rows.transfer1', { quantity: num, location: location.name }).toString()
                         };
                       }
                     }.bind(this));
@@ -1002,7 +1002,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                   }
                 }.bind(this));
                 if (reportType !== 'detailedExpense' && reportType !== 'summaryExpense') {
-                  this._addTotalsRow(i18n.t('inventory.reports.rows.subtotal'), summaryCost, summaryQuantity);
+                  this._addTotalsRow(intl.t('inventory.reports.rows.subtotal'), summaryCost, summaryQuantity);
                   this.incrementProperty('grandCost', summaryCost);
                   this.incrementProperty('grandQuantity', summaryQuantity);
                 }
@@ -1054,7 +1054,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     summaryQuantity += this._getValidNumber(purchase.originalQuantity);
                   }
                 }.bind(this));
-                this._addTotalsRow(i18n.t('inventory.reports.rows.subtotal'), summaryCost, summaryQuantity);
+                this._addTotalsRow(intl.t('inventory.reports.rows.subtotal'), summaryCost, summaryQuantity);
                 this.incrementProperty('grandCost', summaryCost);
                 this.incrementProperty('grandQuantity', summaryQuantity);
               }
@@ -1102,19 +1102,19 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           }
           case 'byLocation': {
             this._finishLocationReport();
-            this._addTotalsRow(i18n.t('inventory.reports.rows.total'), this.get('grandCost'), this.get('grandQuantity'));
+            this._addTotalsRow(intl.t('inventory.reports.rows.total'), this.get('grandCost'), this.get('grandQuantity'));
             break;
           }
           default: {
-            this._addTotalsRow(i18n.t('inventory.reports.rows.total'), this.get('grandCost'), this.get('grandQuantity'));
+            this._addTotalsRow(intl.t('inventory.reports.rows.total'), this.get('grandCost'), this.get('grandQuantity'));
           }
         }
         this._finishReport();
       }.bind(this), function(err) {
-        this._notifyReportError(i18n.t('inventory.reports.rows.errInFindPur') + err);
+        this._notifyReportError(intl.t('inventory.reports.rows.errInFindPur') + err);
       }.bind(this));
     }.bind(this), function(err) {
-      this._notifyReportError(i18n.t('inventory.reports.rows.errInFindPur') + err);
+      this._notifyReportError(intl.t('inventory.reports.rows.errInFindPur') + err);
     }.bind(this));
   },
 

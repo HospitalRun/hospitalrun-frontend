@@ -4,6 +4,6 @@ export default AbstractEditController.extend({
   updateCapability: 'update_config',
 
   afterUpdate() {
-    this.displayAlert(this.get('i18n').t('admin.workflow.titles.optionsSaved'), this.get('i18n').t('admin.workflow.messages.optionsSaved'));
+    this.displayAlert(this.get('intl').t('admin.workflow.titles.optionsSaved'), this.get('intl').t('admin.workflow.messages.optionsSaved'));
   }
 });

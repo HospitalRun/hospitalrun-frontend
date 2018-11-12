@@ -1,32 +1,45 @@
 import { getOwner } from '@ember/application';
 import { moduleForModel, test } from 'ember-qunit';
-import tHelper from 'ember-i18n/helper';
-import localeConfig from 'ember-i18n/config/en';
+import tHelper from 'ember-intl/helpers/t';
 
 moduleForModel('patient', 'Unit | Model | patient', {
   needs: [
     'config:environment',
     'ember-validations@validator:local/format',
     'ember-validations@validator:local/presence',
-    'locale:en/config',
-    'locale:en/translations',
     'model:allergy',
     'model:diagnosis',
     'model:operation-report',
     'model:operative-plan',
     'model:payment',
     'model:price-profile',
-    'service:i18n',
     'service:session',
-    'util:i18n/compile-template',
-    'util:i18n/missing-message'
+    'service:intl',
+    'ember-intl@adapter:default',
+    'cldr:cn',
+    'cldr:de',
+    'cldr:en',
+    'cldr:es',
+    'cldr:gr',
+    'cldr:hi',
+    'cldr:pt',
+    'cldr:th',
+    'cldr:tw',
+    'cldr:de',
+    'cldr:es',
+    'cldr:fr',
+    'cldr:he',
+    'cldr:it',
+    'cldr:ru',
+    'cldr:tr',
+    'cldr:ur',
+    'translation:en',
+    'util:intl/missing-message'
   ],
   beforeEach() {
     // set the locale and the config
-    this.container.lookup('service:i18n').set('locale', 'en');
-    this.registry.register('locale:en/config', localeConfig);
-
-    getOwner(this).inject('model', 'i18n', 'service:i18n');
+    this.container.lookup('service:intl').set('locale', 'en');
+    getOwner(this).inject('model', 'intl', 'service:intl');
 
     // register t helper
     this.registry.register('helper:t', tHelper);

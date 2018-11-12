@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import UserSession from 'hospitalrun/mixins/user-session';
 
 export default AbstractEditRoute.extend(UserSession, {

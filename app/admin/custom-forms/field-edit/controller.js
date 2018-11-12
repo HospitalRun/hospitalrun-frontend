@@ -7,7 +7,7 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 export default AbstractEditController.extend({
   editController: controller('admin/custom-forms/edit'),
   cancelAction: 'closeModal',
-  i18n: service(),
+  intl: service(),
 
   actions: {
     addValue() {
@@ -48,12 +48,12 @@ export default AbstractEditController.extend({
   ],
 
   fieldTypes: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let fieldTypeValues = this.get('fieldTypeValues');
     return fieldTypeValues.map((fieldTypeId) => {
       return {
         id: fieldTypeId,
-        value: i18n.t(`admin.customForms.labels.${fieldTypeId}`)
+        value: intl.t(`admin.customForms.labels.${fieldTypeId}`)
       };
     }).sort(function(a, b) {
       return compare(a.value.toString(), b.value.toString());
@@ -64,5 +64,4 @@ export default AbstractEditController.extend({
     let type = this.get('model.type');
     return (type === 'checkbox' || type === 'radio' || type === 'select' || type === 'header');
   })
-
 });
