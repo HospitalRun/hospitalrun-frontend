@@ -1,6 +1,7 @@
 // Derived from https://raw.githubusercontent.com/edgycircle/ember-pikaday/master/addon/helpers/pikaday.js
 import moment from 'moment';
-
+import $select from 'hospitalrun/tests/helpers/jquery-select';
+import { click, fillIn } from '@ember/test-helpers';
 import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 
 function triggerNativeEvent(element, eventName) {
@@ -14,10 +15,10 @@ function triggerNativeEvent(element, eventName) {
 }
 
 async function selectDate(selector, date) {
-  await click(selector);
+  await click($select(selector));
   await waitToAppear('.pika-single:not(.is-hidden)');
-  await fillIn(selector, moment(date).format('l'));
-  triggerNativeEvent($(selector)[0], 'change');
+  await fillIn($select(selector), moment(date).format('l'));
+  triggerNativeEvent($select(selector), 'change');
 }
 
 export default selectDate;
