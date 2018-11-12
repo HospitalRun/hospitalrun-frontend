@@ -12,8 +12,8 @@ export default AbstractDeleteController.extend(PouchDbMixin, ProgressDialog, Cas
   progressMessage: t('visits.messages.deletingVisit'),
   deleting: taskGroup(),
 
-  deleteVisit() {
-    return this.get('deleteVisitTask').perform();
+  deleteVisit(visit) {
+    return this.get('deleteVisitTask').perform(visit);
   },
 
   getVisitInvoices(visit) {
@@ -45,7 +45,8 @@ export default AbstractDeleteController.extend(PouchDbMixin, ProgressDialog, Cas
   }),
 
   actions: {
-    delete(visit) {
+    delete() {
+      let visit = this.get('model');
       this.get('deleteActionTask').perform(visit);
     }
   }

@@ -25,16 +25,20 @@ export default Mixin.create({
     return yield all(archivePromises, 'async array deletion');
   }).group('deleting'),
 
+  deleteSingle(record) {
+    let deleteRecordTask = this.get('deleteRecordTask');
+    deleteRecordTask.perform(record);
+    return;
+  },
+
   deleteRecordTask: task(function* (recordToDelete) {
     recordToDelete.set('archived', true);
     yield recordToDelete.save();
     return yield recordToDelete.unloadRecord();
   }).group('deleting'),
 
-  deleteVisitTask: task(function* () {
-    let visit = this.get('model');
+  deleteVisitTask: task(function* (visit) {
     let invoices = yield this.getVisitInvoices(visit);
-    let deleteRecordTask = this.get('deleteRecordTask');
 
     let pendingTasks = [];
     let labs = visit.get('labs');
@@ -57,7 +61,7 @@ export default Mixin.create({
     pendingTasks.push(this.deleteInvoices(invoices));
 
     yield all(pendingTasks);
-    return yield deleteRecordTask.perform(visit);
+    return yield this.deleteSingle(visit);
   }).group('deleting'),
 
   deleteInvoices(invoices) {

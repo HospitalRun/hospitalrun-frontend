@@ -14,17 +14,15 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   progressMessage: t('patients.messages.deletingPatient'),
   deleting: taskGroup(),
 
-  deletePatient() {
-    return this.get('deletePatientTask').perform();
+  deletePatient(patient) {
+    return this.get('deletePatientTask').perform(patient);
   },
 
-  deletePatientTask: task(function* () {
-    let patient = this.get('model');
+  deletePatientTask: task(function* (patient) {
     let visits = yield this.getPatientVisits(patient);
     let invoices = yield this.getPatientInvoices(patient);
     let appointments = yield this.getPatientAppointments(patient);
     let payments = yield patient.get('payments');
-    let deleteRecordTask = this.get('deleteRecordTask');
 
     yield all([
       this.deleteVisits(visits),
@@ -33,7 +31,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
       this.deleteMany(payments)
     ]);
 
-    return yield deleteRecordTask.perform(patient);
+    return yield this.deleteSingle(patient);
   }).group('deleting'),
 
   deleteVisits(visits) {
@@ -47,7 +45,6 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
       pendingTasks.push(deleteVisitTask(visit));
     });
     yield all(pendingTasks);
-    // don't have to deleteMany(visits) because it will happen in deleteVisitTask
   }),
 
   deleteActionTask: task(function* (patient) {
@@ -60,7 +57,8 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   }).drop(),
 
   actions: {
-    delete(patient) {
+    delete() {
+      let patient = this.get('model');
       this.get('deleteActionTask').perform(patient);
     }
   }
