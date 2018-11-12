@@ -78,8 +78,8 @@ export default AbstractEditController.extend(ReturnTo, {
       property: 'model.expenseAccount',
       id: 'expense_account_list'
     }];
-    let showPricingType = this.get('showPricingType');
-    if (showPricingType) {
+    let pricingTypeEditable = this.get('pricingTypeEditable');
+    if (pricingTypeEditable) {
       listsToUpdate.push({
         name: `${category}PricingTypes`,
         property: 'model.pricingType',
@@ -97,7 +97,7 @@ export default AbstractEditController.extend(ReturnTo, {
     }
   }),
 
-  showPricingType: computed('model.category', function() {
+  pricingTypeEditable: computed('model.category', function() {
     let model = this.get('model');
     let category = model.get('category');
     if (category === 'Imaging' || category === 'Lab') {

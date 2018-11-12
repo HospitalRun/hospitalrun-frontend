@@ -70,7 +70,7 @@
         {{#each model.locations as |location|}}
           {{#unless location.archived}}
             <tr>
-              <td>{{location.location}}</td>
+              <td class="test-location-location">{{location.location}}</td>
               <td>{{location.aisleLocation}}</td>
               <td class="test-location-quantity">{{location.quantity}}</td>
               {{#if canAdjustLocation}}

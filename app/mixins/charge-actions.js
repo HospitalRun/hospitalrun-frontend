@@ -89,19 +89,6 @@ export default Mixin.create({
     return this.currentUserCan('add_charge');
   }),
 
-  /**
-   * Returns pricing list without object types
-   * Used for labs and imaging where the labs and imaging types are
-   * directly in the price list.
-   */
-  chargesPricingList: computed('pricingList', 'pricingTypeForObjectType', function() {
-    let pricingList = this.get('pricingList');
-    let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
-    return pricingList.filter(function(item) {
-      return (item.type !== pricingTypeForObjectType);
-    });
-  }),
-
   chargeRoute: null,
 
   findChargeForPricingItem(pricingItem, charges) {
@@ -118,14 +105,13 @@ export default Mixin.create({
    */
   objectTypeList: computed('pricingList', 'pricingTypeForObjectType', 'pricingTypeValues', function() {
     let pricingList = this.get('pricingList');
-    let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
     let userCanAddPricingTypes = this.get('userCanAddPricingTypes');
     let returnList = EmberObject.create({
       value: [],
       userCanAdd: userCanAddPricingTypes
     });
     if (!isEmpty(pricingList)) {
-      returnList.set('value', pricingList.filterBy('pricingType', pricingTypeForObjectType));
+      returnList.set('value', pricingList);
     }
     return returnList;
   }),

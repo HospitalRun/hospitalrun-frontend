@@ -5,7 +5,7 @@ import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
 import selectDate from 'hospitalrun/tests/helpers/select-date';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
-import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
 import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | inventory');
@@ -99,6 +99,45 @@ test('Items with negative quantites should not be saved', (assert) => {
       'not a valid number',
       'Error message should be present for invalid quantities'
     );
+  });
+});
+
+test('Transfer or Delete location should update inventory item', (assert) => {
+  return runWithPouchDump('inventory', async function() {
+    await authenticateUser();
+    await visit('/inventory/listing');
+    assert.equal(currentURL(), '/inventory/listing');
+
+    // transfer all units to a new location
+    await click('button:contains(Edit)');
+    await click('button:contains(Transfer)');
+    await waitToAppear('.modal-dialog');
+    await typeAheadFillIn('.test-transfer-location', 'newLocation');
+    await fillIn('.test-adjustment-quantity input', 1000);
+    await click('button:contains(Transfer):last');
+    await waitToDisappear('.modal-dialog');
+    await click('button:contains(Return)');
+
+    // verify new location appears correctly along with default location
+    assert.dom('tr .btn').exists({ count: 4 });
+    await click('button:contains(Edit)');
+    assert.dom('.test-location-quantity').exists({ count: 2 });
+    assert.equal(find('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
+    assert.equal(find('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
+
+    // delete default location
+    await click('button:contains(Delete)');
+    await waitToAppear('.modal-dialog');
+    await click('button:contains(Delete):last');
+    await waitToDisappear('.modal-dialog');
+    await click('button:contains(Return)');
+
+    // verify default location is gone and new location w/ all units is still there
+    assert.dom('tr .btn').exists({ count: 4 });
+    await click('button:contains(Edit)');
+    assert.dom('.test-location-quantity').exists({ count: 1 });
+    assert.equal(find('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
+    assert.equal(find('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
   });
 });
 
