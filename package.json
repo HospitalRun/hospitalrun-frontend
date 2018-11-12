@@ -80,6 +80,7 @@
     "ember-keyboard": "4.0.0",
     "ember-load-initializers": "^1.0.0",
     "ember-metrics": "^0.12.1",
+    "ember-native-dom-helpers": "^0.6.2",
     "ember-pouch": "4.3.0",
     "ember-qunit": "^4.1.2",
     "ember-radio-buttons": "^4.0.1",
