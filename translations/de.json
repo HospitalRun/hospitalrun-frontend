@@ -1,0 +1,1620 @@
+{
+  "admin": {
+    "address": {
+      "address1Label": "Adresse 1 Kennzeichen",
+      "address2Label": "Adresse 2 Kennzeichen",
+      "address3Label": "Adresse 3 Kennzeichen",
+      "address4Label": "Adresse 4 Kennzeichen",
+      "addressLabel": "Adresse",
+      "editTitle": "Adressoptionen",
+      "include1Label": "Einbezug 1 Kennzeichen",
+      "include2Label": "Einbezug 2 Kennzeichen",
+      "include3Label": "Einbezug 3 Kennzeichen",
+      "include4Label": "Einbezug 4 Kennzeichen",
+      "messages": {
+        "addressSaved": "Die Adressoptionen wurden gespeichert"
+      },
+      "newTitle": "Adressoptionen",
+      "titles": {
+        "optionsSaved": "Optionen gespeichert"
+      }
+    },
+    "addressOptions": "Adressoptionen",
+    "customForms": {
+      "buttons": {
+        "addField": "Feld hinzufügen",
+        "moveDown": "Nach unten verschieben",
+        "moveUp": "Nach oben verschieben",
+        "newForm": "+ neues Formular",
+        "preview": "Vorschau"
+      },
+      "labels": {
+        "alwaysInclude": "Immer einbeziehen",
+        "checkbox": "Checkbox",
+        "colSpan": "Spaltenanzahl zum Fusionieren",
+        "columns": "Spalten",
+        "customForm": "Benutzerdefiniertes Formular",
+        "dischargeReportFormType": "Entlassungsbericht",
+        "expenseTo": "Spesen an",
+        "formName": "Formularname",
+        "formType": "Formulartyp",
+        "header": "Kopfzeile",
+        "incidentFormType": "Vorfall",
+        "includeOtherOption": "Andere Optionen einbeziehen",
+        "labFormType": "Labor",
+        "label": "Beschriftung",
+        "newForm": "Neues Formular",
+        "opdReportFormType": "Ambulanter Bericht",
+        "operativePlanFormType": "Operativer Plan und Bericht",
+        "otherOptionLabel": "Andere Option Beschriftung",
+        "patientFormType": "Patient",
+        "property": "Eigenschaft",
+        "radio": "Option",
+        "select": "Auswahl",
+        "socialworkFormType": "Sozialarbeit",
+        "text": "Text",
+        "textarea": "Langer Text",
+        "visitFormType": "Visite"
+      },
+      "messages": {
+        "formSaved": "Das {name} Formular wurde gespeichert."
+      },
+      "titles": {
+        "checkboxValues": "Checkboxwerte",
+        "customForms": "Benutzerdefinierte Formulare",
+        "deleteForm": "Benutzerdefiniertes Formular löschen",
+        "dropDownValues": "Auswahlboxwerte",
+        "editCustomForm": "Benutzerdefiniertes Formular bearbeiten",
+        "fields": "Felder",
+        "formSaved": "Formular gespeichert",
+        "headerValues": "Kopfzeilenwerte",
+        "newCustomForm": "Neues benutzerdefiniertes Formular",
+        "radioValues": "Optionsfeldwerte"
+      }
+    },
+    "header": {
+      "editTitle": "Kopfzeilenoptionen",
+      "facilityName": "Name der Einrichtung",
+      "headerLabel": "Kopfzeile",
+      "headerLine1": "Kopfzeile 1",
+      "headerLine2": "Kopfzeile 2",
+      "headerLine3": "Kopfzeile 3",
+      "logoURL": "Logo-URL",
+      "messages": {
+        "headerSaved": "Die Kopfzeilenoptionen wurden gespeichert."
+      },
+      "newTitle": "Kopfzeilenoptionen",
+      "titles": {
+        "optionsSaved": "Optionen gespeichert"
+      }
+    },
+    "loadDb": "Datenbank laden",
+    "loaddb": {
+      "displayAlertMessage": "Bitte wählen Sie eine Datei zum Laden aus.",
+      "displayAlertTitle": "Datei zum Laden auswählen",
+      "editTitle": "Datenbank laden",
+      "errorDisplayAlertMessage": "Die Datenbank konnte nicht importiert werden. Der Fehler war: {error}",
+      "errorDisplayAlertTitle": "Fehler beim Laden",
+      "progressMessage": "Bitte warten Sie, bis die Datenbank geladen ist.",
+      "progressTitle": "Datenbank laden"
+    },
+    "lookup": {
+      "aisleLocationList": "Gänge-Verzeichnis",
+      "alertImportListMessage": "Bitte wählen Sie eine Datei zum Importieren.",
+      "alertImportListSaveMessage": "Die Nachschlageliste wurde importiert.",
+      "alertImportListSaveTitle": "Liste importiert",
+      "alertImportListTitle": "Datei zum Import auswählen",
+      "alertImportListUpdateMessage": "Die Nachschlageliste wurde gespeichert.",
+      "alertImportListUpdateTitle": "Liste gespeichert",
+      "anesthesiaTypes": "Anästhesiearten",
+      "anesthesiologists": "Anästhesiologe",
+      "billingCategories": "Abrechnungskategorien",
+      "clinicList": "Kliniken",
+      "countryList": "Länder",
+      "cptCodeList": "CPT Codes",
+      "diagnosisList": "Diagnosen",
+      "edit": {
+        "template": {
+          "addTitle": "Wert hinzufügen",
+          "editTitle": "Wert bearbeiten",
+          "labelTitle": "Wert",
+          "updateButtonTextAdd": "Hinzufügen",
+          "updateButtonTextUpdate": "Aktualisieren"
+        }
+      },
+      "expenseAccountList": "Spesenkonten",
+      "imagingPricingTypes": "Bildgebungs-Preiskategorien",
+      "incidentDepartments": "Vorfallsabteilungen",
+      "inventoryTypes": "Inventartypen",
+      "labPricingTypes": "Labor-Preiskategorien",
+      "pageTitle": "Nachschlageliste",
+      "patientStatusList": "Patientenstatus",
+      "physicianList": "Ärzte",
+      "procedureList": "Behandlungen",
+      "procedureLocations": "Behandlungsorte",
+      "procedurePricingTypes": "Behandlungs-Preiskategorien",
+      "radiologists": "Radiologen",
+      "titles": {
+        "deleteLookupValue": "Wert löschen"
+      },
+      "unitTypes": "Einheiten",
+      "vendorList": "Anbieter",
+      "visitLocationList": "Einsatzorte",
+      "visitTypes": "Arten der Visite",
+      "wardPricingTypes": "Krankenstations-Preiskategorien",
+      "warehouseList": "Warenhaus"
+    },
+    "lookupLists": "Nachschlagelisten",
+    "roles": {
+      "capability": {
+        "addAllergy": "Allergie hinzufügen",
+        "addAppointment": "Termin hinzufügen",
+        "addBillingDiagnosis": "Abrechnungsdiagnose hinzufügen",
+        "addCharge": "Gebühr hinzufügen",
+        "addDiagnosis": "Diagnose hinzufügen",
+        "addImaging": "Bildgebung hinzufügen",
+        "addIncident": "Vorfall hinzufügen",
+        "addIncidentCategory": "Vorfallkategorie hinzufügen",
+        "addInventoryItem": "Inventargegenstand hinzufügen",
+        "addInventoryPurchase": "Inventarkauf",
+        "addInventoryRequest": "Inventaranfrage",
+        "addInvoice": "Rechnung hinzufügen",
+        "addLab": "Labor hinzufügen",
+        "addMedication": "Medikation hinzufügen",
+        "addNote": "Notiz hinzufügen",
+        "addOperationReport": "Operationsbericht hinzufügen",
+        "addOperativePlan": "Betriebsplan hinzufügen",
+        "addPatient": "Patient hinzufügen",
+        "addPayment": "Bezahlung hinzufügen",
+        "addPhoto": "Foto hinzufügen",
+        "addPricing": "Preisfindung hinzufügen",
+        "addPricingProfile": "Preisprofil hinzufügen",
+        "addProcedure": "Behandlung hinzufügen",
+        "addSocialwork": "Sozialarbeit hinzufügen",
+        "addVisit": "Besuch hinzufügen",
+        "addVitals": "Vitalitäten hinzufügen",
+        "adjustInventoryLocation": "Lagerort anpassen",
+        "admin": "Administration",
+        "admitPatient": "Patient zulassen",
+        "appointments": "Termine",
+        "billing": "Abrechnung",
+        "cashier": "Kassierer",
+        "completeImaging": "Bildgebung abschließen",
+        "completeLab": "Labor abschließen",
+        "defineUserRoles": "Nutzerrollen definieren",
+        "deleteAppointment": "Termin löschen",
+        "deleteDiagnosis": "Diagnose löschen",
+        "deleteImaging": "Bildgebung löschen",
+        "deleteIncident": "Vorfall löschen",
+        "deleteIncidentCategory": "Vorfallkategorie löschen",
+        "deleteInventoryItem": "Inventargegenstand löschen",
+        "deleteInvoice": "Rechnung löschen",
+        "deleteLab": "Labor löschen",
+        "deleteMedication": "Medikation löschen",
+        "deleteNote": "Notiz löschen",
+        "deletePatient": "Patient löschen",
+        "deletePhoto": "Foto löschen",
+        "deletePricing": "Preisfindung löschen",
+        "deletePricingProfile": "Preisprofil löschen",
+        "deleteProcedure": "Behandlung löschen",
+        "deleteSocialwork": "Sozialarbeit löschen",
+        "deleteVisit": "Visite löschen",
+        "deleteVitals": "Vitalwert löschen",
+        "dischargePatient": "Patient entlassen",
+        "editInvoice": "Rechnung bearbeiten",
+        "fulfillInventory": "Bestand füllen",
+        "fulfillMedication": "Medikamente füllen",
+        "generateIncidentReport": "Vorfallbericht erzeugen",
+        "imaging": "Bildgebung",
+        "incident": "Vorfall",
+        "inventory": "Inventar",
+        "invoices": "Rechnungen",
+        "labs": "Labore",
+        "listPaidInvoices": "Bezahlte Rechnungen auflisten",
+        "loadDb": "Datenbank laden",
+        "manageIncidents": "Vorfälle verwalten",
+        "medication": "Medikation",
+        "overrideInvoice": "Rechnung überschreiben",
+        "patientReports": "Patientenbericht",
+        "patients": "Patienten",
+        "pricing": "Preisfindung",
+        "updateConfig": "Konfigurationen updaten",
+        "visits": "Visiten"
+      },
+      "messages": {
+        "roleSaved": "Die {roleName} Rolle wurde gespeichert."
+      },
+      "titles": {
+        "roleSaved": "Rolle gespeichert"
+      }
+    },
+    "textReplacements": {
+      "createNew": "Neues Kürzel erstellen",
+      "existingRepl": "Bestehende Kürzel",
+      "noMatches": "Keine Ersetzungen stimmen mit '{term}' überein",
+      "pageTitle": "Kürzel",
+      "performExpand": "Enter drücken, um #{from} mit '{to}' zu ersetzen",
+      "possibleExpansions": "Mögliche Ersetzungen: {possible}",
+      "replDesc": "Wenn Text eingegeben wird, ermöglichen diese Shortcuts das Ersetzen von kurzen Zeichenketten mit längeren Sätzen.",
+      "replaceWith": "Ersetzen mit",
+      "toReplace": "Zu ersetzender Text"
+    },
+    "userRoles": "Nutzerrollen",
+    "users": "Benutzer",
+    "visitForms": {
+      "labels": {
+        "followup": "Folgebesuch",
+        "form": "Formular",
+        "initial": "Erstbesuch",
+        "visitType": "Visitenarten"
+      },
+      "titles": {
+        "visitForms": "Visitenformulare"
+      }
+    },
+    "workflow": {
+      "admissionDepositLabel": "Einzahlung erforderlich",
+      "clinicPrepaymentLabel": "Vorauszahlung der Klinik erforderlich",
+      "editTitle": "Workflow-Optionen",
+      "followupPrepaymentLabel": "Folgebesuch Vorauszahlung erforderlich",
+      "messages": {
+        "optionsSaved": "Die Workflow-Optionen wurden gespeichert"
+      },
+      "newTitle": "Workflow-Optionen",
+      "outpatientImagingLabel": "Ambulante Bildgebung Vorauszahlung erforderlich",
+      "outpatientLabLabel": "Ambulantes Labor Vorauszahlung erforderlich",
+      "outpatientMedicationLabel": "Ambulate Medikation Vorauszahlung erforderlich",
+      "titles": {
+        "optionsSaved": "Optionen gespeichert"
+      },
+      "workflowLabel": "Workflow"
+    }
+  },
+  "alerts": {
+    "errorExclamation": "Fehler!!!!",
+    "pleaseWait": "Bitte warten",
+    "reportError": "Fehler bei der Berichtsgenerierung",
+    "warningExclamation": "Warnung!!!!"
+  },
+  "allergies": {
+    "buttons": {
+      "addAllergy": "Allergie hinzufügen"
+    },
+    "labels": {
+      "allergyName": "Name",
+      "patientAllergy": "Patientenallergien"
+    },
+    "titles": {
+      "addAllergy": "Allergie hinzufügen",
+      "editAllergy": "Allergie bearbeiten"
+    }
+  },
+  "application": {
+    "messages": {
+      "sessionExpired": "Ihre Session ist abgelaufen. Bitte loggen Sie sich erneut ein."
+    },
+    "titles": {
+      "sessionExpired": "Session abgelaufen"
+    }
+  },
+  "appointments": {
+    "buttons": {
+      "newButton": "+ neuer Termin",
+      "scheduleSurgery": "+ Chirurgie ansetzen"
+    },
+    "calendarTitle": "Terminkalender",
+    "currentScreenTitle": "Terminliste",
+    "editTitle": "Termin bearbeiten",
+    "labels": {
+      "noLocation": "Kein Ort",
+      "selectedStartingDate": "Termine währenddessen oder danach anzeigen"
+    },
+    "messages": {
+      "appointmentSaved": "Der Termin für {patient} wurde gespeichert.",
+      "endTimeLaterThanStart": "Bitte wählen Sie eine Endzeit nach der Startzeit aus."
+    },
+    "missed": "Verpasste Termine",
+    "newTitle": "Neuer Termin",
+    "searchTitle": "Termin suchen",
+    "sectionTitle": "Termine",
+    "thisWeek": "Termine diese Woche",
+    "titles": {
+      "appointmentSaved": "Termin gespeichert",
+      "editSurgicalAppointment": "Chirurgie Termin bearbeiten",
+      "newSurgicalAppointment": "Neuer Chirurgie Termin",
+      "theaterSchedule": "Operationssaal Zeitplan"
+    },
+    "todayTitle": "Heutige Termine"
+  },
+  "billing": {
+    "alerts": {
+      "noInvoiceFound": "Keine Rechnung gefunden",
+      "noPricingItems": "Kein Preisfindungselemente gefunden.",
+      "noPricingProfiles": "Keine Preisprofile gefunden."
+    },
+    "buttons": {
+      "addDeposit": "",
+      "addOverride": "Überschreibung hinzufügen",
+      "createInvoice": "Rechnung erstellen?",
+      "newInvoice": ""
+    },
+    "currentScreenTitle": "",
+    "editInvoice": "",
+    "invoiceTitle": "",
+    "labels": {
+      "actualCharges": "Tatsächliche Gebühren",
+      "discountAmount": "Rabattbetrag",
+      "discountPercentage": "Rabattprozentsatz",
+      "externalInvoiceNumber": "Externe Rechnungsnummer",
+      "hmoCom": "HMO/COM",
+      "insurance": "Staatliche Versicherung",
+      "paymentProfile": "Zahlungsprofil",
+      "paymentsDeposits": "Zahlungen / Einlagen",
+      "pricingPanelOverrides": "Preisprofilüberschreibung",
+      "pricingProfile": "Preisprofil",
+      "setFee": "Festgelegte Gebühren"
+    },
+    "messages": {
+      "flatDiscountMsg": "Für die finanzielle Verantwortung des Patienten gilt ein pauschaler Rabatt von {discountAmount}{currency}",
+      "flatFeeMsg": "Es gibt eine Pauschalgebühr für die finanzielle Verantwortung des Patienten über {setFee}{currency}"
+    },
+    "navigation": {
+      "allInvoices": "",
+      "billed": "",
+      "drafts": "",
+      "paid": ""
+    },
+    "newInvoice": ""
+  },
+  "buttons": {
+    "add": "Hinzufügen",
+    "addItem": "Element hinzufügen",
+    "addLineItem": "Einzelposten hinzufügen",
+    "addValue": "Wert hinzufügen",
+    "addVisit": "Visite hinzufügen",
+    "allRequests": "Alle Anfragen",
+    "barcode": "Barcode",
+    "cancel": "Abbrechen",
+    "clear": "Löschen",
+    "close": "Schließen",
+    "complete": "Abschließen",
+    "delete": "Entfernen",
+    "dispense": "Verteilen",
+    "edit": "Bearbeiten",
+    "filter": "Filtern",
+    "fulfill": "Erfüllen",
+    "import": "Importieren",
+    "loadFile": "Datei laden",
+    "newItem": "+ neues Element",
+    "newNote": "Neue Notiz",
+    "newRequest": "Neue Anfrage",
+    "newRequestPlus": "+ neue Anfrage",
+    "newUser": "Neuer Benutzer",
+    "ok": "Okay",
+    "print": "Drucken",
+    "remove": "Entfernen",
+    "returnButton": "Zurück",
+    "review": "Überprüfen",
+    "search": "Suchen",
+    "showAll": "Alle Anzeigen",
+    "showFewer": "Weniger Anzeigen",
+    "update": "Aktualisieren"
+  },
+  "components": {
+    "chargesByTypeTab": {
+      "charges": "Gebühren"
+    },
+    "customFormManager": {
+      "buttons": {
+        "addForm": "Formular hinzufügen"
+      }
+    },
+    "dateTimePicker": {
+      "amHour": "{hour} AM",
+      "midnight": "Mitternacht",
+      "noon": "Mittag",
+      "pmHour": "{hour} PM"
+    },
+    "imageUpload": {
+      "messages": {
+        "selectValidImageFile": "Bitte wählen Sie eine Bilddatei aus."
+      }
+    },
+    "operativeProcedures": {
+      "buttons": {
+        "addProcedure": "Behandlung hinzufügen"
+      },
+      "labels": {
+        "procedure": "Behandlung"
+      },
+      "titles": {
+        "procedures": "Behandlungen"
+      }
+    },
+    "patientOrders": {
+      "buttons": {
+        "newImaging": "Neue Bildgebung",
+        "newLab": "Neues Labor",
+        "newMedication": "Neue Medikation"
+      },
+      "labels": {
+        "imagingOrderType": "Bildgebung",
+        "labOrderType": "Labor",
+        "medicationOrderType": "Medikation",
+        "orderType": "Auftragsart"
+      }
+    },
+    "priceList": {
+      "charges": "{pricingType} Gebühren"
+    },
+    "quantityCalc": {
+      "result": "Gesamt: {calculated} {targetUnit}"
+    },
+    "quantityConv": {
+      "conversion": "Was enthält 1 {name}?",
+      "unit": "Einheit"
+    },
+    "sortableColumn": {
+      "labels": {
+        "selectAll": "(Alle Auswählen)"
+      }
+    },
+    "takePhoto": {
+      "camera": "Kamera",
+      "how": "Wie wollen Sie ein Foto hinzufügen?",
+      "labels": {
+        "takeAPicture": "Foto machen",
+        "uploadAFile": "Foto hochladen"
+      },
+      "photo": "Foto",
+      "preview": "Vorschau",
+      "takePhoto": "Foto machen",
+      "uploadFile": "Datei hochladen"
+    },
+    "upcomingAppointments": {
+      "labels": {
+        "date": "Datum",
+        "location": "Ort",
+        "type": "Typ",
+        "with": "Mit"
+      },
+      "titles": {
+        "upcomingAppointments": "Kommende Termine"
+      }
+    }
+  },
+  "customForms": {
+    "buttons": {
+      "addForm": "Formular hinzufügen"
+    },
+    "labels": {
+      "formToAdd": "Formular zum Hinzufügen"
+    },
+    "titles": {
+      "addCustomForm": "Benutzerdefiniertes Formular hinzufügen"
+    }
+  },
+  "dashboard": {
+    "needs_user_setup": "Wir empfehlen Ihnen einen Nutzeraccount einzurichten.",
+    "standalone_welcome": "<h4>Vielen Dank, dass Sie HospitalRun heruntergeladen haben</h4><p>HospitalRun läuft im Standalone Modus. Dieser Modus erlaubt es Ihnen mehrere Nutzer auf einer einzelnen Desktop/Laptop Instanz von HospitalRun anzulegen. Dies ist ideal, um:</p><ul><li>HospitalRun zu evaluieren</li><li>die Platform in einer Klinik oder Einrichtung zu nutzen, in der eine einzelne Instanz ausreichend ist.</li></ul><p>Sollten Sie überlegen HospitalRun auf einem Server einzurichten, wir <a href=\"https://github.com/HospitalRun/hospitalrun-frontend/issues/1048\" target=\"_blank\">arbeiten an Features</a>, die Ihnen den Umstieg ermöglichen.</p>",
+    "title": "Willkommen bei HospitalRun!"
+  },
+  "dates": {
+    "long": "{years} Jahr {months} Monate {days} Tage",
+    "longOmitDays": "{years} Jahr {months} Monate",
+    "longOmitDaysPlural": "{years} Jahre {months} Monate",
+    "longOmitDaysYears": "{months} Monate",
+    "longOmitYears": "{months} Monate {days} Tage",
+    "longPlural": "{years} Jahre {months} Monate {days} Tage",
+    "short": "{years}a {months}m {days}d",
+    "shortOmitYears": "{months}m {days}d"
+  },
+  "diagnosis": {
+    "labels": {
+      "activeDiagnosis": "Aktive Diagnose",
+      "date": "Datum",
+      "diagnosis": "Diagnose",
+      "secondaryDiagnosis": "Sekundär Diagnose"
+    },
+    "titles": {
+      "addDiagnosis": "Diagnose hinzufügen",
+      "editDiagnosis": "Diagnose bearbeiten"
+    }
+  },
+  "errors": {
+    "accepted": "muss akzeptiert werden",
+    "blank": "darf nicht leer sein",
+    "confirmation": "stimmt nicht mit {attribute} überein",
+    "empty": "darf nicht leer sein",
+    "equalTo": "muss gleich {count} sein",
+    "even": "muss gerade sein",
+    "exclusion": "ist reserviert",
+    "greaterThan": "muss größer als {count} sein",
+    "greaterThanOrEqualTo": "muss größer oder gleich {count} sein",
+    "inclusion": "ist nicht in der Liste enthalten",
+    "invalid": "ist ungültig",
+    "invalidNumber": "keine gültige Nummer",
+    "lessThan": "muss weniger als {count} sein",
+    "lessThanOrEqualTo": "muss weniger oder gleich {count} sein",
+    "notANumber": "ist keine Nummer",
+    "notAnInteger": "muss eine Zahl sein",
+    "odd": "muss ungerade sein",
+    "otherThan": "muss anders als {count} sein",
+    "present": "muss leer sein",
+    "result": "Bitte geben Sie ein Ergebnis ein",
+    "tooLong": "ist zu lang (Maximum ist {count} Zeichen)",
+    "tooShort": "ist zu kurz (Minimum ist {count} Zeichen)",
+    "wrongLength": "hat eine falsche Länge (Länge muss {count} Zeichen sein)"
+  },
+  "headings": {
+    "chargedItems": "Berechnete Elemente"
+  },
+  "imaging": {
+    "alerts": {
+      "completedMessage": "Die Anfrage zur Bildgebung wurde abgeschlossen.",
+      "completedTitle": "Bildgebungs-Anfrage gestellt",
+      "savedMessage": "Die Anfrage zur Bildgebung wurde gespeichert.",
+      "savedTitle": "Bildgebungs-Anfrage gespeichert"
+    },
+    "buttons": {
+      "newButton": "+ Neue Bildgebung"
+    },
+    "labels": {
+      "addNewVisit": "--Neue Visite hinzufügen--",
+      "completedBy": "",
+      "radiologist": "Radiologe",
+      "requestedNotes": "",
+      "resultNotes": ""
+    },
+    "messages": {
+      "noCompleted": "Keine erledigten Einträge gefunden."
+    },
+    "pageTitle": "Anfrage zur Bildgebung",
+    "sectionTitle": "Bildgebung",
+    "titles": {
+      "completedImaging": "Erledigte Bildgebung",
+      "editTitle": "Bildgebungs-Anfrage bearbeiten",
+      "newTitle": "Neue Bildgebungs-Anfrage"
+    }
+  },
+  "incident": {
+    "buttons": {
+      "add": "Hinzufügen",
+      "addForm": "+ Formular hinzufügen",
+      "addItem": "Element hinzufügen",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "download": "Herunterladen",
+      "edit": "Bearbeiten",
+      "export": "Exportieren",
+      "generateRep": "Bericht erzeugen",
+      "newAttachment": "+ neuer Anhang",
+      "newCategory": "+ neue Kategorie",
+      "newIncident": "+ neuer Vorfall",
+      "newNote": "+ neue Notiz"
+    },
+    "labels": {
+      "actions": "Aktionen",
+      "addedBy": "Hinzugefügt von",
+      "category": "Kategorie",
+      "categoryItem": "Kategorie",
+      "date": "Datum",
+      "dateRecorded": "Aufzeichnungsdatum",
+      "department": "Abteilung",
+      "description": "Beschreibung",
+      "endDate": "Endzeit",
+      "givenBy": "Gegeben durch",
+      "howToAddAttachment": "Wie wollen Sie ein Anhang hinzufügen?",
+      "incidentDate": "Datum des Vorfalls",
+      "incidentId": "Vorfalls-ID",
+      "item": "Element",
+      "lastUpdated": "Zuletzt aktualisiert",
+      "note": "Notiz",
+      "patientId": "Patienten-ID",
+      "patientImpacted": "Patient betroffen",
+      "reportType": "Berichtsart",
+      "reportedBy": "Berichtet von",
+      "reportedDate": "Gemeldetes Datum",
+      "reportedTo": "Vorfall gemeldet an (vollständiger Name)",
+      "sentinelEvent": "Sentinel-Ereignis",
+      "startDate": "Startdatum",
+      "status": "Status",
+      "statusActive": "Aktiv",
+      "statusClosed": "Geschlossen",
+      "statusFollowup": "Folgebesuch",
+      "statusReported": "Gemeldet",
+      "title": "Titel",
+      "total": "Gesamt",
+      "updatedBy": "Geändert durch"
+    },
+    "messages": {
+      "attachmentFileRequired": "Bitte laden Sie eine Datei hoch oder nehmen Sie ein Foto auf bevor Sie den Anhang speichern.",
+      "createNew": "Neuen Vorfall anlegen?",
+      "createNewIncidentCategory": "Neue Vorfallkategorie anlegen?",
+      "fillIn": "Füllen Sie die obigen Optionen aus, um das Ergebnis zu berechnen.",
+      "incidentCategorySaved": "Die Kategorie {name} wurde gespeichert.",
+      "noClosedIncidents": "Keine geschlossenen Vorfälle gefunden.",
+      "noIncidentCategoriesFound": "Keine Vorfallkategorien gefunden.",
+      "noIncidents": "Keine Vorfälle gefunden.",
+      "saved": "Der Vorfallsbericht wurde gespeichert.",
+      "selectExistingPatient": "Bitte wählen Sie einen existierenden Patienten aus oder lassen Sie das Feld leer."
+    },
+    "titles": {
+      "addAttachment": "Anhang hinzufügen",
+      "addCategoryItem": "Kategorie hinzufügen",
+      "addNote": "Notiz hinzufügen",
+      "attachments": "Anhänge",
+      "closed": "Geschlossene Vorfälle",
+      "current": "Aktuell",
+      "deleteAttachment": "Anhang löschen",
+      "deleteIncident": "Vorfall löschen",
+      "deleteIncidentCategory": "Vorfallkategorie löschen",
+      "deleteItem": "Eintrag löschen",
+      "deleteNote": "Notiz löschen",
+      "editAttachment": "Anhang bearbeiten",
+      "editIncident": "Vorfall bearbeiten",
+      "editIncidentCategory": "Vorfallkategorie bearbeiten",
+      "editNote": "Notiz bearbeiten",
+      "general": "Allgemeine Informationen",
+      "history": "Verlauf",
+      "incidentCategories": "Vorfallkategorien",
+      "incidentCategoryItem": "Vorfallkategorie",
+      "incidentCategoryName": "Vorfallkategoriename",
+      "incidentCategorySaved": "Vorfallkategorie gespeichert",
+      "incidentSaved": "Vorfall gespeichert",
+      "incidents": "Vorfälle",
+      "incidentsByCategory": "Vorfälle nach Kategorie",
+      "incidentsByDepartment": "Vorfälle nach Abteilung",
+      "newIncident": "Neuer Vorfall",
+      "newIncidentCategory": "Neue Vorfallskategorie",
+      "notes": "Notizen",
+      "reports": "Bericht"
+    }
+  },
+  "inventory": {
+    "edit": {
+      "cost": "Kosten pro Einheit:",
+      "delivered": "Geliefert An:",
+      "location": "Ort angepasst:",
+      "prescription": "Rezept für:",
+      "pulled": "Gezogen aus:",
+      "quantity": "Menge bei Fertigstellung:",
+      "reason": "Grund:",
+      "returned": "Rückgabe durch Patient:",
+      "transferredFrom": "Übertragen von:",
+      "transferredTo": "Übertragen nach:"
+    },
+    "labels": {
+      "action": "Aktion",
+      "add": "Hinzufügen",
+      "addAdjustmentType": "Hinzufügen",
+      "adjust": "Anpassen",
+      "adjustmentDate": "Anpassungsdatum",
+      "adjustmentFor": "Anpassung für",
+      "adjustmentType": "Anpassungsart",
+      "aisle": "Gang",
+      "aisleLocation": "Gang Ort",
+      "allInventory": "Gesamtes Inventar",
+      "allItems": "Gesamte Artikel",
+      "availableQuantity": "{quantity} verfügbar",
+      "billTo": "Rechnung an",
+      "consumePurchases": "Verbrauchseinkauf",
+      "consumptionRate": "Verbrauchsrate",
+      "cost": "Kosten",
+      "costPerUnit": "Kosten pro Einheit",
+      "crossReference": "Querverweis",
+      "currentQuantity": "Aktuelle Menge",
+      "dateCompleted": "Fertigstellungsdatum",
+      "dateEffective": "Gültigkeitsdatum",
+      "dateEnd": "Enddatum",
+      "dateReceived": "Empfangsdatum",
+      "dateStart": "Startdatum",
+      "dateTransferred": "Übertragungsdatum",
+      "daysLeft": "Verbleibende Tage",
+      "deleteItem": "Gelöschte Elemente",
+      "deliveryAisle": "Lieferungsgang",
+      "deliveryLocation": "Lieferort",
+      "details": "Details",
+      "distributionUnit": "Verteiler",
+      "editItem": "Element bearbeiten",
+      "expense": "Spesen an",
+      "expirationDate": "Verfallsdatum",
+      "fulfillRequest": "Anfragen",
+      "fulfillRequestNow": "Jetzt Anfragen",
+      "gift": "Art des Geschenks",
+      "giftInKindNo": "N",
+      "giftInKindYes": "J",
+      "giftUsage": "Geschenk in Verwendung",
+      "inventoryConsumed": "Inventar verbraucht",
+      "inventoryItem": "Inventarelement",
+      "inventoryObsolence": "Inventarveralterung",
+      "invoiceItems": "Rechnungsposten",
+      "invoiceLineItem": "Einzelpostenrechnung",
+      "invoiceNumber": "Rechnungsnummer",
+      "item": "Element",
+      "itemNumber": "Elementnummer",
+      "items": "Elemente",
+      "location": "Ort",
+      "locations": "Orte",
+      "markAsConsumed": "Als verbraucht kennzeichnen",
+      "name": "Name",
+      "newItem": "Neues Element",
+      "originalQuantity": "Originalmenge",
+      "print": "Drucken",
+      "printBarcode": "Barcode drucken",
+      "printer": "Drucker",
+      "pullFrom": "Gezogen von",
+      "purchaseCost": "Kaufkosten",
+      "purchaseInfo": "Informationen zum Kauf",
+      "purchases": "Käufe",
+      "quantity": "Anzahl ({unit})",
+      "quantityAvailable": "Verfügbare Menge",
+      "quantityOnHand": "Vorliegende Menge",
+      "quantityRequested": "Angeforderte Menge",
+      "rank": "Rang",
+      "reason": "Grund",
+      "remove": "Entfernen",
+      "removeAdjustmentType": "Entfernen",
+      "reorderPoint": "Meldebestand",
+      "requestedItems": "Angeforderte Artikel",
+      "returnAdjustmentType": "Rückgabe",
+      "returnToVendorAdjustmentType": "Rückgabe an den Verkäufer",
+      "salePricePerUnit": "Verkauf Preis pro Einheit",
+      "save": "Speichern",
+      "serialNumber": "Ordnungs-/Chargennummer",
+      "total": "Gesamt",
+      "totalCost": "Gesamtkosten",
+      "totalReceived": "Insgesamt erhalten: {total}",
+      "transaction": "Transaktion",
+      "transactions": "Transaktionen",
+      "transfer": "Übertragung",
+      "transferFrom": "Übertragen von",
+      "transferTo": "An Übertragungsort",
+      "transferToAisle": "Übertragen an Gang Ort",
+      "unit": "Einheit",
+      "unitCost": "Kosten pro Einheit",
+      "vendor": "Lieferant",
+      "vendorItemNumber": "Lieferantennummer",
+      "writeOffAdjustmentType": "Abschreiben",
+      "xref": "XRef"
+    },
+    "messages": {
+      "adjust": "Bitte passen Sie die Mengen an den entsprechenden Standorten an, um den Unterschied von {difference} zu berücksichtigen.",
+      "createRequest": "Neue Anfrage erstellen?",
+      "itemNotFound": "Der Inventargegenstand <strong>{item}</strong> konnte nicht gefunden werden.<br>Falls Sie einen neuen Inventargegenstand anlegen wollen, füllen Sie die nachfolgenden Informationen aus.<br> Andernfalls drücken Sie den Abbrechen-Button.",
+      "loading": "Lade Transaktionen...",
+      "noItems": "Keine Elemente gefunden.",
+      "noRequests": "Keine Anfragen gefunden.",
+      "purchaseSaved": "Die Inventurkäufe wurden erfolgreich gespeichert.",
+      "quantity": "Die Gesamtanzahl <strong>({quantity})</strong> stimmt nicht mit der Gesamtanzahl der Standorte <strong>({locationQuantity})</strong> überein.",
+      "removeItem": "Sind Sie sicher, dass Sie diesen Artikel von der Rechnung löschen wollen?",
+      "removeItemRequest": "Sind Sie sicher, dass Sie diesen Artikel von der Anfrage löschen wollen?",
+      "requestFulfilled": "Die Inventaranforderung wurde erfüllt.",
+      "requestUpdated": "Die Inventaranforderung wurde aktualisiert.",
+      "warning": "Bitte füllen Sie alle Pflichtfelder (markiert mit einem *) aus und beheben Sie die Fehler vor dem Hinzufügen."
+    },
+    "reports": {
+      "adjustment": "Detaillierte Anpassung",
+      "daysSupply": "Tage, die der Vorrat im Lager verbleibt",
+      "expenseDetail": "Detaillierte Spesen",
+      "expenseSum": "Zusammenfassung Spesen",
+      "expiration": "Haltbarkeitsdatum",
+      "export": "Bericht exportieren",
+      "fields": "Einzubeziehende Felder",
+      "finance": "Finanzübersicht",
+      "generate": "Bericht erzeugen",
+      "invLocation": "Inventar nach Standort",
+      "invValuation": "Inventur",
+      "purchaseDetail": "Kaufdetails",
+      "purchaseSum": "Kaufzusammenfassung",
+      "reportType": "Berichtsart",
+      "rows": {
+        "adjustments": "Anpassungen",
+        "adjustmentsTotal": "Gesamtanpassungen",
+        "balanceBegin": "Anfangsbestand",
+        "balanceEnd": "Endbestand",
+        "category": "Kategorie",
+        "consumed": "Verbrauch",
+        "consumedGik": "GiK-Verbrauch",
+        "consumedGikTotal": "Gesamtverbrauch GiK",
+        "consumedPuchases": "Anschaffungen Verbrauch",
+        "consumedPurchasesTotal": "Gesamtverbrauch Anschaffungen",
+        "consumedTotal": "Gesamtverbrauch",
+        "errInFinSum": "Fehler in _generateFinancialSummaryReport: ",
+        "errInFindPur": "Fehler in _findInventoryItemsByPurchase: ",
+        "errInFindReq": "Fehler in _findInventoryItemsByRequest: ",
+        "expensesFor": "Spese für: ",
+        "noAccount": "(Kein Account)",
+        "subtotal": "Zwischensumme: ",
+        "subtotalFor": "Zwischensumme für {category} - {account}: ",
+        "total": "Summe:",
+        "totalFor": "Summe für {var}: ",
+        "totalPurchases": "Gesamteinkauf",
+        "transfer1": "{quantity} von {location}",
+        "trasnfer2": "Von: {source} Nach: {target}"
+      },
+      "stockTransferDetail": "Detaillierte Umlagerung",
+      "stockTransferSum": "Zusammenfassung Umlagerung",
+      "stockUsageDetail": "Detaillierte Bestandsverwendung",
+      "stockUsageSum": "Zusammenfassung Bestandsverwendung",
+      "titleDateRange": "{name} Bericht {startDate} - {endDate}",
+      "titleSingleDate": "{name} Bericht {date}"
+    },
+    "titles": {
+      "addPurchase": "Kauf hinzufügen",
+      "addRequest": "Anfrage hinzufügen",
+      "adjustment": "Anpassung",
+      "editPurchase": "Kauf bearbeiten",
+      "editRequest": "Anfrage bearbeiten",
+      "inventoryItem": "Neuer Inventargegenstand",
+      "inventoryReport": "Inventarbericht",
+      "purchaseSaved": "Inventurkäufe gespeichert",
+      "quickAddTitle": "Neuer Inventargegenstand",
+      "removeItem": "Gegenstand löschen",
+      "requestFulfilled": "Anfrage erfüllt",
+      "requestUpdated": "Anfrage akualisiert",
+      "transfer": "Gegenstand übertragen",
+      "warning": "Warnung!!!!!"
+    }
+  },
+  "labels": {
+    "action": "Aktion",
+    "actions": "Aktionen",
+    "addNewOutpatientVisit": "--Neuen ambulanten Besuch hinzufügen--",
+    "address": "Adresse",
+    "age": "Alter",
+    "allDay": "Ganzer Tag",
+    "allItems": "Alle Elemente",
+    "amount": "Anzahl",
+    "anesthesia": "Anästhesie",
+    "assisting": "Unterstützung",
+    "balanceDue": "Saldo fällig",
+    "billDate": "Rechnungsdatum",
+    "billTo": "Rechnungsanschrift",
+    "category": "Kategorie",
+    "completed": "Erledigt",
+    "country": "Land",
+    "cptcode": "CPT Code",
+    "creditTo": "Gutschrift an",
+    "currencySymbol": "€",
+    "date": "Datum",
+    "dateCompleted": "Abschlussdatum",
+    "dateOfBirth": "Geburtsdatum",
+    "dateOfBirthShort": "Geb.",
+    "datePaid": "Zahlungsdatum",
+    "dateRequested": "Anfragedatum",
+    "delete": "Entfernen",
+    "deleteRequest": "Löschanfrage",
+    "deleteUser": "Benutzer löschen",
+    "department": "Abteilung",
+    "description": "Beschreibung",
+    "discount": "Rabatt",
+    "displayName": "Angezeigter Name",
+    "docRead": "Dokument gelesen",
+    "docWritten": "Dokument geschrieben",
+    "edit": "Bearbeiten",
+    "editUser": "Benutzer bearbeiten",
+    "email": "E-Mail",
+    "endDate": "Enddatum",
+    "endTime": "Endzeit",
+    "excess": "Übertrag",
+    "expenseTo": "Spesen an",
+    "fileLoadSuccessful": "Datei erfolgreich geladen",
+    "fileName": "Dateiname",
+    "fileToLoad": "Datei laden",
+    "from": "Von",
+    "fulfill": "Ausführen",
+    "fulfillRequest": "Anfragen",
+    "fulfillRequestNow": "Jetzt Anfragen",
+    "fulfilled": "Erfüllt",
+    "grandTotal": "Gesamtsumme",
+    "id": "ID",
+    "imageOrders": "Bildaufträge",
+    "imagingType": "Bildgebungsart",
+    "importFile": "Datei importieren",
+    "invoiceId": "Rechnungs-ID",
+    "labOrders": "Laboraufträge",
+    "lineItems": "Einzelposten",
+    "loading": "Lade",
+    "location": "Ort",
+    "lookupType": "Nachschlagebereich",
+    "medication": "Medikation",
+    "name": "Name",
+    "newItem": "+ neues Element",
+    "newUser": "Neuer Benutzer",
+    "note": "Notiz",
+    "notes": "Notizen",
+    "number": "Nummer",
+    "on": "an",
+    "password": "Passwort",
+    "patient": "Patient",
+    "payments": "Zahlungen",
+    "physician": "Arzt",
+    "prescriber": "Verschreiber",
+    "prescription": "Rezept",
+    "prescriptionDate": "Verschreibungsdatum",
+    "price": "Preis",
+    "print": "Druck",
+    "procedures": "Behandlungen",
+    "provider": "Anbieter",
+    "pullFrom": "Gezogen von",
+    "quantity": "Anzahl",
+    "remarks": "Bemerkungen",
+    "requestedBy": "Angefragt von",
+    "requestedOn": "Angefragt am",
+    "requests": "Anfragen",
+    "result": "Ergebnis",
+    "results": "Ergebnisse",
+    "role": "Rolle",
+    "search": "Suche",
+    "sex": "Geschlecht",
+    "startDate": "Startdatum",
+    "startTime": "Startzeit",
+    "status": "Status",
+    "takenBy": "Genommen von",
+    "to": "An",
+    "total": "Gesamt",
+    "type": "Typ",
+    "userCanAddNewValue": "Benutzer kann neue Werte hinzufügen",
+    "username": "Nuzername",
+    "value": "Wert",
+    "view": "Ansicht",
+    "visit": "Visite",
+    "with": "Mit"
+  },
+  "labs": {
+    "alerts": {
+      "requestCompletedMessage": "Der Laborbericht ist fertig.",
+      "requestCompletedTitle": "Laborbericht fertig",
+      "requestSavedMessage": "Der Laborbericht wurde gespeichert.",
+      "requestSavedTitle": "Laborbericht gespeichert"
+    },
+    "buttons": {
+      "newButton": "+ neues Labor"
+    },
+    "completedTitle": "Abgeschlossene Labore",
+    "deleteTitle": "Anfrage löschen",
+    "editTitle": "Laboranfrage bearbeiten",
+    "labels": {
+      "addNewVisit": "--Neue Visite hinzufügen--",
+      "labType": "Labortyp"
+    },
+    "messages": {
+      "createNewRecord": "Neuen Datensatz erstellen?",
+      "noCompleted": "Keine abgeschlossenen Einträge gefunden.",
+      "noItemsFound": "Keine Labore gefunden."
+    },
+    "newTitle": "Neuer Laborbericht",
+    "requestsTitle": "Laborbericht",
+    "sectionTitle": "Labore"
+  },
+  "languageName": "Deutsch",
+  "loading": {
+    "messages": {
+      "0": "Die höchste Schmetterlingsfluggeschwindigkeit beträgt 12 Meilen pro Stunde. Einige Motten können 25 Meilen pro Stunde fliegen!",
+      "1": "Eulen sind die einzigen Vögel, die die Farbe blau sehen können.",
+      "2": "Katzen haben über 100 Vokalklänge; Hunde haben nur 10.",
+      "3": "Menschen verwenden insgesamt 72 verschiedene Muskeln beim Sprechen.",
+      "4": "Über 1.000 verschiedene Sprachen werden auf dem afrikanischen Kontinent gesprochen.",
+      "5": "Ein Erythrophob ist jemand, der leicht errötet.",
+      "6": "Die häufigste Phobie der Welt ist Odynophobie, die die Angst vor Schmerzen ist.",
+      "7": "Ihr Körper verwendet 300 Muskeln, um sich zu balancieren, wenn Sie still stehen.",
+      "8": "Bestimmte Frösche können festgefroren werden, dann aufgetaut werden und weiter leben.",
+      "9": "Unsere Augen sind von Geburt an immer gleich groß, aber unsere Nase und Ohren hören nie auf zu wachsen.",
+      "10": "Ihre Zunge ist der einzige Muskel in Ihrem Körper, der nur an einem Ende befestigt ist.",
+      "11": "Kamele haben drei Augenlider, um sich vor wehendem Sand zu schützen."
+    },
+    "progressBar": {
+      "progress": "{progressBarValue}% vollständig"
+    }
+  },
+  "login": {
+    "labels": {
+      "password": "Passwort",
+      "signIn": "Anmelden",
+      "username": "Benutzername"
+    },
+    "messages": {
+      "error": "Benutzername oder Passwort falsch.",
+      "offlineError": "Einloggen ist offline nicht möglich. Bitte stellen Sie eine Netzwerkverbindung her und versuchen Sie es erneut.",
+      "signIn": "Bitte anmelden"
+    }
+  },
+  "medication": {
+    "alerts": {
+      "fulfilledTitle": "Medikamentenanforderung erfüllt",
+      "returnedMessage": "Das Medikament wurde als zurückgegeben gekennzeichnet.",
+      "returnedTitle": "Medikament zurückgegeben",
+      "savedMessage": "Der Medikationsdatensatz wurde gespeichert.",
+      "savedTitle": "Medikationsdatensatz gespeichert"
+    },
+    "buttons": {
+      "dispenseMedication": "Medikamente abgeben",
+      "newButton": "+ neue Anfrage",
+      "returnMedication": "Medikament zurückgeben"
+    },
+    "labels": {
+      "adjustmentDate": "Anpassungstag",
+      "creditToAccount": "Guthabenkonto",
+      "quantityDispensed": "Ausgabemenge",
+      "quantityDistributed": "Verteilungsmente",
+      "quantityRequested": "Anfragemenge",
+      "quantityToReturn": "Rückgabemenge",
+      "refills": "Nachfüllungen",
+      "returnAisle": "Rückgabelänge",
+      "returnLocation": "Rückgabeort",
+      "returnReason": "Rückgabegrund"
+    },
+    "messages": {
+      "createNew": "Neue Medikamentenanforderung stellen?"
+    },
+    "pageTitle": "Medikamentenanforderungen",
+    "returnMedication": "Rückgabe von Medikamenten",
+    "sectionTitle": "Medikamente",
+    "titles": {
+      "completedMedication": "Abgeschlossene Medikamente",
+      "editMedicationRequest": "Medikamentenanforderung bearbeiten",
+      "newMedicationRequest": "Neue Medikamentenanforderung"
+    }
+  },
+  "messages": {
+    "createNewRecord": "Neuen Eintrag erstellen?",
+    "createNewUser": "Neuen Benutzer hinzufügen?",
+    "delete": "Sind Sie sicher, dass Sie {name} löschen möchten?",
+    "delete_plural": "Sind Sie sicher, dass Sie {name} löschen möchten?",
+    "delete_singular": "Sind Sie sicher, dass Sie {name} löschen möchten?",
+    "forAuthorizedPersons": "Dieser Bericht ist nur für autorisierte Personen.",
+    "newPatientHasToBeCreated": "Ein neuer Patient muss erstellt werden... Bitte warten..",
+    "noHistoryAvailable": "Kein Verlauf verfügbar.",
+    "noItemsFound": "Keine Einträge gefunden.",
+    "noNotesAvailable": "Für diesen Besuch sind keine zusätzlichen klinischen Notizen verfügbar.",
+    "noUsersFound": "Keine Benutzer gefunden.",
+    "onBehalfOf": "im Auftrag von",
+    "reportError": "Beim Erzeugen des angeforderten Berichts ist ein Fehler aufgetreten. Bitte lassen Sie Ihren Systemadministrator wissen, dass ein Fehler aufgetreten ist.",
+    "requiredFieldsCorrectErrors": "Bitte füllen Sie alle Pflichtfelder (markiert mit einem *) aus und beheben Sie die Fehler vor dem Hinzufügen.",
+    "saveActionException": "Ein Fehler ist während des Speicherns aufgetreten: {message}",
+    "sorry": "Entschuldigung, etwas ist schiefgegangen...",
+    "userHasBeenSaved": "Der Benutzer wurde gespeichert.",
+    "userSaved": "Benutzer gespeichert"
+  },
+  "models": {
+    "appointment": {
+      "labels": {
+        "allDay": "Ganztägig",
+        "appointmentDate": "Tag",
+        "appointmentType": "Typ",
+        "endDate": "Enddatum",
+        "location": "Ort",
+        "notes": "Notizen",
+        "patient": "Patient",
+        "provider": "Mit",
+        "startDate": "Startdatum",
+        "status": "Status",
+        "type": "Typ"
+      },
+      "names": {
+        "plural": "Termine",
+        "singular": "Termin"
+      }
+    },
+    "attachment": {
+      "names": {
+        "plural": "Anhänge",
+        "singular": "Anhang"
+      }
+    },
+    "form": {
+      "names": {
+        "plural": "Formulare",
+        "singular": "Formular"
+      }
+    },
+    "imaging": {
+      "names": "Bildgebung",
+      "request": {
+        "plural": "Bildgebungs-Aufträge",
+        "singular": "Bildgebungs-Auftrag"
+      }
+    },
+    "incident": {
+      "names": {
+        "plural": "Vorfälle",
+        "singular": "Vorfall"
+      }
+    },
+    "item": {
+      "names": {
+        "plural": "Elemente",
+        "singular": "Element"
+      }
+    },
+    "lab": {
+      "names": {
+        "plural": "Labore",
+        "singular": "Labor"
+      },
+      "request": {
+        "plural": "Laboranfragen",
+        "singular": "Laboranfrage"
+      }
+    },
+    "medication": {
+      "names": {
+        "plural": "Medikamente",
+        "singular": "Medikament"
+      },
+      "request": {
+        "plural": "Medikationsanfragen",
+        "singular": "Medikationsanfrage"
+      }
+    },
+    "note": {
+      "names": {
+        "plural": "Notizen",
+        "singular": "Notiz"
+      }
+    },
+    "patient": {
+      "labels": {
+        "name": "Name"
+      },
+      "names": {
+        "singular": "Patient"
+      }
+    },
+    "procedure": {
+      "names": {
+        "plural": "Behandlungen",
+        "singular": "Behandlung"
+      }
+    },
+    "user": {
+      "names": {
+        "plural": "Nutzer",
+        "singular": "Nutzer"
+      }
+    },
+    "visit": {
+      "names": {
+        "plural": "Visiten",
+        "singular": "Visite"
+      }
+    },
+    "vital": {
+      "names": {
+        "plural": "Vitalwerte",
+        "singular": "Vitalwert"
+      }
+    }
+  },
+  "navigation": {
+    "about": "Über HospitalRun",
+    "actions": {
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "selectLanguage": "Sprache auswählen"
+    },
+    "administration": "Administration",
+    "billing": "Abrechnung",
+    "imaging": "Bildgebung",
+    "incident": "Vorfall",
+    "inventory": "Inventar",
+    "labs": "Labore",
+    "medication": "Medikation",
+    "messages": {
+      "logoutFailed": "Sie konnten nicht ausgeloggt werden. Ausloggen ist offline nicht möglich."
+    },
+    "patients": "Patienten",
+    "scheduling": "Planung",
+    "subnav": {
+      "actions": "Aktionen",
+      "addAppointment": "Termin eintragen",
+      "addressFields": "Adressfelder",
+      "admittedPatients": "Zugelassene Patienten",
+      "appointmentSearch": "Terminsuche",
+      "appointmentsCalendar": "Terminkalender",
+      "appointmentsThisWeek": "Termine diese Woche",
+      "cashier": "Kassierer",
+      "completed": "Erledigt",
+      "currentIncidents": "Aktuelle Vorfälle",
+      "customForms": "Benutzerdefinierte Formulare",
+      "dispense": "Verabreichen",
+      "history": "Historie",
+      "incidentCategories": "Vorfallkategorien",
+      "inventoryReceived": "Eingeganges Inventar",
+      "inventoryReceivedPlus": "+ Eingeganges Inventar",
+      "invoices": "Rechnungen",
+      "items": "Einheiten",
+      "loadDB": "Datenbank laden",
+      "lookupLists": "Nachschlagelisten",
+      "newIncident": "Neuer Vorfall",
+      "newInvoice": "Neue Rechnung",
+      "newPatient": "Neuer Patient",
+      "newRequest": "Neue Anfrage",
+      "newUser": "Neuer Benutzer",
+      "outpatient": "Ambulant",
+      "patientListing": "Patientenliste",
+      "priceProfiles": "Preisprofile",
+      "prices": "Kosten",
+      "printHeader": "Kopfzeile drucken",
+      "reports": "Berichte",
+      "requests": "Anfragen",
+      "returnMedication": "Medikamente zurückgeben",
+      "scheduleSurgery": "Zeitplan Chirurgie",
+      "textReplacements": "Kürtel",
+      "theaterSchedule": "Operationssaal Zeitplan",
+      "today'sAppointments": "Heutige Termine",
+      "userRoles": "Nutzerrollen",
+      "users": "Benutzer",
+      "workflow": "Workflow"
+    },
+    "titles": {
+      "logoutFailed": "Ausloggen gescheitert"
+    }
+  },
+  "operationReport": {
+    "labels": {
+      "additionalNotes": "Zusätzliche Notiz",
+      "assistant": "Assistent",
+      "caseComplexity": "Komplexität des Falls",
+      "operationDescription": "Operationsbeschreibung",
+      "preOpPrimaryDiagnosis": "Pre-OP Primärdiagnose",
+      "preOpSecondaryDiagnosis": "Pre-OP Sekundärdiagnose",
+      "surgeon": "Chirurg",
+      "surgeryDate": "Chirurgie Datum"
+    },
+    "messages": {
+      "reportSaved": "Der Operationsbericht wurde gespeichert."
+    },
+    "titles": {
+      "editTitle": "Operationsbericht bearbeiten",
+      "newTitle": "Neuer Operationsbericht",
+      "reportSaved": "Bericht gespeichert"
+    }
+  },
+  "operativePlan": {
+    "buttons": {
+      "completePlan": "Gesamtplan"
+    },
+    "labels": {
+      "additionalNotes": "Zusätzliche Notizen",
+      "admissionInstructions": "Anweisungen bei der Zulassung",
+      "caseComplexity": "Komplexität des Falls",
+      "completedStatus": "Vollständig",
+      "droppedStatus": "Verworfen",
+      "operationDescription": "Operationsbeschreibung",
+      "plannedStatus": "Geplant",
+      "status": "Status",
+      "surgeon": "Chirurg"
+    },
+    "messages": {
+      "planCompleted": "Der operative Plan ist abgeschlossen. Sie werden nun zum Operationsbericht weitergeleitet.",
+      "planSaved": "Der operative Plan wurde gespeichert."
+    },
+    "titles": {
+      "editTitle": "Operativen Plan bearbeiten",
+      "newTitle": "Neuer operativer Plan",
+      "planCompleted": "Plan abgeschlossen",
+      "planSaved": "Plan gespeichert"
+    }
+  },
+  "patients": {
+    "buttons": {
+      "addContact": "Kontakt hinzufügen",
+      "addExpense": "Spesen hinzufügen",
+      "addFamilyMember": "Familienmitglied hinzufügen",
+      "addOperativePlan": "Operativen Plan hinzufügen",
+      "backToPatients": "Zurück zur Patientenliste",
+      "download": "Herunterladen",
+      "editOperativePlan": "Derzeitiger operativer Plan",
+      "newAppointment": "Neuer Termin",
+      "newImaging": "Neue Bildgebung",
+      "newLab": "Neues Labor",
+      "newMedication": "Neues Medikament",
+      "newPatient": "Neuer Patient",
+      "newPhoto": "Neues Foto",
+      "newVisit": "Neue Visite",
+      "patientCheckIn": "Patientenüberprüfung",
+      "scheduleSurgery": "Zeitplan Chirurgie"
+    },
+    "labels": {
+      "admissionDate": "Aufnahmedatum",
+      "admit": "Zulassen",
+      "bloodType": "Blutgruppe",
+      "caption": "Beschriftung",
+      "civilStatus": "Zivilstand",
+      "clinic": "Klinik",
+      "contacts": "Kontakte",
+      "cost": "Kosten",
+      "dateOfBirth": "Geburtsdatum",
+      "dateProcessed": "Verarbeitungsdatum",
+      "dischargeDate": "Entlassungsdatum",
+      "dob": "DOB",
+      "education": "Bildung",
+      "email": "E-Mail",
+      "externalPatientId": "Externe Patienten-ID",
+      "firstName": "Vorname",
+      "income": "Einkommen",
+      "insurance": "Versicherung",
+      "lastName": "Nachname",
+      "middleName": "zweiter Vorname",
+      "monthlyCost": "Monatliche Kosten",
+      "occupation": "Beruf",
+      "operativePlan": "Operativer Plan",
+      "parent": "Erziehungsberechtigter",
+      "patientDays": "Patiententage",
+      "patientType": "Patiententyp",
+      "patientTypeCharity": "Karitas",
+      "patientTypePrivate": "Privat",
+      "phone": "Telefon",
+      "placeOfBirth": "Geburtsort",
+      "primaryDiagnosis": "Primärdiagnose",
+      "referredBy": "Überweisung von",
+      "referredDate": "Überweisungsdatum",
+      "relationship": "Beziehung zum Patienten",
+      "relationships": "Beziehungen",
+      "religion": "Religion",
+      "secondaryDiagnosis": "Sekundärdiagnose",
+      "sex": "Geschlecht",
+      "sexNotEntered": "Geschlecht nicht Eingetragen",
+      "sources": "Quellen",
+      "status": "Patientenstatus",
+      "totalMontlyExpense": "Monatliche Gesamtausgaben"
+    },
+    "messages": {
+      "areYouSureDelete": "Sind Sie sicher, dass Sie {object} löschen möchten?",
+      "createNewPatient": "Neue Patientenakte anlegen?",
+      "deletingPatient": "Patient und alle zusammenhängenden Datensätze löschen",
+      "noPatientsFound": "Kein Patient gefunden.",
+      "notFoundQuickAdd": "Der Patient <strong>{patientFullName}</strong> konnte nicht gefunden werden. Wenn Sie einen neuen Patienten anlegen möchten, füllen Sie die nachfolgenden Felder aus. Andernfalls drücken Sie den Abbrechen-Button um zurück zu kehren.",
+      "photoFileRequired": "Bitte nehmen Sie ein Bild auf oder laden Sie eine Datei hoch bevor Sie das Foto speichern.",
+      "savedPatient": "Die Patientenakte für {displayName} wurde gespeichert."
+    },
+    "navigation": {
+      "appointments": "Termine",
+      "general": "Allgemein",
+      "history": "Historie",
+      "imaging": "Bildgebung",
+      "labs": "Labore",
+      "medication": "Medikament",
+      "photos": "Fotos",
+      "socialWork": "Sozialarbeit",
+      "visits": "Visiten"
+    },
+    "notes": {
+      "newNote": "Neue Notiz für",
+      "onBehalfOfCopy": "im Auftrag von",
+      "onBehalfOfLabel": "Im Auftrag von",
+      "pleaseSelectAVisit": "Bitte eine Visite auswählen",
+      "updateNote": "Notiz aktualisieren von"
+    },
+    "titles": {
+      "addContact": "Kontakt hinzufügen",
+      "addPhoto": "Foto hinzufügen",
+      "additionalContacts": "Zusätzliche Kontakte",
+      "admissionsDetail": "Zuslassungsdetails",
+      "admissionsSummary": "Zulassungszusammenfassung",
+      "admittedPatients": "Zugelassene Patienten",
+      "delete": "Patient löschen",
+      "deleteContact": "Kontakt löschen",
+      "deleteExpense": "Spese löschen",
+      "deleteFamilyMember": "Familienmitglied löschen",
+      "deletePatientRecord": "Patientenakte löschen",
+      "deletePhoto": "Foto löschen",
+      "diagnosticTesting": "Diagnostische Tests",
+      "dischargesDetail": "Entlassungsdetails",
+      "dischargesSummary": "Entlassungszusammenfassung",
+      "edit": "Patient bearbeiten",
+      "editPhoto": "Foto bearbeiten",
+      "expenses": "Spesen",
+      "familyInfo": "Familieninfo",
+      "familyInformation": "Familien Information",
+      "new": "Neuer Patient",
+      "outpatientsForDate": "Ambulante Patienten zum {visitDate}",
+      "patient": "Patientenbericht",
+      "patientListing": "Patientenauflistung",
+      "patientReport": "Patientenbericht",
+      "patientStatus": "Patientenstatus",
+      "proceduresDetail": "Behandlungsdetails",
+      "proceduresSummary": "Behandlungszusammenfassung",
+      "savedPatient": "Patient gespeichert",
+      "socialWork": "Kosten",
+      "todaysOutpatients": "Heutige ambulante Patienten",
+      "totalPatientDays": "Gesamtzahl der Patiententage",
+      "totalPatientDaysDetailed": "Gesamtzahl der Patiententage (detailliert)",
+      "visit": "Visite"
+    }
+  },
+  "pricing": {
+    "labels": {
+      "discountAmount": "Rabattbetrag",
+      "discountPercentage": "Rabattprozentsatz",
+      "setFee": "Festgelegte Gebühren"
+    },
+    "navigation": {
+      "allPricingItems": "",
+      "imagePricing": "",
+      "labPricing": "",
+      "pricingProfiles": "",
+      "procedurePricing": "",
+      "wardPricing": ""
+    },
+    "sectionTitle": ""
+  },
+  "print": {
+    "invoice": {
+      "labels": {
+        "billedBy": "Abgerechnet von:",
+        "billedDate": "Rechnungsdatum:",
+        "dateAdmitted": "ZUGELASSEN:",
+        "dateDischarged": "ENTLASSEN:",
+        "dischargeNotes": "Entlassungsnotizen:",
+        "patientAddress": "ADRESSE:",
+        "patientAge": "ALTER:",
+        "patientId": "PATIENTEN NUMMER:",
+        "patientName": "NAME DES PATIENTEN:",
+        "remarks": "Bemerkungen",
+        "spacer": "__________________________________________"
+      },
+      "messages": {
+        "whereConducted": "wurden während meines Einschlusses abgezogen"
+      },
+      "titles": {
+        "billingStatement": "Abrechnung",
+        "patientMember": "Patientenmitglied",
+        "patients": "Patienten",
+        "relContact": "Verwandten/Kontakt Nr."
+      }
+    }
+  },
+  "procedures": {
+    "buttons": {
+      "addMedication": "Medikament hinzufügen"
+    },
+    "labels": {
+      "medicationUsed": "Verwendete Medikamente"
+    },
+    "messages": {
+      "saved": "Die Behandlungsakte wurde gespeichert."
+    },
+    "titles": {
+      "addChargeItem": "Gebühr hinzufügen",
+      "addMedicationUsed": "Verwendete Medikamente hinzufügen",
+      "deleteChargeItem": "Gebühr entfernen",
+      "deleteMedicationUsed": "Verwendete Medikamente entfernen",
+      "edit": "Behandlung bearbeiten",
+      "editChargeItem": "Gebühr bearbeiten",
+      "editMedicationUsed": "Verwendetes Medikamente bearbeiten",
+      "medicationUsed": "Verwendete Medikamente",
+      "new": "Neue Behandlung",
+      "saved": "Behandlung gespeichert"
+    }
+  },
+  "reports": {
+    "labels": {
+      "admissionDate": "Aufnahmedatum",
+      "allProcedures": "Alle durchgeführten Behandlungen",
+      "completedBy": "Abgeschlossen von",
+      "dischargeDate": "Entlassungsdatum",
+      "examiner": "Prüfer",
+      "images": "Bilder",
+      "labs": "Labore",
+      "location": "Besuchsort",
+      "medications": "Medikamente",
+      "nextAppointment": "Nächster Termin",
+      "nextAppointments": "Nächste Termine",
+      "notes": {
+        "author": "Verfasser",
+        "date": "Datum",
+        "title": "Notizen"
+      },
+      "operativePlan": {
+        "description": "Operationsbeschreibung",
+        "instructions": "Anweisungen bei der Zulassung",
+        "procedures": "Geplante Behandungen",
+        "title": "Operativer Plan"
+      },
+      "primaryDiagnosis": "Primärdiagnose",
+      "procedures": "Behandlung",
+      "secondaryDiagnosis": "Sekundärdiagnose",
+      "visitDate": "Datum der Visite",
+      "visitType": "Visitenarten"
+    },
+    "messages": {
+      "delete": "Sind Sie sicher, dass Sie diesen Bericht löschen möchten?",
+      "saved": "Der Bericht wurde gespeichert."
+    },
+    "titles": {
+      "dischargeReport": "Entlassungsbericht",
+      "newDischargeReport": "Neuer Entlassungsbericht",
+      "newOPDReport": "Neuer OPD-Bericht",
+      "opdReport": "OPD-Bericht",
+      "saved": "Bericht gespeichert"
+    }
+  },
+  "user": {
+    "plusNewUser": "+ Neuer Benutzer",
+    "usersPageTile": "Benutzerliste"
+  },
+  "visits": {
+    "buttons": {
+      "addDiagnosis": "Diagnose hinzufügen",
+      "checkIn": "Check-In",
+      "checkOut": "Check-Out",
+      "discharge": "Entlassung",
+      "newAppointment": "Neuer Termin",
+      "newDischargeReport": "Neuer Entlassungsbericht",
+      "newOPDReport": "Neuer OPD-Bericht",
+      "newProcedure": "Neue Behandlung",
+      "newVitals": "Neuer Vitalwert"
+    },
+    "labels": {
+      "appointment": "Termin",
+      "authoredBy": "Geschrieben von",
+      "checkInTime": "Check-In",
+      "checkOutTime": "Check-Out",
+      "createNewPatient": "Neuen Patienten anlegen",
+      "diagnosis": "Diagnose",
+      "examiner": "Prüfer",
+      "finalDiagnosis": "Schluss- / Abrechnungsdiagnose",
+      "haveAppointment": "J",
+      "haveDoneOrders": "J",
+      "noAppointment": "N",
+      "ordersDone": "Bestellungen erledigt",
+      "ordersNotDone": "N",
+      "patientToCheckIn": "Patient zum Einchecken",
+      "procedure": "Behandlung",
+      "procedureDate": "Behandlungsdatum",
+      "reasonForVisit": "Grund für die Visite",
+      "reportType": "Berichtsart",
+      "status": "Status der Visite",
+      "statusAdmitted": "Zugelassen",
+      "statusCheckedIn": "Check-In",
+      "statusCheckedOut": "Check-Out",
+      "statusDischarged": "Entlassen",
+      "visitDate": "Datum der Visite",
+      "visitInformation": "Informationen zur Visite",
+      "visitType": "Visitenarten"
+    },
+    "messages": {
+      "checkOut": "Sind Sie sicher, dass Sie {patientName} austragen wollen?",
+      "checkedOut": "{patientName} wurde ausgetragen.",
+      "discharged": "{patientName} wurde entlassen.",
+      "patientCheckedIn": "{patientName} wurde eingetragen.",
+      "patientCreatedAndCheckedIn": "{patientName} wurde erstellt und eingetragen.",
+      "visitAndPatientSaved": "Die Visite und Patientenakte wurden gespeichert.",
+      "visitSaved": "Der Visitendatensatz wurde gespeichert."
+    },
+    "navigation": {
+      "charges": "Gebühren",
+      "notes": "Notizen",
+      "orders": "Aufträge",
+      "procedures": "Behandlungen",
+      "reports": "Berichte",
+      "vitals": "Vitalwerte"
+    },
+    "titles": {
+      "additionalDiagnoses": "Zusätzliche Diagnose",
+      "checkOut": "Patient austragen",
+      "checkedIn": "Patient eingetragen",
+      "checkedOut": "Patient ausgetragen",
+      "discharged": "Patient entlassen",
+      "editVisit": "Visite bearbeiten",
+      "newVisit": "Neue Visite",
+      "patientCheckIn": "Patient eintragen",
+      "visitSaved": "Visite gespeichert"
+    }
+  },
+  "vitals": {
+    "labels": {
+      "dateRecorded": "Aufnahmedatum",
+      "dbp": "Diastolischer Blutdruck",
+      "heartRate": "Puls",
+      "height": "Größe",
+      "respiratoryRate": "Atemfrequenz",
+      "sbp": "Systolischer Blutdruck",
+      "temperature": "Temperatur",
+      "weight": "Gewicht"
+    }
+  }
+}

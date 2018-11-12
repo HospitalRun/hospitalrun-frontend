@@ -1,7 +1,7 @@
 import { alias } from '@ember/object/computed';
 import Controller, { inject as controller } from '@ember/controller';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 
 export default Controller.extend(IsUpdateDisabled, {
   patientsEdit: controller('patients/edit'),

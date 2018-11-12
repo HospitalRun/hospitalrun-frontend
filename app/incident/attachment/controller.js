@@ -1,6 +1,6 @@
 import { inject as controller } from '@ember/controller';
 import PatientPhotoController from 'hospitalrun/patients/photo/controller';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 
 export default PatientPhotoController.extend({
   addAction: 'addAttachment',

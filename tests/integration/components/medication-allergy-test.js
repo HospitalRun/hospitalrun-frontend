@@ -10,7 +10,7 @@ let allergy = Allergy.create({ name: 'test allergy' });
 moduleForComponent('medication-allergy', 'Integration | Component | medication allergy', {
   integration: true,
   beforeEach() {
-    this.inject.service('i18n');
+    this.inject.service('intl');
   }
 });
 

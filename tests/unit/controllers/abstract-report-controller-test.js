@@ -1,29 +1,43 @@
 import EmberObject from '@ember/object';
 import { getOwner } from '@ember/application';
-import localeConfig from 'ember-i18n/config/en';
 import moment from 'moment';
 import sinonTest from 'ember-sinon-qunit/test-support/test';
-import tHelper from 'ember-i18n/helper';
+import tHelper from 'ember-intl/helpers/t';
 import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('controller:abstract-report-controller', 'Unit | Controller | abstract-report-controller', {
   needs: [
-    'service:i18n',
+    'service:intl',
     'service:metrics',
-    'locale:en/translations',
-    'locale:en/config',
-    'util:i18n/missing-message',
-    'util:i18n/compile-template',
-    'config:environment'
+    'config:environment',
+    'ember-intl@adapter:default',
+    'cldr:cn',
+    'cldr:de',
+    'cldr:en',
+    'cldr:es',
+    'cldr:gr',
+    'cldr:hi',
+    'cldr:pt',
+    'cldr:th',
+    'cldr:tw',
+    'cldr:de',
+    'cldr:es',
+    'cldr:fr',
+    'cldr:he',
+    'cldr:it',
+    'cldr:ru',
+    'cldr:tr',
+    'cldr:ur',
+    'translation:en',
+    'util:intl/missing-message'
   ],
   beforeEach() {
     // set the locale and the config
-    this.container.lookup('service:i18n').set('locale', 'en');
-    this.registry.register('locale:en/config', localeConfig);
+    this.container.lookup('service:intl').set('locale', 'en');
 
-    // manually inject the i18n service as initialzer does not run
+    // manually inject the intl service as initialzer does not run
     // in unit test
-    getOwner(this).inject('controller', 'i18n', 'service:i18n');
+    getOwner(this).inject('controller', 'intl', 'service:intl');
 
     // register t helper
     this.registry.register('helper:t', tHelper);

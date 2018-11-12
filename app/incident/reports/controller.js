@@ -14,15 +14,15 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   }),
 
   departmentReportColumns: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return {
       department: {
-        label: i18n.t('incident.labels.department'),
+        label: intl.t('incident.labels.department'),
         include: true,
         property: 'type' // property type because in _addReportRow function looks for column name with value as type
       },
       total: {
-        label: i18n.t('incident.labels.total'),
+        label: intl.t('incident.labels.total'),
         include: true,
         property: 'total',
         format: '_numberFormat'
@@ -30,15 +30,15 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     };
   }),
   incidentCategoryReportColumns: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return {
       incidentCategory: {
-        label: i18n.t('incident.labels.category'),
+        label: intl.t('incident.labels.category'),
         include: true,
         property: 'type'
       },
       total: {
-        label: i18n.t('incident.labels.total'),
+        label: intl.t('incident.labels.total'),
         include: true,
         property: 'total',
         format: '_numberFormat'
@@ -47,12 +47,12 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   }),
 
   reportTypes: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return [{
-      name: i18n.t('incident.titles.incidentsByDepartment'),
+      name: intl.t('incident.titles.incidentsByDepartment'),
       value: 'department'
     }, {
-      name: i18n.t('incident.titles.incidentsByCategory'),
+      name: intl.t('incident.titles.incidentsByCategory'),
       value: 'incidentCategory'
     }];
   }),

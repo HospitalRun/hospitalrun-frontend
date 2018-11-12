@@ -25,13 +25,13 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
 
   additionalButtons: computed('model.isNew', function() {
     let isNew = get(this, 'model.isNew');
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     if (!isNew) {
       return [{
         class: 'btn btn-primary on-white',
         buttonAction: 'printReport',
         buttonIcon: 'octicon octicon-check',
-        buttonText: i18n.t('labels.print')
+        buttonText: intl.t('labels.print')
       }];
     }
   }),
@@ -53,11 +53,11 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   },
 
   afterUpdate() {
-    let alertTitle = get(this, 'i18n').t('reports.titles.saved');
-    let alertMessage = get(this, 'i18n').t('reports.messages.saved');
+    let alertTitle = get(this, 'intl').t('reports.titles.saved');
+    let alertMessage = get(this, 'intl').t('reports.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
-    let opdTitle = get(this, 'i18n').t('reports.titles.opdReport');
-    let dischargeTitle = get(this, 'i18n').t('reports.titles.dischargeReport');
+    let opdTitle = get(this, 'intl').t('reports.titles.opdReport');
+    let dischargeTitle = get(this, 'intl').t('reports.titles.dischargeReport');
     let editTitle = get(this, 'model.visit.outPatient') ? opdTitle : dischargeTitle;
     let sectionDetails = {};
     sectionDetails.currentScreenTitle = editTitle;

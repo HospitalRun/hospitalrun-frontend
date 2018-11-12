@@ -1,10 +1,10 @@
 import { computed } from '@ember/object';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractIndexRoute.extend({
   hideNewButton: true,
-  pageTitle: computed('i18n.locale', () => {
+  pageTitle: computed('intl.locale', () => {
     return t('admin.lookup.pageTitle');
   }),
   model() {

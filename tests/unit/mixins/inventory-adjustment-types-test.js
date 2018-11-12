@@ -2,25 +2,39 @@ import EmberObject from '@ember/object';
 import { getOwner } from '@ember/application';
 import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import { moduleFor, test } from 'ember-qunit';
-import tHelper from 'ember-i18n/helper';
-import localeConfig from 'ember-i18n/config/en';
+import tHelper from 'ember-intl/helpers/t';
 
 moduleFor('mixin:inventory-adjustment-types', 'Unit | Mixin | inventory-adjustment-types', {
   needs: [
-    'service:i18n',
-    'locale:en/translations',
-    'locale:en/config',
-    'util:i18n/missing-message',
-    'util:i18n/compile-template',
+    'service:intl',
+    'ember-intl@adapter:default',
+    'cldr:cn',
+    'cldr:de',
+    'cldr:en',
+    'cldr:es',
+    'cldr:gr',
+    'cldr:hi',
+    'cldr:pt',
+    'cldr:th',
+    'cldr:tw',
+    'cldr:de',
+    'cldr:es',
+    'cldr:fr',
+    'cldr:he',
+    'cldr:it',
+    'cldr:ru',
+    'cldr:tr',
+    'cldr:ur',
+    'translation:en',
+    'util:intl/missing-message',
     'config:environment'
   ],
   beforeEach() {
     // set the locale and the config
-    this.container.lookup('service:i18n').set('locale', 'en');
-    this.registry.register('locale:en/config', localeConfig);
+    this.container.lookup('service:intl').set('locale', 'en');
 
-    // Inject i18n as the intializer does not run in unit test
-    getOwner(this).inject('inventory-adjustment-types', 'i18n', 'service:i18n');
+    // Inject intl as the intializer does not run in unit test
+    getOwner(this).inject('inventory-adjustment-types', 'intl', 'service:intl');
 
     // register t helper
     this.registry.register('helper:t', tHelper);

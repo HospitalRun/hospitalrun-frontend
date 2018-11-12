@@ -5,7 +5,7 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   <div class="alert alert-warning" role="alert">
-    {{t 'patients.messages.notFoundQuickAdd' model}}
+    {{t 'patients.messages.notFoundQuickAdd' patientFullName=model.shortDisplayName}}
   </div>
   {{#em-form model=model submitButton=false as |form|}}
     <div class="row">

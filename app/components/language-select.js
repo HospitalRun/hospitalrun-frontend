@@ -4,31 +4,26 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 
 export default Component.extend({
-  i18n: service(),
+  intl: service(),
   languagePreference: service(),
-  selectedLanguage: alias('i18n.locale'),
+  selectedLanguage: alias('intl.locale'),
 
-  languageOptions: computed('i18n.locale', function() {
-    let i18n = this.get('i18n');
-    // Hacking around the fact that i18n
-    // has no support for t(key, locale).
-    let currentLocale = i18n.get('locale');
-    let options = i18n.get('locales').map((item) => {
-      i18n.set('locale', item);
+  languageOptions: computed('intl.locale', function() {
+    let intl = this.get('intl');
+    let options = intl.get('locales').map((locale) => {
       return {
-        id: item,
-        name: i18n.t('languageName')
+        id: locale,
+        name: intl.lookup('languageName', locale)
       };
     });
-    i18n.set('locale', currentLocale);
     return options;
   }),
 
   onFinish: () => {},
 
   actions: {
-    selectLanguage(i18n) {
-      this.get('languagePreference').saveUserLanguagePreference(i18n);
+    selectLanguage(intl) {
+      this.get('languagePreference').saveUserLanguagePreference(intl);
       this.get('onFinish')();
     }
   }

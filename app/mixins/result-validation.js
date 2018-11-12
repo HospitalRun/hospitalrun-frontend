@@ -1,6 +1,6 @@
 import { isEmpty } from '@ember/utils';
 import Mixin from '@ember/object/mixin';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 
 export default Mixin.create({
   validations: {

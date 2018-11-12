@@ -10,10 +10,10 @@ const languagePreference = {
 moduleForComponent('language-select', 'Integration | Component | language select', {
   integration: true,
   beforeEach() {
-    this.inject.service('i18n');
-
+    this.inject.service('intl');
     this.register('service:language-preference', Service.extend(languagePreference));
     this.inject.service('language-preference', { as: 'languagePreference' });
+    this.container.owner.lookup('service:intl').setLocale('en');
   },
   afterEach() {
     languagePreference.saveUserLanguagePreference.reset();
