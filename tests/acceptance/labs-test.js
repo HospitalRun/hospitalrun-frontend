@@ -1,5 +1,7 @@
-import { click, fillIn, currentURL, visit } from '@ember/test-helpers';
+import { click, fillIn, currentURL, visit, waitUntil, settled as wait } from '@ember/test-helpers';
 import { module, test } from 'qunit';
+import { default as jquerySelect } from 'hospitalrun/tests/helpers/jquery-select';
+import { findWithAssert } from 'ember-native-dom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import {
@@ -22,8 +24,8 @@ module('Acceptance | labs', function(hooks) {
       await authenticateUser();
       await visit('/labs');
       assert.equal(currentURL(), '/labs');
-      findWithAssert('a:contains(Create a new record?)');
-      findWithAssert('button:contains(new lab)');
+      findWithAssert(jquerySelect('a:contains(Create a new record?)'));
+      findWithAssert(jquerySelect('button:contains(new lab)'));
     });
   });
 
@@ -32,22 +34,26 @@ module('Acceptance | labs', function(hooks) {
       await authenticateUser();
       await visit('/labs');
 
-      await click('button:contains(new lab)');
+      await click(jquerySelect('button:contains(new lab)'));
+
+      await waitUntil(() => currentURL() === "/labs/edit/new");
       assert.equal(currentURL(), '/labs/edit/new');
 
       await typeAheadFillIn('.test-patient-name', 'Lennex Zinyando - P00017');
       await typeAheadFillIn('.test-lab-type', 'Chest Scan');
       await fillIn('.test-result-input input', 'Chest is clear');
       await fillIn('textarea', 'Dr test ordered another scan');
-      await click('button:contains(Add)');
+      await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Lab Request Saved', 'Lab Request was saved successfully');
       assert.dom('.patient-summary').exists();
 
-      await click('.modal-footer button:contains(Ok)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
       assert.dom('.patient-summary').exists({ count: 1 }, 'Patient summary is displayed');
 
-      await click('.panel-footer button:contains(Return)');
+      await click(jquerySelect('.panel-footer button:contains(Return)'));
+      await waitUntil(() => currentURL() === "/labs");
+
       assert.equal(currentURL(), '/labs');
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
     });
@@ -60,13 +66,17 @@ module('Acceptance | labs', function(hooks) {
       assert.dom('.alert-info').hasText('No completed items found.', 'No completed requests are displayed');
 
       await visit('/labs');
-      await click('button:contains(Edit)');
-      await click('button:contains(Complete)');
+      await click(jquerySelect('button:contains(Edit)'));
+
+      await waitUntil(() => currentURL().includes("/labs/edit"));
+
+      await click(jquerySelect('button:contains(Complete)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Lab Request Completed', 'Lab Request was completed successfully');
 
-      await click('.modal-footer button:contains(Ok)');
-      await click('.panel-footer button:contains(Return)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.panel-footer button:contains(Return)'));
+
       await visit('/labs/completed');
       assert.dom('tr').exists({ count: 2 }, 'One completed request is displayed');
     });
@@ -79,7 +89,7 @@ module('Acceptance | labs', function(hooks) {
       await createCustomFormForType('Lab', true);
 
       await visit('/labs');
-      await click('button:contains(new lab)');
+      await click(jquerySelect('button:contains(new lab)'));
 
       await checkCustomFormIsDisplayed(assert, 'Test Custom Form for Lab included');
 
@@ -88,31 +98,33 @@ module('Acceptance | labs', function(hooks) {
       await fillIn('.test-result-input input', 'Chest is clear');
       await fillIn('.js-lab-notes textarea', 'Dr test ordered another scan');
       await fillCustomForm('Test Custom Form for Lab included');
-      await click('.panel-footer button:contains(Add)');
+      await click(jquerySelect('.panel-footer button:contains(Add)'));
       await waitToAppear('.modal-dialog');
 
-      await click('.modal-footer button:contains(Ok)');
-      await click('.panel-footer button:contains(Return)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.panel-footer button:contains(Return)'));
+      await waitUntil(() => currentURL() === "/labs");
 
       assert.equal(currentURL(), '/labs');
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
 
-      await click('tr:last');
+      await click(jquerySelect('tr:last'));
+
+      await waitToAppear(".test-result-input input");
+
       assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
       assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');
 
       await checkCustomFormIsFilled(assert, 'Test Custom Form for Lab included');
 
-      await click('button:contains(Complete)');
+      await click(jquerySelect('button:contains(Complete)'));
       await waitToAppear('.modal-dialog');
-      await click('.modal-footer button:contains(Ok)');
-      await click('.panel-footer button:contains(Return)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.panel-footer button:contains(Return)'));
+
       await visit('/labs/completed');
-
       assert.dom('tr').exists({ count: 2 }, 'One completed request is displayed');
-
-      await click('tr:last');
-
+      await click(jquerySelect('tr:last'));
       await checkCustomFormIsFilledAndReadonly(assert, 'Test Custom Form for Lab included');
     });
   });
@@ -124,7 +136,7 @@ module('Acceptance | labs', function(hooks) {
       await createCustomFormForType('Lab');
 
       await visit('/labs');
-      await click('button:contains(new lab)');
+      await click(jquerySelect('button:contains(new lab)'));
 
       await attachCustomForm('Test Custom Form for Lab NOT included');
       await checkCustomFormIsDisplayed(assert, 'Test Custom Form for Lab NOT included');
@@ -134,32 +146,34 @@ module('Acceptance | labs', function(hooks) {
       await fillIn('.test-result-input input', 'Chest is clear');
       await fillIn('.js-lab-notes textarea', 'Dr test ordered another scan');
       await fillCustomForm('Test Custom Form for Lab NOT included');
-      await click('.panel-footer button:contains(Add)');
+      await click(jquerySelect('.panel-footer button:contains(Add)'));
+
       await waitToAppear('.modal-dialog');
 
-      await click('.modal-footer button:contains(Ok)');
-      await click('.panel-footer button:contains(Return)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.panel-footer button:contains(Return)'));
+      await waitUntil(() => currentURL() === "/labs");
 
       assert.equal(currentURL(), '/labs');
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
+      await click(jquerySelect('tr:last'));
 
-      await click('tr:last');
+      await waitToAppear(".test-result-input input");
 
       assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
       assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');
 
       await checkCustomFormIsFilled(assert, 'Test Custom Form for Lab NOT included');
 
-      await click('button:contains(Complete)');
+      await click(jquerySelect('button:contains(Complete)'));
       await waitToAppear('.modal-dialog');
-      await click('.modal-footer button:contains(Ok)');
-      await click('.panel-footer button:contains(Return)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.panel-footer button:contains(Return)'));
       await visit('/labs/completed');
 
       assert.dom('tr').exists({ count: 2 }, 'One completed request is displayed');
 
-      await click('tr:last');
-
+      await click(jquerySelect('tr:last'));
       await checkCustomFormIsFilledAndReadonly(assert, 'Test Custom Form for Lab NOT included');
     });
   });
@@ -172,10 +186,9 @@ module('Acceptance | labs', function(hooks) {
       await createCustomFormForType('Lab', false);
 
       await visit('/labs');
-      await click('button:contains(new lab)');
+      await click(jquerySelect('button:contains(new lab)'));
 
       await checkCustomFormIsDisplayed(assert, 'Test Custom Form for Lab included');
-
       await attachCustomForm('Test Custom Form for Lab NOT included');
       await checkCustomFormIsDisplayed(assert, 'Test Custom Form for Lab NOT included');
 
@@ -185,16 +198,19 @@ module('Acceptance | labs', function(hooks) {
       await fillIn('.js-lab-notes textarea', 'Dr test ordered another scan');
       await fillCustomForm('Test Custom Form for Lab included');
       await fillCustomForm('Test Custom Form for Lab NOT included');
-      await click('.panel-footer button:contains(Add)');
+      await click(jquerySelect('.panel-footer button:contains(Add)'));
       await waitToAppear('.modal-dialog');
 
-      await click('.modal-footer button:contains(Ok)');
-      await click('.panel-footer button:contains(Return)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.panel-footer button:contains(Return)'));
+
+      await wait();
 
       assert.equal(currentURL(), '/labs');
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
+      await click(jquerySelect('tr:last'));
 
-      await click('tr:last');
+      await waitToAppear(".test-result-input input");
 
       assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
       assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');
@@ -202,15 +218,15 @@ module('Acceptance | labs', function(hooks) {
       await checkCustomFormIsFilled(assert, 'Test Custom Form for Lab included');
       await checkCustomFormIsFilled(assert, 'Test Custom Form for Lab NOT included');
 
-      await click('button:contains(Complete)');
+      await click(jquerySelect('button:contains(Complete)'));
       await waitToAppear('.modal-dialog');
-      await click('.modal-footer button:contains(Ok)');
-      await click('.panel-footer button:contains(Return)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.panel-footer button:contains(Return)'));
       await visit('/labs/completed');
 
       assert.dom('tr').exists({ count: 2 }, 'One completed request is displayed');
 
-      await click('tr:last');
+      await click(jquerySelect('tr:last'));
 
       await checkCustomFormIsFilledAndReadonly(assert, 'Test Custom Form for Lab included');
       await checkCustomFormIsFilledAndReadonly(assert, 'Test Custom Form for Lab NOT included');

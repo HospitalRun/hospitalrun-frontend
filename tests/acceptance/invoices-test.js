@@ -1,5 +1,6 @@
 import { click, fillIn, find, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
+import { default as jquerySelect, jqueryLength } from 'hospitalrun/tests/helpers/jquery-select';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
@@ -29,7 +30,7 @@ module('Acceptance | invoices', function(hooks) {
       await select('.invoice-visit', '(Admission)');
       await fillIn('.external-invoice-no input', 'inv000002');
       await waitToAppear('button:contains(Update)');
-      await click('button:contains(Update)');
+      await click(jquerySelect('button:contains(Update)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Invoice Saved', 'Invoice was saved successfully');
     });
@@ -41,11 +42,11 @@ module('Acceptance | invoices', function(hooks) {
       await authenticateUser();
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
-      assert.equal(findAll('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for printing');
+      assert.equal(jqueryLength('.invoice-number:contains(inv00001)'), 1, 'Invoice is available for printing');
 
-      await click('button:contains(Edit)');
+      await click(jquerySelect('button:contains(Edit)'));
       await waitToAppear('button:contains(Print)');
-      await click('button:contains(Print)');
+      await click(jquerySelect('button:contains(Print)'));
       assert.dom('.invoices-review').exists({ count: 1 }, 'Invoice is displayed for printing');
     });
   });
@@ -55,41 +56,41 @@ module('Acceptance | invoices', function(hooks) {
     return runWithPouchDump('billing', async function() {
       await authenticateUser();
       await visit('/pricing/profiles');
-      assert.equal(findAll('.btn-primary:contains(+ new item)').length, 1, 'We can add a new pricing profile');
+      assert.equal(jqueryLength('.btn-primary:contains(+ new item)'), 1, 'We can add a new pricing profile');
 
-      await click('button:contains(+ new item)');
+      await click(jquerySelect('button:contains(+ new item)'));
       await waitToAppear('h4:contains(New Pricing Profile)');
 
       // % discount
       await fillIn('.pricing-profile-name input', '50% profile');
       await fillIn('.pricing-profile-percentage input', '50');
-      await click('button:contains(Add)');
+      await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('button:contains(Ok)');
-      await click('button:contains(Ok)');
-      await click('button:contains(+ new item)');
+      await click(jquerySelect('button:contains(Ok)'));
+      await click(jquerySelect('button:contains(+ new item)'));
       await waitToAppear('h4:contains(New Pricing Profile)');
 
       // flat discount
       await fillIn('.pricing-profile-name input', '$100 discount');
       await fillIn('.pricing-profile-discount input', '100');
-      await click('button:contains(Add)');
+      await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('button:contains(Ok)');
-      await click('button:contains(Ok)');
-      await click('button:contains(+ new item)');
+      await click(jquerySelect('button:contains(Ok)'));
+      await click(jquerySelect('button:contains(+ new item)'));
       await waitToAppear('h4:contains(New Pricing Profile)');
 
       // flat fee
       await fillIn('.pricing-profile-name input', '$150 fee');
       await fillIn('.pricing-set-fee input', '150');
-      await click('button:contains(Add)');
+      await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('button:contains(Ok)');
-      await click('button:contains(Ok)');
+      await click(jquerySelect('button:contains(Ok)'));
 
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
-      assert.equal(findAll('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for modifying');
+      assert.equal(jqueryLength('.invoice-number:contains(inv00001)'), 1, 'Invoice is available for modifying');
 
-      await click('button:contains(Edit)');
+      await click(jquerySelect('button:contains(Edit)'));
     });
   });
 
@@ -98,18 +99,18 @@ module('Acceptance | invoices', function(hooks) {
       await authenticateUser();
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
-      assert.equal(findAll('.invoice-number:contains(inv00001)').length, 1, 'Invoice is displayed for deletion');
+      assert.equal(jqueryLength('.invoice-number:contains(inv00001)'), 1, 'Invoice is displayed for deletion');
 
-      await click('button:contains(Delete)');
+      await click(jquerySelect('button:contains(Delete)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.alert').hasText(
         'Are you sure you wish to delete inv00001?',
         'Invoice deletion confirm displays'
       );
 
-      await click('button:contains(Delete):last');
+      await click(jquerySelect('button:contains(Delete):last'));
       await waitToDisappear('.invoice-number:contains(inv00001)');
-      assert.equal(findAll('.invoice-number:contains(inv00001)').length, 0, 'Invoice is deleted');
+      assert.equal(jqueryLength('.invoice-number:contains(inv00001)'), 0, 'Invoice is deleted');
     });
   });
 
@@ -119,7 +120,7 @@ module('Acceptance | invoices', function(hooks) {
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
 
-      await click('button:contains(Add Payment)');
+      await click(jquerySelect('button:contains(Add Payment)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Add Payment', 'Add Payment modal displays');
 
@@ -128,7 +129,7 @@ module('Acceptance | invoices', function(hooks) {
       await waitToAppear('.modal-title:contains(Payment Added)');
       assert.dom('.modal-title').hasText('Payment Added', 'Payment was saved successfully');
 
-      await click('.modal-footer button:contains(Ok)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
       await waitToDisappear('.modal-dialog');
     });
   });
@@ -139,7 +140,7 @@ module('Acceptance | invoices', function(hooks) {
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
 
-      await click('button:contains(add deposit)');
+      await click(jquerySelect('button:contains(add deposit)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Add Deposit', 'Add Deposit modal displays');
 
@@ -163,14 +164,14 @@ module('Acceptance | invoices', function(hooks) {
       await visit('/invoices');
       assert.equal(currentURL(), '/invoices');
       assert.dom('.primary-section-link').exists({ count: 2 }, 'Should have 2 navigations');
-      assert.equal(findAll('.primary-section-link:contains(Scheduling)').length, 1, 'should see Scheduling navigation');
-      assert.equal(findAll('.primary-section-link:contains(Billing)').length, 1,  'should see Billing navigation');
+      assert.equal(jqueryLength('.primary-section-link:contains(Scheduling)'), 1, 'should see Scheduling navigation');
+      assert.equal(jqueryLength('.primary-section-link:contains(Billing)'), 1,  'should see Billing navigation');
 
-      assert.equal(findAll('li:contains(Billed)').length, 1, 'should see Billed selection');
-      assert.equal(findAll('li:contains(Drafts)').length, 1, 'should see Drafts selection');
-      assert.equal(findAll('li:contains(All Invoices)').length, 1, 'should see All Invoices selection');
+      assert.equal(jqueryLength('li:contains(Billed)'), 1, 'should see Billed selection');
+      assert.equal(jqueryLength('li:contains(Drafts)'), 1, 'should see Drafts selection');
+      assert.equal(jqueryLength('li:contains(All Invoices)'), 1, 'should see All Invoices selection');
 
-      await click('a:contains(Billing)');
+      await click(jquerySelect('a:contains(Billing)'));
       assert.dom('.category-sub-item').exists({ count: 2 }, 'Should have 2 sub navigations');
     });
   });
@@ -211,13 +212,13 @@ module('Acceptance | invoices', function(hooks) {
       await select('.invoice-visit', '(Admission)');
 
       await click('.glyphicon-plus');
-      await click('button:contains(Add Charge)');
+      await click(jquerySelect('button:contains(Add Charge)'));
 
       // delete the first line item detail (second Delete button from top, as the very first is for the line item itself)
       await click($('button:contains(Delete):eq(1)')[0]);
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Delete Charge', 'Delete Charge modal displays');
-      await click('.modal-footer button:contains(Ok)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
       await waitToDisappear('.modal-dialog');
 
       // topmost detail showing should now be the blank one we added at beginning of this test
@@ -235,10 +236,10 @@ module('Acceptance | invoices', function(hooks) {
       await waitToAppear('.invoice-visit option:contains((Admission))');
       await select('.invoice-visit', '(Admission)');
 
-      await click('button:contains(Delete)');
+      await click(jquerySelect('button:contains(Delete):first'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Delete Line Item', 'Delete Line Item modal displays');
-      await click('.modal-footer button:contains(Ok)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
       await waitToDisappear('.modal-dialog');
       assert.equal(find('.item-name').value, 'Pharmacy', 'First line item no longer appears.');
     });
@@ -260,26 +261,26 @@ module('Acceptance | invoices', function(hooks) {
       await fillIn(find('.item-private-insurance'), '3');
       await click('.glyphicon-plus');
       await fillIn(find('.detail-price'), '3');
-      await click('button:contains(Add Charge)');
-      await fillIn($('.detail-quantity:eq(1)'), '60');
-      await fillIn($('.detail-price:eq(1)'), '4');
+      await click(jquerySelect('button:contains(Add Charge)'));
+      await fillIn(jquerySelect('.detail-quantity:eq(1)'), '60');
+      await fillIn(jquerySelect('.detail-price:eq(1)'), '4');
 
       // second item, discounts and details
       await click('.glyphicon-plus');
-      await fillIn($('.item-discount:eq(1)'), '4');
-      await fillIn($('.item-national-insurance:eq(1)'), '6');
-      await fillIn($('.item-private-insurance:eq(1)'), '1');
-      await fillIn($('.detail-price:eq(2)'), '14');
+      await fillIn(jquerySelect('.item-discount:eq(1)'), '4');
+      await fillIn(jquerySelect('.item-national-insurance:eq(1)'), '6');
+      await fillIn(jquerySelect('.item-private-insurance:eq(1)'), '1');
+      await fillIn(jquerySelect('.detail-price:eq(2)'), '14');
 
       // add a payment
-      await click('button:contains(Add Payment)');
+      await click(jquerySelect('button:contains(Add Payment):first'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Add Payment', 'Add Payment modal displays');
       await fillIn('.payment-amount input', '100');
       await click('.update-payment-btn');
       await waitToAppear('.modal-title:contains(Payment Added)');
       assert.dom('.modal-title').hasText('Payment Added', 'Payment was saved successfully');
-      await click('.modal-footer button:contains(Ok)');
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
       await waitToDisappear('.modal-dialog');
 
       // total for first 2 items (2 details per item)

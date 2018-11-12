@@ -1,4 +1,6 @@
-import { click, fillIn, findAll, currentURL, visit } from '@ember/test-helpers';
+import { click, fillIn, findAll, currentURL, visit, waitUntil } from '@ember/test-helpers';
+import { findWithAssert } from 'ember-native-dom-helpers';
+import { default as jquerySelect, jqueryLength } from 'hospitalrun/tests/helpers/jquery-select';
 import moment from 'moment';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
@@ -17,10 +19,10 @@ module('Acceptance | inventory', function(hooks) {
       await authenticateUser();
       await visit('/inventory');
       assert.equal(currentURL(), '/inventory');
-      findWithAssert('button:contains(new request)');
-      findWithAssert('button:contains(+ Inventory Received)');
-      findWithAssert('p:contains(No requests found. )');
-      findWithAssert('a:contains(Create a new request?)');
+      findWithAssert(jquerySelect('button:contains(new request)'));
+      findWithAssert(jquerySelect('button:contains(+ Inventory Received)'));
+      findWithAssert(jquerySelect('p:contains(No requests found. )'));
+      findWithAssert(jquerySelect('a:contains(Create a new request?)'));
     });
   });
 
@@ -42,16 +44,16 @@ module('Acceptance | inventory', function(hooks) {
       await fillIn('.test-inv-cost input', '4000');
       await select('.test-inv-unit', 'tablet');
       await typeAheadFillIn('.test-vendor', 'Alpha Pharmacy');
-      await click('button:contains(Add)');
+      await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Inventory Item Saved', 'Inventory Item was saved successfully');
 
-      await click('button:contains(Ok)');
-      findWithAssert('button:contains(Add Purchase)');
-      findWithAssert('button:contains(Update)');
-      findWithAssert('button:contains(Return)');
+      await click(jquerySelect('button:contains(Ok)'));
+      findWithAssert(jquerySelect('button:contains(Add Purchase)'));
+      findWithAssert(jquerySelect('button:contains(Update)'));
+      findWithAssert(jquerySelect('button:contains(Return)'));
 
-      await click('button:contains(Add Purchase)');
+      await click(jquerySelect('button:contains(Add Purchase)'));
       await waitToAppear('.modal-dialog');
       await fillIn('.test-inv-quantity div div input', 18);
       await fillIn('.test-inv-cost div input', 2);
@@ -61,8 +63,11 @@ module('Acceptance | inventory', function(hooks) {
       assert.dom($('.test-location-quantity')[0]).hasText('1018', 'Location quantity is correct after new purchase');
       assert.dom('.test-inv-quantity p').hasText('1018', 'Item total quantity is correct after new purchase');
 
-      await click('button:contains(Return)');
+      await click(jquerySelect('button:contains(Return)'));
+
+      await waitUntil(() => currentURL() === "/inventory/listing");
       assert.equal(currentURL(), '/inventory/listing');
+
       assert.dom('tr').exists({ count: 2 }, 'One item is listed');
     });
   });
@@ -85,7 +90,7 @@ module('Acceptance | inventory', function(hooks) {
       await fillIn('.test-inv-cost input', '4000');
       await select('.test-inv-unit', 'tablet');
       await typeAheadFillIn('.test-vendor', 'Alpha Pharmacy');
-      await click('button:contains(Add)');
+      await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('.modal-dialog');
 
       assert.dom('.modal-title').hasText(
@@ -93,10 +98,10 @@ module('Acceptance | inventory', function(hooks) {
         'Inventory Item with negative quantity should not be saved.'
       );
 
-      await click('button:contains(Ok)');
+      await click(jquerySelect('button:contains(Ok)'));
       assert.equal(currentURL(), '/inventory/edit/new');
-      findWithAssert('button:contains(Add)');
-      findWithAssert('button:contains(Cancel)');
+      findWithAssert(jquerySelect('button:contains(Add)'));
+      findWithAssert(jquerySelect('button:contains(Cancel)'));
       assert.dom('.test-inv-quantity .help-block').hasText(
         'not a valid number',
         'Error message should be present for invalid quantities'
@@ -111,35 +116,39 @@ module('Acceptance | inventory', function(hooks) {
       assert.equal(currentURL(), '/inventory/listing');
 
       // transfer all units to a new location
-      await click('button:contains(Edit)');
-      await click('button:contains(Transfer)');
+      await click(jquerySelect('button:contains(Edit)'));
+      await click(jquerySelect('button:contains(Transfer)'));
       await waitToAppear('.modal-dialog');
       await typeAheadFillIn('.test-transfer-location', 'newLocation');
       await fillIn('.test-adjustment-quantity input', 1000);
-      await click('button:contains(Transfer):last');
+      await click(jquerySelect('button:contains(Transfer):last'));
       await waitToDisappear('.modal-dialog');
-      await click('button:contains(Return)');
+      await click(jquerySelect('button:contains(Return)'));
+
+      await waitUntil(() => currentURL() === "/inventory/listing");
+      assert.dom('tr .btn').exists({ count: 4 });
 
       // verify new location appears correctly along with default location
-      assert.dom('tr .btn').exists({ count: 4 });
-      await click('button:contains(Edit)');
+      await click(jquerySelect('button:contains(Edit)'));
+
       assert.dom('.test-location-quantity').exists({ count: 2 });
-      assert.equal(findAll('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
-      assert.equal(findAll('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
+      assert.equal(jqueryLength('.test-location-location:last:contains(newLocation)'), 1, 'newLocation appears');
+      assert.equal(jqueryLength('.test-location-quantity:last:contains(1000)'), 1, 'Has correct quantity in newLocation');
 
       // delete default location
-      await click('button:contains(Delete)');
+      await click(jquerySelect('button:contains(Delete)'));
       await waitToAppear('.modal-dialog');
-      await click('button:contains(Delete):last');
+      await click(jquerySelect('button:contains(Delete):last'));
       await waitToDisappear('.modal-dialog');
-      await click('button:contains(Return)');
+      await click(jquerySelect('button:contains(Return)'));
+      await waitUntil(() => console.log(currentURL()) || currentURL() === "/inventory/listing");
 
       // verify default location is gone and new location w/ all units is still there
       assert.dom('tr .btn').exists({ count: 4 });
-      await click('button:contains(Edit)');
+      await click(jquerySelect('button:contains(Edit)'));
       assert.dom('.test-location-quantity').exists({ count: 1 });
-      assert.equal(findAll('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
-      assert.equal(findAll('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
+      assert.equal(jqueryLength('.test-location-location:last:contains(newLocation)'), 1, 'newLocation appears');
+      assert.equal(jqueryLength('.test-location-quantity:last:contains(1000)'), 1, 'Has correct quantity in newLocation');
     });
   });
 
@@ -149,7 +158,7 @@ module('Acceptance | inventory', function(hooks) {
       await visit('/inventory/listing');
       assert.equal(currentURL(), '/inventory/listing');
 
-      await click('a:contains(Barcode)');
+      await click(jquerySelect('a:contains(Barcode)'));
       assert.equal(currentURL(), '/inventory/barcode/igbmk5zf_is');
       findWithAssert('.panel-body img[src^="data:image"]');
     });
@@ -161,14 +170,14 @@ module('Acceptance | inventory', function(hooks) {
       await visit('/inventory/listing');
       assert.equal(currentURL(), '/inventory/listing');
 
-      await click('button:contains(Delete)');
+      await click(jquerySelect('button:contains(Delete)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Delete Item', 'Deleting confirmation.');
 
-      await click('.modal-content button:contains(Delete)');
+      await click(jquerySelect('.modal-content button:contains(Delete)'));
       await waitToAppear('.panel-body .alert-info');
       assert.equal(currentURL(), '/inventory/listing');
-      findWithAssert('a:contains(Create a new record?)');
+      findWithAssert(jquerySelect('a:contains(Create a new record?)'));
     });
   });
 
@@ -183,15 +192,16 @@ module('Acceptance | inventory', function(hooks) {
       await typeAheadFillIn('.test-delivery-location', 'Harare');
       await typeAheadFillIn('.test-delivery-aisle', 'C100');
       await typeAheadFillIn('.test-bill-to', 'Accounts Dept');
-      await click('button:contains(Add)');
+      await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Request Updated', 'New request has been saved');
 
-      await click('button:contains(Ok)');
-      findWithAssert('button:contains(Fulfill)');
-      findWithAssert('button:contains(Cancel)');
+      await click(jquerySelect('button:contains(Ok)'));
+      findWithAssert(jquerySelect('button:contains(Fulfill)'));
+      findWithAssert(jquerySelect('button:contains(Cancel)'));
 
-      await click('button:contains(Cancel)');
+      await click(jquerySelect('button:contains(Cancel)'));
+      await waitUntil(() => currentURL() === "/inventory");
       assert.equal(currentURL(), '/inventory');
       assert.dom('tr').exists({ count: 3 }, 'Two requests are now displayed');
     });
@@ -205,18 +215,19 @@ module('Acceptance | inventory', function(hooks) {
       let tableRows = findAll('tr').length;
       assert.equal(tableRows, 2, 'One request not fulfilled');
 
-      await click('button:contains(Fulfill)');
-      findWithAssert('button:contains(Fulfill)');
-      findWithAssert('button:contains(Cancel)');
+      await click(jquerySelect('button:contains(Fulfill)'));
+      findWithAssert(jquerySelect('button:contains(Fulfill)'));
+      findWithAssert(jquerySelect('button:contains(Cancel)'));
 
-      await waitToAppear('.inventory-location option:contains(No Location)');
-      await click('button:contains(Fulfill)');
+      await waitToAppear(jquerySelect('.inventory-location option:contains(No Location)'));
+      await click(jquerySelect('button:contains(Fulfill)'));
       await waitToAppear('.modal-dialog');
 
-      let modalTitle = find('.modal-title');
-      assert.equal(modalTitle.text(), 'Request Fulfilled', 'Inventory request has been fulfilled');
+      assert.dom('.modal-title').hasText('Request Fulfilled', 'Inventory request has been fulfilled');
 
-      await click('button:contains(Ok)');
+      await click(jquerySelect('button:contains(Ok)'));
+
+      await waitUntil(() => currentURL() === "/inventory");
       assert.equal(currentURL(), '/inventory');
     });
   });
@@ -226,16 +237,16 @@ module('Acceptance | inventory', function(hooks) {
       await authenticateUser();
       await visit('/inventory');
       assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
-      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one request');
+      assert.equal(jqueryLength('button:contains(Delete)'), 1, 'There is one request');
 
-      await click('button:contains(Delete)');
+      await click(jquerySelect('button:contains(Delete)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Delete Item', 'Deleting confirmation');
 
-      await click('.modal-content button:contains(Delete)');
+      await click(jquerySelect('.modal-content button:contains(Delete)'));
       await waitToAppear('.panel-body .alert-info');
       assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
-      assert.equal(findAll('button:contains(Delete)').length, 0, 'Request was deleted');
+      assert.equal(jqueryLength('button:contains(Delete)'), 0, 'Request was deleted');
     });
   });
 
@@ -249,7 +260,7 @@ module('Acceptance | inventory', function(hooks) {
       await visit('/inventory');
 
       assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
-      assert.equal(findAll('button:contains(Delete)').length, 0, 'User doesn\'t see Delete button');
+      assert.equal(jqueryLength('button:contains(Delete)'), 0, 'User doesn\'t see Delete button');
     });
   });
 
@@ -265,13 +276,14 @@ module('Acceptance | inventory', function(hooks) {
       await fillIn('.test-inv-quantity input', 500);
       await fillIn('.test-inv-cost input', '2000');
       await waitToAppear('.inventory-distribution-unit');
-      await click('button:contains(Save)');
+      await click(jquerySelect('button:contains(Save)'));
       await waitToAppear('.modal-title');
 
-      let modalTitle = find('.modal-title');
-      assert.equal(modalTitle.text(), 'Inventory Purchases Saved', 'Inventory has been received');
+      assert.dom('.modal-title').hasText('Inventory Purchases Saved', 'Inventory has been received');
 
-      await click('button:contains(Ok)');
+      await click(jquerySelect('button:contains(Ok)'));
+
+      await waitUntil(() => currentURL() === "/inventory/listing");
       assert.equal(currentURL(), '/inventory/listing');
     });
   });
@@ -284,17 +296,17 @@ module('Acceptance | inventory', function(hooks) {
       await fillIn('[role="search"] div input', 'Biogesic');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/inventory/search/Biogesic', 'Searched for Biogesic');
-      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(jqueryLength('button:contains(Delete)'), 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'biogesic');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/inventory/search/biogesic', 'Searched with all lower case ');
-      assert.equal(findAll('button:contains(Delete)').length, 1, 'There is one search item');
+      assert.equal(jqueryLength('button:contains(Delete)'), 1, 'There is one search item');
 
       await fillIn('[role="search"] div input', 'ItemNotFound');
       await click('.glyphicon-search');
       assert.equal(currentURL(), '/inventory/search/ItemNotFound', 'Searched for ItemNotFound');
-      assert.equal(findAll('button:contains(Delete)').length, 0, 'There is no search result');
+      assert.equal(jqueryLength('button:contains(Delete)'), 0, 'There is no search result');
     });
   });
 
@@ -324,12 +336,12 @@ module('Acceptance | inventory', function(hooks) {
         await selectDate('.test-start-date input', startDate.toDate());
         await selectDate('.test-end-date input', endDate.toDate());
         await select('#report-type', `${reportName}`);
-        await click('button:contains(Generate Report)');
+        await click(jquerySelect('button:contains(Generate Report)'));
         await waitToAppear('.panel-title');
 
         let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
         assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
-        let exportLink = findWithAssert('a:contains(Export Report)');
+        let exportLink = findWithAssert(jquerySelect('a:contains(Export Report)'));
         assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
       });
     });
@@ -343,12 +355,12 @@ module('Acceptance | inventory', function(hooks) {
         assert.equal(currentURL(), '/inventory/reports');
 
         await select('#report-type', `${reportName}`);
-        await click('button:contains(Generate Report)');
+        await click(jquerySelect('button:contains(Generate Report)'));
         await waitToAppear('.panel-title');
 
         let reportTitle = `${reportName} Report ${moment().format('l')}`;
         assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
-        let exportLink = findWithAssert('a:contains(Export Report)');
+        let exportLink = findWithAssert(jquerySelect('a:contains(Export Report)'));
         assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
       });
     });

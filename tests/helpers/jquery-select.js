@@ -1,4 +1,4 @@
-export default function(selector) {
+export default function jquerySelect(selector) {
   let selected = $(selector);
   switch (selected.length) {
     case 0:
@@ -10,3 +10,5 @@ export default function(selector) {
       return selected.toArray();
   }
 }
+
+export let jqueryLength = selector => $(selector).length

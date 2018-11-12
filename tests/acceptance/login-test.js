@@ -1,4 +1,5 @@
 import { click, fillIn, currentURL, visit } from '@ember/test-helpers';
+import { default as jquerySelect } from "hospitalrun/tests/helpers/jquery-select";
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
@@ -48,7 +49,7 @@ module('Acceptance | login', function(hooks) {
 
       await fillIn('#identification', 'hradmin');
       await fillIn('#password', 'tset');
-      await click('button:contains(Sign in)');
+      await click(jquerySelect('button:contains(Sign in)'));
       await waitToAppear('.form-signin-alert');
 
       assert.dom('.form-signin-alert').hasText(errorMessage, 'Error reason is shown');
@@ -71,7 +72,7 @@ module('Acceptance | login', function(hooks) {
 
       await fillIn('#identification', !spaceAroundUsername ? 'hradmin' : ' hradmin');
       await fillIn('#password', 'test');
-      await click('button:contains(Sign in)');
+      await click(jquerySelect('button:contains(Sign in)'));
       await waitToAppear('.sidebar-nav-logo');
     });
   }

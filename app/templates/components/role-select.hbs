@@ -1,4 +1,4 @@
-<select {{action 'change' on='change'}} class="form-control">
+<select class="form-control" onchange={{action 'change'}} >
   {{#if prompt}}
     <option disabled selected={{is-not selection}}>
       {{prompt}}

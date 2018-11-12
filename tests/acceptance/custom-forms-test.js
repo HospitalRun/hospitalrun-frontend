@@ -1,5 +1,6 @@
 import { click, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
+import $select from 'hospitalrun/tests/helpers/jquery-select';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import { createCustomFormForType } from 'hospitalrun/tests/helpers/scenarios/custom-forms';
@@ -16,27 +17,28 @@ module('Acceptance | custom forms', function(hooks) {
     let header = ['______________________________'];
 
     async function verifyPreview() {
-      await click('button:contains(Preview)');
+      await click($select('button:contains(Preview)'));
       await waitToAppear('.form-preview');
-      assert.equal(findAll('.form-preview label:contains(Create a Pizza)').length, 1, 'Found Create a Pizza Label');
-      assert.equal(findAll(`.form-preview label:contains(${header})`).length, 1, `Found ${header} Label`);
-      assert.equal(findAll('.form-preview label:contains(Pizza Toppings)').length, 1, 'Found Pizza Toppings Label');
+      assert.equal($('.form-preview label:contains(Create a Pizza)').length, 1, 'Found Create a Pizza Label');
+      assert.equal($(`.form-preview label:contains(${header})`).length, 1, `Found ${header} Label`);
+      assert.equal($('.form-preview label:contains(Pizza Toppings)').length, 1, 'Found Pizza Toppings Label');
       toppings.forEach((topping) => {
-        assert.equal(findAll(`.form-preview label:contains(${topping}):has(input[type=checkbox])`).length, 1, `Found ${topping} checkbox`);
+        assert.equal($(`.form-preview label:contains(${topping}):has(input[type=checkbox])`).length, 1, `Found ${topping} checkbox`);
       });
-      assert.equal(findAll('.form-preview label:contains(Pizza Crust)').length, 1, 'Found Pizza Toppings Label');
+      assert.equal($('.form-preview label:contains(Pizza Crust)').length, 1, 'Found Pizza Toppings Label');
       crusts.forEach((crust) => {
-        assert.equal(findAll(`.form-preview option:contains(${crust})`).length, 1, `Found ${crust} option`);
+        assert.equal($(`.form-preview option:contains(${crust})`).length, 1, `Found ${crust} option`);
       });
-      assert.equal(findAll('.form-preview label:contains(Dessert)').length, 1, 'Found Pizza Toppings Label');
+      assert.equal($('.form-preview label:contains(Dessert)').length, 1, 'Found Pizza Toppings Label');
       desserts.forEach((dessert) => {
-        assert.equal(findAll(`.form-preview label:contains(${dessert}):has(input[type=radio])`).length, 1, `Found ${dessert} radio option`);
+        assert.equal($(`.form-preview label:contains(${dessert}):has(input[type=radio])`).length, 1, `Found ${dessert} radio option`);
       });
-      assert.equal(findAll('.form-preview label:contains(Beverage)').length, 1, 'Found Beverage Label');
+
+      assert.equal($('.form-preview label:contains(Beverage)').length, 1, 'Found Beverage Label');
       assert.dom('.form-preview input[id*=beverage]').exists({ count: 1 }, 'Found Beverage input');
-      assert.equal(findAll('.form-preview label:contains(Special Instructions)').length, 1, 'Found Special Instructions Label');
+      assert.equal($('.form-preview label:contains(Special Instructions)').length, 1, 'Found Special Instructions Label');
       assert.dom('.form-preview textarea[id*=specialInstructions]').exists({ count: 1 }, 'Found special instructions textarea');
-      await click('button:contains(Preview)'); // Hide preview to reset it back to being closed.
+      await click($select('button:contains(Preview)')); // Hide preview to reset it back to being closed.
     }
 
     return runWithPouchDump('default', async function() {
@@ -47,22 +49,22 @@ module('Acceptance | custom forms', function(hooks) {
 
       await createCustomFormForType('Visit', false, assert);
       await verifyPreview();
-      await click('button:contains(Return)');
+      await click($select('button:contains(Return)'));
       await waitToAppear('.view-current-title:contains(Custom Forms)');
-      assert.equal(findAll('.custom-form-name:contains(Test Custom Form)').length, 1, 'Custom form appears in listing.');
+      assert.equal($('.custom-form-name:contains(Test Custom Form)').length, 1, 'Custom form appears in listing.');
 
-      await click('button:contains(Edit)');
+      await click($select('button:contains(Edit)'));
       await waitToAppear('button:contains(Preview)');
       assert.dom('.view-current-title').hasText('Edit Custom Form', 'Custom form edit page displays');
 
       await verifyPreview();
-      await click('button:contains(Return)');
+      await click($select('button:contains(Return)'));
       await waitToAppear('.view-current-title:contains(Custom Forms)');
-      await click('button:contains(Delete)');
+      await click($select('button:contains(Delete)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Delete Custom Form', 'Delete confirmation displays');
 
-      await click('.modal-footer button:contains(Ok)');
+      await click($select('.modal-footer button:contains(Ok)'));
       assert.dom('.custom-form-name').doesNotExist('Deleted custom form disappears from custom form listing.');
     });
   });

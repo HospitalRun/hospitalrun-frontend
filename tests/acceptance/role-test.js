@@ -1,4 +1,17 @@
-import { click, currentURL, visit } from '@ember/test-helpers';
+import {
+  click,
+  fillIn,
+  find,
+  findAll,
+  currentURL,
+  visit,
+  waitUntil
+} from "@ember/test-helpers";
+import { findWithAssert } from "ember-native-dom-helpers";
+import {
+  default as jquerySelect,
+  jqueryLength
+} from "hospitalrun/tests/helpers/jquery-select";
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -25,12 +38,12 @@ module('Acceptance | roles', function(hooks) {
       assert.dom('.checkbox-appointments input').isChecked('Appointments checkbox is checked');
       assert.dom('.checkbox-addAppointment input').isChecked('Add appointments checkbox is checked');
 
-      await click('button:contains(Update)');
+      await click(jquerySelect('button:contains(Update)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Role Saved', 'Role has been saved');
       assert.dom('.modal-body').hasText('The Doctor role has been saved.', 'Doctor role has been saved');
 
-      await click('button:contains(Ok)');
+      await click(jquerySelect('button:contains(Ok)'));
       await invalidateSession();
       await visit('/login');
 

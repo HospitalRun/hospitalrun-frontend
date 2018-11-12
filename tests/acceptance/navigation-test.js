@@ -1,4 +1,5 @@
 import { click, fillIn, visit } from '@ember/test-helpers';
+import { default as jquerySelect } from "hospitalrun/tests/helpers/jquery-select";
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
@@ -28,7 +29,7 @@ module('Acceptance | navigation', function(hooks) {
 
       await click('.settings-trigger');
       await waitToAppear('a:contains(About HospitalRun)');
-      await click('a:contains(About HospitalRun)');
+      await click(jquerySelect('a:contains(About HospitalRun)'));
 
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('About HospitalRun', 'About dialog is shown');
@@ -53,7 +54,7 @@ module('Acceptance | navigation', function(hooks) {
       await visit('/patients');
 
       await fillIn('.sidebar-nav-search div input', 'fakeSearchText');
-      await click('a:contains(Inventory)');
+      await click(jquerySelect('a:contains(Inventory)'));
       await waitToAppear('h1:contains(Requests)');
       assert.dom('.sidebar-nav-search div input').hasValue('');
     });

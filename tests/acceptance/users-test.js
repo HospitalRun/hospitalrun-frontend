@@ -10,6 +10,10 @@ import addOfflineUsersForElectron from 'hospitalrun/tests/helpers/add-offline-us
 import select from 'hospitalrun/tests/helpers/select';
 import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
+import {
+  default as jquerySelect,
+  jqueryLength
+} from "hospitalrun/tests/helpers/jquery-select";
 
 const MOCK_USER_DATA = [{
   'id': 'org.couchdb.user:hradmin',
@@ -94,10 +98,10 @@ module('Acceptance | users', function(hooks) {
       await addAllUsers(assert);
       await visit('/'); // Default home page for User Administrator is admin/users
       assert.equal(currentURL(), '/admin/users', 'User Administrator initial page displays');
-      assert.equal(find('td.user-display-name:first').textContent, 'HospitalRun Administrator');
-      assert.equal(find('td.user-name:first').textContent, 'hradmin');
-      assert.equal(find('td.user-email:first').textContent, 'hradmin@hospitalrun.io');
-      assert.equal(find('td.user-role:first').textContent, 'System Administrator');
+      assert.equal(find(jquerySelect('td.user-display-name:first')).textContent, 'HospitalRun Administrator');
+      assert.equal(find(jquerySelect('td.user-name:first')).textContent, 'hradmin');
+      assert.equal(find(jquerySelect('td.user-email:first')).textContent, 'hradmin@hospitalrun.io');
+      assert.equal(find(jquerySelect('td.user-role:first')).textContent, 'System Administrator');
     });
   });
 
@@ -128,16 +132,16 @@ module('Acceptance | users', function(hooks) {
       });
 
       await visit('/admin/users/edit/new');
-      await select('.user-role', 'Hospital Administrator');
+
+      await select('.user-role select', 'Hospital Administrator');
       await fillIn('.user-display-name input', 'Jane Bagadonuts');
       await fillIn('.user-email input', 'jane@donuts.com');
       await fillIn('.user-password input', 'password');
-      await click('button:contains(Add)');
+      await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('User Saved', 'User was saved successfully');
       assert.dom('.view-current-title').hasText('Edit User', 'Page title changed to Edit User');
-
-      await click('button:contains(Ok)');
+      await click(jquerySelect('button:contains(Ok)'));
     });
   });
 
@@ -171,12 +175,12 @@ module('Acceptance | users', function(hooks) {
       });
 
       await visit('/admin/users');
-      await click('button:contains(Delete):last');
+      await click(jquerySelect('button:contains(Delete):last'));
       await waitToAppear('.modal-dialog');
       assert.dom('.alert').hasText('Are you sure you wish to delete ?', 'User is displayed for deletion');
 
-      await click('button:contains(Delete):last');
-      assert.equal(findAll('.user-email:contains(joe@donuts.com)').length, 0, 'User disappears from user list');
+      await click(jquerySelect('button:contains(Delete):last'));
+      assert.equal(jqueryLength('.user-email:contains(joe@donuts.com)'), 0, 'User disappears from user list');
     });
   });
 });

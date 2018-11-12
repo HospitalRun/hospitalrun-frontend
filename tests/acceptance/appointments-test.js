@@ -1,9 +1,11 @@
-import { click, fillIn, find, findAll, currentURL, visit } from '@ember/test-helpers';
+import { click, fillIn, find, findAll, currentURL, visit, settled as wait, waitUntil } from '@ember/test-helpers';
+import { findWithAssert } from 'ember-native-dom-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import moment from 'moment';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
+import $select from 'hospitalrun/tests/helpers/jquery-select';
 import selectDate from 'hospitalrun/tests/helpers/select-date';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
@@ -21,7 +23,7 @@ module('Acceptance | appointments', function(hooks) {
       await authenticateUser();
       await visit('/appointments');
       assert.equal(currentURL(), '/appointments');
-      findWithAssert('button:contains(new appointment)');
+      findWithAssert($select('button:contains(new appointment)'));
       assert.dom('.table-header').exists();
     });
   });
@@ -41,7 +43,7 @@ module('Acceptance | appointments', function(hooks) {
       });
       await visit(url);
       assert.equal(currentURL(), url);
-      findWithAssert(`.appointment-status:contains(${status})`);
+      findWithAssert($select(`.appointment-status:contains(${status})`));
     });
   });
 
@@ -52,8 +54,8 @@ module('Acceptance | appointments', function(hooks) {
       assert.dom('.appointment-date').doesNotExist('should have 0 appointment today');
       await visit('/appointments/edit/new');
       assert.equal(currentURL(), '/appointments/edit/new');
-      findWithAssert('button:contains(Cancel)');
-      findWithAssert('button:contains(Add)');
+      findWithAssert($select('button:contains(Cancel)'));
+      findWithAssert($select('button:contains(Add)'));
 
       await createAppointment(assert);
 
@@ -69,16 +71,17 @@ module('Acceptance | appointments', function(hooks) {
       await visit('/appointments/edit/new');
 
       assert.equal(currentURL(), '/appointments/edit/new');
-      findWithAssert('button:contains(Cancel)');
-      findWithAssert('button:contains(Add)');
+      findWithAssert($select('button:contains(Cancel)'));
+      findWithAssert($select('button:contains(Add)'));
 
       await createAppointment(assert);
+      await waitUntil(() => currentURL() === "/appointments");
 
       assert.equal(currentURL(), '/appointments');
       assert.dom('tr').exists({ count: 2 }, 'New appointment has been added');
-      findWithAssert('button:contains(Check In)');
-      findWithAssert('button:contains(Edit)');
-      findWithAssert('button:contains(Delete)');
+      findWithAssert($select('button:contains("Check In")'));
+      findWithAssert($select('button:contains(Edit)'));
+      findWithAssert($select('button:contains(Delete)'));
     });
   });
 
@@ -88,9 +91,9 @@ module('Acceptance | appointments', function(hooks) {
       let tomorrow =  moment(today).add(24, 'hours');
       await authenticateUser();
       await visit('/patients');
-      findWithAssert('button:contains(Edit)');
+      findWithAssert($select('button:contains(Edit)'));
 
-      await click('button:contains(Edit)');
+      await click($select('button:contains(Edit)'));
       assert.dom('button[data-test-selector="appointments-btn"]').exists({ count: 1 }, 'Tab Appointments shown AFTER clicking edit');
 
       await click('button[data-test-selector="appointments-btn"]');
@@ -102,13 +105,15 @@ module('Acceptance | appointments', function(hooks) {
       await fillIn('.test-appointment-end input', tomorrow.format(DATE_FORMAT));
       await typeAheadFillIn('.test-appointment-location', 'Harare');
       await typeAheadFillIn('.test-appointment-with', 'Dr Test');
-      await click('button:contains(Add)');
+      await click($select('button:contains(Add)'));
 
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Appointment Saved', 'Appointment has been saved');
-      await click('.modal-footer button:contains(Ok)');
+      await click($select('.modal-footer button:contains(Ok)'));
 
-      await click('button:contains(Return)');
+      await click($select('button:contains(Return)'));
+
+      await waitUntil(() => currentURL().includes("/patients/edit/"));
       assert.equal(currentURL().substr(0, 15), '/patients/edit/', 'Back on patient edit screen');
     });
   });
@@ -120,16 +125,17 @@ module('Acceptance | appointments', function(hooks) {
       await visit('/appointments/edit/new');
 
       assert.equal(currentURL(), '/appointments/edit/new');
-      findWithAssert('button:contains(Cancel)');
-      findWithAssert('button:contains(Add)');
+      findWithAssert($select('button:contains(Cancel)'));
+      findWithAssert($select('button:contains(Add)'));
 
       await createAppointment(assert);
 
+      await waitUntil(() => currentURL() === "/appointments");
       assert.equal(currentURL(), '/appointments');
       assert.dom('tr').exists({ count: 2 }, 'New appointment has been added');
-      findWithAssert('button:contains(Edit)');
+      findWithAssert($select('button:contains(Edit)'));
 
-      await click('button:contains(Edit)');
+      await click($select('button:contains(Edit)'));
 
       assert.equal(currentURL().substring(0, 19), '/appointments/edit/');
       assert.dom('.appointment-all-day input').hasValue('on', 'All day appointment is on');
@@ -137,7 +143,7 @@ module('Acceptance | appointments', function(hooks) {
       await select('.test-appointment-type', 'Clinic');
 
       assert.dom('.test-appointment-date input').hasValue(today.format(DATE_FORMAT), 'Single date field found');
-      assert.equal(find('.appointment-all-day').value, '', 'All day appointment was turned off');
+      assert.equal(find('.appointment-all-day').value, undefined, 'All day appointment was turned off');
     });
   });
 
@@ -149,32 +155,34 @@ module('Acceptance | appointments', function(hooks) {
 
       assert.equal(currentURL(), '/appointments');
       assert.dom('tr').exists({ count: 2 }, 'New appointment has been added');
-      findWithAssert('button:contains(Check In)');
-      findWithAssert('button:contains(Edit)');
-      findWithAssert('button:contains(Delete)');
+      findWithAssert($select('button:contains(Check In)'));
+      findWithAssert($select('button:contains(Edit)'));
+      findWithAssert($select('button:contains(Delete)'));
 
-      await click('button:contains(Check In)');
+      await click($select('button:contains(Check In)'));
 
+      await waitUntil(() => currentURL() === "/visits/edit/checkin");
       assert.equal(currentURL(), '/visits/edit/checkin', 'Now in add visiting information route');
 
-      await click('.panel-footer button:contains(Check In)');
+      await click($select('.panel-footer button:contains(Check In)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Patient Checked In', 'Patient has been checked in');
 
-      await click('button:contains(Ok)');
-      findWithAssert('button:contains(New Note)');
-      findWithAssert('button:contains(New Procedure)');
-      findWithAssert('button:contains(New Medication)');
-      findWithAssert('button:contains(New Lab)');
-      findWithAssert('button:contains(New Imaging)');
-      findWithAssert('button:contains(New Vitals)');
-      findWithAssert('button:contains(Add Item)');
+      await click($select('button:contains(Ok)'));
+      findWithAssert($select('button:contains(New Note)'));
+      findWithAssert($select('button:contains(New Procedure)'));
+      findWithAssert($select('button:contains(New Medication)'));
+      findWithAssert($select('button:contains(New Lab)'));
+      findWithAssert($select('button:contains(New Imaging)'));
+      findWithAssert($select('button:contains(New Vitals)'));
+      findWithAssert($select('button:contains(Add Item)'));
 
-      await click('button:contains(Return)');
+      await click($select('button:contains(Return)'));
+      await waitUntil(() => currentURL() === "/appointments");
       assert.equal(currentURL(), '/appointments');
-      assert.equal(findAll('button:contains(Check In)').length, 0, 'Check In button no longer appears');
-      findWithAssert('button:contains(Edit)');
-      findWithAssert('button:contains(Delete)');
+      assert.equal($('button:contains(Check In)').length, 0, 'Check In button no longer appears');
+      findWithAssert($select('button:contains(Edit)'));
+      findWithAssert($select('button:contains(Delete)'));
     });
   });
 
@@ -184,20 +192,22 @@ module('Acceptance | appointments', function(hooks) {
       await createAppointment(assert);
       await visit('/appointments');
 
+      await waitUntil(() => currentURL() === "/appointments");
       assert.equal(currentURL(), '/appointments');
-      assert.dom('.appointment-date').exists({ count: 1 }, 'One appointment is listed');
-      findWithAssert('button:contains(Check In)');
-      findWithAssert('button:contains(Edit)');
-      findWithAssert('button:contains(Delete)');
 
-      await click('button:contains(Delete)');
+      assert.dom('.appointment-date').exists({ count: 1 }, 'One appointment is listed');
+      findWithAssert($select('button:contains(Check In)'));
+      findWithAssert($select('button:contains(Edit)'));
+      findWithAssert($select('button:contains(Delete)'));
+
+      await click($select('button:contains(Delete)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText(
         'Delete Appointment',
         'Delete Appointment confirmation modal has been displayed'
       );
 
-      await click('.modal-dialog button:contains(Delete)');
+      await click($select('.modal-dialog button:contains(Delete)'));
       await waitToDisappear('.appointment-date');
       assert.dom('.appointment-date').doesNotExist('No appointments are displayed');
     });
@@ -237,33 +247,37 @@ module('Acceptance | appointments', function(hooks) {
       await authenticateUser();
 
       await createAppointment(assert);
+      await waitUntil(() => currentURL() === "/appointments");
+
       await createAppointment(assert, {
         startDate: moment().startOf('day').add(1, 'years'),
         startTime: moment().startOf('day').add(1, 'years').format(TIME_FORMAT),
         endDate: moment().endOf('day').add(1, 'years').add(2, 'days'),
         endTime: moment().endOf('day').add(1, 'years').add(2, 'days').format(TIME_FORMAT)
       });
+      await waitUntil(() => currentURL() === "/appointments");
 
       await visit('/appointments/search');
 
-      findWithAssert(':contains(Search Appointments)');
-      findWithAssert(':contains(Show Appointments On Or After)');
-      findWithAssert(':contains(Status)');
-      findWithAssert(':contains(Type)');
-      findWithAssert(':contains(With)');
+      await findWithAssert($select('.view-current-title:contains(Search Appointments)'));
+      await findWithAssert($select('.control-label:contains(Show Appointments On Or After)'));
+      await findWithAssert($select('.control-label:contains(Status)'));
+      await findWithAssert($select('.control-label:contains(Type)'));
+      await findWithAssert($select('.control-label:contains(With)'));
 
       let desiredDate = moment().endOf('day').add(363, 'days').format('l');
       let datePicker = '.test-selected-start-date input';
       await selectDate(datePicker, desiredDate);
-      await click('button:contains(Search)');
+      // console.log($select('button:contains(Search)'));
+      await click($('button:contains(Search)').get(0));
 
       let date = moment().endOf('day').add(1, 'years').add(2, 'days').format('l');
-      findWithAssert(`.appointment-status:contains(${status})`);
+      await findWithAssert($(`.appointment-status:contains(${status})`).get(0));
       let element = `tr:contains(${date})`;
-      findWithAssert(element);
+      await findWithAssert($(element).get(0));
       date = moment().startOf('day').add(1, 'years');
-      element = find(`tr:contains(${date})`);
-      assert.equal(element.length, 0);
+      element = $(`tr:contains(${date})`).get(0);
+      assert.equal(element, null);
     });
   });
 
@@ -338,12 +352,13 @@ module('Acceptance | appointments', function(hooks) {
 
     await typeAheadFillIn('.test-appointment-location', 'Harare');
     await typeAheadFillIn('.test-appointment-with', 'Dr Test');
-    await click('button:contains(Add)');
+    await click($select('button:contains(Add)'));
     await waitToAppear('.modal-dialog');
     assert.dom('.modal-title').hasText('Appointment Saved', 'Appointment has been saved');
 
-    await click('.modal-footer button:contains(Ok)');
-    await click('button:contains(Return)');
+    await click($select('.modal-footer button:contains(Ok)'));
+
+    await click($select('button:contains(Return)'));
   }
 
   function getHour(date) {

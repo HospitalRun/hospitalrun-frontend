@@ -1,3 +1,4 @@
+import { settled as wait } from "@ember/test-helpers";
 import PouchDB from 'pouchdb';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 
