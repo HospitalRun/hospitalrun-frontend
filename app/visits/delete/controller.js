@@ -16,16 +16,6 @@ export default AbstractDeleteController.extend(PouchDbMixin, ProgressDialog, Cas
     return this.get('deleteVisitTask').perform(visit);
   },
 
-  getVisitInvoices(visit) {
-    let visitId = visit.get('id');
-    return this.store.query('invoice', {
-      options: {
-        key: visitId
-      },
-      mapReduce: 'invoice_by_visit'
-    });
-  },
-
   deleteActionTask: task(function* (visit) {
     // delete related records without modal dialogs
     this.send('closeModal');

@@ -26,9 +26,7 @@ export default Mixin.create({
   }).group('deleting'),
 
   deleteSingle(record) {
-    let deleteRecordTask = this.get('deleteRecordTask');
-    deleteRecordTask.perform(record);
-    return;
+    return this.get('deleteRecordTask').perform(record);
   },
 
   deleteRecordTask: task(function* (recordToDelete) {
@@ -63,6 +61,16 @@ export default Mixin.create({
     yield all(pendingTasks);
     return yield this.deleteSingle(visit);
   }).group('deleting'),
+
+  getVisitInvoices(visit) {
+    let visitId = visit.get('id');
+    return this.store.query('invoice', {
+      options: {
+        key: visitId
+      },
+      mapReduce: 'invoice_by_visit'
+    });
+  },
 
   deleteInvoices(invoices) {
     return this.get('deleteInvoicesTask').perform(invoices);

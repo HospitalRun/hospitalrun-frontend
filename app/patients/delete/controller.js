@@ -1,7 +1,6 @@
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import PatientVisitsMixin from 'hospitalrun/mixins/patient-visits';
 import PatientAppointmentsMixin from 'hospitalrun/mixins/patient-appointments';
-import PatientInvoicesMixin from 'hospitalrun/mixins/patient-invoices';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import CascadingDeletions from 'hospitalrun/mixins/cascading-deletion';
@@ -20,7 +19,6 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
 
   deletePatientTask: task(function* (patient) {
     let visits = yield this.getPatientVisits(patient);
-    let invoices = yield this.getPatientInvoices(patient);
     let appointments = yield this.getPatientAppointments(patient);
     let payments = yield patient.get('payments');
 
@@ -42,7 +40,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     let deleteVisitTask = this.get('deleteVisitTask');
     let pendingTasks = [];
     visits.forEach((visit) => {
-      pendingTasks.push(deleteVisitTask(visit));
+      pendingTasks.push(deleteVisitTask.perform(visit));
     });
     yield all(pendingTasks);
   }),
