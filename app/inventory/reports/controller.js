@@ -1292,43 +1292,49 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     }
   },
 
+  _validateDates() {
+    let reportType = this.get('reportType');
+    if (reportType === 'byLocation' || reportType === 'valuation') {
+      return true;
+    }
+
+    return this._validateDateInputs();
+  },
+
   actions: {
     generateReport() {
-      let endDate = this.get('endDate');
       let reportRows = this.get('reportRows');
       let reportType = this.get('reportType');
-      let startDate = this.get('startDate');
-      if (isEmpty(startDate) && isEmpty(endDate)) {
-        return;
-      }
-      reportRows.clear();
-      this.showProgressModal();
-      switch (reportType) {
-        case 'expiration': {
-          this._generateExpirationReport();
-          break;
-        }
-        case 'summaryFinance': {
-          this._generateFinancialSummaryReport();
-          break;
-        }
-        case 'detailedExpense':
-        case 'summaryExpense': {
-          let expenseCategories = this.get('expenseCategories');
-          let expenseMap = {};
-          expenseCategories.forEach(function(category) {
-            expenseMap[category] = {
-              total: 0,
-              expenseAccounts: []
-            };
-          });
-          this.set('expenseMap', expenseMap);
-          this._generateInventoryReport();
-          break;
-        }
-        default: {
-          this._generateInventoryReport();
-          break;
+      if (this._validateDates()) {
+        reportRows.clear();
+        this.showProgressModal();
+        switch (reportType) {
+          case 'expiration': {
+            this._generateExpirationReport();
+            break;
+          }
+          case 'summaryFinance': {
+            this._generateFinancialSummaryReport();
+            break;
+          }
+          case 'detailedExpense':
+          case 'summaryExpense': {
+            let expenseCategories = this.get('expenseCategories');
+            let expenseMap = {};
+            expenseCategories.forEach(function(category) {
+              expenseMap[category] = {
+                total: 0,
+                expenseAccounts: []
+              };
+            });
+            this.set('expenseMap', expenseMap);
+            this._generateInventoryReport();
+            break;
+          }
+          default: {
+            this._generateInventoryReport();
+            break;
+          }
         }
       }
     },

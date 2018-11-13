@@ -5,7 +5,7 @@ import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
 import selectDate from 'hospitalrun/tests/helpers/select-date';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
-import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
+import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
 
 moduleForAcceptance('Acceptance | inventory');
@@ -99,45 +99,6 @@ test('Items with negative quantites should not be saved', (assert) => {
       'not a valid number',
       'Error message should be present for invalid quantities'
     );
-  });
-});
-
-test('Transfer or Delete location should update inventory item', (assert) => {
-  return runWithPouchDump('inventory', async function() {
-    await authenticateUser();
-    await visit('/inventory/listing');
-    assert.equal(currentURL(), '/inventory/listing');
-
-    // transfer all units to a new location
-    await click('button:contains(Edit)');
-    await click('button:contains(Transfer)');
-    await waitToAppear('.modal-dialog');
-    await typeAheadFillIn('.test-transfer-location', 'newLocation');
-    await fillIn('.test-adjustment-quantity input', 1000);
-    await click('button:contains(Transfer):last');
-    await waitToDisappear('.modal-dialog');
-    await click('button:contains(Return)');
-
-    // verify new location appears correctly along with default location
-    assert.dom('tr .btn').exists({ count: 4 });
-    await click('button:contains(Edit)');
-    assert.dom('.test-location-quantity').exists({ count: 2 });
-    assert.equal(find('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
-    assert.equal(find('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
-
-    // delete default location
-    await click('button:contains(Delete)');
-    await waitToAppear('.modal-dialog');
-    await click('button:contains(Delete):last');
-    await waitToDisappear('.modal-dialog');
-    await click('button:contains(Return)');
-
-    // verify default location is gone and new location w/ all units is still there
-    assert.dom('tr .btn').exists({ count: 4 });
-    await click('button:contains(Edit)');
-    assert.dom('.test-location-quantity').exists({ count: 1 });
-    assert.equal(find('.test-location-location:last:contains(newLocation)').length, 1, 'newLocation appears');
-    assert.equal(find('.test-location-quantity:last:contains(1000)').length, 1, 'Has correct quantity in newLocation');
   });
 });
 
@@ -296,19 +257,35 @@ test('Searching inventory', function(assert) {
   });
 });
 
-testSimpleReportForm('Detailed Adjustment');
-testSimpleReportForm('Detailed Purchase');
-testSimpleReportForm('Detailed Stock Usage');
-testSimpleReportForm('Detailed Stock Transfer');
-testSimpleReportForm('Detailed Expenses');
-testSimpleReportForm('Expiration Date');
-testSimpleReportForm('Summary Expenses');
-testSimpleReportForm('Summary Purchase');
-testSimpleReportForm('Summary Stock Usage');
-testSimpleReportForm('Summary Stock Transfer');
-testSimpleReportForm('Finance Summary');
-testSingleDateReportForm('Inventory By Location');
-testSingleDateReportForm('Inventory Valuation');
+const startAndEndDateReportTypes = [
+  'Days Supply Left In Stock',
+  'Detailed Adjustment',
+  'Detailed Purchase',
+  'Detailed Stock Usage',
+  'Detailed Stock Transfer',
+  'Detailed Expenses',
+  'Expiration Date',
+  'Summary Expenses',
+  'Summary Purchase',
+  'Summary Stock Usage',
+  'Summary Stock Transfer',
+  'Finance Summary'
+];
+
+const singleDateReportTypes = [
+  'Inventory By Location',
+  'Inventory Valuation'
+];
+
+startAndEndDateReportTypes.forEach((reportName) => {
+  testSimpleReportForm(reportName);
+  testReportWithEmptyEndDate(reportName);
+  testReportWithEmptyEndDateBeforeStartDate(reportName);
+});
+
+singleDateReportTypes.forEach((reportName) => {
+  testSingleDateReportForm(reportName);
+});
 
 function testSimpleReportForm(reportName) {
   test(`${reportName} report can be generated`, function(assert) {
@@ -324,8 +301,53 @@ function testSimpleReportForm(reportName) {
       await select('#report-type', `${reportName}`);
       await click('button:contains(Generate Report)');
       await waitToAppear('.panel-title');
-
       let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
+      assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
+      let exportLink = findWithAssert('a:contains(Export Report)');
+      assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
+    });
+  });
+}
+
+async function generateReport(reportName, startDate, endDate) {
+  await authenticateUser();
+  await visit('/inventory/reports');
+
+  if (startDate) {
+    await selectDate('.test-start-date input', moment(startDate).toDate());
+  }
+
+  if (endDate) {
+    await selectDate('.test-end-date input', moment(endDate).toDate());
+  }
+
+  await select('#report-type', `${reportName}`);
+  await click('button:contains(Generate Report)');
+}
+
+function testReportWithEmptyEndDateBeforeStartDate(reportName) {
+  test('${reportName} report with end date before start date should display an error', (assert) => {
+    return runWithPouchDump('default', async function() {
+      let endDate = '12/10/2016';
+      let startDate = '12/11/2016';
+      await generateReport(reportName, startDate, endDate);
+      await waitToAppear('.modal-dialog');
+      assert.dom('.modal-title').hasText('Error Generating Report', 'Error Generating Report');
+      assert.dom('.modal-body').hasText('Please enter an end date after the start date.');
+    });
+  });
+}
+
+function testReportWithEmptyEndDate(reportName) {
+  test(`${reportName} report can be generated with empty end date`, function(assert) {
+    return runWithPouchDump('default', async function() {
+
+      let startDate = '12/11/2016';
+      let endDate = new Date();
+      await generateReport(reportName, startDate, null);
+      await waitToAppear('.panel-title');
+      assert.equal(currentURL(), '/inventory/reports');
+      let reportTitle = `${reportName} Report ${moment(startDate).format('l')} - ${moment(endDate).format('l')}`;
       assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
       let exportLink = findWithAssert('a:contains(Export Report)');
       assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
@@ -336,15 +358,11 @@ function testSimpleReportForm(reportName) {
 function testSingleDateReportForm(reportName) {
   test(`${reportName} report can be generated`, function(assert) {
     return runWithPouchDump('default', async function() {
-      await authenticateUser();
-      await visit('/inventory/reports');
-      assert.equal(currentURL(), '/inventory/reports');
-
-      await select('#report-type', `${reportName}`);
-      await click('button:contains(Generate Report)');
+      let startDate = new Date();
+      await generateReport(reportName, null, null);
       await waitToAppear('.panel-title');
-
-      let reportTitle = `${reportName} Report ${moment().format('l')}`;
+      assert.equal(currentURL(), '/inventory/reports');
+      let reportTitle = `${reportName} Report ${moment(startDate).format('l')}`;
       assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
       let exportLink = findWithAssert('a:contains(Export Report)');
       assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);

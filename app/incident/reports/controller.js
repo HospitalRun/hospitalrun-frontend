@@ -63,21 +63,19 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   _findIncidentsByDate() {
     let filterEndDate = get(this, 'endDate');
     let filterStartDate = get(this, 'startDate');
+
     let findParams = {
       options: {},
       mapReduce: 'incident_by_date'
     };
-    let maxValue = get(this, 'maxValue');
-    return new RSVP.Promise(function(resolve, reject) {
-      if (isEmpty(filterStartDate)) {
-        reject('Start date cannot be an empty value.');
-      }
-      findParams.options.startkey =  [filterStartDate.getTime(), null];
 
-      if (!isEmpty(filterEndDate)) {
-        filterEndDate = moment(filterEndDate).endOf('day').toDate();
-        findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
-      }
+    let maxValue = get(this, 'maxValue');
+
+    return new RSVP.Promise(function(resolve, reject) {
+      findParams.options.startkey =  [filterStartDate.getTime(), null];
+      filterEndDate = moment(filterEndDate).endOf('day').toDate();
+      findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
+
       return this.store.query('incident', findParams).then(resolve, reject);
     }.bind(this));
   },
@@ -143,22 +141,28 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     return types;
   },
 
+  _validateDates() {
+    return this._validateDateInputs();
+  },
+
   actions: {
     generateReport() {
-      let reportRows = get(this, 'reportRows');
-      let reportType = get(this, 'reportType');
-      reportRows.clear();
-      this.showProgressModal();
-      switch (reportType) {
-        case 'department':
-        case 'incidentCategory': {
-          this._findIncidentsByDate().then((incidents) => {
-            this._generateByDepartmentOrByIncidentCategoryReport(incidents, reportType);
-          }).catch((ex) => {
-            console.log('Error:', ex);
-            this.closeProgressModal();
-          });
-          break;
+      if (this._validateDates()) {
+        let reportRows = get(this, 'reportRows');
+        let reportType = get(this, 'reportType');
+        reportRows.clear();
+        this.showProgressModal();
+        switch (reportType) {
+          case 'department':
+          case 'incidentCategory': {
+            this._findIncidentsByDate().then((incidents) => {
+              this._generateByDepartmentOrByIncidentCategoryReport(incidents, reportType);
+            }).catch((ex) => {
+              console.log('Error:', ex);
+              this.closeProgressModal();
+            });
+            break;
+          }
         }
       }
     }
