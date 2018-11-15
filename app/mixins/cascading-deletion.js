@@ -42,20 +42,21 @@ export default Mixin.create({
     let labCharges = labs.get('charges');
     let imagingCharges = imaging.get('charges');
     let visitCharges = visit.get('charges');
-    pendingTasks.push(this.deleteMany(labCharges));
     pendingTasks.push(this.deleteMany(labs));
+    pendingTasks.push(this.deleteMany(labCharges));
     pendingTasks.push(this.deleteMany(visit.get('patientNotes')));
     pendingTasks.push(this.deleteMany(visit.get('vitals')));
-    pendingTasks.push(this.deleteMany(procCharges));
     pendingTasks.push(this.deleteMany(procedures));
+    pendingTasks.push(this.deleteMany(procCharges));
     pendingTasks.push(this.deleteMany(visit.get('medication')));
-    pendingTasks.push(this.deleteMany(imagingCharges));
     pendingTasks.push(this.deleteMany(imaging));
+    pendingTasks.push(this.deleteMany(imagingCharges));
     pendingTasks.push(this.deleteMany(visitCharges));
     pendingTasks.push(this.deleteInvoices(invoices));
 
-    // this is to hide the visit's procedures/labs/imaging/medication properties from being shown on the patient/edit template
-    // which otherwise causes errors while deleting visit from patient/edit screen
+    // this is to hide the visit's procedures/labs/imaging/medication details from being shown on the patient/edit template
+    // which otherwise causes errors while deleting visit from patient/edit screen, due to attempting to calculate computed properties
+    // on some of these records (which template refers to) while other records are being deleted
     visit.set('willBeDeleted', true);
 
     yield all(pendingTasks);
