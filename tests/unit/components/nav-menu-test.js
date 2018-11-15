@@ -1,10 +1,12 @@
 import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
+import { setupRenderingTest } from "ember-qunit";
+import { render } from "@ember/test-helpers";
+import hbs from "htmlbars-inline-precompile";
 
 module('NavMenuComponent', function(hooks) {
-  setupTest(hooks);
+  setupRenderingTest(hooks);
 
-  test('it renders', function(assert) {
+  test('it renders', async function(assert) {
 
     assert.expect(2);
 
@@ -17,23 +19,24 @@ module('NavMenuComponent', function(hooks) {
         title: 'Requests',
         iconClass: 'octicon-chevron-right',
         route: 'inventory.index',
-        capability: 'add_inventory_request'
+        capability: 'add_inventory_request',
+        localizedTitle: 'First Menu Item'
       }, {
         title: 'Items',
         iconClass: 'octicon-chevron-right',
         route: 'inventory.listing',
-        capability: 'inventory'
+        capability: 'inventory',
+        localizedTitle: 'Second Menu Item'
       }]
     };
 
-    // creates the component instance
-    let navMenuProperties = { nav: startingMenu };
-    let navMenu = this.owner.factoryFor('component:nav-menu').create(navMenuProperties);
-    assert.equal(navMenu._state, 'preRender');
+    let currentUserCanStub = () => true;
 
-    // appends the navMenu to the page
-    this.render();
-    assert.equal(navMenu._state, 'inDOM');
+    this.set('nav', startingMenu);
+    this.set("currentUserCanStub", currentUserCanStub);
+    await render(hbs`{{nav-menu nav=nav isShowing=true currentUserCan=currentUserCanStub}}`);
 
+    await assert.dom(".category-sub-items div:nth-child(1)").hasText('First Menu Item');
+    await assert.dom(".category-sub-items div:nth-child(2)").hasText('Second Menu Item');
   });
 });
