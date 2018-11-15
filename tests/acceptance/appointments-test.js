@@ -5,7 +5,8 @@ import { setupApplicationTest } from 'ember-qunit';
 import moment from 'moment';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
-import $select from 'hospitalrun/tests/helpers/jquery-select';
+import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
+import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import selectDate from 'hospitalrun/tests/helpers/select-date';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
@@ -23,7 +24,7 @@ module('Acceptance | appointments', function(hooks) {
       await authenticateUser();
       await visit('/appointments');
       assert.equal(currentURL(), '/appointments');
-      findWithAssert($select('button:contains(new appointment)'));
+      findWithAssert(jquerySelect('button:contains(new appointment)'));
       assert.dom('.table-header').exists();
     });
   });
@@ -43,7 +44,7 @@ module('Acceptance | appointments', function(hooks) {
       });
       await visit(url);
       assert.equal(currentURL(), url);
-      findWithAssert($select(`.appointment-status:contains(${status})`));
+      findWithAssert(jquerySelect(`.appointment-status:contains(${status})`));
     });
   });
 
@@ -54,8 +55,8 @@ module('Acceptance | appointments', function(hooks) {
       assert.dom('.appointment-date').doesNotExist('should have 0 appointment today');
       await visit('/appointments/edit/new');
       assert.equal(currentURL(), '/appointments/edit/new');
-      findWithAssert($select('button:contains(Cancel)'));
-      findWithAssert($select('button:contains(Add)'));
+      findWithAssert(jquerySelect('button:contains(Cancel)'));
+      findWithAssert(jquerySelect('button:contains(Add)'));
 
       await createAppointment(assert);
 
@@ -71,17 +72,17 @@ module('Acceptance | appointments', function(hooks) {
       await visit('/appointments/edit/new');
 
       assert.equal(currentURL(), '/appointments/edit/new');
-      findWithAssert($select('button:contains(Cancel)'));
-      findWithAssert($select('button:contains(Add)'));
+      findWithAssert(jquerySelect('button:contains(Cancel)'));
+      findWithAssert(jquerySelect('button:contains(Add)'));
 
       await createAppointment(assert);
       await waitUntil(() => currentURL() === "/appointments");
 
       assert.equal(currentURL(), '/appointments');
       assert.dom('tr').exists({ count: 2 }, 'New appointment has been added');
-      findWithAssert($select('button:contains("Check In")'));
-      findWithAssert($select('button:contains(Edit)'));
-      findWithAssert($select('button:contains(Delete)'));
+      findWithAssert(jquerySelect('button:contains("Check In")'));
+      findWithAssert(jquerySelect('button:contains(Edit)'));
+      findWithAssert(jquerySelect('button:contains(Delete)'));
     });
   });
 
@@ -91,9 +92,9 @@ module('Acceptance | appointments', function(hooks) {
       let tomorrow =  moment(today).add(24, 'hours');
       await authenticateUser();
       await visit('/patients');
-      findWithAssert($select('button:contains(Edit)'));
+      findWithAssert(jquerySelect('button:contains(Edit)'));
 
-      await click($select('button:contains(Edit)'));
+      await click(jquerySelect('button:contains(Edit)'));
       assert.dom('button[data-test-selector="appointments-btn"]').exists({ count: 1 }, 'Tab Appointments shown AFTER clicking edit');
 
       await click('button[data-test-selector="appointments-btn"]');
@@ -105,13 +106,13 @@ module('Acceptance | appointments', function(hooks) {
       await fillIn('.test-appointment-end input', tomorrow.format(DATE_FORMAT));
       await typeAheadFillIn('.test-appointment-location', 'Harare');
       await typeAheadFillIn('.test-appointment-with', 'Dr Test');
-      await click($select('button:contains(Add)'));
+      await click(jquerySelect('button:contains(Add)'));
 
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Appointment Saved', 'Appointment has been saved');
-      await click($select('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
 
-      await click($select('button:contains(Return)'));
+      await click(jquerySelect('button:contains(Return)'));
 
       await waitUntil(() => currentURL().includes("/patients/edit/"));
       assert.equal(currentURL().substr(0, 15), '/patients/edit/', 'Back on patient edit screen');
@@ -125,17 +126,17 @@ module('Acceptance | appointments', function(hooks) {
       await visit('/appointments/edit/new');
 
       assert.equal(currentURL(), '/appointments/edit/new');
-      findWithAssert($select('button:contains(Cancel)'));
-      findWithAssert($select('button:contains(Add)'));
+      findWithAssert(jquerySelect('button:contains(Cancel)'));
+      findWithAssert(jquerySelect('button:contains(Add)'));
 
       await createAppointment(assert);
 
       await waitUntil(() => currentURL() === "/appointments");
       assert.equal(currentURL(), '/appointments');
       assert.dom('tr').exists({ count: 2 }, 'New appointment has been added');
-      findWithAssert($select('button:contains(Edit)'));
+      findWithAssert(jquerySelect('button:contains(Edit)'));
 
-      await click($select('button:contains(Edit)'));
+      await click(jquerySelect('button:contains(Edit)'));
 
       assert.equal(currentURL().substring(0, 19), '/appointments/edit/');
       assert.dom('.appointment-all-day input').hasValue('on', 'All day appointment is on');
@@ -155,34 +156,34 @@ module('Acceptance | appointments', function(hooks) {
 
       assert.equal(currentURL(), '/appointments');
       assert.dom('tr').exists({ count: 2 }, 'New appointment has been added');
-      findWithAssert($select('button:contains(Check In)'));
-      findWithAssert($select('button:contains(Edit)'));
-      findWithAssert($select('button:contains(Delete)'));
+      findWithAssert(jquerySelect('button:contains(Check In)'));
+      findWithAssert(jquerySelect('button:contains(Edit)'));
+      findWithAssert(jquerySelect('button:contains(Delete)'));
 
-      await click($select('button:contains(Check In)'));
+      await click(jquerySelect('button:contains(Check In)'));
 
       await waitUntil(() => currentURL() === "/visits/edit/checkin");
       assert.equal(currentURL(), '/visits/edit/checkin', 'Now in add visiting information route');
 
-      await click($select('.panel-footer button:contains(Check In)'));
+      await click(jquerySelect('.panel-footer button:contains(Check In)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Patient Checked In', 'Patient has been checked in');
 
-      await click($select('button:contains(Ok)'));
-      findWithAssert($select('button:contains(New Note)'));
-      findWithAssert($select('button:contains(New Procedure)'));
-      findWithAssert($select('button:contains(New Medication)'));
-      findWithAssert($select('button:contains(New Lab)'));
-      findWithAssert($select('button:contains(New Imaging)'));
-      findWithAssert($select('button:contains(New Vitals)'));
-      findWithAssert($select('button:contains(Add Item)'));
+      await click(jquerySelect('button:contains(Ok)'));
+      findWithAssert(jquerySelect('button:contains(New Note)'));
+      findWithAssert(jquerySelect('button:contains(New Procedure)'));
+      findWithAssert(jquerySelect('button:contains(New Medication)'));
+      findWithAssert(jquerySelect('button:contains(New Lab)'));
+      findWithAssert(jquerySelect('button:contains(New Imaging)'));
+      findWithAssert(jquerySelect('button:contains(New Vitals)'));
+      findWithAssert(jquerySelect('button:contains(Add Item)'));
 
-      await click($select('button:contains(Return)'));
+      await click(jquerySelect('button:contains(Return)'));
       await waitUntil(() => currentURL() === "/appointments");
       assert.equal(currentURL(), '/appointments');
       assert.equal($('button:contains(Check In)').length, 0, 'Check In button no longer appears');
-      findWithAssert($select('button:contains(Edit)'));
-      findWithAssert($select('button:contains(Delete)'));
+      findWithAssert(jquerySelect('button:contains(Edit)'));
+      findWithAssert(jquerySelect('button:contains(Delete)'));
     });
   });
 
@@ -196,18 +197,18 @@ module('Acceptance | appointments', function(hooks) {
       assert.equal(currentURL(), '/appointments');
 
       assert.dom('.appointment-date').exists({ count: 1 }, 'One appointment is listed');
-      findWithAssert($select('button:contains(Check In)'));
-      findWithAssert($select('button:contains(Edit)'));
-      findWithAssert($select('button:contains(Delete)'));
+      findWithAssert(jquerySelect('button:contains(Check In)'));
+      findWithAssert(jquerySelect('button:contains(Edit)'));
+      findWithAssert(jquerySelect('button:contains(Delete)'));
 
-      await click($select('button:contains(Delete)'));
+      await click(jquerySelect('button:contains(Delete)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText(
         'Delete Appointment',
         'Delete Appointment confirmation modal has been displayed'
       );
 
-      await click($select('.modal-dialog button:contains(Delete)'));
+      await click(jquerySelect('.modal-dialog button:contains(Delete)'));
       await waitToDisappear('.appointment-date');
       assert.dom('.appointment-date').doesNotExist('No appointments are displayed');
     });
@@ -259,16 +260,16 @@ module('Acceptance | appointments', function(hooks) {
 
       await visit('/appointments/search');
 
-      await findWithAssert($select('.view-current-title:contains(Search Appointments)'));
-      await findWithAssert($select('.control-label:contains(Show Appointments On Or After)'));
-      await findWithAssert($select('.control-label:contains(Status)'));
-      await findWithAssert($select('.control-label:contains(Type)'));
-      await findWithAssert($select('.control-label:contains(With)'));
+      await findWithAssert(jquerySelect('.view-current-title:contains(Search Appointments)'));
+      await findWithAssert(jquerySelect('.control-label:contains(Show Appointments On Or After)'));
+      await findWithAssert(jquerySelect('.control-label:contains(Status)'));
+      await findWithAssert(jquerySelect('.control-label:contains(Type)'));
+      await findWithAssert(jquerySelect('.control-label:contains(With)'));
 
       let desiredDate = moment().endOf('day').add(363, 'days').format('l');
       let datePicker = '.test-selected-start-date input';
       await selectDate(datePicker, desiredDate);
-      // console.log($select('button:contains(Search)'));
+      // console.log(jquerySelect('button:contains(Search)'));
       await click($('button:contains(Search)').get(0));
 
       let date = moment().endOf('day').add(1, 'years').add(2, 'days').format('l');
@@ -352,13 +353,13 @@ module('Acceptance | appointments', function(hooks) {
 
     await typeAheadFillIn('.test-appointment-location', 'Harare');
     await typeAheadFillIn('.test-appointment-with', 'Dr Test');
-    await click($select('button:contains(Add)'));
+    await click(jquerySelect('button:contains(Add)'));
     await waitToAppear('.modal-dialog');
     assert.dom('.modal-title').hasText('Appointment Saved', 'Appointment has been saved');
 
-    await click($select('.modal-footer button:contains(Ok)'));
+    await click(jquerySelect('.modal-footer button:contains(Ok)'));
 
-    await click($select('button:contains(Return)'));
+    await click(jquerySelect('button:contains(Return)'));
   }
 
   function getHour(date) {

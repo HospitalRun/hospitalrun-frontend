@@ -1,5 +1,6 @@
 import { click, fillIn, visit } from '@ember/test-helpers';
-import { default as jquerySelect } from "hospitalrun/tests/helpers/jquery-select";
+import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
+import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';

@@ -1,5 +1,6 @@
 import select from 'hospitalrun/tests/helpers/select';
-import { default as jquerySelect, jqueryLength } from 'hospitalrun/tests/helpers/jquery-select';
+import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
+import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
 import { click, currentURL, visit, fillIn, settled as wait} from '@ember/test-helpers';
 

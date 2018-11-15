@@ -1,6 +1,7 @@
 import { click, fillIn, find, findAll, currentURL, visit } from '@ember/test-helpers';
 import { findWithAssert } from "ember-native-dom-helpers";
-import { default as jquerySelect, jqueryLength } from "hospitalrun/tests/helpers/jquery-select";
+import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
+import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';

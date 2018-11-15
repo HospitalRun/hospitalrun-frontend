@@ -10,10 +10,8 @@ import addOfflineUsersForElectron from 'hospitalrun/tests/helpers/add-offline-us
 import select from 'hospitalrun/tests/helpers/select';
 import { waitToAppear } from 'hospitalrun/tests/helpers/wait-to-appear';
 import { authenticateUser } from 'hospitalrun/tests/helpers/authenticate-user';
-import {
-  default as jquerySelect,
-  jqueryLength
-} from "hospitalrun/tests/helpers/jquery-select";
+import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
+import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 
 const MOCK_USER_DATA = [{
   'id': 'org.couchdb.user:hradmin',

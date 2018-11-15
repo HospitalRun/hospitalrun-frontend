@@ -1,6 +1,7 @@
 import { click, findAll, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
-import $select from 'hospitalrun/tests/helpers/jquery-select';
+import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
+import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import { createCustomFormForType } from 'hospitalrun/tests/helpers/scenarios/custom-forms';
@@ -17,7 +18,7 @@ module('Acceptance | custom forms', function(hooks) {
     let header = ['______________________________'];
 
     async function verifyPreview() {
-      await click($select('button:contains(Preview)'));
+      await click(jquerySelect('button:contains(Preview)'));
       await waitToAppear('.form-preview');
       assert.equal($('.form-preview label:contains(Create a Pizza)').length, 1, 'Found Create a Pizza Label');
       assert.equal($(`.form-preview label:contains(${header})`).length, 1, `Found ${header} Label`);
@@ -38,7 +39,7 @@ module('Acceptance | custom forms', function(hooks) {
       assert.dom('.form-preview input[id*=beverage]').exists({ count: 1 }, 'Found Beverage input');
       assert.equal($('.form-preview label:contains(Special Instructions)').length, 1, 'Found Special Instructions Label');
       assert.dom('.form-preview textarea[id*=specialInstructions]').exists({ count: 1 }, 'Found special instructions textarea');
-      await click($select('button:contains(Preview)')); // Hide preview to reset it back to being closed.
+      await click(jquerySelect('button:contains(Preview)')); // Hide preview to reset it back to being closed.
     }
 
     return runWithPouchDump('default', async function() {
@@ -49,22 +50,22 @@ module('Acceptance | custom forms', function(hooks) {
 
       await createCustomFormForType('Visit', false, assert);
       await verifyPreview();
-      await click($select('button:contains(Return)'));
+      await click(jquerySelect('button:contains(Return)'));
       await waitToAppear('.view-current-title:contains(Custom Forms)');
       assert.equal($('.custom-form-name:contains(Test Custom Form)').length, 1, 'Custom form appears in listing.');
 
-      await click($select('button:contains(Edit)'));
+      await click(jquerySelect('button:contains(Edit)'));
       await waitToAppear('button:contains(Preview)');
       assert.dom('.view-current-title').hasText('Edit Custom Form', 'Custom form edit page displays');
 
       await verifyPreview();
-      await click($select('button:contains(Return)'));
+      await click(jquerySelect('button:contains(Return)'));
       await waitToAppear('.view-current-title:contains(Custom Forms)');
-      await click($select('button:contains(Delete)'));
+      await click(jquerySelect('button:contains(Delete)'));
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Delete Custom Form', 'Delete confirmation displays');
 
-      await click($select('.modal-footer button:contains(Ok)'));
+      await click(jquerySelect('.modal-footer button:contains(Ok)'));
       assert.dom('.custom-form-name').doesNotExist('Deleted custom form disappears from custom form listing.');
     });
   });

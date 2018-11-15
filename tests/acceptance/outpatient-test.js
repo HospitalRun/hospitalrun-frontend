@@ -4,10 +4,8 @@ import {
   visit,
   waitUntil
 } from "@ember/test-helpers";
-import {
-  default as jquerySelect,
-  jqueryLength
-} from "hospitalrun/tests/helpers/jquery-select";
+import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
+import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { findWithAssert } from "ember-native-dom-helpers";
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
