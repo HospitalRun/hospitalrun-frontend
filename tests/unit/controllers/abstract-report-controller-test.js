@@ -24,7 +24,7 @@ module('Unit | Controller | abstract-report-controller', function(hooks) {
   });
 
   sinonTest('_notifyReportError', function(assert) {
-    let controller = this.subject();
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create();
     let closeProgressModal = this.stub(controller, 'closeProgressModal');
     let displayAlert = this.stub(controller, 'displayAlert');
 
@@ -48,7 +48,7 @@ module('Unit | Controller | abstract-report-controller', function(hooks) {
   sinonTest('_setReportTitle', function(assert) {
     let endDate = new Date(1482269979422);
     let startDate = new Date(1472269979422);
-    let controller = this.subject({
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
       endDate,
       startDate,
       reportTypes: [
@@ -70,7 +70,7 @@ module('Unit | Controller | abstract-report-controller', function(hooks) {
 
   sinonTest('_setReportTitle single date', function(assert) {
     let endDate = new Date(1472269979422);
-    let controller = this.subject({
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
       endDate,
       reportTypes: [
         EmberObject.create({

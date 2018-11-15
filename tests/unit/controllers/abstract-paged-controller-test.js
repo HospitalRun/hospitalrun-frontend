@@ -97,7 +97,7 @@ module('Unit | Controller | abstract-paged-controller', function(hooks) {
   });
 
   sinonTest('actions.nextPage', function(assert) {
-    let controller = this.subject({
+    let controller = this.owner.factoryFor('controller:abstract-paged-controller').create({
       nextStartKey: 'next',
       previousStartKeys: ['prev1', 'prev2'],
       firstKey: 'first'
@@ -113,7 +113,7 @@ module('Unit | Controller | abstract-paged-controller', function(hooks) {
   });
 
   sinonTest('actions.previousPage', function(assert) {
-    let controller = this.subject({
+    let controller = this.owner.factoryFor('controller:abstract-paged-controller').create({
       previousStartKey: 'prev',
       previousStartKeys: ['prev1', 'prev2', 'prev3']
     });
@@ -128,7 +128,7 @@ module('Unit | Controller | abstract-paged-controller', function(hooks) {
   });
 
   sinonTest('actions.sortByKey', function(assert) {
-    let controller = this.subject({
+    let controller = this.owner.factoryFor('controller:abstract-paged-controller').create({
       nextStartKey: 'next',
       previousStartKey: 'prev',
       previousStartKeys: ['prev1', 'prev2'],

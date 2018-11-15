@@ -1,15 +1,21 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-
+import { getContext } from "@ember/test-helpers";
+import { run } from "@ember/runloop";
 import {
   testValidPropertyValues,
   testInvalidPropertyValues
 } from '../../helpers/validate-properties';
 
-import { run } from '@ember/runloop';
-
 module('Unit | Model | inv-purchase', function(hooks) {
   setupTest(hooks);
+  hooks.beforeEach(function () {
+    let { owner } = getContext();
+
+    this.subject = () => run(() => owner
+      .lookup("service:store")
+      .createRecord("invPurchase"));
+  });
 
   test('costPerUnit', function(assert) {
     let inventoryPurchaseItem = run(() => this.owner.lookup('service:store').createRecord('inv-purchase', {

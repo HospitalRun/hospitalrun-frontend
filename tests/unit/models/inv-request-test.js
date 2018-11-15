@@ -4,6 +4,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import tHelper from 'ember-i18n/helper';
 import localeConfig from 'ember-i18n/config/en';
+import { getContext } from "@ember/test-helpers";
 
 import {
   testValidPropertyValues,
@@ -12,6 +13,13 @@ import {
 
 module('Unit | Model | inv-request', function(hooks) {
   setupTest(hooks);
+  hooks.beforeEach(function() {
+    let { owner } = getContext();
+
+    this.subject = () => run(() => owner
+      .lookup("service:store")
+      .createRecord("inv-request"));
+  });
 
   hooks.beforeEach(function() {
     // set the locale and the config
