@@ -1,13 +1,14 @@
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import PatientVisitsMixin from 'hospitalrun/mixins/patient-visits';
 import PatientAppointmentsMixin from 'hospitalrun/mixins/patient-appointments';
+import VisitInvoicesMixin from 'hospitalrun/mixins/visit-invoices';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import CascadingDeletions from 'hospitalrun/mixins/cascading-deletion';
 import { translationMacro as t } from 'ember-i18n';
 import { task, taskGroup, all } from 'ember-concurrency';
 
-export default AbstractDeleteController.extend(PatientVisitsMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, CascadingDeletions, {
+export default AbstractDeleteController.extend(PatientVisitsMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, VisitInvoicesMixin, CascadingDeletions, {
   title: t('patients.titles.delete'),
   progressTitle: t('patients.titles.deletePatientRecord'),
   progressMessage: t('patients.messages.deletingPatient'),
@@ -26,7 +27,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PouchDbMixin,
       this.deleteMany(appointments),
       this.deleteMany(payments)
     ]);
-    return yield patient.destroyRecord();
+    return yield this.get('deleteRecordTask').perform(patient);
   }).group('deleting'),
 
   deleteVisits(visits) {

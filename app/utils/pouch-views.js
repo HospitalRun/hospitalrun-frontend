@@ -370,12 +370,6 @@ let designDocs = [{
   ),
   version: 5
 }, {
-  name: 'invoice_by_patient',
-  function: generateView('invoice',
-    'emit(doc.data.patient);'
-  ),
-  version: 1
-}, {
   name: 'invoice_by_visit',
   function: generateView('invoice',
     'emit(doc.data.visit);'

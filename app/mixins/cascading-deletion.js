@@ -54,20 +54,13 @@ export default Mixin.create({
     pendingTasks.push(this.deleteMany(visitCharges));
     pendingTasks.push(this.deleteInvoices(invoices));
 
-    // yield visit.destroyRecord();
-    yield this.get('deleteRecordTask').perform(visit);
-    return yield all(pendingTasks);
-  }).group('deleting'),
+    // this is to hide the visit's procedures/labs/imaging/medication properties from being shown on the patient/edit template
+    // which otherwise causes errors while deleting visit from patient/edit screen
+    visit.set('willBeDeleted', true);
 
-  getVisitInvoices(visit) {
-    let visitId = visit.get('id');
-    return this.store.query('invoice', {
-      options: {
-        key: visitId
-      },
-      mapReduce: 'invoice_by_visit'
-    });
-  },
+    yield all(pendingTasks);
+    return yield this.get('deleteRecordTask').perform(visit);
+  }).group('deleting'),
 
   deleteInvoices(invoices) {
     return this.get('deleteInvoicesTask').perform(invoices);

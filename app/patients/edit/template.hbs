@@ -39,56 +39,58 @@
             <div class="panel-body detail-section-content">
               {{#if model.visits}}
                 {{#each model.visits as |visit|}}
-                  <div class="patient-history-item">
-                    <div class="patient-history-heading clickable" {{action "editVisit" visit}}>
-                      <span class="ph-visit-date">{{visit.visitDate}}</span>
-                      <span class="ph-visit-type">{{visit.visitType}}</span>
-                    </div>
-                    {{#if visit.procedures}}
-                      <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'labels.procedures' }}</h5>
-                        {{#each visit.procedures as |procedure|}}
-                          <div {{action 'editProcedure' procedure }} class="clickable">
-                            <h5 class="ph-note-heading">
-                              {{date-format procedure.procedureDate}}:
-                              {{procedure.description}}
-                            </h5>
-                          </div>
-                        {{/each}}
+                  {{#unless visit.willBeDeleted }}
+                    <div class="patient-history-item">
+                      <div class="patient-history-heading clickable" {{action "editVisit" visit}}>
+                        <span class="ph-visit-date">{{visit.visitDate}}</span>
+                        <span class="ph-visit-type">{{visit.visitType}}</span>
                       </div>
-                    {{/if}}
-                    {{#if visit.hasCompletedImaging}}
-                      <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'labels.imageOrders' }}</h5>
-                        {{#each visit.imaging as |imaging|}}
-                          {{#if (eq imaging.status 'Completed')}}
-                            <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
-                          {{/if}}
-                        {{/each}}
-                      </div>
-                    {{/if}}
-                    {{#if visit.hasCompletedLabs}}
-                      <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'labels.labOrders' }}</h5>
-                        {{#each visit.labs as |lab|}}
-                          {{#if (eq lab.status 'Completed')}}
-                            <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
-                          {{/if}}
-                        {{/each}}
-                      </div>
-                    {{/if}}
-                    {{#if visit.hasCompletedMedication}}
-                      <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'labels.medication' }}</h5>
-                        {{#each visit.medication as |medication|}}
-                          {{#if (eq medication.status 'Fulfilled')}}
-                            <h5 class="ph-note-heading">{{date-format medication.prescriptionDate}}: {{medication.medicationName}}</h5>
-                          {{/if}}
-                        {{/each}}
-                      </div>
-                    {{/if}}
+                      {{#if visit.procedures}}
+                        <div class="ph-note-item">
+                          <h5 class="ph-note-heading">{{t 'labels.procedures' }}</h5>
+                          {{#each visit.procedures as |procedure|}}
+                            <div {{action 'editProcedure' procedure }} class="clickable">
+                              <h5 class="ph-note-heading">
+                                {{date-format procedure.procedureDate}}:
+                                {{procedure.description}}
+                              </h5>
+                            </div>
+                          {{/each}}
+                        </div>
+                      {{/if}}
+                      {{#if visit.hasCompletedImaging}}
+                        <div class="ph-note-item">
+                          <h5 class="ph-note-heading">{{t 'labels.imageOrders' }}</h5>
+                          {{#each visit.imaging as |imaging|}}
+                            {{#if (eq imaging.status 'Completed')}}
+                              <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
+                            {{/if}}
+                          {{/each}}
+                        </div>
+                      {{/if}}
+                      {{#if visit.hasCompletedLabs}}
+                        <div class="ph-note-item">
+                          <h5 class="ph-note-heading">{{t 'labels.labOrders' }}</h5>
+                          {{#each visit.labs as |lab|}}
+                            {{#if (eq lab.status 'Completed')}}
+                              <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
+                            {{/if}}
+                          {{/each}}
+                        </div>
+                      {{/if}}
+                      {{#if visit.hasCompletedMedication}}
+                        <div class="ph-note-item">
+                          <h5 class="ph-note-heading">{{t 'labels.medication' }}</h5>
+                          {{#each visit.medication as |medication|}}
+                            {{#if (eq medication.status 'Fulfilled')}}
+                              <h5 class="ph-note-heading">{{date-format medication.prescriptionDate}}: {{medication.medicationName}}</h5>
+                            {{/if}}
+                          {{/each}}
+                        </div>
+                      {{/if}}
 
-                  </div>
+                    </div>
+                  {{/unless}}
                 {{/each}}
               {{else}}
                 {{t 'messages.noHistoryAvailable'}}
