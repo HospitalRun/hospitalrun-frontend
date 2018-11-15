@@ -1,5 +1,5 @@
-import { click, fillIn, findAll, currentURL, find, visit, waitUntil } from '@ember/test-helpers';
-import { findWithAssert } from "ember-native-dom-helpers";
+import { click, fillIn, currentURL, find, visit, waitUntil } from '@ember/test-helpers';
+import { findWithAssert } from 'ember-native-dom-helpers';
 import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 import { module, test } from 'qunit';
@@ -98,7 +98,7 @@ module('Acceptance | visits', function(hooks) {
       await waitToAppear('#visits button:contains(Edit)');
       await click(jquerySelect('#visits button:contains(Edit)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340");
+      await waitUntil(() => currentURL() === '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340');
 
       assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'Visit url is correct');
 
@@ -126,29 +126,29 @@ module('Acceptance | visits', function(hooks) {
 
       await click(jquerySelect('button:contains(Cancel)'));
 
-      await waitUntil(() => currentURL().includes("/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340"));
+      await waitUntil(() => currentURL().includes('/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340'));
 
       await click(jquerySelect('button:contains(New Lab)'));
 
-      await waitUntil(() => currentURL().includes("/labs/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340"));
+      await waitUntil(() => currentURL().includes('/labs/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340'));
 
       assert.equal(currentURL(), '/labs/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'New lab url is correct');
       assert.dom('.patient-name .ps-info-data').hasText('Joe Bagadonuts', 'New lab prepopulates with patient');
 
       await click(jquerySelect('button:contains(Cancel)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340");
+      await waitUntil(() => currentURL() === '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340');
 
       await click(jquerySelect('button:contains(New Imaging)'));
 
-      await waitUntil(() => currentURL() === "/imaging/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340");
+      await waitUntil(() => currentURL() === '/imaging/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340');
 
       assert.equal(currentURL(), '/imaging/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'New imaging url is correct');
       assert.dom('.patient-name .ps-info-data').hasText('Joe Bagadonuts', 'New imaging prepopulates with patient');
 
       await click(jquerySelect('button:contains(Cancel)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340");
+      await waitUntil(() => currentURL() === '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340');
 
       await click(jquerySelect('button:contains(New Vitals)'));
       waitToAppear('.modal-dialog');
@@ -303,7 +303,7 @@ module('Acceptance | visits', function(hooks) {
     await updateVisitData(assert, 'Lab Request Saved');
     await click(jquerySelect('button:contains(New Imaging)'));
 
-    await waitUntil(() => currentURL().includes("/imaging/edit/new?forVisitId"));
+    await waitUntil(() => currentURL().includes('/imaging/edit/new?forVisitId'));
 
     assert.ok(currentURL().includes('/imaging/edit/new?forVisitId'), 'New Imaging URL is visited');
 
@@ -327,7 +327,7 @@ module('Acceptance | visits', function(hooks) {
     await click(jquerySelect('.modal-footer button:contains(Add)'));
     await waitToDisappear('.modal-dialog');
 
-    await waitUntil(() => currentURL().includes("/visits/edit/"));
+    await waitUntil(() => currentURL().includes('/visits/edit/'));
 
     assert.ok(currentURL().includes('/visits/edit/'), 'Returns back to visit URL');
   }
@@ -355,7 +355,7 @@ module('Acceptance | visits', function(hooks) {
 
     await click('[data-test-selector=report-btn]');
 
-    await waitUntil(() => currentURL().includes("visits/reports/edit/new"));
+    await waitUntil(() => currentURL().includes('visits/reports/edit/new'));
 
     assert.ok(currentURL().includes('visits/reports/edit/new'), 'Report url is correct');
     assert.dom('.view-current-title').hasText(`New ${type} Report`, `${type} report title displayed correctly`);
@@ -440,7 +440,7 @@ module('Acceptance | visits', function(hooks) {
     await waitToDisappear('.modal-dialog');
     await click(jquerySelect('button:contains(Return)'));
 
-    await waitUntil(() => currentURL().includes("/visits/edit"));
+    await waitUntil(() => currentURL().includes('/visits/edit'));
 
     assert.ok(currentURL().includes('/visits/edit/'), 'Returns back to visit URL');
   }

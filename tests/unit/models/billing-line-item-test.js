@@ -1,6 +1,6 @@
 import { module } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { getContext } from "@ember/test-helpers";
+import { getContext } from '@ember/test-helpers';
 import { run } from '@ember/runloop';
 
 import {
@@ -14,8 +14,8 @@ module('Unit | Model | billing-line-item', function(hooks) {
     let { owner } = getContext();
 
     this.subject = () => run(() => owner
-      .lookup("service:store")
-      .createRecord("billing-line-item"));
+      .lookup('service:store')
+      .createRecord('billing-line-item'));
   });
 
   testValidPropertyValues('category', ['test']);

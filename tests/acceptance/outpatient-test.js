@@ -3,10 +3,10 @@ import {
   currentURL,
   visit,
   waitUntil
-} from "@ember/test-helpers";
+} from '@ember/test-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
-import { findWithAssert } from "ember-native-dom-helpers";
+import { findWithAssert } from 'ember-native-dom-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import moment from 'moment';
@@ -29,7 +29,7 @@ module('Acceptance | outpatient', function(hooks) {
 
       await click(jquerySelect('button:contains(Patient Check In)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/checkin");
+      await waitUntil(() => currentURL() === '/visits/edit/checkin');
 
       assert.equal(currentURL(), '/visits/edit/checkin', 'Check In url is correct');
 
@@ -48,7 +48,7 @@ module('Acceptance | outpatient', function(hooks) {
 
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/patients/outpatient");
+      await waitUntil(() => currentURL() === '/patients/outpatient');
 
       assert.equal(currentURL(), '/patients/outpatient', 'Returned to Outpatient');
       assert.equal(jqueryLength('.outpatient-list td:contains(Joe Bagadonuts)'), 1, 'Checked in patient appears in list');
@@ -77,7 +77,7 @@ module('Acceptance | outpatient', function(hooks) {
 
       await click(jquerySelect('button:contains(Patient Check In)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/checkin");
+      await waitUntil(() => currentURL() === '/visits/edit/checkin');
 
       assert.equal(currentURL(), '/visits/edit/checkin', 'Check In url is correct');
 
@@ -104,7 +104,7 @@ module('Acceptance | outpatient', function(hooks) {
 
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/patients/outpatient");
+      await waitUntil(() => currentURL() === '/patients/outpatient');
 
       assert.equal(currentURL(), '/patients/outpatient', 'Returned to Outpatient');
       assert.equal(jqueryLength('.outpatient-list td:contains(Jane Bagadonuts)'), 0, 'Checked in patient does not appears in list because of date');

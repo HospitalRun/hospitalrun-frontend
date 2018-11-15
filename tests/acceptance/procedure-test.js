@@ -1,5 +1,4 @@
-import { click, fillIn, find, findAll, currentURL, visit, waitUntil, settled as wait } from '@ember/test-helpers';
-import { findWithAssert } from "ember-native-dom-helpers";
+import { click, fillIn, currentURL, visit, waitUntil } from '@ember/test-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { module, test } from 'qunit';
@@ -18,7 +17,7 @@ module('Acceptance | procedures', function(hooks) {
 
     await click(jquerySelect('button:contains(New Procedure)'));
 
-    await waitUntil(() => currentURL() === "/visits/procedures/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340");
+    await waitUntil(() => currentURL() === '/visits/procedures/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340');
 
     await typeAheadFillIn('.procedure-description', procedureDesc);
     await typeAheadFillIn('.procedure-physician', 'Dr Jones');
@@ -26,7 +25,7 @@ module('Acceptance | procedures', function(hooks) {
     await updateProcedure(assert, 'Add');
     await click(jquerySelect('button:contains(Return)'));
 
-    await waitUntil(() => currentURL() === "/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340");
+    await waitUntil(() => currentURL() === '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340');
 
     assert.equal(jqueryLength('#visit-procedures tr'), 3, 'Two procedure are listed for the visit');
     assert.equal(jqueryLength(`#visit-procedures td:contains(${procedureDesc})`), 1, 'New procedure description is listed for the visit');
@@ -35,7 +34,7 @@ module('Acceptance | procedures', function(hooks) {
   testWithVisit('Edit procedure', async function(assert) {
     await click(jquerySelect('#visit-procedures button:contains(Edit)'));
 
-    await waitUntil(() => currentURL() === "/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F");
+    await waitUntil(() => currentURL() === '/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F');
     assert.equal(currentURL(), '/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F', 'Procedure url is correct');
 
     await fillIn('.procedure-notes textarea', 'Abdominals blood glucose level blood pressure carbohydrate medications');
@@ -99,15 +98,15 @@ module('Acceptance | procedures', function(hooks) {
     await updateProcedure(assert, 'Update');
     await waitToAppear('button:contains(Return)');
 
-    await waitUntil(() => currentURL() === "/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F");
+    await waitUntil(() => currentURL() === '/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F');
 
     await click(jquerySelect('button:contains(Return)'));
 
-    await waitUntil(() => currentURL() === "/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340");
+    await waitUntil(() => currentURL() === '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340');
 
     await click(jquerySelect('#visit-procedures button:contains(Edit)'));
 
-    await waitUntil(() => currentURL() === "/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F");
+    await waitUntil(() => currentURL() === '/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F');
 
     assert.equal(currentURL(), '/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F', 'Returned back to procedure');
     assert.dom('td.charge-item-name').doesNotExist('Charge item is deleted');
@@ -139,7 +138,7 @@ module('Acceptance | procedures', function(hooks) {
         await click('[data-test-selector=visits-tab]');
         await waitToAppear('#visits button:contains(Edit)');
         await click(jquerySelect('#visits button:contains(Edit)'));
-        await waitUntil(() => currentURL() === "/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340");
+        await waitUntil(() => currentURL() === '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340');
         assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'Visit url is correct');
 
         await testFunction(assert);

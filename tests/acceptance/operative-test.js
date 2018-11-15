@@ -1,5 +1,5 @@
-import { click, fillIn, find, findAll, currentURL, visit } from '@ember/test-helpers';
-import { findWithAssert } from "ember-native-dom-helpers";
+import { click, fillIn, find, currentURL, visit } from '@ember/test-helpers';
+import { findWithAssert } from 'ember-native-dom-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { module, test } from 'qunit';

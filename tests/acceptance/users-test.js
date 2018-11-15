@@ -1,9 +1,8 @@
-import { click, fillIn, findAll, currentURL, find, visit } from '@ember/test-helpers';
+import { click, fillIn, currentURL, find, visit } from '@ember/test-helpers';
 import RSVP from 'rsvp';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
 import { module, test } from 'qunit';
-
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import addOfflineUsersForElectron from 'hospitalrun/tests/helpers/add-offline-users-for-electron';

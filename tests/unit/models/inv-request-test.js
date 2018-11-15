@@ -1,10 +1,9 @@
 import { run } from '@ember/runloop';
-import { getOwner } from '@ember/application';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import tHelper from 'ember-i18n/helper';
 import localeConfig from 'ember-i18n/config/en';
-import { getContext } from "@ember/test-helpers";
+import { getContext } from '@ember/test-helpers';
 
 import {
   testValidPropertyValues,
@@ -17,8 +16,8 @@ module('Unit | Model | inv-request', function(hooks) {
     let { owner } = getContext();
 
     this.subject = () => run(() => owner
-      .lookup("service:store")
-      .createRecord("inv-request"));
+      .lookup('service:store')
+      .createRecord('inv-request'));
   });
 
   hooks.beforeEach(function() {

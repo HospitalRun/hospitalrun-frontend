@@ -5,7 +5,7 @@ import { setupTest } from 'ember-qunit';
 module('Unit | Model | invoice', function(hooks) {
   setupTest(hooks);
 
-  const lineItemsData = [
+  let lineItemsData = [
     {
       category: 'test',
       privateInsurance: 10,

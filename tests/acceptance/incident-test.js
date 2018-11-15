@@ -1,4 +1,4 @@
-import { click, fillIn, findAll, currentURL, find, visit, waitUntil } from '@ember/test-helpers';
+import { click, fillIn, currentURL, find, visit, waitUntil } from '@ember/test-helpers';
 import { findWithAssert } from 'ember-native-dom-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
@@ -65,7 +65,7 @@ module('Acceptance | Incidents', function(hooks) {
 
       await click(jquerySelect('button:contains(+ new incident)'));
 
-      await waitUntil(() => currentURL() === "/incident/edit/new");
+      await waitUntil(() => currentURL() === '/incident/edit/new');
       assert.equal(currentURL(), '/incident/edit/new', 'Incident edit url is correct');
 
       await click('.sentinel-event input');
@@ -130,7 +130,7 @@ module('Acceptance | Incidents', function(hooks) {
       await waitToDisappear('.modal-dialog');
       await click(jquerySelect('.panel-footer button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/incident");
+      await waitUntil(() => currentURL() === '/incident');
       assert.equal(currentURL(), '/incident', 'Incident listing url is correct');
       assert.equal(jqueryLength('.incident-row'), 2, 'Two incidents appears');
       assert.equal(jqueryLength(`.incident-row td.incident-date:contains(${now.format(DATE_FORMAT)})`), 1, 'Incident date appears in listing');

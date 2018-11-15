@@ -1,5 +1,4 @@
 import EmberObject from '@ember/object';
-import { getOwner } from '@ember/application';
 import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';

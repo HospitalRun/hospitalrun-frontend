@@ -1,7 +1,6 @@
 import { click, fillIn, findAll, currentURL, visit, waitUntil } from '@ember/test-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
-import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
-import { findWithAssert } from "ember-native-dom-helpers";
+import { findWithAssert } from 'ember-native-dom-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -45,7 +44,7 @@ module('Acceptance | medication', function(hooks) {
       await click(jquerySelect('button:contains(Ok)'));
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/medication");
+      await waitUntil(() => currentURL() === '/medication');
 
       assert.equal(currentURL(), '/medication');
       assert.dom('tr').exists({ count: 3 }, 'New medication request is now displayed');
@@ -67,7 +66,7 @@ module('Acceptance | medication', function(hooks) {
       await click(jquerySelect('button:contains(Ok)'));
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/medication");
+      await waitUntil(() => currentURL() === '/medication');
 
       assert.equal(currentURL(), '/medication');
       findWithAssert(jquerySelect('p:contains(No items found. )'));
@@ -112,7 +111,7 @@ module('Acceptance | medication', function(hooks) {
       assert.dom('.modal-title').hasText('Medication Returned', 'Medication has been return successfully');
       await click(jquerySelect('button:contains(Ok)'));
 
-      await waitUntil(() => currentURL() === "/medication");
+      await waitUntil(() => currentURL() === '/medication');
 
       assert.equal(currentURL(), '/medication');
     });

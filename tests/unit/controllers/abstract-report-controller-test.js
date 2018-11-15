@@ -1,5 +1,4 @@
 import EmberObject from '@ember/object';
-import { getOwner } from '@ember/application';
 import localeConfig from 'ember-i18n/config/en';
 import moment from 'moment';
 import sinonTest from 'ember-sinon-qunit/test-support/test';

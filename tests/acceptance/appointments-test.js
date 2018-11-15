@@ -1,4 +1,4 @@
-import { click, fillIn, find, findAll, currentURL, visit, settled as wait, waitUntil } from '@ember/test-helpers';
+import { click, fillIn, find, currentURL, visit, waitUntil } from '@ember/test-helpers';
 import { findWithAssert } from 'ember-native-dom-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
@@ -6,7 +6,6 @@ import moment from 'moment';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import select from 'hospitalrun/tests/helpers/select';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
-import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import selectDate from 'hospitalrun/tests/helpers/select-date';
 import typeAheadFillIn from 'hospitalrun/tests/helpers/typeahead-fillin';
 import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
@@ -76,7 +75,7 @@ module('Acceptance | appointments', function(hooks) {
       findWithAssert(jquerySelect('button:contains(Add)'));
 
       await createAppointment(assert);
-      await waitUntil(() => currentURL() === "/appointments");
+      await waitUntil(() => currentURL() === '/appointments');
 
       assert.equal(currentURL(), '/appointments');
       assert.dom('tr').exists({ count: 2 }, 'New appointment has been added');
@@ -114,7 +113,7 @@ module('Acceptance | appointments', function(hooks) {
 
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL().includes("/patients/edit/"));
+      await waitUntil(() => currentURL().includes('/patients/edit/'));
       assert.equal(currentURL().substr(0, 15), '/patients/edit/', 'Back on patient edit screen');
     });
   });
@@ -131,7 +130,7 @@ module('Acceptance | appointments', function(hooks) {
 
       await createAppointment(assert);
 
-      await waitUntil(() => currentURL() === "/appointments");
+      await waitUntil(() => currentURL() === '/appointments');
       assert.equal(currentURL(), '/appointments');
       assert.dom('tr').exists({ count: 2 }, 'New appointment has been added');
       findWithAssert(jquerySelect('button:contains(Edit)'));
@@ -162,7 +161,7 @@ module('Acceptance | appointments', function(hooks) {
 
       await click(jquerySelect('button:contains(Check In)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/checkin");
+      await waitUntil(() => currentURL() === '/visits/edit/checkin');
       assert.equal(currentURL(), '/visits/edit/checkin', 'Now in add visiting information route');
 
       await click(jquerySelect('.panel-footer button:contains(Check In)'));
@@ -179,7 +178,7 @@ module('Acceptance | appointments', function(hooks) {
       findWithAssert(jquerySelect('button:contains(Add Item)'));
 
       await click(jquerySelect('button:contains(Return)'));
-      await waitUntil(() => currentURL() === "/appointments");
+      await waitUntil(() => currentURL() === '/appointments');
       assert.equal(currentURL(), '/appointments');
       assert.equal($('button:contains(Check In)').length, 0, 'Check In button no longer appears');
       findWithAssert(jquerySelect('button:contains(Edit)'));
@@ -193,7 +192,7 @@ module('Acceptance | appointments', function(hooks) {
       await createAppointment(assert);
       await visit('/appointments');
 
-      await waitUntil(() => currentURL() === "/appointments");
+      await waitUntil(() => currentURL() === '/appointments');
       assert.equal(currentURL(), '/appointments');
 
       assert.dom('.appointment-date').exists({ count: 1 }, 'One appointment is listed');
@@ -248,7 +247,7 @@ module('Acceptance | appointments', function(hooks) {
       await authenticateUser();
 
       await createAppointment(assert);
-      await waitUntil(() => currentURL() === "/appointments");
+      await waitUntil(() => currentURL() === '/appointments');
 
       await createAppointment(assert, {
         startDate: moment().startOf('day').add(1, 'years'),
@@ -256,7 +255,7 @@ module('Acceptance | appointments', function(hooks) {
         endDate: moment().endOf('day').add(1, 'years').add(2, 'days'),
         endTime: moment().endOf('day').add(1, 'years').add(2, 'days').format(TIME_FORMAT)
       });
-      await waitUntil(() => currentURL() === "/appointments");
+      await waitUntil(() => currentURL() === '/appointments');
 
       await visit('/appointments/search');
 

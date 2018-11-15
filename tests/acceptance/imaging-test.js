@@ -23,7 +23,7 @@ module('Acceptance | imaging', function(hooks) {
       findWithAssert(jquerySelect('a:contains(Create a new record?)'));
 
       await click(jquerySelect('button:contains(new imaging)'));
-      await waitUntil(() => currentURL() === "/imaging/edit/new");
+      await waitUntil(() => currentURL() === '/imaging/edit/new');
       assert.equal(currentURL(), '/imaging/edit/new');
     });
   });
@@ -50,7 +50,7 @@ module('Acceptance | imaging', function(hooks) {
       assert.dom('.patient-summary').exists({ count: 1 }, 'Patient summary is displayed');
 
       await click(jquerySelect('button:contains(Return)'));
-      await waitUntil(() => currentURL() === "/imaging");
+      await waitUntil(() => currentURL() === '/imaging');
       assert.equal(currentURL(), '/imaging');
       assert.dom('tr').exists({ count: 3 }, 'Two imaging requests are displayed');
     });
@@ -75,7 +75,7 @@ module('Acceptance | imaging', function(hooks) {
 
       await click(jquerySelect('button:contains(Edit):first'));
 
-      await waitUntil(() => currentURL() === "/imaging/edit/12DEDA58-4670-7A74-BA8B-9CC5E5CA82E7");
+      await waitUntil(() => currentURL() === '/imaging/edit/12DEDA58-4670-7A74-BA8B-9CC5E5CA82E7');
       assert.equal(currentURL(), '/imaging/edit/12DEDA58-4670-7A74-BA8B-9CC5E5CA82E7');
 
       findWithAssert(jquerySelect('button:contains(Update)'));
@@ -89,7 +89,7 @@ module('Acceptance | imaging', function(hooks) {
       await click(jquerySelect('button:contains(Ok)'));
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/imaging");
+      await waitUntil(() => currentURL() === '/imaging');
       assert.equal(currentURL(), '/imaging');
 
       findWithAssert(jquerySelect('a:contains(Create a new record?)'));

@@ -1,7 +1,6 @@
-import { click, findAll, currentURL, visit } from '@ember/test-helpers';
+import { click, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
-import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
 import { createCustomFormForType } from 'hospitalrun/tests/helpers/scenarios/custom-forms';

@@ -1,6 +1,5 @@
 import { fillIn, triggerEvent } from '@ember/test-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
-import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 
 async function typeAheadFillIn(selector, value) {
   let typeAheadSelector = `${selector} .tt-input`;

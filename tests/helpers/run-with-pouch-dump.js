@@ -123,7 +123,7 @@ async function runWithPouchDump(dumpName, functionToRun) {
     }
   });
 
-  let owner = getContext().owner;
+  let { owner } = getContext();
   owner.register('service:config', InMemoryConfigService);
   owner.register('service:database', InMemoryDatabaseService);
 

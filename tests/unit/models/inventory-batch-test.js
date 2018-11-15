@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { getContext } from "@ember/test-helpers";
-import { run } from "@ember/runloop";
+import { getContext } from '@ember/test-helpers';
+import { run } from '@ember/runloop';
 import {
   testValidPropertyValues,
   testInvalidPropertyValues
@@ -13,10 +13,9 @@ module('Unit | Model | inventory-batch', function(hooks) {
     let { owner } = getContext();
 
     this.subject = () => run(() => owner
-      .lookup("service:store")
-      .createRecord("inventory-batch"));
+      .lookup('service:store')
+      .createRecord('inventory-batch'));
   });
-
 
   test('haveInvoiceItems', function(assert) {
     let inventoryBatch = run(() => this.owner.lookup('service:store').createRecord('inventory-batch', {

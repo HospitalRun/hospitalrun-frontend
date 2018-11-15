@@ -1,5 +1,5 @@
-import { click, fillIn, find, findAll, currentURL, visit, waitUntil } from '@ember/test-helpers';
-import { findWithAssert } from "ember-native-dom-helpers";
+import { click, fillIn, find, currentURL, visit, waitUntil } from '@ember/test-helpers';
+import { findWithAssert } from 'ember-native-dom-helpers';
 import { module, test } from 'qunit';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
@@ -24,7 +24,7 @@ module('Acceptance | patients', function(hooks) {
       assert.equal(jqueryLength(newPatientButton), 1, 'Add new patient button is visible');
 
       await click(jquerySelect('button:contains(+ new patient)'));
-      await waitUntil(() => currentURL() === "/patients/edit/new");
+      await waitUntil(() => currentURL() === '/patients/edit/new');
 
       assert.equal(currentURL(), '/patients/edit/new');
     });
@@ -37,7 +37,7 @@ module('Acceptance | patients', function(hooks) {
 
       let generateReportButton = jquerySelect('button:contains(Generate Report)');
       assert.equal(currentURL(), '/patients/reports');
-      assert.equal(jqueryLength(generateReportButton), 1, "Generate Report button is visible");
+      assert.equal(jqueryLength(generateReportButton), 1, 'Generate Report button is visible');
       let reportType = find('[data-test-selector="select-report-type"]');
       assert.equal(jqueryLength(reportType), 1, 'Report type select is visible');
       assert.equal($(reportType).find(':selected').text().trim(), 'Admissions Detail', 'Default value selected"');
@@ -64,9 +64,9 @@ module('Acceptance | patients', function(hooks) {
       await select('[data-test-selector="select-report-type"] select', 'Patient Status');
 
       assert.equal(currentURL(), '/patients/reports');
-      assert.equal(jqueryLength("button:contains(Generate Report)"), 1, "Generate Report button is visible");
+      assert.equal(jqueryLength('button:contains(Generate Report)'), 1, 'Generate Report button is visible');
       let reportType = ('[data-test-selector="select-report-type"] select');
-      assert.equal(jqueryLength('[data-test-selector="select-report-type"] select'), 1, "Report type select is visible");
+      assert.equal(jqueryLength('[data-test-selector="select-report-type"] select'), 1, 'Report type select is visible');
       assert.dom(jquerySelect(`${reportType} option:selected`)).hasText('Patient Status', 'Default value selected"');
     });
   });

@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, click, fillIn, findAll, currentURL, find } from '@ember/test-helpers';
+import { visit, click, fillIn, currentURL } from '@ember/test-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';

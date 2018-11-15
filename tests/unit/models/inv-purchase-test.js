@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { getContext } from "@ember/test-helpers";
-import { run } from "@ember/runloop";
+import { getContext } from '@ember/test-helpers';
+import { run } from '@ember/runloop';
 import {
   testValidPropertyValues,
   testInvalidPropertyValues
@@ -9,12 +9,12 @@ import {
 
 module('Unit | Model | inv-purchase', function(hooks) {
   setupTest(hooks);
-  hooks.beforeEach(function () {
+  hooks.beforeEach(function() {
     let { owner } = getContext();
 
     this.subject = () => run(() => owner
-      .lookup("service:store")
-      .createRecord("invPurchase"));
+      .lookup('service:store')
+      .createRecord('invPurchase'));
   });
 
   test('costPerUnit', function(assert) {

@@ -2,7 +2,7 @@ import select from 'hospitalrun/tests/helpers/select';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { waitToAppear, waitToDisappear } from 'hospitalrun/tests/helpers/wait-to-appear';
-import { click, currentURL, visit, fillIn, settled as wait} from '@ember/test-helpers';
+import { click, currentURL, visit, fillIn } from '@ember/test-helpers';
 
 const crusts =  ['Thin', 'Deep Dish', 'Flatbread'];
 const desserts = ['Ice Cream', 'Cookies', 'Cake'];
@@ -106,7 +106,7 @@ export async function checkCustomFormIsDisplayed(assert, header) {
 
 export async function fillCustomForm(header) {
   let formSelector = `h4:contains(${header}) + .js-custom-form`;
-  await select('[id="' + jquerySelect(`${formSelector} select`).id + '"]', crusts[2]);
+  await select(`[id="${  jquerySelect(`${formSelector} select`).id  }"]`, crusts[2]);
   await click(jquerySelect(`${formSelector} input[type=checkbox]:last`));
   await click(jquerySelect(`${formSelector} input[type=radio]:nth(1)`));
   await fillIn(jquerySelect(`${formSelector} textarea`), `Large text for the form ${header}`);

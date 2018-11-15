@@ -1,7 +1,6 @@
 import { click, fillIn, currentURL, visit, waitUntil, settled as wait } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
-import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { findWithAssert } from 'ember-native-dom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import runWithPouchDump from 'hospitalrun/tests/helpers/run-with-pouch-dump';
@@ -37,7 +36,7 @@ module('Acceptance | labs', function(hooks) {
 
       await click(jquerySelect('button:contains(new lab)'));
 
-      await waitUntil(() => currentURL() === "/labs/edit/new");
+      await waitUntil(() => currentURL() === '/labs/edit/new');
       assert.equal(currentURL(), '/labs/edit/new');
 
       await typeAheadFillIn('.test-patient-name', 'Lennex Zinyando - P00017');
@@ -53,7 +52,7 @@ module('Acceptance | labs', function(hooks) {
       assert.dom('.patient-summary').exists({ count: 1 }, 'Patient summary is displayed');
 
       await click(jquerySelect('.panel-footer button:contains(Return)'));
-      await waitUntil(() => currentURL() === "/labs");
+      await waitUntil(() => currentURL() === '/labs');
 
       assert.equal(currentURL(), '/labs');
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
@@ -69,7 +68,7 @@ module('Acceptance | labs', function(hooks) {
       await visit('/labs');
       await click(jquerySelect('button:contains(Edit)'));
 
-      await waitUntil(() => currentURL().includes("/labs/edit"));
+      await waitUntil(() => currentURL().includes('/labs/edit'));
 
       await click(jquerySelect('button:contains(Complete)'));
       await waitToAppear('.modal-dialog');
@@ -104,14 +103,14 @@ module('Acceptance | labs', function(hooks) {
 
       await click(jquerySelect('.modal-footer button:contains(Ok)'));
       await click(jquerySelect('.panel-footer button:contains(Return)'));
-      await waitUntil(() => currentURL() === "/labs");
+      await waitUntil(() => currentURL() === '/labs');
 
       assert.equal(currentURL(), '/labs');
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
 
       await click(jquerySelect('tr:last'));
 
-      await waitToAppear(".test-result-input input");
+      await waitToAppear('.test-result-input input');
 
       assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
       assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');
@@ -153,13 +152,13 @@ module('Acceptance | labs', function(hooks) {
 
       await click(jquerySelect('.modal-footer button:contains(Ok)'));
       await click(jquerySelect('.panel-footer button:contains(Return)'));
-      await waitUntil(() => currentURL() === "/labs");
+      await waitUntil(() => currentURL() === '/labs');
 
       assert.equal(currentURL(), '/labs');
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
       await click(jquerySelect('tr:last'));
 
-      await waitToAppear(".test-result-input input");
+      await waitToAppear('.test-result-input input');
 
       assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
       assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');
@@ -211,7 +210,7 @@ module('Acceptance | labs', function(hooks) {
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
       await click(jquerySelect('tr:last'));
 
-      await waitToAppear(".test-result-input input");
+      await waitToAppear('.test-result-input input');
 
       assert.dom('.test-result-input input').hasValue('Chest is clear', 'There is result');
       assert.dom('.js-lab-notes textarea').hasValue('Dr test ordered another scan', 'There is note');

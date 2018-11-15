@@ -1,5 +1,4 @@
-import { click, fillIn, findAll, currentURL, visit, waitUntil } from '@ember/test-helpers';
-import { findWithAssert } from "ember-native-dom-helpers";
+import { click, fillIn, currentURL, visit, waitUntil } from '@ember/test-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
 import { module, test } from 'qunit';
@@ -32,7 +31,7 @@ module('Acceptance | patient notes', function(hooks) {
 
       await click(jquerySelect('button:contains(New Visit)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/new");
+      await waitUntil(() => currentURL() === '/visits/edit/new');
 
       assert.equal(currentURL(), '/visits/edit/new', 'Now in add visiting information route');
 
@@ -94,7 +93,7 @@ module('Acceptance | patient notes', function(hooks) {
       // add a first visit with type 'Admission'
       await click(jquerySelect('button:contains(New Visit)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/new");
+      await waitUntil(() => currentURL() === '/visits/edit/new');
 
       assert.equal(currentURL(), '/visits/edit/new', 'Now in add visiting information route');
       await select('.visit-type', 'Admission');
@@ -108,7 +107,7 @@ module('Acceptance | patient notes', function(hooks) {
       // add a second visit with type 'Lab'
       await click(jquerySelect('button:contains(New Visit)'));
 
-      await waitUntil(() => currentURL() === "/visits/edit/new");
+      await waitUntil(() => currentURL() === '/visits/edit/new');
 
       assert.equal(currentURL(), '/visits/edit/new', 'Now in add visiting information route');
       await select('.visit-type', 'Lab');
@@ -134,7 +133,7 @@ module('Acceptance | patient notes', function(hooks) {
       await waitToAppear('.ph-visit-type');
       await click(jquerySelect('.ph-visit-type:contains(Admission)'));
 
-      await waitToAppear("[data-test-selector=notes-tab]");
+      await waitToAppear('[data-test-selector=notes-tab]');
 
       await click('[data-test-selector=notes-tab]');
       await waitToAppear('#visit-notes table');
@@ -144,7 +143,7 @@ module('Acceptance | patient notes', function(hooks) {
       await waitToAppear('.ph-visit-type');
       await click(jquerySelect('.ph-visit-type:contains(Lab)'));
 
-      await waitToAppear("[data-test-selector=notes-tab]");
+      await waitToAppear('[data-test-selector=notes-tab]');
 
       await click('[data-test-selector=notes-tab]');
       await waitToAppear('#visit-notes table');

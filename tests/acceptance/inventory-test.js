@@ -66,7 +66,7 @@ module('Acceptance | inventory', function(hooks) {
 
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/inventory/listing");
+      await waitUntil(() => currentURL() === '/inventory/listing');
       assert.equal(currentURL(), '/inventory/listing');
 
       assert.dom('tr').exists({ count: 2 }, 'One item is listed');
@@ -126,7 +126,7 @@ module('Acceptance | inventory', function(hooks) {
       await waitToDisappear('.modal-dialog');
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/inventory/listing");
+      await waitUntil(() => currentURL() === '/inventory/listing');
       assert.dom('tr .btn').exists({ count: 4 });
 
       // verify new location appears correctly along with default location
@@ -142,7 +142,7 @@ module('Acceptance | inventory', function(hooks) {
       await click(jquerySelect('button:contains(Delete):last'));
       await waitToDisappear('.modal-dialog');
       await click(jquerySelect('button:contains(Return)'));
-      await waitUntil(() => console.log(currentURL()) || currentURL() === "/inventory/listing");
+      await waitUntil(() => console.log(currentURL()) || currentURL() === '/inventory/listing');
 
       // verify default location is gone and new location w/ all units is still there
       assert.dom('tr .btn').exists({ count: 4 });
@@ -202,7 +202,7 @@ module('Acceptance | inventory', function(hooks) {
       findWithAssert(jquerySelect('button:contains(Cancel)'));
 
       await click(jquerySelect('button:contains(Cancel)'));
-      await waitUntil(() => currentURL() === "/inventory");
+      await waitUntil(() => currentURL() === '/inventory');
       assert.equal(currentURL(), '/inventory');
       assert.dom('tr').exists({ count: 3 }, 'Two requests are now displayed');
     });
@@ -228,7 +228,7 @@ module('Acceptance | inventory', function(hooks) {
 
       await click(jquerySelect('button:contains(Ok)'));
 
-      await waitUntil(() => currentURL() === "/inventory");
+      await waitUntil(() => currentURL() === '/inventory');
       assert.equal(currentURL(), '/inventory');
     });
   });
@@ -284,7 +284,7 @@ module('Acceptance | inventory', function(hooks) {
 
       await click(jquerySelect('button:contains(Ok)'));
 
-      await waitUntil(() => currentURL() === "/inventory/listing");
+      await waitUntil(() => currentURL() === '/inventory/listing');
       assert.equal(currentURL(), '/inventory/listing');
     });
   });

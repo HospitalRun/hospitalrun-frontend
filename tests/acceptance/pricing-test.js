@@ -1,13 +1,10 @@
 import {
   click,
   fillIn,
-  find,
-  findAll,
   currentURL,
   visit,
   waitUntil
-} from "@ember/test-helpers";
-import { findWithAssert } from "ember-native-dom-helpers";
+} from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
@@ -143,7 +140,7 @@ module('Acceptance | pricing', function(hooks) {
       assert.dom('.modal-title').hasText('Pricing Item Saved', 'Pricing Item saved');
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/pricing");
+      await waitUntil(() => currentURL() === '/pricing');
 
       assert.dom('td:nth-child(4)').hasText('Lab Procedure');
 
@@ -171,7 +168,7 @@ module('Acceptance | pricing', function(hooks) {
       assert.dom('.modal-title').hasText('Pricing Item Saved', 'Pricing Item saved');
       await click(jquerySelect('button:contains(Return)'));
 
-      await waitUntil(() => currentURL() === "/pricing");
+      await waitUntil(() => currentURL() === '/pricing');
 
       assert.dom('td:nth-child(4)').hasText('Imaging Procedure');
     });

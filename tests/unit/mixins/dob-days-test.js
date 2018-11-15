@@ -1,5 +1,4 @@
 import { run } from '@ember/runloop';
-import { getOwner } from '@ember/application';
 import DOBDays from 'hospitalrun/mixins/dob-days';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
