@@ -41,7 +41,6 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PouchDbMixin,
       pendingTasks.push(deleteVisitTask.perform(visit));
     });
     yield all(pendingTasks);
-    // don't have to deleteMany(visits) because it will happen in deleteVisitTask
   }),
 
   deleteActionTask: task(function* (patient) {
