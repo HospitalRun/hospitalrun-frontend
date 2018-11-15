@@ -7,7 +7,7 @@ import CascadingDeletions from 'hospitalrun/mixins/cascading-deletion';
 import { translationMacro as t } from 'ember-i18n';
 import { task, taskGroup, all } from 'ember-concurrency';
 
-export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoicesMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, CascadingDeletions, {
+export default AbstractDeleteController.extend(PatientVisitsMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, CascadingDeletions, {
   title: t('patients.titles.delete'),
   progressTitle: t('patients.titles.deletePatientRecord'),
   progressMessage: t('patients.messages.deletingPatient'),
@@ -21,15 +21,12 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     let visits = yield this.getPatientVisits(patient);
     let appointments = yield this.getPatientAppointments(patient);
     let payments = yield patient.get('payments');
-
     yield all([
       this.deleteVisits(visits),
-      this.deleteInvoices(invoices),
       this.deleteMany(appointments),
       this.deleteMany(payments)
     ]);
-
-    return yield this.deleteSingle(patient);
+    return yield patient.destroyRecord();
   }).group('deleting'),
 
   deleteVisits(visits) {
@@ -43,6 +40,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
       pendingTasks.push(deleteVisitTask.perform(visit));
     });
     yield all(pendingTasks);
+    // don't have to deleteMany(visits) because it will happen in deleteVisitTask
   }),
 
   deleteActionTask: task(function* (patient) {

@@ -25,10 +25,6 @@ export default Mixin.create({
     return yield all(archivePromises, 'async array deletion');
   }).group('deleting'),
 
-  deleteSingle(record) {
-    return this.get('deleteRecordTask').perform(record);
-  },
-
   deleteRecordTask: task(function* (recordToDelete) {
     recordToDelete.set('archived', true);
     yield recordToDelete.save();
@@ -46,20 +42,21 @@ export default Mixin.create({
     let labCharges = labs.get('charges');
     let imagingCharges = imaging.get('charges');
     let visitCharges = visit.get('charges');
-    pendingTasks.push(this.deleteMany(labs));
     pendingTasks.push(this.deleteMany(labCharges));
+    pendingTasks.push(this.deleteMany(labs));
     pendingTasks.push(this.deleteMany(visit.get('patientNotes')));
     pendingTasks.push(this.deleteMany(visit.get('vitals')));
-    pendingTasks.push(this.deleteMany(procedures));
     pendingTasks.push(this.deleteMany(procCharges));
+    pendingTasks.push(this.deleteMany(procedures));
     pendingTasks.push(this.deleteMany(visit.get('medication')));
-    pendingTasks.push(this.deleteMany(imaging));
     pendingTasks.push(this.deleteMany(imagingCharges));
+    pendingTasks.push(this.deleteMany(imaging));
     pendingTasks.push(this.deleteMany(visitCharges));
     pendingTasks.push(this.deleteInvoices(invoices));
 
-    yield all(pendingTasks);
-    return yield this.deleteSingle(visit);
+    // yield visit.destroyRecord();
+    yield this.get('deleteRecordTask').perform(visit);
+    return yield all(pendingTasks);
   }).group('deleting'),
 
   getVisitInvoices(visit) {
