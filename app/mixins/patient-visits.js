@@ -82,15 +82,15 @@ export default Mixin.create(PouchDbMixin, {
     visit.set('status', status);
     visit.set('endDate', new Date());
     return visit.save().then((savedVisit) => this.updatePatientVisitFlags(savedVisit).then(() => {
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       let patientDetails = { patientName: visit.get('patient.displayName') };
       let message, title;
       if (status === VisitStatus.CHECKED_OUT) {
-        message =  i18n.t('visits.messages.checkedOut', patientDetails);
-        title = i18n.t('visits.titles.checkedOut');
+        message =  intl.t('visits.messages.checkedOut', patientDetails);
+        title = intl.t('visits.titles.checkedOut');
       } else {
-        message =  i18n.t('visits.messages.discharged', patientDetails);
-        title = i18n.t('visits.titles.discharged');
+        message =  intl.t('visits.messages.discharged', patientDetails);
+        title = intl.t('visits.titles.discharged');
       }
       this.displayAlert(title, message);
     }));

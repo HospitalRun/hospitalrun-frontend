@@ -13,10 +13,9 @@ module('Integration | Component | language select', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function() {
-    this.i18n = this.owner.lookup('service:i18n');
-
     this.owner.register('service:language-preference', Service.extend(languagePreference));
     this.languagePreference = this.owner.lookup('service:language-preference');
+    this.owner.lookup('service:intl').setLocale('en');
   });
 
   hooks.afterEach(function() {

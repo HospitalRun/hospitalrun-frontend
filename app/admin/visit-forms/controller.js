@@ -27,18 +27,18 @@ export default AbstractEditController.extend(VisitTypes, {
   visitTemplateIds: ['initial', 'followup'],
 
   visitTemplates: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let visitTemplateIds = this.get('visitTemplateIds');
     return visitTemplateIds.map((currentId) => {
       return {
         id: currentId,
-        value: i18n.t(`admin.visitForms.labels.${currentId}`)
+        value: intl.t(`admin.visitForms.labels.${currentId}`)
       };
     });
   }),
 
   afterUpdate() {
-    this.displayAlert(this.get('i18n').t('admin.address.titles.optionsSaved'), this.get('i18n').t('admin.address.messages.addressSaved'));
+    this.displayAlert(this.get('intl').t('admin.address.titles.optionsSaved'), this.get('intl').t('admin.address.messages.addressSaved'));
   },
 
   actions: {

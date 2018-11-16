@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 export default Controller.extend(ModalHelper, ProgressDialog, {
@@ -17,8 +17,8 @@ export default Controller.extend(ModalHelper, ProgressDialog, {
       let fileToImport = this.get('importFile');
       if (!fileToImport || !fileToImport.type) {
         this.displayAlert(
-          this.get('i18n').t('admin.loaddb.displayAlertTitle'),
-          this.get('i18n').t('admin.loaddb.displayAlertMessage')
+          this.get('intl').t('admin.loaddb.displayAlertTitle'),
+          this.get('intl').t('admin.loaddb.displayAlertMessage')
         );
       } else {
         this.showProgressModal();
@@ -35,8 +35,8 @@ export default Controller.extend(ModalHelper, ProgressDialog, {
             this.set('syncResults', results);
           }).catch((err) => {
             this.displayAlert(
-              this.get('i18n').t('admin.loaddb.errorDisplayAlertTitle'),
-              this.get('i18n').t('admin.loaddb.errorDisplayAlertMessage', { error: JSON.stringify(err) })
+              this.get('intl').t('admin.loaddb.errorDisplayAlertTitle'),
+              this.get('intl').t('admin.loaddb.errorDisplayAlertMessage', { error: JSON.stringify(err) })
             );
           });
         });

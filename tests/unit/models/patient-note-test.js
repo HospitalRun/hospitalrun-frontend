@@ -1,7 +1,5 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import tHelper from 'ember-i18n/helper';
-import localeConfig from 'ember-i18n/config/en';
 
 import { run } from '@ember/runloop';
 
@@ -10,15 +8,11 @@ module('Unit | Model | patient-note', function(hooks) {
 
   hooks.beforeEach(function() {
     // set the locale and the config
-    this.owner.lookup('service:i18n').set('locale', 'en');
-    this.owner.register('locale:en/config', localeConfig);
+    this.owner.lookup('service:intl').set('locale', 'en');
 
-    // manually inject the i18n service as initialzer does not run
+    // manually inject the intl service as initialzer does not run
     // in unit test
-    this.owner.inject('model', 'i18n', 'service:i18n');
-
-    // register t helper
-    this.owner.register('helper:t', tHelper);
+    this.owner.inject('model', 'intl', 'service:intl');
   });
 
   test('authoredBy', function(assert) {

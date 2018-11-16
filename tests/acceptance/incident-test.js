@@ -220,18 +220,24 @@ module('Acceptance | Incidents', function(hooks) {
     });
   });
 
-  testSimpleReportForm('Incidents By Department');
-  testSimpleReportForm('Incidents By Category');
+  testSimpleReportForm('Incidents By Department', '2015-10-01', '2015-10-31');
+  testSimpleReportForm('Incidents By Category', '2015-10-01', '2015-10-31');
+  testEmptyEndDate('Incidents By Department', '2015-10-01');
+  testEmptyEndDate('Incidents By Category', '2015-10-01');
+  testEmptyStartDate('Incidents By Department');
+  testEmptyStartDate('Incidents By Category');
+  testEndDateBeforeStartDate('Incidents By Department');
+  testEndDateBeforeStartDate('Incidents By Category');
 
-  function testSimpleReportForm(reportName) {
+  function testSimpleReportForm(reportName, start, end) {
     test(`${reportName} report can be generated`, function(assert) {
       return runWithPouchDump('default', async function() {
         await authenticateUser();
         await visit('/incident/reports');
         assert.equal(currentURL(), '/incident/reports');
 
-        let startDate = moment('2015-10-01');
-        let endDate = moment('2015-10-31');
+        let startDate = moment(start);
+        let endDate = moment(end);
         await selectDate('.test-start-date input', startDate.toDate());
         await selectDate('.test-end-date input', endDate.toDate());
         await select('#report-type', `${reportName}`);
@@ -242,6 +248,64 @@ module('Acceptance | Incidents', function(hooks) {
         assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
         let exportLink = findWithAssert(jquerySelect('a:contains(Export Report)'));
         assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
+      });
+    });
+  }
+
+  function testEmptyEndDate(reportName, start) {
+    test(`${reportName} report can be generated with no end date`, function(assert) {
+      return runWithPouchDump('default', async function() {
+        await authenticateUser();
+        await visit('/incident/reports');
+        assert.equal(currentURL(), '/incident/reports');
+
+        let startDate = moment(start);
+        await selectDate('.test-start-date input', startDate.toDate());
+        await select('#report-type', `${reportName}`);
+        await click(jquerySelect('button:contains(Generate Report)'));
+        await waitToAppear('.panel-title');
+
+        let endDate = moment(new Date());
+        let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
+        assert.dom('.panel-title').hasText(reportTitle, `${reportName} Report generated`);
+        let exportLink = findWithAssert(jquerySelect('a:contains(Export Report)'));
+        assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
+      });
+    });
+  }
+
+  function testEmptyStartDate(reportName) {
+    test(`${reportName} report cannot be generated without a start date`, function(assert) {
+      return runWithPouchDump('default', async function() {
+        let endDate = moment('2015-10-01');
+        await authenticateUser();
+        await visit('/incident/reports');
+        assert.equal(currentURL(), '/incident/reports');
+        await selectDate('.test-end-date input', endDate);
+        await select('#report-type', `${reportName}`);
+        await click(jquerySelect('button:contains(Generate Report)'));
+        await waitToAppear('.modal-dialog');
+        assert.dom('.modal-title').hasText('Error Generating Report', 'Error Generating Report');
+        assert.dom('.modal-body').hasText('Please enter a start date.');
+      });
+    });
+  }
+
+  function testEndDateBeforeStartDate(reportName) {
+    test(`${reportName} report cannot be generatedwith an end date before a start date`, function(assert) {
+      return runWithPouchDump('default', async function() {
+        let startDate = moment('2015-10-02');
+        let endDate = moment('2015-10-01');
+        await authenticateUser();
+        await visit('/incident/reports');
+        assert.equal(currentURL(), '/incident/reports');
+        await selectDate('.test-start-date input', startDate);
+        await selectDate('.test-end-date input', endDate);
+        await select('#report-type', `${reportName}`);
+        await click(jquerySelect('button:contains(Generate Report)'));
+        await waitToAppear('.modal-dialog');
+        assert.dom('.modal-title').hasText('Error Generating Report', 'Error Generating Report');
+        assert.dom('.modal-body').hasText('Please enter an end date after the start date.');
       });
     });
   }

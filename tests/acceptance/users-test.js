@@ -174,7 +174,7 @@ module('Acceptance | users', function(hooks) {
       await visit('/admin/users');
       await click(jquerySelect('button:contains(Delete):last'));
       await waitToAppear('.modal-dialog');
-      assert.dom('.alert').hasText('Are you sure you wish to delete ?', 'User is displayed for deletion');
+      assert.dom('.alert').hasText('Are you sure you wish to delete Joe Bagadonuts?', 'User is displayed for deletion');
 
       await click(jquerySelect('button:contains(Delete):last'));
       assert.equal(jqueryLength('.user-email:contains(joe@donuts.com)'), 0, 'User disappears from user list');

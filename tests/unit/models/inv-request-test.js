@@ -1,9 +1,6 @@
 import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import tHelper from 'ember-i18n/helper';
-import localeConfig from 'ember-i18n/config/en';
-import { getContext } from '@ember/test-helpers';
 
 import {
   testValidPropertyValues,
@@ -13,22 +10,14 @@ import {
 module('Unit | Model | inv-request', function(hooks) {
   setupTest(hooks);
   hooks.beforeEach(function() {
-    let { owner } = getContext();
-
-    this.subject = () => run(() => owner
+    this.subject = () => run(() => this.owner
       .lookup('service:store')
       .createRecord('inv-request'));
   });
 
   hooks.beforeEach(function() {
     // set the locale and the config
-    this.owner.lookup('service:i18n').set('locale', 'en');
-    this.owner.register('locale:en/config', localeConfig);
-
-    this.owner.inject('model', 'i18n', 'service:i18n');
-
-    // register t helper
-    this.owner.register('helper:t', tHelper);
+    this.owner.lookup('service:intl').set('locale', 'en');
   });
 
   test('deliveryLocationName', function(assert) {

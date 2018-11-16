@@ -1,6 +1,6 @@
 import { alias } from '@ember/object/computed';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractEditController.extend({
   sexList: alias('model.requestingController.sexList'),

@@ -8,10 +8,10 @@ import sinon from 'sinon';
 const preferences = {
   _id: 'preferences',
   hradmin: {
-    i18n: 'es'
+    intl: 'es'
   },
   'testuser@test.ts': {
-    i18n: 'fr'
+    intl: 'fr'
   }
 };
 
@@ -36,9 +36,7 @@ module('Unit | Service | Language preference', function(hooks) {
     configDb.put = sinon.stub();
 
     this.owner.register('service:config', config);
-    this.config = this.owner.lookup('service:config');
-    this.owner.register('service:i18n', Service.extend({}));
-    this.i18n = this.owner.lookup('service:i18n');
+    this.owner.register('service:intl', Service.extend({}));
   });
 
   hooks.afterEach(function() {
@@ -53,7 +51,7 @@ module('Unit | Service | Language preference', function(hooks) {
     let subject = this.owner.lookup('service:language-preference');
     return subject.loadUserLanguagePreference().then(function(lang) {
       assert.equal(lang, 'fr');
-      assert.equal(subject.get('i18n.locale'), lang, 'i18n service was not updated');
+      assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
     });
   });
 
@@ -63,7 +61,7 @@ module('Unit | Service | Language preference', function(hooks) {
     let subject = this.owner.lookup('service:language-preference');
     return subject.loadUserLanguagePreference().then(function(lang) {
       assert.equal(lang, DEFAULT_LANGUAGE);
-      assert.equal(subject.get('i18n.locale'), lang, 'i18n service was not updated');
+      assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
     });
   });
 
@@ -73,7 +71,7 @@ module('Unit | Service | Language preference', function(hooks) {
     let subject = this.owner.lookup('service:language-preference');
     return subject.loadUserLanguagePreference().then(function(lang) {
       assert.equal(lang, DEFAULT_LANGUAGE);
-      assert.equal(subject.get('i18n.locale'), lang, 'i18n service was not updated');
+      assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
     });
   });
 
@@ -85,7 +83,7 @@ module('Unit | Service | Language preference', function(hooks) {
     let subject = this.owner.lookup('service:language-preference');
     return subject.loadUserLanguagePreference().then(function(lang) {
       assert.equal(lang, DEFAULT_LANGUAGE);
-      assert.equal(subject.get('i18n.locale'), lang, 'i18n service was not updated');
+      assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
     });
   });
 
@@ -93,13 +91,13 @@ module('Unit | Service | Language preference', function(hooks) {
     currentUser.returns({ name: 'hradmin' });
 
     let expectedPreferences = JSON.parse(JSON.stringify(preferences));
-    expectedPreferences.hradmin.i18n = 'ru';
+    expectedPreferences.hradmin.intl = 'ru';
 
     let subject = this.owner.lookup('service:language-preference');
     return subject.saveUserLanguagePreference('ru').then(function() {
       sinon.assert.calledOnce(configDb.put);
       sinon.assert.calledWith(configDb.put, expectedPreferences);
-      assert.equal(subject.get('i18n.locale'), 'ru', 'i18n service was not updated');
+      assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
     });
   });
 
@@ -108,7 +106,7 @@ module('Unit | Service | Language preference', function(hooks) {
 
     let expectedPreferences = Object.assign({}, preferences, {
       'no-such-user@test.ts': {
-        i18n: 'ru'
+        intl: 'ru'
       }
     });
 
@@ -116,7 +114,7 @@ module('Unit | Service | Language preference', function(hooks) {
     return subject.saveUserLanguagePreference('ru').then(function() {
       sinon.assert.calledOnce(configDb.put);
       sinon.assert.calledWith(configDb.put, expectedPreferences);
-      assert.equal(subject.get('i18n.locale'), 'ru', 'i18n service was not updated');
+      assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
     });
   });
 
@@ -127,7 +125,7 @@ module('Unit | Service | Language preference', function(hooks) {
     let expectedPreferences = {
       _id: 'preferences',
       'no-such-user@test.ts': {
-        i18n: 'ru'
+        intl: 'ru'
       }
     };
 
@@ -135,13 +133,13 @@ module('Unit | Service | Language preference', function(hooks) {
     return subject.saveUserLanguagePreference('ru').then(function() {
       sinon.assert.calledOnce(configDb.put);
       sinon.assert.calledWith(configDb.put, expectedPreferences);
-      assert.equal(subject.get('i18n.locale'), 'ru', 'i18n service was not updated');
+      assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
     });
   });
 
-  test('setApplicationLanguage should update i18n', function(assert) {
+  test('setApplicationLanguage should update intl', function(assert) {
     let subject = this.owner.lookup('service:language-preference');
     subject.setApplicationLanguage('ru');
-    assert.equal(subject.get('i18n.locale'), 'ru', 'i18n service was not updated');
+    assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
   });
 });

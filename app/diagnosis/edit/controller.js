@@ -16,14 +16,14 @@ export default AbstractEditController.extend({
   }],
 
   additionalButtons: computed('model.isNew', function() {
-    let i8n = this.get('i18n');
+    let intl = this.get('intl');
     let isNew = this.get('model.isNew');
     if (!isNew) {
       return [{
         class: 'btn btn-default warning',
         buttonAction: 'deleteDiagnosis',
         buttonIcon: 'octicon octicon-x',
-        buttonText: i8n.t('buttons.delete')
+        buttonText: intl.t('buttons.delete')
       }];
     }
   }),
@@ -33,12 +33,12 @@ export default AbstractEditController.extend({
   }),
 
   title: computed('model.isNew', function() {
-    let i8n = this.get('i18n');
+    let intl = this.get('intl');
     let isNew = this.get('model.isNew');
     if (isNew) {
-      return i8n.t('diagnosis.titles.addDiagnosis');
+      return intl.t('diagnosis.titles.addDiagnosis');
     } else {
-      return i8n.t('diagnosis.titles.editDiagnosis');
+      return intl.t('diagnosis.titles.editDiagnosis');
     }
   }),
 

@@ -1,8 +1,6 @@
 import EmberObject from '@ember/object';
-import localeConfig from 'ember-i18n/config/en';
 import moment from 'moment';
 import sinonTest from 'ember-sinon-qunit/test-support/test';
-import tHelper from 'ember-i18n/helper';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 
@@ -11,15 +9,7 @@ module('Unit | Controller | abstract-report-controller', function(hooks) {
 
   hooks.beforeEach(function() {
     // set the locale and the config
-    this.owner.lookup('service:i18n').set('locale', 'en');
-    this.owner.register('locale:en/config', localeConfig);
-
-    // manually inject the i18n service as initialzer does not run
-    // in unit test
-    this.owner.inject('controller', 'i18n', 'service:i18n');
-
-    // register t helper
-    this.owner.register('helper:t', tHelper);
+    this.owner.lookup('service:intl').set('locale', 'en');
   });
 
   sinonTest('_notifyReportError', function(assert) {

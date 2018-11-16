@@ -54,6 +54,7 @@ module('Acceptance | appointments', function(hooks) {
       assert.dom('.appointment-date').doesNotExist('should have 0 appointment today');
       await visit('/appointments/edit/new');
       assert.equal(currentURL(), '/appointments/edit/new');
+
       findWithAssert(jquerySelect('button:contains(Cancel)'));
       findWithAssert(jquerySelect('button:contains(Add)'));
 
@@ -268,7 +269,6 @@ module('Acceptance | appointments', function(hooks) {
       let desiredDate = moment().endOf('day').add(363, 'days').format('l');
       let datePicker = '.test-selected-start-date input';
       await selectDate(datePicker, desiredDate);
-      // console.log(jquerySelect('button:contains(Search)'));
       await click($('button:contains(Search)').get(0));
 
       let date = moment().endOf('day').add(1, 'years').add(2, 'days').format('l');
@@ -357,7 +357,6 @@ module('Acceptance | appointments', function(hooks) {
     assert.dom('.modal-title').hasText('Appointment Saved', 'Appointment has been saved');
 
     await click(jquerySelect('.modal-footer button:contains(Ok)'));
-
     await click(jquerySelect('button:contains(Return)'));
   }
 

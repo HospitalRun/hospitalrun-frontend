@@ -73,7 +73,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   },
 
   additionalButtons: computed('canComplete', 'model.isValid', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let canComplete = this.get('canComplete');
     let isValid = this.get('model.isValid');
     if (isValid && canComplete) {
@@ -81,7 +81,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         buttonAction: 'completeImaging',
         buttonIcon: 'glyphicon glyphicon-ok',
         class: 'btn btn-primary on-white',
-        buttonText: i18n.t('buttons.complete')
+        buttonText: intl.t('buttons.complete')
       }];
     }
   }),
@@ -101,17 +101,17 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_imaging',
 
   afterUpdate(saveResponse, multipleRecords) {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     this.updateLookupLists();
     let afterDialogAction,
       alertTitle,
       alertMessage;
     if (this.get('model.status') === 'Completed') {
-      alertTitle = i18n.t('imaging.alerts.completedTitle');
-      alertMessage = i18n.t('imaging.alerts.completedMessage');
+      alertTitle = intl.t('imaging.alerts.completedTitle');
+      alertMessage = intl.t('imaging.alerts.completedMessage');
     } else {
-      alertTitle = i18n.t('imaging.alerts.savedTitle');
-      alertMessage = i18n.t('imaging.alerts.savedMessage');
+      alertTitle = intl.t('imaging.alerts.savedTitle');
+      alertMessage = intl.t('imaging.alerts.savedMessage');
     }
     if (multipleRecords) {
       afterDialogAction = this.get('cancelAction');

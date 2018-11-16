@@ -5,7 +5,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 
 export default Component.extend({
-  i18n: service(),
+  intl: service(),
   classNames: ['col-xs-2', 'form-group'],
   classNameBindings: ['hasError'],
   tagName: 'td',
@@ -23,8 +23,7 @@ export default Component.extend({
 
   quantityHelp: computed('hasError', function() {
     if (this.get('hasError')) {
-      return this.get('i18n').t('errors.invalidNumber');
+      return this.get('intl').t('errors.invalidNumber');
     }
   })
-
 });

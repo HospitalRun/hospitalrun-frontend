@@ -3,41 +3,25 @@ import DOBDays from 'hospitalrun/mixins/dob-days';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import DS from 'ember-data';
-import tHelper from 'ember-i18n/helper';
-import localeConfig from 'ember-i18n/config/en';
 import moment from 'moment';
 
 module('Unit | Mixin | dob-days', function(hooks) {
   setupTest(hooks);
 
   hooks.beforeEach(function() {
+    // set the locale and the config
+    this.owner.lookup('service:intl').set('locale', 'en');
+
     this.subject = function(attrs) {
-      let subject;
-      run(() => {
+      return run(() => {
         let Test = DS.Model.extend(DOBDays);
         this.owner.register('model:test', Test);
-        subject = this.store().createRecord('test', attrs);
+        return this.owner.lookup('service:store').createRecord('test', attrs);
       });
-
-      return subject;
-    };
-
-    this.store = function() {
-      return this.owner.lookup('service:store');
     };
   });
 
   hooks.beforeEach(function() {
-    // set the locale and the config
-    this.owner.lookup('service:i18n').set('locale', 'en');
-    this.owner.register('locale:en/config', localeConfig);
-
-    // Inject i18n as the intializer does not run in unit test
-    this.owner.inject('model', 'i18n', 'service:i18n');
-
-    // register t helper
-    this.owner.register('helper:t', tHelper);
-
     // eslint-disable-next-line no-undef
     timekeeper.freeze(new Date(1481784419830));
   });

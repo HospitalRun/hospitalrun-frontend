@@ -69,7 +69,7 @@ module.exports = function(environment) {
     ENV.APP.autoboot = false;
   }
 
-  ENV.i18n = {
+  ENV.intl = {
     defaultLocale: 'en'
   };
 

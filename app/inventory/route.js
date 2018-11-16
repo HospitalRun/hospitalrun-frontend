@@ -10,7 +10,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     if (this.currentUserCan(this.get('addCapability'))) {
       return [{
         buttonAction: 'newInventoryBatch',
-        buttonText: this.get('i18n').t('navigation.subnav.inventoryReceivedPlus'),
+        buttonText: this.get('intl').t('navigation.subnav.inventoryReceivedPlus'),
         class: 'btn btn-primary'
       }];
     }
