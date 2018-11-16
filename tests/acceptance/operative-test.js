@@ -1,4 +1,4 @@
-import { click, fillIn, find, currentURL, visit } from '@ember/test-helpers';
+import { click, fillIn, find, currentURL, visit, settled as wait } from '@ember/test-helpers';
 import { findWithAssert } from 'ember-native-dom-helpers';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
@@ -106,6 +106,9 @@ module('Acceptance | Operative Plan and Operation Report', function(hooks) {
 
       await click(jquerySelect('a.patient-procedure:contains(fix broken arm)'));
       assert.dom('.view-current-title').hasText('Edit Operation Report', 'Operation Report appears for editing');
+
+      // necessary for passing the electron tests
+      await wait();
     });
   });
 });

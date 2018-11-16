@@ -1,4 +1,4 @@
-import { click, fillIn, currentURL, find, visit, waitUntil } from '@ember/test-helpers';
+import { click, fillIn, currentURL, find, visit, waitUntil, settled as wait } from '@ember/test-helpers';
 import { findWithAssert } from 'ember-native-dom-helpers';
 import { isEmpty } from '@ember/utils';
 import moment from 'moment';
@@ -429,6 +429,9 @@ module('Acceptance | visits', function(hooks) {
     for (let f of (testCase && testCase.customForms || [])) {
       await checkCustomFormIsFilledAndReadonly(assert, f.name);
     }
+
+    // necessary for passing the electron tests
+    await wait();
   }
 
   async function updateVisitData(assert, modalTitle) {

@@ -50,6 +50,9 @@ module('Acceptance | Incidents', function(hooks) {
       await waitToAppear('.modal-dialog');
       assert.dom('.modal-title').hasText('Incident Category Saved', 'Incident Category saved modal appears');
       await click(jquerySelect('button:contains(Return)'));
+
+      await waitUntil(() => currentURL() === '/admin/inc-category');
+
       assert.equal(currentURL(), '/admin/inc-category', 'Incident Categories url is correct');
       assert.equal(jqueryLength('td.incident-catergory-name:contains(Infection Control)'),
         1, 'New incident category displays in listing');

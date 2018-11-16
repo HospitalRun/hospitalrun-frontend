@@ -1,4 +1,4 @@
-import { click, fillIn, find, currentURL, visit } from '@ember/test-helpers';
+import { click, fillIn, find, currentURL, visit, settled as wait } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import jqueryLength from 'hospitalrun/tests/helpers/deprecated-jquery-length';
@@ -68,6 +68,7 @@ module('Acceptance | invoices', function(hooks) {
       await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('button:contains(Ok)');
       await click(jquerySelect('button:contains(Ok)'));
+      await wait();
       await click(jquerySelect('button:contains(+ new item)'));
       await waitToAppear('h4:contains(New Pricing Profile)');
 
@@ -77,6 +78,7 @@ module('Acceptance | invoices', function(hooks) {
       await click(jquerySelect('button:contains(Add)'));
       await waitToAppear('button:contains(Ok)');
       await click(jquerySelect('button:contains(Ok)'));
+      await wait();
       await click(jquerySelect('button:contains(+ new item)'));
       await waitToAppear('h4:contains(New Pricing Profile)');
 

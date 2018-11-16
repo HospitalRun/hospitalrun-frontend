@@ -1,4 +1,4 @@
-import { click, fillIn, currentURL, visit, waitUntil, settled as wait } from '@ember/test-helpers';
+import { click, fillIn, currentURL, visit, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import jquerySelect from 'hospitalrun/tests/helpers/deprecated-jquery-select';
 import { findWithAssert } from 'ember-native-dom-helpers';
@@ -204,7 +204,7 @@ module('Acceptance | labs', function(hooks) {
       await click(jquerySelect('.modal-footer button:contains(Ok)'));
       await click(jquerySelect('.panel-footer button:contains(Return)'));
 
-      await wait();
+      await waitUntil(() => currentURL() === '/labs');
 
       assert.equal(currentURL(), '/labs');
       assert.dom('tr').exists({ count: 3 }, 'Two lab requests are displayed');
