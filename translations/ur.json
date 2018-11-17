@@ -34,17 +34,11 @@
         "colSpan": "پھیلاؤ کے کالموں کی تعداد",
         "columns": "کالم",
         "customForm": "کسٹم فام",
-        "dischargeReportFormType": "",
-        "expenseTo": "",
         "formName": "فارم کا نام",
         "formType": "فارم کی قسم",
-        "header": "",
-        "incidentFormType": "",
         "includeOtherOption": "دیگر آپشن شامل کریں",
-        "labFormType": "",
         "label": "لیبل",
         "newForm": "نیا فارم",
-        "opdReportFormType": "",
         "operativePlanFormType": "آپریٹو پلان اور رپورٹ",
         "otherOptionLabel": "دیگر آپشن لیبل",
         "patientFormType": "مریض",
@@ -67,26 +61,13 @@
         "editCustomForm": "کسٹم فارم میں ترمیم کریں",
         "fields": "قطعات",
         "formSaved": "فارم محفوظ ہوگیا",
-        "headerValues": "",
         "newCustomForm": "نئے کسٹم فارم",
         "radioValues": "ریڈیو میں قیمتیں"
       }
     },
     "header": {
-      "editTitle": "",
-      "facilityName": "",
-      "headerLabel": "",
-      "headerLine1": "",
-      "headerLine2": "",
-      "headerLine3": "",
-      "logoURL": "",
-      "messages": {
-        "headerSaved": ""
-      },
-      "newTitle": "",
-      "titles": {
-        "optionsSaved": ""
-      }
+      "messages": {},
+      "titles": {}
     },
     "loadDb": "DB لوڈ کریں",
     "loaddb": {
@@ -124,7 +105,6 @@
       },
       "expenseAccountList": "اخراجات اکاؤنٹس",
       "imagingPricingTypes": "امیجنگ قیمتوں کا تعین کی اقسام",
-      "incidentDepartments": "",
       "inventoryTypes": "انوینٹری کی اقسا م",
       "labPricingTypes": "لیب کی قیمتوں کا تعین کی اقسام",
       "pageTitle": "تلاش فہرستیں",
@@ -153,8 +133,6 @@
         "addCharge": "چارج شامل کریں",
         "addDiagnosis": "تشخیص کے لئے شامل کریں",
         "addImaging": "امیجنگ کا اضافہ کریں",
-        "addIncident": "",
-        "addIncidentCategory": "",
         "addInventoryItem": "انوینٹری آئٹم شامل کریں",
         "addInventoryPurchase": "انوینٹری کی خریداری شامل کریں",
         "addInventoryRequest": "انوینٹری کی درخواست شامل کریں",
@@ -178,15 +156,12 @@
         "admitPatient": "مریض جمع کریں",
         "appointments": "ملاقاتیں",
         "billing": "بلنگ",
-        "cashier": "",
         "completeImaging": "مکمل امیجنگ",
         "completeLab": "مکمل لیب",
         "defineUserRoles": "صارف کے کردار کی وضاحت کریں",
         "deleteAppointment": "ملاقات حذف کریں",
         "deleteDiagnosis": "تشخیس حذف کریں",
         "deleteImaging": "امیجنگ حذف کریں",
-        "deleteIncident": "",
-        "deleteIncidentCategory": "",
         "deleteInventoryItem": "حذف انوینٹری آئٹم",
         "deleteInvoice": "رسید کو حذف کریں",
         "deleteLab": "لیب حذف کریں",
@@ -204,15 +179,11 @@
         "editInvoice": "رسید میں ترمیم کریں",
         "fulfillInventory": "انوینٹری پورا کریں",
         "fulfillMedication": "ادویات پورا کریں",
-        "generateIncidentReport": "",
         "imaging": "امیجنگ",
-        "incident": "",
         "inventory": "انوینٹری",
         "invoices": "رسیدیں",
         "labs": "لیبز",
-        "listPaidInvoices": "",
         "loadDb": "لوڈ کریں ڈیٹا بیس",
-        "manageIncidents": "",
         "medication": "ادویات",
         "overrideInvoice": "رسید کو منسوخ کردے",
         "patientReports": "مریض کی رپورٹیں",
@@ -228,17 +199,7 @@
         "roleSaved": "کردار محفوظ ہوگیا ہے"
       }
     },
-    "textReplacements": {
-      "createNew": "",
-      "existingRepl": "",
-      "noMatches": "",
-      "pageTitle": "",
-      "performExpand": "",
-      "possibleExpansions": "",
-      "replDesc": "",
-      "replaceWith": "",
-      "toReplace": ""
-    },
+    "textReplacements": {},
     "userRoles": "صارف کے کردار",
     "users": "صارفین",
     "visitForms": {
@@ -333,14 +294,9 @@
       "noPricingProfiles": "کوئی قیمتوں کے تعیں والی پروفائل نہیں ملی"
     },
     "buttons": {
-      "addDeposit": "",
       "addOverride": "منسوخ شامل کریں",
-      "createInvoice": "ایک رسید بنائیں؟",
-      "newInvoice": ""
+      "createInvoice": "ایک رسید بنائیں؟"
     },
-    "currentScreenTitle": "",
-    "editInvoice": "",
-    "invoiceTitle": "",
     "labels": {
       "actualCharges": "اصل قیمت",
       "discountAmount": "ڈسکاؤنٹ رقم",
@@ -351,20 +307,10 @@
       "paymentProfile": "ادائیگی پروفائل",
       "paymentsDeposits": "ادائیگی / جمع کھاتہ",
       "pricingPanelOverrides": "قیمتوں کا تعین پروفائل کی منسوخی",
-      "pricingProfile": "قیمتوں کا تعین پروفائل",
-      "setFee": ""
+      "pricingProfile": "قیمتوں کا تعین پروفائل"
     },
-    "messages": {
-      "flatDiscountMsg": "",
-      "flatFeeMsg": ""
-    },
-    "navigation": {
-      "allInvoices": "",
-      "billed": "",
-      "drafts": "",
-      "paid": ""
-    },
-    "newInvoice": ""
+    "messages": {},
+    "navigation": {}
   },
   "buttons": {
     "add": "شامل کریں",
@@ -391,10 +337,8 @@
     "newRequestPlus": "+ نئی درخواست",
     "newUser": "نیا صارف",
     "ok": "ٹھیک ہے",
-    "print": "",
     "remove": "دور کریں",
     "returnButton": "واپسی",
-    "review": "",
     "search": "تلاش کریں",
     "showAll": "سارے دکھائیں",
     "showFewer": "کم دکھائیں",
@@ -416,9 +360,7 @@
       "pmHour": "{hour} PM"
     },
     "imageUpload": {
-      "messages": {
-        "selectValidImageFile": ""
-      }
+      "messages": {}
     },
     "operativeProcedures": {
       "buttons": {
@@ -462,10 +404,7 @@
     "takePhoto": {
       "camera": "کیمرہ",
       "how": "آپ ایک تصویر کو کس طرح شامل کرنا چاہتے ہیں؟",
-      "labels": {
-        "takeAPicture": "",
-        "uploadAFile": ""
-      },
+      "labels": {},
       "photo": "تصویر",
       "preview": "پیش نظارہ",
       "takePhoto": "تصویر کھینچیں",
@@ -495,8 +434,6 @@
     }
   },
   "dashboard": {
-    "needs_user_setup": "",
-    "standalone_welcome": "",
     "title": "آپ کیا کرنا چاہیں گے؟"
   },
   "dates": {
@@ -561,10 +498,7 @@
     },
     "labels": {
       "addNewVisit": "--- نیا دورہ شامل کریں ---",
-      "completedBy": "",
-      "radiologist": "ریڈیولوجسٹ",
-      "requestedNotes": "",
-      "resultNotes": ""
+      "radiologist": "ریڈیولوجسٹ"
     },
     "messages": {
       "noCompleted": "کوئی مکمل اشیاء نہیں موجود۔"
@@ -578,98 +512,10 @@
     }
   },
   "incident": {
-    "buttons": {
-      "add": "",
-      "addForm": "",
-      "addItem": "",
-      "cancel": "",
-      "delete": "",
-      "download": "",
-      "edit": "",
-      "export": "",
-      "generateRep": "",
-      "newAttachment": "",
-      "newCategory": "",
-      "newIncident": "",
-      "newNote": ""
-    },
-    "labels": {
-      "actions": "",
-      "addedBy": "",
-      "category": "",
-      "categoryItem": "",
-      "date": "",
-      "dateRecorded": "",
-      "department": "",
-      "description": "",
-      "endDate": "",
-      "givenBy": "",
-      "howToAddAttachment": "",
-      "incidentDate": "",
-      "incidentId": "",
-      "item": "",
-      "lastUpdated": "",
-      "note": "",
-      "patientId": "",
-      "patientImpacted": "",
-      "reportType": "",
-      "reportedBy": "",
-      "reportedDate": "",
-      "reportedTo": "",
-      "sentinelEvent": "",
-      "startDate": "",
-      "status": "",
-      "statusActive": "",
-      "statusClosed": "",
-      "statusFollowup": "",
-      "statusReported": "",
-      "title": "",
-      "total": "",
-      "updatedBy": ""
-    },
-    "messages": {
-      "attachmentFileRequired": "",
-      "createNew": "",
-      "createNewIncidentCategory": "",
-      "fillIn": "",
-      "incidentCategorySaved": "",
-      "noClosedIncidents": "",
-      "noIncidentCategoriesFound": "",
-      "noIncidents": "",
-      "saved": "",
-      "selectExistingPatient": ""
-    },
-    "titles": {
-      "addAttachment": "",
-      "addCategoryItem": "",
-      "addNote": "",
-      "attachments": "",
-      "closed": "",
-      "current": "",
-      "deleteAttachment": "",
-      "deleteIncident": "",
-      "deleteIncidentCategory": "",
-      "deleteItem": "",
-      "deleteNote": "",
-      "editAttachment": "",
-      "editIncident": "",
-      "editIncidentCategory": "",
-      "editNote": "",
-      "general": "",
-      "history": "",
-      "incidentCategories": "",
-      "incidentCategoryItem": "",
-      "incidentCategoryName": "",
-      "incidentCategorySaved": "",
-      "incidentSaved": "",
-      "incidents": "",
-      "incidentsByCategory": "",
-      "incidentsByDepartment": "",
-      "newIncident": "",
-      "newIncidentCategory": "",
-      "notes": "",
-      "reports": ""
-    }
+    "buttons": {},
+    "labels": {},
+    "messages": {},
+    "titles": {}
   },
   "inventory": {
     "edit": {
@@ -687,7 +533,6 @@
     "labels": {
       "action": "عمل",
       "add": "شامل کریں",
-      "addAdjustmentType": "",
       "adjust": "درست کریں",
       "adjustmentDate": "درستگی کی تاریخ",
       "adjustmentFor": "درستگی براۓ",
@@ -754,11 +599,8 @@
       "rank": "درجہ",
       "reason": "وجہ",
       "remove": "دور کریں",
-      "removeAdjustmentType": "",
       "reorderPoint": " پوائنٹ پھر ترتیب کریں",
       "requestedItems": "درخواست کی گئی اشیاء",
-      "returnAdjustmentType": "",
-      "returnToVendorAdjustmentType": "",
       "salePricePerUnit": "فی یونٹ فروخت کی قیمت",
       "save": "محفوظ کریں",
       "serialNumber": "سیریل / لوٹ نمبر",
@@ -775,7 +617,6 @@
       "unitCost": "یونٹ کی لاگت",
       "vendor": "وینڈر",
       "vendorItemNumber": "وینڈر آئٹم نمبر",
-      "writeOffAdjustmentType": "",
       "xref": "XRef"
     },
     "messages": {
@@ -864,7 +705,6 @@
     "address": "ایڈریس",
     "age": "عمر",
     "allDay": "تمام دن",
-    "allItems": "",
     "amount": "رقم",
     "anesthesia": "اینستھیزیا",
     "assisting": "مدد",
@@ -876,7 +716,6 @@
     "country": "ملک",
     "cptcode": "CPT کوڈ",
     "creditTo": "کرنے کے لئے کریڈٹ",
-    "currencySymbol": "",
     "date": "تاریخ",
     "dateCompleted": "تاریخ مکمل",
     "dateOfBirth": "پیدائش کی تاریخ",
@@ -902,7 +741,6 @@
     "fileLoadSuccessful": " فائل لوڈ کامیابی سے ہو گئ",
     "fileName": "فائل کا نام",
     "fileToLoad": " لوڈ کے لیے فائل",
-    "from": "",
     "fulfill": "پورا کریں",
     "fulfillRequest": "درخواست کو پورا کریں",
     "fulfillRequestNow": "ابھی درخواست کو پورا کریں",
@@ -920,7 +758,6 @@
     "lookupType": "تلاش قسم",
     "medication": "ادویات",
     "name": "نام",
-    "newItem": "",
     "newUser": "نیا صارف",
     "note": "نوٹ",
     "notes": "نوٹس",
@@ -934,7 +771,6 @@
     "prescription": "نسخے",
     "prescriptionDate": "نسخے تاریخ",
     "price": "قیمت",
-    "print": "",
     "procedures": "طریقہ کار",
     "provider": "مھیا کرنے والا",
     "pullFrom": "سے کھیںچو",
@@ -951,14 +787,11 @@
     "startDate": "شروع کرنے کی تاریخ",
     "startTime": "وقت آغاز",
     "status": "صورتحال",
-    "takenBy": "",
-    "to": "",
     "total": "کل",
     "type": "قسم",
     "userCanAddNewValue": "صارف نئی اقدار کا اضافہ کر سکتے ہیں",
     "username": "یوزر نیم",
     "value": "قدر",
-    "view": "",
     "visit": "دورہ",
     "with": "ساتھ"
   },
@@ -1016,7 +849,6 @@
     },
     "messages": {
       "error": "یوزر نیم یا پاس ورڈ غلط ہے.",
-      "offlineError": "",
       "signIn": "سائن ان کریں"
     }
   },
@@ -1060,9 +892,6 @@
   "messages": {
     "createNewRecord": "ایک نیا ریکارڈ بنائیں؟",
     "createNewUser": "ایک نیا صارف بنائیں؟",
-    "delete": "",
-    "delete_plural": "",
-    "delete_singular": "",
     "forAuthorizedPersons": "یہ رپورٹ صرف مجاز افراد کے لئے ہے.",
     "newPatientHasToBeCreated": "ایک نیا مریض بنایا جانا ضروری ہے ... براہ کرم انتظار کریں ...",
     "noHistoryAvailable": "کوئی سرگزشت دستیاب نہیں",
@@ -1079,112 +908,50 @@
   },
   "models": {
     "appointment": {
-      "labels": {
-        "allDay": "",
-        "appointmentDate": "",
-        "appointmentType": "",
-        "endDate": "",
-        "location": "",
-        "notes": "",
-        "patient": "",
-        "provider": "",
-        "startDate": "",
-        "status": "",
-        "type": ""
-      },
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "labels": {},
+      "names": {}
     },
     "attachment": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "form": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "imaging": {
-      "names": "",
-      "request": {
-        "plural": "",
-        "singular": ""
-      }
+      "request": {}
     },
     "incident": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "item": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "lab": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      },
-      "request": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {},
+      "request": {}
     },
     "medication": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      },
-      "request": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {},
+      "request": {}
     },
     "note": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "patient": {
-      "labels": {
-        "name": ""
-      },
-      "names": {
-        "singular": ""
-      }
+      "labels": {},
+      "names": {}
     },
     "procedure": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "user": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "visit": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "vital": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     }
   },
   "navigation": {
@@ -1197,13 +964,10 @@
     "administration": "انتظامیہ",
     "billing": "بلنگ",
     "imaging": "امیجنگ",
-    "incident": "",
     "inventory": "انوینٹری",
     "labs": "لیبز",
     "medication": "ادویات",
-    "messages": {
-      "logoutFailed": ""
-    },
+    "messages": {},
     "patients": "مریض",
     "scheduling": "اوقات نامہ",
     "subnav": {
@@ -1214,20 +978,15 @@
       "appointmentSearch": " ملاقاتیں تلاش کریں",
       "appointmentsCalendar": "ملاقاتوں کا کیلنڈر",
       "appointmentsThisWeek": "اس ہفتے کی ملاقاتیں",
-      "cashier": "",
       "completed": "مکمل",
-      "currentIncidents": "",
       "customForms": "کسٹم فام",
       "dispense": "تقسیم",
-      "history": "",
-      "incidentCategories": "",
       "inventoryReceived": "انوینٹری موصول",
       "inventoryReceivedPlus": "+ انوینٹری موصو",
       "invoices": "رسیدیں",
       "items": "اشیاء",
       "loadDB": "DB لوڈ کریں",
       "lookupLists": "تلاش فہرستیں",
-      "newIncident": "",
       "newInvoice": "نئے رسید",
       "newPatient": "نئے مریض",
       "newRequest": "نئی درخواست",
@@ -1236,21 +995,16 @@
       "patientListing": "مریض کی فہرست سازی",
       "priceProfiles": "قیمت پروفائلز",
       "prices": "قیمتیں",
-      "printHeader": "",
       "reports": "رپورٹس",
       "requests": "درخواستیں",
       "returnMedication": "واپس دوا",
       "scheduleSurgery": "سرجری اوقات نامہ",
-      "textReplacements": "",
       "theaterSchedule": "تھیٹر اوقات نامہ",
-      "today'sAppointments": "",
       "userRoles": "صارف کے کردار",
       "users": "صارفین",
       "workflow": "ورک فلو"
     },
-    "titles": {
-      "logoutFailed": ""
-    }
+    "titles": {}
   },
   "operationReport": {
     "labels": {
@@ -1305,7 +1059,6 @@
       "addFamilyMember": "خاندان کا فرد شامل کریں",
       "addOperativePlan": "آپریٹو پلان میں شامل کریں",
       "backToPatients": "مریض کی فہرست پر واپس جائیں",
-      "download": "",
       "editOperativePlan": "موجودہ آپریٹو پلان",
       "newAppointment": "نئی ملاقات",
       "newImaging": "نئی امیجنگ",
@@ -1321,7 +1074,6 @@
       "admissionDate": "داخلے کی تاریخ",
       "admit": "داخل کریں",
       "bloodType": "خون کی قسم",
-      "caption": "",
       "civilStatus": "سول حیثیت",
       "clinic": "کلینک کی جگہ",
       "contacts": "رابطے",
@@ -1344,8 +1096,6 @@
       "parent": "والدین / سرپرست",
       "patientDays": "مریض کے دن",
       "patientType": "مریضوں کی اقسام",
-      "patientTypeCharity": "",
-      "patientTypePrivate": "",
       "phone": "فون",
       "placeOfBirth": "جائے پیدائش",
       "primaryDiagnosis": "بنیادی تشخیص",
@@ -1367,7 +1117,6 @@
       "deletingPatient": "مریض اور سارے متعلقہ ریکارڈز حذف کیا جا رہا ہے",
       "noPatientsFound": "کوئی مریض نہیں ملا۔",
       "notFoundQuickAdd": " مریض نہیں مل سکا۔ اگر آپ کو ایک نیا مریض بنانا چاہتے ہیں تو ذیل میں معلومات درج کیجے۔ ورنہ واپس جانے کے کیے منسوخ کا بٹن دبائیں۔ <strong>{patientFullName}</strong> ",
-      "photoFileRequired": "",
       "savedPatient": " کے لئے مریض کا ریکارڈ محفوظ ہوگیا ہے۔ {displayName} "
     },
     "navigation": {
@@ -1426,20 +1175,8 @@
     }
   },
   "pricing": {
-    "labels": {
-      "discountAmount": "",
-      "discountPercentage": "",
-      "setFee": ""
-    },
-    "navigation": {
-      "allPricingItems": "",
-      "imagePricing": "",
-      "labPricing": "",
-      "pricingProfiles": "",
-      "procedurePricing": "",
-      "wardPricing": ""
-    },
-    "sectionTitle": ""
+    "labels": {},
+    "navigation": {}
   },
   "print": {
     "invoice": {
@@ -1492,45 +1229,11 @@
   },
   "reports": {
     "labels": {
-      "admissionDate": "",
-      "allProcedures": "",
-      "completedBy": "",
-      "dischargeDate": "",
-      "examiner": "",
-      "images": "",
-      "labs": "",
-      "location": "",
-      "medications": "",
-      "nextAppointment": "",
-      "nextAppointments": "",
-      "notes": {
-        "author": "",
-        "date": "",
-        "title": ""
-      },
-      "operativePlan": {
-        "description": "",
-        "instructions": "",
-        "procedures": "",
-        "title": ""
-      },
-      "primaryDiagnosis": "",
-      "procedures": "",
-      "secondaryDiagnosis": "",
-      "visitDate": "",
-      "visitType": ""
+      "notes": {},
+      "operativePlan": {}
     },
-    "messages": {
-      "delete": "",
-      "saved": ""
-    },
-    "titles": {
-      "dischargeReport": "",
-      "newDischargeReport": "",
-      "newOPDReport": "",
-      "opdReport": "",
-      "saved": ""
-    }
+    "messages": {},
+    "titles": {}
   },
   "user": {
     "plusNewUser": "+ نیا صارف",
@@ -1543,8 +1246,6 @@
       "checkOut": "چیک آٹ",
       "discharge": "فارغ کر دیں",
       "newAppointment": "نئی ملاقات",
-      "newDischargeReport": "",
-      "newOPDReport": "",
       "newProcedure": "نئے طریقہ کار",
       "newVitals": "نئے vitals"
     },
@@ -1566,7 +1267,6 @@
       "procedure": "ضابطے",
       "procedureDate": "ضابطے کی تاریخ",
       "reasonForVisit": "دورے کی وجہ",
-      "reportType": "",
       "status": "دورہ کی صورتحال",
       "statusAdmitted": "داخل کر دیا گیا",
       "statusCheckedIn": "چیک ان کر دیا گیا",
@@ -1590,7 +1290,6 @@
       "notes": "نوٹس",
       "orders": "آرڈرز",
       "procedures": "طریقہ کار",
-      "reports": "",
       "vitals": "Vitals"
     },
     "titles": {

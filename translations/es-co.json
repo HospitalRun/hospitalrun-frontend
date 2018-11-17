@@ -21,72 +21,14 @@
     },
     "addressOptions": "Opciones de direcciones",
     "customForms": {
-      "buttons": {
-        "addField": "",
-        "moveDown": "",
-        "moveUp": "",
-        "newForm": "",
-        "preview": ""
-      },
-      "labels": {
-        "alwaysInclude": "",
-        "checkbox": "",
-        "colSpan": "",
-        "columns": "",
-        "customForm": "",
-        "dischargeReportFormType": "",
-        "expenseTo": "",
-        "formName": "",
-        "formType": "",
-        "header": "",
-        "incidentFormType": "",
-        "includeOtherOption": "",
-        "labFormType": "",
-        "label": "",
-        "newForm": "",
-        "opdReportFormType": "",
-        "operativePlanFormType": "",
-        "otherOptionLabel": "",
-        "patientFormType": "",
-        "property": "",
-        "radio": "",
-        "select": "",
-        "socialworkFormType": "",
-        "text": "",
-        "textarea": "",
-        "visitFormType": ""
-      },
-      "messages": {
-        "formSaved": ""
-      },
-      "titles": {
-        "checkboxValues": "",
-        "customForms": "",
-        "deleteForm": "",
-        "dropDownValues": "",
-        "editCustomForm": "",
-        "fields": "",
-        "formSaved": "",
-        "headerValues": "",
-        "newCustomForm": "",
-        "radioValues": ""
-      }
+      "buttons": {},
+      "labels": {},
+      "messages": {},
+      "titles": {}
     },
     "header": {
-      "editTitle": "",
-      "facilityName": "",
-      "headerLabel": "",
-      "headerLine1": "",
-      "headerLine2": "",
-      "headerLine3": "",
-      "logoURL": "",
-      "messages": {
-        "headerSaved": ""
-      },
-      "newTitle": "",
-      "titles": {
-        "optionsSaved": ""
-      }
+      "messages": {},
+      "titles": {}
     },
     "loadDb": "Cargar Base de datos",
     "loaddb": {
@@ -124,7 +66,6 @@
       },
       "expenseAccountList": "Cuentas de gastos",
       "imagingPricingTypes": "Tipos de precios de radiografias",
-      "incidentDepartments": "",
       "inventoryTypes": "Tipos de inventarios",
       "labPricingTypes": "Precios de laboratorio",
       "pageTitle": "Listas de busqueda",
@@ -134,9 +75,7 @@
       "procedureLocations": "Ubicacion de los procedimientos",
       "procedurePricingTypes": "Tipos de procedimientos y precios",
       "radiologists": "Radiologo",
-      "titles": {
-        "deleteLookupValue": ""
-      },
+      "titles": {},
       "unitTypes": "Tipos de unidad",
       "vendorList": "Proveedor",
       "visitLocationList": "Lugares de visista",
@@ -147,30 +86,21 @@
     "lookupLists": "Lista de busqueda",
     "roles": {
       "capability": {
-        "addAllergy": "",
         "addAppointment": "Adicionar cita",
-        "addBillingDiagnosis": "",
         "addCharge": "Adicionar cargo (valor)",
         "addDiagnosis": "Adicionar diagnostico",
         "addImaging": "Adicionar radiografia",
-        "addIncident": "",
-        "addIncidentCategory": "",
         "addInventoryItem": "Adicionar elemento al inventario",
         "addInventoryPurchase": "Adicionar compra",
         "addInventoryRequest": "Pedido de inventario",
         "addInvoice": "Adicionar factura",
         "addLab": "Adicionar laboratorio",
         "addMedication": "Adicionar medicación",
-        "addNote": "",
-        "addOperationReport": "",
-        "addOperativePlan": "",
         "addPatient": "Adicionar paciente",
         "addPayment": "Adicionar pago",
         "addPhoto": "Adicionar foto",
         "addPricing": "Adicionar precio",
         "addPricingProfile": "Adicionar perfil de precios",
-        "addProcedure": "",
-        "addSocialwork": "",
         "addVisit": "Adicionar visita",
         "addVitals": "Adicionar partes vitales",
         "adjustInventoryLocation": "Ajustar lugar elemento en el inventario",
@@ -178,20 +108,16 @@
         "admitPatient": "Admitir paciente",
         "appointments": "Citas",
         "billing": "Facturacion",
-        "cashier": "",
         "completeImaging": "Completar radiografia",
         "completeLab": "Completar laboratorio",
         "defineUserRoles": "Roles de usuario",
         "deleteAppointment": "Eliminar cita",
         "deleteDiagnosis": "Eliminar diagnostico",
         "deleteImaging": "Eliminar radiografia",
-        "deleteIncident": "",
-        "deleteIncidentCategory": "",
         "deleteInventoryItem": "Eliminar elemento del inventario",
         "deleteInvoice": "Eliminar factura",
         "deleteLab": "Eliminar laboratorio",
         "deleteMedication": "Eliminar medicación",
-        "deleteNote": "",
         "deletePatient": "Eliminar paciente",
         "deletePhoto": "Eliminar foto",
         "deletePricing": "Eliminar precio",
@@ -204,15 +130,11 @@
         "editInvoice": "Editar factura",
         "fulfillInventory": "Cumplimiento de inventario",
         "fulfillMedication": "Cumplir la medicación",
-        "generateIncidentReport": "",
         "imaging": "Radiografia",
-        "incident": "",
         "inventory": "Inventario",
         "invoices": "Facturas",
         "labs": "Laboratorios",
-        "listPaidInvoices": "",
         "loadDb": "Cargar base de datos",
-        "manageIncidents": "",
         "medication": "Medicación",
         "overrideInvoice": "Sobreescribir factura",
         "patientReports": "Reportes por paciente",
@@ -228,89 +150,38 @@
         "roleSaved": "Role salvado"
       }
     },
-    "textReplacements": {
-      "createNew": "",
-      "existingRepl": "",
-      "noMatches": "",
-      "pageTitle": "",
-      "performExpand": "",
-      "possibleExpansions": "",
-      "replDesc": "",
-      "replaceWith": "",
-      "toReplace": ""
-    },
+    "textReplacements": {},
     "userRoles": "Roles",
     "users": "Usuarios",
     "visitForms": {
-      "labels": {
-        "followup": "",
-        "form": "",
-        "initial": "",
-        "visitType": ""
-      },
-      "titles": {
-        "visitForms": ""
-      }
+      "labels": {},
+      "titles": {}
     },
     "workflow": {
-      "admissionDepositLabel": "",
-      "clinicPrepaymentLabel": "",
-      "editTitle": "",
-      "followupPrepaymentLabel": "",
-      "messages": {
-        "optionsSaved": ""
-      },
-      "newTitle": "",
-      "outpatientImagingLabel": "",
-      "outpatientLabLabel": "",
-      "outpatientMedicationLabel": "",
-      "titles": {
-        "optionsSaved": ""
-      },
-      "workflowLabel": ""
+      "messages": {},
+      "titles": {}
     }
   },
   "alerts": {
-    "errorExclamation": "",
-    "pleaseWait": "Por favor espere",
-    "reportError": "",
-    "warningExclamation": ""
+    "pleaseWait": "Por favor espere"
   },
   "allergies": {
-    "buttons": {
-      "addAllergy": ""
-    },
-    "labels": {
-      "allergyName": "",
-      "patientAllergy": ""
-    },
-    "titles": {
-      "addAllergy": "",
-      "editAllergy": ""
-    }
+    "buttons": {},
+    "labels": {},
+    "titles": {}
   },
   "application": {
-    "messages": {
-      "sessionExpired": ""
-    },
-    "titles": {
-      "sessionExpired": ""
-    }
+    "messages": {},
+    "titles": {}
   },
   "appointments": {
     "buttons": {
-      "newButton": "+ nueva cita",
-      "scheduleSurgery": ""
+      "newButton": "+ nueva cita"
     },
-    "calendarTitle": "",
     "currentScreenTitle": "Listado de citas",
     "editTitle": "Editar cita",
-    "labels": {
-      "noLocation": "",
-      "selectedStartingDate": ""
-    },
+    "labels": {},
     "messages": {
-      "appointmentSaved": "",
       "endTimeLaterThanStart": "Seleccione una hora de finalizacion despues de la de inicio."
     },
     "missed": "Citas perdidas",
@@ -318,70 +189,27 @@
     "searchTitle": "Buscar citas",
     "sectionTitle": "Citas",
     "thisWeek": "Citas esta semana",
-    "titles": {
-      "appointmentSaved": "",
-      "editSurgicalAppointment": "",
-      "newSurgicalAppointment": "",
-      "theaterSchedule": ""
-    },
+    "titles": {},
     "todayTitle": "Citas para hoy"
   },
   "billing": {
-    "alerts": {
-      "noInvoiceFound": "",
-      "noPricingItems": "",
-      "noPricingProfiles": ""
-    },
-    "buttons": {
-      "addDeposit": "",
-      "addOverride": "",
-      "createInvoice": "",
-      "newInvoice": ""
-    },
-    "currentScreenTitle": "",
-    "editInvoice": "",
-    "invoiceTitle": "",
-    "labels": {
-      "actualCharges": "",
-      "discountAmount": "",
-      "discountPercentage": "",
-      "externalInvoiceNumber": "",
-      "hmoCom": "",
-      "insurance": "",
-      "paymentProfile": "",
-      "paymentsDeposits": "",
-      "pricingPanelOverrides": "",
-      "pricingProfile": "",
-      "setFee": ""
-    },
-    "messages": {
-      "flatDiscountMsg": "",
-      "flatFeeMsg": ""
-    },
-    "navigation": {
-      "allInvoices": "",
-      "billed": "",
-      "drafts": "",
-      "paid": ""
-    },
-    "newInvoice": ""
+    "alerts": {},
+    "buttons": {},
+    "labels": {},
+    "messages": {},
+    "navigation": {}
   },
   "buttons": {
     "add": "Adicionar",
-    "addItem": "",
-    "addLineItem": "",
     "addValue": "Adicionar valor",
     "addVisit": "Adicionar visita",
     "allRequests": "Todas las solicitudes",
     "barcode": "Codigo de barras",
     "cancel": "Cancelar",
-    "clear": "",
     "close": "Cerrar",
     "complete": "Completado",
     "delete": "Eliminar",
     "dispense": "Repartir",
-    "edit": "",
-    "filter": "",
     "fulfill": "Cumplimiento",
     "import": "Importar",
     "loadFile": "Cargar archivo",
@@ -391,164 +219,58 @@
     "newRequestPlus": "+ nuevo pedido",
     "newUser": "Nuevo usuario",
     "ok": "Ok",
-    "print": "",
     "remove": "Remover",
     "returnButton": "Regresar",
-    "review": "",
     "search": "Buscar",
-    "showAll": "",
-    "showFewer": "",
     "update": "Actualizar"
   },
   "components": {
-    "chargesByTypeTab": {
-      "charges": ""
-    },
+    "chargesByTypeTab": {},
     "customFormManager": {
-      "buttons": {
-        "addForm": ""
-      }
+      "buttons": {}
     },
-    "dateTimePicker": {
-      "amHour": "",
-      "midnight": "",
-      "noon": "",
-      "pmHour": ""
-    },
+    "dateTimePicker": {},
     "imageUpload": {
-      "messages": {
-        "selectValidImageFile": ""
-      }
+      "messages": {}
     },
     "operativeProcedures": {
-      "buttons": {
-        "addProcedure": ""
-      },
-      "labels": {
-        "procedure": ""
-      },
-      "titles": {
-        "procedures": ""
-      }
+      "buttons": {},
+      "labels": {},
+      "titles": {}
     },
     "patientOrders": {
-      "buttons": {
-        "newImaging": "",
-        "newLab": "",
-        "newMedication": ""
-      },
-      "labels": {
-        "imagingOrderType": "",
-        "labOrderType": "",
-        "medicationOrderType": "",
-        "orderType": ""
-      }
+      "buttons": {},
+      "labels": {}
     },
-    "priceList": {
-      "charges": ""
-    },
-    "quantityCalc": {
-      "result": ""
-    },
-    "quantityConv": {
-      "conversion": "",
-      "unit": ""
-    },
+    "priceList": {},
+    "quantityCalc": {},
+    "quantityConv": {},
     "sortableColumn": {
-      "labels": {
-        "selectAll": ""
-      }
+      "labels": {}
     },
     "takePhoto": {
-      "camera": "",
-      "how": "",
-      "labels": {
-        "takeAPicture": "",
-        "uploadAFile": ""
-      },
-      "photo": "",
-      "preview": "",
-      "takePhoto": "",
-      "uploadFile": ""
+      "labels": {}
     },
     "upcomingAppointments": {
-      "labels": {
-        "date": "",
-        "location": "",
-        "type": "",
-        "with": ""
-      },
-      "titles": {
-        "upcomingAppointments": ""
-      }
+      "labels": {},
+      "titles": {}
     }
   },
   "customForms": {
-    "buttons": {
-      "addForm": ""
-    },
-    "labels": {
-      "formToAdd": ""
-    },
-    "titles": {
-      "addCustomForm": ""
-    }
+    "buttons": {},
+    "labels": {},
+    "titles": {}
   },
   "dashboard": {
-    "needs_user_setup": "",
-    "standalone_welcome": "",
     "title": "Que deseas hacer?"
   },
-  "dates": {
-    "long": "",
-    "longOmitDays": "",
-    "longOmitDaysPlural": "",
-    "longOmitDaysYears": "",
-    "longOmitYears": "",
-    "longPlural": "",
-    "short": "",
-    "shortOmitYears": ""
-  },
+  "dates": {},
   "diagnosis": {
-    "labels": {
-      "activeDiagnosis": "",
-      "date": "",
-      "diagnosis": "",
-      "secondaryDiagnosis": ""
-    },
-    "titles": {
-      "addDiagnosis": "",
-      "editDiagnosis": ""
-    }
+    "labels": {},
+    "titles": {}
   },
-  "errors": {
-    "accepted": "",
-    "blank": "",
-    "confirmation": "",
-    "empty": "",
-    "equalTo": "",
-    "even": "",
-    "exclusion": "",
-    "greaterThan": "",
-    "greaterThanOrEqualTo": "",
-    "inclusion": "",
-    "invalid": "",
-    "invalidNumber": "",
-    "lessThan": "",
-    "lessThanOrEqualTo": "",
-    "notANumber": "",
-    "notAnInteger": "",
-    "odd": "",
-    "otherThan": "",
-    "present": "",
-    "result": "",
-    "tooLong": "",
-    "tooShort": "",
-    "wrongLength": ""
-  },
-  "headings": {
-    "chargedItems": ""
-  },
+  "errors": {},
+  "headings": {},
   "imaging": {
     "alerts": {
       "completedMessage": "El pedido de radiografia ha sido completado.",
@@ -561,10 +283,7 @@
     },
     "labels": {
       "addNewVisit": "--Adicionar nueva visita--",
-      "completedBy": "",
-      "radiologist": "Radiologo",
-      "requestedNotes": "",
-      "resultNotes": ""
+      "radiologist": "Radiologo"
     },
     "messages": {
       "noCompleted": "No de items encontrados."
@@ -578,98 +297,10 @@
     }
   },
   "incident": {
-    "buttons": {
-      "add": "",
-      "addForm": "",
-      "addItem": "",
-      "cancel": "",
-      "delete": "",
-      "download": "",
-      "edit": "",
-      "export": "",
-      "generateRep": "",
-      "newAttachment": "",
-      "newCategory": "",
-      "newIncident": "",
-      "newNote": ""
-    },
-    "labels": {
-      "actions": "",
-      "addedBy": "",
-      "category": "",
-      "categoryItem": "",
-      "date": "",
-      "dateRecorded": "",
-      "department": "",
-      "description": "",
-      "endDate": "",
-      "givenBy": "",
-      "howToAddAttachment": "",
-      "incidentDate": "",
-      "incidentId": "",
-      "item": "",
-      "lastUpdated": "",
-      "note": "",
-      "patientId": "",
-      "patientImpacted": "",
-      "reportType": "",
-      "reportedBy": "",
-      "reportedDate": "",
-      "reportedTo": "",
-      "sentinelEvent": "",
-      "startDate": "",
-      "status": "",
-      "statusActive": "",
-      "statusClosed": "",
-      "statusFollowup": "",
-      "statusReported": "",
-      "title": "",
-      "total": "",
-      "updatedBy": ""
-    },
-    "messages": {
-      "attachmentFileRequired": "",
-      "createNew": "",
-      "createNewIncidentCategory": "",
-      "fillIn": "",
-      "incidentCategorySaved": "",
-      "noClosedIncidents": "",
-      "noIncidentCategoriesFound": "",
-      "noIncidents": "",
-      "saved": "",
-      "selectExistingPatient": ""
-    },
-    "titles": {
-      "addAttachment": "",
-      "addCategoryItem": "",
-      "addNote": "",
-      "attachments": "",
-      "closed": "",
-      "current": "",
-      "deleteAttachment": "",
-      "deleteIncident": "",
-      "deleteIncidentCategory": "",
-      "deleteItem": "",
-      "deleteNote": "",
-      "editAttachment": "",
-      "editIncident": "",
-      "editIncidentCategory": "",
-      "editNote": "",
-      "general": "",
-      "history": "",
-      "incidentCategories": "",
-      "incidentCategoryItem": "",
-      "incidentCategoryName": "",
-      "incidentCategorySaved": "",
-      "incidentSaved": "",
-      "incidents": "",
-      "incidentsByCategory": "",
-      "incidentsByDepartment": "",
-      "newIncident": "",
-      "newIncidentCategory": "",
-      "notes": "",
-      "reports": ""
-    }
+    "buttons": {},
+    "labels": {},
+    "messages": {},
+    "titles": {}
   },
   "inventory": {
     "edit": {
@@ -687,7 +318,6 @@
     "labels": {
       "action": "Acción",
       "add": "Adicionar",
-      "addAdjustmentType": "",
       "adjust": "Adjustar",
       "adjustmentDate": "Fecha de ajuste",
       "adjustmentFor": "Ajustado para",
@@ -695,8 +325,6 @@
       "aisle": "Pasillo",
       "aisleLocation": "Ubicación pasillo",
       "allInventory": "Todo el inventario",
-      "allItems": "",
-      "availableQuantity": "",
       "billTo": "Facturao a",
       "consumePurchases": "Consume Purchases",
       "consumptionRate": "Tasa de consumo",
@@ -754,11 +382,8 @@
       "rank": "Ranking",
       "reason": "Razón",
       "remove": "Remover",
-      "removeAdjustmentType": "",
       "reorderPoint": "Reordenar punto",
       "requestedItems": "Elementos solicitados",
-      "returnAdjustmentType": "",
-      "returnToVendorAdjustmentType": "",
       "salePricePerUnit": "Costo de venta por unidad",
       "save": "Guardar",
       "serialNumber": "Serial/Numero de lote",
@@ -775,7 +400,6 @@
       "unitCost": "Unidad Costo",
       "vendor": "Proveedor",
       "vendorItemNumber": "Proveedor numero de elemento",
-      "writeOffAdjustmentType": "",
       "xref": "XRef"
     },
     "messages": {
@@ -836,9 +460,7 @@
       "stockTransferDetail": "Detalle de traslado de stock",
       "stockTransferSum": "Resumen traslado de stock",
       "stockUsageDetail": "Detalle de uso de stock",
-      "stockUsageSum": "Resumen uso de stock",
-      "titleDateRange": "",
-      "titleSingleDate": ""
+      "stockUsageSum": "Resumen uso de stock"
     },
     "titles": {
       "addPurchase": "Adicionar compra",
@@ -861,34 +483,22 @@
     "action": "Accion",
     "actions": "Acciones",
     "addNewOutpatientVisit": "--Nueva visita a paciente externo--",
-    "address": "",
     "age": "Edad",
     "allDay": "Todo el dia",
-    "allItems": "",
-    "amount": "",
     "anesthesia": "Anestesia",
     "assisting": "Asistencia",
-    "balanceDue": "",
-    "billDate": "",
     "billTo": "Facturar a",
-    "category": "",
     "completed": "Completado",
-    "country": "",
     "cptcode": "Codigo CPT",
-    "creditTo": "",
-    "currencySymbol": "",
     "date": "Fecha",
     "dateCompleted": "Fecha completada",
     "dateOfBirth": "Fecha de nacimiento",
     "dateOfBirthShort": "FDN",
-    "datePaid": "",
     "dateRequested": "Fecha de pedido",
     "delete": "Eliminar",
     "deleteRequest": "Eliminar pedido",
     "deleteUser": "Eliminar usuario",
-    "department": "",
     "description": "Descripción",
-    "discount": "",
     "displayName": "Nombre para mostrar",
     "docRead": "Leer documento",
     "docWritten": "Documento escrito",
@@ -897,68 +507,48 @@
     "email": "Email",
     "endDate": "Fecha final",
     "endTime": "Hora de finalización",
-    "excess": "",
-    "expenseTo": "",
     "fileLoadSuccessful": "Archivo cargado exitosamente",
-    "fileName": "",
     "fileToLoad": "Archivo cargado",
-    "from": "",
     "fulfill": "Cumplomiento",
     "fulfillRequest": "Pedido de cumplimiento",
     "fulfillRequestNow": "Pedido de cumplimiento ahora",
     "fulfilled": "Cumplido",
-    "grandTotal": "",
     "id": "Id",
     "imageOrders": "Ordenes de radiografias",
     "imagingType": "Tipo de radiografia",
     "importFile": "Importar archivo",
-    "invoiceId": "",
     "labOrders": "Ordenes de laboratorio",
-    "lineItems": "",
     "loading": "Cargando",
     "location": "Ubicacion",
     "lookupType": "Tipo de busqueda",
     "medication": "Medicación",
     "name": "Nombre",
-    "newItem": "",
     "newUser": "Nuevo usuario",
-    "note": "",
     "notes": "Notas",
-    "number": "",
     "on": "on",
     "password": "Contraseña",
     "patient": "Paciente",
-    "payments": "",
     "physician": "Médico",
-    "prescriber": "",
     "prescription": "Receta medica",
     "prescriptionDate": "Fecha de la receta medica",
-    "price": "",
-    "print": "",
     "procedures": "Procedimiento",
     "provider": "Proveedor",
     "pullFrom": "Traer de",
     "quantity": "Cantidada",
-    "remarks": "",
     "requestedBy": "Pedido por|",
     "requestedOn": "Pedido On",
     "requests": "Pedido",
     "result": "Resultado",
     "results": "Resultados",
     "role": "Rol",
-    "search": "",
     "sex": "Genero",
     "startDate": "Fecha de inicio",
     "startTime": "Hora de inicio",
     "status": "Estado",
-    "takenBy": "",
-    "to": "",
-    "total": "",
     "type": "Tipo",
     "userCanAddNewValue": "Los usuarios pueden agregar nuevos valores",
     "username": "Nombre de usuario",
     "value": "Valor",
-    "view": "",
     "visit": "Visita",
     "with": "con"
   },
@@ -990,23 +580,8 @@
   },
   "languageName": "Español (Colombiano)",
   "loading": {
-    "messages": {
-      "0": "",
-      "1": "",
-      "2": "",
-      "3": "",
-      "4": "",
-      "5": "",
-      "6": "",
-      "7": "",
-      "8": "",
-      "9": "",
-      "10": "",
-      "11": ""
-    },
-    "progressBar": {
-      "progress": ""
-    }
+    "messages": {},
+    "progressBar": {}
   },
   "login": {
     "labels": {
@@ -1016,7 +591,6 @@
     },
     "messages": {
       "error": "Nombre de usuario o clave incorrectos.",
-      "offlineError": "",
       "signIn": "por favor ingrese"
     }
   },
@@ -1060,9 +634,6 @@
   "messages": {
     "createNewRecord": "Crear un nuevo registro?",
     "createNewUser": "Crear un nuevo usuario?",
-    "delete": "",
-    "delete_plural": "",
-    "delete_singular": "",
     "forAuthorizedPersons": "Este informe es sólo para personas autorizadas.",
     "newPatientHasToBeCreated": "Un nuevo paciente debe ser creado...Por favor espere..",
     "noHistoryAvailable": "Historia no disponible.",
@@ -1070,551 +641,157 @@
     "noNotesAvailable": "No hay notas clínicas adicionales están disponibles para esta visita.",
     "noUsersFound": "Ningun usuario encontrado.",
     "onBehalfOf": "a nombre de",
-    "reportError": "",
-    "requiredFieldsCorrectErrors": "",
-    "saveActionException": "",
     "sorry": "Lo sentimos, un error ha ocurrido...",
     "userHasBeenSaved": "El usuario ha sido salvado.",
     "userSaved": "Usuario salvado"
   },
   "models": {
     "appointment": {
-      "labels": {
-        "allDay": "",
-        "appointmentDate": "",
-        "appointmentType": "",
-        "endDate": "",
-        "location": "",
-        "notes": "",
-        "patient": "",
-        "provider": "",
-        "startDate": "",
-        "status": "",
-        "type": ""
-      },
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "labels": {},
+      "names": {}
     },
     "attachment": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "form": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "imaging": {
-      "names": "",
-      "request": {
-        "plural": "",
-        "singular": ""
-      }
+      "request": {}
     },
     "incident": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "item": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "lab": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      },
-      "request": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {},
+      "request": {}
     },
     "medication": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      },
-      "request": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {},
+      "request": {}
     },
     "note": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "patient": {
-      "labels": {
-        "name": ""
-      },
-      "names": {
-        "singular": ""
-      }
+      "labels": {},
+      "names": {}
     },
     "procedure": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "user": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "visit": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     },
     "vital": {
-      "names": {
-        "plural": "",
-        "singular": ""
-      }
+      "names": {}
     }
   },
   "navigation": {
     "about": "Información de HospitalRun",
     "actions": {
       "login": "Ingresar",
-      "logout": "Salir",
-      "selectLanguage": ""
+      "logout": "Salir"
     },
     "administration": "Administracion",
     "billing": "Facturas",
     "imaging": "Radiografia",
-    "incident": "",
     "inventory": "Inventario",
     "labs": "Laboratorio",
     "medication": "Recetas medicas",
-    "messages": {
-      "logoutFailed": ""
-    },
+    "messages": {},
     "patients": "Pacientes",
-    "scheduling": "",
     "subnav": {
-      "actions": "",
       "addAppointment": "Nueva cita",
       "addressFields": "Campos de dirección",
-      "admittedPatients": "",
-      "appointmentSearch": "",
-      "appointmentsCalendar": "",
-      "appointmentsThisWeek": "",
-      "cashier": "",
       "completed": "Completado",
-      "currentIncidents": "",
-      "customForms": "",
       "dispense": "Dispense",
-      "history": "",
-      "incidentCategories": "",
       "inventoryReceived": "Inventario recibido",
       "inventoryReceivedPlus": "+ Inventario recibido",
       "invoices": "Facturas",
       "items": "Items",
-      "loadDB": "",
       "lookupLists": "Lista de busuedas",
-      "newIncident": "",
       "newInvoice": "Nueva factura",
       "newPatient": "Nuevo paciente",
       "newRequest": "New pedido",
       "newUser": "Nuevo usuario",
-      "outpatient": "",
       "patientListing": "Lista de pacientes",
       "priceProfiles": "Perfil de precios",
       "prices": "Precios",
-      "printHeader": "",
       "reports": "Reportes",
       "requests": "Pedidos",
       "returnMedication": "Devolver medicamento",
-      "scheduleSurgery": "",
-      "textReplacements": "",
-      "theaterSchedule": "",
-      "today'sAppointments": "",
       "userRoles": "Roles",
-      "users": "Usuarios",
-      "workflow": ""
+      "users": "Usuarios"
     },
-    "titles": {
-      "logoutFailed": ""
-    }
+    "titles": {}
   },
   "operationReport": {
-    "labels": {
-      "additionalNotes": "",
-      "assistant": "",
-      "caseComplexity": "",
-      "operationDescription": "",
-      "preOpPrimaryDiagnosis": "",
-      "preOpSecondaryDiagnosis": "",
-      "surgeon": "",
-      "surgeryDate": ""
-    },
-    "messages": {
-      "reportSaved": ""
-    },
-    "titles": {
-      "editTitle": "",
-      "newTitle": "",
-      "reportSaved": ""
-    }
+    "labels": {},
+    "messages": {},
+    "titles": {}
   },
   "operativePlan": {
-    "buttons": {
-      "completePlan": ""
-    },
-    "labels": {
-      "additionalNotes": "",
-      "admissionInstructions": "",
-      "caseComplexity": "",
-      "completedStatus": "",
-      "droppedStatus": "",
-      "operationDescription": "",
-      "plannedStatus": "",
-      "status": "",
-      "surgeon": ""
-    },
-    "messages": {
-      "planCompleted": "",
-      "planSaved": ""
-    },
-    "titles": {
-      "editTitle": "",
-      "newTitle": "",
-      "planCompleted": "",
-      "planSaved": ""
-    }
+    "buttons": {},
+    "labels": {},
+    "messages": {},
+    "titles": {}
   },
   "patients": {
-    "buttons": {
-      "addContact": "",
-      "addExpense": "",
-      "addFamilyMember": "",
-      "addOperativePlan": "",
-      "backToPatients": "",
-      "download": "",
-      "editOperativePlan": "",
-      "newAppointment": "",
-      "newImaging": "",
-      "newLab": "",
-      "newMedication": "",
-      "newPatient": "",
-      "newPhoto": "",
-      "newVisit": "",
-      "patientCheckIn": "",
-      "scheduleSurgery": ""
-    },
-    "labels": {
-      "admissionDate": "",
-      "admit": "",
-      "bloodType": "",
-      "caption": "",
-      "civilStatus": "",
-      "clinic": "",
-      "contacts": "",
-      "cost": "",
-      "dateOfBirth": "",
-      "dateProcessed": "",
-      "dischargeDate": "",
-      "dob": "",
-      "education": "",
-      "email": "",
-      "externalPatientId": "",
-      "firstName": "",
-      "income": "",
-      "insurance": "",
-      "lastName": "",
-      "middleName": "",
-      "monthlyCost": "",
-      "occupation": "",
-      "operativePlan": "",
-      "parent": "",
-      "patientDays": "",
-      "patientType": "",
-      "patientTypeCharity": "",
-      "patientTypePrivate": "",
-      "phone": "",
-      "placeOfBirth": "",
-      "primaryDiagnosis": "",
-      "referredBy": "",
-      "referredDate": "",
-      "relationship": "",
-      "relationships": "",
-      "religion": "",
-      "secondaryDiagnosis": "",
-      "sex": "",
-      "sexNotEntered": "",
-      "sources": "",
-      "status": "",
-      "totalMontlyExpense": ""
-    },
-    "messages": {
-      "areYouSureDelete": "",
-      "createNewPatient": "",
-      "deletingPatient": "",
-      "noPatientsFound": "",
-      "notFoundQuickAdd": "",
-      "photoFileRequired": "",
-      "savedPatient": ""
-    },
-    "navigation": {
-      "appointments": "",
-      "general": "",
-      "history": "",
-      "imaging": "",
-      "labs": "",
-      "medication": "",
-      "photos": "",
-      "socialWork": "",
-      "visits": ""
-    },
+    "buttons": {},
+    "labels": {},
+    "messages": {},
+    "navigation": {},
     "notes": {
-      "newNote": "",
       "onBehalfOfCopy": "a nombre de",
       "onBehalfOfLabel": "A nombre de",
-      "pleaseSelectAVisit": "Por favor seleccione una visista",
-      "updateNote": ""
+      "pleaseSelectAVisit": "Por favor seleccione una visista"
     },
-    "titles": {
-      "addContact": "",
-      "addPhoto": "",
-      "additionalContacts": "",
-      "admissionsDetail": "",
-      "admissionsSummary": "",
-      "admittedPatients": "",
-      "delete": "",
-      "deleteContact": "",
-      "deleteExpense": "",
-      "deleteFamilyMember": "",
-      "deletePatientRecord": "",
-      "deletePhoto": "",
-      "diagnosticTesting": "",
-      "dischargesDetail": "",
-      "dischargesSummary": "",
-      "edit": "",
-      "editPhoto": "",
-      "expenses": "",
-      "familyInfo": "",
-      "familyInformation": "",
-      "new": "",
-      "outpatientsForDate": "",
-      "patient": "",
-      "patientListing": "",
-      "patientReport": "",
-      "patientStatus": "",
-      "proceduresDetail": "",
-      "proceduresSummary": "",
-      "savedPatient": "",
-      "socialWork": "",
-      "todaysOutpatients": "",
-      "totalPatientDays": "",
-      "totalPatientDaysDetailed": "",
-      "visit": ""
-    }
+    "titles": {}
   },
   "pricing": {
-    "labels": {
-      "discountAmount": "",
-      "discountPercentage": "",
-      "setFee": ""
-    },
-    "navigation": {
-      "allPricingItems": "",
-      "imagePricing": "",
-      "labPricing": "",
-      "pricingProfiles": "",
-      "procedurePricing": "",
-      "wardPricing": ""
-    },
-    "sectionTitle": ""
+    "labels": {},
+    "navigation": {}
   },
   "print": {
     "invoice": {
-      "labels": {
-        "billedBy": "",
-        "billedDate": "",
-        "dateAdmitted": "",
-        "dateDischarged": "",
-        "dischargeNotes": "",
-        "patientAddress": "",
-        "patientAge": "",
-        "patientId": "",
-        "patientName": "",
-        "remarks": "",
-        "spacer": ""
-      },
-      "messages": {
-        "whereConducted": ""
-      },
-      "titles": {
-        "billingStatement": "",
-        "patientMember": "",
-        "patients": "",
-        "relContact": ""
-      }
+      "labels": {},
+      "messages": {},
+      "titles": {}
     }
   },
   "procedures": {
-    "buttons": {
-      "addMedication": ""
-    },
-    "labels": {
-      "medicationUsed": ""
-    },
-    "messages": {
-      "saved": ""
-    },
-    "titles": {
-      "addChargeItem": "",
-      "addMedicationUsed": "",
-      "deleteChargeItem": "",
-      "deleteMedicationUsed": "",
-      "edit": "",
-      "editChargeItem": "",
-      "editMedicationUsed": "",
-      "medicationUsed": "",
-      "new": "",
-      "saved": ""
-    }
+    "buttons": {},
+    "labels": {},
+    "messages": {},
+    "titles": {}
   },
   "reports": {
     "labels": {
-      "admissionDate": "",
-      "allProcedures": "",
-      "completedBy": "",
-      "dischargeDate": "",
-      "examiner": "",
-      "images": "",
-      "labs": "",
-      "location": "",
-      "medications": "",
-      "nextAppointment": "",
-      "nextAppointments": "",
-      "notes": {
-        "author": "",
-        "date": "",
-        "title": ""
-      },
-      "operativePlan": {
-        "description": "",
-        "instructions": "",
-        "procedures": "",
-        "title": ""
-      },
-      "primaryDiagnosis": "",
-      "procedures": "",
-      "secondaryDiagnosis": "",
-      "visitDate": "",
-      "visitType": ""
+      "notes": {},
+      "operativePlan": {}
     },
-    "messages": {
-      "delete": "",
-      "saved": ""
-    },
-    "titles": {
-      "dischargeReport": "",
-      "newDischargeReport": "",
-      "newOPDReport": "",
-      "opdReport": "",
-      "saved": ""
-    }
+    "messages": {},
+    "titles": {}
   },
   "user": {
     "plusNewUser": "+ nuevo usuario",
     "usersPageTile": "Listado de usuarios"
   },
   "visits": {
-    "buttons": {
-      "addDiagnosis": "",
-      "checkIn": "",
-      "checkOut": "",
-      "discharge": "",
-      "newAppointment": "",
-      "newDischargeReport": "",
-      "newOPDReport": "",
-      "newProcedure": "",
-      "newVitals": ""
-    },
-    "labels": {
-      "appointment": "",
-      "authoredBy": "",
-      "checkInTime": "",
-      "checkOutTime": "",
-      "createNewPatient": "",
-      "diagnosis": "",
-      "examiner": "",
-      "finalDiagnosis": "",
-      "haveAppointment": "",
-      "haveDoneOrders": "",
-      "noAppointment": "",
-      "ordersDone": "",
-      "ordersNotDone": "",
-      "patientToCheckIn": "",
-      "procedure": "",
-      "procedureDate": "",
-      "reasonForVisit": "",
-      "reportType": "",
-      "status": "",
-      "statusAdmitted": "",
-      "statusCheckedIn": "",
-      "statusCheckedOut": "",
-      "statusDischarged": "",
-      "visitDate": "",
-      "visitInformation": "",
-      "visitType": ""
-    },
-    "messages": {
-      "checkOut": "",
-      "checkedOut": "",
-      "discharged": "",
-      "patientCheckedIn": "",
-      "patientCreatedAndCheckedIn": "",
-      "visitAndPatientSaved": "",
-      "visitSaved": ""
-    },
-    "navigation": {
-      "charges": "",
-      "notes": "",
-      "orders": "",
-      "procedures": "",
-      "reports": "",
-      "vitals": ""
-    },
-    "titles": {
-      "additionalDiagnoses": "",
-      "checkOut": "",
-      "checkedIn": "",
-      "checkedOut": "",
-      "discharged": "",
-      "editVisit": "",
-      "newVisit": "",
-      "patientCheckIn": "",
-      "visitSaved": ""
-    }
+    "buttons": {},
+    "labels": {},
+    "messages": {},
+    "navigation": {},
+    "titles": {}
   },
   "vitals": {
-    "labels": {
-      "dateRecorded": "",
-      "dbp": "",
-      "heartRate": "",
-      "height": "",
-      "respiratoryRate": "",
-      "sbp": "",
-      "temperature": "",
-      "weight": ""
-    }
+    "labels": {}
   }
 }
