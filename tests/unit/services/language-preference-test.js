@@ -51,7 +51,7 @@ test('loadUserLanguagePreference should return user language preference', functi
   let subject = this.subject();
   return subject.loadUserLanguagePreference().then(function(lang) {
     assert.equal(lang, 'fr');
-    assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
+    assert.deepEqual(subject.get('intl.locale'), [lang, DEFAULT_LANGUAGE], 'intl service was not updated');
   });
 });
 
@@ -61,7 +61,7 @@ test("loadUserLanguagePreference should return default language if user's prefer
   let subject = this.subject();
   return subject.loadUserLanguagePreference().then(function(lang) {
     assert.equal(lang, DEFAULT_LANGUAGE);
-    assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
+    assert.deepEqual(subject.get('intl.locale'), [DEFAULT_LANGUAGE], 'intl service was not updated');
   });
 });
 
@@ -71,7 +71,7 @@ test('loadUserLanguagePreference should return default language if there are no 
   let subject = this.subject();
   return subject.loadUserLanguagePreference().then(function(lang) {
     assert.equal(lang, DEFAULT_LANGUAGE);
-    assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
+    assert.deepEqual(subject.get('intl.locale'), [DEFAULT_LANGUAGE], 'intl service was not updated');
   });
 });
 
@@ -97,7 +97,7 @@ test('saveUserLanguagePreference should update existing user setting', function(
   return subject.saveUserLanguagePreference('ru').then(function() {
     sinon.assert.calledOnce(configDb.put);
     sinon.assert.calledWith(configDb.put, expectedPreferences);
-    assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
+    assert.deepEqual(subject.get('intl.locale'), ['ru', DEFAULT_LANGUAGE], 'intl service was not updated');
   });
 });
 
@@ -114,7 +114,7 @@ test("saveUserLanguagePreference should update preferences when user doesn't exi
   return subject.saveUserLanguagePreference('ru').then(function() {
     sinon.assert.calledOnce(configDb.put);
     sinon.assert.calledWith(configDb.put, expectedPreferences);
-    assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
+    assert.deepEqual(subject.get('intl.locale'), ['ru', DEFAULT_LANGUAGE], 'intl service was not updated');
   });
 });
 
@@ -133,12 +133,12 @@ test("saveUserLanguagePreference should create preferences when they doesn't exi
   return subject.saveUserLanguagePreference('ru').then(function() {
     sinon.assert.calledOnce(configDb.put);
     sinon.assert.calledWith(configDb.put, expectedPreferences);
-    assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
+    assert.deepEqual(subject.get('intl.locale'), ['ru', DEFAULT_LANGUAGE], 'intl service was not updated');
   });
 });
 
 test('setApplicationLanguage should update intl', function(assert) {
   let subject = this.subject();
   subject.setApplicationLanguage('ru');
-  assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
+  assert.deepEqual(subject.get('intl.locale'), ['ru', DEFAULT_LANGUAGE], 'intl service was not updated');
 });

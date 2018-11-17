@@ -20,7 +20,10 @@ export default Service.extend({
   },
 
   setApplicationLanguage(selectedLanguage) {
-    return run(() => this.set('intl.locale', [selectedLanguage, 'en']));
+    // this will set the locale to the selected language but allow
+    // translation fallbacks to DEFAULT_LANGUAGE
+    run(() => this.set('intl.locale', [selectedLanguage, DEFAULT_LANGUAGE].uniq()));
+    return selectedLanguage;
   },
 
   saveUserLanguagePreference(selectedLanguage) {
