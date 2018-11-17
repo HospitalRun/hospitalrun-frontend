@@ -1,10 +1,8 @@
 import { run } from '@ember/runloop';
-import { getOwner } from '@ember/application';
 import { hash } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import Ember from 'ember';
 import config from '../config/environment';
-import { walkConfigs, setRTL } from '../utils/locale-utils';
 
 export const DEFAULT_LANGUAGE = config.intl.defaultLocale || 'en';
 
@@ -22,14 +20,7 @@ export default Service.extend({
   },
 
   setApplicationLanguage(selectedLanguage) {
-
-    // Whenever the languague changes, apply RTL settings to application
-    let currentConfig = walkConfigs(selectedLanguage, getOwner(this)) || {};
-    if (currentConfig.class) {
-      setRTL(currentConfig.class.rtl);
-    }
-
-    return run(() => this.set('intl.locale', selectedLanguage));
+    return run(() => this.set('intl.locale', [selectedLanguage, 'en']));
   },
 
   saveUserLanguagePreference(selectedLanguage) {
