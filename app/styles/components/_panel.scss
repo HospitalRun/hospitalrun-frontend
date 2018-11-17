@@ -8,7 +8,7 @@
   .view-action-buttons {
     float: right;
 
-    :root body[dir="rtl"] & {
+    @at-root body[dir='rtl'] & {
       float: left;
     }
 

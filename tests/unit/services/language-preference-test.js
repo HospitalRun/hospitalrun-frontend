@@ -42,6 +42,9 @@ moduleFor('service:language-preference', 'Unit | Service | Language preference',
     configDb.get.reset();
     configDb.put.reset();
     currentUser.reset();
+
+    // in case of any leftover tests that have modified the direction
+    document.body.dir = 'auto';
   }
 });
 
@@ -141,4 +144,13 @@ test('setApplicationLanguage should update intl', function(assert) {
   let subject = this.subject();
   subject.setApplicationLanguage('ru');
   assert.deepEqual(subject.get('intl.locale'), ['ru', DEFAULT_LANGUAGE], 'intl service was not updated');
+});
+
+test('setting a rtl language sets the direction on the body tag', function(assert) {
+  let subject = this.subject();
+  subject.setApplicationLanguage('ar');
+  assert.equal(document.body.dir, 'rtl', 'arabic sets dir attribute to right to left');
+
+  subject.setApplicationLanguage('en');
+  assert.equal(document.body.dir, 'auto', 'english sets dir attribute back to auto');
 });

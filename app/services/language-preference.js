@@ -3,6 +3,7 @@ import { hash } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import Ember from 'ember';
 import config from '../config/environment';
+import rtlDetect from 'hospitalrun/utils/rtl-detect';
 
 export const DEFAULT_LANGUAGE = config.intl.defaultLocale || 'en';
 
@@ -23,6 +24,10 @@ export default Service.extend({
     // this will set the locale to the selected language but allow
     // translation fallbacks to DEFAULT_LANGUAGE
     run(() => this.set('intl.locale', [selectedLanguage, DEFAULT_LANGUAGE].uniq()));
+
+    // allows for the browser to set direction (rtl for right-to-left)
+    document.body.dir = rtlDetect.isRtlLang(selectedLanguage) ? 'rtl' : 'auto';
+
     return selectedLanguage;
   },
 
