@@ -81,5 +81,4 @@ export default Mixin.create({
     });
     return yield all(pendingTasks);
   }).group('deleting')
-
 });

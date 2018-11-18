@@ -41,7 +41,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PouchDbMixin,
       pendingTasks.push(deleteVisitTask.perform(visit));
     });
     yield all(pendingTasks);
-  }),
+  }).group('deleting'),
 
   deleteActionTask: task(function* (patient) {
     // delete related records without modal dialogs
