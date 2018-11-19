@@ -65,7 +65,7 @@ $inactive-sort-indicator: rgba($navy_drk2,.3);
   font-size: 28px;
   font-weight: 600;
 
-  .rtl & {
+  @at-root body[dir='rtl'] & {
     float: right;
     text-align: right;
   }
