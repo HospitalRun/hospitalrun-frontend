@@ -5,7 +5,7 @@ import VisitInvoicesMixin from 'hospitalrun/mixins/visit-invoices';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import CascadingDeletions from 'hospitalrun/mixins/cascading-deletion';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import { task, taskGroup, all } from 'ember-concurrency';
 
 export default AbstractDeleteController.extend(PatientVisitsMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, VisitInvoicesMixin, CascadingDeletions, {

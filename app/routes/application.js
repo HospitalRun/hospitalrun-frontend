@@ -27,10 +27,10 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
 
     error(reason, transition) {
       if (reason instanceof UnauthorizedError) {
-        let i18n = this.get('i18n');
-        let message = i18n.t('application.messages.sessionExpired');
+        let intl = this.get('intl');
+        let message = intl.t('application.messages.sessionExpired');
         let session = get(this, 'session');
-        let title = i18n.t('application.titles.sessionExpired');
+        let title = intl.t('application.titles.sessionExpired');
         if (!isEmpty(transition)) {
           let sessionStore = session.get('store');
           let sessionData = session.get('data');
@@ -79,6 +79,11 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
     updateModal(modalPath, model) {
       set(this.controllerFor(modalPath), 'model', model);
     }
+  },
+
+  beforeModel() {
+    let intl = this.get('intl');
+    intl.setLocale(DEFAULT_LANGUAGE);
   },
 
   model(params, transition) {

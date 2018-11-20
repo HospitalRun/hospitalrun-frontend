@@ -4,6 +4,6 @@ export default AbstractEditController.extend({
   updateCapability: 'update_config',
 
   afterUpdate() {
-    this.displayAlert(this.get('i18n').t('admin.header.titles.optionsSaved'), this.get('i18n').t('admin.header.messages.headerSaved'));
+    this.displayAlert(this.get('intl').t('admin.header.titles.optionsSaved'), this.get('intl').t('admin.header.messages.headerSaved'));
   }
 });

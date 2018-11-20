@@ -3,7 +3,7 @@ import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-co
 import VisitInvoicesMixin from 'hospitalrun/mixins/visit-invoices';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import CascadingDeletions from 'hospitalrun/mixins/cascading-deletion';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import { task, taskGroup } from 'ember-concurrency';
 
 export default AbstractDeleteController.extend(ProgressDialog, VisitInvoicesMixin, CascadingDeletions, {

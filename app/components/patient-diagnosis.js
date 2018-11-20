@@ -2,7 +2,7 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { get, computed } from '@ember/object';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import UserSession from 'hospitalrun/mixins/user-session';
 
 const DIAGNOSIS_KEYS = [
@@ -13,7 +13,7 @@ const DIAGNOSIS_KEYS = [
 ];
 
 export default Component.extend(PatientDiagnosis, UserSession, {
-  i18n: service(),
+  intl: service(),
   allowAddDiagnosis: false,
   diagnosisContainer: null,
   diagnosisProperty: null,
@@ -76,5 +76,4 @@ export default Component.extend(PatientDiagnosis, UserSession, {
       this.sendAction('showAddDiagnosisAction');
     }
   }
-
 });

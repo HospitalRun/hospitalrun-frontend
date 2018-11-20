@@ -97,8 +97,8 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
   }),
 
   afterUpdate() {
-    let i18n = get(this, 'i18n');
-    this.displayAlert(i18n.t('incident.titles.incidentSaved'), i18n.t('incident.messages.saved'));
+    let intl = get(this, 'intl');
+    this.displayAlert(intl.t('incident.titles.incidentSaved'), intl.t('incident.messages.saved'));
   },
 
   beforeUpdate() {
@@ -196,13 +196,13 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
     },
 
     showDeleteAttachment(attachment) {
-      let i18n = get(this, 'i18n');
-      let modelName = i18n.t('models.attachment.names.singular');
-      let message = i18n.t('messages.delete_singular', { name: modelName });
+      let intl = get(this, 'intl');
+      let modelName = intl.t('models.attachment.names.singular');
+      let message = intl.t('messages.delete_singular', { name: modelName });
       let model = EmberObject.create({
         itemToDelete: attachment
       });
-      let title = i18n.t('incident.titles.deleteAttachment');
+      let title = intl.t('incident.titles.deleteAttachment');
       this.displayConfirm(title, message, 'deleteAttachment', model);
     },
 

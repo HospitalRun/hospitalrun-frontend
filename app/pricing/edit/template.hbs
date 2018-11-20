@@ -6,25 +6,27 @@
       {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'labels.expenseTo') list=expenseAccountList selection=model.expenseAccount className="col-xs-4 price-department"}}
     </div>
     <div class="row">
-      <div class="required col-xs-4 price-category form-input-group">
-        <label class="control-label">{{t 'labels.category'}}</label>
-        <select onchange={{action "categoryChanged" value="target.value"}} class="form-control">
-          {{#each categories as |category|}}
-            <option value="{{category.id}}"
-                    selected={{is-equal category.id model.category}}>
-              {{category.value}}
-            </option>
-          {{/each}}
-        </select>
-      </div>
-      {{#if showPricingType}}
+      {{form.select
+        class='required col-xs-4 price-category form-input-group'
+        content=categories
+        optionValuePath='value'
+        optionLabelPath='id'
+        property='category'
+        action=(action 'categoryChanged')
+        label=(t 'labels.category')
+      }}
+      {{#if pricingTypeEditable}}
         {{select-or-typeahead form=form model=model
           property="pricingType" label=(t 'labels.type')
           list=pricingTypes
-          selection=model.pricingType
           className="col-xs-4 price-type form-input-group"
           prompt=" "
         }}
+      {{else}}
+        <div class="col-xs-4 price-type form-input-group">
+          <label class="control-label">{{t 'labels.type'}}</label>
+          <p class="form-control-static">{{model.pricingType}}</p>
+        </div>
       {{/if}}
     </div>
     <div class="panel">

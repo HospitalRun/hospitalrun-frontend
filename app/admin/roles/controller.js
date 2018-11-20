@@ -150,11 +150,11 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     section.capabilities.forEach((key) => {
       mappedCapabilities.push({
         key,
-        name: this.get('i18n').t(`admin.roles.capability.${key}`)
+        name: this.get('intl').t(`admin.roles.capability.${key}`)
       });
     });
     return {
-      name: this.get('i18n').t(`admin.roles.capability.${section.name}`),
+      name: this.get('intl').t(`admin.roles.capability.${section.name}`),
       capabilities: mappedCapabilities
     };
   }),
@@ -211,8 +211,8 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       });
       roleToUpdate.set('capabilities', capabilitiesToSave);
       roleToUpdate.save().then(() => {
-        this.displayAlert(this.get('i18n').t('admin.roles.titles.roleSaved'),
-          this.get('i18n').t('admin.roles.messages.roleSaved', { roleName: currentRole }));
+        this.displayAlert(this.get('intl').t('admin.roles.titles.roleSaved'),
+          this.get('intl').t('admin.roles.messages.roleSaved', { roleName: currentRole }));
       });
     }
   }

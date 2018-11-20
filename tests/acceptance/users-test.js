@@ -171,7 +171,7 @@ test('delete user', function(assert) {
     await visit('/admin/users');
     await click('button:contains(Delete):last');
     await waitToAppear('.modal-dialog');
-    assert.dom('.alert').hasText('Are you sure you wish to delete ?', 'User is displayed for deletion');
+    assert.dom('.alert').hasText('Are you sure you wish to delete Joe Bagadonuts?', 'User is displayed for deletion');
 
     await click('button:contains(Delete):last');
     assert.equal(find('.user-email:contains(joe@donuts.com)').length, 0, 'User disappears from user list');

@@ -15,35 +15,31 @@
   <div class="panel-heading">
     <h3 class="panel-title">{{lookupTitle}}</h3>
   </div>
-  {{#if canEditValues}}
-    <div class="panel-body">
-      <table class="table">
-        <tr class="table-header">
-          <th>{{t 'labels.value'}}</th>
-          <th>{{t 'labels.actions'}}</th>
+  <div class="panel-body">
+    <table class="table">
+      <tr class="table-header">
+        <th>{{t 'labels.value'}}</th>
+        <th>{{t 'labels.actions'}}</th>
+      </tr>
+      {{#each lookupTypeValues as |lookupTypeValue|}}
+        <tr>
+          <td class="lookup-type-value">{{lookupTypeValue.value}}</td>
+          <td>
+            {{#if lookupTypeValue.canModify}}
+              <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue.value bubbles=false }}>
+                {{t 'labels.edit'}}
+              </button>
+              <button class="btn btn-default warning" {{action 'confirmDeleteValue' lookupTypeValue.value bubbles=false }}>
+                <span class="octicon octicon-x"></span>{{t 'labels.delete'}}
+              </button>
+            {{/if}}
+          </td>
         </tr>
-        {{#each lookupTypeValues as |lookupTypeValue|}}
-          <tr>
-            <td class="lookup-type-value">{{lookupTypeValue.value}}</td>
-            <td>
-              {{#if lookupTypeValue.canModify}}
-                <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue.value bubbles=false }}>
-                  {{t 'labels.edit'}}
-                </button>
-                <button class="btn btn-default warning" {{action 'confirmDeleteValue' lookupTypeValue.value bubbles=false }}>
-                  <span class="octicon octicon-x"></span>{{t 'labels.delete'}}
-                </button>
-              {{/if}}
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-    </div>
-  {{/if}}
+      {{/each}}
+    </table>
+  </div>
   <div class="panel-footer">
-    {{#if canEditValues}}
-      <button class="btn btn-default neutral" {{action 'addValue'}}>{{t 'buttons.addValue'}}</button>
-    {{/if}}
+    <button class="btn btn-default neutral" {{action 'addValue'}}>{{t 'buttons.addValue'}}</button>
     {{#em-form model=lookupTypeList submitButton=false as |form|}}
       <div class="row">
         <div class="col-sm-4">

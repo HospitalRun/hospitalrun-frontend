@@ -1,29 +1,43 @@
 import { getOwner } from '@ember/application';
 import { moduleForModel, test } from 'ember-qunit';
-import tHelper from 'ember-i18n/helper';
-import localeConfig from 'ember-i18n/config/en';
+import tHelper from 'ember-intl/helpers/t';
 
 moduleForModel('patient-note', 'Unit | Model | patient-note', {
   needs: [
     'ember-validations@validator:local/presence',
-    'service:i18n',
     'service:session',
-    'locale:en/translations',
-    'locale:en/config',
-    'util:i18n/missing-message',
-    'util:i18n/compile-template',
     'config:environment',
     'model:patient',
-    'model:visit'
+    'model:visit',
+    'service:intl',
+    'ember-intl@adapter:default',
+    'cldr:cn',
+    'cldr:de',
+    'cldr:en',
+    'cldr:es',
+    'cldr:gr',
+    'cldr:hi',
+    'cldr:pt',
+    'cldr:th',
+    'cldr:tw',
+    'cldr:de',
+    'cldr:es',
+    'cldr:fr',
+    'cldr:he',
+    'cldr:it',
+    'cldr:ru',
+    'cldr:tr',
+    'cldr:ur',
+    'translation:en',
+    'util:intl/missing-message'
   ],
   beforeEach() {
     // set the locale and the config
-    this.container.lookup('service:i18n').set('locale', 'en');
-    this.registry.register('locale:en/config', localeConfig);
+    this.container.lookup('service:intl').set('locale', 'en');
 
-    // manually inject the i18n service as initialzer does not run
+    // manually inject the intl service as initialzer does not run
     // in unit test
-    getOwner(this).inject('model', 'i18n', 'service:i18n');
+    getOwner(this).inject('model', 'intl', 'service:intl');
 
     // register t helper
     this.registry.register('helper:t', tHelper);

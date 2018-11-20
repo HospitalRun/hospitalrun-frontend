@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import EmberObject, { set, get } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
@@ -41,7 +41,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
 
   getScreenTitle(model) {
     if (model.get('checkIn')) {
-      return this.get('i18n').t('visits.titles.patientCheckIn');
+      return this.get('intl').t('visits.titles.patientCheckIn');
     } else {
       return this._super(model);
     }
