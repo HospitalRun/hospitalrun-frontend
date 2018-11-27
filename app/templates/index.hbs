@@ -4,7 +4,7 @@
   </div>
   {{#if standAlone }}
     <div class="panel-body">
-      {{t "dashboard.standalone_welcome" }}
+      {{t "dashboard.standalone_welcome" htmlSafe=true}}
       {{#if needsUserSetup }}
         <p>{{t "dashboard.needs_user_setup"}}</p>
         <button type="button" class="btn btn-primary align-left" {{action "newUser" }}>

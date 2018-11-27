@@ -38,7 +38,6 @@
         "expenseTo": "Expense To",
         "formName": "Form Name",
         "formType": "Form Type",
-        "header": "",
         "incidentFormType": "Incident",
         "includeOtherOption": "Include Other Option",
         "labFormType": "Lab",
@@ -67,7 +66,6 @@
         "editCustomForm": "Edit Custom Form",
         "fields": "Fields",
         "formSaved": "Form Saved",
-        "headerValues": "",
         "newCustomForm": "New Custom Form",
         "radioValues": "Radio Values"
       }
@@ -333,14 +331,9 @@
       "noPricingProfiles": "No pricing profiles found."
     },
     "buttons": {
-      "addDeposit": "",
       "addOverride": "Add Override",
-      "createInvoice": "Create an invoice?",
-      "newInvoice": ""
+      "createInvoice": "Create an invoice?"
     },
-    "currentScreenTitle": "",
-    "editInvoice": "",
-    "invoiceTitle": "",
     "labels": {
       "actualCharges": "Actual Charges",
       "discountAmount": "Discount Amount",
@@ -358,13 +351,7 @@
       "flatDiscountMsg": "There is a flat discount amount applied to the patient financial responsibility of {currency}{discountAmount}.",
       "flatFeeMsg": "There is a flat fee for patient financial responsibility of {currency}{setFee}."
     },
-    "navigation": {
-      "allInvoices": "",
-      "billed": "",
-      "drafts": "",
-      "paid": ""
-    },
-    "newInvoice": ""
+    "navigation": {}
   },
   "buttons": {
     "add": "Add",
@@ -1431,15 +1418,7 @@
       "discountPercentage": "Discount Percentage",
       "setFee": "Set Fee"
     },
-    "navigation": {
-      "allPricingItems": "",
-      "imagePricing": "",
-      "labPricing": "",
-      "pricingProfiles": "",
-      "procedurePricing": "",
-      "wardPricing": ""
-    },
-    "sectionTitle": ""
+    "navigation": {}
   },
   "print": {
     "invoice": {

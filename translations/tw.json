@@ -333,14 +333,9 @@
       "noPricingProfiles": "找無定價概況"
     },
     "buttons": {
-      "addDeposit": "",
       "addOverride": "新增覆蓋",
-      "createInvoice": "建立單據?",
-      "newInvoice": ""
+      "createInvoice": "建立單據?"
     },
-    "currentScreenTitle": "",
-    "editInvoice": "",
-    "invoiceTitle": "",
     "labels": {
       "actualCharges": "實際收費",
       "discountAmount": "折扣金額",
@@ -358,13 +353,7 @@
       "flatDiscountMsg": "患者負責的基本費用已包含 {currency}{discountAmount} 的折扣.",
       "flatFeeMsg": "患者負責 {currency}{setFee} 的基本費用."
     },
-    "navigation": {
-      "allInvoices": "",
-      "billed": "",
-      "drafts": "",
-      "paid": ""
-    },
-    "newInvoice": ""
+    "navigation": {}
   },
   "buttons": {
     "add": "新增",
@@ -1431,15 +1420,7 @@
       "discountPercentage": "折扣百分比",
       "setFee": "設定費用"
     },
-    "navigation": {
-      "allPricingItems": "",
-      "imagePricing": "",
-      "labPricing": "",
-      "pricingProfiles": "",
-      "procedurePricing": "",
-      "wardPricing": ""
-    },
-    "sectionTitle": ""
+    "navigation": {}
   },
   "print": {
     "invoice": {
