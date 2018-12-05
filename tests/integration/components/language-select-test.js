@@ -54,20 +54,20 @@ module('Integration | Component | language select', function(hooks) {
 
     sinon.assert.calledOnce(finish);
   });
-});
 
-test('it selects current locale from service in the dropdown by default', async function(assert) {
-  await this.render(hbs`{{language-select}}`);
-  let getSelectedOption = () => {
-    let options = this.$('.language-select option').toArray();
-    return options.filter((option) => option.selected === true).pop();
-  };
+  test('it selects current locale from service in the dropdown by default', async function(assert) {
+    await render(hbs`{{language-select}}`);
+    let getSelectedOption = () => {
+      let options = this.$('.language-select option').toArray();
+      return options.filter((option) => option.selected === true).pop();
+    };
 
-  run(() => this.container.owner.lookup('service:intl').setLocale('de'));
-  let selectedOption = getSelectedOption();
-  assert.equal(selectedOption.innerText, 'Deutsch', 'it selects the currently selected locale');
+    run(() => this.owner.lookup('service:intl').setLocale('de'));
+    let selectedOption = getSelectedOption();
+    assert.equal(selectedOption.innerText, 'Deutsch', 'it selects the currently selected locale');
 
-  run(() => this.container.owner.lookup('service:intl').setLocale('fr'));
-  selectedOption = getSelectedOption();
-  assert.equal(selectedOption.innerText, 'Français', 'it selects the locale changed in service');
+    run(() => this.owner.lookup('service:intl').setLocale('fr'));
+    selectedOption = getSelectedOption();
+    assert.equal(selectedOption.innerText, 'Français', 'it selects the locale changed in service');
+  });
 });
