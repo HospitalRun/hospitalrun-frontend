@@ -43,6 +43,9 @@ module('Unit | Service | Language preference', function(hooks) {
     configDb.get.reset();
     configDb.put.reset();
     currentUser.reset();
+
+    // in case of any leftover tests that have modified the direction
+    document.body.dir = 'auto';
   });
 
   test('loadUserLanguagePreference should return user language preference', function(assert) {
@@ -51,7 +54,7 @@ module('Unit | Service | Language preference', function(hooks) {
     let subject = this.owner.lookup('service:language-preference');
     return subject.loadUserLanguagePreference().then(function(lang) {
       assert.equal(lang, 'fr');
-      assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
+      assert.equal(subject.get('intl.locale'), [lang, DEFAULT_LANGUAGE], 'intl service was not updated');
     });
   });
 
@@ -61,7 +64,7 @@ module('Unit | Service | Language preference', function(hooks) {
     let subject = this.owner.lookup('service:language-preference');
     return subject.loadUserLanguagePreference().then(function(lang) {
       assert.equal(lang, DEFAULT_LANGUAGE);
-      assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
+      assert.equal(subject.get('intl.locale'), [DEFAULT_LANGUAGE], 'intl service was not updated');
     });
   });
 
@@ -71,7 +74,7 @@ module('Unit | Service | Language preference', function(hooks) {
     let subject = this.owner.lookup('service:language-preference');
     return subject.loadUserLanguagePreference().then(function(lang) {
       assert.equal(lang, DEFAULT_LANGUAGE);
-      assert.equal(subject.get('intl.locale'), lang, 'intl service was not updated');
+      assert.equal(subject.get('intl.locale'), [DEFAULT_LANGUAGE], 'intl service was not updated');
     });
   });
 
@@ -97,7 +100,7 @@ module('Unit | Service | Language preference', function(hooks) {
     return subject.saveUserLanguagePreference('ru').then(function() {
       sinon.assert.calledOnce(configDb.put);
       sinon.assert.calledWith(configDb.put, expectedPreferences);
-      assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
+      assert.equal(subject.get('intl.locale'), ['ru', DEFAULT_LANGUAGE], 'intl service was not updated');
     });
   });
 
@@ -133,13 +136,13 @@ module('Unit | Service | Language preference', function(hooks) {
     return subject.saveUserLanguagePreference('ru').then(function() {
       sinon.assert.calledOnce(configDb.put);
       sinon.assert.calledWith(configDb.put, expectedPreferences);
-      assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
+      assert.equal(subject.get('intl.locale'), ['ru', DEFAULT_LANGUAGE], 'intl service was not updated');
     });
   });
 
   test('setApplicationLanguage should update intl', function(assert) {
     let subject = this.owner.lookup('service:language-preference');
     subject.setApplicationLanguage('ru');
-    assert.equal(subject.get('intl.locale'), 'ru', 'intl service was not updated');
+    assert.equal(subject.get('intl.locale'), ['ru', DEFAULT_LANGUAGE], 'intl service was not updated');
   });
 });

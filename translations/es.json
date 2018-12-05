@@ -35,10 +35,8 @@
         "columns": "Columnas",
         "customForm": "Formulario personalizado",
         "dischargeReportFormType": "Descartar reporte",
-        "expenseTo": "",
         "formName": "Nombre de la forma",
         "formType": "Tipo de forma",
-        "header": "",
         "incidentFormType": "Incidente",
         "includeOtherOption": "Incluir otra opción",
         "labFormType": "Tipo de formulario de laboratorio",
@@ -67,7 +65,6 @@
         "editCustomForm": "Editar formulario personalizado",
         "fields": "Campos",
         "formSaved": "Formulario guardado",
-        "headerValues": "",
         "newCustomForm": "Nuevo formulario personalizado",
         "radioValues": "Valores de radio botones"
       }
@@ -178,7 +175,6 @@
         "admitPatient": "Admitir paciente",
         "appointments": "Citas",
         "billing": "Facturación",
-        "cashier": "",
         "completeImaging": "Completar radiografía",
         "completeLab": "Completar laboratorio",
         "defineUserRoles": "Roles de usuario",
@@ -210,7 +206,6 @@
         "inventory": "Inventario",
         "invoices": "Facturas",
         "labs": "Laboratorios",
-        "listPaidInvoices": "",
         "loadDb": "Cargar base de datos",
         "manageIncidents": "Administrar credenciales",
         "medication": "Medicación",
@@ -228,17 +223,7 @@
         "roleSaved": "Rol guardado"
       }
     },
-    "textReplacements": {
-      "createNew": "",
-      "existingRepl": "",
-      "noMatches": "",
-      "pageTitle": "",
-      "performExpand": "",
-      "possibleExpansions": "",
-      "replDesc": "",
-      "replaceWith": "",
-      "toReplace": ""
-    },
+    "textReplacements": {},
     "userRoles": "Roles de usuario",
     "users": "Usuarios",
     "visitForms": {
@@ -333,14 +318,9 @@
       "noPricingProfiles": "No se encontraron perfiles de precio"
     },
     "buttons": {
-      "addDeposit": "",
       "addOverride": "Agregar anulación",
-      "createInvoice": "Crear factura",
-      "newInvoice": ""
+      "createInvoice": "Crear factura"
     },
-    "currentScreenTitle": "",
-    "editInvoice": "",
-    "invoiceTitle": "",
     "labels": {
       "actualCharges": "Cargos actuales",
       "discountAmount": "Monto de descuento",
@@ -351,20 +331,10 @@
       "paymentProfile": "Perfil de pago",
       "paymentsDeposits": "Pagos / Depósitos",
       "pricingPanelOverrides": "Sustitución de perfiles de pago",
-      "pricingProfile": "Perfil de Pago",
-      "setFee": ""
+      "pricingProfile": "Perfil de Pago"
     },
-    "messages": {
-      "flatDiscountMsg": "",
-      "flatFeeMsg": ""
-    },
-    "navigation": {
-      "allInvoices": "",
-      "billed": "",
-      "drafts": "",
-      "paid": ""
-    },
-    "newInvoice": ""
+    "messages": {},
+    "navigation": {}
   },
   "buttons": {
     "add": "Agregar",
@@ -391,10 +361,8 @@
     "newRequestPlus": "+ nuevo pedido",
     "newUser": "Nuevo usuario",
     "ok": "Ok",
-    "print": "",
     "remove": "Quitar",
     "returnButton": "Regresar",
-    "review": "",
     "search": "Buscar",
     "showAll": "Mostrar todo",
     "showFewer": "Mostrar menos",
@@ -495,8 +463,6 @@
     }
   },
   "dashboard": {
-    "needs_user_setup": "",
-    "standalone_welcome": "",
     "title": "Bienvenido a HospitalRun!"
   },
   "dates": {
@@ -561,10 +527,7 @@
     },
     "labels": {
       "addNewVisit": "--Agregar nueva visita--",
-      "completedBy": "",
-      "radiologist": "Radiólogo",
-      "requestedNotes": "",
-      "resultNotes": ""
+      "radiologist": "Radiólogo"
     },
     "messages": {
       "noCompleted": "No de elementos encontrados."
@@ -864,7 +827,6 @@
     "address": "Dirección",
     "age": "Edad",
     "allDay": "Todo el día",
-    "allItems": "",
     "amount": "Monto",
     "anesthesia": "Anestesia",
     "assisting": "Asistencia",
@@ -876,7 +838,6 @@
     "country": "País",
     "cptcode": "Codigo CPT",
     "creditTo": "Crédito a",
-    "currencySymbol": "",
     "date": "Fecha",
     "dateCompleted": "Fecha de finalización",
     "dateOfBirth": "Fecha de nacimiento",
@@ -902,7 +863,6 @@
     "fileLoadSuccessful": "Archivo cargado exitosamente",
     "fileName": "Nombre del archivo",
     "fileToLoad": "Archivo cargado",
-    "from": "",
     "fulfill": "Cumplimiento",
     "fulfillRequest": "Pedido de cumplimiento",
     "fulfillRequestNow": "Pedido de cumplimiento ahora",
@@ -920,7 +880,6 @@
     "lookupType": "Tipo de búsqueda",
     "medication": "Medicación",
     "name": "Nombre",
-    "newItem": "",
     "newUser": "Nuevo usuario",
     "note": "Nota",
     "notes": "Notas",
@@ -952,7 +911,6 @@
     "startTime": "Hora de inicio",
     "status": "Estado",
     "takenBy": "Tomado por",
-    "to": "",
     "total": "Total",
     "type": "Tipo",
     "userCanAddNewValue": "El usuario puede agregar nuevos valores",
@@ -1016,7 +974,6 @@
     },
     "messages": {
       "error": "Nombre de usuario o clave incorrectos.",
-      "offlineError": "",
       "signIn": "por favor ingrese"
     }
   },
@@ -1201,9 +1158,7 @@
     "inventory": "Inventario",
     "labs": "Laboratorio",
     "medication": "Recetas medicas",
-    "messages": {
-      "logoutFailed": ""
-    },
+    "messages": {},
     "patients": "Pacientes",
     "scheduling": "Programación",
     "subnav": {
@@ -1214,7 +1169,6 @@
       "appointmentSearch": "Busqueda de citas",
       "appointmentsCalendar": "Calendario de citas",
       "appointmentsThisWeek": "Citas esta semana",
-      "cashier": "",
       "completed": "Completado",
       "currentIncidents": "Incidentes actuales",
       "customForms": "Formularios personalizados",
@@ -1241,16 +1195,13 @@
       "requests": "Pedidos",
       "returnMedication": "Devolver medicamento",
       "scheduleSurgery": "Programar cirugía",
-      "textReplacements": "",
       "theaterSchedule": "Horario de cirugía",
       "today'sAppointments": "Citas de hoy",
       "userRoles": "Roles de usuario",
       "users": "Usuarios",
       "workflow": "Flujo de trabajo"
     },
-    "titles": {
-      "logoutFailed": ""
-    }
+    "titles": {}
   },
   "operationReport": {
     "labels": {
@@ -1426,20 +1377,8 @@
     }
   },
   "pricing": {
-    "labels": {
-      "discountAmount": "",
-      "discountPercentage": "",
-      "setFee": ""
-    },
-    "navigation": {
-      "allPricingItems": "",
-      "imagePricing": "",
-      "labPricing": "",
-      "pricingProfiles": "",
-      "procedurePricing": "",
-      "wardPricing": ""
-    },
-    "sectionTitle": ""
+    "labels": {},
+    "navigation": {}
   },
   "print": {
     "invoice": {

@@ -337,7 +337,7 @@ module('Acceptance | inventory', function(hooks) {
   }
 
   function testReportWithEmptyEndDateBeforeStartDate(reportName) {
-    test('${reportName} report with end date before start date should display an error', (assert) => {
+    test(`${reportName} report with end date before start date should display an error`, (assert) => {
       return runWithPouchDump('default', async function() {
         let endDate = '12/10/2016';
         let startDate = '12/11/2016';
