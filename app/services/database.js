@@ -4,12 +4,12 @@ import RSVP from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import { set, get } from '@ember/object';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
-import List from 'npm:pouchdb-list';
+import List from 'pouchdb-list';
 import OAuthHeaders from 'hospitalrun/mixins/oauth-headers';
-import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
+import PouchAdapterMemory from 'pouchdb-adapter-memory';
 import PouchFindIndexes from 'hospitalrun/mixins/pouch-find-indexes';
-import PouchDBUsers from 'npm:pouchdb-users';
-import PouchDBWorker from 'npm:worker-pouch/client';
+import PouchDBUsers from 'pouchdb-users';
+import PouchDBWorker from 'worker-pouch/client';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
 export default Service.extend(OAuthHeaders, PouchFindIndexes, {

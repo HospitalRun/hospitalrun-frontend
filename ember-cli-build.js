@@ -88,6 +88,10 @@ module.exports = function (defaults) {
     'ember-cli-barcode': {
       include: 'code128'
     },
+    autoImport: {
+      // `pouchdb` is shimmed with some extra required plugins by `ember-pouch`
+      exclude: ['pouchdb']
+    },
     trees: {
       vendor: new MergeTrees([
         vendorTree,
