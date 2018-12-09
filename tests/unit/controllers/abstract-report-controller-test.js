@@ -1,228 +1,197 @@
 import EmberObject from '@ember/object';
-import { getOwner } from '@ember/application';
 import moment from 'moment';
 import sinonTest from 'ember-sinon-qunit/test-support/test';
-import tHelper from 'ember-intl/helpers/t';
-import { moduleFor, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleFor('controller:abstract-report-controller', 'Unit | Controller | abstract-report-controller', {
-  needs: [
-    'service:intl',
-    'service:metrics',
-    'config:environment',
-    'ember-intl@adapter:default',
-    'cldr:cn',
-    'cldr:de',
-    'cldr:en',
-    'cldr:es',
-    'cldr:gr',
-    'cldr:hi',
-    'cldr:pt',
-    'cldr:th',
-    'cldr:tw',
-    'cldr:de',
-    'cldr:es',
-    'cldr:fr',
-    'cldr:he',
-    'cldr:it',
-    'cldr:ru',
-    'cldr:tr',
-    'cldr:ur',
-    'translation:en',
-    'util:intl/missing-message'
-  ],
-  beforeEach() {
+module('Unit | Controller | abstract-report-controller', function(hooks) {
+  setupTest(hooks);
+
+  hooks.beforeEach(function() {
     // set the locale and the config
-    this.container.lookup('service:intl').set('locale', 'en');
-
-    // manually inject the intl service as initialzer does not run
-    // in unit test
-    getOwner(this).inject('controller', 'intl', 'service:intl');
-
-    // register t helper
-    this.registry.register('helper:t', tHelper);
-  }
-});
-
-sinonTest('_notifyReportError', function(assert) {
-  let controller = this.subject();
-  let closeProgressModal = this.stub(controller, 'closeProgressModal');
-  let displayAlert = this.stub(controller, 'displayAlert');
-
-  assert.throws(() => {
-    controller._notifyReportError('error message');
-  }, new Error('error message'), 'Should throw error');
-
-  assert.equal(
-    displayAlert.getCall(0).args[0],
-    'Error Generating Report',
-    'Should set alert title'
-  );
-  assert.equal(
-    displayAlert.getCall(0).args[1],
-    'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
-    'Should set alert message'
-  );
-  assert.ok(closeProgressModal.calledOnce, 'Should close progress modal');
-});
-
-sinonTest('_setReportTitle', function(assert) {
-  let endDate = new Date(1482269979422);
-  let startDate = new Date(1472269979422);
-  let controller = this.subject({
-    endDate,
-    startDate,
-    reportTypes: [
-      EmberObject.create({
-        value: 'one',
-        name: 'Number One'
-      }),
-      EmberObject.create({
-        value: 'two',
-        name: 'Number Two'
-      })
-    ],
-    reportType: 'two'
-  });
-  controller._setReportTitle();
-
-  assert.equal(controller.get('reportTitle').toString(), `Number Two Report ${moment(startDate).format('l')} - ${moment(endDate).format('l')}`);
-});
-
-sinonTest('_setReportTitle single date', function(assert) {
-  let endDate = new Date(1472269979422);
-  let controller = this.subject({
-    endDate,
-    reportTypes: [
-      EmberObject.create({
-        value: 'one',
-        name: 'Number One'
-      }),
-      EmberObject.create({
-        value: 'two',
-        name: 'Number Two'
-      })
-    ],
-    reportType: 'one'
+    this.owner.lookup('service:intl').set('locale', 'en');
   });
 
-  this.stub(window, 'moment').callsFake(() => {
-    return {
-      format() {
-        return 'April 3rd, 2015';
-      }
-    };
+  sinonTest('_notifyReportError', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create();
+    let closeProgressModal = this.stub(controller, 'closeProgressModal');
+    let displayAlert = this.stub(controller, 'displayAlert');
+
+    assert.throws(() => {
+      controller._notifyReportError('error message');
+    }, new Error('error message'), 'Should throw error');
+
+    assert.equal(
+      displayAlert.getCall(0).args[0],
+      'Error Generating Report',
+      'Should set alert title'
+    );
+    assert.equal(
+      displayAlert.getCall(0).args[1],
+      'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
+      'Should set alert message'
+    );
+    assert.ok(closeProgressModal.calledOnce, 'Should close progress modal');
   });
 
-  controller._setReportTitle();
+  sinonTest('_setReportTitle', function(assert) {
+    let endDate = new Date(1482269979422);
+    let startDate = new Date(1472269979422);
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      endDate,
+      startDate,
+      reportTypes: [
+        EmberObject.create({
+          value: 'one',
+          name: 'Number One'
+        }),
+        EmberObject.create({
+          value: 'two',
+          name: 'Number Two'
+        })
+      ],
+      reportType: 'two'
+    });
+    controller._setReportTitle();
 
-  assert.equal(controller.get('reportTitle').toString(), `Number One Report ${moment(endDate).format('l')}`);
-});
-
-test('actions.firstPage', function(assert) {
-  let controller = this.subject();
-
-  controller.send('firstPage');
-
-  assert.strictEqual(controller.get('offset'), 0);
-});
-
-test('actions.nextPage', function(assert) {
-  let controller = this.subject({
-    offset: 8,
-    limit: 4
+    assert.equal(controller.get('reportTitle').toString(), `Number Two Report ${moment(startDate).format('l')} - ${moment(endDate).format('l')}`);
   });
 
-  controller.send('nextPage');
+  sinonTest('_setReportTitle single date', function(assert) {
+    let endDate = new Date(1472269979422);
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      endDate,
+      reportTypes: [
+        EmberObject.create({
+          value: 'one',
+          name: 'Number One'
+        }),
+        EmberObject.create({
+          value: 'two',
+          name: 'Number Two'
+        })
+      ],
+      reportType: 'one'
+    });
 
-  assert.strictEqual(controller.get('offset'), 12);
-});
+    this.stub(window, 'moment').callsFake(() => {
+      return {
+        format() {
+          return 'April 3rd, 2015';
+        }
+      };
+    });
 
-test('actions.previousPage', function(assert) {
-  let controller = this.subject({
-    offset: 8,
-    limit: 2
+    controller._setReportTitle();
+
+    assert.equal(controller.get('reportTitle').toString(), `Number One Report ${moment(endDate).format('l')}`);
   });
 
-  controller.send('previousPage');
+  test('actions.firstPage', function(assert) {
+    let controller = this.owner.lookup('controller:abstract-report-controller');
 
-  assert.strictEqual(controller.get('offset'), 6);
-});
+    controller.send('firstPage');
 
-test('actions.lastPage', function(assert) {
-  let controller = this.subject({
-    limit: 1,
-    offset: 0,
-    reportRows: ['one', 'two', 'three']
+    assert.strictEqual(controller.get('offset'), 0);
   });
 
-  controller.send('lastPage');
+  test('actions.nextPage', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      offset: 8,
+      limit: 4
+    });
 
-  assert.strictEqual(controller.get('offset'), 3);
-});
+    controller.send('nextPage');
 
-test('currentReportRows', function(assert) {
-  let controller = this.subject({
-    limit: 2,
-    offset: 1,
-    reportRows: ['one', 'two', 'three', 'four']
+    assert.strictEqual(controller.get('offset'), 12);
   });
 
-  assert.deepEqual(controller.get('currentReportRows'), ['two', 'three']);
-});
+  test('actions.previousPage', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      offset: 8,
+      limit: 2
+    });
 
-test('disablePreviousPage', function(assert) {
-  let controller = this.subject({
-    offset: 0
+    controller.send('previousPage');
+
+    assert.strictEqual(controller.get('offset'), 6);
   });
 
-  assert.strictEqual(controller.get('disablePreviousPage'), true);
-});
+  test('actions.lastPage', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      limit: 1,
+      offset: 0,
+      reportRows: ['one', 'two', 'three']
+    });
 
-test('disablePreviousPage false', function(assert) {
-  let controller = this.subject({
-    offset: 2
+    controller.send('lastPage');
+
+    assert.strictEqual(controller.get('offset'), 3);
   });
 
-  assert.strictEqual(controller.get('disablePreviousPage'), false);
-});
+  test('currentReportRows', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      limit: 2,
+      offset: 1,
+      reportRows: ['one', 'two', 'three', 'four']
+    });
 
-test('disableNextPage', function(assert) {
-  let controller = this.subject({
-    limit: 1,
-    offset: 2,
-    reportRows: ['one', 'two', 'three']
+    assert.deepEqual(controller.get('currentReportRows'), ['two', 'three']);
   });
 
-  assert.strictEqual(controller.get('disableNextPage'), true);
-});
+  test('disablePreviousPage', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      offset: 0
+    });
 
-test('disableNextPage false', function(assert) {
-  let controller = this.subject({
-    limit: 1,
-    offset: 1,
-    reportRows: ['one', 'two', 'three']
+    assert.strictEqual(controller.get('disablePreviousPage'), true);
   });
 
-  assert.strictEqual(controller.get('disableNextPage'), false);
-});
+  test('disablePreviousPage false', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      offset: 2
+    });
 
-test('showPagination', function(assert) {
-  let controller = this.subject({
-    limit: 1,
-    offset: 0,
-    reportRows: ['one', 'two', 'three']
+    assert.strictEqual(controller.get('disablePreviousPage'), false);
   });
 
-  assert.strictEqual(controller.get('showPagination'), true);
-});
+  test('disableNextPage', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      limit: 1,
+      offset: 2,
+      reportRows: ['one', 'two', 'three']
+    });
 
-test('showPagination false', function(assert) {
-  let controller = this.subject({
-    limit: 3,
-    offset: 0,
-    reportRows: ['one', 'two', 'three']
+    assert.strictEqual(controller.get('disableNextPage'), true);
   });
 
-  assert.strictEqual(controller.get('showPagination'), false);
+  test('disableNextPage false', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      limit: 1,
+      offset: 1,
+      reportRows: ['one', 'two', 'three']
+    });
+
+    assert.strictEqual(controller.get('disableNextPage'), false);
+  });
+
+  test('showPagination', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      limit: 1,
+      offset: 0,
+      reportRows: ['one', 'two', 'three']
+    });
+
+    assert.strictEqual(controller.get('showPagination'), true);
+  });
+
+  test('showPagination false', function(assert) {
+    let controller = this.owner.factoryFor('controller:abstract-report-controller').create({
+      limit: 3,
+      offset: 0,
+      reportRows: ['one', 'two', 'three']
+    });
+
+    assert.strictEqual(controller.get('showPagination'), false);
+  });
 });

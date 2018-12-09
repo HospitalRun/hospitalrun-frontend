@@ -1,13 +1,9 @@
 import { merge } from '@ember/polyfills';
-import { getContext } from '@ember/test-helpers';
-import {
-  authenticateSession,
-  invalidateSession as _invalidateSession
-} from 'hospitalrun/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
 export function authenticateUser(attrs = {}) {
   let expiresAt = new Date().getTime() + 600000;
-  authenticateSession(getContext().application, merge({
+  return authenticateSession(merge({
     name: 'hradmin',
     roles: ['System Administrator', 'admin', 'user'],
     expires_at: expiresAt,
@@ -16,6 +12,4 @@ export function authenticateUser(attrs = {}) {
   }, attrs));
 }
 
-export function invalidateSession() {
-  _invalidateSession(getContext().application);
-}
+export { invalidateSession } from 'ember-simple-auth/test-support';

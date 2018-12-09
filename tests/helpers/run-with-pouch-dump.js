@@ -1,5 +1,5 @@
 /* jshint ignore:start */
-import { getContext } from '@ember/test-helpers';
+import { getContext, settled as wait } from '@ember/test-helpers';
 
 import { Promise as EmberPromise, all } from 'rsvp';
 import { set, get } from '@ember/object';
@@ -123,7 +123,7 @@ async function runWithPouchDump(dumpName, functionToRun) {
     }
   });
 
-  let owner = getContext().application.__deprecatedInstance__;
+  let { owner } = getContext();
   owner.register('service:config', InMemoryConfigService);
   owner.register('service:database', InMemoryDatabaseService);
 
