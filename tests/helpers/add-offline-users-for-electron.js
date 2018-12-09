@@ -1,6 +1,6 @@
 import { settled as wait } from '@ember/test-helpers';
 import PouchDB from 'pouchdb';
-import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
+import PouchAdapterMemory from 'pouchdb-adapter-memory';
 
 const MOCK_USER_DATA = [{
   'id': 'org.couchdb.user:hradmin',

@@ -1,7 +1,7 @@
 import EmberObject, { computed } from '@ember/object';
 import { isEmpty, compare } from '@ember/utils';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import uuid from 'npm:uuid';
+import uuid from 'uuid';
 
 export default AbstractEditController.extend({
   preview: false,

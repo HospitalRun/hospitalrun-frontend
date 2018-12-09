@@ -2,7 +2,7 @@ import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import DS from 'ember-data';
-import uuid from 'npm:uuid';
+import uuid from 'uuid';
 
 export default DS.Transform.extend({
   store: service(),
