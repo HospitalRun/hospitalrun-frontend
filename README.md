@@ -47,6 +47,7 @@ yarn install
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
 6. Install and configure [CouchDB](http://couchdb.apache.org/):
     1. Download and install CouchDB from http://couchdb.apache.org/#download.
+      - Note: CouchDB v1.6.1 is recommended for this project, and the current version, CouchDB 2.3.0, is not fully supported. Files for v1.6.1 are available on [the Apache Archives](http://archive.apache.org/dist/couchdb/binary/mac/1.6.1/).
     2. Start CouchDB:
         1. If you downloaded the installed app, navigate to CouchDB and double-click on the application.
         2. If you installed CouchDB via Homebrew or some other command line tool, launch the tool from the command line.
