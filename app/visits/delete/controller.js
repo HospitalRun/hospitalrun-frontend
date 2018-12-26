@@ -2,19 +2,15 @@ import { computed } from '@ember/object';
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import VisitInvoicesMixin from 'hospitalrun/mixins/visit-invoices';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
-import CascadingDeletions from 'hospitalrun/mixins/cascading-deletion';
+import CascadingDeletion from 'hospitalrun/mixins/cascading-deletion';
 import { t } from 'hospitalrun/macro';
 import { task, taskGroup } from 'ember-concurrency';
 
-export default AbstractDeleteController.extend(ProgressDialog, VisitInvoicesMixin, CascadingDeletions, {
+export default AbstractDeleteController.extend(ProgressDialog, VisitInvoicesMixin, CascadingDeletion, {
   title: t('visits.titles.delete'),
   progressTitle: t('visits.titles.deleteVisitRecord'),
   progressMessage: t('visits.messages.deletingVisit'),
   deleting: taskGroup(),
-
-  deleteVisit(visit) {
-    return this.get('deleteVisitTask').perform(visit);
-  },
 
   deleteActionTask: task(function* (visit) {
     // delete related records without modal dialogs

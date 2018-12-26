@@ -31,6 +31,39 @@ export default Mixin.create({
     return yield recordToDelete.unloadRecord();
   }).group('deleting'),
 
+  deletePatient(patient) {
+    return this.get('deletePatientTask').perform(patient);
+  },
+
+  deletePatientTask: task(function* (patient) {
+    let visits = yield this.getPatientVisits(patient);
+    let appointments = yield this.getPatientAppointments(patient);
+    let payments = yield patient.get('payments');
+    yield all([
+      this.deleteVisits(visits),
+      this.deleteMany(appointments),
+      this.deleteMany(payments)
+    ]);
+    return yield this.get('deleteRecordTask').perform(patient);
+  }).group('deleting'),
+
+  deleteVisits(visits) {
+    return this.get('deleteVisitsTask').perform(visits);
+  },
+
+  deleteVisitsTask: task(function* (visits) {
+    let deleteVisitTask = this.get('deleteVisitTask');
+    let pendingTasks = [];
+    visits.forEach((visit) => {
+      pendingTasks.push(deleteVisitTask.perform(visit));
+    });
+    yield all(pendingTasks);
+  }).group('deleting'),
+
+  deleteVisit(visit) {
+    return this.get('deleteVisitTask').perform(visit);
+  },
+
   deleteVisitTask: task(function* (visit) {
     let invoices = yield this.getVisitInvoices(visit);
 
