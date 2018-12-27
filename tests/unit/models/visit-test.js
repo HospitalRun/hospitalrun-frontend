@@ -1,43 +1,27 @@
 import { run } from '@ember/runloop';
-import { moduleForModel, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleForModel('visit', 'Unit | Model | visit', {
-  // Specify the other units that are required for this test.
-  needs: [
-    'ember-validations@validator:local/acceptance',
-    'ember-validations@validator:local/presence',
-    'model:diagnosis',
-    'model:procedure',
-    'model:imaging',
-    'model:lab',
-    'model:medication',
-    'model:patient',
-    'model:patient-note',
-    'model:proc-charge',
-    'model:vital',
-    'model:visit',
-    'model:report',
-    'service:validations',
-    'service:session'
-  ]
-});
+module('Unit | Model | visit', function(hooks) {
+  setupTest(hooks);
 
-test('paymentState', function(assert) {
-  let model = this.subject();
+  test('paymentState', function(assert) {
+    let model = run(() => this.owner.lookup('service:store').createRecord('visit'));
 
-  run(() => {
-    model.setProperties({
-      paymentState: 'bad value'
+    run(() => {
+      model.setProperties({
+        paymentState: 'bad value'
+      });
     });
-  });
-  assert.equal(model.get('paymentState'), 'bad value');
-  assert.ok(model.errors.paymentState.length, 'there should errors');
+    assert.equal(model.get('paymentState'), 'bad value');
+    assert.ok(model.errors.paymentState.length, 'there should errors');
 
-  run(() => {
-    model.setProperties({
-      paymentState: 'clear'
+    run(() => {
+      model.setProperties({
+        paymentState: 'clear'
+      });
     });
+    assert.equal(model.get('paymentState'), 'clear');
+    assert.ok(!model.errors.paymentState.length, 'there should be no error');
   });
-  assert.equal(model.get('paymentState'), 'clear');
-  assert.ok(!model.errors.paymentState.length, 'there should be no error');
 });

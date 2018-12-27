@@ -7,7 +7,7 @@ import { reads } from '@ember/object/computed';
 import { get } from '@ember/object';
 import { bind } from '@ember/runloop';
 import CheckForErrors from 'hospitalrun/mixins/check-for-errors';
-import uuid from 'npm:uuid';
+import uuid from 'uuid';
 import withTestWaiter from 'ember-concurrency-test-waiter/with-test-waiter';
 import { Adapter } from 'ember-pouch';
 import { task } from 'ember-concurrency';

@@ -1,7 +1,9 @@
 import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
-
+import { inject as service } from '@ember/service';
 export default Mixin.create({
+  intl: service(),
+
   adjustmentTypes: computed(function() {
     let intl = this.get('intl');
     return [

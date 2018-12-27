@@ -1,23 +1,24 @@
-import { moduleForModel, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleForModel('user', 'Unit | Model | user', {
-  needs: [
-    'ember-validations@validator:local/format'
-  ]
-});
+import { run } from '@ember/runloop';
 
-test('displayRole', function(assert) {
-  let user = this.subject({
-    roles: ['first', 'second', 'third']
+module('Unit | Model | user', function(hooks) {
+  setupTest(hooks);
+
+  test('displayRole', function(assert) {
+    let user = run(() => this.owner.lookup('service:store').createRecord('user', {
+      roles: ['first', 'second', 'third']
+    }));
+
+    assert.strictEqual(user.get('displayRole'), 'first');
   });
 
-  assert.strictEqual(user.get('displayRole'), 'first');
-});
+  test('displayRole no roles', function(assert) {
+    let user = run(() => this.owner.lookup('service:store').createRecord('user', {
+      roles: []
+    }));
 
-test('displayRole no roles', function(assert) {
-  let user = this.subject({
-    roles: []
+    assert.strictEqual(user.get('displayRole'), undefined);
   });
-
-  assert.strictEqual(user.get('displayRole'), undefined);
 });

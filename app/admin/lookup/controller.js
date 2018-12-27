@@ -7,7 +7,7 @@ import { isEmpty, compare } from '@ember/utils';
 import Controller from '@ember/controller';
 import EmberObject, { get, computed } from '@ember/object';
 import BillingCategories from 'hospitalrun/mixins/billing-categories';
-import csvParse from 'npm:csv-parse';
+import csvParse from 'csv-parse';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from 'hospitalrun/mixins/unit-types';

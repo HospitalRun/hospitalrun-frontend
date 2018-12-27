@@ -1,12 +1,14 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('calendar-control', 'Integration | Component | calendar control', {
-  integration: true
-});
+module('Integration | Component | calendar control', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
-  this.render(hbs`{{calendar-control}}`);
+  test('it renders', async function(assert) {
+    await render(hbs`{{calendar-control}}`);
 
-  assert.equal(this.$('.ember-view.full-calendar').length, 1);
+    assert.equal(this.$('.ember-view.full-calendar').length, 1);
+  });
 });

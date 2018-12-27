@@ -1,37 +1,43 @@
 import EmberObject from '@ember/object';
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
-import wait from 'ember-test-helpers/wait';
 
-moduleForComponent('date-picker', 'Integration | Component | date picker', {
-  integration: true
-});
+module('Integration | Component | date picker', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it renders', function(assert) {
+  hooks.beforeEach(function() {
+    this.actions = {};
+    this.send = (actionName, ...args) => this.actions[actionName].apply(this, args);
+  });
 
-  this.set('model', EmberObject.create({
-    test: new Date()
-  }));
+  test('it renders', async function(assert) {
 
-  this.render(hbs`{{date-picker model=model property="test"}}`);
+    this.set('model', EmberObject.create({
+      test: new Date()
+    }));
 
-  assert.equal(this.$().text().trim(), '');
-});
+    await render(hbs`{{date-picker model=model property="test"}}`);
 
-test('it calls the event handler', function(assert) {
-  assert.expect(1);
+    assert.equal(this.$().text().trim(), '');
+  });
 
-  let stub = sinon.stub();
+  test('it calls the event handler', async function(assert) {
+    assert.expect(1);
 
-  this.on('testAction', stub);
-  this.set('model', EmberObject.create({
-    test: new Date()
-  }));
+    let stub = sinon.stub();
 
-  this.render(hbs`{{date-picker model=model property="test" dateSetAction="testAction"}}`);
+    this.actions.testAction = stub;
+    this.set('model', EmberObject.create({
+      test: new Date()
+    }));
 
-  return wait().then(() => {
-    sinon.assert.calledOnce(stub);
+    await render(hbs`{{date-picker model=model property="test" dateSetAction="testAction"}}`);
+
+    return settled().then(() => {
+      sinon.assert.calledOnce(stub);
+    });
   });
 });
