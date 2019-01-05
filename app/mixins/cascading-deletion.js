@@ -36,14 +36,32 @@ export default Mixin.create({
   },
 
   deletePatientTask: task(function* (patient) {
+    let pendingTasks = [];
     let visits = yield this.getPatientVisits(patient);
     let appointments = yield this.getPatientAppointments(patient);
     let payments = yield patient.get('payments');
-    yield all([
-      this.deleteVisits(visits),
-      this.deleteMany(appointments),
-      this.deleteMany(payments)
-    ]);
+    let diagnoses = yield patient.get('diagnoses');
+    let allergies = yield patient.get('allergies');
+    let operationReports = yield patient.get('operationReports');
+    let operativePlans = yield patient.get('operativePlans');
+    operationReports.forEach((operationReport) => {
+      pendingTasks.push(this.deleteMany(operationReport.get('diagnoses')));
+    });
+    operationReports.forEach((operationReport) => {
+      pendingTasks.push(this.deleteMany(operationReport.get('preOpDiagnoses')));
+    });
+    operativePlans.forEach((operativePlan) => {
+      pendingTasks.push(this.deleteMany(operativePlan.get('diagnoses')));
+    });
+    pendingTasks.push(this.deleteVisits(visits));
+    pendingTasks.push(this.deleteMany(appointments));
+    pendingTasks.push(this.deleteMany(payments));
+    pendingTasks.push(this.deleteMany(diagnoses));
+    pendingTasks.push(this.deleteMany(allergies));
+    pendingTasks.push(this.deleteMany(operationReports));
+    pendingTasks.push(this.deleteMany(operativePlans));
+
+    yield all(pendingTasks);
     return yield this.get('deleteRecordTask').perform(patient);
   }).group('deleting'),
 
@@ -66,25 +84,28 @@ export default Mixin.create({
 
   deleteVisitTask: task(function* (visit) {
     let invoices = yield this.getVisitInvoices(visit);
-
     let pendingTasks = [];
     let labs = visit.get('labs');
     let procedures = visit.get('procedures');
     let imaging =  visit.get('imaging');
-    let procCharges = procedures.get('charges');
-    let labCharges = labs.get('charges');
-    let imagingCharges = imaging.get('charges');
-    let visitCharges = visit.get('charges');
+    procedures.forEach((procedure) => {
+      pendingTasks.push(this.deleteMany(procedure.get('charges')));
+    });
+    labs.forEach((lab) => {
+      pendingTasks.push(this.deleteMany(lab.get('charges')));
+    });
+    imaging.forEach((imaging) => {
+      pendingTasks.push(this.deleteMany(imaging.get('charges')));
+    });
     pendingTasks.push(this.deleteMany(labs));
-    pendingTasks.push(this.deleteMany(labCharges));
+    pendingTasks.push(this.deleteMany(procedures));
+    pendingTasks.push(this.deleteMany(imaging));
+    pendingTasks.push(this.deleteMany(visit.get('charges')));
+    pendingTasks.push(this.deleteMany(visit.get('reports')));
     pendingTasks.push(this.deleteMany(visit.get('patientNotes')));
     pendingTasks.push(this.deleteMany(visit.get('vitals')));
-    pendingTasks.push(this.deleteMany(procedures));
-    pendingTasks.push(this.deleteMany(procCharges));
     pendingTasks.push(this.deleteMany(visit.get('medication')));
-    pendingTasks.push(this.deleteMany(imaging));
-    pendingTasks.push(this.deleteMany(imagingCharges));
-    pendingTasks.push(this.deleteMany(visitCharges));
+    pendingTasks.push(this.deleteMany(visit.get('diagnoses')));
     pendingTasks.push(this.deleteInvoices(invoices));
 
     // this is to hide the visit's procedures/labs/imaging/medication details from being shown on the patient/edit template

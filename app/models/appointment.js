@@ -42,7 +42,6 @@ export default AbstractModel.extend({
 
   // Associations
   patient: DS.belongsTo('patient', { async: false }),
-  visits: DS.hasMany('visit'),
 
   // Formats
   longDateFormat: 'l h:mm A',
