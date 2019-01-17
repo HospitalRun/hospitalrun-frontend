@@ -39,27 +39,25 @@ export default Mixin.create({
     let pendingTasks = [];
     let visits = yield this.getPatientVisits(patient);
     let appointments = yield this.getPatientAppointments(patient);
-    let payments = yield patient.get('payments');
-    let diagnoses = yield patient.get('diagnoses');
-    let allergies = yield patient.get('allergies');
-    let operationReports = yield patient.get('operationReports');
-    let operativePlans = yield patient.get('operativePlans');
+    let operationReports = patient.get('operationReports');
+    let operativePlans = patient.get('operativePlans');
     operationReports.forEach((operationReport) => {
-      pendingTasks.push(this.deleteMany(operationReport.get('diagnoses')));
-    });
-    operationReports.forEach((operationReport) => {
-      pendingTasks.push(this.deleteMany(operationReport.get('preOpDiagnoses')));
+      let diagnoses = operationReport.get('diagnoses');
+      let preOpDiagnoses = operationReport.get('preOpDiagnoses');
+      pendingTasks.push(this.deleteMany(diagnoses));
+      pendingTasks.push(this.deleteMany(preOpDiagnoses));
     });
     operativePlans.forEach((operativePlan) => {
-      pendingTasks.push(this.deleteMany(operativePlan.get('diagnoses')));
+      let diagnoses = operativePlan.get('diagnoses');
+      pendingTasks.push(this.deleteMany(diagnoses));
     });
     pendingTasks.push(this.deleteVisits(visits));
     pendingTasks.push(this.deleteMany(appointments));
-    pendingTasks.push(this.deleteMany(payments));
-    pendingTasks.push(this.deleteMany(diagnoses));
-    pendingTasks.push(this.deleteMany(allergies));
     pendingTasks.push(this.deleteMany(operationReports));
     pendingTasks.push(this.deleteMany(operativePlans));
+    pendingTasks.push(this.deleteMany(patient.get('payments')));
+    pendingTasks.push(this.deleteMany(patient.get('allergies')));
+    pendingTasks.push(this.deleteMany(patient.get('diagnoses')));
 
     yield all(pendingTasks);
     return yield this.get('deleteRecordTask').perform(patient);
@@ -83,16 +81,16 @@ export default Mixin.create({
   },
 
   deleteVisitTask: task(function* (visit) {
-    let invoices = yield this.getVisitInvoices(visit);
     let pendingTasks = [];
+    let invoices = yield this.getVisitInvoices(visit);
     let labs = visit.get('labs');
     let procedures = visit.get('procedures');
     let imaging =  visit.get('imaging');
-    procedures.forEach((procedure) => {
-      pendingTasks.push(this.deleteMany(procedure.get('charges')));
-    });
     labs.forEach((lab) => {
       pendingTasks.push(this.deleteMany(lab.get('charges')));
+    });
+    procedures.forEach((procedure) => {
+      pendingTasks.push(this.deleteMany(procedure.get('charges')));
     });
     imaging.forEach((imaging) => {
       pendingTasks.push(this.deleteMany(imaging.get('charges')));
@@ -100,13 +98,13 @@ export default Mixin.create({
     pendingTasks.push(this.deleteMany(labs));
     pendingTasks.push(this.deleteMany(procedures));
     pendingTasks.push(this.deleteMany(imaging));
-    pendingTasks.push(this.deleteMany(visit.get('charges')));
+    pendingTasks.push(this.deleteInvoices(invoices));
     pendingTasks.push(this.deleteMany(visit.get('reports')));
     pendingTasks.push(this.deleteMany(visit.get('patientNotes')));
     pendingTasks.push(this.deleteMany(visit.get('vitals')));
     pendingTasks.push(this.deleteMany(visit.get('medication')));
     pendingTasks.push(this.deleteMany(visit.get('diagnoses')));
-    pendingTasks.push(this.deleteInvoices(invoices));
+    pendingTasks.push(this.deleteMany(visit.get('charges')));
 
     // this is to hide the visit's procedures/labs/imaging/medication details from being shown on the patient/edit template
     // which otherwise causes errors while deleting visit from patient/edit screen, due to attempting to calculate computed properties
@@ -124,13 +122,13 @@ export default Mixin.create({
   deleteInvoicesTask: task(function* (invoicesToDelete) {
     let pendingTasks = [];
     let invoices = yield invoicesToDelete;
-    let lineItems = invoices.mapBy('lineItems');
+    let lineItemsArrays = yield invoices.mapBy('lineItems');
     pendingTasks.push(this.deleteMany(invoices));
-    lineItems.forEach((item) => {
-      let itemDetails = item.mapBy('details');
-      pendingTasks.push(this.deleteMany(item));
-      itemDetails.forEach((detail) => {
-        pendingTasks.push(this.deleteMany(detail));
+    lineItemsArrays.forEach((itemsArray) => {
+      let itemDetailsArrays = itemsArray.mapBy('details');
+      pendingTasks.push(this.deleteMany(itemsArray));
+      itemDetailsArrays.forEach((detailsArray) => {
+        pendingTasks.push(this.deleteMany(detailsArray));
       });
     });
     return yield all(pendingTasks);
