@@ -77,7 +77,7 @@ module('Unit | Mixin | cascading-deletion', function(hooks) {
     // ASSERTS
     assert.equal(stubs.length, 16, 'There were 16 total records created');
     stubs.forEach(function(stub) {
-      assert.equal(stub.saveStub.getCalls().length, 1, `save() method was called once for model:  + ${stub.recordType}`);
+      assert.equal(stub.saveStub.getCalls().length, 1, `save() method was called once for model: ${stub.recordType}`);
     });
   });
 
@@ -98,7 +98,7 @@ module('Unit | Mixin | cascading-deletion', function(hooks) {
     // ASSERTS
     assert.equal(stubs.length, 45, 'There were 45 total records created');
     stubs.forEach(function(stub) {
-      assert.equal(stub.saveStub.getCalls().length, 1, `save() method was called once for model:  + ${stub.recordType}`);
+      assert.equal(stub.saveStub.getCalls().length, 1, `save() method was called once for model: ${stub.recordType}`);
     });
   });
 
@@ -123,7 +123,7 @@ module('Unit | Mixin | cascading-deletion', function(hooks) {
     // ASSERTS
     assert.equal(stubs.length, 26, 'There were 26 total records created');
     stubs.forEach(function(stub) {
-      assert.equal(stub.saveStub.getCalls().length, 1, `save() method was called once for model:  + ${stub.recordType}`);
+      assert.equal(stub.saveStub.getCalls().length, 1, `save() method was called once for model: ${stub.recordType}`);
     });
   });
 
@@ -151,7 +151,7 @@ module('Unit | Mixin | cascading-deletion', function(hooks) {
     // ASSERTS
     assert.equal(stubs.length, 115, 'There were 115 total records created');
     stubs.forEach(function(stub) {
-      assert.equal(stub.saveStub.getCalls().length, 1, `save() method was called once for model:  + ${stub.recordType}`);
+      assert.equal(stub.saveStub.getCalls().length, 1, `save() method was called once for model: ${stub.recordType}`);
     });
   });
 });
