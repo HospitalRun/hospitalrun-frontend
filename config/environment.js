@@ -97,6 +97,7 @@ module.exports = function(environment) {
     };
     if (environment === 'production') {
       ENV.serviceWorker.debug = false;
+      ENV.serviceWorker.excludePaths = ['manifest.appcache', new RegExp(/.\.map$/)];
     }
   }
   if (environment === 'test' && !process.env.EMBER_CLI_ELECTRON) {
