@@ -10,7 +10,7 @@
           <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true" class="octicon octicon-x"></span><span class="sr-only">{{t 'buttons.close'}}</span></button>
           <p>
             <span class="glyphicon glyphicon-warning-sign"></span>
-            {{t 'inventory.messages.quantity' quantity=model.quantity locationQuantity=locationQuantityTotal}}
+            {{t 'inventory.messages.quantity' quantity=model.quantity locationQuantity=locationQuantityTotal htmlSafe=true}}
           </p>
           <p>{{t 'inventory.messages.adjust' difference=quantityDifferential}}</p>
         </div>

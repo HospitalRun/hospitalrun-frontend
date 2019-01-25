@@ -75,7 +75,7 @@ export default Mixin.create({
         message: 'Are you sure you want to delete this charged item?',
         chargeToDelete: charge,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
     },
 

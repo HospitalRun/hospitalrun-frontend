@@ -1,7 +1,7 @@
 import { isEmpty } from '@ember/utils';
 import EmberObject, { computed, get } from '@ember/object';
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 
 export default AppointmentIndexRoute.extend({
   dateIntervalEnd: null,
@@ -9,7 +9,7 @@ export default AppointmentIndexRoute.extend({
   editReturn: 'appointments.calendar',
   filterParams: ['appointmentType', 'provider', 'status', 'location'],
   modelName: 'appointment',
-  pageTitle: computed('i18n.locale', () => {
+  pageTitle: computed('intl.locale', () => {
     return t('appointments.calendarTitle');
   }),
 
@@ -50,8 +50,8 @@ export default AppointmentIndexRoute.extend({
     };
     let location =  get(appointment, 'location');
     if (isEmpty(location)) {
-      let i18n = get(this, 'i18n');
-      location = i18n.t('appointments.labels.noLocation').toString();
+      let intl = get(this, 'intl');
+      location = intl.t('appointments.labels.noLocation').toString();
     }
     event.resourceId = location.toLowerCase();
     return event;

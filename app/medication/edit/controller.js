@@ -54,14 +54,14 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   }),
 
   quantityLabel: computed('isFulfilled', function() {
-    let i18n = this.get('i18n');
-    let returnLabel = i18n.t('medication.labels.quantityRequested');
+    let intl = this.get('intl');
+    let returnLabel = intl.t('medication.labels.quantityRequested');
     let isFulfilled = this.get('isFulfilled');
     let isFulfilling = this.get('isFulfilling');
     if (isFulfilling) {
-      returnLabel = i18n.t('medication.labels.quantityDispensed');
+      returnLabel = intl.t('medication.labels.quantityDispensed');
     } else if (isFulfilled) {
-      returnLabel = i18n.t('medication.labels.quantityDistributed');
+      returnLabel = intl.t('medication.labels.quantityDistributed');
     }
     return returnLabel;
   }),
@@ -70,16 +70,16 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   updateCapability: 'add_medication',
 
   afterUpdate() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     let alertTitle, alertMessage;
     let isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
-      alertTitle = i18n.t('medication.alerts.fulfilledTitle');
+      alertTitle = intl.t('medication.alerts.fulfilledTitle');
       alertMessage = 'The medication request has been fulfilled.';
       this.set('model.selectPatient', false);
     } else {
-      alertTitle = i18n.t('medication.alerts.savedTitle');
-      alertMessage = i18n.t('medication.alerts.savedMessage');
+      alertTitle = intl.t('medication.alerts.savedTitle');
+      alertMessage = intl.t('medication.alerts.savedMessage');
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   },
@@ -158,11 +158,11 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   }),
 
   updateButtonText: computed('model.isNew', 'isFulfilling', 'model.hideFulfillRequest', function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     if (this.get('model.hideFulfillRequest')) {
-      return i18n.t('buttons.dispense');
+      return intl.t('buttons.dispense');
     } else if (this.get('isFulfilling')) {
-      return i18n.t('labels.fulfill');
+      return intl.t('labels.fulfill');
     }
     return this._super();
 

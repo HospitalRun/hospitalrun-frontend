@@ -14,7 +14,7 @@ import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
 import SelectValues from 'hospitalrun/utils/select-values';
-import uuid from 'npm:uuid';
+import uuid from 'uuid';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
   invoiceController: controller('invoices'),
@@ -152,7 +152,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         message: `Are you sure you want to delete ${item.get('name')}?`,
         itemToDelete: item,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
       this.send('openModal', 'dialog', options);
     },

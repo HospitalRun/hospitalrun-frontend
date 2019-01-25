@@ -1,35 +1,34 @@
 import { run } from '@ember/runloop';
-import { getOwner } from '@ember/application';
 import { hash } from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import Ember from 'ember';
 import config from '../config/environment';
-import { walkConfigs, setRTL } from '../utils/locale-utils';
+import rtlDetect from 'hospitalrun/utils/rtl-detect';
 
-export const DEFAULT_LANGUAGE = config.i18n.defaultLocale || 'en';
+export const DEFAULT_LANGUAGE = config.intl.defaultLocale || 'en';
 
 export default Service.extend({
-  i18n: service(),
+  intl: service(),
   config: service(),
 
   loadUserLanguagePreference() {
     return hash({
       user: this.getConfig().getCurrentUser(),
       preferences: this.fetchOrCreatePreferences()
-    }).then(({ user, preferences }) => user && user.name && preferences[user.name] && preferences[user.name].i18n || DEFAULT_LANGUAGE)
+    }).then(({ user, preferences }) => user && user.name && preferences[user.name] && preferences[user.name].intl || DEFAULT_LANGUAGE)
       .catch(() => DEFAULT_LANGUAGE)
       .then(this.setApplicationLanguage.bind(this));
   },
 
   setApplicationLanguage(selectedLanguage) {
+    // this will set the locale to the selected language but allow
+    // translation fallbacks to DEFAULT_LANGUAGE
+    run(() => this.set('intl.locale', [selectedLanguage, DEFAULT_LANGUAGE].uniq()));
 
-    // Whenever the languague changes, apply RTL settings to application
-    let currentConfig = walkConfigs(selectedLanguage, getOwner(this)) || {};
-    if (currentConfig.class) {
-      setRTL(currentConfig.class.rtl);
-    }
+    // allows for the browser to set direction (rtl for right-to-left)
+    document.body.dir = rtlDetect.isRtlLang(selectedLanguage) ? 'rtl' : 'auto';
 
-    return run(() => this.set('i18n.locale', selectedLanguage));
+    return selectedLanguage;
   },
 
   saveUserLanguagePreference(selectedLanguage) {
@@ -44,7 +43,7 @@ export default Service.extend({
       )
     }).then(({ user, preferences }) => {
       preferences[user.name] = preferences[user.name] || {};
-      preferences[user.name].i18n = selectedLanguage;
+      preferences[user.name].intl = selectedLanguage;
       return this.getConfig().getConfigDB().put(preferences);
     }).catch((err) => Ember.Logger.error(err));
   },

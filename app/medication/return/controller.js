@@ -3,7 +3,7 @@ import { isEmpty } from '@ember/utils';
 import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as controller } from '@ember/controller';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
@@ -98,9 +98,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   actions: {
     doneFulfillRequest() {
-      let i18n = this.get('i18n');
+      let intl = this.get('intl');
       this.updateLookupLists();
-      this.displayAlert(i18n.t('medication.alerts.returnedTitle'), i18n.t('medication.alerts.returnedMessage'), 'allItems');
+      this.displayAlert(intl.t('medication.alerts.returnedTitle'), intl.t('medication.alerts.returnedMessage'), 'allItems');
     },
     update() {
       let medication = this.get('model.medication');

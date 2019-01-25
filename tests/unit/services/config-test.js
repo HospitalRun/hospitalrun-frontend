@@ -1,20 +1,17 @@
-import { moduleFor, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleFor('service:config', 'Unit | Service | config', {
-  needs: [
-    'service:session',
-    'service:languagePreference',
-    'service:database'
-  ]
-});
+module('Unit | Service | config', function(hooks) {
+  setupTest(hooks);
 
-test('getCurrentUser returns user from the session', function(assert) {
-  let service = this.subject();
+  test('getCurrentUser returns user from the session', function(assert) {
+    let service = this.owner.lookup('service:config');
 
-  let user = { name: 'name' };
-  service.get('session').set('data', {
-    authenticated: user
+    let user = { name: 'name' };
+    service.get('session').set('data', {
+      authenticated: user
+    });
+
+    assert.equal(service.getCurrentUser(), user);
   });
-
-  assert.equal(service.getCurrentUser(), user);
 });

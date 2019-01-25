@@ -1,26 +1,24 @@
-import { moduleForModel, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleForModel('payment', 'Unit | Model | payment', {
-  needs: [
-    'ember-validations@validator:local/numericality',
-    'ember-validations@validator:local/presence',
-    'model:invoice',
-    'service:session'
-  ]
-});
+import { run } from '@ember/runloop';
 
-test('canRemovePayment', function(assert) {
-  let payment = this.subject({
-    paymentType: 'Deposit'
+module('Unit | Model | payment', function(hooks) {
+  setupTest(hooks);
+
+  test('canRemovePayment', function(assert) {
+    let payment = run(() => this.owner.lookup('service:store').createRecord('payment', {
+      paymentType: 'Deposit'
+    }));
+
+    assert.strictEqual(payment.get('canRemovePayment'), true);
   });
 
-  assert.strictEqual(payment.get('canRemovePayment'), true);
-});
+  test('canRemovePayment false', function(assert) {
+    let payment = run(() => this.owner.lookup('service:store').createRecord('payment', {
+      paymentType: 'Test'
+    }));
 
-test('canRemovePayment false', function(assert) {
-  let payment = this.subject({
-    paymentType: 'Test'
+    assert.strictEqual(payment.get('canRemovePayment'), false);
   });
-
-  assert.strictEqual(payment.get('canRemovePayment'), false);
 });

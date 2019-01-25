@@ -115,9 +115,9 @@ export default Controller.extend(DateFormat, ModalHelper, NumberFormat, Paginati
   },
 
   _notifyReportError(errorMessage) {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
     this.closeProgressModal();
-    this.displayAlert(i18n.t('alerts.reportError'), i18n.t('messages.reportError'));
+    this.displayAlert(intl.t('alerts.reportError'), intl.t('messages.reportError'));
     throw new Error(errorMessage);
   },
 
@@ -147,7 +147,7 @@ export default Controller.extend(DateFormat, ModalHelper, NumberFormat, Paginati
 
     let reportDesc = reportTypes.findBy('value', reportType);
     if (isEmpty(startDate)) {
-      this.set('reportTitle', this.get('i18n').t(
+      this.set('reportTitle', this.get('intl').t(
         'inventory.reports.titleSingleDate',
         {
           name: reportDesc.name,
@@ -156,7 +156,7 @@ export default Controller.extend(DateFormat, ModalHelper, NumberFormat, Paginati
       ));
     } else {
       formattedStartDate = moment(startDate).format('l');
-      this.set('reportTitle', this.get('i18n').t(
+      this.set('reportTitle', this.get('intl').t(
         'inventory.reports.titleDateRange',
         {
           name: reportDesc.name,
@@ -165,6 +165,34 @@ export default Controller.extend(DateFormat, ModalHelper, NumberFormat, Paginati
         }
       ));
     }
+  },
+
+  _validateDateInputs() {
+    let isValid = true;
+    let startDate = this.get('startDate');
+    let endDate = this.get('endDate');
+    let alertMessage;
+
+    if (isEmpty(startDate)) {
+      alertMessage = 'Please enter a start date.';
+      isValid = false;
+    } else {
+      if (isEmpty(endDate)) {
+        let now = new Date();
+        this.set('endDate', now);
+        endDate = this.get('endDate');
+      }
+
+      if (endDate.getTime() < startDate.getTime()) {
+        alertMessage = 'Please enter an end date after the start date.';
+        isValid = false;
+      }
+
+    }
+    if (!isValid) {
+      this.displayAlert('Error Generating Report', alertMessage);
+    }
+    return isValid;
   },
 
   actions: {

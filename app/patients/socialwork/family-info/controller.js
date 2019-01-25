@@ -1,7 +1,7 @@
 import { alias } from '@ember/object/computed';
 import Controller, { inject as controller } from '@ember/controller';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import { computed } from '@ember/object';
 
 export default Controller.extend(IsUpdateDisabled, {
@@ -15,9 +15,9 @@ export default Controller.extend(IsUpdateDisabled, {
   updateButtonText: computed('model.isNew', function() {
     let isNew = this.get('model.isNew');
     if (isNew) {
-      return this.get('i18n').t('buttons.add');
+      return this.get('intl').t('buttons.add');
     } else {
-      return this.get('i18n').t('buttons.update');
+      return this.get('intl').t('buttons.update');
     }
   }),
 

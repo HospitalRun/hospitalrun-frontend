@@ -78,11 +78,11 @@ export default AbstractModel.extend({
 
   hasAppointmentLabel: computed('hasAppointment', function() {
     let hasAppointment = get(this, 'hasAppointment');
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     if (hasAppointment === true) {
-      return i18n.t('visits.labels.haveAppointment');
+      return intl.t('visits.labels.haveAppointment');
     } else {
-      return i18n.t('visits.labels.noAppointment');
+      return intl.t('visits.labels.noAppointment');
     }
   }),
 
@@ -102,13 +102,13 @@ export default AbstractModel.extend({
   }),
 
   hasDoneOrders: computed('imaging.@each.status', 'labs.@each.status', function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     let imaging = get(this, 'imaging');
     let labs = get(this, 'labs');
     if (imaging.isAny(STATUS_FIELD, REQUESTED_STATUS) || labs.isAny(STATUS_FIELD, REQUESTED_STATUS)) {
-      return i18n.t('visits.labels.ordersNotDone');
+      return intl.t('visits.labels.ordersNotDone');
     } else {
-      return i18n.t('visits.labels.haveDoneOrders');
+      return intl.t('visits.labels.haveDoneOrders');
     }
   }),
 

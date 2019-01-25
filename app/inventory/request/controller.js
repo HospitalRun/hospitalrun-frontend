@@ -68,9 +68,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   quantityLabel: computed('selectedInventoryItem', function() {
     let selectedInventoryItem = this.get('selectedInventoryItem');
     if (isEmpty(selectedInventoryItem)) {
-      return this.get('i18n').t('labels.quantity').toString();
+      return this.get('intl').t('labels.quantity').toString();
     } else {
-      return this.get('i18n').t('inventory.labels.quantity', { unit: selectedInventoryItem.distributionUnit }).toString();
+      return this.get('intl').t('inventory.labels.quantity', { unit: selectedInventoryItem.distributionUnit }).toString();
     }
   }),
 
@@ -83,7 +83,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   updateButtonText: computed('model.isNew', 'isFulfilling', function() {
     if (this.get('isFulfilling')) {
-      return this.get('i18n').t('buttons.fulfill');
+      return this.get('intl').t('buttons.fulfill');
     }
     return this._super();
   }),
@@ -123,11 +123,11 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     },
 
     showRemoveItem(item) {
-      let message = this.get('i18n').t('inventory.messages.removeItemRequest');
+      let message = this.get('intl').t('inventory.messages.removeItemRequest');
       let model = EmberObject.create({
         itemToRemove: item
       });
-      let title = this.get('i18n').t('inventory.titles.removeItem');
+      let title = this.get('intl').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },
 
@@ -193,9 +193,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   afterUpdate() {
     let updateViaFulfillRequest = this.get('updateViaFulfillRequest');
     if (updateViaFulfillRequest) {
-      this.displayAlert(this.get('i18n').t('inventory.titles.requestFulfilled'), this.get('i18n').t('inventory.messages.requestFulfilled'), 'allRequests');
+      this.displayAlert(this.get('intl').t('inventory.titles.requestFulfilled'), this.get('intl').t('inventory.messages.requestFulfilled'), 'allRequests');
     } else {
-      this.displayAlert(this.get('i18n').t('inventory.titles.requestUpdated'), this.get('i18n').t('inventory.messages.requestUpdated'));
+      this.displayAlert(this.get('intl').t('inventory.titles.requestUpdated'), this.get('intl').t('inventory.messages.requestUpdated'));
     }
   },
 

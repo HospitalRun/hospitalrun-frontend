@@ -1,4 +1,4 @@
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 import { inject as controller } from '@ember/controller';
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 export default AbstractDeleteController.extend({

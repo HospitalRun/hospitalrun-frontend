@@ -4,7 +4,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 
 export default Component.extend({
-  i18n: service(),
+  intl: service(),
   cancelAction: 'cancel',
   closeModalAction: 'closeModal',
   hideCancelButton: false,
@@ -15,14 +15,16 @@ export default Component.extend({
   updateButtonClass: '',
   updateButtonText: '',
   cancelButtonText: '',
+
   cancelBtnText: computed('cancelButtonText', function() {
     let cancelText = this.get('cancelButtonText');
     if (isEmpty(cancelText)) {
-      return this.get('i18n').t('buttons.cancel');
+      return this.get('intl').t('buttons.cancel');
     } else {
       return cancelText;
     }
   }),
+
   actions: {
     cancelAction() {
       this.sendAction('cancelAction');

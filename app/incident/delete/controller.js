@@ -1,7 +1,7 @@
 import { get } from '@ember/object';
 import RSVP from 'rsvp';
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 
 export default AbstractDeleteController.extend({
   title: t('incident.titles.deleteIncident'),
