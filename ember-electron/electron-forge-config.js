@@ -9,7 +9,7 @@ module.exports = {
     /* all: true, */
     appCategoryType: 'public.app-category.medical-software',
     appCopyright: 'Copyright (c) 2017 HospitalRun Foundation',
-    icon: 'assets/icons/icon',
+    icon: 'assets/icons/favicon',
     name: 'HospitalRun',
     osxSign: true,
     overwrite: true,
