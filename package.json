@@ -18,7 +18,8 @@
     "test": "ember test",
     "electron-test": "ember electron:test",
     "translation-sync": "babel-node script/translation/sync.js --presets es2015 && eslint --fix app/locales",
-    "stylelint": "stylelint 'app/styles/**/*.scss'"
+    "stylelint": "stylelint 'app/styles/**/*.scss'",
+    "ember-electron": "ember electron:make --platform=win32 && ember electron:make --platform=win32 --arch=ia32"
   },
   "repository": {
     "type": "git",
