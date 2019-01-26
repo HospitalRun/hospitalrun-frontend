@@ -1,19 +1,22 @@
 import EmberObject from '@ember/object';
 import CanEditRequested from 'hospitalrun/mixins/can-edit-requested';
-import { moduleFor, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleFor('mixin:can-edit-requested', 'Unit | Mixin | can-edit-requested');
+module('Unit | Mixin | can-edit-requested', function(hooks) {
+  setupTest(hooks);
 
-test('canEdit', function(assert) {
-  let canEditRequested = EmberObject.extend(CanEditRequested).create({
-    status: 'Requested'
+  test('canEdit', function(assert) {
+    let canEditRequested = EmberObject.extend(CanEditRequested).create({
+      status: 'Requested'
+    });
+
+    assert.strictEqual(canEditRequested.get('canEdit'), true);
   });
 
-  assert.strictEqual(canEditRequested.get('canEdit'), true);
-});
+  test('canEdit false', function(assert) {
+    let canEditRequested = EmberObject.extend(CanEditRequested).create();
 
-test('canEdit false', function(assert) {
-  let canEditRequested = EmberObject.extend(CanEditRequested).create();
-
-  assert.strictEqual(canEditRequested.get('canEdit'), false);
+    assert.strictEqual(canEditRequested.get('canEdit'), false);
+  });
 });

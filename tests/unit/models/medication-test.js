@@ -1,25 +1,20 @@
-import { moduleForModel, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleForModel('medication', 'Unit | Model | medication', {
-  needs: [
-    'ember-validations@validator:local/acceptance',
-    'ember-validations@validator:local/numericality',
-    'ember-validations@validator:local/presence',
-    'model:inventory',
-    'model:patient',
-    'model:visit',
-    'service:session'
-  ]
-});
+import { run } from '@ember/runloop';
 
-test('isRequested', function(assert) {
-  let medication = this.subject({ status: 'Requested' });
+module('Unit | Model | medication', function(hooks) {
+  setupTest(hooks);
 
-  assert.strictEqual(medication.get('isRequested'), true);
-});
+  test('isRequested', function(assert) {
+    let medication = run(() => this.owner.lookup('service:store').createRecord('medication', { status: 'Requested' }));
 
-test('isRequested false', function(assert) {
-  let medication = this.subject({ status: 'Test' });
+    assert.strictEqual(medication.get('isRequested'), true);
+  });
 
-  assert.strictEqual(medication.get('isRequested'), false);
+  test('isRequested false', function(assert) {
+    let medication = run(() => this.owner.lookup('service:store').createRecord('medication', { status: 'Test' }));
+
+    assert.strictEqual(medication.get('isRequested'), false);
+  });
 });

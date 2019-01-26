@@ -14,12 +14,12 @@ const STATUS_VALUES = [
 
 export default Mixin.create({
   planStatuses: computed(function() {
-    let i18n = this.get('i18n');
+    let intl = this.get('intl');
 
     return STATUS_VALUES.map((status) => {
       return {
         id: status,
-        value: i18n.t(`operativePlan.labels.${status}Status`)
+        value: intl.t(`operativePlan.labels.${status}Status`)
       };
     }).sort(function(a, b) {
       return compare(a.value.toString(), b.value.toString());

@@ -1,21 +1,21 @@
 import { run } from '@ember/runloop';
-import $ from 'jquery';
+import { settled as wait } from '@ember/test-helpers';
+import { findAll, findWithAssert } from 'ember-native-dom-helpers';
 
 async function select(selector, ...texts) {
-  let $options = findWithAssert(`${selector} option`);
+  findWithAssert(`${selector}`);
+  let options = Array.from(findAll(`${selector} option`));
 
-  $options.each(function() {
-    let $option = $(this);
-
+  options.forEach(function(option) {
     run(() => {
-      this.selected = texts.some((text) => $option.is(`:contains('${text}')`));
-      if (this.selected) {
-        $option.trigger('change');
+      if (texts.some((text) => option.textContent.includes(text))) {
+        option.selected = true;
+        option.parentNode.dispatchEvent(new Event('change'));
       }
     });
   });
 
-  await wait();
+  return wait();
 }
 
 export default select;

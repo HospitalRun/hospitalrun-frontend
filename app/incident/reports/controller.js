@@ -14,15 +14,15 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   }),
 
   departmentReportColumns: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return {
       department: {
-        label: i18n.t('incident.labels.department'),
+        label: intl.t('incident.labels.department'),
         include: true,
         property: 'type' // property type because in _addReportRow function looks for column name with value as type
       },
       total: {
-        label: i18n.t('incident.labels.total'),
+        label: intl.t('incident.labels.total'),
         include: true,
         property: 'total',
         format: '_numberFormat'
@@ -30,15 +30,15 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     };
   }),
   incidentCategoryReportColumns: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return {
       incidentCategory: {
-        label: i18n.t('incident.labels.category'),
+        label: intl.t('incident.labels.category'),
         include: true,
         property: 'type'
       },
       total: {
-        label: i18n.t('incident.labels.total'),
+        label: intl.t('incident.labels.total'),
         include: true,
         property: 'total',
         format: '_numberFormat'
@@ -47,12 +47,12 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   }),
 
   reportTypes: computed(function() {
-    let i18n = get(this, 'i18n');
+    let intl = get(this, 'intl');
     return [{
-      name: i18n.t('incident.titles.incidentsByDepartment'),
+      name: intl.t('incident.titles.incidentsByDepartment'),
       value: 'department'
     }, {
-      name: i18n.t('incident.titles.incidentsByCategory'),
+      name: intl.t('incident.titles.incidentsByCategory'),
       value: 'incidentCategory'
     }];
   }),
@@ -63,21 +63,19 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   _findIncidentsByDate() {
     let filterEndDate = get(this, 'endDate');
     let filterStartDate = get(this, 'startDate');
+
     let findParams = {
       options: {},
       mapReduce: 'incident_by_date'
     };
-    let maxValue = get(this, 'maxValue');
-    return new RSVP.Promise(function(resolve, reject) {
-      if (isEmpty(filterStartDate)) {
-        reject('Start date cannot be an empty value.');
-      }
-      findParams.options.startkey =  [filterStartDate.getTime(), null];
 
-      if (!isEmpty(filterEndDate)) {
-        filterEndDate = moment(filterEndDate).endOf('day').toDate();
-        findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
-      }
+    let maxValue = get(this, 'maxValue');
+
+    return new RSVP.Promise(function(resolve, reject) {
+      findParams.options.startkey =  [filterStartDate.getTime(), null];
+      filterEndDate = moment(filterEndDate).endOf('day').toDate();
+      findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
+
       return this.store.query('incident', findParams).then(resolve, reject);
     }.bind(this));
   },
@@ -143,22 +141,28 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     return types;
   },
 
+  _validateDates() {
+    return this._validateDateInputs();
+  },
+
   actions: {
     generateReport() {
-      let reportRows = get(this, 'reportRows');
-      let reportType = get(this, 'reportType');
-      reportRows.clear();
-      this.showProgressModal();
-      switch (reportType) {
-        case 'department':
-        case 'incidentCategory': {
-          this._findIncidentsByDate().then((incidents) => {
-            this._generateByDepartmentOrByIncidentCategoryReport(incidents, reportType);
-          }).catch((ex) => {
-            console.log('Error:', ex);
-            this.closeProgressModal();
-          });
-          break;
+      if (this._validateDates()) {
+        let reportRows = get(this, 'reportRows');
+        let reportType = get(this, 'reportType');
+        reportRows.clear();
+        this.showProgressModal();
+        switch (reportType) {
+          case 'department':
+          case 'incidentCategory': {
+            this._findIncidentsByDate().then((incidents) => {
+              this._generateByDepartmentOrByIncidentCategoryReport(incidents, reportType);
+            }).catch((ex) => {
+              console.log('Error:', ex);
+              this.closeProgressModal();
+            });
+            break;
+          }
         }
       }
     }

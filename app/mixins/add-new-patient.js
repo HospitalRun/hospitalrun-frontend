@@ -22,8 +22,8 @@ export default Mixin.create(PatientId, {
 
   addNewPatient() {
 
-    let i18n = this.get('i18n');
-    this.displayAlert(i18n.t('alerts.pleaseWait'), i18n.t('messages.newPatientHasToBeCreated'));
+    let intl = this.get('intl');
+    this.displayAlert(intl.t('alerts.pleaseWait'), intl.t('messages.newPatientHasToBeCreated'));
     this._getNewPatientId().then((friendlyId) => {
       let patientTypeAhead = this.get('model.patientTypeAhead');
       let nameParts = patientTypeAhead.split(' ');

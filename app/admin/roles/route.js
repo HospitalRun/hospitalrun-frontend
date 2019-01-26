@@ -1,5 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import { translationMacro as t } from 'ember-i18n';
+import { t } from 'hospitalrun/macro';
 export default AbstractEditRoute.extend({
   hideNewButton: true,
   newTitle: t('admin.userRoles'),

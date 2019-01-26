@@ -70,9 +70,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   title: computed('model.isNew', function() {
     let isNew = this.get('model.isNew');
     if (isNew) {
-      return this.get('i18n').t('procedures.titles.add');
+      return this.get('intl').t('procedures.titles.add');
     }
-    return this.get('i18n').t('procedures.titles.edit');
+    return this.get('intl').t('procedures.titles.edit');
   }),
 
   updateCapability: 'add_procedure',
@@ -134,23 +134,23 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       this.send('openModal', 'dialog', EmberObject.create({
         closeModalOnConfirm: false,
         confirmAction: 'deleteCharge',
-        title: this.get('i18n').t('procedures.titles.deleteMedicationUsed'),
-        name: this.get('i18n').t('models.medication.names.singular'),
-        message: this.get('i18n').t('messages.delete_singular', { name: this.name }),
+        title: this.get('intl').t('procedures.titles.deleteMedicationUsed'),
+        name: this.get('intl').t('models.medication.names.singular'),
+        message: this.get('intl').t('messages.delete_singular', { name: this.name }),
         chargeToDelete: charge,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
     },
 
     showDeletePhoto(photo) {
       this.send('openModal', 'dialog', EmberObject.create({
         confirmAction: 'deletePhoto',
-        title: this.get('i18n').t('patients.titles.deletePhoto'),
-        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
+        title: this.get('intl').t('patients.titles.deletePhoto'),
+        message: this.get('intl').t('patients.titles.deletePhoto', { object: 'photo' }),
         photoToDelete: photo,
         updateButtonAction: 'confirm',
-        updateButtonText: this.get('i18n').t('buttons.ok')
+        updateButtonText: this.get('intl').t('buttons.ok')
       }));
     }
   },
@@ -168,8 +168,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   },
 
   afterUpdate() {
-    let alertTitle = this.get('i18n').t('procedures.titles.saved');
-    let alertMessage = this.get('i18n').t('procedures.messages.saved');
+    let alertTitle = this.get('intl').t('procedures.titles.saved');
+    let alertMessage = this.get('intl').t('procedures.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   }
 });
