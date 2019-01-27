@@ -75,7 +75,7 @@ module.exports = function (defaults) {
 
   let app = new EmberApp(defaults, {
     babel: {
-      optional: ['es6.spec.symbols']
+      plugins: ['@babel/plugin-transform-typeof-symbol']
     },
     'ember-cli-babel': {
       includePolyfill: true
