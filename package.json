@@ -76,7 +76,7 @@
     "ember-export-application-global": "^2.0.0",
     "ember-fullcalendar": "1.8.0",
     "ember-inspector": "^3.0.0",
-    "ember-intl": "^3.5.0",
+    "ember-intl": "^4.0.0",
     "ember-keyboard": "4.0.0",
     "ember-load-initializers": "^1.0.0",
     "ember-macro-helpers": "^2.0.1",
