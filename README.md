@@ -1,6 +1,6 @@
-HospitalRun Ember frontend
+HospitalRun Ember Frontend
 ========
-[![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Greenkeeper badge](https://badges.greenkeeper.io/stukalin/hospitalrun-frontend.svg)](https://greenkeeper.io/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
+[![Build Status](https://travis-ci.com/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.com/HospitalRun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Greenkeeper badge](https://badges.greenkeeper.io/stukalin/hospitalrun-frontend.svg)](https://greenkeeper.io/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
 
 _Ember frontend for [HospitalRun](http://hospitalrun.io/): free software for developing world hospitals_
 
