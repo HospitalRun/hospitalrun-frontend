@@ -1,11 +1,8 @@
-HospitalRun frontend
+HospitalRun Ember frontend
 ========
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/stukalin/hospitalrun-frontend.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Greenkeeper badge](https://badges.greenkeeper.io/stukalin/hospitalrun-frontend.svg)](https://greenkeeper.io/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
 
 _Ember frontend for [HospitalRun](http://hospitalrun.io/): free software for developing world hospitals_
-
-[![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/)
 
 To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/), and [CouchDB](http://couchdb.apache.org/) installed.
 
