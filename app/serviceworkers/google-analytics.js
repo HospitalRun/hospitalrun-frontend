@@ -1,1 +1,0 @@
-goog.offlineGoogleAnalytics.initialize();
