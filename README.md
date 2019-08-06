@@ -1,7 +1,9 @@
 HospitalRun Ember Frontend
 ========
-[![Build Status](https://travis-ci.com/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.com/HospitalRun/hospitalrun-frontend) [![Snyk](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend/badge.svg)](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Greenkeeper badge](https://badges.greenkeeper.io/stukalin/hospitalrun-frontend.svg)](https://greenkeeper.io/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
+[[![Snyk](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend/badge.svg)](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
 
+## Important Note
+### We are now working on a new major version of HospitalRun. As soon as the [next branch](https://github.com/HospitalRun/hospitalrun-frontend/tree/next) will be ready, it will be merged onto master. Please don't do any PR to this branch. Use this README just as installation reference for the current version.
 _Ember frontend for [HospitalRun](http://hospitalrun.io/): free software for developing world hospitals_
 
 To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/), and [CouchDB](http://couchdb.apache.org/) installed.
