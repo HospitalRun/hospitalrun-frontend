@@ -1,6 +1,6 @@
 HospitalRun Ember Frontend
 ========
-[[![Snyk](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend/badge.svg)](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
+[![Snyk](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend/badge.svg)](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
 
 ## Important Note
 ### We are now working on a new major version of HospitalRun. As soon as the [next branch](https://github.com/HospitalRun/hospitalrun-frontend/tree/next) will be ready, it will be merged onto master. Please don't do any PR to this branch. Use this README just as installation reference for the current version.
