@@ -175,6 +175,9 @@ _HospitalRun_ is the result of the work of a great community.
 ### Lead Maintainer
 * [__Maksim Sinik__](https://github.com/fox1t)
 
+### Medical Supervisor
+* [__Daniele Piccolo__](https://github.com/daninucleode)
+
 ### Core Team
 * [__Riccardo Gulin__](https://github.com/bazuzu666)
 * [__Matteo Vivona__](https://github.com/tehKapa)
