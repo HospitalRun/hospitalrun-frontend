@@ -35,7 +35,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "@ember/test-helpers": "^1.0.1",
-    "bootstrap": "~3.3.5",
+    "bootstrap": "~3.4.1",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
     "broccoli-funnel": "^2.0.1",
