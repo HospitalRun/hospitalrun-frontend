@@ -32,8 +32,8 @@ Before submitting a request, please search for similar ones in the
 
 ## Contributor License Agreement
 
-HospitalRun is a member of the [JS Foundation](https://js.foundation/).
-As such, we request that all contributors sign the JS Foundation
+HospitalRun is a member of the [Open JS Foundation](https://openjsf.org/).
+As such, we request that all contributors sign our
 [contributor license agreement (CLA)](https://js.foundation/CLA/).
 
 For more information about CLAs, please check out Alex Russell’s excellent post,
