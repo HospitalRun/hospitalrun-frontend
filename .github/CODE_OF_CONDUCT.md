@@ -65,6 +65,15 @@ Project maintainers who do not follow or enforce the Code of Conduct in good
 faith may face temporary or permanent repercussions as determined by other
 members of the project's leadership.
 
+## Contributor License Agreement
+
+HospitalRun is a member of the [JS Foundation](https://js.foundation/).
+As such, we request that all contributors sign the JS Foundation
+[contributor license agreement (CLA)](https://js.foundation/CLA/).
+
+For more information about CLAs, please check out Alex Russell’s excellent post,
+[“Why Do I Need to Sign This?”](https://infrequently.org/2008/06/why-do-i-need-to-sign-this/).
+
 ## Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
