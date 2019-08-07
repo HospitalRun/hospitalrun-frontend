@@ -168,6 +168,23 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
+## Team
+
+_HospitalRun_ is the result of the work of a great community.
+
+**Lead Maintainers:**
+* [__Maksim Sinik__](https://github.com/fox1t)
+
+### Maintainers
+* [__Riccardo Gulin__](https://github.com/bazuzu666)
+* [__Matteo Vivona__](https://github.com/tehKapa)
+* [__Stefano Casasola__](https://github.com/irvelervel)
+* [__Stefano Miceli__](https://github.com/StefanoMiC)
+
+### Contributors
+
+[![Contributors](https://opencollective.com/hospitalrun/contributors.svg?width=960&button=false)](https://github.com/HospitalRun/hospitalrun-frontend/graphs/contributors) 
+
 ## Start Coding
 To start coding and understand the frameworks, concepts and structure of the project, please read:
 [Contribution Guide: Start Coding](.github/CONTRIBUTING.md#start-coding).
