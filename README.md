@@ -172,10 +172,10 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 
 _HospitalRun_ is the result of the work of a great community.
 
-**Lead Maintainers:**
+**Lead Maintainer:**
 * [__Maksim Sinik__](https://github.com/fox1t)
 
-### Maintainers
+### Core Team
 * [__Riccardo Gulin__](https://github.com/bazuzu666)
 * [__Matteo Vivona__](https://github.com/tehKapa)
 * [__Stefano Casasola__](https://github.com/irvelervel)
