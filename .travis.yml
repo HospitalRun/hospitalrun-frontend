@@ -2,10 +2,11 @@ language: node_js
 node_js:
   - '8'
 
+sudo: false
 dist: trusty
-sudo: required
 
 addons:
+  chrome: stable
   apt:
     sources:
       - ubuntu-toolchain-r-test
