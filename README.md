@@ -26,10 +26,11 @@ _HospitalRun_ is the result of the work of a great community.
 
 ### Core Team
 
+- [**Travis Boudreaux**](https://github.com/tjboudreaux)
+- [**Stefano Casasola**](https://github.com/irvelervel)
+- [**Michael J Feher**](https://github.com/PhearZero)
 - [**Riccardo Gulin**](https://github.com/bazuzu666)
 - [**Matteo Vivona**](https://github.com/tehKapa)
-- [**Stefano Casasola**](https://github.com/irvelervel)
-- [**Stefano Miceli**](https://github.com/StefanoMiC)
 
 ### Contributors
 
