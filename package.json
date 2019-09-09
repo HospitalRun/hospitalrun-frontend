@@ -25,6 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "cross-env CI=true react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -44,7 +45,8 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run test:ci"
     }
   },
   "config": {
