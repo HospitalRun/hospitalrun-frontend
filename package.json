@@ -12,6 +12,15 @@
     "react-scripts": "3.1.1",
     "typescript": "3.6.2"
   },
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/core": "^8.1.0",
+    "commitlint-config-gitmoji": "^1.0.1",
+    "cross-env": "^5.2.1",
+    "cz-emoji": "^1.1.2",
+    "dateformat": "^3.0.3",
+    "husky": "^3.0.5"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -32,5 +41,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-emoji"
+    }
   }
 }
