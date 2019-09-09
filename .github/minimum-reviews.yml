@@ -1,0 +1,15 @@
+# Number of reviews required to mark the pull request as valid
+reviewsUntilReady: 2
+
+# Number of changes in the pull request to start enforcing the reviewsUntilReady rule
+changesThreshold: 100
+
+# Message to display when the commit status passes
+readyMessage: 'No pending reviews'
+
+# Message to display when the commit status fails
+notReadyMessage: 'Pending review approvals'
+
+# Status to set the commit to when waiting for reviews
+# 'failure, error, and pending' are the suggested options
+notReadyState: 'pending'
