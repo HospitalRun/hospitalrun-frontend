@@ -63,7 +63,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-emoji"
+      "path": "./node_modules/cz-emoji"
     }
   }
 }
