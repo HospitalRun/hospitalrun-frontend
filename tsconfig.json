@@ -1,25 +1,47 @@
 {
+  "include": [
+    "src",
+    "types"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
   "compilerOptions": {
     "target": "es5",
+    "module": "esnext",
     "lib": [
       "dom",
-      "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "rootDir": "./",
+    "strict": true,
+    "pretty": true,
+    "removeComments": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": false,
+    "moduleResolution": "node",
+    "jsx": "react",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "baseUrl": "./src",
+    "allowJs": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
-  },
-  "include": [
-    "src"
-  ]
+    "isolatedModules": true
+  }
 }
