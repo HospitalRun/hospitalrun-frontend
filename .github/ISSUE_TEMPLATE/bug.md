@@ -34,6 +34,5 @@ Paste the results here:
 ## Your Environment
 
 - _node version_: 6,8,10
-- _fastify version_: >=1.0.0
 - _os_: Mac, Windows, Linux
 - _any other relevant information_
