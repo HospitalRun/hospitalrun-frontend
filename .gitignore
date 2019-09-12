@@ -1,3 +1,4 @@
+build
 # Logs
 logs
 *.log
@@ -59,3 +60,7 @@ typings/
 
 # next.js build output
 .next
+
+# misc
+package-lock.json
+.DS_Store
