@@ -1,14 +1,14 @@
 {
-  "name": "@hospitalrun-org/frontend",
+  "name": "@hospitalrun/frontend",
   "version": "0.1.0",
   "description": "React frontend for HospitalRun",
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1",
-    "typescript": "3.6.2"
+    "react": "~16.9.0",
+    "react-dom": "~16.9.0",
+    "react-scripts": "~3.1.2",
+    "typescript": "~3.6.3"
   },
   "repository": {
     "type": "git",
@@ -21,17 +21,17 @@
     "Stefano Casasola"
   ],
   "devDependencies": {
-    "@commitlint/cli": "^8.1.0",
-    "@commitlint/core": "^8.1.0",
-    "@types/jest": "24.0.18",
-    "@types/node": "12.7.4",
-    "@types/react": "16.9.2",
-    "@types/react-dom": "16.9.0",
-    "commitlint-config-gitmoji": "^1.0.1",
-    "cross-env": "^5.2.1",
-    "cz-emoji": "^1.1.2",
-    "dateformat": "^3.0.3",
-    "husky": "^3.0.5"
+    "@commitlint/cli": "~8.1.0",
+    "@commitlint/core": "~8.1.0",
+    "@types/jest": "~24.0.18",
+    "@types/node": "~12.7.8",
+    "@types/react": "~16.9.3",
+    "@types/react-dom": "~16.9.1",
+    "commitlint-config-gitmoji": "~1.0.1",
+    "cross-env": "~5.2.1",
+    "cz-emoji": "~1.1.2",
+    "dateformat": "~3.0.3",
+    "husky": "~3.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
