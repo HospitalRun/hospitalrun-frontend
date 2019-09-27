@@ -4,7 +4,7 @@
 
 ## Important Note
 
-### We are now working on a new major version of HospitalRun. As soon as the [next branch](https://github.com/HospitalRun/hospitalrun-server/tree/next) will be ready, it will be merged onto master. Please don't do any PR to this branch.
+### We are now working on a new major version of HospitalRun. As soon as the new master branch will be ready, it will be merged onto master. Please don't do any PR to this branch.
 
 ### Please read [this message](https://twitter.com/HospitalRun/status/1159428978790338561) from the project maintainer.
 
