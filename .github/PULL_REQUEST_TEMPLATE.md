@@ -1,11 +1,9 @@
-Fixes #[replace brackets with the issue number that your pull request addresses].
+Got some code for us? Awesome 🎊!
 
-**Changes proposed in this pull request:**
-- [list out summary of changes here]
-- [list out summary of changes here]
-- [list out summary of changes here]
-- [etc]
+Please include a description of your change & check your PR against this list, thanks!
 
-*Note: pull requests without proper descriptions may simply be closed without further discussion. We appreciate your contributions, but need to know what you are offering in clearly described format. Thanks! (you can delete this text)*
+- [ ] There's a clear use-case for this code change
+- [ ] Commit message has a short title & references relevant issues
+- [ ] The build will pass (run `npm test` and `npm lint`)
 
-cc @HospitalRun/core-maintainers
+More info can be found by clicking the "guidelines for contributing" link above.
