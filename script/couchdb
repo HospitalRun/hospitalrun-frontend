@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-check_installed () {
-  command -v couchdb >/dev/null 2>&1 || { echo >&2 "CouchDB must be installed. Aborting."; exit 1; }
-}
-
-check_installed && couchdb

@@ -1,37 +1,69 @@
-# HospitalRun Frontend
+<div align="center">
 
-[![Snyk](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend/badge.svg)](https://snyk.io/test/github/hospitalrun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
+![hospitalrun-logo-v1](https://github.com/HospitalRun/design/blob/master/logo/logo-on-transparent.png)
 
-## Important Note
+</div>
 
-### We are now working on a new major version of HospitalRun. As soon as the [next branch](https://github.com/HospitalRun/hospitalrun-server/tree/next) will be ready, it will be merged onto master. Please don't do any PR to this branch.
+<div align="center">
 
-### Please read [this message](https://twitter.com/HospitalRun/status/1159428978790338561) from the project maintainer.
+[![Release](https://img.shields.io/github/release/HospitalRun/hospitalrun-frontend.svg)](https://img.shields.io/github/release) [![Build Status](https://dev.azure.com/hospitalrun/hospitalrun-frontend/_apis/build/status/hospitalrun.hospitalrun-frontend)](https://dev.azure.com/hospitalrun/hospitalrun-frontend/_build/latest?definitionId=1) [![Build Status](https://travis-ci.com/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.com/HospitalRun/hospitalrun-frontend) [![Maintainability](https://api.codeclimate.com/v1/badges/2a60136ab6c13e2b2d3b/maintainability)](https://codeclimate.com/github/HospitalRun/hospitalrun-frontend/maintainability)  [![Coverage Status](https://coveralls.io/repos/github/HospitalRun/hospitalrun-frontend/badge.svg?branch=master)](https://coveralls.io/github/HospitalRun/hospitalrun-frontend?branch=master) [![Contributor](https://img.shields.io/github/contributors/HospitalRun/hospitalrun-frontend.svg)](https://github.com/HospitalRun/hospitalrun-frontend/graphs/contributors)
+[![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE) [![Nucleode](https://img.shields.io/badge/kindly%20maintained%20by-nucleode-blue)](https://nucleode.com) [![Slack](https://hospitalrun-slackin.herokuapp.com/badge.svg)](https://hospitalrun-slackin.herokuapp.com) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
+
+</div>
+
+<div align="center">
+
+### Free, easy-to-use software for developing world healthcare.
+React frontend for [HospitalRun](http://hospitalrun.io/): free software for developing world hospitals.
+
+</div>
 
 <hr />
 
-:warning: Looking for 1.0.0-beta legacy? Click [here](https://github.com/HospitalRun/hospitalrun-frontend/blob/1.0.0-beta/INSTALLATION_GUIDE.md).
+# Behind HospitalRun
 
-## Team
+## Hosted by
 
-_HospitalRun_ is the result of the work of a great community.
+[<img src="https://github.com/openjs-foundation/cross-project-council/blob/master/logos/openjsf-color.png?raw=true" width="120px;"/>](https://openjsf.org/projects/#atlarge)
 
-### Lead Maintainer
+## Sponsors
 
-- [**Maksim Sinik**](https://github.com/fox1t)
+[![Sponsors](https://opencollective.com/hospitalrun/sponsors.svg?width=890)](https://opencollective.com/hospitalrun/contribute/sponsors-336/checkout)
 
-### Medical Supervisor
+### Big Thanks
 
-- [**M.D. Daniele Piccolo**](https://github.com/daninucleode)
+Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][homepage]
 
-### Core Team
+[homepage]: https://saucelabs.com
 
-- [**Travis Boudreaux**](https://github.com/tjboudreaux)
-- [**Stefano Casasola**](https://github.com/irvelervel)
-- [**Michael J Feher**](https://github.com/PhearZero)
-- [**Riccardo Gulin**](https://github.com/bazuzu666)
-- [**Matteo Vivona**](https://github.com/tehKapa)
+## Backers
 
-### Contributors
+[![Backers](https://opencollective.com/hospitalrun/backers.svg?width=890)](https://opencollective.com/hospitalrun/contribute/backers-335/checkout)
 
-[![Contributors](https://opencollective.com/hospitalrun/contributors.svg?width=960&button=false)](https://github.com/HospitalRun/hospitalrun-server/graphs/contributors)
+## Lead Maintainer
+
+[<img src="https://avatars2.githubusercontent.com/u/1620916?s=460&v=4" width="100px;"/><br /><sub><b>Maksim Sinik</b></sub>](https://github.com/fox1t)<br />
+
+## Core Team
+
+<!-- prettier-ignore -->
+|[<img src="https://avatars1.githubusercontent.com/u/11684?s=460&v=4" width="100px;"/><br /><sub><b>Travis Boudreaux</b></sub>](https://github.com/tjboudreaux) | [<img src="https://avatars3.githubusercontent.com/u/25089405?s=460&v=4" width="100px;"/><br /><sub><b>Stefano Casasola</b></sub>](https://github.com/irvelervel) | [<img src="https://avatars3.githubusercontent.com/u/3400442?s=460&v=4" width="100px;"/><br /><sub><b>Michael J Feher</b></sub>](https://github.com/PhearZero) | [<img src="https://avatars1.githubusercontent.com/u/25009192?s=460&v=4" width="100px;"/><br /><sub><b>Riccardo Gulin</b></sub>](https://github.com/bazuzu666) | [<img src="https://avatars3.githubusercontent.com/u/18731800?s=460&v=4" width="100px;"/><br /><sub><b>Jack Meyer</b></sub>](https://github.com/jackcmeyer) | [<img src="https://avatars0.githubusercontent.com/u/6388707?s=460&v=4" width="100px;"/><br /><sub><b>Matteo Vivona</b></sub>](https://github.com/tehKapa) |
+|---|---|---|---|---|---|
+
+## Medical Supervisor
+
+[<img src="https://avatars2.githubusercontent.com/u/24660474?s=460&v=4" width="100px;"/><br /><sub><b>M.D. Daniele Piccolo</b></sub>](https://it.linkedin.com/in/danielepiccolo)<br />
+
+## Contributors
+
+[![Contributors](https://opencollective.com/hospitalrun/contributors.svg?width=960&button=false)](https://github.com/HospitalRun/hospitalrun-frontend/graphs/contributors)
+
+## Founders
+
+<!-- prettier-ignore -->
+| [<img src="https://avatars0.githubusercontent.com/u/609052?s=460&v=4" width="100px;"/><br /><sub><b>John Kleinschmidtr</b></sub>](https://github.com/jkleinsc) | [<img src="https://avatars0.githubusercontent.com/u/929261?s=400&v=4" width="100px;"/><br /><sub><b>Joel Worrall</b></sub>](https://github.com/tangollama)  | [<img src="https://avatars0.githubusercontent.com/u/1319791?s=460&v=4" width="100px;"/><br /><sub><b>Joel Glovier</b></sub>](https://github.com/jglovier)  |
+|---|---|---|
+
+# License
+
+Released under the [MIT license](LICENSE).

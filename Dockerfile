@@ -1,37 +1,41 @@
-FROM node:6-alpine
+FROM node:10-alpine as build
+LABEL maintainer="Michael Feher, Matteo Vivona, Maksim Sinik"
 
-# install script dependencies
-RUN apk update && apk add \
-  bash \
-  curl \
-  g++ \
-  git \
-  make \
-  python \
-  sudo \
-  wget
+# set app basepath
+ENV HOME=/home/app
 
-# install global npm dependencies
-RUN yarn global add ember-cli@latest
+# copy all app files
+COPY . $HOME/node/
 
-# use changes to package.json to force Docker not to use the cache
-# when we change our application's nodejs dependencies:
-COPY package*.json /tmp/
-RUN cd /tmp && yarn install --silent
-RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app
+# change workgin dir and install deps in quiet mode
+WORKDIR $HOME/node
+RUN npm ci -q
 
-# setup folders
-WORKDIR /usr/src/app
+# compile typescript and build all production stuff
+RUN npm run build
 
-# install source code
-COPY . /usr/src/app
-COPY ./server/config-example.js ./server/config.js
+# remove dev dependencies that are not needed in production
+RUN npm prune --production
 
-# define settings
-RUN sed -i -e 's/URL="localhost"/URL="couchdb"/g' ./script/initcouch.sh
-RUN sed -i -e "s/couchDbServer: 'localhost'/couchDbServer: 'couchdb'/g" ./server/config.js
-RUN sed -i -e "s/localhost:5984/couchdb:5984/g" ./script/server.js
+# start new image for lower size
+FROM node:10-alpine
 
-EXPOSE 4200
+# create use with no permissions
+RUN addgroup -g 101 -S app && adduser -u 100 -S -G app -s /bin/false app
 
-ENTRYPOINT ./script/initcouch.sh && yarn start
+# set app basepath
+ENV HOME=/home/app
+
+# copy production complied node app to the new image
+COPY --from=build $HOME/node/ $HOME/node/
+RUN chown -R app:app $HOME/*
+
+# run app with low permissions level user
+USER app
+WORKDIR $HOME/node
+
+EXPOSE 3000
+
+ENV NODE_ENV=production
+
+CMD [ "yarn", "start" ]
