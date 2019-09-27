@@ -1,6 +1,6 @@
 # HospitalRun Ember Frontend
 
-[![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
+![Maintenance](https://img.shields.io/maintenance/no/2018) ![license](https://img.shields.io/badge/license-GPLv3-green) ![ember](https://img.shields.io/badge/framework-ember-orange) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun) 
 
 ## Important Note
 
@@ -22,4 +22,4 @@ _HospitalRun_ is the result of the work of a great community.
 
 ### Contributors
 
-[![Contributors](https://opencollective.com/hospitalrun/contributors.svg?width=960&button=false)](https://github.com/HospitalRun/hospitalrun-server/graphs/contributors)
+[![Contributors](https://opencollective.com/hospitalrun/contributors.svg?width=960&button=false)](https://github.com/HospitalRun/hospitalrun-frontend/graphs/contributors)
