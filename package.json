@@ -43,6 +43,7 @@
     "semantic-release": "^15.13.24"
   },
   "scripts": {
+    "commit": "npx git-cz",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
