@@ -5,10 +5,10 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "react": "~16.10.2",
-    "react-dom": "~16.10.2",
-    "react-scripts": "~3.1.2",
-    "typescript": "~3.6.3"
+   "react": "~16.10.2",
+   "react-dom": "~16.10.2",
+   "react-scripts": "~3.2.0",
+   "typescript": "~3.6.3"
   },
   "repository": {
     "type": "git",
