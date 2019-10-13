@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "react": "~16.9.0",
+    "react": "~16.10.2",
     "react-dom": "~16.10.2",
     "react-scripts": "~3.1.2",
     "typescript": "~3.6.3"
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
-    "@commitlint/core": "~8.1.0",
+    "@commitlint/core": "~8.2.0",
     "@commitlint/prompt": "^8.2.0",
     "@semantic-release/changelog": "^3.0.4",
     "@semantic-release/commit-analyzer": "^6.3.0",
