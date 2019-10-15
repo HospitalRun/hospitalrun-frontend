@@ -1,0 +1,62 @@
+name: GitHub CI
+
+on: [push, pull_request]
+
+jobs:
+  npm:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+        os: [ubuntu-18.04]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install with npm
+        run: |
+          npm install
+      - name: Lint code
+        run: |
+          npm run lint
+      - name: Build
+        run: |
+          npm run build
+      - name: Run tests
+        run: |
+          npm run test
+  yarn:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+        os: [ubuntu-18.04]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install with yarn
+        run: |
+          curl -o- -L https://yarnpkg.com/install.sh | bash
+          yarn install
+      - name: Lint code
+        run: |
+          yarn lint
+      - name: Build
+        run: |
+          yarn build
+      - name: Run tests
+        run: |
+          yarn test
