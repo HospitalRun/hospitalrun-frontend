@@ -17,7 +17,7 @@ before_script:
 script:
   - npm run build
 after_script:
-  - npm run test
+  - npm run test:ci
 after_success:
   - jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 
