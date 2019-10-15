@@ -5,10 +5,10 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-   "react": "~16.10.2",
-   "react-dom": "~16.10.2",
-   "react-scripts": "~3.2.0",
-   "typescript": "~3.6.3"
+    "react": "~16.10.2",
+    "react-dom": "~16.10.2",
+    "react-scripts": "~3.2.0",
+    "typescript": "~3.6.3"
   },
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
     "cz-conventional-changelog": "^3.0.2",
     "dateformat": "~3.0.3",
     "husky": "^3.0.5",
+    "jest": "^24.9.0",
     "semantic-release": "^15.13.24"
   },
   "scripts": {
@@ -49,6 +50,7 @@
     "test": "react-scripts test",
     "test:ci": "cross-env CI=true react-scripts test",
     "eject": "react-scripts eject",
+    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
   "eslintConfig": {
