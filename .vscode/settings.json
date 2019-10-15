@@ -1,0 +1,24 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    {
+      "autoFix": true,
+      "language": "typescript"
+    },
+    {
+      "autoFix": true,
+      "language": "typescriptreact"
+    }
+  ],
+  "eslint.workingDirectories": [
+    {
+      "directory": "packages/components",
+      "changeProcessCWD": true
+    },
+    {
+      "directory": "packages/server",
+      "changeProcessCWD": true
+    }
+  ]
+}

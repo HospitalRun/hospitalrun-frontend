@@ -38,8 +38,10 @@
     "commitlint-config-cz": "^0.12.1",
     "cross-env": "~6.0.3",
     "cz-conventional-changelog": "^3.0.2",
+    "eslint-config-react-app": "~5.0.2",
     "dateformat": "~3.0.3",
     "husky": "^3.0.5",
+    "prettier": "~1.18.2",
     "jest": "^24.9.0",
     "semantic-release": "^15.13.24"
   },
@@ -47,9 +49,11 @@
     "commit": "npx git-cz",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "prepublishOnly": "npm run build",
+    "pretest": "npm run lint && npm run build",
     "test": "react-scripts test",
     "test:ci": "cross-env CI=true react-scripts test",
-    "eject": "react-scripts eject",
+    "lint": "prettier --write --loglevel warn \"src/**/*\" \"stories/**/*\" \"test/**/*\" \"README.md\" \"docs/**/*\" && tsdx lint --fix \"src/**/*.{ts,tsx}\" \"test/**/*.{ts,tsx}\" \"stories/**/*.{ts,tsx}\"",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
@@ -77,6 +81,49 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  "jest": {
+    "setupFiles": [
+      "jest-canvas-mock",
+      "<rootDir>test-setup.ts"
+    ]
+  },
+  "eslint": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "tsconfigRootDir": "./",
+      "createDefaultProgram": true
+    },
+    "prettier": {
+      "printWidth": 100,
+      "tabWidth": 2,
+      "semi": false,
+      "singleQuote": true,
+      "trailingComma": "all",
+      "bracketSpacing": true,
+      "jsxBracketSameLine": false,
+      "arrowParens": "avoid"
+    },
+    "extends": [
+      "react-app",
+      "plugin:@typescript-eslint/recommended",
+      "prettier",
+      "prettier/@typescript-eslint"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "off"
     }
   }
 }
