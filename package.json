@@ -5,10 +5,10 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-   "react": "~16.10.2",
-   "react-dom": "~16.10.2",
-   "react-scripts": "~3.2.0",
-   "typescript": "~3.6.3"
+    "react": "~16.10.2",
+    "react-dom": "~16.10.2",
+    "react-scripts": "~3.2.0",
+    "typescript": "~3.6.3"
   },
   "repository": {
     "type": "git",
@@ -32,23 +32,34 @@
     "@semantic-release/release-notes-generator": "^7.3.0",
     "@types/jest": "~24.0.18",
     "@types/node": "~12.7.8",
-    "@types/react": "~16.9.3",
+    "@types/react": "~16.9.6",
     "@types/react-dom": "~16.9.1",
+    "@typescript-eslint/eslint-plugin": "~2.4.0",
+    "@typescript-eslint/parser": "~2.4.0",
     "commitizen": "^4.0.3",
     "commitlint-config-cz": "^0.12.1",
     "cross-env": "~6.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "dateformat": "~3.0.3",
+    "eslint-config-prettier": "~6.4.0",
+    "eslint-config-react": "~1.1.7",
+    "eslint-config-react-app": "~5.0.2",
+    "eslint-plugin-prettier": "~3.1.1",
     "husky": "^3.0.5",
+    "jest": "^24.9.0",
+    "prettier": "~1.18.2",
     "semantic-release": "^15.13.24"
   },
   "scripts": {
     "commit": "npx git-cz",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "prepublishOnly": "npm run build",
+    "pretest": "npm run lint && npm run build",
     "test": "react-scripts test",
     "test:ci": "cross-env CI=true react-scripts test",
-    "eject": "react-scripts eject",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
   "eslintConfig": {
@@ -75,6 +86,43 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  "eslint": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "tsconfigRootDir": "./",
+      "createDefaultProgram": true
+    },
+    "prettier": {
+      "printWidth": 100,
+      "tabWidth": 2,
+      "semi": false,
+      "singleQuote": true,
+      "trailingComma": "all",
+      "bracketSpacing": true,
+      "jsxBracketSameLine": false,
+      "arrowParens": "avoid"
+    },
+    "extends": [
+      "react-app",
+      "plugin:@typescript-eslint/recommended",
+      "prettier",
+      "prettier/@typescript-eslint"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "off"
     }
   }
 }
