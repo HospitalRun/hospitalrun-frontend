@@ -6,14 +6,14 @@
 
 <div align="center">
 
-[![Release](https://img.shields.io/github/release/HospitalRun/hospitalrun-frontend.svg)](https://img.shields.io/github/release) [![GitHub CI](https://github.com/HospitalRun/frontend/workflows/GitHub%20CI/badge.svg)](https://github.com/HospitalRun/frontend/actions) [![Build Status](https://dev.azure.com/HospitalRun/hospitalrun-frontend/_apis/build/status/HospitalRun.hospitalrun-frontend?branchName=master)](https://dev.azure.com/HospitalRun/hospitalrun-frontend/_build/latest?definitionId=3&branchName=master) [![Build Status](https://travis-ci.com/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.com/HospitalRun/hospitalrun-frontend) [![Coverage Status](https://coveralls.io/repos/github/HospitalRun/hospitalrun-frontend/badge.svg?branch=master)](https://coveralls.io/github/HospitalRun/hospitalrun-frontend?branch=master) [![Contributor](https://img.shields.io/github/contributors/HospitalRun/hospitalrun-frontend.svg)](https://github.com/HospitalRun/hospitalrun-frontend/graphs/contributors)
-[![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE) ![dependabot](https://api.dependabot.com/badges/status?host=github&repo=HospitalRun/frontend) [![Slack](https://hospitalrun-slackin.herokuapp.com/badge.svg)](https://hospitalrun-slackin.herokuapp.com) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
+[![Release](https://img.shields.io/github/release/HospitalRun/hospitalrun-frontend.svg)](https://img.shields.io/github/release) [![GitHub CI](https://github.com/HospitalRun/frontend/workflows/GitHub%20CI/badge.svg)](https://github.com/HospitalRun/frontend/actions) [![Build Status](https://dev.azure.com/HospitalRun/hospitalrun-frontend/_apis/build/status/HospitalRun.hospitalrun-frontend?branchName=master)](https://dev.azure.com/HospitalRun/hospitalrun-frontend/_build/latest?definitionId=3&branchName=master) [![Build Status](https://travis-ci.com/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.com/HospitalRun/hospitalrun-frontend) [![Coverage Status](https://coveralls.io/repos/github/HospitalRun/hospitalrun-frontend/badge.svg?branch=master)](https://coveralls.io/github/HospitalRun/hospitalrun-frontend?branch=master) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE) ![dependabot](https://api.dependabot.com/badges/status?host=github&repo=HospitalRun/frontend) [![Slack](https://hospitalrun-slackin.herokuapp.com/badge.svg)](https://hospitalrun-slackin.herokuapp.com) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun)
 
 </div>
 
 <div align="center">
 
 ### Free, easy-to-use software for developing world healthcare.
+
 React frontend for [HospitalRun](http://hospitalrun.io/): free software for developing world hospitals.
 
 </div>
