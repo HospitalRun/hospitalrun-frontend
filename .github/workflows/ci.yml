@@ -59,4 +59,4 @@ jobs:
           yarn build
       - name: Run tests
         run: |
-          yarn test
+          yarn test:ci
