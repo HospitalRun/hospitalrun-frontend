@@ -1,3 +1,23 @@
+# [1.1.0](https://github.com/HospitalRun/hospitalrun-frontend/compare/v1.0.0...v1.1.0) (2019-10-20)
+
+
+### Bug Fixes
+
+* **docs:** fixes badge url on readme ([db127b6](https://github.com/HospitalRun/hospitalrun-frontend/commit/db127b6b3d4587fdb49fe568b74841fbdf3e74f3))
+* **locales/de:** languageName ([1cfba70](https://github.com/HospitalRun/hospitalrun-frontend/commit/1cfba70a937ae0eced0baec836ac52cfb4373a76))
+* **nav-sidebar:** current route highlighting ([357e4b5](https://github.com/HospitalRun/hospitalrun-frontend/commit/357e4b5679096ed53a628c8cc7b60e1b90196b78))
+* **package:** update electron-localshortcut to version 3.0.4 ([5e98e76](https://github.com/HospitalRun/hospitalrun-frontend/commit/5e98e760a0e3c39a74c238b7b1c7425b7efc7ec5))
+
+
+### Features
+
+* **toolchain:** adds commit script ([3fc9c2f](https://github.com/HospitalRun/hospitalrun-frontend/commit/3fc9c2fc661104f898d1533c057ea3f0388965ff))
+
+
+### Performance Improvements
+
+* **docker:** add `yarn` for faster dependency installs ([ae1ca43](https://github.com/HospitalRun/hospitalrun-frontend/commit/ae1ca43da091eb28bf62da92272cf204675ecbc7))
+
 # 1.0.0 (2019-10-15)
 
 
