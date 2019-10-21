@@ -21,12 +21,13 @@ after_script:
 after_success:
   - jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 
-jobs:
-  include:
-    - stage: release
-      node_js: lts/*
-      script:
-        - npm run semantic-release
+# Re-enable for version v2.0.0
+# jobs:
+#   include:
+#     - stage: release
+#       node_js: lts/*
+#       script:
+#         - npm run semantic-release
 
 notifications:
   email:
