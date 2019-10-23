@@ -8,8 +8,9 @@
     "@semantic-release/changelog": "~3.0.4",
     "@semantic-release/git": "~7.0.16",
     "@semantic-release/release-notes-generator": "~7.3.0",
-    "react": "~16.12.0",
-    "react-dom": "~16.12.0",
+    "pouchdb": "~7.1.1",
+    "react": "~16.10.2",
+    "react-dom": "~16.10.2",
     "react-scripts": "~3.2.0",
     "typescript": "~3.7.2"
   },
@@ -34,7 +35,12 @@
     "@semantic-release/github": "^5.4.3",
     "@semantic-release/release-notes-generator": "~7.3.0",
     "@types/jest": "~24.0.18",
+<<<<<<< HEAD
     "@types/node": "~12.12.9",
+=======
+    "@types/node": "~12.7.8",
+    "@types/pouchdb": "~6.4.0",
+>>>>>>> feat(init): creates a very simple pouchdb client
     "@types/react": "~16.9.6",
     "@types/react-dom": "~16.9.4",
     "@typescript-eslint/eslint-plugin": "~2.8.0",
