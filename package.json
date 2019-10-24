@@ -58,7 +58,7 @@
     "pretest": "npm run lint && npm run build",
     "test": "react-scripts test",
     "test:ci": "cross-env CI=true react-scripts test",
-    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "lint": "eslint ./src/**/*.{ts,tsx}",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
