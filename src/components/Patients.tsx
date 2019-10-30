@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
+import * as patientsDb from '../clients/db/patients-db';
 
 class Patients extends Component {
+
+  async componentDidMount() {
+    const patients = await patientsDb.getAll();
+    console.log(patients);
+  }
+  
   render() {
     return (
       <div>

@@ -1,8 +1,17 @@
+<<<<<<< HEAD
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+=======
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+// import './client/pouchdb';
+import * as serviceWorker from './serviceWorker';
+>>>>>>> feat(patients): add very simple create patient page
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

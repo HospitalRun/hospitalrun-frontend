@@ -1,13 +1,15 @@
-import PouchDB from 'pouchdb';
+import { patients } from '../../config/pouchdb';
 
-const db = new PouchDB('hospitalrun');
+export async function getAll() {
+  return patients.allDocs();
+}
 
 export async function deleteDocument(document: any) {
-  return db.remove(document);
+  return patients.remove(document);
 }
 
 export async function deleteDocumentById(id: string, revId: string) {
-  return db.remove(id, revId);
+  return patients.remove(id, revId);
 }
 
 export async function saveOrUpdate(document: any) {
@@ -18,19 +20,21 @@ export async function saveOrUpdate(document: any) {
       _rev: existingDocument._rev,
       ...document
     }
-    return db.put(updatedDcoument)
+    return patients.put(updatedDcoument)
   } catch(error) {
     if(error.status === 404) {
       return save(document)
     }
   }
+
+  return null;
 }
 
 export async function save(document: any) {
-  await db.post(document);
+  return patients.post(document);
 }
 
 export async function get(id: string) {
-  const document = await db.get(id);
+  const document = await patients.get(id);
   return document;
 }
