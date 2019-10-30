@@ -1,7 +1,7 @@
 import { patients } from '../../config/pouchdb';
 
 export async function getAll() {
-  return patients.allDocs();
+  return patients.allDocs({ include_docs: true});
 }
 
 export async function deleteDocument(document: any) {
