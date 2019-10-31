@@ -14,7 +14,7 @@ export async function deleteDocumentById(id: string, revId: string) {
 
 export async function saveOrUpdate(document: any) {
   try {
-    const existingDocument = await get(document._id);
+    const existingDocument = await patients.get(document.id);
     const updatedDcoument = {
       _id: existingDocument._id,
       _rev: existingDocument._rev,
@@ -36,5 +36,10 @@ export async function save(document: any) {
 
 export async function get(id: string) {
   const document = await patients.get(id);
-  return document;
+  const patient = document as any;
+  return {
+    id: patient._id,
+    firstName: patient.firstName,
+    lastName: patient.lastName
+  };
 }

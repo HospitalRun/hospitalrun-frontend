@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { TextInput, Button } from '@hospitalrun/components';
 import * as patientsDb from '../clients/db/patients-db';
+import PatientForm from 'components/PatientForm';
 
 interface Props extends RouteComponentProps {
 
@@ -17,9 +17,9 @@ class NewPatient extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.onFirstNameChange = this.onFirstNameChange.bind(this)
-    this.onLastNameChange = this.onLastNameChange.bind(this);
+    this.onFieldChange = this.onFieldChange.bind(this);
     this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
+    this.onCancelButtonClick = this.onCancelButtonClick.bind(this);
 
     this.state = {
       firstName: '',
@@ -28,21 +28,19 @@ class NewPatient extends Component<Props, State> {
   }
 
 
-  onFirstNameChange(event: any) {
-    this.setState({
-      firstName: event.target.value,
-    })
+  onFieldChange(key: string, value: string) {
+    this.setState((prevState) => {
+      (prevState as any)[key] = value;
+    });
   }
-
-  onLastNameChange(event: any) {
-    this.setState({
-      lastName: event.target.value,
-    })
-  } 
 
   async onSaveButtonClick() {
     const newPatient = (await patientsDb.save(this.state)) as any
     this.props.history.push(`/patients/${newPatient.id}`);
+  }
+
+  onCancelButtonClick() {
+    this.props.history.push(`/patients`);
   }
 
   render() {
@@ -50,17 +48,11 @@ class NewPatient extends Component<Props, State> {
       <div>
         <h1>New Patient</h1>
         <div className="container">
-          <form>
-            <div className="row">
-              <h3>First Name:</h3>
-              <TextInput onChange={this.onFirstNameChange}/>
-            </div>
-            <div className="row">
-              <h3>Last Name:</h3>
-              <TextInput onChange={this.onLastNameChange}/>
-            </div>
-            <Button onClick={this.onSaveButtonClick}>Save</Button>
-          </form>
+          <PatientForm 
+            onFieldChange={this.onFieldChange} 
+            onSaveButtonClick={this.onSaveButtonClick}
+            onCancelButtonClick={this.onCancelButtonClick}
+          />
         </div>
       </div>
     );

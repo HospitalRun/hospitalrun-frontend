@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Navbar } from '@hospitalrun/components';
 import Dashboard from './Dashboard';
-import Patient from './Patient';
 import Patients from './Patients';
 import NewPatient from './NewPatient';
+import ViewPatient from 'containers/ViewPatient';
 
 class HospitalRun extends Component<RouteComponentProps, {}> {
   constructor(props: RouteComponentProps) {
@@ -39,7 +39,7 @@ class HospitalRun extends Component<RouteComponentProps, {}> {
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/patients" component={Patients} />
             <Route exact path="/new/patient" component={NewPatient} />
-            <Route exact path="/patients/:id" component={Patient} />
+            <Route exact path="/patients/:id" component={ViewPatient} />
           </Switch>
         </div>
       </div>
