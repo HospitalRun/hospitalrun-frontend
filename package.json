@@ -41,6 +41,7 @@
     "cross-env": "~6.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "dateformat": "~3.0.3",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-import": "^2.18.2",
