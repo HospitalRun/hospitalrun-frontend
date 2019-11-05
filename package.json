@@ -41,10 +41,14 @@
     "cross-env": "~6.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "dateformat": "~3.0.3",
-    "eslint-config-prettier": "~6.4.0",
-    "eslint-config-react": "~1.1.7",
-    "eslint-config-react-app": "~5.0.2",
-    "eslint-plugin-prettier": "~3.1.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.0.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.2.0",
     "husky": "^3.0.5",
     "jest": "^24.9.0",
     "prettier": "~1.18.2",
@@ -58,7 +62,7 @@
     "pretest": "npm run lint && npm run build",
     "test": "react-scripts test",
     "test:ci": "cross-env CI=true react-scripts test",
-    "lint": "eslint ./src/**/*.{ts,tsx}",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"test/**/*.{js,jsx,ts,tsx}\" \"stories/**/*.{js,jsx,ts,tsx}\" --fix",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
@@ -89,7 +93,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": [
+    "**/*.{js,jsx,ts,tsx}": [
       "npm run lint",
       "git add"
     ]
