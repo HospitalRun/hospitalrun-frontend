@@ -1,3 +1,3 @@
-import PouchDB from 'pouchdb';
+import PouchDB from "pouchdb";
 
-export const patients = new PouchDB('patients');
+export const patients = new PouchDB("patients");

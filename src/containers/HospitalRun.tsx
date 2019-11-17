@@ -1,23 +1,15 @@
-import React, { Component } from 'react';
-import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom';
-import { Navbar } from '@hospitalrun/components';
-import Dashboard from './Dashboard';
-import Patients from './Patients';
-import NewPatient from './NewPatient';
-import ViewPatient from 'containers/ViewPatient';
+import React, { Component } from "react";
+import { Switch, Route, withRouter, RouteComponentProps } from "react-router-dom";
+import { Navbar } from "@hospitalrun/components";
+import ViewPatient from "./ViewPatient";
+import Dashboard from "./Dashboard";
+import Patients from "./Patients";
+import NewPatient from "./NewPatient";
 
 class HospitalRun extends Component<RouteComponentProps, {}> {
-  constructor(props: RouteComponentProps) {
-    super(props);
-    this.noOpHandler = this.noOpHandler.bind(this);
-  }
-
-  noOpHandler() {
-    console.log('no op');
-  }
-
   navigate(route: string) {
-    this.props.history.push(route);
+    const { history } = this.props;
+    history.push(route);
   }
 
   render() {
@@ -25,14 +17,24 @@ class HospitalRun extends Component<RouteComponentProps, {}> {
       <div>
         <Navbar
           brand={{
-            label: 'HospitalRun',
-            onClick: () => {this.navigate('/')}
+            label: "HospitalRun",
+            onClick: () => {
+              this.navigate("/");
+            }
           }}
           bg="light"
           variant="light"
-          onSeachButtonClick={this.noOpHandler}
-          onSearchTextBoxChange={this.noOpHandler}
-          navLinks={[{ label: 'Patients', onClick: () => {this.navigate('/patients')}, children: [] }]}
+          onSeachButtonClick={() => console.log("hello")}
+          onSearchTextBoxChange={() => console.log("hello")}
+          navLinks={[
+            {
+              label: "Patients",
+              onClick: () => {
+                this.navigate("/patients");
+              },
+              children: []
+            }
+          ]}
         />
         <div>
           <Switch>
@@ -43,7 +45,7 @@ class HospitalRun extends Component<RouteComponentProps, {}> {
           </Switch>
         </div>
       </div>
-    )
+    );
   }
 }
 

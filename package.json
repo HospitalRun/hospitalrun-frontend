@@ -8,14 +8,16 @@
     "@semantic-release/changelog": "~3.0.4",
     "@semantic-release/git": "~7.0.16",
     "@semantic-release/release-notes-generator": "~7.3.0",
-    "pouchdb": "~7.1.1",
     "bootstrap": "^4.3.1",
+    "pouchdb": "~7.1.1",
     "react": "~16.10.2",
     "react-dom": "~16.10.2",
+    "react-redux": "^7.1.3",
     "react-router": "~5.1.2",
     "react-router-dom": "~5.1.2",
     "react-scripts": "~3.2.0",
-    "typescript": "~3.7.2"
+    "redux": "^4.0.4",
+    "typescript": "~3.6.3"
   },
   "repository": {
     "type": "git",

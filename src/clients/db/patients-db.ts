@@ -1,7 +1,7 @@
-import { patients } from '../../config/pouchdb';
+import { patients } from "../../config/pouchdb";
 
 export async function getAll() {
-  return patients.allDocs({ include_docs: true});
+  return patients.allDocs({ include_docs: true });
 }
 
 export async function deleteDocument(document: any) {
@@ -19,11 +19,11 @@ export async function saveOrUpdate(document: any) {
       _id: existingDocument._id,
       _rev: existingDocument._rev,
       ...document
-    }
-    return patients.put(updatedDcoument)
-  } catch(error) {
-    if(error.status === 404) {
-      return save(document)
+    };
+    return patients.put(updatedDcoument);
+  } catch (error) {
+    if (error.status === 404) {
+      return save(document);
     }
   }
 

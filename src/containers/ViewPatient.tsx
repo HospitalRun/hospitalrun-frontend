@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Button, Alert } from '@hospitalrun/components';
-import * as patientsDb from '../clients/db/patients-db';
-import PatientForm from 'components/PatientForm';
+import React, { Component } from "react";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { Button, Alert } from "@hospitalrun/components";
+import PatientForm from "../components/PatientForm";
+import * as patientsDb from "../clients/db/patients-db";
 
 interface Props extends RouteComponentProps {
-  patient: { firstName: string, lastName: string, id: string,}
+  patient: { firstName: string; lastName: string; id: string };
 }
 
 interface State {
-  isEditable: boolean,
-  showSuccess: boolean,
-  patient: { firstName: string, lastName: string, id: string }
+  isEditable: boolean;
+  showSuccess: boolean;
+  patient: { firstName: string; lastName: string; id: string };
 }
 
 class ViewPatient extends Component<Props, State> {
@@ -22,23 +22,26 @@ class ViewPatient extends Component<Props, State> {
     this.onEditButtonClick = this.onEditButtonClick.bind(this);
     this.onCancelButtonClick = this.onCancelButtonClick.bind(this);
 
-    this.state ={
+    this.state = {
       showSuccess: false,
       isEditable: false,
-      patient: props.patient,
-    }
+      patient: props.patient
+    };
   }
 
   async componentDidMount() {
-    const { id } = this.props.match.params as any;
-    const patient = await patientsDb.get(id) as any;
+    const { match } = this.props;
+    let { patient } = this.state;
+
+    const { id } = match.params as any;
+    patient = (await patientsDb.get(id)) as any;
     this.setState({
-      patient: patient
-    })
+      patient
+    });
   }
 
   onFieldChange(key: string, value: string) {
-    this.setState((prevState) => {
+    this.setState(prevState => {
       (prevState.patient as any)[key] = value;
     });
   }
@@ -50,17 +53,19 @@ class ViewPatient extends Component<Props, State> {
   }
 
   async onSaveButtonClick() {
-    const newPatient = (await patientsDb.saveOrUpdate(this.state.patient)) as any
-    const patient = await patientsDb.get(newPatient.id) as any;
+    let { patient } = this.state;
+    const newPatient = (await patientsDb.saveOrUpdate(patient)) as any;
+    patient = (await patientsDb.get(newPatient.id)) as any;
     this.setState({
       showSuccess: true,
-      patient: patient,
-      isEditable: false,
-    })
+      patient,
+      isEditable: false
+    });
   }
 
   onCancelButtonClick() {
-    this.props.history.push(`/patients`);
+    const { history } = this.props;
+    history.push(`/patients`);
   }
 
   render() {
@@ -69,13 +74,17 @@ class ViewPatient extends Component<Props, State> {
       <div className="container">
         <Button onClick={this.onEditButtonClick}>Edit</Button>
 
-        {showSuccess &&
-          <Alert color="success" title="Successfully Updated" message={`Successfully updated ${patient.firstName} ${patient.lastName}`} />
-        }
+        {showSuccess && (
+          <Alert
+            color="success"
+            title="Successfully Updated"
+            message={`Successfully updated ${patient.firstName} ${patient.lastName}`}
+          />
+        )}
 
-        <PatientForm 
-          isEditable={isEditable} 
-          onFieldChange={this.onFieldChange} 
+        <PatientForm
+          isEditable={isEditable}
+          onFieldChange={this.onFieldChange}
           onSaveButtonClick={this.onSaveButtonClick}
           onCancelButtonClick={this.onCancelButtonClick}
           patient={patient}
