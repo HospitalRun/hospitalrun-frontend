@@ -1,8 +1,4 @@
-<div align="center">
-
-![hospitalrun-logo-v1](https://github.com/HospitalRun/design/blob/master/logo/logo-on-transparent.png)
-
-</div>
+# HospitalRun Frontend
 
 <div align="center">
 
@@ -11,13 +7,10 @@
 
 </div>
 
-<div align="center">
-
-### Free, easy-to-use software for developing world healthcare.
 
 React frontend for [HospitalRun](http://hospitalrun.io/): free software for developing world hospitals.
 
-</div>
+---
 
 <hr />
 
