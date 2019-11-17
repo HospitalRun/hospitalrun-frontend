@@ -70,9 +70,6 @@
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -101,36 +98,5 @@
       "npm run lint",
       "git add"
     ]
-  },
-  "eslint": {
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "project": "./tsconfig.json",
-      "tsconfigRootDir": "./",
-      "createDefaultProgram": true
-    },
-    "prettier": {
-      "printWidth": 100,
-      "tabWidth": 2,
-      "semi": false,
-      "singleQuote": true,
-      "trailingComma": "all",
-      "bracketSpacing": true,
-      "jsxBracketSameLine": false,
-      "arrowParens": "avoid"
-    },
-    "extends": [
-      "react-app",
-      "plugin:@typescript-eslint/recommended",
-      "prettier",
-      "prettier/@typescript-eslint"
-    ],
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "rules": {
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-explicit-any": "off"
-    }
   }
 }
