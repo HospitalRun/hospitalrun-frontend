@@ -1,6 +1,6 @@
-import React from "react";
-import logo from "./hospitalrun-icon-transparent.png";
-import "./App.css";
+import React from 'react'
+import logo from './hospitalrun-icon-transparent.png'
+import './App.css'
 
 const App: React.FC = () => (
   <div className="App">
@@ -8,6 +8,6 @@ const App: React.FC = () => (
       <img src={logo} className="App-logo" alt="logo" />
     </header>
   </div>
-);
+)
 
-export default App;
+export default App
