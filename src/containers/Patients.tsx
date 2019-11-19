@@ -1,52 +1,41 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import * as patientsDb from '../clients/db/patients-db'
-import Patient from 'model/Patient'
+import { RootState } from '../store/store'
+import { fetchPatients } from '../slices/patients-slice'
 
-interface Props {}
+const Patients = () => {
+  const dispatch = useDispatch()
+  const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 
-interface State {
-  patients: Patient[]
-}
+  useEffect(() => {
+    dispatch(fetchPatients())
+  }, [dispatch])
 
-class Patients extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      patients: [],
-    }
+  if (isLoading) {
+    return <h3>Loading...</h3>
   }
 
-  async componentDidMount() {
-    const patients = await patientsDb.getAll()
-    this.setState({
-      patients: patients,
-    })
-  }
+  const list = (
+    <ul>
+      {patients.map((p) => (
+        <Link to={`/patients/${p.id}`}>
+          <li key={p.id}>
+            {p.firstName} {p.lastName}
+          </li>
+        </Link>
+      ))}
+    </ul>
+  )
 
-  render() {
-    const { patients } = this.state
-    const list = (
-      <ul>
-        {patients.map((p) => (
-          <Link to={`/patients/${p.id}`}>
-            <li key={p.id}>
-              {p.firstName} {p.lastName}
-            </li>
-          </Link>
-        ))}
-      </ul>
-    )
-
-    return (
-      <div>
-        <h1>Patients</h1>
-        <div className="container">
-          <ul>{list}</ul>
-        </div>
+  return (
+    <div>
+      <h1>Patients</h1>
+      <div className="container">
+        <ul>{list}</ul>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default Patients

@@ -1,96 +1,70 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Button, Alert } from '@hospitalrun/components'
+import { fetchPatient, updatePatient } from '../slices/patient-slice'
+import { RootState } from '../store/store'
+import Patient from '../model/Patient'
 import PatientForm from '../components/PatientForm'
-import * as patientsDb from '../clients/db/patients-db'
-import Patient from 'model/Patient'
 
 interface Props extends RouteComponentProps {
   patient: Patient
 }
 
-interface State {
-  isEditable: boolean
-  showSuccess: boolean
-  patient: Patient
-}
+const ViewPatient = (props: Props) => {
+  const { match } = props
+  const { id } = match.params as any
+  const dispatch = useDispatch()
+  const [isEditable, setIsEditable] = useState(false)
+  const { patient, isLoading, isUpdated } = useSelector((state: RootState) => state.patient)
 
-class ViewPatient extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.onFieldChange = this.onFieldChange.bind(this)
-    this.onSaveButtonClick = this.onSaveButtonClick.bind(this)
-    this.onEditButtonClick = this.onEditButtonClick.bind(this)
-    this.onCancelButtonClick = this.onCancelButtonClick.bind(this)
-
-    this.state = {
-      showSuccess: false,
-      isEditable: false,
-      patient: props.patient,
-    }
+  const onSaveButtonClick = async () => {
+    dispatch(updatePatient(patient))
+    setIsEditable(false)
   }
 
-  async componentDidMount() {
-    const { match } = this.props
-    const { id } = match.params as any
-    const patient = await patientsDb.get(id);
-    this.setState({
-      patient,
-    })
-  }
-
-  onFieldChange(key: string, value: string) {
-    this.setState((prevState) => {
-      (prevState.patient as any)[key] = value
-    })
-  }
-
-  onEditButtonClick() {
-    this.setState((prevState) => ({
-      isEditable: !prevState.isEditable,
-    }))
-  }
-
-  async onSaveButtonClick() {
-    let { patient } = this.state
-    const newPatient = (await patientsDb.saveOrUpdate(patient)) as any
-    patient = (await patientsDb.get(newPatient.id)) as any
-    this.setState({
-      showSuccess: true,
-      patient,
-      isEditable: false,
-    })
-  }
-
-  onCancelButtonClick() {
-    const { history } = this.props
+  const onCancelButtonClick = () => {
+    const { history } = props
     history.push(`/patients`)
   }
 
-  render() {
-    const { isEditable, patient, showSuccess } = this.state
-    return (
-      <div className="container">
-        <Button onClick={this.onEditButtonClick}>Edit</Button>
-
-        {showSuccess && (
-          <Alert
-            color="success"
-            title="Successfully Updated"
-            message={`Successfully updated ${patient.firstName} ${patient.lastName}`}
-          />
-        )}
-
-        <PatientForm
-          isEditable={isEditable}
-          onFieldChange={this.onFieldChange}
-          onSaveButtonClick={this.onSaveButtonClick}
-          onCancelButtonClick={this.onCancelButtonClick}
-          patient={patient}
-        />
-      </div>
-    )
+  const onEditButtonClick = () => {
+    setIsEditable(true)
   }
+
+  const onFieldChange = (key: string, value: string) => {
+    ;(patient as any)[key] = value
+  }
+
+  useEffect(() => {
+    dispatch(fetchPatient(id))
+  }, [dispatch, id])
+
+  if (isLoading) {
+    return <h3>Loading...</h3>
+  }
+
+  return (
+    <div className="container">
+      <Button onClick={onEditButtonClick}>Edit</Button>
+
+      {isUpdated && (
+        <Alert
+          color="success"
+          title="Successfully Updated"
+          message={`Successfully updated ${patient.firstName} ${patient.lastName}`}
+        />
+      )}
+
+      <PatientForm
+        isEditable={isEditable}
+        onFieldChange={onFieldChange}
+        onSaveButtonClick={onSaveButtonClick}
+        onCancelButtonClick={onCancelButtonClick}
+        patient={patient}
+      />
+    </div>
+  )
 }
 
 export default withRouter(ViewPatient)

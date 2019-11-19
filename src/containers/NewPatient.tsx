@@ -1,60 +1,43 @@
-import React, { Component } from 'react'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import React from 'react'
+import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { createPatient } from '../slices/patient-slice'
+import { RootState } from '../store/store'
 import PatientForm from '../components/PatientForm'
-import * as patientsDb from '../clients/db/patients-db'
-import Patient from 'model/Patient'
 
-interface Props extends RouteComponentProps {}
+const NewPatient = (props: RouteComponentProps) => {
+  const dispatch = useDispatch()
+  const { patient, isCreated } = useSelector((state: RootState) => state.patient)
 
-interface State {
-  firstName: string
-  lastName: string
-}
-
-class NewPatient extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.onFieldChange = this.onFieldChange.bind(this)
-    this.onSaveButtonClick = this.onSaveButtonClick.bind(this)
-    this.onCancelButtonClick = this.onCancelButtonClick.bind(this)
-
-    this.state = {
-      firstName: '',
-      lastName: '',
-    }
+  const onSaveButtonClick = async () => {
+    dispatch(createPatient(patient))
   }
 
-  onFieldChange(key: string, value: string) {
-    this.setState((prevState) => {
-      (prevState as any)[key] = value
-    })
-  }
-
-  async onSaveButtonClick() {
-    const { history } = this.props
-    const createdPatient = await patientsDb.save(this.state as Patient)
-    history.push(`/patients/${createdPatient.id}`)
-  }
-
-  onCancelButtonClick() {
-    const { history } = this.props
+  const onCancelButtonClick = () => {
+    const { history } = props
     history.push(`/patients`)
   }
 
-  render() {
-    return (
-      <div>
-        <h1>New Patient</h1>
-        <div className="container">
-          <PatientForm
-            onFieldChange={this.onFieldChange}
-            onSaveButtonClick={this.onSaveButtonClick}
-            onCancelButtonClick={this.onCancelButtonClick}
-          />
-        </div>
-      </div>
-    )
+  const onFieldChange = (key: string, value: string) => {
+    ;(patient as any)[key] = value
   }
+
+  if (isCreated) {
+    return <Redirect to={`/patients/${patient.id}`} />
+  }
+
+  return (
+    <div>
+      <h1>New Patient</h1>
+      <div className="container">
+        <PatientForm
+          onFieldChange={onFieldChange}
+          onSaveButtonClick={onSaveButtonClick}
+          onCancelButtonClick={onCancelButtonClick}
+        />
+      </div>
+    </div>
+  )
 }
 
 export default withRouter(NewPatient)
