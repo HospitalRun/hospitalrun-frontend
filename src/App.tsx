@@ -1,6 +1,6 @@
 import React from 'react'
-import logo from './hospitalrun-icon-transparent.png'
-import './App.css'
+import { BrowserRouter } from 'react-router-dom'
+import HospitalRun from './containers/HospitalRun'
 
 const App: React.FC = () => (
   <div>

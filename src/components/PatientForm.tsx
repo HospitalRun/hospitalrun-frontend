@@ -1,27 +1,27 @@
-import React from "react";
-import { TextInput, Button } from "@hospitalrun/components";
+import React from 'react'
+import { TextInput, Button } from '@hospitalrun/components'
 
 interface Props {
-  isEditable?: boolean;
-  patient?: { firstName: string; lastName: string };
-  onFieldChange: (key: string, value: string) => void;
-  onSaveButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  onCancelButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isEditable?: boolean
+  patient?: { firstName: string; lastName: string }
+  onFieldChange: (key: string, value: string) => void
+  onSaveButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  onCancelButtonClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const PatientForm: React.FC<Props> = (props: Props) => {
   const handleChange = (event: any, fieldName: string) => {
-    const htmlInputEvent = event as React.FormEvent<HTMLInputElement>;
-    props.onFieldChange(fieldName, htmlInputEvent.currentTarget.value);
-  };
+    const htmlInputEvent = event as React.FormEvent<HTMLInputElement>
+    props.onFieldChange(fieldName, htmlInputEvent.currentTarget.value)
+  }
 
-  const { patient, isEditable, onSaveButtonClick, onCancelButtonClick } = props;
+  const { patient, isEditable, onSaveButtonClick, onCancelButtonClick } = props
 
-  let firstName = "";
-  let lastName = "";
+  let firstName = ''
+  let lastName = ''
   if (patient) {
-    firstName = patient.firstName;
-    lastName = patient.lastName;
+    firstName = patient.firstName
+    lastName = patient.lastName
   }
 
   return (
@@ -32,7 +32,7 @@ const PatientForm: React.FC<Props> = (props: Props) => {
           <TextInput
             value={firstName}
             disabled={!isEditable}
-            onChange={event => handleChange(event, "firstName")}
+            onChange={(event) => handleChange(event, 'firstName')}
           />
         </div>
         <div className="row">
@@ -40,7 +40,7 @@ const PatientForm: React.FC<Props> = (props: Props) => {
           <TextInput
             value={lastName}
             disabled={!isEditable}
-            onChange={event => handleChange(event, "lastName")}
+            onChange={(event) => handleChange(event, 'lastName')}
           />
         </div>
         {isEditable && (
@@ -53,12 +53,12 @@ const PatientForm: React.FC<Props> = (props: Props) => {
         )}
       </form>
     </div>
-  );
-};
+  )
+}
 
 PatientForm.defaultProps = {
   isEditable: true,
-  patient: { firstName: "", lastName: "" }
-};
+  patient: { firstName: '', lastName: '' },
+}
 
-export default PatientForm;
+export default PatientForm

@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Switch, Route, withRouter, RouteComponentProps } from "react-router-dom";
-import { Navbar } from "@hospitalrun/components";
-import ViewPatient from "./ViewPatient";
-import Dashboard from "./Dashboard";
-import Patients from "./Patients";
-import NewPatient from "./NewPatient";
+import React, { Component } from 'react'
+import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom'
+import { Navbar } from '@hospitalrun/components'
+import ViewPatient from './ViewPatient'
+import Dashboard from './Dashboard'
+import Patients from './Patients'
+import NewPatient from './NewPatient'
 
 class HospitalRun extends Component<RouteComponentProps, {}> {
   navigate(route: string) {
-    const { history } = this.props;
-    history.push(route);
+    const { history } = this.props
+    history.push(route)
   }
 
   render() {
@@ -17,23 +17,23 @@ class HospitalRun extends Component<RouteComponentProps, {}> {
       <div>
         <Navbar
           brand={{
-            label: "HospitalRun",
+            label: 'HospitalRun',
             onClick: () => {
-              this.navigate("/");
-            }
+              this.navigate('/')
+            },
           }}
           bg="light"
           variant="light"
-          onSeachButtonClick={() => console.log("hello")}
-          onSearchTextBoxChange={() => console.log("hello")}
+          onSeachButtonClick={() => console.log('hello')}
+          onSearchTextBoxChange={() => console.log('hello')}
           navLinks={[
             {
-              label: "Patients",
+              label: 'Patients',
               onClick: () => {
-                this.navigate("/patients");
+                this.navigate('/patients')
               },
-              children: []
-            }
+              children: [],
+            },
           ]}
         />
         <div>
@@ -45,8 +45,8 @@ class HospitalRun extends Component<RouteComponentProps, {}> {
           </Switch>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default withRouter(HospitalRun);
+export default withRouter(HospitalRun)

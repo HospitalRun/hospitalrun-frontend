@@ -1,41 +1,42 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import * as patientsDb from "../clients/db/patients-db";
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import * as patientsDb from '../clients/db/patients-db'
+import Patient from 'model/Patient'
 
 interface Props {}
 
 interface State {
-  patients: any[];
+  patients: Patient[]
 }
 
 class Patients extends Component<Props, State> {
   constructor(props: Props) {
-    super(props);
+    super(props)
     this.state = {
-      patients: []
-    };
+      patients: [],
+    }
   }
 
   async componentDidMount() {
-    const patients = await patientsDb.getAll();
+    const patients = await patientsDb.getAll()
     this.setState({
-      patients: patients.rows
-    });
+      patients: patients,
+    })
   }
 
   render() {
-    const { patients } = this.state;
+    const { patients } = this.state
     const list = (
       <ul>
-        {patients.map(patient => (
-          <Link to={`/patients/${patient.id}`}>
-            <li key={patient.id}>
-              {patient.doc.firstName} {patient.doc.lastName}
+        {patients.map((p) => (
+          <Link to={`/patients/${p.id}`}>
+            <li key={p.id}>
+              {p.firstName} {p.lastName}
             </li>
           </Link>
         ))}
       </ul>
-    );
+    )
 
     return (
       <div>
@@ -44,8 +45,8 @@ class Patients extends Component<Props, State> {
           <ul>{list}</ul>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Patients;
+export default Patients

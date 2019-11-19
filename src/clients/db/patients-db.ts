@@ -1,45 +1,61 @@
-import { patients } from "../../config/pouchdb";
+import { patients } from '../../config/pouchdb'
+import Patient from 'model/Patient';
 
-export async function getAll() {
-  return patients.allDocs({ include_docs: true });
+function mapRowToPatient(row: any): Patient {
+  return new Patient(row.id, row.value.rev, row.doc.firstName, row.doc.lastName);
+}
+
+function mapDocumentToPatient(document: any): Patient {
+  return new Patient(document._id, document._rev, document.firstName, document.lastName);
+}
+
+export async function getAll(): Promise<Patient[]> {
+  const allPatients = await patients.allDocs({
+    include_docs: true,
+  });
+
+ return allPatients.rows.map(r => {
+  const row = r as any;
+  return mapRowToPatient(row)
+ });
 }
 
 export async function deleteDocument(document: any) {
-  return patients.remove(document);
+  return patients.remove(document)
 }
 
 export async function deleteDocumentById(id: string, revId: string) {
-  return patients.remove(id, revId);
+  return patients.remove(id, revId)
 }
 
-export async function saveOrUpdate(document: any) {
+export async function saveOrUpdate(patient: Patient) {
   try {
-    const existingDocument = await patients.get(document.id);
+    // try and get a patient, if the patient is missing it will throw an error
+    // and have a status of 404.
+    await patients.get(patient.id)
+    const { id, rev, ...restOfPatient} = patient;
     const updatedDcoument = {
-      _id: existingDocument._id,
-      _rev: existingDocument._rev,
-      ...document
-    };
-    return patients.put(updatedDcoument);
-  } catch (error) {
-    if (error.status === 404) {
-      return save(document);
+      _id: id,
+      _rev: rev,
+      ...restOfPatient,
     }
+
+    return patients.put(updatedDcoument)
+  } catch (error) {
+    if (error.status !== 404) {
+      throw Error(error);
+    }
+
+    return save(patient)
   }
-
-  return null;
 }
 
-export async function save(document: any) {
-  return patients.post(document);
+export async function save(patient: Patient): Promise<Patient> {
+  const newPatient = await patients.post(patient)
+  return get(newPatient.id);
 }
 
-export async function get(id: string) {
-  const document = await patients.get(id);
-  const patient = document as any;
-  return {
-    id: patient._id,
-    firstName: patient.firstName,
-    lastName: patient.lastName
-  };
+export async function get(id: string): Promise<Patient> {
+  const document = await patients.get(id)
+  return mapDocumentToPatient(document as any);
 }
