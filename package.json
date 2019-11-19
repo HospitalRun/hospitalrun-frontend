@@ -54,6 +54,7 @@
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^2.2.0",
     "husky": "^3.0.5",
+    "lint-staged": "~9.4.3",
     "jest": "^24.9.0",
     "prettier": "~1.19.1",
     "semantic-release": "^15.13.24"
@@ -85,7 +86,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run test:ci"
+      "pre-commit": "lint-staged"
     }
   },
   "config": {
@@ -96,7 +97,8 @@
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
       "npm run lint",
-      "git add"
+      "npm run test:ci",
+      "git add ."
     ]
   }
 }
