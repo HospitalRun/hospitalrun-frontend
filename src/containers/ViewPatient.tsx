@@ -47,7 +47,6 @@ const ViewPatient = (props: Props) => {
   return (
     <div className="container">
       <Button onClick={onEditButtonClick}>Edit</Button>
-
       {isUpdated && (
         <Alert
           color="success"
@@ -55,7 +54,8 @@ const ViewPatient = (props: Props) => {
           message={`Successfully updated ${patient.firstName} ${patient.lastName}`}
         />
       )}
-
+      <br />
+      {patient.id}
       <PatientForm
         isEditable={isEditable}
         onFieldChange={onFieldChange}

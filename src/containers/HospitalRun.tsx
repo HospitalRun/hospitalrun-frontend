@@ -29,10 +29,21 @@ class HospitalRun extends Component<RouteComponentProps, {}> {
           navLinks={[
             {
               label: 'Patients',
-              onClick: () => {
-                this.navigate('/patients')
-              },
-              children: [],
+              onClick: () => {},
+              children: [
+                {
+                  label: 'List',
+                  onClick: () => {
+                    this.navigate('/patients')
+                  },
+                },
+                {
+                  label: 'New',
+                  onClick: () => {
+                    this.navigate('/patients/new')
+                  },
+                },
+              ],
             },
           ]}
         />
@@ -40,7 +51,7 @@ class HospitalRun extends Component<RouteComponentProps, {}> {
           <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/patients" component={Patients} />
-            <Route exact path="/new/patient" component={NewPatient} />
+            <Route exact path="/patients/new" component={NewPatient} />
             <Route exact path="/patients/:id" component={ViewPatient} />
           </Switch>
         </div>
