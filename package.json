@@ -37,7 +37,7 @@
     "@types/node": "~12.12.9",
     "@types/react": "~16.9.6",
     "@types/react-dom": "~16.9.1",
-    "@typescript-eslint/eslint-plugin": "~2.4.0",
+    "@typescript-eslint/eslint-plugin": "~2.8.0",
     "@typescript-eslint/parser": "~2.8.0",
     "commitizen": "^4.0.3",
     "commitlint-config-cz": "^0.12.1",
