@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Patient from '../model/Patient'
-import * as patientsDb from '../clients/db/patients-db'
+import PatientRepository from '../clients/db/PatientRepository'
 import { AppThunk } from '../store/store'
 
 interface PatientsState {
@@ -34,7 +34,7 @@ export const { getPatientsStart, getAllPatientsSuccess } = patientsSlice.actions
 export const fetchPatients = (): AppThunk => async (dispatch) => {
   try {
     dispatch(getPatientsStart())
-    const patients = await patientsDb.getAll()
+    const patients = await PatientRepository.findAll()
     dispatch(getAllPatientsSuccess(patients))
   } catch (error) {
     console.log(error)

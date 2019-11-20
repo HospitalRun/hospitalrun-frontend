@@ -12,6 +12,7 @@ interface Props extends RouteComponentProps {
 }
 
 const ViewPatient = (props: Props) => {
+  const [currentPatient, setCurrentPatient] = useState(new Patient('', '', '', ''))
   const { match } = props
   const { id } = match.params as any
   const dispatch = useDispatch()
@@ -19,7 +20,9 @@ const ViewPatient = (props: Props) => {
   const { patient, isLoading, isUpdated } = useSelector((state: RootState) => state.patient)
 
   const onSaveButtonClick = async () => {
-    dispatch(updatePatient(patient))
+    currentPatient.id = patient.id
+    currentPatient.rev = patient.rev
+    dispatch(updatePatient(currentPatient))
     setIsEditable(false)
   }
 
@@ -33,7 +36,8 @@ const ViewPatient = (props: Props) => {
   }
 
   const onFieldChange = (key: string, value: string) => {
-    ;(patient as any)[key] = value
+    ;(currentPatient as any)[key] = value
+    setCurrentPatient(currentPatient)
   }
 
   useEffect(() => {
