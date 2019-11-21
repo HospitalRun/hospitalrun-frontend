@@ -10,9 +10,8 @@ interface Props {
 }
 
 const PatientForm: React.FC<Props> = (props: Props) => {
-  const handleChange = (event: any, fieldName: string) => {
-    const htmlInputEvent = event as React.FormEvent<HTMLInputElement>
-    props.onFieldChange(fieldName, htmlInputEvent.currentTarget.value)
+  const handleChange = (event: React.FormEvent<HTMLInputElement>, fieldName: string) => {
+    props.onFieldChange(fieldName, event.currentTarget.value)
   }
 
   const { patient, isEditable, onSaveButtonClick, onCancelButtonClick } = props
