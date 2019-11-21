@@ -30,10 +30,6 @@ const patientSlice = createSlice({
       state.isLoading = false
       state.patient = payload
     },
-    createPatientSuccess(state, { payload }: PayloadAction<Patient>) {
-      state.isCreated = true
-      state.patient = payload
-    },
     updateStart: startLoading,
     updatePatientSuccess(state, { payload }: PayloadAction<Patient>) {
       state.isUpdated = true
@@ -48,7 +44,6 @@ export const {
   getPatientSuccess,
   updateStart,
   updatePatientSuccess,
-  createPatientSuccess,
 } = patientSlice.actions
 
 export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
@@ -65,15 +60,6 @@ export const updatePatient = (patient: Patient): AppThunk => async (dispatch) =>
   try {
     const updatedPatient = await PatientRepository.saveOrUpdate(patient)
     dispatch(updatePatientSuccess(updatedPatient))
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-export const createPatient = (patient: Patient): AppThunk => async (dispatch) => {
-  try {
-    const newPatient = await PatientRepository.save(patient)
-    dispatch(createPatientSuccess(newPatient))
   } catch (error) {
     console.log(error)
   }

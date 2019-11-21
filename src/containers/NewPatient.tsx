@@ -1,29 +1,28 @@
-import React from 'react'
-import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { createPatient } from '../slices/patient-slice'
-import { RootState } from '../store/store'
-import PatientForm from '../components/PatientForm'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { withRouter, useHistory } from 'react-router-dom'
+import { createPatient } from 'slices/patients-slice'
+import Patient from 'model/Patient'
+import PatientForm from 'components/PatientForm'
 
-const NewPatient = (props: RouteComponentProps) => {
+const NewPatient = () => {
   const dispatch = useDispatch()
-  const { patient, isCreated } = useSelector((state: RootState) => state.patient)
+  const history = useHistory()
+  const [patient, setPatient] = useState({ firstName: '', lastName: '' })
 
   const onSaveButtonClick = async () => {
-    dispatch(createPatient(patient))
+    dispatch(createPatient(patient as Patient, history))
   }
 
   const onCancelButtonClick = () => {
-    const { history } = props
     history.push(`/patients`)
   }
 
   const onFieldChange = (key: string, value: string) => {
-    ;(patient as any)[key] = value
-  }
-
-  if (isCreated) {
-    return <Redirect to={`/patients/${patient.id}`} />
+    setPatient({
+      ...patient,
+      [key]: value,
+    })
   }
 
   return (
