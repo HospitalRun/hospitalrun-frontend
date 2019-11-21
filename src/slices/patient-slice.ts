@@ -5,15 +5,13 @@ import { AppThunk } from '../store/store'
 
 interface PatientState {
   isLoading: boolean
-  isUpdated: boolean
-  isCreated: boolean
+  isUpdatedSuccessfully: boolean
   patient: Patient
 }
 
 const initialState: PatientState = {
   isLoading: false,
-  isUpdated: false,
-  isCreated: false,
+  isUpdatedSuccessfully: false,
   patient: new Patient('', '', '', ''),
 }
 
@@ -32,7 +30,7 @@ const patientSlice = createSlice({
     },
     updateStart: startLoading,
     updatePatientSuccess(state, { payload }: PayloadAction<Patient>) {
-      state.isUpdated = true
+      state.isUpdatedSuccessfully = true
       state.isLoading = false
       state.patient = payload
     },
