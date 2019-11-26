@@ -1,63 +1,39 @@
-import React, { Component } from 'react'
-import { Switch, Route, withRouter, RouteComponentProps } from 'react-router-dom'
-import { Navbar } from '@hospitalrun/components'
-import ViewPatient from './ViewPatient'
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import Sidebar from 'components/Sidebar'
 import Dashboard from './Dashboard'
 import Patients from './Patients'
 import NewPatient from './NewPatient'
+import ViewPatient from './ViewPatient'
+import { RootState } from '../store/store'
+import Navbar from '../components/Navbar'
 
-class HospitalRun extends Component<RouteComponentProps, {}> {
-  navigate(route: string) {
-    const { history } = this.props
-    history.push(route)
-  }
-
-  render() {
-    return (
-      <div>
-        <Navbar
-          brand={{
-            label: 'HospitalRun',
-            onClick: () => {
-              this.navigate('/')
-            },
-          }}
-          bg="light"
-          variant="light"
-          onSeachButtonClick={() => console.log('hello')}
-          onSearchTextBoxChange={() => console.log('hello')}
-          navLinks={[
-            {
-              label: 'Patients',
-              onClick: () => {},
-              children: [
-                {
-                  label: 'List',
-                  onClick: () => {
-                    this.navigate('/patients')
-                  },
-                },
-                {
-                  label: 'New',
-                  onClick: () => {
-                    this.navigate('/patients/new')
-                  },
-                },
-              ],
-            },
-          ]}
-        />
-        <div>
-          <Switch>
-            <Route exact path="/" component={Dashboard} />
-            <Route exact path="/patients" component={Patients} />
-            <Route exact path="/patients/new" component={NewPatient} />
-            <Route exact path="/patients/:id" component={ViewPatient} />
-          </Switch>
+const HospitalRun = () => {
+  const { title } = useSelector((state: RootState) => state.title)
+  return (
+    <div>
+      <Navbar />
+      <div className="container-fluid">
+        <Sidebar />
+        <div className="row">
+          <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+              <h1 className="h2">{title}</h1>
+            </div>
+            <div>
+              <Switch>
+                <Route exact path="/" component={Dashboard} />
+                <Route exact path="/patients" component={Patients} />
+                <Route exact path="/patients/new" component={NewPatient} />
+                <Route exact path="/patients/:id" component={ViewPatient} />
+              </Switch>
+            </div>
+          </main>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-export default withRouter(HospitalRun)
+export default HospitalRun

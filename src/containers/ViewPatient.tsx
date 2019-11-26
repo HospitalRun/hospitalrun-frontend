@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, useHistory, useParams } from 'react-router-dom'
 import { Button, Alert } from '@hospitalrun/components'
+import useTitle from 'util/useTitle'
 import { fetchPatient, updatePatient } from '../slices/patient-slice'
 import { RootState } from '../store/store'
 import Patient from '../model/Patient'
 import PatientForm from '../components/PatientForm'
 
 const ViewPatient = () => {
+  useTitle('View Patient')
   const dispatch = useDispatch()
   const { patient, isLoading, isUpdatedSuccessfully } = useSelector(
     (state: RootState) => state.patient,

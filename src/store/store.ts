@@ -4,10 +4,12 @@ import { createLogger } from 'redux-logger'
 
 import patient from '../slices/patient-slice'
 import patients from '../slices/patients-slice'
+import title from '../slices/title-slice'
 
 const reducer = combineReducers({
   patient,
   patients,
+  title,
 })
 
 const store = configureStore({

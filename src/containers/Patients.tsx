@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import useTitle from 'util/useTitle'
 import { RootState } from '../store/store'
 import { fetchPatients } from '../slices/patients-slice'
 
 const Patients = () => {
+  useTitle('Patients')
   const dispatch = useDispatch()
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 
@@ -30,7 +32,6 @@ const Patients = () => {
 
   return (
     <div>
-      <h1>Patients</h1>
       <div className="container">
         <ul>{list}</ul>
       </div>

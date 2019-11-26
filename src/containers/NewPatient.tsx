@@ -4,8 +4,10 @@ import { withRouter, useHistory } from 'react-router-dom'
 import { createPatient } from 'slices/patients-slice'
 import Patient from 'model/Patient'
 import PatientForm from 'components/PatientForm'
+import useTitle from 'util/useTitle'
 
 const NewPatient = () => {
+  useTitle('New Patient')
   const dispatch = useDispatch()
   const history = useHistory()
   const [patient, setPatient] = useState({ firstName: '', lastName: '' })
@@ -27,7 +29,6 @@ const NewPatient = () => {
 
   return (
     <div>
-      <h1>New Patient</h1>
       <div className="container">
         <PatientForm
           onFieldChange={onFieldChange}
