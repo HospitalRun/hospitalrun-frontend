@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import useTitle from 'util/useTitle'
-import { RootState } from '../store/store'
-import { fetchPatients } from '../slices/patients-slice'
 import { useTranslation } from 'react-i18next'
 import { Spinner } from '@hospitalrun/components'
+import { RootState } from '../store/store'
+import { fetchPatients } from '../slices/patients-slice'
 
 const Patients = () => {
   const { t } = useTranslation()

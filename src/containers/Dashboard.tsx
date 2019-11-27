@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 const Dashboard: React.FC = () => {
   const { t } = useTranslation()
   useTitle(t('dashboard.label'))
-  return <h3>This is where the content would go.</h3>
+  return <h3>Example</h3>
 }
 
 export default Dashboard

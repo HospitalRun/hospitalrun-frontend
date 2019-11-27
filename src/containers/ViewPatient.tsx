@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, useHistory, useParams } from 'react-router-dom'
 import { Button, Alert, Spinner } from '@hospitalrun/components'
 import useTitle from 'util/useTitle'
+import { useTranslation } from 'react-i18next'
 import { fetchPatient, updatePatient } from '../slices/patient-slice'
 import { RootState } from '../store/store'
 import Patient from '../model/Patient'
 import PatientForm from '../components/PatientForm'
-import { useTranslation } from 'react-i18next'
 
 const ViewPatient = () => {
   const { t } = useTranslation()

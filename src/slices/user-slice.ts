@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import Permissions from 'Permissions'
+import Permissions from 'util/Permissions'
 
 interface UserState {
   permissions: Permissions[]

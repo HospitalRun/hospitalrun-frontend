@@ -12,7 +12,7 @@ const Sidebar = () => {
         <ul className="nav flex-column">
           <li className="nav-item">
             <Link to="/" className={`nav-link ${path.pathname === '/' ? ' active' : ''}`}>
-            {t('dashboard.label')}
+              {t('dashboard.label')}
             </Link>
           </li>
           <li className="nav-item">
