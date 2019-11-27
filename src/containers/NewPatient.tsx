@@ -5,9 +5,11 @@ import { createPatient } from 'slices/patients-slice'
 import Patient from 'model/Patient'
 import PatientForm from 'components/PatientForm'
 import useTitle from 'util/useTitle'
+import { useTranslation } from 'react-i18next'
 
 const NewPatient = () => {
-  useTitle('New Patient')
+  const { t } = useTranslation()
+  useTitle(t('patients.newPatient'))
   const dispatch = useDispatch()
   const history = useHistory()
   const [patient, setPatient] = useState({ firstName: '', lastName: '' })

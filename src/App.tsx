@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import HospitalRun from './containers/HospitalRun'
 
 import store from './store/store'
+import { Spinner } from '@hospitalrun/components'
 
 const App: React.FC = () => (
   <div>
     <Provider store={store}>
-      <BrowserRouter>
-        <HospitalRun />
-      </BrowserRouter>
+      <Suspense fallback={<Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />}>
+        <BrowserRouter>
+          <HospitalRun />
+        </BrowserRouter>
+      </Suspense>
     </Provider>
   </div>
 )

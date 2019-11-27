@@ -1,8 +1,10 @@
 import React from 'react'
 import { useHistory } from 'react-router'
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
+import { useTranslation } from 'react-i18next'
 
 const Navbar = () => {
+  const { t } = useTranslation()
   const history = useHistory()
   return (
     <HospitalRunNavbar
@@ -18,17 +20,17 @@ const Navbar = () => {
       onSearchTextBoxChange={() => console.log('hello')}
       navLinks={[
         {
-          label: 'Patients',
+          label: t('patients.label'),
           onClick: () => {},
           children: [
             {
-              label: 'List',
+              label: t('actions.list'),
               onClick: () => {
                 history.push('/patients')
               },
             },
             {
-              label: 'New',
+              label: t('actions.new'),
               onClick: () => {
                 history.push('/patients/new')
               },

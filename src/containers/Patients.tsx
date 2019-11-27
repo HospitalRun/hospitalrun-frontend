@@ -4,9 +4,12 @@ import { Link } from 'react-router-dom'
 import useTitle from 'util/useTitle'
 import { RootState } from '../store/store'
 import { fetchPatients } from '../slices/patients-slice'
+import { useTranslation } from 'react-i18next'
+import { Spinner } from '@hospitalrun/components'
 
 const Patients = () => {
-  useTitle('Patients')
+  const { t } = useTranslation()
+  useTitle(t('patients.label'))
   const dispatch = useDispatch()
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 
@@ -15,7 +18,7 @@ const Patients = () => {
   }, [dispatch])
 
   if (isLoading) {
-    return <h3>Loading...</h3>
+    return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
   const list = (

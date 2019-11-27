@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, useHistory, useParams } from 'react-router-dom'
-import { Button, Alert } from '@hospitalrun/components'
+import { Button, Alert, Spinner } from '@hospitalrun/components'
 import useTitle from 'util/useTitle'
 import { fetchPatient, updatePatient } from '../slices/patient-slice'
 import { RootState } from '../store/store'
 import Patient from '../model/Patient'
 import PatientForm from '../components/PatientForm'
+import { useTranslation } from 'react-i18next'
 
 const ViewPatient = () => {
-  useTitle('View Patient')
+  const { t } = useTranslation()
+  useTitle(t('patients.viewPatient'))
   const dispatch = useDispatch()
   const { patient, isLoading, isUpdatedSuccessfully } = useSelector(
     (state: RootState) => state.patient,
@@ -58,12 +60,12 @@ const ViewPatient = () => {
   }, [dispatch, id])
 
   if (isLoading) {
-    return <h3>Loading...</h3>
+    return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
   return (
     <div className="container">
-      <Button onClick={onEditButtonClick}>Edit</Button>
+      <Button onClick={onEditButtonClick}>{t('actions.edit')}</Button>
       {isUpdatedSuccessfully && (
         <Alert
           color="success"
