@@ -2,15 +2,18 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Sidebar from 'components/Sidebar'
+import Permissions from 'Permissions'
 import Dashboard from './Dashboard'
 import Patients from './Patients'
 import NewPatient from './NewPatient'
 import ViewPatient from './ViewPatient'
 import { RootState } from '../store/store'
 import Navbar from '../components/Navbar'
+import PrivateRoute from '../components/PrivateRoute'
 
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
+  const { permissions } = useSelector((state: RootState) => state.user)
   return (
     <div>
       <Navbar />
@@ -24,9 +27,24 @@ const HospitalRun = () => {
             <div>
               <Switch>
                 <Route exact path="/" component={Dashboard} />
-                <Route exact path="/patients" component={Patients} />
-                <Route exact path="/patients/new" component={NewPatient} />
-                <Route exact path="/patients/:id" component={ViewPatient} />
+                <PrivateRoute
+                  isAuthenticated={permissions.includes(Permissions.ReadPatients)}
+                  exact
+                  path="/patients"
+                  component={Patients}
+                />
+                <PrivateRoute
+                  isAuthenticated={permissions.includes(Permissions.WritePatients)}
+                  exact
+                  path="/patients/new"
+                  component={NewPatient}
+                />
+                <PrivateRoute
+                  isAuthenticated={permissions.includes(Permissions.ReadPatients)}
+                  exact
+                  path="/patients/:id"
+                  component={ViewPatient}
+                />
               </Switch>
             </div>
           </main>
