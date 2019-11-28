@@ -16,7 +16,7 @@ const Navbar = () => {
       }}
       bg="dark"
       variant="dark"
-      onSeachButtonClick={() => console.log('hello')}
+      onSearchButtonClick={() => console.log('hello')}
       onSearchTextBoxChange={() => console.log('hello')}
       navLinks={[
         {
