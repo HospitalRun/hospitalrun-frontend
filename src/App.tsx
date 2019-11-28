@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { Spinner } from '@hospitalrun/components'
 import HospitalRun from './containers/HospitalRun'
 
-import store from './store/store'
+import store from './store'
 
 const App: React.FC = () => (
   <div>

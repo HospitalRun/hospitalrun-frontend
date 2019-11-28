@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Patient from '../model/Patient'
 import PatientRepository from '../clients/db/PatientRepository'
-import { AppThunk } from '../store/store'
+import { AppThunk } from '../store'
 
 interface PatientState {
   isLoading: boolean

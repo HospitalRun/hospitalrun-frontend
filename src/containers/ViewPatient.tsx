@@ -5,7 +5,7 @@ import { Button, Alert, Spinner } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import useTitle from '../util/useTitle'
 import { fetchPatient, updatePatient } from '../slices/patient-slice'
-import { RootState } from '../store/store'
+import { RootState } from '../store'
 import Patient from '../model/Patient'
 import PatientForm from '../components/PatientForm'
 

@@ -7,7 +7,7 @@ import Dashboard from './Dashboard'
 import Patients from './Patients'
 import NewPatient from './NewPatient'
 import ViewPatient from './ViewPatient'
-import { RootState } from '../store/store'
+import { RootState } from '../store'
 import Navbar from '../components/Navbar'
 import PrivateRoute from '../components/PrivateRoute'
 
