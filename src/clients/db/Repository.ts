@@ -1,6 +1,6 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
 
-import AbstractDBModel from 'model/AbstractDBModel'
+import AbstractDBModel from '../../model/AbstractDBModel'
 
 function mapRow(row: any): any {
   const { value, doc } = row

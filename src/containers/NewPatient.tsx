@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
-import { createPatient } from 'slices/patients-slice'
-import Patient from 'model/Patient'
-import PatientForm from 'components/PatientForm'
-import useTitle from 'util/useTitle'
 import { useTranslation } from 'react-i18next'
+import { createPatient } from '../slices/patients-slice'
+import Patient from '../model/Patient'
+import PatientForm from '../components/PatientForm'
+import useTitle from '../util/useTitle'
 
 const NewPatient = () => {
   const { t } = useTranslation()
