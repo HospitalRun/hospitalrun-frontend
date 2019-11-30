@@ -1,10 +1,10 @@
 import '../__mocks__/matchMediaMock'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { mount } from 'enzyme'
+import HospitalRun from '../containers/HospitalRun'
 import App from '../App'
 
 it('renders without crashing', () => {
-  const div = document.createElement('div')
-  ReactDOM.render(<App />, div)
-  ReactDOM.unmountComponentAtNode(div)
+  const wrapper = mount(<App />)
+  expect(wrapper.find(HospitalRun)).toHaveLength(1)
 })
