@@ -1,12 +1,20 @@
-import React from 'react'
-import logo from './hospitalrun-icon-transparent.png'
-import './App.css'
+import React, { Suspense } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { Spinner } from '@hospitalrun/components'
+import HospitalRun from './containers/HospitalRun'
+
+import store from './store'
 
 const App: React.FC = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-    </header>
+  <div>
+    <Provider store={store}>
+      <Suspense fallback={<Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />}>
+        <BrowserRouter>
+          <HospitalRun />
+        </BrowserRouter>
+      </Suspense>
+    </Provider>
   </div>
 )
 
