@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "@hospitalrun/components": "^0.19.0",
+    "@hospitalrun/components": "^0.20.0",
     "@reduxjs/toolkit": "~1.1.0",
     "@semantic-release/changelog": "~3.0.4",
     "@semantic-release/git": "~7.0.16",
@@ -26,7 +26,7 @@
     "react-scripts": "~3.2.0",
     "redux": "~4.0.4",
     "redux-thunk": "~2.3.0",
-    "typescript": "~3.6.3"
+    "typescript": "~3.7.2"
   },
   "repository": {
     "type": "git",
@@ -57,7 +57,7 @@
     "@types/react-router": "~5.1.2",
     "@types/react-router-dom": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "~2.9.0",
-    "@typescript-eslint/parser": "~2.9.0",
+    "@typescript-eslint/parser": "~2.10.0",
     "commitizen": "~4.0.3",
     "commitlint-config-cz": "~0.12.1",
     "cross-env": "~6.0.3",
@@ -65,7 +65,7 @@
     "dateformat": "~3.0.3",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
-    "eslint": "~6.6.0",
+    "eslint": "~6.7.2",
     "eslint-config-airbnb": "~18.0.1",
     "eslint-config-prettier": "~6.7.0",
     "eslint-plugin-import": "~2.18.2",
