@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "@hospitalrun/components": "^0.19.0",
-    "@reduxjs/toolkit": "~1.0.4",
+    "@reduxjs/toolkit": "~1.1.0",
     "@semantic-release/changelog": "~3.0.4",
     "@semantic-release/git": "~7.0.16",
     "@semantic-release/release-notes-generator": "~7.3.0",
