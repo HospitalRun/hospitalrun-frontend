@@ -65,7 +65,7 @@
     "dateformat": "~3.0.3",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
-    "eslint": "~6.6.0",
+    "eslint": "~6.7.2",
     "eslint-config-airbnb": "~18.0.1",
     "eslint-config-prettier": "~6.7.0",
     "eslint-plugin-import": "~2.18.2",
