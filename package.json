@@ -10,7 +10,7 @@
     "@semantic-release/changelog": "~3.0.4",
     "@semantic-release/git": "~7.0.16",
     "@semantic-release/release-notes-generator": "~7.3.0",
-    "bootstrap": "~4.3.1",
+    "bootstrap": "~4.4.1",
     "i18next": "^19.0.1",
     "i18next-browser-languagedetector": "^4.0.1",
     "i18next-xhr-backend": "^3.2.2",
