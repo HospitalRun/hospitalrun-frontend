@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "label": "Панель приборов"
+  },
+  "patients": {
+    "label": "Пациенты",
+    "viewPatients": "Просмотр пациентов",
+    "viewPatient": "Просмотр пациента",
+    "newPatient": "Новый пациент"
+  },
+  "patient": {
+    "firstName": "Имя",
+    "lastName": "Фамилия"
+  },
+  "actions": {
+    "edit": "редактировать",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "new": "новый",
+    "list": "Список"
+  }
+}

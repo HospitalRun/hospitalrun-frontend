@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "label": "Painel de controle"
+  },
+  "patients": {
+    "label": "Pacientes",
+    "viewPatients": "Exibir pacientes",
+    "viewPatient": "Ver paciente",
+    "newPatient": "Novo Paciente"
+  },
+  "patient": {
+    "firstName": "Primeiro nome",
+    "lastName": "Último nome"
+  },
+  "actions": {
+    "edit": "Editar",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "new": "Novo",
+    "list": "Lista"
+  }
+}

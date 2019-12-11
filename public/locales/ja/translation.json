@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "label": "ダッシュボード"
+  },
+  "patients": {
+    "label": "患者さん",
+    "viewPatients": "患者を見る",
+    "viewPatient": "患者を見る",
+    "newPatient": "新しい患者"
+  },
+  "patient": {
+    "firstName": "ファーストネーム",
+    "lastName": "苗字"
+  },
+  "actions": {
+    "edit": "編集",
+    "save": "セーブ",
+    "cancel": "キャンセル",
+    "new": "新しい",
+    "list": "リスト"
+  }
+}

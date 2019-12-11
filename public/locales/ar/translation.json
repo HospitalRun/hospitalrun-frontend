@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "label": "لوحة القيادة"
+  },
+  "patients": {
+    "label": "المرضى",
+    "viewPatients": "عرض المرضى",
+    "viewPatient": "عرض المريض",
+    "newPatient": "مريض جديد"
+  },
+  "patient": {
+    "firstName": "الاسم الاول",
+    "lastName": "الكنية"
+  },
+  "actions": {
+    "edit": "تصحيح",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "new": "الجديد",
+    "list": "قائمة"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "dashboard": {
+    "label": "仪表板"
+  },
+  "patients": {
+    "label": "耐心",
+    "viewPatients": "查看患者",
+    "viewPatient": "查看患者",
+    "newPatient": "新病人"
+  },
+  "patient": {
+    "firstName": "名字",
+    "lastName": "姓"
+  },
+  "actions": {
+    "edit": "编辑",
+    "save": "保存",
+    "cancel": "取消",
+    "new": "新",
+    "list": "清单"
+  }
+}
