@@ -4,7 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
 
 i18n
-  // load translation using xhr -> see /public/locales
+  // load translation using xhr -> see /public/app-sections/languages
   // learn more: https://github.com/i18next/i18next-xhr-backend
   .use(Backend)
   // detect user language
