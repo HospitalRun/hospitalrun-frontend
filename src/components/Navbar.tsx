@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 const Navbar = () => {
   const { t } = useTranslation()
   const history = useHistory()
+
   return (
     <HospitalRunNavbar
       brand={{
@@ -14,8 +15,6 @@ const Navbar = () => {
           history.push('/')
         },
       }}
-      bg="dark"
-      variant="dark"
       onSearchButtonClick={() => console.log('hello')}
       onSearchTextBoxChange={() => console.log('hello')}
       navLinks={[

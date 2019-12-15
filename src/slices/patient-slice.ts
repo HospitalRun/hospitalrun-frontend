@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Patient from '../model/Patient'
+import Name from '../model/Name'
 import PatientRepository from '../clients/db/PatientRepository'
 import { AppThunk } from '../store'
 
@@ -12,7 +13,7 @@ interface PatientState {
 const initialState: PatientState = {
   isLoading: false,
   isUpdatedSuccessfully: false,
-  patient: new Patient('', '', '', ''),
+  patient: new Patient('', '', new Name('', '', '', ''), ''),
 }
 
 function startLoading(state: PatientState) {

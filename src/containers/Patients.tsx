@@ -25,9 +25,7 @@ const Patients = () => {
     <ul>
       {patients.map((p) => (
         <Link to={`/patients/${p.id}`} key={p.id}>
-          <li key={p.id}>
-            {p.firstName} {p.lastName}
-          </li>
+          <li key={p.id}>{p.name}</li>
         </Link>
       ))}
     </ul>
