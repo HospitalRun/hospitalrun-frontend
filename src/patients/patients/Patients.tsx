@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Spinner } from '@hospitalrun/components'
-import useTitle from '../util/useTitle'
-import { RootState } from '../store'
-import { fetchPatients } from '../slices/patients-slice'
+import { RootState } from '../../store'
+import { fetchPatients } from '../../slices/patients-slice'
+import useTitle from '../../util/useTitle'
 
 const Patients = () => {
   const { t } = useTranslation()

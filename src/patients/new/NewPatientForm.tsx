@@ -5,10 +5,18 @@ import SelectWithLabelFormGroup from '../../components/input/SelectWithLableForm
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import DatePickerWithLabelFormGroup from '../../components/input/DatePickerWithLabelFormGroup'
+import Patient from '../../model/Patient'
+import Name from '../../model/Name'
 
-const NewPatientForm = () => {
+interface Props {
+  onCancel: () => void
+  onSave: (patient: Patient) => void
+}
+
+const NewPatientForm = (props: Props) => {
   const { t } = useTranslation()
   const [isEditable] = useState(true)
+  const { onCancel, onSave } = props
   const [patient, setPatient] = useState({
     givenName: '',
     familyName: '',
@@ -26,7 +34,19 @@ const NewPatientForm = () => {
   })
 
   const onSaveButtonClick = async () => {
-    console.log(patient)
+    const newPatient = {
+      name: new Name(patient.prefix, patient.givenName, patient.familyName, patient.suffix),
+      sex: patient.sex,
+      dateOfBirth: patient.dateOfBirth,
+      type: patient.type,
+      occupation: patient.occupation,
+      preferredLanguage: patient.preferredLanguage,
+      phoneNumber: patient.phoneNumber,
+      email: patient.email,
+      address: patient.address,
+    } as Patient
+
+    onSave(newPatient)
   }
 
   const onFieldChange = (key: string, value: string) => {
@@ -37,11 +57,11 @@ const NewPatientForm = () => {
   }
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) => {
-    onFieldChange(fieldName, event.currentTarget.value)
+    onFieldChange(fieldName, event.target.value)
   }
 
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
-    onFieldChange(fieldName, event.currentTarget.value)
+    onFieldChange(fieldName, event.target.value)
   }
 
   return (
@@ -67,7 +87,7 @@ const NewPatientForm = () => {
               value={patient.givenName}
               isEditable={isEditable}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'given')
+                onInputElementChange(event, 'givenName')
               }}
             />
           </div>
@@ -78,7 +98,7 @@ const NewPatientForm = () => {
               value={patient.familyName}
               isEditable={isEditable}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'family')
+                onInputElementChange(event, 'familyName')
               }}
             />
           </div>
@@ -208,7 +228,7 @@ const NewPatientForm = () => {
         {isEditable && (
           <div className="row">
             <Button onClick={onSaveButtonClick}> {t('actions.save')}</Button>
-            <Button color="danger" onClick={() => console.log('cancel button click')}>
+            <Button color="danger" onClick={() => onCancel()}>
               {t('actions.cancel')}
             </Button>
           </div>

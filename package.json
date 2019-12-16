@@ -50,6 +50,7 @@
     "@semantic-release/git": "~7.0.16",
     "@semantic-release/github": "~5.5.5",
     "@semantic-release/release-notes-generator": "~7.3.0",
+    "@testing-library/react": "^9.4.0",
     "@types/jest": "~24.0.18",
     "@types/node": "~12.12.14",
     "@types/pouchdb": "~6.4.0",

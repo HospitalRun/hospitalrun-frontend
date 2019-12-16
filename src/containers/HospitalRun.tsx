@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import Sidebar from '../components/Sidebar'
 import Permissions from '../util/Permissions'
 import Dashboard from './Dashboard'
-import Patients from './Patients'
+import Patients from '../patients/patients/Patients'
 import NewPatient from '../patients/new/NewPatient'
 import ViewPatient from './ViewPatient'
 import { RootState } from '../store'
@@ -36,7 +36,7 @@ const HospitalRun = () => {
                 <PrivateRoute
                   isAuthenticated={permissions.includes(Permissions.WritePatients)}
                   exact
-                  path="/patients/new"
+                  path="/new/patients"
                   component={NewPatient}
                 />
                 <PrivateRoute

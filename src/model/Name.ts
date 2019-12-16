@@ -1,7 +1,10 @@
 export default class Name {
   prefix?: string
+
   given?: string
+
   family?: string
+
   suffix?: string
 
   constructor(prefix?: string, given?: string, family?: string, suffix?: string) {
