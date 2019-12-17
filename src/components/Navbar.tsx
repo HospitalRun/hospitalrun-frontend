@@ -31,7 +31,7 @@ const Navbar = () => {
             {
               label: t('actions.new'),
               onClick: () => {
-                history.push('/patients/new')
+                history.push('/new/patients')
               },
             },
           ],
