@@ -1,9 +1,9 @@
-import * as patientsSlice from '../../patients/patients-slice'
 import { AnyAction } from 'redux'
 import { createMemoryHistory } from 'history'
+import { mocked } from 'ts-jest/utils'
+import * as patientsSlice from '../../patients/patients-slice'
 import Patient from '../../model/Patient'
 import PatientRepository from '../../clients/db/PatientRepository'
-import { mocked } from 'ts-jest/utils'
 
 describe('patients slice', () => {
   beforeEach(() => {

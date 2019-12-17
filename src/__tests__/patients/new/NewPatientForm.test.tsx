@@ -1,15 +1,15 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
-import NewPatientForm from "../../../patients/new/NewPatientForm"
 import { shallow, mount } from 'enzyme'
-import TextInputWithLabelFormGroup from "../../../components/input/TextInputWithLabelFormGroup"
-import SelectWithLabelFormGroup from "../../../components/input/SelectWithLableFormGroup";
-import DatePickerWithLabelFormGroup from "../../../components/input/DatePickerWithLabelFormGroup";
-import TextFieldWithLabelFormGroup from "../../../components/input/TextFieldWithLabelFormGroup";
-import {Button} from "@hospitalrun/components";
+import { Button } from '@hospitalrun/components'
 import { render, act, fireEvent } from '@testing-library/react'
-import Patient from "../../../model/Patient";
-import Name from "../../../model/Name";
+import NewPatientForm from '../../../patients/new/NewPatientForm'
+import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
+import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
+import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
+import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
+import Patient from '../../../model/Patient'
+import Name from '../../../model/Name'
 
 const onSave = jest.fn()
 const onCancel = jest.fn()
@@ -17,7 +17,6 @@ const onCancel = jest.fn()
 describe('New Patient Form', () => {
   describe('layout', () => {
     it('should have a "Basic Information" header', () => {
-      // eslint-disable-next-line import/no-unresolved
       const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const basicInformationHeader = wrapper.find('h3').at(0)
 
