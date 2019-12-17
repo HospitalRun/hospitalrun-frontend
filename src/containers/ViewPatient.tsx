@@ -4,7 +4,7 @@ import { withRouter, useParams } from 'react-router-dom'
 import { Spinner } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import useTitle from '../util/useTitle'
-import { fetchPatient } from '../slices/patient-slice'
+import { fetchPatient } from '../patients/patient-slice'
 import { RootState } from '../store'
 
 const ViewPatient = () => {
