@@ -18,3 +18,5 @@ assignees: ''
 **THEN**
 
 ## Related Issues
+
+## Technical Notes
