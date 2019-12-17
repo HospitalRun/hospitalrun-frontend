@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, useParams } from 'react-router-dom'
 import { Spinner } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
-import useTitle from '../util/useTitle'
-import { fetchPatient } from '../patients/patient-slice'
-import { RootState } from '../store'
+import useTitle from '../../util/useTitle'
+import { fetchPatient } from '../patient-slice'
+import { RootState } from '../../store'
 
 const ViewPatient = () => {
   const { t } = useTranslation()
@@ -26,8 +26,7 @@ const ViewPatient = () => {
 
   return (
     <div className="container">
-      {patient.id}
-      <h1>{`${patient.name}`}</h1>
+      <h1>{`${patient.name.given} ${patient.name.family}`}</h1>
     </div>
   )
 }
