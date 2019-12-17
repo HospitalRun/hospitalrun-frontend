@@ -9,8 +9,8 @@ assignees: ''
 
 ## Scenario
 **AS**
-**SO**
-**THAT**
+**I WANT**
+**SO THAT**
 
 ## Acceptance Criteria
 **GIVEN**
