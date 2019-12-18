@@ -1,5 +1,5 @@
 ---
-name: "\U0001F4AC Questions / Help"
+name: 💬 Questions / Help
 about: If you have questions, please check our Spectrum channel
 title: ''
 labels: ''
