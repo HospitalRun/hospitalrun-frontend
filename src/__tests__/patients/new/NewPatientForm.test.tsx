@@ -1,8 +1,9 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { shallow, mount } from 'enzyme'
-import { Button } from '@hospitalrun/components'
+import { Button, Checkbox } from '@hospitalrun/components'
 import { render, act, fireEvent } from '@testing-library/react'
+import { DateTime } from 'luxon'
 import NewPatientForm from '../../../patients/new/NewPatientForm'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
 import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
@@ -98,6 +99,14 @@ describe('New Patient Form', () => {
       expect(dateOfBirthTextInput.prop('label')).toEqual('patient.dateOfBirth')
     })
 
+    it('should have a unknown checkbox', () => {
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
+      const unknownCheckbox = wrapper.find(Checkbox)
+      expect(unknownCheckbox).toHaveLength(1)
+      expect(unknownCheckbox.prop('name')).toEqual('unknown')
+      expect(unknownCheckbox.prop('label')).toEqual('patient.unknownDateOfBirth')
+    })
+
     it('should have a patient type dropdown with the proper options', () => {
       const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const patientTypeDropdown = wrapper.findWhere((w) => w.prop('name') === 'type')
@@ -191,6 +200,59 @@ describe('New Patient Form', () => {
 
       expect(cancelButton.prop('color')).toEqual('danger')
       expect(cancelButton.text().trim()).toEqual('actions.cancel')
+    })
+  })
+
+  describe('calculate approximate date of birth', () => {
+    it('should calculate the approximate date of birth on change and store the value in the date of birth input', () => {
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
+      const unknownCheckbox = wrapper.find(Checkbox)
+
+      act(() => {
+        if (unknownCheckbox) {
+          unknownCheckbox.prop('onChange')!({ target: { checked: true } } as ChangeEvent<
+            HTMLInputElement
+          >)
+        }
+      })
+
+      const approximateAgeInput = wrapper.findWhere((w) => w.prop('name') === 'approximateAge')
+      act(() => {
+        approximateAgeInput.prop('onChange')({ target: { value: 5 } })
+      })
+
+      const dateOfBirthTextInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfBirth')
+
+      expect(dateOfBirthTextInput.prop('value')).toEqual(
+        DateTime.local()
+          .minus({ year: 5 })
+          .toISODate(),
+      )
+    })
+  })
+
+  describe('on unknown checkbox click', () => {
+    it('should show a approximate age input box when checkbox is checked', () => {
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
+      const approximateAgeInputBefore = wrapper.findWhere(
+        (w) => w.prop('name') === 'approximateAge',
+      )
+      expect(approximateAgeInputBefore).toHaveLength(0)
+
+      const unknownCheckbox = wrapper.find(Checkbox)
+
+      act(() => {
+        if (unknownCheckbox) {
+          unknownCheckbox.prop('onChange')!({ target: { checked: true } } as ChangeEvent<
+            HTMLInputElement
+          >)
+        }
+      })
+
+      const approximateAgeInputerAfter = wrapper.findWhere(
+        (w) => w.prop('name') === 'approximateAge',
+      )
+      expect(approximateAgeInputerAfter).toHaveLength(1)
     })
   })
 

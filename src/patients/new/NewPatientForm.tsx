@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@hospitalrun/components'
+import { Button, Checkbox } from '@hospitalrun/components'
+import { DateTime } from 'luxon'
 import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
@@ -17,13 +18,14 @@ const NewPatientForm = (props: Props) => {
   const { t } = useTranslation()
   const [isEditable] = useState(true)
   const { onCancel, onSave } = props
+  const [approximateAge, setApproximateAge] = useState(0)
   const [patient, setPatient] = useState({
     givenName: '',
     familyName: '',
     suffix: '',
     prefix: '',
     dateOfBirth: '',
-    placeOfBirth: '',
+    isApproximateDateOfBirth: false,
     sex: '',
     phoneNumber: '',
     email: '',
@@ -62,6 +64,21 @@ const NewPatientForm = (props: Props) => {
 
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     onFieldChange(fieldName, event.target.value)
+  }
+
+  const onApproximateAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let approximateAgeNumber
+    if (Number.isNaN(parseFloat(event.target.value))) {
+      approximateAgeNumber = 0
+    } else {
+      approximateAgeNumber = parseFloat(event.target.value)
+    }
+
+    setApproximateAge(approximateAgeNumber)
+    const approximateDateOfBirth = DateTime.local().minus({
+      years: approximateAgeNumber,
+    })
+    setPatient({ ...patient, dateOfBirth: approximateDateOfBirth.toISODate() })
   }
 
   return (
@@ -134,17 +151,6 @@ const NewPatientForm = (props: Props) => {
             />
           </div>
           <div className="col">
-            <DatePickerWithLabelFormGroup
-              name="dateOfBirth"
-              label={t('patient.dateOfBirth')}
-              isEditable={isEditable}
-              value={patient.dateOfBirth}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'dateOfBirth')
-              }}
-            />
-          </div>
-          <div className="col">
             <SelectWithLabelFormGroup
               name="type"
               label={t('patient.type')}
@@ -161,7 +167,7 @@ const NewPatientForm = (props: Props) => {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-6">
             <TextInputWithLabelFormGroup
               label={t('patient.occupation')}
               name="occupation"
@@ -172,7 +178,7 @@ const NewPatientForm = (props: Props) => {
               }}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <TextInputWithLabelFormGroup
               label={t('patient.preferredLanguage')}
               name="preferredLanguage"
@@ -184,7 +190,42 @@ const NewPatientForm = (props: Props) => {
             />
           </div>
         </div>
-
+        <div className="row">
+          <div className="col-md-4">
+            <DatePickerWithLabelFormGroup
+              name="dateOfBirth"
+              label={t('patient.dateOfBirth')}
+              isEditable={isEditable && !patient.isApproximateDateOfBirth}
+              value={patient.dateOfBirth}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                onInputElementChange(event, 'dateOfBirth')
+              }}
+            />
+          </div>
+          <div className="col-md-2">
+            <div className="form-group">
+              <Checkbox
+                label={t('patient.unknownDateOfBirth')}
+                name="unknown"
+                onChange={(event) => {
+                  setPatient({ ...patient, isApproximateDateOfBirth: event.target.checked })
+                }}
+              />
+            </div>
+          </div>
+          {patient.isApproximateDateOfBirth && (
+            <div className="col-md-3">
+              <TextInputWithLabelFormGroup
+                label={t('patient.approximateAge')}
+                name="approximateAge"
+                type="number"
+                value={`${approximateAge}`}
+                isEditable={isEditable}
+                onChange={onApproximateAgeChange}
+              />
+            </div>
+          )}
+        </div>
         <h3>{t('patient.contactInformation')}</h3>
         <div className="row">
           <div className="col">

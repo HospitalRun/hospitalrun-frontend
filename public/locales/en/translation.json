@@ -24,6 +24,8 @@
     "preferredLanguage": "Preferred Language",
     "basicInformation": "Basic Information",
     "contactInformation": "Contact Information",
+    "approximateAge": "Approximate Age",
+    "unknownDateOfBirth": "Unknown",
     "types": {
       "charity": "Charity",
       "private": "Private"

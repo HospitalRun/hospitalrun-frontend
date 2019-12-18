@@ -8,6 +8,8 @@ export default class Patient extends AbstractDBModel {
 
   dateOfBirth?: string
 
+  isApproximateDateOfBirth?: boolean
+
   phoneNumber?: string
 
   email?: string
@@ -26,6 +28,7 @@ export default class Patient extends AbstractDBModel {
     name: Name,
     sex: string,
     dateOfBirth?: string,
+    isApproximateDateOfBirth?: boolean,
     phoneNumber?: string,
     email?: string,
     address?: string,
@@ -37,6 +40,7 @@ export default class Patient extends AbstractDBModel {
     this.name = name
     this.sex = sex
     this.dateOfBirth = dateOfBirth
+    this.isApproximateDateOfBirth = isApproximateDateOfBirth
     this.phoneNumber = phoneNumber
     this.email = email
     this.address = address
