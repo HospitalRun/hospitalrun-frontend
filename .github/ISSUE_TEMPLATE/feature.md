@@ -1,5 +1,5 @@
 ---
-name: "\U0001F680 Feature Proposal"
+name: 🚀 Feature Proposal
 about: Submit a proposal for a new feature
 title: ''
 labels: ''
