@@ -167,30 +167,6 @@ const NewPatientForm = (props: Props) => {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6">
-            <TextInputWithLabelFormGroup
-              label={t('patient.occupation')}
-              name="occupation"
-              value={patient.occupation}
-              isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'occupation')
-              }}
-            />
-          </div>
-          <div className="col-md-6">
-            <TextInputWithLabelFormGroup
-              label={t('patient.preferredLanguage')}
-              name="preferredLanguage"
-              value={patient.preferredLanguage}
-              isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'preferredLanguage')
-              }}
-            />
-          </div>
-        </div>
-        <div className="row">
           <div className="col-md-4">
             <DatePickerWithLabelFormGroup
               name="dateOfBirth"
@@ -226,6 +202,31 @@ const NewPatientForm = (props: Props) => {
             </div>
           )}
         </div>
+        <div className="row">
+          <div className="col-md-6">
+            <TextInputWithLabelFormGroup
+              label={t('patient.occupation')}
+              name="occupation"
+              value={patient.occupation}
+              isEditable={isEditable}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                onInputElementChange(event, 'occupation')
+              }}
+            />
+          </div>
+          <div className="col-md-6">
+            <TextInputWithLabelFormGroup
+              label={t('patient.preferredLanguage')}
+              name="preferredLanguage"
+              value={patient.preferredLanguage}
+              isEditable={isEditable}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                onInputElementChange(event, 'preferredLanguage')
+              }}
+            />
+          </div>
+        </div>
+
         <h3>{t('patient.contactInformation')}</h3>
         <div className="row">
           <div className="col">
