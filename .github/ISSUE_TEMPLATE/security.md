@@ -1,5 +1,5 @@
 ---
-name: "\U0001F46E Security Issue"
+name: 👮 Security Issue
 about: Responsible Disclosure
 title: ''
 labels: ''
