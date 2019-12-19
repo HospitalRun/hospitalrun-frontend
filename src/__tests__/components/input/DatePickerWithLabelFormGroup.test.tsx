@@ -1,6 +1,6 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { Label } from '@hospitalrun/components'
+import React, { ChangeEvent } from 'react'
+import { DateTimePicker, Label } from '@hospitalrun/components'
 import { shallow } from 'enzyme'
 import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
 
@@ -12,7 +12,7 @@ describe('date picker with label form group', () => {
         <DatePickerWithLabelFormGroup
           name={expectedName}
           label="test"
-          value=""
+          value={new Date()}
           isEditable
           onChange={jest.fn()}
         />,
@@ -24,22 +24,20 @@ describe('date picker with label form group', () => {
       expect(label.prop('text')).toEqual(expectedName)
     })
 
-    it('should render and input box', () => {
+    it('should render and date time picker', () => {
       const expectedName = 'test'
       const wrapper = shallow(
         <DatePickerWithLabelFormGroup
           name={expectedName}
           label="test"
-          value=""
+          value={new Date()}
           isEditable
           onChange={jest.fn()}
         />,
       )
 
-      const input = wrapper.find('input')
+      const input = wrapper.find(DateTimePicker)
       expect(input).toHaveLength(1)
-      expect(input.prop('id')).toEqual(`${expectedName}DatePicker`)
-      expect(input.prop('type')).toEqual('date')
     })
 
     it('should render disabled is isDisable disabled is true', () => {
@@ -48,20 +46,20 @@ describe('date picker with label form group', () => {
         <DatePickerWithLabelFormGroup
           name={expectedName}
           label="test"
-          value=""
+          value={new Date()}
           isEditable={false}
           onChange={jest.fn()}
         />,
       )
 
-      const input = wrapper.find('input')
+      const input = wrapper.find(DateTimePicker)
       expect(input).toHaveLength(1)
       expect(input.prop('disabled')).toBeTruthy()
     })
 
     it('should render the proper value', () => {
       const expectedName = 'test'
-      const expectedValue = 'expected value'
+      const expectedValue = new Date()
       const wrapper = shallow(
         <DatePickerWithLabelFormGroup
           name={expectedName}
@@ -72,16 +70,16 @@ describe('date picker with label form group', () => {
         />,
       )
 
-      const input = wrapper.find('input')
+      const input = wrapper.find(DateTimePicker)
       expect(input).toHaveLength(1)
-      expect(input.prop('value')).toEqual(expectedValue)
+      expect(input.prop('selected')).toEqual(expectedValue)
     })
   })
 
   describe('change handler', () => {
     it('should call the change handler on change', () => {
       const expectedName = 'test'
-      const expectedValue = 'expected value'
+      const expectedValue = new Date()
       const handler = jest.fn()
       const wrapper = shallow(
         <DatePickerWithLabelFormGroup
@@ -93,8 +91,10 @@ describe('date picker with label form group', () => {
         />,
       )
 
-      const input = wrapper.find('input')
-      input.simulate('change')
+      const input = wrapper.find(DateTimePicker)
+      input.prop('onChange')(new Date(), {
+        target: { value: new Date().toISOString() },
+      } as ChangeEvent<HTMLInputElement>)
       expect(handler).toHaveBeenCalledTimes(1)
     })
   })

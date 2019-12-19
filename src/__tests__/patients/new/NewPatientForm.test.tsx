@@ -223,8 +223,8 @@ describe('New Patient Form', () => {
 
       const dateOfBirthTextInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfBirth')
 
-      expect(dateOfBirthTextInput.prop('value')).toEqual(
-        DateTime.local()
+      expect(DateTime.fromJSDate(dateOfBirthTextInput.prop('value')).toISODate()).toEqual(
+        DateTime.fromJSDate(new Date())
           .minus({ year: 5 })
           .toISODate(),
       )
@@ -279,7 +279,6 @@ describe('New Patient Form', () => {
       const expectedFamilyName = 'family name'
       const expectedSuffix = 'suffix'
       const expectedSex = 'male'
-      const expectedDateOfBirth = '2019-12-15'
       const expectedType = 'charity'
       const expectedOccupation = 'occupation'
       const expectedPreferredLanguage = 'preferred language'
@@ -305,12 +304,6 @@ describe('New Patient Form', () => {
       act(() => {
         if (sexDropdown) {
           fireEvent.change(sexDropdown, { target: { value: expectedSex } })
-        }
-      })
-
-      act(() => {
-        if (dateOfBirthInput) {
-          fireEvent.change(dateOfBirthInput, { target: { value: expectedDateOfBirth } })
         }
       })
 
@@ -349,8 +342,8 @@ describe('New Patient Form', () => {
       const expectedPatient = {
         name: new Name(expectedPrefix, expectedGivenName, expectedFamilyName, expectedSuffix),
         sex: expectedSex,
-        dateOfBirth: expectedDateOfBirth,
         type: expectedType,
+        dateOfBirth: '',
         occupation: expectedOccupation,
         preferredLanguage: expectedPreferredLanguage,
         phoneNumber: expectedPhoneNumber,

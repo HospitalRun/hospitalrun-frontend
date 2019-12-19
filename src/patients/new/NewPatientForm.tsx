@@ -62,6 +62,10 @@ const NewPatientForm = (props: Props) => {
     onFieldChange(fieldName, event.target.value)
   }
 
+  const onDateOfBirthChange = (date: string) => {
+    onFieldChange('dateOfBirth', date)
+  }
+
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     onFieldChange(fieldName, event.target.value)
   }
@@ -75,10 +79,10 @@ const NewPatientForm = (props: Props) => {
     }
 
     setApproximateAge(approximateAgeNumber)
-    const approximateDateOfBirth = DateTime.local().minus({
+    const approximateDateOfBirth = DateTime.fromJSDate(new Date()).minus({
       years: approximateAgeNumber,
     })
-    setPatient({ ...patient, dateOfBirth: approximateDateOfBirth.toISODate() })
+    setPatient({ ...patient, dateOfBirth: approximateDateOfBirth.toISO() })
   }
 
   return (
@@ -172,9 +176,12 @@ const NewPatientForm = (props: Props) => {
               name="dateOfBirth"
               label={t('patient.dateOfBirth')}
               isEditable={isEditable && !patient.isApproximateDateOfBirth}
-              value={patient.dateOfBirth}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'dateOfBirth')
+              value={patient.dateOfBirth.length > 0 ? new Date(patient.dateOfBirth) : undefined}
+              onChange={(date: Date) => {
+                const dateString = DateTime.fromJSDate(date).toISODate()
+                console.log(date.toISOString())
+                console.log(dateString)
+                onDateOfBirthChange(date.toISOString())
               }}
             />
           </div>
@@ -190,7 +197,7 @@ const NewPatientForm = (props: Props) => {
             </div>
           </div>
           {patient.isApproximateDateOfBirth && (
-            <div className="col-md-3">
+            <div className="col-md-6">
               <TextInputWithLabelFormGroup
                 label={t('patient.approximateAge')}
                 name="approximateAge"
