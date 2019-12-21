@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Checkbox } from '@hospitalrun/components'
-import { DateTime } from 'luxon'
+import { startOfDay, subYears } from 'date-fns'
 import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
@@ -64,8 +64,8 @@ const NewPatientForm = (props: Props) => {
     onFieldChange(fieldName, event.target.value)
   }
 
-  const onDateOfBirthChange = (date: string) => {
-    onFieldChange('dateOfBirth', date)
+  const onDateOfBirthChange = (date: Date) => {
+    onFieldChange('dateOfBirth', date.toISOString())
   }
 
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
@@ -81,10 +81,8 @@ const NewPatientForm = (props: Props) => {
     }
 
     setApproximateAge(approximateAgeNumber)
-    const approximateDateOfBirth = DateTime.fromJSDate(new Date()).minus({
-      years: approximateAgeNumber,
-    })
-    setPatient({ ...patient, dateOfBirth: approximateDateOfBirth.toISO() })
+    const approximateDateOfBirth = subYears(new Date(), approximateAgeNumber)
+    setPatient({ ...patient, dateOfBirth: startOfDay(approximateDateOfBirth).toISOString() })
   }
 
   return (
@@ -180,10 +178,7 @@ const NewPatientForm = (props: Props) => {
               isEditable={isEditable && !patient.isApproximateDateOfBirth}
               value={patient.dateOfBirth.length > 0 ? new Date(patient.dateOfBirth) : undefined}
               onChange={(date: Date) => {
-                const dateString = DateTime.fromJSDate(date).toISODate()
-                console.log(date.toISOString())
-                console.log(dateString)
-                onDateOfBirthChange(date.toISOString())
+                onDateOfBirthChange(date)
               }}
             />
           </div>

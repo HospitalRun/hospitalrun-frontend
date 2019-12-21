@@ -3,7 +3,7 @@ import React, { ChangeEvent } from 'react'
 import { shallow, mount } from 'enzyme'
 import { Button, Checkbox } from '@hospitalrun/components'
 import { render, act, fireEvent } from '@testing-library/react'
-import { DateTime } from 'luxon'
+import { isEqual, startOfDay, subYears } from 'date-fns'
 import NewPatientForm from '../../../patients/new/NewPatientForm'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
 import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
@@ -222,151 +222,149 @@ describe('New Patient Form', () => {
 
       const dateOfBirthTextInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfBirth')
 
-      expect(DateTime.fromJSDate(dateOfBirthTextInput.prop('value')).toISODate()).toEqual(
-        DateTime.fromJSDate(new Date())
-          .minus({ year: 5 })
-          .toISODate(),
-      )
+      expect(
+        isEqual(dateOfBirthTextInput.prop('value'), startOfDay(subYears(new Date(), 5))),
+      ).toBeTruthy()
     })
-  })
 
-  describe('on unknown checkbox click', () => {
-    it('should show a approximate age input box when checkbox is checked', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
-      const approximateAgeInputBefore = wrapper.findWhere(
-        (w) => w.prop('name') === 'approximateAge',
-      )
-      expect(approximateAgeInputBefore).toHaveLength(0)
+    describe('on unknown checkbox click', () => {
+      it('should show a approximate age input box when checkbox is checked', () => {
+        const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
+        const approximateAgeInputBefore = wrapper.findWhere(
+          (w) => w.prop('name') === 'approximateAge',
+        )
+        expect(approximateAgeInputBefore).toHaveLength(0)
 
-      const unknownCheckbox = wrapper.find(Checkbox)
+        const unknownCheckbox = wrapper.find(Checkbox)
 
-      act(() => {
-        if (unknownCheckbox) {
-          unknownCheckbox.prop('onChange')!({ target: { checked: true } } as ChangeEvent<
-            HTMLInputElement
-          >)
-        }
+        act(() => {
+          if (unknownCheckbox) {
+            unknownCheckbox.prop('onChange')!({ target: { checked: true } } as ChangeEvent<
+              HTMLInputElement
+            >)
+          }
+        })
+
+        const approximateAgeInputerAfter = wrapper.findWhere(
+          (w) => w.prop('name') === 'approximateAge',
+        )
+        expect(approximateAgeInputerAfter).toHaveLength(1)
       })
-
-      const approximateAgeInputerAfter = wrapper.findWhere(
-        (w) => w.prop('name') === 'approximateAge',
-      )
-      expect(approximateAgeInputerAfter).toHaveLength(1)
     })
-  })
 
-  describe('save button', () => {
-    it('should call the onSave prop with the Patient data', async () => {
-      const wrapper = render(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
-      const prefixInput = wrapper.getByPlaceholderText('patient.prefix')
-      const givenNameInput = wrapper.getByPlaceholderText('patient.givenName')
-      const familyNameInput = wrapper.getByPlaceholderText('patient.familyName')
-      const suffixInput = wrapper.getByPlaceholderText('patient.suffix')
-      const sexDropdown = wrapper.getByText('patient.sex').nextElementSibling
-      const patientTypeDropdown = wrapper.getByText('patient.type').nextElementSibling
-      const occupationInput = wrapper.getByPlaceholderText('patient.occupation')
-      const preferredLanguageInput = wrapper.getByPlaceholderText('patient.preferredLanguage')
-      const phoneNumberInput = wrapper.getByPlaceholderText('patient.phoneNumber')
-      const emailInput = wrapper.getByPlaceholderText('email@email.com')
-      const addressInput = wrapper.getByText('patient.address').nextElementSibling
+    describe('save button', () => {
+      it('should call the onSave prop with the Patient data', async () => {
+        const wrapper = render(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
+        const prefixInput = wrapper.getByPlaceholderText('patient.prefix')
+        const givenNameInput = wrapper.getByPlaceholderText('patient.givenName')
+        const familyNameInput = wrapper.getByPlaceholderText('patient.familyName')
+        const suffixInput = wrapper.getByPlaceholderText('patient.suffix')
+        const sexDropdown = wrapper.getByText('patient.sex').nextElementSibling
+        const patientTypeDropdown = wrapper.getByText('patient.type').nextElementSibling
+        const occupationInput = wrapper.getByPlaceholderText('patient.occupation')
+        const preferredLanguageInput = wrapper.getByPlaceholderText('patient.preferredLanguage')
+        const phoneNumberInput = wrapper.getByPlaceholderText('patient.phoneNumber')
+        const emailInput = wrapper.getByPlaceholderText('email@email.com')
+        const addressInput = wrapper.getByText('patient.address').nextElementSibling
 
-      const saveButton = wrapper.getByText('actions.save')
+        const saveButton = wrapper.getByText('actions.save')
 
-      const expectedPrefix = 'prefix'
-      const expectedGivenName = 'given name'
-      const expectedFamilyName = 'family name'
-      const expectedSuffix = 'suffix'
-      const expectedSex = 'male'
-      const expectedType = 'charity'
-      const expectedOccupation = 'occupation'
-      const expectedPreferredLanguage = 'preferred language'
-      const expectedPhoneNumber = 'phone number'
-      const expectedEmail = 'test@test.com'
-      const expectedAddress = 'address'
-      act(() => {
-        fireEvent.change(prefixInput, { target: { value: expectedPrefix } })
+        const expectedPrefix = 'prefix'
+        const expectedGivenName = 'given name'
+        const expectedFamilyName = 'family name'
+        const expectedSuffix = 'suffix'
+        const expectedSex = 'male'
+        const expectedType = 'charity'
+        const expectedOccupation = 'occupation'
+        const expectedPreferredLanguage = 'preferred language'
+        const expectedPhoneNumber = 'phone number'
+        const expectedEmail = 'test@test.com'
+        const expectedAddress = 'address'
+        act(() => {
+          fireEvent.change(prefixInput, { target: { value: expectedPrefix } })
+        })
+
+        act(() => {
+          fireEvent.change(givenNameInput, { target: { value: expectedGivenName } })
+        })
+
+        act(() => {
+          fireEvent.change(familyNameInput, { target: { value: expectedFamilyName } })
+        })
+
+        act(() => {
+          fireEvent.change(suffixInput, { target: { value: expectedSuffix } })
+        })
+
+        act(() => {
+          if (sexDropdown) {
+            fireEvent.change(sexDropdown, { target: { value: expectedSex } })
+          }
+        })
+
+        act(() => {
+          if (patientTypeDropdown) {
+            fireEvent.change(patientTypeDropdown, { target: { value: expectedType } })
+          }
+        })
+
+        act(() => {
+          fireEvent.change(occupationInput, { target: { value: expectedOccupation } })
+        })
+
+        act(() => {
+          fireEvent.change(preferredLanguageInput, { target: { value: expectedPreferredLanguage } })
+        })
+
+        act(() => {
+          fireEvent.change(phoneNumberInput, { target: { value: expectedPhoneNumber } })
+        })
+
+        act(() => {
+          fireEvent.change(emailInput, { target: { value: expectedEmail } })
+        })
+
+        act(() => {
+          if (addressInput) {
+            fireEvent.change(addressInput, { target: { value: expectedAddress } })
+          }
+        })
+
+        act(() => {
+          fireEvent.click(saveButton)
+        })
+
+        const expectedPatient = {
+          prefix: expectedPrefix,
+          givenName: expectedGivenName,
+          familyName: expectedFamilyName,
+          suffix: expectedSuffix,
+          sex: expectedSex,
+          type: expectedType,
+          dateOfBirth: '',
+          occupation: expectedOccupation,
+          preferredLanguage: expectedPreferredLanguage,
+          phoneNumber: expectedPhoneNumber,
+          email: expectedEmail,
+          address: expectedAddress,
+        } as Patient
+
+        expect(onSave).toHaveBeenCalledTimes(1)
+        expect(onSave).toHaveBeenLastCalledWith(expectedPatient)
       })
-
-      act(() => {
-        fireEvent.change(givenNameInput, { target: { value: expectedGivenName } })
-      })
-
-      act(() => {
-        fireEvent.change(familyNameInput, { target: { value: expectedFamilyName } })
-      })
-
-      act(() => {
-        fireEvent.change(suffixInput, { target: { value: expectedSuffix } })
-      })
-
-      act(() => {
-        if (sexDropdown) {
-          fireEvent.change(sexDropdown, { target: { value: expectedSex } })
-        }
-      })
-
-      act(() => {
-        if (patientTypeDropdown) {
-          fireEvent.change(patientTypeDropdown, { target: { value: expectedType } })
-        }
-      })
-
-      act(() => {
-        fireEvent.change(occupationInput, { target: { value: expectedOccupation } })
-      })
-
-      act(() => {
-        fireEvent.change(preferredLanguageInput, { target: { value: expectedPreferredLanguage } })
-      })
-
-      act(() => {
-        fireEvent.change(phoneNumberInput, { target: { value: expectedPhoneNumber } })
-      })
-
-      act(() => {
-        fireEvent.change(emailInput, { target: { value: expectedEmail } })
-      })
-
-      act(() => {
-        if (addressInput) {
-          fireEvent.change(addressInput, { target: { value: expectedAddress } })
-        }
-      })
-
-      act(() => {
-        fireEvent.click(saveButton)
-      })
-
-      const expectedPatient = {
-        prefix: expectedPrefix,
-        givenName: expectedGivenName,
-        familyName: expectedFamilyName,
-        suffix: expectedSuffix,
-        sex: expectedSex,
-        type: expectedType,
-        dateOfBirth: '',
-        occupation: expectedOccupation,
-        preferredLanguage: expectedPreferredLanguage,
-        phoneNumber: expectedPhoneNumber,
-        email: expectedEmail,
-        address: expectedAddress,
-      } as Patient
-
-      expect(onSave).toHaveBeenCalledTimes(1)
-      expect(onSave).toHaveBeenLastCalledWith(expectedPatient)
     })
-  })
 
-  describe('cancel button', () => {
-    it('should navigate back to /patients when clicked', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
+    describe('cancel button', () => {
+      it('should navigate back to /patients when clicked', () => {
+        const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
 
-      const cancelButton = wrapper.find(Button).at(1)
-      act(() => {
-        cancelButton.simulate('click')
+        const cancelButton = wrapper.find(Button).at(1)
+        act(() => {
+          cancelButton.simulate('click')
+        })
+
+        expect(onCancel).toHaveBeenCalledTimes(1)
       })
-
-      expect(onCancel).toHaveBeenCalledTimes(1)
     })
   })
 })
