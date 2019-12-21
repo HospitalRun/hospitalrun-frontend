@@ -42,6 +42,7 @@ const NewPatientForm = (props: Props) => {
       suffix: patient.suffix,
       sex: patient.sex,
       dateOfBirth: patient.dateOfBirth,
+      isApproximateDateOfBirth: patient.isApproximateDateOfBirth,
       type: patient.type,
       occupation: patient.occupation,
       preferredLanguage: patient.preferredLanguage,

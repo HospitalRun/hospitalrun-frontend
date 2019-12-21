@@ -341,6 +341,7 @@ describe('New Patient Form', () => {
           suffix: expectedSuffix,
           sex: expectedSex,
           type: expectedType,
+          isApproximateDateOfBirth: false,
           dateOfBirth: '',
           occupation: expectedOccupation,
           preferredLanguage: expectedPreferredLanguage,
