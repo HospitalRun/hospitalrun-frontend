@@ -12,7 +12,7 @@ describe('HospitalRun', () => {
     it('should render the new patient screen when /patients/new is accessed', () => {
       const wrapper = mount(
         <Provider store={store}>
-          <MemoryRouter initialEntries={['/new/patients']}>
+          <MemoryRouter initialEntries={['/patients/new']}>
             <HospitalRun />
           </MemoryRouter>
         </Provider>,

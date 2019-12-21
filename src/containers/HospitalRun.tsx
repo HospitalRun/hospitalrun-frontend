@@ -36,7 +36,7 @@ const HospitalRun = () => {
                 <PrivateRoute
                   isAuthenticated={permissions.includes(Permissions.WritePatients)}
                   exact
-                  path="/new/patients"
+                  path="/patients/new"
                   component={NewPatient}
                 />
                 <PrivateRoute
