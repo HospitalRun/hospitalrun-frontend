@@ -79,7 +79,7 @@
     "lint-staged": "~9.5.0",
     "memdown": "^5.1.0",
     "prettier": "~1.19.1",
-    "semantic-release": "~15.13.24",
+    "semantic-release": "~15.14.0",
     "ts-jest": "^24.2.0"
   },
   "scripts": {
