@@ -1,6 +1,10 @@
 ---
 name: 💥 Regression Report
 about: Report unexpected behavior that worked in previous versions
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
 Before you submit an issue we recommend you drop into our [Spectrum channel](https://spectrum.chat/hospitalrun) and ask any questions you have or mention any problems you've had getting started with HospitalRun.

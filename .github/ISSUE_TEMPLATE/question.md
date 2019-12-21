@@ -1,6 +1,10 @@
 ---
 name: 💬 Questions / Help
-about: If you have questions, please check our Spectrum channel 
+about: If you have questions, please check our Spectrum channel
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
 ## 💬 Questions and Help
