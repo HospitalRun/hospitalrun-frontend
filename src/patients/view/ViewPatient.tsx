@@ -26,7 +26,7 @@ const ViewPatient = () => {
 
   return (
     <div className="container">
-      <h1>{`${patient.name.given} ${patient.name.family}`}</h1>
+      <h1>{`${patient.givenName} ${patient.familyName}`}</h1>
     </div>
   )
 }

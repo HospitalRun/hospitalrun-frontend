@@ -10,7 +10,6 @@ import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableF
 import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 import Patient from '../../../model/Patient'
-import Name from '../../../model/Name'
 
 const onSave = jest.fn()
 const onCancel = jest.fn()
@@ -264,7 +263,6 @@ describe('New Patient Form', () => {
       const familyNameInput = wrapper.getByPlaceholderText('patient.familyName')
       const suffixInput = wrapper.getByPlaceholderText('patient.suffix')
       const sexDropdown = wrapper.getByText('patient.sex').nextElementSibling
-      const dateOfBirthInput = wrapper.getByText('patient.dateOfBirth').nextElementSibling
       const patientTypeDropdown = wrapper.getByText('patient.type').nextElementSibling
       const occupationInput = wrapper.getByPlaceholderText('patient.occupation')
       const preferredLanguageInput = wrapper.getByPlaceholderText('patient.preferredLanguage')
@@ -340,7 +338,10 @@ describe('New Patient Form', () => {
       })
 
       const expectedPatient = {
-        name: new Name(expectedPrefix, expectedGivenName, expectedFamilyName, expectedSuffix),
+        prefix: expectedPrefix,
+        givenName: expectedGivenName,
+        familyName: expectedFamilyName,
+        suffix: expectedSuffix,
         sex: expectedSex,
         type: expectedType,
         dateOfBirth: '',

@@ -26,7 +26,7 @@ const Patients = () => {
       {patients.map((p) => (
         <Link to={`/patients/${p.id}`} key={p.id}>
           <li key={p.id}>
-            {p.name.given} {p.name.family}
+            {p.givenName} {p.familyName}
           </li>
         </Link>
       ))}

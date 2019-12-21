@@ -7,7 +7,6 @@ import NewPatient from '../../../patients/new/NewPatient'
 import NewPatientForm from '../../../patients/new/NewPatientForm'
 import store from '../../../store'
 import Patient from '../../../model/Patient'
-import Name from '../../../model/Name'
 import * as patientSlice from '../../../patients/patients-slice'
 import * as titleUtil from '../../../util/useTitle'
 
@@ -39,9 +38,10 @@ describe('New Patient', () => {
 
   it('should call create patient when save button is clicked', async () => {
     jest.spyOn(patientSlice, 'createPatient')
-    const expectedName = new Name('prefix', 'given', 'family', 'suffix')
     const expectedPatient = {
-      name: expectedName,
+      sex: 'male',
+      givenName: 'givenName',
+      familyName: 'familyName',
     } as Patient
 
     const wrapper = mount(

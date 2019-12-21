@@ -1,8 +1,13 @@
 import AbstractDBModel from './AbstractDBModel'
-import Name from './Name'
 
 export default class Patient extends AbstractDBModel {
-  name: Name
+  prefix?: string
+
+  givenName?: string
+
+  familyName?: string
+
+  suffix?: string
 
   sex: string
 
@@ -25,8 +30,11 @@ export default class Patient extends AbstractDBModel {
   constructor(
     id: string,
     rev: string,
-    name: Name,
     sex: string,
+    prefix?: string,
+    givenName?: string,
+    familyName?: string,
+    suffix?: string,
     dateOfBirth?: string,
     isApproximateDateOfBirth?: boolean,
     phoneNumber?: string,
@@ -37,7 +45,10 @@ export default class Patient extends AbstractDBModel {
     type?: string,
   ) {
     super(id, rev)
-    this.name = name
+    this.prefix = prefix
+    this.givenName = givenName
+    this.familyName = familyName
+    this.suffix = suffix
     this.sex = sex
     this.dateOfBirth = dateOfBirth
     this.isApproximateDateOfBirth = isApproximateDateOfBirth

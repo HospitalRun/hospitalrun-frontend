@@ -7,7 +7,6 @@ import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLab
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import DatePickerWithLabelFormGroup from '../../components/input/DatePickerWithLabelFormGroup'
 import Patient from '../../model/Patient'
-import Name from '../../model/Name'
 
 interface Props {
   onCancel: () => void
@@ -37,7 +36,10 @@ const NewPatientForm = (props: Props) => {
 
   const onSaveButtonClick = async () => {
     const newPatient = {
-      name: new Name(patient.prefix, patient.givenName, patient.familyName, patient.suffix),
+      prefix: patient.prefix,
+      familyName: patient.familyName,
+      givenName: patient.givenName,
+      suffix: patient.suffix,
       sex: patient.sex,
       dateOfBirth: patient.dateOfBirth,
       type: patient.type,
