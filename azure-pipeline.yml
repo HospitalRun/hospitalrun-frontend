@@ -6,20 +6,12 @@ trigger:
 jobs:
   - template: azure/azure-pipelines-npm.yml
     parameters:
-      name: Linux_npm
-      vmImage: ubuntu-16.04
-  - template: azure/azure-pipelines-npm.yml
-    parameters:
       name: Windows_npm
       vmImage: vs2017-win2016
   - template: azure/azure-pipelines-npm.yml
     parameters:
       name: macOs_npm
       vmImage: macOS-10.14
-  - template: azure/azure-pipelines-yarn.yml
-    parameters:
-      name: Linux_yarn
-      vmImage: ubuntu-16.04
   - template: azure/azure-pipelines-yarn.yml
     parameters:
       name: Windows_yarn
