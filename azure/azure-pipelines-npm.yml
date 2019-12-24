@@ -7,8 +7,6 @@ jobs:
       matrix:
         node_12_x:
           node_version: 12.x
-        node_10_x:
-          node_version: 10.x
       maxParallel: 5
 
     steps:
