@@ -13,8 +13,8 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 
 **Version 1.0.0-beta is no longer supported. Version 2 is currently under development.**
 
-- To contribute, follow the guidelines in the readme or alternatively ask for details in the slack channel [#contributors](https://hospitalrun-slack.herokuapp.com).
-- To use version 1.0.0-beta (not ready for production) in a hospital, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com) or Spectrum channel [#support](https://spectrum.chat/hospitalrun).
+- To contribute, follow the guidelines in the readme or alternatively ask for details on Slack channel [#contributors](https://hospitalrun-slack.herokuapp.com).
+- To use version 1.0.0-beta (not production ready) in a hospital facility, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com) or Spectrum channel [#support](https://spectrum.chat/hospitalrun).
 
 # Contributing
 
