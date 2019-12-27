@@ -11,6 +11,28 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 
 ---
 
+**Version 1.0.0-beta is no longer supported. Version 2 is currently under development.**
+
+- To contribute, follow the directions in the readme or otherwise ask for details in the slack channel [#contributors](https://hospitalrun-slack.herokuapp.com).
+- To use version 1.0.0-beta (not ready for production) in a hospital, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com) or Spectrum channel [#support](https://spectrum.chat/hospitalrun).
+
+# Contributing
+
+Contributions are always welcome. Before contributing please read our [contributor guide](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).
+
+1. Fork this repository to your own GitHub account and then clone it to your local device
+2. Navigate to the cloned folder: `cd hospitalrun-frontend`
+3. Install the dependencies: `yarn`
+4. Run `yarn run start` to build and watch for code changes
+
+## How to commit
+
+This repo uses [Conventional Commits](https://www.conventionalcommits.org/). [Commitizen](https://github.com/commitizen/cz-cli) is recommended for development. Once you have changes staged
+you can run `git cz` from the root directory in order to commit to the proper standards.
+
+Alternatively, if you are using NPM 5.2+ you can use [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) instead of installing globally:
+`npx git-cz`
+
 <hr />
 
 # Behind HospitalRun
