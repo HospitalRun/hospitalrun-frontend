@@ -28,11 +28,10 @@ const patientsSlice = createSlice({
       state.patients = payload
     },
     createPatientSuccess(state) {
-      state.isLoading = true
+      state.isLoading = false
     },
   },
 })
-
 export const {
   getPatientsStart,
   getAllPatientsSuccess,
@@ -44,7 +43,8 @@ export const createPatient = (patient: Patient, history: any): AppThunk => async
   try {
     dispatch(createPatientStart())
     const newPatient = await PatientRepository.save(patient)
-    history.push(newPatient.id)
+    dispatch(createPatientSuccess())
+    history.push(`patients/${newPatient.id}`)
   } catch (error) {
     console.log(error)
   }

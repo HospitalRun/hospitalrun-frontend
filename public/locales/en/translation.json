@@ -9,8 +9,33 @@
     "newPatient": "New Patient"
   },
   "patient": {
-    "firstName": "First Name",
-    "lastName": "Last Name"
+    "suffix": "Suffix",
+    "prefix": "Prefix",
+    "givenName": "Given Name",
+    "familyName": "Family Name",
+    "dateOfBirth": "Date of Birth",
+    "placeOfBirth": "Place of Birth",
+    "sex": "Sex",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "address": "Address",
+    "occupation": "Occupation",
+    "type": "Patient Type",
+    "preferredLanguage": "Preferred Language",
+    "basicInformation": "Basic Information",
+    "contactInformation": "Contact Information",
+    "approximateAge": "Approximate Age",
+    "unknownDateOfBirth": "Unknown",
+    "types": {
+      "charity": "Charity",
+      "private": "Private"
+    }
+  },
+  "sex": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "unknown": "Unknown"
   },
   "actions": {
     "edit": "Edit",
