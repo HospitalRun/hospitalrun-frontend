@@ -1,13 +1,62 @@
 import AbstractDBModel from './AbstractDBModel'
 
 export default class Patient extends AbstractDBModel {
-  firstName: string
+  prefix?: string
 
-  lastName: string
+  givenName?: string
 
-  constructor(id: string, rev: string, firstName: string, lastName: string) {
+  familyName?: string
+
+  suffix?: string
+
+  sex: string
+
+  dateOfBirth?: string
+
+  isApproximateDateOfBirth?: boolean
+
+  phoneNumber?: string
+
+  email?: string
+
+  address?: string
+
+  preferredLanguage?: string
+
+  occupation?: string
+
+  type?: string
+
+  constructor(
+    id: string,
+    rev: string,
+    sex: string,
+    prefix?: string,
+    givenName?: string,
+    familyName?: string,
+    suffix?: string,
+    dateOfBirth?: string,
+    isApproximateDateOfBirth?: boolean,
+    phoneNumber?: string,
+    email?: string,
+    address?: string,
+    preferredLanguage?: string,
+    occupation?: string,
+    type?: string,
+  ) {
     super(id, rev)
-    this.firstName = firstName
-    this.lastName = lastName
+    this.prefix = prefix
+    this.givenName = givenName
+    this.familyName = familyName
+    this.suffix = suffix
+    this.sex = sex
+    this.dateOfBirth = dateOfBirth
+    this.isApproximateDateOfBirth = isApproximateDateOfBirth
+    this.phoneNumber = phoneNumber
+    this.email = email
+    this.address = address
+    this.preferredLanguage = preferredLanguage
+    this.occupation = occupation
+    this.type = type
   }
 }
