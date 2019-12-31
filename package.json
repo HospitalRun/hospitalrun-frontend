@@ -58,7 +58,7 @@
     "@types/react-redux": "^7.1.5",
     "@types/react-router": "~5.1.2",
     "@types/react-router-dom": "~5.1.0",
-    "@typescript-eslint/eslint-plugin": "~2.10.0",
+    "@typescript-eslint/eslint-plugin": "~2.14.0",
     "@typescript-eslint/parser": "~2.14.0",
     "commitizen": "~4.0.3",
     "commitlint-config-cz": "~0.12.1",
