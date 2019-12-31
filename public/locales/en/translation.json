@@ -42,6 +42,7 @@
     "save": "Save",
     "cancel": "Cancel",
     "new": "New",
-    "list": "List"
+    "list": "List",
+    "search": "Search"
   }
 }
