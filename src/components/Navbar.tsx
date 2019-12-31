@@ -28,7 +28,9 @@ const Navbar = () => {
       navLinks={[
         {
           label: t('patients.label'),
-          onClick: () => {},
+          onClick: () => {
+            console.log('patients click')
+          },
           children: [
             {
               label: t('actions.list'),
