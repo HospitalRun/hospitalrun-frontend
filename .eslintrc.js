@@ -48,6 +48,7 @@ module.exports = {
     'eol-last': ['error', 'always'],
     'no-debugger': 'error',
     'no-nested-ternary': 'off',
+    'import/no-unresolved': 'off',
     'import/extensions': ['error', 'never'],
     curly: ['error', 'all'],
   },
