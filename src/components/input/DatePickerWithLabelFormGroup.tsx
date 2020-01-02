@@ -6,7 +6,7 @@ interface Props {
   label: string
   value: Date | undefined
   isEditable: boolean
-  onChange: (date: Date) => void
+  onChange?: (date: Date) => void
 }
 
 const DatePickerWithLabelFormGroup = (props: Props) => {
@@ -24,7 +24,9 @@ const DatePickerWithLabelFormGroup = (props: Props) => {
         withPortal={false}
         disabled={!isEditable}
         onChange={(inputDate) => {
-          onChange(inputDate)
+          if (onChange) {
+            onChange(inputDate)
+          }
         }}
       />
     </div>

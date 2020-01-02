@@ -12,7 +12,7 @@ interface Props {
   name: string
   isEditable: boolean
   options: Option[]
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
+  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
 const SelectWithLabelFormGroup = (props: Props) => {
@@ -36,6 +36,7 @@ const SelectWithLabelFormGroup = (props: Props) => {
 }
 
 SelectWithLabelFormGroup.defaultProps = {
+  value: '',
   isEditable: true,
 }
 
