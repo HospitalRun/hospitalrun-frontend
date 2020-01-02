@@ -12,7 +12,7 @@ interface PatientState {
 const initialState: PatientState = {
   isLoading: false,
   isUpdatedSuccessfully: false,
-  patient: new Patient('', '', ''),
+  patient: new Patient('', '', '', ''),
 }
 
 function startLoading(state: PatientState) {

@@ -44,7 +44,7 @@ export const createPatient = (patient: Patient, history: any): AppThunk => async
     dispatch(createPatientStart())
     const newPatient = await PatientRepository.save(patient)
     dispatch(createPatientSuccess())
-    history.push(`patients/${newPatient.id}`)
+    history.push(`/patients/${newPatient.id}`)
   } catch (error) {
     console.log(error)
   }

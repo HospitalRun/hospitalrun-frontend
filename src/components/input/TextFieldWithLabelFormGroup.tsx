@@ -7,7 +7,7 @@ interface Props {
   name: string
   isEditable: boolean
   placeholder?: string
-  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const TextFieldWithLabelFormGroup = (props: Props) => {
@@ -23,6 +23,10 @@ const TextFieldWithLabelFormGroup = (props: Props) => {
 
 TextFieldWithLabelFormGroup.defaultProps = {
   isEditable: true,
+}
+
+TextFieldWithLabelFormGroup.defaultProps = {
+  value: '',
 }
 
 export default TextFieldWithLabelFormGroup
