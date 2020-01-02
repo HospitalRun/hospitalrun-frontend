@@ -11,7 +11,7 @@ export default class Patient extends AbstractDBModel {
 
   sex: string
 
-  dateOfBirth?: string
+  dateOfBirth: string
 
   isApproximateDateOfBirth?: boolean
 
@@ -31,11 +31,11 @@ export default class Patient extends AbstractDBModel {
     id: string,
     rev: string,
     sex: string,
+    dateOfBirth: string,
     prefix?: string,
     givenName?: string,
     familyName?: string,
     suffix?: string,
-    dateOfBirth?: string,
     isApproximateDateOfBirth?: boolean,
     phoneNumber?: string,
     email?: string,
