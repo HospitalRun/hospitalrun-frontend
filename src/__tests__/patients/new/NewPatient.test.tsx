@@ -3,12 +3,14 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router'
 import { Provider } from 'react-redux'
+import { mocked } from 'ts-jest/utils'
 import NewPatient from '../../../patients/new/NewPatient'
 import NewPatientForm from '../../../patients/new/NewPatientForm'
 import store from '../../../store'
 import Patient from '../../../model/Patient'
 import * as patientSlice from '../../../patients/patients-slice'
 import * as titleUtil from '../../../util/useTitle'
+import PatientRepository from '../../../clients/db/PatientRepository'
 
 describe('New Patient', () => {
   it('should render a new patient form', () => {
@@ -38,6 +40,17 @@ describe('New Patient', () => {
 
   it('should call create patient when save button is clicked', async () => {
     jest.spyOn(patientSlice, 'createPatient')
+    jest.spyOn(PatientRepository, 'save')
+    const mockedPatientRepository = mocked(PatientRepository, true)
+    const patient = {
+      id: '123',
+      prefix: 'test',
+      givenName: 'test',
+      familyName: 'test',
+      suffix: 'test',
+    } as Patient
+    mockedPatientRepository.save.mockResolvedValue(patient)
+
     const expectedPatient = {
       sex: 'male',
       givenName: 'givenName',
