@@ -1,0 +1,7 @@
+
+from_owner:
+  - dependabot-preview[bot]
+required_labels:
+  - dependencies
+apply_labels:
+  - autoapproved
