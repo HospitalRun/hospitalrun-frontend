@@ -40,10 +40,10 @@
     "Stefano Casasola"
   ],
   "devDependencies": {
-    "@commitlint/cli": "~8.2.0",
+    "@commitlint/cli": "~8.3.3",
     "@commitlint/config-conventional": "~8.3.3",
     "@commitlint/core": "~8.3.3",
-    "@commitlint/prompt": "~8.2.0",
+    "@commitlint/prompt": "~8.3.3",
     "@semantic-release/changelog": "~3.0.4",
     "@semantic-release/commit-analyzer": "~6.3.0",
     "@semantic-release/git": "~7.0.16",
