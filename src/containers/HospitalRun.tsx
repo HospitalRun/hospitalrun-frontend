@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Toaster } from '@hospitalrun/components'
 import Sidebar from '../components/Sidebar'
 import Permissions from '../util/Permissions'
 import Dashboard from './Dashboard'
@@ -47,6 +48,7 @@ const HospitalRun = () => {
                 />
               </Switch>
             </div>
+            <Toaster autoClose={5000} hideProgressBar draggable />
           </main>
         </div>
       </div>
