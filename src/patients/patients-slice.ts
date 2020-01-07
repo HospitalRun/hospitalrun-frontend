@@ -64,7 +64,14 @@ export const fetchPatients = (): AppThunk => async (dispatch) => {
 export const searchPatients = (searchString: string): AppThunk => async (dispatch) => {
   try {
     dispatch(getPatientsStart())
-    const patients = await PatientRepository.search(new Search(searchString, ['fullName']))
+
+    let patients
+    if (searchString.trim() === '') {
+      patients = await PatientRepository.findAll()
+    } else {
+      patients = await PatientRepository.search(new Search(searchString, ['fullName']))
+    }
+
     dispatch(getAllPatientsSuccess(patients))
   } catch (error) {
     console.log(error)

@@ -122,6 +122,16 @@ describe('patients slice', () => {
       )
     })
 
+    it('should call the PatientRepository findALl method if there is no string text', async () => {
+      const dispatch = jest.fn()
+      const getState = jest.fn()
+      jest.spyOn(PatientRepository, 'findAll')
+
+      await searchPatients('')(dispatch, getState, null)
+
+      expect(PatientRepository.findAll).toHaveBeenCalledTimes(1)
+    })
+
     it('should dispatch the GET_ALL_PATIENTS_SUCCESS action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
