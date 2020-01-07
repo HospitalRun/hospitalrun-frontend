@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Spinner } from '@hospitalrun/components'
+import { Spinner, TextInput, Button, List, ListItem, Container, Row } from '@hospitalrun/components'
 import { RootState } from '../../store'
-import { fetchPatients } from '../patients-slice'
+import { fetchPatients, searchPatients } from '../patients-slice'
 import useTitle from '../../util/useTitle'
 
 const Patients = () => {
   const { t } = useTranslation()
+  const history = useHistory()
   useTitle(t('patients.label'))
   const dispatch = useDispatch()
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
+
+  const [searchText, setSearchText] = useState<string>('')
 
   useEffect(() => {
     dispatch(fetchPatients())
@@ -24,21 +27,44 @@ const Patients = () => {
   const list = (
     <ul>
       {patients.map((p) => (
-        <Link to={`/patients/${p.id}`} key={p.id}>
-          <li key={p.id}>
-            {p.givenName} {p.familyName}
-          </li>
-        </Link>
+        <ListItem action key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
+          {p.givenName} {p.familyName}
+        </ListItem>
       ))}
     </ul>
   )
 
+  const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value)
+  }
+
+  const onSearchFormSubmit = (event: React.FormEvent | React.MouseEvent) => {
+    event.preventDefault()
+    dispatch(searchPatients(searchText))
+  }
+
   return (
-    <div>
-      <div className="container">
-        <ul>{list}</ul>
-      </div>
-    </div>
+    <Container>
+      <form className="form-inline" onSubmit={onSearchFormSubmit}>
+        <div className="input-group" style={{ width: '100%' }}>
+          <TextInput
+            size="lg"
+            value={searchText}
+            placeholder={t('actions.search')}
+            onChange={onSearchBoxChange}
+          />
+          <div className="input-group-append">
+            <Button onClick={onSearchFormSubmit}>{t('actions.search')}</Button>
+          </div>
+        </div>
+      </form>
+
+      <Row>
+        <List layout="flush" style={{ width: '100%', marginTop: '10px', marginLeft: '-25px' }}>
+          {list}
+        </List>
+      </Row>
+    </Container>
   )
 }
 

@@ -1,6 +1,7 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
 
 import AbstractDBModel from '../../model/AbstractDBModel'
+import Search from './Search'
 
 function mapRow(row: any): any {
   const { value, doc } = row
@@ -21,6 +22,11 @@ function mapDocument(document: any): any {
   }
 }
 
+function mapRowFromSearch(row: any): any {
+  const { doc } = row
+  return mapDocument(doc)
+}
+
 export default class Repository<T extends AbstractDBModel> {
   db: PouchDB.Database
 
@@ -31,6 +37,16 @@ export default class Repository<T extends AbstractDBModel> {
   async find(id: string): Promise<T> {
     const document = await this.db.get(id)
     return mapDocument(document)
+  }
+
+  async search(search: Search): Promise<T[]> {
+    const response = await this.db.search({
+      query: search.searchString,
+      fields: search.fields,
+      include_docs: true,
+    })
+
+    return response.rows.map(mapRowFromSearch)
   }
 
   async findAll(): Promise<T[]> {

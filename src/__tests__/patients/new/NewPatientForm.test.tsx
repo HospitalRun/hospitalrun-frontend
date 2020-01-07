@@ -10,7 +10,7 @@ import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableF
 import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 import Patient from '../../../model/Patient'
-import {getPatientName} from "../../../util/patient-name-util"
+import { getPatientName } from '../../../util/patient-name-util'
 
 const onSave = jest.fn()
 const onCancel = jest.fn()
@@ -350,7 +350,7 @@ describe('New Patient Form', () => {
           phoneNumber: expectedPhoneNumber,
           email: expectedEmail,
           address: expectedAddress,
-          fullName: getPatientName(expectedGivenName, expectedFamilyName, expectedSuffix)
+          fullName: getPatientName(expectedGivenName, expectedFamilyName, expectedSuffix),
         } as Patient
 
         expect(onSave).toHaveBeenCalledTimes(1)

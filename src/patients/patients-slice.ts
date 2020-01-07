@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Patient from '../model/Patient'
 import PatientRepository from '../clients/db/PatientRepository'
 import { AppThunk } from '../store'
+import Search from '../clients/db/Search'
 
 interface PatientsState {
   isLoading: boolean
@@ -54,6 +55,16 @@ export const fetchPatients = (): AppThunk => async (dispatch) => {
   try {
     dispatch(getPatientsStart())
     const patients = await PatientRepository.findAll()
+    dispatch(getAllPatientsSuccess(patients))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const searchPatients = (searchString: string): AppThunk => async (dispatch) => {
+  try {
+    dispatch(getPatientsStart())
+    const patients = await PatientRepository.search(new Search(searchString, ['fullName']))
     dispatch(getAllPatientsSuccess(patients))
   } catch (error) {
     console.log(error)

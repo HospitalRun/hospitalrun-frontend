@@ -1,8 +1,11 @@
 import PouchDB from 'pouchdb'
 
-// eslint-disable-next-line
+/* eslint-disable */
 const memoryAdapter = require('pouchdb-adapter-memory')
+const search = require('pouchdb-quick-search')
+/* eslint-enable */
 
+PouchDB.plugin(search)
 PouchDB.plugin(memoryAdapter)
 
 function createDb(name: string) {
