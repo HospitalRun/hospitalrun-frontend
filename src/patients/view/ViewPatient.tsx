@@ -10,16 +10,8 @@ import { RootState } from '../../store'
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
-import Patient from '../../model/Patient'
 import DatePickerWithLabelFormGroup from '../../components/input/DatePickerWithLabelFormGroup'
-
-const getNamePartString = (namePart: string | undefined) => {
-  if (!namePart) {
-    return ''
-  }
-
-  return namePart
-}
+import { getPatientFullName } from '../../util/patient-name-util'
 
 const getPatientAge = (dateOfBirth: string | undefined): string => {
   if (!dateOfBirth) {
@@ -38,20 +30,11 @@ const getPatientDateOfBirth = (dateOfBirth: string | undefined): Date | undefine
   return new Date(dateOfBirth)
 }
 
-const formatPatientName = (patient: Patient) => {
-  if (!patient) {
-    return ''
-  }
-
-  // eslint-disable-next-line
-  return `${getNamePartString(patient.givenName)} ${getNamePartString(patient.familyName)} ${getNamePartString(patient.suffix)}`
-}
-
 const ViewPatient = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { patient } = useSelector((state: RootState) => state.patient)
-  useTitle(formatPatientName(patient))
+  useTitle(getPatientFullName(patient))
 
   const { id } = useParams()
   useEffect(() => {

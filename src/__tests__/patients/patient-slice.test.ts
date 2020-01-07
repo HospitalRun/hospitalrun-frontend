@@ -22,6 +22,7 @@ describe('patients slice', () => {
         rev: '',
         sex: '',
         dateOfBirth: '',
+        fullName: '',
       })
     })
 
@@ -34,13 +35,15 @@ describe('patients slice', () => {
     })
 
     it('should handle the GET_PATIENT_SUCCESS actions', () => {
-      const expectedPatient = {
-        id: '123',
-        rev: '123',
-        sex: 'male',
-        dateOfBirth: new Date().toISOString(),
-        giveName: 'test',
-      } as Patient
+      const expectedPatient = new Patient(
+        '123',
+        '123',
+        'male',
+        new Date().toISOString(),
+        '',
+        'test',
+        'test',
+      )
       const patientStore = patient(undefined, {
         type: getPatientSuccess.type,
         payload: {

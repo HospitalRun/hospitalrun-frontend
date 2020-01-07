@@ -1,4 +1,5 @@
 import AbstractDBModel from './AbstractDBModel'
+import { getPatientName } from '../util/patient-name-util'
 
 export default class Patient extends AbstractDBModel {
   prefix?: string
@@ -6,6 +7,8 @@ export default class Patient extends AbstractDBModel {
   givenName?: string
 
   familyName?: string
+
+  fullName: string
 
   suffix?: string
 
@@ -58,5 +61,6 @@ export default class Patient extends AbstractDBModel {
     this.preferredLanguage = preferredLanguage
     this.occupation = occupation
     this.type = type
+    this.fullName = getPatientName(this.givenName, this.familyName, this.suffix)
   }
 }
