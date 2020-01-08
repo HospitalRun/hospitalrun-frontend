@@ -17,14 +17,7 @@ describe('patients slice', () => {
     it('should create the proper initial state with empty patients array', () => {
       const patientStore = patient(undefined, {} as AnyAction)
       expect(patientStore.isLoading).toBeFalsy()
-      expect(patientStore.patient).toEqual({
-        id: '',
-        rev: '',
-        sex: '',
-        dateOfBirth: '',
-        fullName: '',
-        friendlyId: '',
-      })
+      expect(patientStore.patient).toEqual({})
     })
 
     it('should handle the GET_PATIENT_START action', () => {
@@ -36,15 +29,14 @@ describe('patients slice', () => {
     })
 
     it('should handle the GET_PATIENT_SUCCESS actions', () => {
-      const expectedPatient = new Patient(
-        '123',
-        '123',
-        'male',
-        new Date().toISOString(),
-        '',
-        'test',
-        'test',
-      )
+      const expectedPatient = {
+        id: '123',
+        rev: '123',
+        sex: 'male',
+        dateOfBirth: new Date().toISOString(),
+        givenName: 'test',
+        familyName: 'test',
+      }
       const patientStore = patient(undefined, {
         type: getPatientSuccess.type,
         payload: {
