@@ -114,7 +114,7 @@ describe('patients slice', () => {
       jest.spyOn(PatientRepository, 'search')
 
       const expectedSearchString = 'search string'
-      const expectedSearchFields = ['fullName']
+      const expectedSearchFields = ['fullName', 'friendlyId']
       await searchPatients(expectedSearchString)(dispatch, getState, null)
 
       expect(PatientRepository.search).toHaveBeenCalledWith(
