@@ -23,6 +23,7 @@ describe('patients slice', () => {
         sex: '',
         dateOfBirth: '',
         fullName: '',
+        friendlyId: '',
       })
     })
 

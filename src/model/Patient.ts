@@ -30,8 +30,11 @@ export default class Patient extends AbstractDBModel {
 
   type?: string
 
+  friendlyId: string
+
   constructor(
     id: string,
+    friendlyId: string,
     rev: string,
     sex: string,
     dateOfBirth: string,
@@ -62,5 +65,6 @@ export default class Patient extends AbstractDBModel {
     this.occupation = occupation
     this.type = type
     this.fullName = getPatientName(this.givenName, this.familyName, this.suffix)
+    this.friendlyId = friendlyId
   }
 }

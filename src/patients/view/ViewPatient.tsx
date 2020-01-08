@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, withRouter } from 'react-router-dom'
-import { Panel, Spinner } from '@hospitalrun/components'
+import { useHistory, useParams, withRouter } from 'react-router-dom'
+import { Panel, Row, Spinner, Button } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import { differenceInYears } from 'date-fns'
 import useTitle from '../../util/useTitle'
-import { fetchPatient } from '../patient-slice'
+import { deletePatient, fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
 import DatePickerWithLabelFormGroup from '../../components/input/DatePickerWithLabelFormGroup'
 import { getPatientFullName } from '../../util/patient-name-util'
+import Patient from '../../model/Patient'
 
 const getPatientAge = (dateOfBirth: string | undefined): string => {
   if (!dateOfBirth) {
@@ -30,11 +31,20 @@ const getPatientDateOfBirth = (dateOfBirth: string | undefined): Date | undefine
   return new Date(dateOfBirth)
 }
 
+const getFriendlyId = (p: Patient): string => {
+  if (p) {
+    return p.friendlyId
+  }
+
+  return ''
+}
+
 const ViewPatient = () => {
+  const history = useHistory()
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { patient } = useSelector((state: RootState) => state.patient)
-  useTitle(getPatientFullName(patient))
+  useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
 
   const { id } = useParams()
   useEffect(() => {
@@ -47,8 +57,18 @@ const ViewPatient = () => {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
+  const deleteCurrentPatient = () => {
+    dispatch(deletePatient(patient, history))
+  }
+
   return (
     <div>
+      <Row>
+        <Button color="danger" onClick={deleteCurrentPatient}>
+          Delete
+        </Button>
+      </Row>
+
       <Panel title={t('patient.basicInformation')} color="primary" collapsible>
         <div className="row">
           <div className="col">
