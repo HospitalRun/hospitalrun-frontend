@@ -1,5 +1,5 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
-
+import { getTime } from 'date-fns'
 import AbstractDBModel from '../../model/AbstractDBModel'
 import Search from './Search'
 
@@ -59,7 +59,7 @@ export default class Repository<T extends AbstractDBModel> {
 
   async save(entity: T): Promise<T> {
     const { id, rev, ...valuesToSave } = entity
-    const savedEntity = await this.db.post({ ...valuesToSave })
+    const savedEntity = await this.db.put({ _id: getTime(new Date()).toString(), ...valuesToSave })
     return this.find(savedEntity.id)
   }
 
