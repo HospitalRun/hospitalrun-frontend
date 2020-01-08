@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useParams, withRouter } from 'react-router-dom'
-import { Panel, Row, Spinner, Button } from '@hospitalrun/components'
+import { useParams, withRouter } from 'react-router-dom'
+import { Panel, Spinner } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import { differenceInYears } from 'date-fns'
 import useTitle from '../../util/useTitle'
-import { deletePatient, fetchPatient } from '../patient-slice'
+import { fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
@@ -40,7 +40,6 @@ const getFriendlyId = (p: Patient): string => {
 }
 
 const ViewPatient = () => {
-  const history = useHistory()
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { patient } = useSelector((state: RootState) => state.patient)
@@ -57,18 +56,8 @@ const ViewPatient = () => {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
-  const deleteCurrentPatient = () => {
-    dispatch(deletePatient(patient, history))
-  }
-
   return (
     <div>
-      <Row>
-        <Button color="danger" onClick={deleteCurrentPatient}>
-          Delete
-        </Button>
-      </Row>
-
       <Panel title={t('patient.basicInformation')} color="primary" collapsible>
         <div className="row">
           <div className="col">
