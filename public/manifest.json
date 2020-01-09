@@ -16,10 +16,10 @@
       "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512"
-    }	 
+    }
   ],
   "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "display": "fullscreen",
+  "theme_color": "#1abc9c",
+  "background_color": "#fdfffc"
 }
