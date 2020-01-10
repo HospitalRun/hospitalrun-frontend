@@ -18,6 +18,23 @@ export class PatientRepository extends Repository<Patient> {
     super(patients)
   }
 
+  async search(text: string): Promise<Patient[]> {
+    return super.search({
+      selector: {
+        $or: [
+          {
+            fullName: {
+              $regex: `^(.)*${text}(.)*$`,
+            },
+          },
+          {
+            friendlyId: text,
+          },
+        ],
+      },
+    })
+  }
+
   async getFriendlyId(): Promise<string> {
     const storedPatients = await this.findAll()
 

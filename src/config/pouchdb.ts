@@ -3,10 +3,12 @@ import PouchDB from 'pouchdb'
 /* eslint-disable */
 const memoryAdapter = require('pouchdb-adapter-memory')
 const search = require('pouchdb-quick-search')
+import PouchdbFind from 'pouchdb-find'
 /* eslint-enable */
 
 PouchDB.plugin(search)
 PouchDB.plugin(memoryAdapter)
+PouchDB.plugin(PouchdbFind)
 
 function createDb(name: string) {
   if (process.env.NODE_ENV === 'test') {

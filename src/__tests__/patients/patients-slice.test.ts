@@ -11,7 +11,6 @@ import patients, {
 } from '../../patients/patients-slice'
 import Patient from '../../model/Patient'
 import PatientRepository from '../../clients/db/PatientRepository'
-import Search from '../../clients/db/Search'
 
 describe('patients slice', () => {
   beforeEach(() => {
@@ -114,12 +113,9 @@ describe('patients slice', () => {
       jest.spyOn(PatientRepository, 'search')
 
       const expectedSearchString = 'search string'
-      const expectedSearchFields = ['fullName', 'friendlyId']
       await searchPatients(expectedSearchString)(dispatch, getState, null)
 
-      expect(PatientRepository.search).toHaveBeenCalledWith(
-        new Search(expectedSearchString, expectedSearchFields),
-      )
+      expect(PatientRepository.search).toHaveBeenCalledWith(expectedSearchString)
     })
 
     it('should call the PatientRepository findALl method if there is no string text', async () => {

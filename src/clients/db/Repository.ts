@@ -1,7 +1,6 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
 import { getTime } from 'date-fns'
 import AbstractDBModel from '../../model/AbstractDBModel'
-import Search from './Search'
 
 function mapRow(row: any): any {
   const { value, doc } = row
@@ -22,11 +21,6 @@ function mapDocument(document: any): any {
   }
 }
 
-function mapRowFromSearch(row: any): any {
-  const { doc } = row
-  return mapDocument(doc)
-}
-
 export default class Repository<T extends AbstractDBModel> {
   db: PouchDB.Database
 
@@ -39,14 +33,9 @@ export default class Repository<T extends AbstractDBModel> {
     return mapDocument(document)
   }
 
-  async search(search: Search): Promise<T[]> {
-    const response = await this.db.search({
-      query: search.searchString,
-      fields: search.fields,
-      include_docs: true,
-    })
-
-    return response.rows.map(mapRowFromSearch)
+  async search(criteria: any): Promise<T[]> {
+    const response = await this.db.find(criteria)
+    return response.docs.map(mapDocument)
   }
 
   async findAll(): Promise<T[]> {
