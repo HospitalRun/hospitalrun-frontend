@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Toast } from '@hospitalrun/components'
 import Patient from '../model/Patient'
 import PatientRepository from '../clients/db/PatientRepository'
 import { AppThunk } from '../store'
+import il8n from '../i18n'
 
 interface PatientsState {
   isLoading: boolean
@@ -45,6 +47,13 @@ export const createPatient = (patient: Patient, history: any): AppThunk => async
     const newPatient = await PatientRepository.save(patient)
     dispatch(createPatientSuccess())
     history.push(`/patients/${newPatient.id}`)
+    Toast(
+      'success',
+      il8n.t('Success!'),
+      `${il8n.t('patients.successfullyCreated')} ${patient.givenName} ${patient.familyName} ${
+        patient.suffix
+      }`,
+    )
   } catch (error) {
     console.log(error)
   }

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import { Toaster } from '@hospitalrun/components'
 import NewPatient from '../../patients/new/NewPatient'
 import ViewPatient from '../../patients/view/ViewPatient'
 import PatientRepository from '../../clients/db/PatientRepository'
@@ -63,6 +64,25 @@ describe('HospitalRun', () => {
       )
 
       expect(wrapper.find(ViewPatient)).toHaveLength(1)
+    })
+  })
+
+  describe('layout', () => {
+    it('should render a Toaster', () => {
+      const wrapper = mount(
+        <Provider
+          store={mockStore({
+            title: 'test',
+            user: { permissions: [Permissions.WritePatients] },
+          })}
+        >
+          <MemoryRouter initialEntries={['/']}>
+            <HospitalRun />
+          </MemoryRouter>
+        </Provider>,
+      )
+
+      expect(wrapper.find(Toaster)).toHaveLength(1)
     })
   })
 })

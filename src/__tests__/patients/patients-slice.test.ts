@@ -1,6 +1,8 @@
+import '../../__mocks__/matchMediaMock'
 import { AnyAction } from 'redux'
 import { createMemoryHistory } from 'history'
 import { mocked } from 'ts-jest/utils'
+import * as components from '@hospitalrun/components'
 import patients, {
   getPatientsStart,
   getAllPatientsSuccess,
@@ -94,6 +96,34 @@ describe('patients slice', () => {
       await createPatient(expectedPatient, history)(dispatch, getState, null)
 
       expect(history.entries[1].pathname).toEqual(`/patients/${expectedPatientId}`)
+    })
+
+    it('should call the Toaster function with the correct data', async () => {
+      jest.spyOn(components, 'Toast')
+      const expectedPatientId = '12345'
+      const expectedGivenName = 'given'
+      const expectedFamilyName = 'family'
+      const expectedSuffix = 'suffix'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: expectedGivenName,
+        familyName: expectedFamilyName,
+        suffix: expectedSuffix,
+      } as Patient
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      mockedPatientRepository.save.mockResolvedValue(expectedPatient)
+      const mockedComponents = mocked(components, true)
+      const history = createMemoryHistory()
+      const dispatch = jest.fn()
+      const getState = jest.fn()
+
+      await createPatient(expectedPatient, history)(dispatch, getState, null)
+
+      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+        'success',
+        'Success!',
+        `patients.successfullyCreated ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
+      )
     })
   })
 
