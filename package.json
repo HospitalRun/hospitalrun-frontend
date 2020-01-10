@@ -12,7 +12,7 @@
     "@semantic-release/release-notes-generator": "~7.3.0",
     "@types/pouchdb-find": "^6.3.4",
     "bootstrap": "~4.4.1",
-    "date-fns": "~2.8.1",
+    "date-fns": "~2.9.0",
     "i18next": "^19.0.1",
     "i18next-browser-languagedetector": "^4.0.1",
     "i18next-xhr-backend": "^3.2.2",
