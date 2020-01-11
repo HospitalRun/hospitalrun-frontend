@@ -15,9 +15,9 @@ before_script:
 script:
   - npm run build
 after_script:
-  - npm run test:ci
+  - npm run test:ci --coverage
 after_success:
-  - jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+  - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
 
 # Re-enable for version v2.0.0
 # jobs:
