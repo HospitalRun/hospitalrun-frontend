@@ -69,4 +69,21 @@ export const fetchPatients = (): AppThunk => async (dispatch) => {
   }
 }
 
+export const searchPatients = (searchString: string): AppThunk => async (dispatch) => {
+  try {
+    dispatch(getPatientsStart())
+
+    let patients
+    if (searchString.trim() === '') {
+      patients = await PatientRepository.findAll()
+    } else {
+      patients = await PatientRepository.search(searchString)
+    }
+
+    dispatch(getAllPatientsSuccess(patients))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export default patientsSlice.reducer

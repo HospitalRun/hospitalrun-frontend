@@ -1,5 +1,5 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
-
+import { getTime } from 'date-fns'
 import AbstractDBModel from '../../model/AbstractDBModel'
 
 function mapRow(row: any): any {
@@ -33,6 +33,11 @@ export default class Repository<T extends AbstractDBModel> {
     return mapDocument(document)
   }
 
+  async search(criteria: any): Promise<T[]> {
+    const response = await this.db.find(criteria)
+    return response.docs.map(mapDocument)
+  }
+
   async findAll(): Promise<T[]> {
     const allPatients = await this.db.allDocs({
       include_docs: true,
@@ -43,7 +48,7 @@ export default class Repository<T extends AbstractDBModel> {
 
   async save(entity: T): Promise<T> {
     const { id, rev, ...valuesToSave } = entity
-    const savedEntity = await this.db.post({ ...valuesToSave })
+    const savedEntity = await this.db.put({ _id: getTime(new Date()).toString(), ...valuesToSave })
     return this.find(savedEntity.id)
   }
 

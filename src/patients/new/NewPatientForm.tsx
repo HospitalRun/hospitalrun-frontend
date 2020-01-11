@@ -7,6 +7,7 @@ import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLab
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import DatePickerWithLabelFormGroup from '../../components/input/DatePickerWithLabelFormGroup'
 import Patient from '../../model/Patient'
+import { getPatientName } from '../../util/patient-name-util'
 
 interface Props {
   onCancel: () => void
@@ -32,6 +33,7 @@ const NewPatientForm = (props: Props) => {
     preferredLanguage: '',
     occupation: '',
     type: '',
+    fullName: '',
   })
 
   const onSaveButtonClick = async () => {
@@ -49,6 +51,7 @@ const NewPatientForm = (props: Props) => {
       phoneNumber: patient.phoneNumber,
       email: patient.email,
       address: patient.address,
+      fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
     } as Patient
 
     onSave(newPatient)

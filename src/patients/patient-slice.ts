@@ -12,7 +12,7 @@ interface PatientState {
 const initialState: PatientState = {
   isLoading: false,
   isUpdatedSuccessfully: false,
-  patient: new Patient('', '', '', ''),
+  patient: {} as Patient,
 }
 
 function startLoading(state: PatientState) {
@@ -49,6 +49,15 @@ export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
     dispatch(getPatientStart())
     const patient = await PatientRepository.find(id)
     dispatch(getPatientSuccess(patient))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deletePatient = (patient: Patient, history: any): AppThunk => async () => {
+  try {
+    await PatientRepository.delete(patient)
+    history.push('/patients')
   } catch (error) {
     console.log(error)
   }

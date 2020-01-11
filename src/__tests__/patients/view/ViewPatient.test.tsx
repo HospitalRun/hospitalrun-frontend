@@ -25,6 +25,7 @@ describe('ViewPatient', () => {
     phoneNumber: 'phoneNumber',
     email: 'email@email.com',
     address: 'address',
+    friendlyId: 'P00001',
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
@@ -62,7 +63,7 @@ describe('ViewPatient', () => {
       await setup()
     })
     expect(titleUtil.default).toHaveBeenCalledWith(
-      `${patient.givenName} ${patient.familyName} ${patient.suffix}`,
+      `${patient.givenName} ${patient.familyName} ${patient.suffix} (${patient.friendlyId})`,
     )
   })
 
@@ -177,12 +178,12 @@ describe('ViewPatient', () => {
 
     wrapper.update()
 
-    const ageInput = wrapper.findWhere((w) => w.prop('name') === 'age')
+    const ageInput = wrapper.findWhere((w: any) => w.prop('name') === 'age')
     expect(ageInput.prop('value')).toEqual('0')
     expect(ageInput.prop('label')).toEqual('patient.approximateAge')
     expect(ageInput.prop('isEditable')).toBeFalsy()
 
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfBirth')
+    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
     expect(dateOfBirthInput.prop('value')).toEqual(new Date(patient.dateOfBirth))
     expect(dateOfBirthInput.prop('label')).toEqual('patient.approximateDateOfBirth')
     expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
