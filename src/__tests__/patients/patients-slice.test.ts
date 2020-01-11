@@ -11,7 +11,6 @@ import patients, {
   createPatient,
   searchPatients,
 } from '../../patients/patients-slice'
-import * as patientsSlice from '../../patients/patients-slice'
 import Patient from '../../model/Patient'
 import PatientRepository from '../../clients/db/PatientRepository'
 
