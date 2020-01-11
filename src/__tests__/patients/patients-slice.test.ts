@@ -11,6 +11,7 @@ import patients, {
   createPatient,
   searchPatients,
 } from '../../patients/patients-slice'
+import * as patientsSlice from '../../patients/patients-slice'
 import Patient from '../../model/Patient'
 import PatientRepository from '../../clients/db/PatientRepository'
 
@@ -122,7 +123,7 @@ describe('patients slice', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'Success!',
-        `patients.successfullyCreated ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
+        `Successfully created patient ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
       )
     })
   })

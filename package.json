@@ -95,6 +95,7 @@
     "commit": "npx git-cz",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "start:serve": "npm run build && serve -s build",
     "prepublishOnly": "npm run build",
     "test": "react-scripts test --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test",
