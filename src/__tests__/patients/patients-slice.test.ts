@@ -3,12 +3,9 @@ import { AnyAction } from 'redux'
 import { createMemoryHistory } from 'history'
 import { mocked } from 'ts-jest/utils'
 import * as components from '@hospitalrun/components'
-import { useTranslation } from 'react-i18next'
 import * as patientsSlice from '../../patients/patients-slice'
 import Patient from '../../model/Patient'
 import PatientRepository from '../../clients/db/PatientRepository'
-
-const { t } = useTranslation()
 
 describe('patients slice', () => {
   beforeEach(() => {
@@ -130,7 +127,7 @@ describe('patients slice', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'Success!',
-        `patients.successfullyCreated ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
+        `Successfully created patient ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
       )
     })
   })
