@@ -15,7 +15,7 @@ before_script:
 script:
   - npm run build
 after_script:
-  - npm run test:ci
+  - npm run test:ci -- --coverage --watchAll=false
 after_success:
   - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
 
