@@ -16,8 +16,10 @@ const Navbar = () => {
       }}
       bg="dark"
       variant="dark"
-      onSearchButtonClick={() => console.log('hello')}
-      onSearchTextBoxChange={() => console.log('hello')}
+      search={{
+        onClickButton: () => console.log('hello'),
+        onChangeInput: () => console.log('hello'),
+      }}
       navLinks={[
         {
           label: t('patients.label'),
