@@ -68,6 +68,7 @@
     "@typescript-eslint/parser": "~2.15.0",
     "commitizen": "~4.0.3",
     "commitlint-config-cz": "~0.12.1",
+    "coveralls": "~3.0.9",
     "cross-env": "~6.0.3",
     "cz-conventional-changelog": "~3.0.2",
     "dateformat": "~3.0.3",
@@ -101,7 +102,7 @@
     "test": "react-scripts test --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
-    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls",
     "semantic-release": "semantic-release"
   },
   "browserslist": {
