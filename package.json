@@ -102,7 +102,7 @@
     "test": "react-scripts test --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
-    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls",
     "semantic-release": "semantic-release"
   },
   "browserslist": {
