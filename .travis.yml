@@ -14,9 +14,8 @@ before_script:
   - npm run lint
 script:
   - npm run build
-after_script:
   - npm run test:ci -- --coverage --watchAll=false
-after_success:
+after_script:
   - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
 
 # Re-enable for version v2.0.0
