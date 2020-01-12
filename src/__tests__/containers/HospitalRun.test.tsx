@@ -12,7 +12,7 @@ import ViewPatient from '../../patients/view/ViewPatient'
 import PatientRepository from '../../clients/db/PatientRepository'
 import Patient from '../../model/Patient'
 import HospitalRun from '../../containers/HospitalRun'
-import Permissions from '../../util/Permissions'
+import Permissions from '../../model/Permissions'
 
 const mockStore = configureMockStore([thunk])
 
