@@ -22,17 +22,17 @@ const Navbar = () => {
       }}
       navLinks={[
         {
-          label: t('patients.label'),
+          label: t('patients.label', 'patients'),
           onClick: () => {},
           children: [
             {
-              label: t('actions.list'),
+              label: t('actions.list', 'list'),
               onClick: () => {
                 history.push('/patients')
               },
             },
             {
-              label: t('actions.new'),
+              label: t('actions.new', 'new'),
               onClick: () => {
                 history.push('/patients/new')
               },

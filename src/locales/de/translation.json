@@ -1,0 +1,22 @@
+{
+  "actions": {
+    "edit": "Bearbeiten",
+    "save": "speichern",
+    "cancel": "Stornieren",
+    "new": "Neu",
+    "list": "Liste"
+  },
+  "dashboard": {
+    "label": "لوحة القيادة"
+  },
+  "patient": {
+    "firstName": "Vorname",
+    "lastName": "Nachname"
+  },
+  "patients": {
+    "label": "Patienten",
+    "viewPatients": "Patienten anzeigen",
+    "viewPatient": "Patient anzeigen",
+    "newPatient": "Neuer Patient"
+  }
+}

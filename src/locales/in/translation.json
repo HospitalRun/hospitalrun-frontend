@@ -1,0 +1,22 @@
+{
+  "actions": {
+    "edit": "Edit",
+    "save": "Menyimpan",
+    "cancel": "Membatalkan",
+    "new": "Baru",
+    "list": "Daftar"
+  },
+  "dashboard": {
+    "label": "Dasbor"
+  },
+  "patient": {
+    "firstName": "Nama depan",
+    "lastName": "Nama keluarga"
+  },
+  "patients": {
+    "label": "Pasien",
+    "viewPatients": "Lihat Pasien",
+    "viewPatient": "Lihat Pasien",
+    "newPatient": "Pasien Baru"
+  }
+}

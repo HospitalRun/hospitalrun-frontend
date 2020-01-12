@@ -12,7 +12,7 @@ const Sidebar = () => {
         <ul className="nav flex-column">
           <li className="nav-item">
             <Link to="/" className={`nav-link ${path.pathname === '/' ? ' active' : ''}`}>
-              {t('dashboard.label')}
+              {t('dashboard.label', 'dashboard')}
             </Link>
           </li>
           <li className="nav-item">
@@ -21,7 +21,7 @@ const Sidebar = () => {
               className={`nav-link ${path.pathname.includes('patient') ? ' active' : ''}`}
             >
               <Icon icon="patients" />
-              {`  ${t('patients.label')}`}
+              {`  ${t('patients.label', 'patients')}`}
             </Link>
           </li>
         </ul>
