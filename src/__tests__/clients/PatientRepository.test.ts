@@ -38,7 +38,7 @@ describe('patient repository', () => {
     it('should return all records that fullName contains search text', async () => {
       await patients.put({ _id: 'id1234', friendlyId: 'P00002', fullName: 'blah test test blah' })
       await patients.put({ _id: 'id5678', friendlyId: 'P00001', fullName: 'test test' })
-      await patients.put({ _id: 'id2345', friendlyId: 'P00003', fullName: 'not found'})
+      await patients.put({ _id: 'id2345', friendlyId: 'P00003', fullName: 'not found' })
 
       const result = await PatientRepository.search('test test')
 
@@ -51,7 +51,7 @@ describe('patient repository', () => {
       await patients.remove(await patients.get('id2345'))
     })
   })
-  
+
   describe('findAll', () => {
     it('should find all patients in the database sorted by their ids', async () => {
       const expectedPatient2 = await patients.put({ _id: 'id5678' })
@@ -115,6 +115,6 @@ describe('patient repository', () => {
 
       const allDocs = await patients.allDocs()
       expect(allDocs.total_rows).toEqual(0)
-    });
+    })
   })
 })
