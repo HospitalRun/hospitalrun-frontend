@@ -41,6 +41,17 @@ describe('patients slice', () => {
 
       expect(patientsStore.isLoading).toBeFalsy()
     })
+    
+    it('should handle the GET_ALL_PATIENTS_SUCCESS action', () => {
+      const expectedPatients = [{id: '1234'}]
+      const patientsStore = patients(undefined, {
+        type: getAllPatientsSuccess.type,
+        payload: [{id: '1234'}]
+      })
+
+      expect(patientsStore.isLoading).toBeFalsy()
+      expect(patientsStore.patients).toEqual(expectedPatients)
+    })
   })
 
   describe('createPatient()', () => {
