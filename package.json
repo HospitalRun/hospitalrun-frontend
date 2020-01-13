@@ -92,7 +92,7 @@
     "prettier": "~1.19.1",
     "redux-mock-store": "~1.5.4",
     "semantic-release": "~15.14.0",
-    "ts-jest": "~24.2.0"
+    "ts-jest": "~24.3.0"
   },
   "scripts": {
     "commit": "npx git-cz",
