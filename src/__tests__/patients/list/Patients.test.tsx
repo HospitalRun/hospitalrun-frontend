@@ -1,7 +1,7 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
-import { TextInput, Button } from '@hospitalrun/components'
+import { TextInput, Button, Spinner } from '@hospitalrun/components'
 import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
@@ -18,11 +18,11 @@ const mockStore = configureStore(middlewares)
 describe('Patients', () => {
   const mockedPatientRepository = mocked(PatientRepository, true)
 
-  const setup = () => {
+  const setup = (isLoading?: boolean) => {
     const store = mockStore({
       patients: {
         patients: [],
-        isLoading: false,
+        isLoading: isLoading,
       },
     })
     return mount(
@@ -48,6 +48,12 @@ describe('Patients', () => {
       expect(searchInput).toHaveLength(1)
       expect(searchInput.prop('placeholder')).toEqual('actions.search')
       expect(searchButton.text().trim()).toEqual('actions.search')
+    })
+
+    it('should render a loading bar if it is loading', () => {
+      const wrapper = setup(true)
+
+      expect(wrapper.find(Spinner)).toHaveLength(1)
     })
   })
 
