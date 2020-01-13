@@ -1,5 +1,5 @@
-import title, { updateTitle, changeTitle } from '../../slices/title-slice'
 import { AnyAction } from 'redux'
+import title, { updateTitle, changeTitle } from '../../slices/title-slice'
 
 describe('title slice', () => {
   describe('title reducer', () => {

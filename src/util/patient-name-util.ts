@@ -9,19 +9,19 @@ const getNamePartString = (namePart: string | undefined) => {
 }
 
 const appendNamePart = (name: string, namePart?: string): string => {
-  if(!namePart) {
-    return name.trim();
+  if (!namePart) {
+    return name.trim()
   }
-  
+
   return `${name} ${getNamePartString(namePart)}`.trim()
 }
 
 export function getPatientName(givenName?: string, familyName?: string, suffix?: string) {
-  let name = '';
-  name = appendNamePart(name, givenName);
-  name = appendNamePart(name, familyName);
-  name = appendNamePart(name, suffix);
-  return name.trim();
+  let name = ''
+  name = appendNamePart(name, givenName)
+  name = appendNamePart(name, familyName)
+  name = appendNamePart(name, suffix)
+  return name.trim()
 }
 
 export function getPatientFullName(patient: Patient): string {
