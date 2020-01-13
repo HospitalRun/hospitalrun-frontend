@@ -210,7 +210,7 @@ describe('New Patient Form', () => {
 
       act(() => {
         if (unknownCheckbox) {
-          unknownCheckbox.prop('onChange')!({ target: { checked: true } } as ChangeEvent<
+          ;(unknownCheckbox.prop('onChange') as any)({ target: { checked: true } } as ChangeEvent<
             HTMLInputElement
           >)
         }
@@ -240,7 +240,7 @@ describe('New Patient Form', () => {
 
         act(() => {
           if (unknownCheckbox) {
-            unknownCheckbox.prop('onChange')!({ target: { checked: true } } as ChangeEvent<
+            ;(unknownCheckbox.prop('onChange') as any)({ target: { checked: true } } as ChangeEvent<
               HTMLInputElement
             >)
           }
