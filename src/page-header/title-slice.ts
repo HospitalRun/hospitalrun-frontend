@@ -22,11 +22,7 @@ const titleSlice = createSlice({
 export const { changeTitle } = titleSlice.actions
 
 export const updateTitle = (title: string): AppThunk => async (dispatch) => {
-  try {
-    dispatch(changeTitle(title))
-  } catch (error) {
-    console.log(error)
-  }
+  dispatch(changeTitle(title))
 }
 
 export default titleSlice.reducer

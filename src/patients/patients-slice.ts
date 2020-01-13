@@ -42,48 +42,36 @@ export const {
 } = patientsSlice.actions
 
 export const createPatient = (patient: Patient, history: any): AppThunk => async (dispatch) => {
-  try {
-    dispatch(createPatientStart())
-    const newPatient = await PatientRepository.save(patient)
-    dispatch(createPatientSuccess())
-    history.push(`/patients/${newPatient.id}`)
-    Toast(
-      'success',
-      il8n.t('Success!'),
-      `${il8n.t('patients.successfullyCreated')} ${patient.givenName} ${patient.familyName} ${
-        patient.suffix
-      }`,
-    )
-  } catch (error) {
-    console.log(error)
-  }
+  dispatch(createPatientStart())
+  const newPatient = await PatientRepository.save(patient)
+  dispatch(createPatientSuccess())
+  history.push(`/patients/${newPatient.id}`)
+  Toast(
+    'success',
+    il8n.t('Success!'),
+    `${il8n.t('patients.successfullyCreated')} ${patient.givenName} ${patient.familyName} ${
+      patient.suffix
+    }`,
+  )
 }
 
 export const fetchPatients = (): AppThunk => async (dispatch) => {
-  try {
-    dispatch(getPatientsStart())
-    const patients = await PatientRepository.findAll()
-    dispatch(getAllPatientsSuccess(patients))
-  } catch (error) {
-    console.log(error)
-  }
+  dispatch(getPatientsStart())
+  const patients = await PatientRepository.findAll()
+  dispatch(getAllPatientsSuccess(patients))
 }
 
 export const searchPatients = (searchString: string): AppThunk => async (dispatch) => {
-  try {
-    dispatch(getPatientsStart())
+  dispatch(getPatientsStart())
 
-    let patients
-    if (searchString.trim() === '') {
-      patients = await PatientRepository.findAll()
-    } else {
-      patients = await PatientRepository.search(searchString)
-    }
-
-    dispatch(getAllPatientsSuccess(patients))
-  } catch (error) {
-    console.log(error)
+  let patients
+  if (searchString.trim() === '') {
+    patients = await PatientRepository.findAll()
+  } else {
+    patients = await PatientRepository.search(searchString)
   }
+
+  dispatch(getAllPatientsSuccess(patients))
 }
 
 export default patientsSlice.reducer

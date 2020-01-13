@@ -9,10 +9,6 @@ const getNamePartString = (namePart: string | undefined) => {
 }
 
 const appendNamePart = (name: string, namePart?: string): string => {
-  if (!namePart) {
-    return name.trim()
-  }
-
   return `${name} ${getNamePartString(namePart)}`.trim()
 }
 
