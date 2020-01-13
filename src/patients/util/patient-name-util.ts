@@ -8,9 +8,8 @@ const getNamePartString = (namePart: string | undefined) => {
   return namePart
 }
 
-const appendNamePart = (name: string, namePart?: string): string => {
-  return `${name} ${getNamePartString(namePart)}`.trim()
-}
+const appendNamePart = (name: string, namePart?: string): string =>
+  `${name} ${getNamePartString(namePart)}`.trim()
 
 export function getPatientName(givenName?: string, familyName?: string, suffix?: string) {
   let name = ''

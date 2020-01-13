@@ -32,11 +32,7 @@ const patientSlice = createSlice({
   },
 })
 
-export const {
-  getPatientStart,
-  getPatientSuccess,
-  updateStart,
-} = patientSlice.actions
+export const { getPatientStart, getPatientSuccess, updateStart } = patientSlice.actions
 
 export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
   dispatch(getPatientStart())

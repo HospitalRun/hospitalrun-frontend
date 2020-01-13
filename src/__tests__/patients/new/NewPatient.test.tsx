@@ -4,6 +4,8 @@ import { mount } from 'enzyme'
 import { Router, MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
+import { createMemoryHistory } from 'history'
+import { act } from 'react-dom/test-utils'
 import NewPatient from '../../../patients/new/NewPatient'
 import NewPatientForm from '../../../patients/new/NewPatientForm'
 import store from '../../../store'
@@ -11,8 +13,6 @@ import Patient from '../../../model/Patient'
 import * as patientSlice from '../../../patients/patients-slice'
 import * as titleUtil from '../../../page-header/useTitle'
 import PatientRepository from '../../../clients/db/PatientRepository'
-import { createMemoryHistory } from 'history'
-import { act } from 'react-dom/test-utils'
 
 describe('New Patient', () => {
   it('should render a new patient form', () => {
