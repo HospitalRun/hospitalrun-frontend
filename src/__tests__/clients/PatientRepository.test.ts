@@ -74,7 +74,7 @@ describe('patient repository', () => {
         fullName: 'test test',
       } as Patient)
 
-      expect(fromUnixTime(parseInt(newPatient.id)).getTime() > 0).toBeTruthy()
+      expect(fromUnixTime(parseInt(newPatient.id, 10)).getTime() > 0).toBeTruthy()
 
       await patients.remove(await patients.get(newPatient.id))
     })
