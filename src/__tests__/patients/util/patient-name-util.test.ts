@@ -1,4 +1,4 @@
-import { getPatientFullName, getPatientName } from 'util/patient-name-util'
+import { getPatientFullName, getPatientName } from 'patients/util/patient-name-util'
 import Patient from 'model/Patient'
 
 describe('patient name util', () => {

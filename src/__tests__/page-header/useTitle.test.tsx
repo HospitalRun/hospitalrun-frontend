@@ -3,8 +3,8 @@ import { renderHook } from '@testing-library/react-hooks'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
-import useTitle from '../../util/useTitle'
-import * as titleSlice from '../../slices/title-slice'
+import useTitle from '../../page-header/useTitle'
+import * as titleSlice from '../../page-header/title-slice'
 
 const store = createMockStore([thunk])
 

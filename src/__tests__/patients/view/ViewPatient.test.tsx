@@ -7,7 +7,7 @@ import { act } from 'react-dom/test-utils'
 import { MemoryRouter, Route } from 'react-router-dom'
 import Patient from '../../../model/Patient'
 import PatientRepository from '../../../clients/db/PatientRepository'
-import * as titleUtil from '../../../util/useTitle'
+import * as titleUtil from '../../../page-header/useTitle'
 import ViewPatient from '../../../patients/view/ViewPatient'
 import store from '../../../store'
 

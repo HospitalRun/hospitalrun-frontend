@@ -7,7 +7,7 @@ import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLab
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import DatePickerWithLabelFormGroup from '../../components/input/DatePickerWithLabelFormGroup'
 import Patient from '../../model/Patient'
-import { getPatientName } from '../../util/patient-name-util'
+import { getPatientName } from '../util/patient-name-util'
 
 interface Props {
   onCancel: () => void

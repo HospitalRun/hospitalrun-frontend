@@ -9,7 +9,7 @@ import NewPatientForm from '../../../patients/new/NewPatientForm'
 import store from '../../../store'
 import Patient from '../../../model/Patient'
 import * as patientSlice from '../../../patients/patients-slice'
-import * as titleUtil from '../../../util/useTitle'
+import * as titleUtil from '../../../page-header/useTitle'
 import PatientRepository from '../../../clients/db/PatientRepository'
 
 describe('New Patient', () => {
