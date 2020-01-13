@@ -3,7 +3,7 @@ import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import NewPatientForm from './NewPatientForm'
-import useTitle from '../../util/useTitle'
+import useTitle from '../../page-header/useTitle'
 import Patient from '../../model/Patient'
 import { createPatient } from '../patients-slice'
 

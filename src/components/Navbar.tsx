@@ -17,10 +17,10 @@ const Navbar = () => {
       }}
       search={{
         onClickButton: () => {
-          console.log('search')
+          // no oop
         },
         onChangeInput: () => {
-          console.log('change')
+          // no oop
         },
         placeholderText: t('actions.search'),
         buttonText: t('actions.search'),
@@ -29,7 +29,7 @@ const Navbar = () => {
         {
           label: t('patients.label'),
           onClick: () => {
-            console.log('patients click')
+            // no oop
           },
           children: [
             {

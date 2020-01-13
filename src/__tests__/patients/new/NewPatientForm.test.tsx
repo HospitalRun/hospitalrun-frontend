@@ -10,7 +10,7 @@ import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableF
 import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 import Patient from '../../../model/Patient'
-import { getPatientName } from '../../../util/patient-name-util'
+import { getPatientName } from '../../../patients/util/patient-name-util'
 
 const onSave = jest.fn()
 const onCancel = jest.fn()
@@ -210,7 +210,7 @@ describe('New Patient Form', () => {
 
       act(() => {
         if (unknownCheckbox) {
-          unknownCheckbox.prop('onChange')!({ target: { checked: true } } as ChangeEvent<
+          ;(unknownCheckbox.prop('onChange') as any)({ target: { checked: true } } as ChangeEvent<
             HTMLInputElement
           >)
         }
@@ -240,7 +240,7 @@ describe('New Patient Form', () => {
 
         act(() => {
           if (unknownCheckbox) {
-            unknownCheckbox.prop('onChange')!({ target: { checked: true } } as ChangeEvent<
+            ;(unknownCheckbox.prop('onChange') as any)({ target: { checked: true } } as ChangeEvent<
               HTMLInputElement
             >)
           }

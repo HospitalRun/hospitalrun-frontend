@@ -1,30 +1,42 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { Icon } from '@hospitalrun/components'
+import React, { CSSProperties } from 'react'
+import { List, ListItem, Icon } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
+import { useLocation, useHistory } from 'react-router'
 
 const Sidebar = () => {
   const { t } = useTranslation()
   const path = useLocation()
+  const history = useHistory()
+
+  const navigateTo = (location: string) => {
+    history.push(location)
+  }
+
+  const listItemStyle: CSSProperties = {
+    cursor: 'pointer',
+  }
+
   return (
     <nav className="col-md-2 d-none d-md-block bg-light sidebar">
       <div className="sidebar-sticky">
-        <ul className="nav flex-column">
-          <li className="nav-item">
-            <Link to="/" className={`nav-link ${path.pathname === '/' ? ' active' : ''}`}>
-              {t('dashboard.label')}
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="/patients"
-              className={`nav-link ${path.pathname.includes('patient') ? ' active' : ''}`}
-            >
-              <Icon icon="patients" />
-              {`  ${t('patients.label')}`}
-            </Link>
-          </li>
-        </ul>
+        <List layout="flush" className="nav flex-column">
+          <ListItem
+            active={path.pathname === '/'}
+            onClick={() => navigateTo('/')}
+            className="nav-item"
+            style={listItemStyle}
+          >
+            <Icon icon="dashboard" /> {t('dashboard.label')}
+          </ListItem>
+          <ListItem
+            active={path.pathname.includes('patient')}
+            onClick={() => navigateTo('/patients')}
+            className="nav-item"
+            style={listItemStyle}
+          >
+            <Icon icon="patients" /> {t('patients.label')}
+          </ListItem>
+        </List>
       </div>
     </nav>
   )

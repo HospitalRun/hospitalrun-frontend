@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Spinner, TextInput, Button, List, ListItem, Container, Row } from '@hospitalrun/components'
 import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
-import useTitle from '../../util/useTitle'
+import useTitle from '../../page-header/useTitle'
 
 const Patients = () => {
   const { t } = useTranslation()
@@ -28,7 +28,7 @@ const Patients = () => {
     <ul>
       {patients.map((p) => (
         <ListItem action key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
-          {p.givenName} {p.familyName} ({p.friendlyId})
+          {p.fullName} ({p.friendlyId})
         </ListItem>
       ))}
     </ul>

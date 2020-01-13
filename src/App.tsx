@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { Spinner } from '@hospitalrun/components'
-import HospitalRun from './containers/HospitalRun'
+import HospitalRun from './HospitalRun'
 
 import store from './store'
 

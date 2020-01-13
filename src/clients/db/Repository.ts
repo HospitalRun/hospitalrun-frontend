@@ -52,30 +52,6 @@ export default class Repository<T extends AbstractDBModel> {
     return this.find(savedEntity.id)
   }
 
-  async saveOrUpdate(entity: T): Promise<T> {
-    const e = entity as any
-    try {
-      // try and get a patient, if the patient is missing it will throw an error
-      // and have a status of 404.
-      await this.db.get(e.id)
-      const { id, rev, ...restOfDocument } = e
-      const updatedDcoument = {
-        _id: id,
-        _rev: rev,
-        ...restOfDocument,
-      }
-
-      await this.db.put(updatedDcoument)
-      return this.find(e.id)
-    } catch (error) {
-      if (error.status !== 404) {
-        throw Error(error)
-      }
-
-      return this.save(e)
-    }
-  }
-
   async delete(entity: T): Promise<T> {
     const e = entity as any
     return mapDocument(this.db.remove(e.id, e.rev))
