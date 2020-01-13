@@ -1,7 +1,7 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
-import { MemoryRouter } from 'react-router'
+import { Router, MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
 import NewPatient from '../../../patients/new/NewPatient'
@@ -11,6 +11,8 @@ import Patient from '../../../model/Patient'
 import * as patientSlice from '../../../patients/patients-slice'
 import * as titleUtil from '../../../page-header/useTitle'
 import PatientRepository from '../../../clients/db/PatientRepository'
+import { createMemoryHistory } from 'history'
+import { act } from 'react-dom/test-utils'
 
 describe('New Patient', () => {
   it('should render a new patient form', () => {
@@ -70,5 +72,24 @@ describe('New Patient', () => {
     await newPatientForm.prop('onSave')(expectedPatient)
 
     expect(patientSlice.createPatient).toHaveBeenCalledWith(expectedPatient, expect.anything())
+  })
+
+  it('should navigate to /patients when cancel is clicked', () => {
+    const history = createMemoryHistory()
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <NewPatient />
+        </Router>
+      </Provider>,
+    )
+
+    act(() => {
+      wrapper.find(NewPatientForm).prop('onCancel')()
+    })
+
+    wrapper.update()
+
+    expect(history.location.pathname).toEqual('/patients')
   })
 })
