@@ -1,7 +1,7 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
-import { TextInput, Button, Spinner } from '@hospitalrun/components'
+import { TextInput, Button, Spinner, ListItem } from '@hospitalrun/components'
 import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
@@ -16,12 +16,13 @@ const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
 describe('Patients', () => {
+  const patients = [{ fullName: 'test test', friendlyId: 'P12345'}]
   const mockedPatientRepository = mocked(PatientRepository, true)
 
   const setup = (isLoading?: boolean) => {
     const store = mockStore({
       patients: {
-        patients: [],
+        patients,
         isLoading: isLoading,
       },
     })
@@ -54,6 +55,15 @@ describe('Patients', () => {
       const wrapper = setup(true)
 
       expect(wrapper.find(Spinner)).toHaveLength(1)
+    })
+
+    it('should render a list of patients', () => {
+      const wrapper = setup()
+
+      const patientListItems = wrapper.find(ListItem)
+      expect(patientListItems).toHaveLength(1)
+      expect(patientListItems.at(0).text()).toEqual(`${patients[0].fullName} (${patients[0].friendlyId})`)
+
     })
   })
 

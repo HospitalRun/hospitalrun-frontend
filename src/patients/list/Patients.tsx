@@ -28,7 +28,7 @@ const Patients = () => {
     <ul>
       {patients.map((p) => (
         <ListItem action key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
-          {p.givenName} {p.familyName} ({p.friendlyId})
+          {p.fullName} ({p.friendlyId})
         </ListItem>
       ))}
     </ul>
