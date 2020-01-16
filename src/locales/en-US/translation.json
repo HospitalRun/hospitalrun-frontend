@@ -51,5 +51,11 @@
   },
   "states": {
     "success": "Success!"
+  },
+  "scheduling": {
+    "label": "Scheduling",
+    "appointments": {
+      "label": "Appointments"
+    }
   }
 }

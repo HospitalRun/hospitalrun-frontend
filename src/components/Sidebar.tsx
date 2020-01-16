@@ -36,6 +36,14 @@ const Sidebar = () => {
           >
             <Icon icon="patients" /> {t('patients.label')}
           </ListItem>
+          <ListItem
+            active={path.pathname.includes('appointments')}
+            onClick={() => navigateTo('/appointments')}
+            className="nav-item"
+            style={listItemStyle}
+          >
+            <Icon icon="appointment" /> {t('scheduling.label')}
+          </ListItem>
         </List>
       </div>
     </nav>

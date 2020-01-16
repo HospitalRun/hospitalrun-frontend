@@ -88,4 +88,39 @@ describe('Sidebar', () => {
       expect(history.location.pathname).toEqual('/patients')
     })
   })
+
+  describe('appointments link', () => {
+    it('should render the scheduling link', () => {
+      const wrapper = setup('/appointments')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(
+        listItems
+          .at(2)
+          .text()
+          .trim(),
+      ).toEqual('scheduling.label')
+    })
+
+    it('should be active when the current path is /appointments', () => {
+      const wrapper = setup('/appointments')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(2).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /appointments when the scheduling link is clicked', () => {
+      const wrapper = setup('/')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        ;(listItems.at(2).prop('onClick') as any)()
+      })
+
+      expect(history.location.pathname).toEqual('/appointments')
+    })
+  })
 })

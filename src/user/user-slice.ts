@@ -6,7 +6,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  permissions: [Permissions.ReadPatients, Permissions.WritePatients],
+  permissions: [Permissions.ReadPatients, Permissions.WritePatients, Permissions.ReadAppointments],
 }
 
 const userSlice = createSlice({
