@@ -27,8 +27,8 @@
     "type": "Patient Type",
     "preferredLanguage": "Preferred Language",
     "basicInformation": "Basic Information",
+    "generalInformation": "General Information",
     "contactInformation": "Contact Information",
-    "approximateAge": "Approximate Age",
     "unknownDateOfBirth": "Unknown",
     "types": {
       "charity": "Charity",

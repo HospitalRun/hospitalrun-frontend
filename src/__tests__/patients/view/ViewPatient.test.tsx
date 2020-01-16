@@ -4,7 +4,10 @@ import { Provider } from 'react-redux'
 import { mount } from 'enzyme'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
-import { MemoryRouter, Route } from 'react-router-dom'
+import { MemoryRouter, Route, BrowserRouter, Router } from 'react-router-dom'
+import { TabsHeader, Tab } from '@hospitalrun/components'
+import GeneralInformation from 'patients/view/GeneralInformation'
+import { createMemoryHistory } from 'history'
 import Patient from '../../../model/Patient'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as titleUtil from '../../../page-header/useTitle'
@@ -29,6 +32,7 @@ describe('ViewPatient', () => {
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
+  let history = createMemoryHistory()
   const setup = () => {
     jest.spyOn(PatientRepository, 'find')
     const mockedPatientRepository = mocked(PatientRepository, true)
@@ -39,13 +43,15 @@ describe('ViewPatient', () => {
       }),
     }))
 
+    history = createMemoryHistory()
+    history.push('/patients/123')
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={['/patients/123']}>
+        <Router history={history}>
           <Route path="/patients/:id">
             <ViewPatient />
           </Route>
-        </MemoryRouter>
+        </Router>
       </Provider>,
     )
 
@@ -67,125 +73,48 @@ describe('ViewPatient', () => {
     )
   })
 
-  it('should render the sex select', () => {
-    const wrapper = setup()
-
-    const sexSelect = wrapper.findWhere((w) => w.prop('name') === 'sex')
-    expect(sexSelect.prop('value')).toEqual(patient.sex)
-    expect(sexSelect.prop('label')).toEqual('patient.sex')
-    expect(sexSelect.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the patient type select', () => {
-    const wrapper = setup()
-
-    const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
-    expect(typeSelect.prop('value')).toEqual(patient.type)
-    expect(typeSelect.prop('label')).toEqual('patient.type')
-    expect(typeSelect.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the age of the patient', () => {
-    const wrapper = setup()
-
-    const ageInput = wrapper.findWhere((w) => w.prop('name') === 'age')
-    expect(ageInput.prop('value')).toEqual('0')
-    expect(ageInput.prop('label')).toEqual('patient.age')
-    expect(ageInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the date of the birth of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfBirth')
-    expect(dateOfBirthInput.prop('value')).toEqual(new Date(patient.dateOfBirth))
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.dateOfBirth')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the occupation of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'occupation')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.occupation)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.occupation')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the preferred language of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'preferredLanguage')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.preferredLanguage)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.preferredLanguage')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the phone number of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'phoneNumber')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.phoneNumber)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.phoneNumber')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the email of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'email')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.email)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.email')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the address of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'address')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.address)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.address')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the age and date of birth as approximate if patient.isApproximateDateOfBirth is true', async () => {
-    jest.restoreAllMocks()
-    const patientWithApproximateDob = {
-      ...patient,
-      isApproximateDateOfBirth: true,
-    } as Patient
-    jest.spyOn(PatientRepository, 'find')
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.find.mockResolvedValue(patientWithApproximateDob)
-    jest.mock('react-router-dom', () => ({
-      useParams: () => ({
-        id: '123',
-      }),
-    }))
-
+  it('should render a tabs header with the correct tabs', async () => {
     let wrapper: any
     await act(async () => {
-      wrapper = await mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={['/patients/123']}>
-            <Route path="/patients/:id">
-              <ViewPatient />
-            </Route>
-          </MemoryRouter>
-        </Provider>,
-      )
+      wrapper = await setup()
+    })
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    expect(tabsHeader).toHaveLength(1)
+
+    expect(tabs).toHaveLength(1)
+    expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
+  })
+
+  it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const generalInformation = wrapper.find(GeneralInformation)
+    expect(tabs.at(0).prop('active')).toBeTruthy()
+    expect(generalInformation).toHaveLength(1)
+    expect(generalInformation.prop('patient')).toEqual(patient)
+  })
+
+  it('should navigate /patients/:id when the general information tab is clicked', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    await act(async () => {
+      await (tabs.at(0).prop('onClick') as any)()
     })
 
     wrapper.update()
 
-    const ageInput = wrapper.findWhere((w: any) => w.prop('name') === 'age')
-    expect(ageInput.prop('value')).toEqual('0')
-    expect(ageInput.prop('label')).toEqual('patient.approximateAge')
-    expect(ageInput.prop('isEditable')).toBeFalsy()
-
-    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
-    expect(dateOfBirthInput.prop('value')).toEqual(new Date(patient.dateOfBirth))
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.approximateDateOfBirth')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
+    expect(history.location.pathname).toEqual('/patients/123')
   })
 })

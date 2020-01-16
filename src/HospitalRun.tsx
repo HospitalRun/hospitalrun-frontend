@@ -43,7 +43,6 @@ const HospitalRun = () => {
                 />
                 <PrivateRoute
                   isAuthenticated={permissions.includes(Permissions.ReadPatients)}
-                  exact
                   path="/patients/:id"
                   component={ViewPatient}
                 />
