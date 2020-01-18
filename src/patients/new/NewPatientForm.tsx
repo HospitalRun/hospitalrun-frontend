@@ -19,6 +19,7 @@ const NewPatientForm = (props: Props) => {
   const [isEditable] = useState(true)
   const { onCancel, onSave } = props
   const [approximateAge, setApproximateAge] = useState(0)
+  const [errorMessage, setError] = useState('')
   const [patient, setPatient] = useState({
     givenName: '',
     familyName: '',
@@ -37,6 +38,9 @@ const NewPatientForm = (props: Props) => {
   })
 
   const onSaveButtonClick = async () => {
+    if (!patient.givenName && !patient.familyName) {
+      return setError("No patient name entered!")
+    }
     const newPatient = {
       prefix: patient.prefix,
       familyName: patient.familyName,
@@ -274,7 +278,9 @@ const NewPatientForm = (props: Props) => {
             />
           </div>
         </div>
-
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">{t(errorMessage)}</div>
+        )}
         {isEditable && (
           <div className="row">
             <Button onClick={onSaveButtonClick}> {t('actions.save')}</Button>
