@@ -74,6 +74,30 @@ describe('Navbar', () => {
     })
   })
 
+  describe('scheduling', () => {
+    it('should render a scheduling dropdown', () => {
+      const wrapper = setup()
+
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+
+      expect(hospitalRunNavbar.prop('navLinks')[1].label).toEqual('scheduling.label')
+      expect(hospitalRunNavbar.prop('navLinks')[1].children[0].label).toEqual(
+        'scheduling.appointments.label',
+      )
+    })
+
+    it('should navigate to to /appointments when the appointment list option is selected', () => {
+      const wrapper = setup()
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+
+      act(() => {
+        ;(hospitalRunNavbar.prop('navLinks')[1].children[0] as any).onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/appointments')
+    })
+  })
+
   describe('search', () => {
     it('should render Search as the search button label', () => {
       const wrapper = setup()

@@ -46,6 +46,20 @@ const Navbar = () => {
             },
           ],
         },
+        {
+          label: t('scheduling.label'),
+          onClick: () => {
+            // no oop
+          },
+          children: [
+            {
+              label: t('scheduling.appointments.label'),
+              onClick: () => {
+                history.push('/appointments')
+              },
+            },
+          ],
+        },
       ]}
     />
   )
