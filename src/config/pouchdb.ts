@@ -30,3 +30,4 @@ function createDb(name: string) {
 }
 
 export const patients = createDb('patients')
+export const appointments = createDb('appointments')
