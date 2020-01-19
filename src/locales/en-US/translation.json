@@ -52,6 +52,9 @@
   "states": {
     "success": "Success!"
   },
+  "errors": {
+    "patientNameRequired": "No patient name entered!"
+  },
   "scheduling": {
     "label": "Scheduling",
     "appointments": {
