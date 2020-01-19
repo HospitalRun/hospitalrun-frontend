@@ -52,6 +52,27 @@ export default class Repository<T extends AbstractDBModel> {
     return this.find(savedEntity.id)
   }
 
+  async saveOrUpdate(entity: T): Promise<T> {
+    if (!entity.id) {
+      return this.save(entity)
+    }
+
+    try {
+      const existingEntity = await this.find(entity.id)
+      const { id, rev, ...restOfDoc } = existingEntity
+      const entityToUpdate = {
+        _id: id,
+        _rev: rev,
+        ...restOfDoc,
+        ...entity,
+      }
+      await this.db.put(entityToUpdate)
+      return this.find(entity.id)
+    } catch (error) {
+      return this.save(entity)
+    }
+  }
+
   async delete(entity: T): Promise<T> {
     const e = entity as any
     return mapDocument(this.db.remove(e.id, e.rev))

@@ -2,6 +2,7 @@ import { patients } from 'config/pouchdb'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import { fromUnixTime } from 'date-fns'
+import { updatePatientStart } from 'patients/patient-slice'
 
 describe('patient repository', () => {
   describe('find', () => {
@@ -102,6 +103,57 @@ describe('patient repository', () => {
 
       await patients.remove(await patients.get(existingPatient.id))
       await patients.remove(await patients.get(newPatient.id))
+    })
+  })
+
+  describe('saveOrUpdate', () => {
+    // it('should save the patient if an id was not on the entity', async () => {
+    //   const newPatient = await PatientRepository.saveOrUpdate({
+    //     fullName: 'test1 test1',
+    //   } as Patient)
+
+    //   expect(newPatient.id).toBeDefined()
+
+    //   await patients.remove(await patients.get(newPatient.id))
+    // })
+
+    it('should update the patient if one was already existing', async () => {
+      const existingPatient = await PatientRepository.save({
+        fullName: 'test test',
+      } as Patient)
+
+      const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
+
+      expect(updatedPatient.id).toEqual(existingPatient.id)
+
+      await patients.remove(await patients.get(existingPatient.id))
+    })
+
+    it('should update the existing fields', async () => {
+      const existingPatient = await PatientRepository.save({
+        fullName: 'test test',
+      } as Patient)
+      existingPatient.fullName = 'changed'
+
+      const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
+
+      expect(updatedPatient.fullName).toEqual('changed')
+
+      await patients.remove(await patients.get(existingPatient.id))
+    })
+
+    it('should add new fields without changing existing fields', async () => {
+      const existingPatient = await PatientRepository.save({
+        fullName: 'test test',
+      } as Patient)
+      existingPatient.givenName = 'givenName'
+
+      const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
+
+      expect(updatedPatient.fullName).toEqual(existingPatient.fullName)
+      expect(updatedPatient.givenName).toEqual('givenName')
+
+      await patients.remove(await patients.get(existingPatient.id))
     })
   })
 
