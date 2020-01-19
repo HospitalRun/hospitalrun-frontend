@@ -30,6 +30,11 @@
     "generalInformation": "General Information",
     "contactInformation": "Contact Information",
     "unknownDateOfBirth": "Unknown",
+    "relatedPersons": {
+      "label": "Related Persons",
+      "new": "New Related Person",
+      "relationshipType": "Relationship Type"
+    },
     "types": {
       "charity": "Charity",
       "private": "Private"
