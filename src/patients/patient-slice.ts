@@ -24,20 +24,35 @@ const patientSlice = createSlice({
   initialState,
   reducers: {
     getPatientStart: startLoading,
+    updatePatientStart: startLoading,
     getPatientSuccess(state, { payload }: PayloadAction<Patient>) {
       state.isLoading = false
       state.patient = payload
     },
-    updateStart: startLoading,
+    updatePatientSuccess(state, { payload }: PayloadAction<Patient>) {
+      state.isLoading = false
+      state.patient = payload
+    },
   },
 })
 
-export const { getPatientStart, getPatientSuccess, updateStart } = patientSlice.actions
+export const {
+  getPatientStart,
+  getPatientSuccess,
+  updatePatientStart,
+  updatePatientSuccess,
+} = patientSlice.actions
 
 export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
   dispatch(getPatientStart())
   const patient = await PatientRepository.find(id)
   dispatch(getPatientSuccess(patient))
+}
+
+export const updatePatient = (patient: Patient): AppThunk => async (dispatch) => {
+  dispatch(updatePatientStart())
+  const updatedPatient = await PatientRepository.saveOrUpdate(patient)
+  dispatch(updatePatientSuccess(updatedPatient))
 }
 
 export default patientSlice.reducer
