@@ -6,12 +6,14 @@ import NewPatientForm from './NewPatientForm'
 import useTitle from '../../page-header/useTitle'
 import Patient from '../../model/Patient'
 import { createPatient } from '../patients-slice'
+import useButton from 'page-header/useButton'
 
 const NewPatient = () => {
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
   useTitle(t('patients.newPatient'))
+  useButton(t(''), '', false, 'add')
 
   const onCancel = () => {
     history.push('/patients')

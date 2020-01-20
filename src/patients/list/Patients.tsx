@@ -6,11 +6,13 @@ import { Spinner, TextInput, Button, List, ListItem, Container, Row } from '@hos
 import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
+import useButton from 'page-header/useButton'
 
 const Patients = () => {
   const { t } = useTranslation()
   const history = useHistory()
   useTitle(t('patients.label'))
+  useButton(t('New Patient'), '/patients/new', true, 'patient-add')
   const dispatch = useDispatch()
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 

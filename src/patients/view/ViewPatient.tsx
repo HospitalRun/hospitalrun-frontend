@@ -10,6 +10,7 @@ import { RootState } from '../../store'
 import { getPatientFullName } from '../util/patient-name-util'
 import Patient from '../../model/Patient'
 import GeneralInformation from './GeneralInformation'
+import useButton from 'page-header/useButton'
 
 const getFriendlyId = (p: Patient): string => {
   if (p) {
@@ -26,6 +27,7 @@ const ViewPatient = () => {
   const dispatch = useDispatch()
   const { patient } = useSelector((state: RootState) => state.patient)
   useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
+  useButton(t(''), '', false, 'add')
 
   const { id } = useParams()
   useEffect(() => {
