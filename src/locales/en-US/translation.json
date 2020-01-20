@@ -35,7 +35,7 @@
       "private": "Private"
     },
     "errors": {
-      "patientNameRequired": "Patient Given Name is required."
+      "patientGivenNameRequired": "Patient Given Name is required."
     }
   },
   "sex": {
