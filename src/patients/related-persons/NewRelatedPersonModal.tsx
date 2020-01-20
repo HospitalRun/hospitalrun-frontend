@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal } from '@hospitalrun/components'
+import { Modal, Alert } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
@@ -15,6 +15,7 @@ interface Props {
 const NewRelatedPersonModal = (props: Props) => {
   const { show, toggle, onCloseButtonClick, onSave } = props
   const { t } = useTranslation()
+  const [errorMessage, setErrorMessage] = useState('')
   const [relatedPerson, setRelatedPerson] = useState({
     prefix: '',
     givenName: '',
@@ -39,6 +40,7 @@ const NewRelatedPersonModal = (props: Props) => {
 
   const body = (
     <form>
+      {errorMessage && <Alert color="danger" title={t('states.error')} message={errorMessage} />}
       <div className="row">
         <div className="col-md-2">
           <TextInputWithLabelFormGroup
@@ -136,7 +138,7 @@ const NewRelatedPersonModal = (props: Props) => {
     <Modal
       show={show}
       toggle={toggle}
-      title="New Related Person"
+      title={t('patient.relatedPersons.new')}
       body={body}
       closeButton={{
         children: t('actions.cancel'),
@@ -148,7 +150,22 @@ const NewRelatedPersonModal = (props: Props) => {
         color: 'success',
         icon: 'add',
         iconLocation: 'left',
-        onClick: () => onSave(relatedPerson as RelatedPerson),
+        onClick: () => {
+          let newErrorMessage = ''
+          if (!relatedPerson.givenName) {
+            newErrorMessage += `${t('patient.relatedPersons.error.givenNameRequired')} `
+          }
+
+          if (!relatedPerson.type) {
+            newErrorMessage += `${t('patient.relatedPersons.error.relationshipTypeRequired')}`
+          }
+
+          if (!newErrorMessage) {
+            onSave(relatedPerson as RelatedPerson)
+          } else {
+            setErrorMessage(newErrorMessage.trim())
+          }
+        },
       }}
     />
   )

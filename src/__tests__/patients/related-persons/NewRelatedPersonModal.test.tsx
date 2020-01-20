@@ -1,7 +1,7 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { ReactWrapper, mount } from 'enzyme'
-import { Modal, Button } from '@hospitalrun/components'
+import { Modal, Button, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import NewRelatedPersonModal from '../../../patients/related-persons/NewRelatedPersonModal'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
@@ -116,9 +116,8 @@ describe('New Related Person Modal', () => {
     })
 
     it('should render an add new related person button button', () => {
-      const addNewButton = wrapper.findWhere((w) => w.text() === 'patient.relatedPersons.new')
-
-      expect(addNewButton).toHaveLength(1)
+      const modal = wrapper.find(Modal)
+      expect(modal.prop('successButton').children).toEqual('patient.relatedPersons.new')
     })
   })
 
@@ -205,6 +204,24 @@ describe('New Related Person Modal', () => {
         email: 'email',
         address: 'address',
       })
+    })
+
+    it('should display an error message if given name or relationship type is not entered.', () => {
+      act(() => {
+        wrapper
+          .find(Modal)
+          .prop('successButton')
+          .onClick({} as React.MouseEvent<HTMLButtonElement, MouseEvent>)
+      })
+
+      wrapper.update()
+
+      const errorAlert = wrapper.find(Alert)
+      expect(onSaveSpy).not.toHaveBeenCalled()
+      expect(errorAlert).toHaveLength(1)
+      expect(errorAlert.prop('message')).toEqual(
+        'patient.relatedPersons.error.givenNameRequired. patient.relatedPersons.error.relationshipTypeRequired.',
+      )
     })
   })
 })
