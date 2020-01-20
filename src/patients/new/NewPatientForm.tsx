@@ -39,7 +39,7 @@ const NewPatientForm = (props: Props) => {
 
   const onSaveButtonClick = async () => {
     if (!patient.givenName) {
-      setErrorMessage(t('errors.patientNameRequired'))
+      setErrorMessage(t('patient.errors.patientNameRequired'))
     } else {
       const newPatient = {
         prefix: patient.prefix,
@@ -98,7 +98,7 @@ const NewPatientForm = (props: Props) => {
     <div>
       <form>
         <h3>{t('patient.basicInformation')}</h3>
-        {errorMessage && <Alert className="alert" color="danger" message={t(errorMessage)} />}
+        {errorMessage && <Alert className="alert" color="danger" message={errorMessage} />}
         <div className="row">
           <div className="col-md-2">
             <TextInputWithLabelFormGroup
