@@ -6,7 +6,9 @@ import { useTranslation } from 'react-i18next'
 import Patient from 'model/Patient'
 import { updatePatient } from 'patients/patient-slice'
 import { getPatientName } from 'patients/util/patient-name-util'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'store'
+import Permissions from 'model/Permissions'
 
 interface Props {
   patient: Patient
@@ -16,6 +18,7 @@ const RelatedPersonTab = (props: Props) => {
   const dispatch = useDispatch()
   const { patient } = props
   const { t } = useTranslation()
+  const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
 
   const onNewRelatedPersonClick = () => {
@@ -54,15 +57,17 @@ const RelatedPersonTab = (props: Props) => {
     <div>
       <div className="row">
         <div className="col-md-12 d-flex justify-content-end">
-          <Button
-            outlined
-            color="success"
-            icon="add"
-            iconLocation="left"
-            onClick={onNewRelatedPersonClick}
-          >
-            {t('patient.relatedPersons.new')}
-          </Button>
+          {permissions.includes(Permissions.WritePatients) && (
+            <Button
+              outlined
+              color="success"
+              icon="add"
+              iconLocation="left"
+              onClick={onNewRelatedPersonClick}
+            >
+              {t('patient.relatedPersons.new')}
+            </Button>
+          )}
         </div>
       </div>
       <br />

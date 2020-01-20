@@ -10,6 +10,7 @@ import Patient from 'model/Patient'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
+import Permissions from 'model/Permissions'
 import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = createMockStore([thunk])
@@ -18,14 +19,20 @@ describe('Related Persons Tab', () => {
   let wrapper: ReactWrapper
 
   describe('Add New Related Person', () => {
-    const patient = {
-      id: '123',
-      rev: '123',
-    } as Patient
+    let patient: any
+    let user: any
 
     beforeEach(() => {
+      patient = {
+        id: '123',
+        rev: '123',
+      } as Patient
+
+      user = {
+        permissions: [Permissions.WritePatients, Permissions.ReadPatients],
+      }
       wrapper = mount(
-        <Provider store={mockStore({ patient })}>
+        <Provider store={mockStore({ patient, user })}>
           <RelatedPersonTab patient={patient} />
         </Provider>,
       )
@@ -36,6 +43,18 @@ describe('Related Persons Tab', () => {
 
       expect(newRelatedPersonButton).toHaveLength(1)
       expect(newRelatedPersonButton.text().trim()).toEqual('patient.relatedPersons.new')
+    })
+
+    it('should not render a New Related Person button if the user does not have write privileges for a patient', () => {
+      user = { permissions: [Permissions.ReadPatients] }
+      wrapper = mount(
+        <Provider store={mockStore({ patient, user })}>
+          <RelatedPersonTab patient={patient} />
+        </Provider>,
+      )
+
+      const newRelatedPersonButton = wrapper.find(Button)
+      expect(newRelatedPersonButton).toHaveLength(0)
     })
 
     it('should render a New Related Person modal', () => {
@@ -117,9 +136,13 @@ describe('Related Persons Tab', () => {
       relatedPersons: [{ fullName: 'test' }],
     } as Patient
 
+    const user = {
+      permissions: [Permissions.WritePatients, Permissions.ReadPatients],
+    }
+
     beforeEach(() => {
       wrapper = mount(
-        <Provider store={mockStore({ patient })}>
+        <Provider store={mockStore({ patient, user })}>
           <RelatedPersonTab patient={patient} />
         </Provider>,
       )
