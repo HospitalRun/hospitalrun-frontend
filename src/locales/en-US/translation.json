@@ -33,6 +33,9 @@
     "types": {
       "charity": "Charity",
       "private": "Private"
+    },
+    "errors": {
+      "patientNameRequired": "Patient Given Name is required."
     }
   },
   "sex": {
@@ -51,9 +54,6 @@
   },
   "states": {
     "success": "Success!"
-  },
-  "errors": {
-    "patientNameRequired": "No patient name entered!"
   },
   "scheduling": {
     "label": "Scheduling",
