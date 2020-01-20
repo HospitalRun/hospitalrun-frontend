@@ -220,7 +220,7 @@ describe('New Related Person Modal', () => {
       expect(onSaveSpy).not.toHaveBeenCalled()
       expect(errorAlert).toHaveLength(1)
       expect(errorAlert.prop('message')).toEqual(
-        'patient.relatedPersons.error.givenNameRequired. patient.relatedPersons.error.relationshipTypeRequired.',
+        'patient.relatedPersons.error.givenNameRequired patient.relatedPersons.error.relationshipTypeRequired',
       )
     })
   })
