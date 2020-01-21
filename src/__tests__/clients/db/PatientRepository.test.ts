@@ -107,15 +107,15 @@ describe('patient repository', () => {
   })
 
   describe('saveOrUpdate', () => {
-    // it('should save the patient if an id was not on the entity', async () => {
-    //   const newPatient = await PatientRepository.saveOrUpdate({
-    //     fullName: 'test1 test1',
-    //   } as Patient)
+    it('should save the patient if an id was not on the entity', async () => {
+      const newPatient = await PatientRepository.saveOrUpdate({
+        fullName: 'test1 test1',
+      } as Patient)
 
-    //   expect(newPatient.id).toBeDefined()
+      expect(newPatient.id).toBeDefined()
 
-    //   await patients.remove(await patients.get(newPatient.id))
-    // })
+      await patients.remove(await patients.get(newPatient.id))
+    })
 
     it('should update the patient if one was already existing', async () => {
       const existingPatient = await PatientRepository.save({
