@@ -85,7 +85,7 @@
     "eslint-plugin-react": "~7.18.0",
     "eslint-plugin-react-hooks": "~2.3.0",
     "history": "~4.10.1",
-    "husky": "~4.0.0",
+    "husky": "~4.2.0",
     "jest": "~24.9.0",
     "lint-staged": "~10.0.0",
     "memdown": "~5.1.0",
