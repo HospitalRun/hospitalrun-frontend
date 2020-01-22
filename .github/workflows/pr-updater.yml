@@ -1,0 +1,16 @@
+name: PR update
+
+on:
+    push:
+        branches: 
+            - master
+
+jobs:
+    autoupdate:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v1
+        - name: PR updater
+          uses: maxkomarychev/pr-updater-action@v1.0.0
+          with:
+            token: ${{ secrets.GH_TOKEN }}
