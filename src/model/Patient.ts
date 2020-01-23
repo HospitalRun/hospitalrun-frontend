@@ -11,5 +11,5 @@ export default interface Patient extends AbstractDBModel, Name, ContactInformati
   occupation?: string
   type?: string
   friendlyId: string
-  relatedPersons: RelatedPerson[]
+  relatedPersons?: RelatedPerson[]
 }

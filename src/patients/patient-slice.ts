@@ -7,12 +7,14 @@ interface PatientState {
   isLoading: boolean
   isUpdatedSuccessfully: boolean
   patient: Patient
+  relatedPersons: Patient[]
 }
 
 const initialState: PatientState = {
   isLoading: false,
   isUpdatedSuccessfully: false,
   patient: {} as Patient,
+  relatedPersons: [],
 }
 
 function startLoading(state: PatientState) {

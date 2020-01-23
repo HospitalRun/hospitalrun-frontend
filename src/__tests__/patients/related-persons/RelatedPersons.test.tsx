@@ -11,6 +11,7 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
+import { mocked } from 'ts-jest/utils'
 import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = createMockStore([thunk])
@@ -80,7 +81,7 @@ describe('Related Persons Tab', () => {
     it('should call update patient with the data from the modal', () => {
       jest.spyOn(patientSlice, 'updatePatient')
       jest.spyOn(PatientRepository, 'saveOrUpdate')
-      const expectedRelatedPerson = { givenName: 'test', fullName: 'test' }
+      const expectedRelatedPerson = { patientId: '123', type: 'type' }
       const expectedPatient = {
         ...patient,
         relatedPersons: [expectedRelatedPerson],
@@ -98,7 +99,7 @@ describe('Related Persons Tab', () => {
         const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
 
         const onSave = newRelatedPersonModal.prop('onSave') as any
-        onSave({ givenName: 'test' })
+        onSave(expectedRelatedPerson)
       })
 
       wrapper.update()
@@ -119,7 +120,7 @@ describe('Related Persons Tab', () => {
       act(() => {
         const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
         const onSave = newRelatedPersonModal.prop('onSave') as any
-        onSave({ givenName: 'test' })
+        onSave({ patientId: '123', type: 'type' })
       })
 
       wrapper.update()
@@ -133,19 +134,26 @@ describe('Related Persons Tab', () => {
     const patient = {
       id: '123',
       rev: '123',
-      relatedPersons: [{ fullName: 'test' }],
+      relatedPersons: [{ patientId: '123', type: 'type' }],
     } as Patient
 
     const user = {
       permissions: [Permissions.WritePatients, Permissions.ReadPatients],
     }
 
-    beforeEach(() => {
-      wrapper = mount(
-        <Provider store={mockStore({ patient, user })}>
-          <RelatedPersonTab patient={patient} />
-        </Provider>,
-      )
+    beforeEach(async () => {
+      jest.spyOn(PatientRepository, 'find')
+      mocked(PatientRepository.find).mockResolvedValue({ fullName: 'test test' } as Patient)
+
+      await act(async () => {
+        wrapper = await mount(
+          <Provider store={mockStore({ patient, user })}>
+            <RelatedPersonTab patient={patient} />
+          </Provider>,
+        )
+      })
+
+      wrapper.update()
     })
 
     it('should render a list of of related persons with their full name being displayed', () => {
@@ -154,7 +162,7 @@ describe('Related Persons Tab', () => {
 
       expect(list).toHaveLength(1)
       expect(listItems).toHaveLength(1)
-      expect(listItems.at(0).text()).toEqual(patient.relatedPersons[0].fullName)
+      expect(listItems.at(0).text()).toEqual('test test')
     })
   })
 })

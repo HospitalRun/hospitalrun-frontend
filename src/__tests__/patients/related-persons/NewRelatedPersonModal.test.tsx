@@ -1,11 +1,11 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { ReactWrapper, mount } from 'enzyme'
-import { Modal, Button, Alert } from '@hospitalrun/components'
+import { Modal, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
+import { Typeahead } from 'react-bootstrap-typeahead'
 import NewRelatedPersonModal from '../../../patients/related-persons/NewRelatedPersonModal'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
-import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 
 describe('New Related Person Modal', () => {
   describe('layout', () => {
@@ -27,44 +27,11 @@ describe('New Related Person Modal', () => {
       expect(modal.prop('show')).toBeTruthy()
     })
 
-    it('should render a prefix name text input', () => {
-      const prefixTextInput = wrapper.findWhere((w) => w.prop('name') === 'prefix')
+    it('should render a patient search typeahead', () => {
+      const patientSearchTypeahead = wrapper.find(Typeahead)
 
-      expect(prefixTextInput).toHaveLength(1)
-      expect(prefixTextInput.type()).toBe(TextInputWithLabelFormGroup)
-      expect(prefixTextInput.prop('name')).toEqual('prefix')
-      expect(prefixTextInput.prop('isEditable')).toBeTruthy()
-      expect(prefixTextInput.prop('label')).toEqual('patient.prefix')
-    })
-
-    it('should render a given name text input', () => {
-      const givenNameTextInput = wrapper.findWhere((w) => w.prop('name') === 'givenName')
-
-      expect(givenNameTextInput).toHaveLength(1)
-      expect(givenNameTextInput.type()).toBe(TextInputWithLabelFormGroup)
-      expect(givenNameTextInput.prop('name')).toEqual('givenName')
-      expect(givenNameTextInput.prop('isEditable')).toBeTruthy()
-      expect(givenNameTextInput.prop('label')).toEqual('patient.givenName')
-    })
-
-    it('should render a family name text input', () => {
-      const familyNameTextInput = wrapper.findWhere((w) => w.prop('name') === 'familyName')
-
-      expect(familyNameTextInput).toHaveLength(1)
-      expect(familyNameTextInput.type()).toBe(TextInputWithLabelFormGroup)
-      expect(familyNameTextInput.prop('name')).toEqual('familyName')
-      expect(familyNameTextInput.prop('isEditable')).toBeTruthy()
-      expect(familyNameTextInput.prop('label')).toEqual('patient.familyName')
-    })
-
-    it('should render a suffix text input', () => {
-      const suffixTextInput = wrapper.findWhere((w) => w.prop('name') === 'suffix')
-
-      expect(suffixTextInput).toHaveLength(1)
-      expect(suffixTextInput.type()).toBe(TextInputWithLabelFormGroup)
-      expect(suffixTextInput.prop('name')).toEqual('suffix')
-      expect(suffixTextInput.prop('isEditable')).toBeTruthy()
-      expect(suffixTextInput.prop('label')).toEqual('patient.suffix')
+      expect(patientSearchTypeahead).toHaveLength(1)
+      expect(patientSearchTypeahead.prop('placeholder')).toEqual('patient.relatedPerson')
     })
 
     it('should render a relationship type text input', () => {
@@ -77,36 +44,6 @@ describe('New Related Person Modal', () => {
       expect(relationshipTypeTextInput.prop('label')).toEqual(
         'patient.relatedPersons.relationshipType',
       )
-    })
-
-    it('should render a phone number text input', () => {
-      const phoneNumberTextInput = wrapper.findWhere((w) => w.prop('name') === 'phoneNumber')
-
-      expect(phoneNumberTextInput).toHaveLength(1)
-      expect(phoneNumberTextInput.type()).toBe(TextInputWithLabelFormGroup)
-      expect(phoneNumberTextInput.prop('name')).toEqual('phoneNumber')
-      expect(phoneNumberTextInput.prop('isEditable')).toBeTruthy()
-      expect(phoneNumberTextInput.prop('label')).toEqual('patient.phoneNumber')
-    })
-
-    it('should render a email text input', () => {
-      const emailTextInput = wrapper.findWhere((w) => w.prop('name') === 'email')
-
-      expect(emailTextInput).toHaveLength(1)
-      expect(emailTextInput.type()).toBe(TextInputWithLabelFormGroup)
-      expect(emailTextInput.prop('name')).toEqual('email')
-      expect(emailTextInput.prop('isEditable')).toBeTruthy()
-      expect(emailTextInput.prop('label')).toEqual('patient.email')
-    })
-
-    it('should render a address text input', () => {
-      const addressTextField = wrapper.findWhere((w) => w.prop('name') === 'address')
-
-      expect(addressTextField).toHaveLength(1)
-      expect(addressTextField.type()).toBe(TextFieldWithLabelFormGroup)
-      expect(addressTextField.prop('name')).toEqual('address')
-      expect(addressTextField.prop('isEditable')).toBeTruthy()
-      expect(addressTextField.prop('label')).toEqual('patient.address')
     })
 
     it('should render a cancel button', () => {
@@ -138,26 +75,8 @@ describe('New Related Person Modal', () => {
 
     it('should call the save function with the correct data', () => {
       act(() => {
-        const prefixTextInput = wrapper.findWhere((w) => w.prop('name') === 'prefix')
-        prefixTextInput.prop('onChange')({ target: { value: 'prefix' } })
-      })
-      wrapper.update()
-
-      act(() => {
-        const givenNameTextInput = wrapper.findWhere((w) => w.prop('name') === 'givenName')
-        givenNameTextInput.prop('onChange')({ target: { value: 'given' } })
-      })
-      wrapper.update()
-
-      act(() => {
-        const familyNameTextInput = wrapper.findWhere((w) => w.prop('name') === 'familyName')
-        familyNameTextInput.prop('onChange')({ target: { value: 'family' } })
-      })
-      wrapper.update()
-
-      act(() => {
-        const suffixTextInput = wrapper.findWhere((w) => w.prop('name') === 'suffix')
-        suffixTextInput.prop('onChange')({ target: { value: 'suffix' } })
+        const patientTypeahead = wrapper.find(Typeahead)
+        patientTypeahead.prop('onChange')([{ id: '123' }])
       })
       wrapper.update()
 
@@ -167,42 +86,16 @@ describe('New Related Person Modal', () => {
       })
       wrapper.update()
 
-      act(() => {
-        const phoneNumberTextInput = wrapper.findWhere((w) => w.prop('name') === 'phoneNumber')
-        phoneNumberTextInput.prop('onChange')({ target: { value: 'phone number' } })
-      })
-      wrapper.update()
-
-      act(() => {
-        const emailTextInput = wrapper.findWhere((w) => w.prop('name') === 'email')
-        emailTextInput.prop('onChange')({ target: { value: 'email' } })
-      })
-      wrapper.update()
-
-      act(() => {
-        const addressTextField = wrapper.findWhere((w) => w.prop('name') === 'address')
-        addressTextField.prop('onChange')({ currentTarget: { value: 'address' } })
-      })
-      wrapper.update()
-
       const addNewButton = wrapper.findWhere((w) => w.text() === 'patient.relatedPersons.new')
       act(() => {
-        wrapper
-          .find(Modal)
-          .prop('successButton')
-          .onClick({} as React.MouseEvent<HTMLButtonElement, MouseEvent>)
+        ;(wrapper.find(Modal).prop('successButton') as any).onClick(
+          {} as React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        )
       })
-
       expect(onSaveSpy).toHaveBeenCalledTimes(1)
       expect(onSaveSpy).toHaveBeenCalledWith({
-        prefix: 'prefix',
-        givenName: 'given',
-        familyName: 'family',
-        suffix: 'suffix',
+        patientId: '123',
         type: 'relationship',
-        phoneNumber: 'phone number',
-        email: 'email',
-        address: 'address',
       })
     })
 
@@ -220,7 +113,7 @@ describe('New Related Person Modal', () => {
       expect(onSaveSpy).not.toHaveBeenCalled()
       expect(errorAlert).toHaveLength(1)
       expect(errorAlert.prop('message')).toEqual(
-        'patient.relatedPersons.error.givenNameRequired patient.relatedPersons.error.relationshipTypeRequired',
+        'patient.relatedPersons.error.relatedPersonRequired patient.relatedPersons.error.relationshipTypeRequired',
       )
     })
   })

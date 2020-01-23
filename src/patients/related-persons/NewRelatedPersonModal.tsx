@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Modal, Alert } from '@hospitalrun/components'
+import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
-import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
 import RelatedPerson from 'model/RelatedPerson'
+import PatientRepository from 'clients/db/PatientRepository'
+import Patient from 'model/Patient'
 
 interface Props {
   show: boolean
@@ -17,14 +18,8 @@ const NewRelatedPersonModal = (props: Props) => {
   const { t } = useTranslation()
   const [errorMessage, setErrorMessage] = useState('')
   const [relatedPerson, setRelatedPerson] = useState({
-    prefix: '',
-    givenName: '',
-    familyName: '',
-    suffix: '',
+    patientId: '',
     type: '',
-    phoneNumber: '',
-    email: '',
-    address: '',
   })
 
   const onFieldChange = (key: string, value: string) => {
@@ -38,49 +33,28 @@ const NewRelatedPersonModal = (props: Props) => {
     onFieldChange(fieldName, event.target.value)
   }
 
+  const onPatientSelect = (patient: Patient[]) => {
+    setRelatedPerson({ ...relatedPerson, patientId: patient[0].id })
+  }
+
   const body = (
     <form>
       {errorMessage && <Alert color="danger" title={t('states.error')} message={errorMessage} />}
       <div className="row">
-        <div className="col-md-2">
-          <TextInputWithLabelFormGroup
-            label={t('patient.prefix')}
-            name="prefix"
-            value={relatedPerson.prefix}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onInputElementChange(event, 'prefix')
-            }}
-          />
-        </div>
-        <div className="col-md-4">
-          <TextInputWithLabelFormGroup
-            label={t('patient.givenName')}
-            name="givenName"
-            value={relatedPerson.givenName}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onInputElementChange(event, 'givenName')
-            }}
-          />
-        </div>
-        <div className="col-md-4">
-          <TextInputWithLabelFormGroup
-            label={t('patient.familyName')}
-            name="familyName"
-            value={relatedPerson.familyName}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onInputElementChange(event, 'familyName')
-            }}
-          />
-        </div>
-        <div className="col-md-2">
-          <TextInputWithLabelFormGroup
-            label={t('patient.suffix')}
-            name="suffix"
-            value={relatedPerson.suffix}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onInputElementChange(event, 'suffix')
-            }}
-          />
+        <div className="col-md-12">
+          <div className="form-group">
+            <Label text={t('patient.relatedPerson')} htmlFor="relatedPersonTypeAhead" />
+            <Typeahead
+              id="relatedPersonTypeAhead"
+              searchAccessor="fullName"
+              placeholder={t('patient.relatedPerson')}
+              onChange={onPatientSelect}
+              onSearch={async (query: string) => PatientRepository.search(query)}
+              renderMenuItemChildren={(patient: Patient) => (
+                <div>{`${patient.fullName} (${patient.friendlyId})`}</div>
+              )}
+            />
+          </div>
         </div>
       </div>
       <div className="row">
@@ -91,42 +65,6 @@ const NewRelatedPersonModal = (props: Props) => {
             value={relatedPerson.type}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onInputElementChange(event, 'type')
-            }}
-          />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <TextInputWithLabelFormGroup
-            label={t('patient.phoneNumber')}
-            name="phoneNumber"
-            value={relatedPerson.phoneNumber}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onInputElementChange(event, 'phoneNumber')
-            }}
-          />
-        </div>
-        <div className="col">
-          <TextInputWithLabelFormGroup
-            label={t('patient.email')}
-            placeholder="email@email.com"
-            name="email"
-            value={relatedPerson.email}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onInputElementChange(event, 'email')
-            }}
-          />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <TextFieldWithLabelFormGroup
-            label={t('patient.address')}
-            name="address"
-            isEditable
-            value={relatedPerson.address}
-            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-              onFieldChange('address', event.currentTarget.value)
             }}
           />
         </div>
@@ -152,8 +90,8 @@ const NewRelatedPersonModal = (props: Props) => {
         iconLocation: 'left',
         onClick: () => {
           let newErrorMessage = ''
-          if (!relatedPerson.givenName) {
-            newErrorMessage += `${t('patient.relatedPersons.error.givenNameRequired')} `
+          if (!relatedPerson.patientId) {
+            newErrorMessage += `${t('patient.relatedPersons.error.relatedPersonRequired')} `
           }
 
           if (!relatedPerson.type) {

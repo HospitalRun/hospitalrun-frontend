@@ -1,6 +1,4 @@
-import Name from './Name'
-import ContactInformation from './ContactInformation'
-
-export default interface RelatedPerson extends Name, ContactInformation {
+export default interface RelatedPerson {
+  patientId: string
   type: string
 }

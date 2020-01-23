@@ -30,9 +30,10 @@
     "generalInformation": "General Information",
     "contactInformation": "Contact Information",
     "unknownDateOfBirth": "Unknown",
+    "relatedPerson": "Related Person",
     "relatedPersons": {
       "error": {
-        "givenNameRequired": "Given Name is required.",
+        "relatedPersonRequired": "Related Person is required.",
         "relationshipTypeRequired": "Relationship Type is required."
       },
       "label": "Related Persons",
