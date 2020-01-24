@@ -39,7 +39,7 @@ const NewPatientForm = (props: Props) => {
 
   const onSaveButtonClick = async () => {
     if (!patient.givenName) {
-      setErrorMessage(t('patient.errors.patientNameRequired'))
+      setErrorMessage(t('patient.errors.patientGivenNameRequired'))
     } else {
       const newPatient = {
         prefix: patient.prefix,
