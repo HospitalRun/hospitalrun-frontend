@@ -373,7 +373,7 @@ describe('New Patient Form', () => {
           const wrapper = render(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
           const givenName = wrapper.getByPlaceholderText('patient.givenName')
           const saveButton = wrapper.getByText('actions.save')
-          expect(givenName).toBeNull()
+          expect(givenName.textContent).toBe('')
 
           act(() => {
             fireEvent.click(saveButton)
