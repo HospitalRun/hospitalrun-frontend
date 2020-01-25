@@ -3,11 +3,11 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import * as titleUtil from '../../../page-header/useTitle'
 import Appointments from 'scheduling/appointments/Appointments'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Calendar } from '@hospitalrun/components'
+import * as titleUtil from '../../../page-header/useTitle'
 
 describe('Appointments', () => {
   const setup = () => {

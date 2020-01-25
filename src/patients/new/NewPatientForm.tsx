@@ -139,7 +139,6 @@ const NewPatientForm = (props: Props) => {
             />
           </div>
         </div>
-
         <div className="row">
           <div className="col">
             <SelectWithLabelFormGroup
