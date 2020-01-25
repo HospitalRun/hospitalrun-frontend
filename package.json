@@ -70,7 +70,7 @@
     "commitizen": "~4.0.3",
     "commitlint-config-cz": "~0.12.1",
     "coveralls": "~3.0.9",
-    "cross-env": "~6.0.3",
+    "cross-env": "~7.0.0",
     "cz-conventional-changelog": "~3.0.2",
     "dateformat": "~3.0.3",
     "enzyme": "~3.11.0",
