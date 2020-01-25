@@ -4,6 +4,9 @@ import patient, {
   getPatientStart,
   getPatientSuccess,
   fetchPatient,
+  updatePatientStart,
+  updatePatientSuccess,
+  updatePatient,
 } from '../../patients/patient-slice'
 import Patient from '../../model/Patient'
 import PatientRepository from '../../clients/db/PatientRepository'
@@ -39,6 +42,34 @@ describe('patients slice', () => {
       }
       const patientStore = patient(undefined, {
         type: getPatientSuccess.type,
+        payload: {
+          ...expectedPatient,
+        },
+      })
+
+      expect(patientStore.isLoading).toBeFalsy()
+      expect(patientStore.patient).toEqual(expectedPatient)
+    })
+
+    it('should handle the UPDATE_PATIENT_START action', () => {
+      const patientStore = patient(undefined, {
+        type: updatePatientStart.type,
+      })
+
+      expect(patientStore.isLoading).toBeTruthy()
+    })
+
+    it('should handle the UPDATE_PATIENT_SUCCESS action', () => {
+      const expectedPatient = {
+        id: '123',
+        rev: '123',
+        sex: 'male',
+        dateOfBirth: new Date().toISOString(),
+        givenName: 'test',
+        familyName: 'test',
+      }
+      const patientStore = patient(undefined, {
+        type: updatePatientSuccess.type,
         payload: {
           ...expectedPatient,
         },
@@ -95,6 +126,53 @@ describe('patients slice', () => {
         payload: {
           ...expectedPatient,
         },
+      })
+    })
+  })
+
+  describe('update patient', () => {
+    it('should dispatch the UPDATE_PATIENT_START action', async () => {
+      const dispatch = jest.fn()
+      const getState = jest.fn()
+      jest.spyOn(PatientRepository, 'saveOrUpdate')
+      const expectedPatientId = '12345'
+      const expectedPatient = { id: expectedPatientId } as Patient
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
+
+      await updatePatient(expectedPatient)(dispatch, getState, null)
+
+      expect(dispatch).toHaveBeenCalledWith({ type: updatePatientStart.type })
+    })
+
+    it('should call the PatientRepository saveOrUpdate function with the correct data', async () => {
+      const dispatch = jest.fn()
+      const getState = jest.fn()
+      jest.spyOn(PatientRepository, 'saveOrUpdate')
+      const expectedPatientId = '12345'
+      const expectedPatient = { id: expectedPatientId } as Patient
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
+
+      await updatePatient(expectedPatient)(dispatch, getState, null)
+
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedPatient)
+    })
+
+    it('should dispatch the UPDATE_PATIENT_SUCCESS action with the correct data', async () => {
+      const dispatch = jest.fn()
+      const getState = jest.fn()
+      jest.spyOn(PatientRepository, 'saveOrUpdate')
+      const expectedPatientId = '12345'
+      const expectedPatient = { id: expectedPatientId } as Patient
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
+
+      await updatePatient(expectedPatient)(dispatch, getState, null)
+
+      expect(dispatch).toHaveBeenCalledWith({
+        type: updatePatientSuccess.type,
+        payload: expectedPatient,
       })
     })
   })
