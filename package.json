@@ -7,7 +7,7 @@
   "dependencies": {
     "@hospitalrun/components": "~0.30.3",
     "@reduxjs/toolkit": "~1.2.1",
-    "@semantic-release/changelog": "~3.0.4",
+    "@semantic-release/changelog": "~5.0.0",
     "@semantic-release/git": "~7.0.16",
     "@semantic-release/release-notes-generator": "~9.0.0",
     "@types/pouchdb-find": "~6.3.4",
@@ -49,7 +49,7 @@
     "@commitlint/config-conventional": "~8.3.3",
     "@commitlint/core": "~8.3.3",
     "@commitlint/prompt": "~8.3.3",
-    "@semantic-release/changelog": "~3.0.4",
+    "@semantic-release/changelog": "~5.0.0",
     "@semantic-release/commit-analyzer": "~6.3.0",
     "@semantic-release/git": "~7.0.16",
     "@semantic-release/github": "~5.5.5",
