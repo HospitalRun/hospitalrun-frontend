@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Toaster } from '@hospitalrun/components'
 import Appointments from 'scheduling/appointments/Appointments'
+import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import Sidebar from './components/Sidebar'
 import Permissions from './model/Permissions'
 import Dashboard from './dashboard/Dashboard'
@@ -51,6 +52,12 @@ const HospitalRun = () => {
                   exact
                   path="/appointments"
                   component={Appointments}
+                />
+                <PrivateRoute
+                  isAuthenticated={permissions.includes(Permissions.WriteAppointments)}
+                  exact
+                  path="/appointments/new"
+                  component={NewAppointment}
                 />
               </Switch>
             </div>

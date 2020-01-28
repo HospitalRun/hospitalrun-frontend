@@ -84,6 +84,9 @@ describe('Navbar', () => {
       expect(hospitalRunNavbar.prop('navLinks')[1].children[0].label).toEqual(
         'scheduling.appointments.label',
       )
+      expect(hospitalRunNavbar.prop('navLinks')[1].children[1].label).toEqual(
+        'scheduling.appointments.new',
+      )
     })
 
     it('should navigate to to /appointments when the appointment list option is selected', () => {
@@ -95,6 +98,17 @@ describe('Navbar', () => {
       })
 
       expect(history.location.pathname).toEqual('/appointments')
+    })
+
+    it('should navigate to /appointments/new when the new appointment list option is selected', () => {
+      const wrapper = setup()
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+
+      act(() => {
+        ;(hospitalRunNavbar.prop('navLinks')[1].children[1] as any).onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/appointments/new')
     })
   })
 
