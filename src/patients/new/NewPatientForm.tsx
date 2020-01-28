@@ -275,11 +275,15 @@ const NewPatientForm = (props: Props) => {
         </div>
 
         {isEditable && (
-          <div className="row">
-            <Button onClick={onSaveButtonClick}> {t('actions.save')}</Button>
-            <Button color="danger" onClick={() => onCancel()}>
-              {t('actions.cancel')}
-            </Button>
+          <div className="row float-right">
+            <div className="btn-grup btn-grup-lg">
+              <Button color="success" onClick={onSaveButtonClick}>
+                {t('actions.save')}
+              </Button>
+              <Button color="danger" onClick={() => onCancel()}>
+                {t('actions.cancel')}
+              </Button>
+            </div>
           </div>
         )}
       </form>
