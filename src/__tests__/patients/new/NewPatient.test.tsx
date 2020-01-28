@@ -1,11 +1,11 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
-import {mount} from 'enzyme'
-import {Router, MemoryRouter} from 'react-router-dom'
-import {Provider} from 'react-redux'
-import {mocked} from 'ts-jest/utils'
-import {createMemoryHistory} from 'history'
-import {act} from 'react-dom/test-utils'
+import { mount } from 'enzyme'
+import { Router, MemoryRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { mocked } from 'ts-jest/utils'
+import { createMemoryHistory } from 'history'
+import { act } from 'react-dom/test-utils'
 import NewPatient from '../../../patients/new/NewPatient'
 import NewPatientForm from '../../../patients/new/NewPatientForm'
 import store from '../../../store'
@@ -19,7 +19,7 @@ describe('New Patient', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NewPatient/>
+          <NewPatient />
         </MemoryRouter>
       </Provider>,
     )
@@ -32,7 +32,7 @@ describe('New Patient', () => {
     mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NewPatient/>
+          <NewPatient />
         </MemoryRouter>
       </Provider>,
     )
@@ -62,7 +62,7 @@ describe('New Patient', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NewPatient/>
+          <NewPatient />
         </MemoryRouter>
       </Provider>,
     )
@@ -79,7 +79,7 @@ describe('New Patient', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <NewPatient/>
+          <NewPatient />
         </Router>
       </Provider>,
     )
@@ -93,4 +93,3 @@ describe('New Patient', () => {
     expect(history.location.pathname).toEqual('/patients')
   })
 })
-

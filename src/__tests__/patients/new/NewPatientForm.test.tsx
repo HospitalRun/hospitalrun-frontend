@@ -1,30 +1,30 @@
 import '../../../__mocks__/matchMediaMock'
-import React, {ChangeEvent} from 'react'
-import {shallow, mount} from 'enzyme'
-import {Button, Checkbox} from '@hospitalrun/components'
-import {render, act, fireEvent} from '@testing-library/react'
-import {isEqual, startOfDay, subYears} from 'date-fns'
+import React, { ChangeEvent } from 'react'
+import { shallow, mount } from 'enzyme'
+import { Button, Checkbox } from '@hospitalrun/components'
+import { render, act, fireEvent } from '@testing-library/react'
+import { isEqual, startOfDay, subYears } from 'date-fns'
 import NewPatientForm from '../../../patients/new/NewPatientForm'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
 import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
 import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 import Patient from '../../../model/Patient'
-import {getPatientName} from '../../../patients/util/patient-name-util'
+import { getPatientName } from '../../../patients/util/patient-name-util'
 
 const onSave = jest.fn()
 const onCancel = jest.fn()
 describe('New Patient Form', () => {
   describe('layout', () => {
     it('should have a "Basic Information" header', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const basicInformationHeader = wrapper.find('h3').at(0)
 
       expect(basicInformationHeader.text()).toEqual('patient.basicInformation')
     })
 
     it('should have a prefix text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const prefixTextInput = wrapper.findWhere((w) => w.prop('name') === 'prefix')
 
       expect(prefixTextInput).toHaveLength(1)
@@ -35,7 +35,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a given name text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const givenNameTextInput = wrapper.findWhere((w) => w.prop('name') === 'givenName')
 
       expect(givenNameTextInput).toHaveLength(1)
@@ -46,7 +46,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a family name text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const familyNameTextInput = wrapper.findWhere((w) => w.prop('name') === 'familyName')
 
       expect(familyNameTextInput).toHaveLength(1)
@@ -57,7 +57,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a suffix text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const suffixTextInput = wrapper.findWhere((w) => w.prop('name') === 'suffix')
 
       expect(suffixTextInput).toHaveLength(1)
@@ -68,7 +68,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a sex dropdown with the proper options', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const sexDropdown = wrapper.findWhere((w) => w.prop('name') === 'sex')
 
       expect(sexDropdown).toHaveLength(1)
@@ -88,7 +88,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a date of birth text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const dateOfBirthTextInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfBirth')
 
       expect(dateOfBirthTextInput).toHaveLength(1)
@@ -99,7 +99,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a unknown checkbox', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const unknownCheckbox = wrapper.find(Checkbox)
       expect(unknownCheckbox).toHaveLength(1)
       expect(unknownCheckbox.prop('name')).toEqual('unknown')
@@ -107,7 +107,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a patient type dropdown with the proper options', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const patientTypeDropdown = wrapper.findWhere((w) => w.prop('name') === 'type')
 
       expect(patientTypeDropdown).toHaveLength(1)
@@ -123,7 +123,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a occupation text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const occupationTextInput = wrapper.findWhere((w) => w.prop('name') === 'occupation')
 
       expect(occupationTextInput).toHaveLength(1)
@@ -134,7 +134,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a preferred language text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const preferredLanguageTextInput = wrapper.findWhere(
         (w) => w.prop('name') === 'preferredLanguage',
       )
@@ -147,14 +147,14 @@ describe('New Patient Form', () => {
     })
 
     it('should have a "Contact Information" header', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const contactInformationHeader = wrapper.find('h3').at(1)
 
       expect(contactInformationHeader.text()).toEqual('patient.contactInformation')
     })
 
     it('should have a phone number text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const phoneNumberTextInput = wrapper.findWhere((w) => w.prop('name') === 'phoneNumber')
 
       expect(phoneNumberTextInput).toHaveLength(1)
@@ -165,7 +165,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a email text box', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const emailTextInput = wrapper.findWhere((w) => w.prop('name') === 'email')
 
       expect(emailTextInput).toHaveLength(1)
@@ -176,7 +176,7 @@ describe('New Patient Form', () => {
     })
 
     it('should have a address text field', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const addressTextField = wrapper.findWhere((w) => w.prop('name') === 'address')
 
       expect(addressTextField).toHaveLength(1)
@@ -187,14 +187,14 @@ describe('New Patient Form', () => {
     })
 
     it('should render a save button', () => {
-      const wrapper = mount(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = mount(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const saveButton = wrapper.find(Button).at(0)
 
       expect(saveButton.text().trim()).toEqual('actions.save')
     })
 
     it('should render a cancel button', () => {
-      const wrapper = mount(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = mount(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const cancelButton = wrapper.find(Button).at(1)
 
       expect(cancelButton.prop('color')).toEqual('danger')
@@ -204,18 +204,20 @@ describe('New Patient Form', () => {
 
   describe('calculate approximate date of birth', () => {
     it('should calculate the approximate date of birth on change and store the value in the date of birth input', () => {
-      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+      const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
       const unknownCheckbox = wrapper.find(Checkbox)
 
       act(() => {
         if (unknownCheckbox) {
-          ;(unknownCheckbox.prop('onChange') as any)({target: {checked: true}} as ChangeEvent<HTMLInputElement>)
+          ;(unknownCheckbox.prop('onChange') as any)({ target: { checked: true } } as ChangeEvent<
+            HTMLInputElement
+          >)
         }
       })
 
       const approximateAgeInput = wrapper.findWhere((w) => w.prop('name') === 'approximateAge')
       act(() => {
-        approximateAgeInput.prop('onChange')({target: {value: 5}})
+        approximateAgeInput.prop('onChange')({ target: { value: 5 } })
       })
 
       const dateOfBirthTextInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfBirth')
@@ -227,7 +229,7 @@ describe('New Patient Form', () => {
 
     describe('on unknown checkbox click', () => {
       it('should show a approximate age input box when checkbox is checked', () => {
-        const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+        const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
         const approximateAgeInputBefore = wrapper.findWhere(
           (w) => w.prop('name') === 'approximateAge',
         )
@@ -237,7 +239,9 @@ describe('New Patient Form', () => {
 
         act(() => {
           if (unknownCheckbox) {
-            ;(unknownCheckbox.prop('onChange') as any)({target: {checked: true}} as ChangeEvent<HTMLInputElement>)
+            ;(unknownCheckbox.prop('onChange') as any)({ target: { checked: true } } as ChangeEvent<
+              HTMLInputElement
+            >)
           }
         })
 
@@ -250,7 +254,7 @@ describe('New Patient Form', () => {
 
     describe('save button', () => {
       it('should call the onSave prop with the Patient data', async () => {
-        const wrapper = render(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+        const wrapper = render(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
         const prefixInput = wrapper.getByPlaceholderText('patient.prefix')
         const givenNameInput = wrapper.getByPlaceholderText('patient.givenName')
         const familyNameInput = wrapper.getByPlaceholderText('patient.familyName')
@@ -278,52 +282,52 @@ describe('New Patient Form', () => {
         const expectedAddress = 'address'
 
         act(() => {
-          fireEvent.change(prefixInput, {target: {value: expectedPrefix}})
+          fireEvent.change(prefixInput, { target: { value: expectedPrefix } })
         })
 
         act(() => {
-          fireEvent.change(givenNameInput, {target: {value: expectedGivenName}})
+          fireEvent.change(givenNameInput, { target: { value: expectedGivenName } })
         })
 
         act(() => {
-          fireEvent.change(familyNameInput, {target: {value: expectedFamilyName}})
+          fireEvent.change(familyNameInput, { target: { value: expectedFamilyName } })
         })
 
         act(() => {
-          fireEvent.change(suffixInput, {target: {value: expectedSuffix}})
+          fireEvent.change(suffixInput, { target: { value: expectedSuffix } })
         })
 
         act(() => {
           if (sexDropdown) {
-            fireEvent.change(sexDropdown, {target: {value: expectedSex}})
+            fireEvent.change(sexDropdown, { target: { value: expectedSex } })
           }
         })
 
         act(() => {
           if (patientTypeDropdown) {
-            fireEvent.change(patientTypeDropdown, {target: {value: expectedType}})
+            fireEvent.change(patientTypeDropdown, { target: { value: expectedType } })
           }
         })
 
         act(() => {
-          fireEvent.change(occupationInput, {target: {value: expectedOccupation}})
+          fireEvent.change(occupationInput, { target: { value: expectedOccupation } })
         })
 
         act(() => {
-          fireEvent.change(preferredLanguageInput, {target: {value: expectedPreferredLanguage}})
+          fireEvent.change(preferredLanguageInput, { target: { value: expectedPreferredLanguage } })
         })
 
         act(() => {
-          fireEvent.change(phoneNumberInput, {target: {value: expectedPhoneNumber}})
+          fireEvent.change(phoneNumberInput, { target: { value: expectedPhoneNumber } })
         })
 
         act(() => {
-          fireEvent.change(emailInput, {target: {value: expectedEmail}})
+          fireEvent.change(emailInput, { target: { value: expectedEmail } })
         })
 
         act(() => {
           if (addressInput) {
-            fireEvent.change(addressInput, {target: {value: expectedAddress}})
+            fireEvent.change(addressInput, { target: { value: expectedAddress } })
           }
         })
 
@@ -355,7 +359,7 @@ describe('New Patient Form', () => {
 
     describe('cancel button', () => {
       it('should navigate back to /patients when clicked', () => {
-        const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
+        const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
 
         const cancelButton = wrapper.find(Button).at(1)
         act(() => {
@@ -368,23 +372,22 @@ describe('New Patient Form', () => {
   })
   describe('Error handling', () => {
     describe('save button', () => {
-      it('should display no given name error when form doesnt contain a given name on save button click',
-        () => {
-          const wrapper = render(<NewPatientForm onCancel={onCancel} onSave={onSave}/>)
-          const givenName = wrapper.getByPlaceholderText('patient.givenName')
-          const saveButton = wrapper.getByText('actions.save')
-          expect(givenName.textContent).toBe('')
+      it('should display no given name error when form doesnt contain a given name on save button click', () => {
+        const wrapper = render(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
+        const givenName = wrapper.getByPlaceholderText('patient.givenName')
+        const saveButton = wrapper.getByText('actions.save')
+        expect(givenName.textContent).toBe('')
 
-          act(() => {
-            fireEvent.click(saveButton)
-          })
-
-          const errorMessage = wrapper.getByText('patient.errors.patientGivenNameRequired')
-
-          expect(errorMessage).toBeTruthy()
-          expect(errorMessage.textContent).toMatch('patient.errors.patientGivenNameRequired')
-          expect(onSave).toHaveBeenCalledTimes(1)
+        act(() => {
+          fireEvent.click(saveButton)
         })
+
+        const errorMessage = wrapper.getByText('patient.errors.patientGivenNameRequired')
+
+        expect(errorMessage).toBeTruthy()
+        expect(errorMessage.textContent).toMatch('patient.errors.patientGivenNameRequired')
+        expect(onSave).toHaveBeenCalledTimes(1)
+      })
     })
   })
 })
