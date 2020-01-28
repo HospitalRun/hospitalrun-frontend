@@ -17,14 +17,6 @@ script:
 after_script:
   - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
 
-# Re-enable for version v2.0.0
-# jobs:
-#   include:
-#     - stage: release
-#       node_js: lts/*
-#       script:
-#         - npm run semantic-release
-
 notifications:
   email:
     on_success: never
