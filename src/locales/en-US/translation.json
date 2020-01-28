@@ -30,6 +30,16 @@
     "generalInformation": "General Information",
     "contactInformation": "Contact Information",
     "unknownDateOfBirth": "Unknown",
+    "relatedPerson": "Related Person",
+    "relatedPersons": {
+      "error": {
+        "relatedPersonRequired": "Related Person is required.",
+        "relationshipTypeRequired": "Relationship Type is required."
+      },
+      "label": "Related Persons",
+      "new": "New Related Person",
+      "relationshipType": "Relationship Type"
+    },
     "types": {
       "charity": "Charity",
       "private": "Private"
@@ -53,7 +63,8 @@
     "search": "Search"
   },
   "states": {
-    "success": "Success!"
+    "success": "Success!",
+    "error": "Error!"
   },
   "scheduling": {
     "label": "Scheduling",
