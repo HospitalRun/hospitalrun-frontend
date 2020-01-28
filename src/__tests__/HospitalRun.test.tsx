@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import { Toaster } from '@hospitalrun/components'
 import Dashboard from 'dashboard/Dashboard'
 import Appointments from 'scheduling/appointments/Appointments'
+import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import NewPatient from '../patients/new/NewPatient'
 import ViewPatient from '../patients/view/ViewPatient'
 import PatientRepository from '../clients/db/PatientRepository'
@@ -140,6 +141,42 @@ describe('HospitalRun', () => {
 
         expect(wrapper.find(Dashboard)).toHaveLength(1)
       })
+    })
+  })
+
+  describe('/appointments/new', () => {
+    it('should render the new appointment screen when /appointments/new is accessed', async () => {
+      const wrapper = mount(
+        <Provider
+          store={mockStore({
+            title: 'test',
+            user: { permissions: [Permissions.WriteAppointments] },
+          })}
+        >
+          <MemoryRouter initialEntries={['/appointments/new']}>
+            <HospitalRun />
+          </MemoryRouter>
+        </Provider>,
+      )
+
+      expect(wrapper.find(NewAppointment)).toHaveLength(1)
+    })
+
+    it('should render the Dashboard when the user does not have read appointment privileges', () => {
+      const wrapper = mount(
+        <Provider
+          store={mockStore({
+            title: 'test',
+            user: { permissions: [] },
+          })}
+        >
+          <MemoryRouter initialEntries={['/appointments/new']}>
+            <HospitalRun />
+          </MemoryRouter>
+        </Provider>,
+      )
+
+      expect(wrapper.find(Dashboard)).toHaveLength(1)
     })
   })
 
