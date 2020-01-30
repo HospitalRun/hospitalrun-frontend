@@ -1,24 +1,43 @@
 import React, { useState } from 'react'
-import { Toast, Toaster } from '@hospitalrun/components'
+import { Toast } from '@hospitalrun/components'
+import { createPatient } from '../slices/patients-slice'
+import { useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
+
 import { useTranslation } from 'react-i18next'
 import PatientForm from '../components/PatientForm'
+import Patient from '../model/Patient'
 import useTitle from '../util/useTitle'
 
 const NewPatient = () => {
   const { t } = useTranslation()
   useTitle(t('patients.newPatient'))
-  // const dispatch = useDispatch()
+
+  const dispatch = useDispatch()
   const history = useHistory()
   const [patient, setPatient] = useState({ firstName: '', lastName: '' })
-  Toast('success', 'This is a toaster!', 'Success')
 
-  const onSaveButtonClick = async () => {
-    // dispatch(createPatient(patient as Patient, history))
-    console.log(history)
+  //Abstract Patient into Person with different types
+  //Patient, Doctor, etc
+  const dispatchCreatePatient = async (patient: Patient, history: any): Promise<any> => {
+    dispatch(createPatient(patient as Patient, history))
   }
 
-  const onCancelButtonClick = () => {
+  const onSaveButtonClick = (): void => {
+    dispatchCreatePatient(patient as Patient, history).then(()=>{
+      onSaveSuccess()
+    }).catch(()=>{
+      onSaveError()
+    })
+  }
+  const onSaveSuccess = (): void => {
+    Toast('success', 'Patient created succesfully!', 'Success')
+  }
+  const onSaveError = (): void => {
+    Toast('danger', 'There was a problem, please try again.', 'Error')
+  }
+
+  const onCancelButtonClick = (): void => {
     history.push(`/patients`)
   }
 
@@ -37,7 +56,6 @@ const NewPatient = () => {
           onSaveButtonClick={onSaveButtonClick}
           onCancelButtonClick={onCancelButtonClick}
         />
-        <Toaster autoClose={3000} hideProgressBar draggable />
       </div>
     </div>
   )

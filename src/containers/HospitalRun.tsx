@@ -1,15 +1,16 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { RootState } from '../store'
 import { useSelector } from 'react-redux'
-import Sidebar from '../components/Sidebar'
-import Permissions from '../util/Permissions'
+import { Switch, Route } from 'react-router-dom'
 import Dashboard from './Dashboard'
 import Patients from './Patients'
 import NewPatient from './NewPatient'
 import ViewPatient from './ViewPatient'
-import { RootState } from '../store'
+import { Toaster } from '@hospitalrun/components'
 import Navbar from '../components/Navbar'
+import Sidebar from '../components/Sidebar'
 import PrivateRoute from '../components/PrivateRoute'
+import Permissions from '../util/Permissions'
 
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
@@ -49,6 +50,7 @@ const HospitalRun = () => {
             </div>
           </main>
         </div>
+        <Toaster autoClose={3000} hideProgressBar draggable />
       </div>
     </div>
   )
