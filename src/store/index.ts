@@ -2,6 +2,7 @@ import { configureStore, combineReducers, Action } from '@reduxjs/toolkit'
 import ReduxThunk, { ThunkAction } from 'redux-thunk'
 import patient from '../patients/patient-slice'
 import patients from '../patients/patients-slice'
+import appointments from '../scheduling/appointments/appointments-slice'
 import title from '../page-header/title-slice'
 import user from '../user/user-slice'
 
@@ -10,6 +11,7 @@ const reducer = combineReducers({
   patients,
   title,
   user,
+  appointments,
 })
 
 const store = configureStore({
