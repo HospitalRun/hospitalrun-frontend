@@ -14,7 +14,6 @@ const NewPatient = () => {
   Toast('success', 'This is a toaster!', 'Success')
 
   const onSaveButtonClick = async () => {
-    console.log(history)
     // dispatch(createPatient(patient as Patient, history))
     console.log(history)
   }
