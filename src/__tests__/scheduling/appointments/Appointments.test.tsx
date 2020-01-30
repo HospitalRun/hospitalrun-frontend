@@ -7,13 +7,26 @@ import Appointments from 'scheduling/appointments/Appointments'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Calendar } from '@hospitalrun/components'
+import { act } from '@testing-library/react'
 import * as titleUtil from '../../../page-header/useTitle'
 
 describe('Appointments', () => {
-  const setup = () => {
+  const expectedAppointments = [
+    {
+      id: '123',
+      rev: '1',
+      patientId: '1234',
+      startDateTime: new Date().toISOString(),
+      endDateTime: new Date().toISOString(),
+      location: 'location',
+      reason: 'reason',
+    },
+  ]
+
+  const setup = async () => {
     const mockStore = createMockStore([thunk])
     return mount(
-      <Provider store={mockStore({})}>
+      <Provider store={mockStore({ appointments: { appointments: expectedAppointments } })}>
         <MemoryRouter initialEntries={['/appointments']}>
           <Appointments />
         </MemoryRouter>
@@ -27,8 +40,25 @@ describe('Appointments', () => {
     expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.label')
   })
 
-  it('should render a calendar', () => {
-    const wrapper = setup()
-    expect(wrapper.find(Calendar)).toHaveLength(1)
+  it('should render a calendar with the proper events', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+    wrapper.update()
+
+    const expectedEvents = [
+      {
+        id: expectedAppointments[0].id,
+        start: new Date(expectedAppointments[0].startDateTime),
+        end: new Date(expectedAppointments[0].endDateTime),
+        title: expectedAppointments[0].patientId,
+        allDay: false,
+      },
+    ]
+
+    const calendar = wrapper.find(Calendar)
+    expect(calendar).toHaveLength(1)
+    expect(calendar.prop('events')).toEqual(expectedEvents)
   })
 })
