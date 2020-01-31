@@ -18,8 +18,8 @@ const Navbar = () => {
       bg="dark"
       variant="dark"
       search={{
-        buttonText: 'actions.search',
-        placeholderText: 'actions.search',
+        buttonText: t('actions.search'),
+        placeholderText: t('actions.search'),
         onClickButton: () => undefined,
         onChangeInput: () => undefined,
       }}
