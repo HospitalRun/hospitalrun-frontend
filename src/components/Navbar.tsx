@@ -15,6 +15,7 @@ const Navbar = () => {
           history.push('/')
         },
       }}
+<<<<<<< HEAD
       search={{
         onClickButton: () => {
           // no oop
@@ -31,15 +32,27 @@ const Navbar = () => {
           onClick: () => {
             // no oop
           },
+=======
+      bg="dark"
+      variant="dark"
+      search={{
+        onClickButton: () => console.log('hello'),
+        onChangeInput: () => console.log('hello'),
+      }}
+      navLinks={[
+        {
+          label: t('patients.label', 'patients'),
+          onClick: () => {},
+>>>>>>> add-translation-resources
           children: [
             {
-              label: t('actions.list'),
+              label: t('actions.list', 'list'),
               onClick: () => {
                 history.push('/patients')
               },
             },
             {
-              label: t('actions.new'),
+              label: t('actions.new', 'new'),
               onClick: () => {
                 history.push('/patients/new')
               },
