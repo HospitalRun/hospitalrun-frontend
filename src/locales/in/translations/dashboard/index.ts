@@ -1,5 +1,5 @@
 export default {
-  "dashboard": {
-    "label": "Dasbor"
-  }
+  dashboard: {
+    label: 'Dasbor',
+  },
 }

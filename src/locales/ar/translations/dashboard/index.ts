@@ -1,5 +1,5 @@
 export default {
-  "dashboard": {
-    "label": "لوحة القيادة"
-  }
+  dashboard: {
+    label: 'لوحة القيادة',
+  },
 }

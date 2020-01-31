@@ -1,5 +1,5 @@
 export default {
-  "dashboard": {
-    "label": "Painel de controle"
-  }
+  dashboard: {
+    label: 'Painel de controle',
+  },
 }

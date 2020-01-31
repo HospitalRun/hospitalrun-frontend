@@ -1,9 +1,9 @@
 export default {
-  "actions": {
-    "edit": "Editar",
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "new": "Nuevo",
-    "list": "Lista"
-  }
+  actions: {
+    edit: 'Editar',
+    save: 'Guardar',
+    cancel: 'Cancelar',
+    new: 'Nuevo',
+    list: 'Lista',
+  },
 }

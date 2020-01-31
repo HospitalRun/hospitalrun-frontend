@@ -1,5 +1,5 @@
 export default {
-  "dashboard": {
-    "label": "Instrumententafel"
-  }
+  dashboard: {
+    label: 'Instrumententafel',
+  },
 }

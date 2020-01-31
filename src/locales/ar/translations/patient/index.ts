@@ -1,6 +1,6 @@
 export default {
-  "patient": {
-    "firstName": "الاسم الاول",
-    "lastName": "الكنية"
-  }
+  patient: {
+    firstName: 'الاسم الاول',
+    lastName: 'الكنية',
+  },
 }

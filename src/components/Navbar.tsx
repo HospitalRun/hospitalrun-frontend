@@ -18,13 +18,15 @@ const Navbar = () => {
       bg="dark"
       variant="dark"
       search={{
-        onClickButton: () => console.log('hello'),
-        onChangeInput: () => console.log('hello'),
+        buttonText: 'actions.search',
+        placeholderText: 'actions.search',
+        onClickButton: () => undefined,
+        onChangeInput: () => undefined,
       }}
       navLinks={[
         {
           label: t('patients.label', 'patients'),
-          onClick: () => {},
+          onClick: () => undefined,
           children: [
             {
               label: t('actions.list', 'list'),
@@ -42,9 +44,7 @@ const Navbar = () => {
         },
         {
           label: t('scheduling.label'),
-          onClick: () => {
-            // no oop
-          },
+          onClick: () => undefined,
           children: [
             {
               label: t('scheduling.appointments.label'),

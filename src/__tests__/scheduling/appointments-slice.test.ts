@@ -2,11 +2,11 @@ import { AnyAction } from 'redux'
 import Appointment from 'model/Appointment'
 import { createMemoryHistory } from 'history'
 import AppointmentRepository from 'clients/db/AppointmentsRepository'
+import { mocked } from 'ts-jest/utils'
 import appointments, {
   createAppointmentStart,
   createAppointment,
 } from '../../scheduling/appointments/appointments-slice'
-import { mocked } from 'ts-jest/utils'
 
 describe('appointments slice', () => {
   describe('appointments reducer', () => {

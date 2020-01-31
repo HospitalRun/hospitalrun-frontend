@@ -4,7 +4,7 @@ import '@hospitalrun/components/scss/main.scss'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import './i18n.ts'
+import './i18n'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

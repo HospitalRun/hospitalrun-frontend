@@ -1,16 +1,16 @@
-import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { initReactI18next } from 'react-i18next';
+import i18n from 'i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
+import { initReactI18next } from 'react-i18next'
 
-import translationAR from './locales/ar/translations';
-import translationDE from './locales/de/translations';
-import translationEN from './locales/en/translations';
-import translationES from './locales/es/translations';
-import translationIN from './locales/in/translations';
-import translationJA from './locales/ja/translations';
-import translationPT from './locales/pt/translations';
-import translationRU from './locales/ru/translations';
-import translationZR from './locales/zr/translations';
+import translationAR from './locales/ar/translations'
+import translationDE from './locales/de/translations'
+import translationEN from './locales/en/translations'
+import translationES from './locales/es/translations'
+import translationIN from './locales/in/translations'
+import translationJA from './locales/ja/translations'
+import translationPT from './locales/pt/translations'
+import translationRU from './locales/ru/translations'
+import translationZR from './locales/zr/translations'
 
 const resources = {
   ar: {
@@ -40,7 +40,7 @@ const resources = {
   zr: {
     translation: translationZR,
   },
-};
+}
 
 i18n
   // load translation using xhr -> see /public/locales
@@ -55,10 +55,10 @@ i18n
   .init({
     fallbackLng: 'en',
     debug: true,
-    resources: resources,
+    resources,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
-  });
+  })
 
-export default i18n;
+export default i18n
