@@ -14,7 +14,6 @@ import { getPatientName } from '../../../patients/util/patient-name-util'
 
 const onSave = jest.fn()
 const onCancel = jest.fn()
-
 describe('New Patient Form', () => {
   describe('layout', () => {
     it('should have a "Basic Information" header', () => {
@@ -368,6 +367,26 @@ describe('New Patient Form', () => {
         })
 
         expect(onCancel).toHaveBeenCalledTimes(1)
+      })
+    })
+  })
+  describe('Error handling', () => {
+    describe('save button', () => {
+      it('should display no given name error when form doesnt contain a given name on save button click', () => {
+        const wrapper = render(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
+        const givenName = wrapper.getByPlaceholderText('patient.givenName')
+        const saveButton = wrapper.getByText('actions.save')
+        expect(givenName.textContent).toBe('')
+
+        act(() => {
+          fireEvent.click(saveButton)
+        })
+
+        const errorMessage = wrapper.getByText('patient.errors.patientGivenNameRequired')
+
+        expect(errorMessage).toBeTruthy()
+        expect(errorMessage.textContent).toMatch('patient.errors.patientGivenNameRequired')
+        expect(onSave).toHaveBeenCalledTimes(1)
       })
     })
   })

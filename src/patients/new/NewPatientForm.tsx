@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Checkbox } from '@hospitalrun/components'
+import { Alert, Button, Checkbox } from '@hospitalrun/components'
 import { startOfDay, subYears } from 'date-fns'
 import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
@@ -19,6 +19,7 @@ const NewPatientForm = (props: Props) => {
   const [isEditable] = useState(true)
   const { onCancel, onSave } = props
   const [approximateAge, setApproximateAge] = useState(0)
+  const [errorMessage, setErrorMessage] = useState('')
   const [patient, setPatient] = useState({
     givenName: '',
     familyName: '',
@@ -37,24 +38,28 @@ const NewPatientForm = (props: Props) => {
   })
 
   const onSaveButtonClick = async () => {
-    const newPatient = {
-      prefix: patient.prefix,
-      familyName: patient.familyName,
-      givenName: patient.givenName,
-      suffix: patient.suffix,
-      sex: patient.sex,
-      dateOfBirth: patient.dateOfBirth,
-      isApproximateDateOfBirth: patient.isApproximateDateOfBirth,
-      type: patient.type,
-      occupation: patient.occupation,
-      preferredLanguage: patient.preferredLanguage,
-      phoneNumber: patient.phoneNumber,
-      email: patient.email,
-      address: patient.address,
-      fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
-    } as Patient
+    if (!patient.givenName) {
+      setErrorMessage(t('patient.errors.patientGivenNameRequired'))
+    } else {
+      const newPatient = {
+        prefix: patient.prefix,
+        familyName: patient.familyName,
+        givenName: patient.givenName,
+        suffix: patient.suffix,
+        sex: patient.sex,
+        dateOfBirth: patient.dateOfBirth,
+        isApproximateDateOfBirth: patient.isApproximateDateOfBirth,
+        type: patient.type,
+        occupation: patient.occupation,
+        preferredLanguage: patient.preferredLanguage,
+        phoneNumber: patient.phoneNumber,
+        email: patient.email,
+        address: patient.address,
+        fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
+      } as Patient
 
-    onSave(newPatient)
+      onSave(newPatient)
+    }
   }
 
   const onFieldChange = (key: string, value: string) => {
@@ -93,6 +98,7 @@ const NewPatientForm = (props: Props) => {
     <div>
       <form>
         <h3>{t('patient.basicInformation')}</h3>
+        {errorMessage && <Alert className="alert" color="danger" message={errorMessage} />}
         <div className="row">
           <div className="col-md-2">
             <TextInputWithLabelFormGroup
@@ -273,7 +279,6 @@ const NewPatientForm = (props: Props) => {
             />
           </div>
         </div>
-
         {isEditable && (
           <div className="row float-right">
             <div className="btn-group btn-group-lg">
