@@ -43,6 +43,9 @@
     "types": {
       "charity": "Charity",
       "private": "Private"
+    },
+    "errors": {
+      "patientGivenNameRequired": "Patient Given Name is required."
     }
   },
   "sex": {
