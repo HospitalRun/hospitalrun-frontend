@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "@hospitalrun/components": "~0.30.3",
+    "@hospitalrun/components": "~0.31.0",
     "@reduxjs/toolkit": "~1.2.1",
     "@semantic-release/changelog": "~5.0.0",
     "@semantic-release/git": "~7.0.16",
@@ -57,7 +57,7 @@
     "@testing-library/react": "~9.4.0",
     "@testing-library/react-hooks": "~3.2.1",
     "@types/jest": "~25.1.0",
-    "@types/node": "~13.5.0",
+    "@types/node": "~13.7.0",
     "@types/pouchdb": "~6.4.0",
     "@types/react": "~16.9.17",
     "@types/react-dom": "~16.9.4",
