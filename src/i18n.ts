@@ -4,11 +4,11 @@ import { initReactI18next } from 'react-i18next'
 
 import translationAR from './locales/ar/translations'
 import translationDE from './locales/de/translations'
-import translationEN from './locales/en/translations'
+import translationEnUs from './locales/enUs/translations'
 import translationES from './locales/es/translations'
 import translationIN from './locales/in/translations'
 import translationJA from './locales/ja/translations'
-import translationPT from './locales/pt/translations'
+import translationPtBR from './locales/ptBr/translations'
 import translationRU from './locales/ru/translations'
 import translationZR from './locales/zr/translations'
 
@@ -20,7 +20,7 @@ const resources = {
     translation: translationDE,
   },
   en: {
-    translation: translationEN,
+    translation: translationEnUs,
   },
   es: {
     translation: translationES,
@@ -32,7 +32,7 @@ const resources = {
     translation: translationJA,
   },
   pt: {
-    translation: translationPT,
+    translation: translationPtBR,
   },
   ru: {
     translation: translationRU,

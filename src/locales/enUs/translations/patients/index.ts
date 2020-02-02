@@ -4,5 +4,6 @@ export default {
     viewPatients: 'View Patients',
     viewPatient: 'View Patient',
     newPatient: 'New Patient',
+    successfullyCreated: "Successfully created patient"
   },
 }
