@@ -16,115 +16,103 @@ describe('Navbar', () => {
       </Router>,
     )
 
+  const wrapper = setup()
+  const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+
   it('should render a HospitalRun Navbar', () => {
-    const wrapper = setup()
-    expect(wrapper.find(HospitalRunNavbar)).toHaveLength(1)
+    expect(hospitalRunNavbar).toHaveLength(1)
   })
 
-  describe('brand', () => {
-    it('should render a HospitalRun Navbar with the navbar brand', () => {
-      const wrapper = setup()
-
-      expect(wrapper.find(HospitalRunNavbar).prop('brand').label).toEqual('HospitalRun')
+  describe('header', () => {
+    const header = wrapper.find('.nav-header')
+    it('should render a HospitalRun Navbar with the navbar header', () => {
+      expect(header.first().props().children.props.children).toEqual('HospitalRun')
     })
-
-    it('should navigate to / when the brand is clicked', () => {
-      const wrapper = setup()
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-
+    it('should navigate to / when the header is clicked', () => {
       act(() => {
-        ;(hospitalRunNavbar.prop('brand') as any).onClick()
+        header
+          .first()
+          .props()
+          .onClick()
       })
-
       expect(history.location.pathname).toEqual('/')
     })
   })
 
   describe('patients', () => {
-    it('should render a patients dropdown', () => {
-      const wrapper = setup()
-
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-
-      expect(hospitalRunNavbar.prop('navLinks')[0].label).toEqual('patients.label')
-      expect(hospitalRunNavbar.prop('navLinks')[0].children[0].label).toEqual('actions.list')
-      expect(hospitalRunNavbar.prop('navLinks')[0].children[1].label).toEqual('actions.new')
+    const patientsLinkList = hospitalRunNavbar.find('.patients-link-list')
+    it('should render a patients link list', () => {
+      expect(patientsLinkList.first().props().title).toEqual('patients.label')
+      expect(patientsLinkList.first().props().children[0].props.children).toEqual('actions.list')
+      expect(patientsLinkList.first().props().children[1].props.children).toEqual('actions.new')
     })
-
     it('should navigate to /patients when the list option is selected', () => {
-      const wrapper = setup()
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-
       act(() => {
-        ;(hospitalRunNavbar.prop('navLinks')[0].children[0] as any).onClick()
+        patientsLinkList
+          .first()
+          .props()
+          .children[0].props.onClick()
       })
-
       expect(history.location.pathname).toEqual('/patients')
     })
-
     it('should navigate to /patients/new when the list option is selected', () => {
-      const wrapper = setup()
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-
       act(() => {
-        ;(hospitalRunNavbar.prop('navLinks')[0].children[1] as any).onClick()
+        patientsLinkList
+          .first()
+          .props()
+          .children[1].props.onClick()
       })
-
       expect(history.location.pathname).toEqual('/patients/new')
     })
   })
 
   describe('scheduling', () => {
+    const scheduleLinkList = hospitalRunNavbar.find('.scheduling-link-list')
+
     it('should render a scheduling dropdown', () => {
-      const wrapper = setup()
-
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-
-      expect(hospitalRunNavbar.prop('navLinks')[1].label).toEqual('scheduling.label')
-      expect(hospitalRunNavbar.prop('navLinks')[1].children[0].label).toEqual(
+      expect(scheduleLinkList.first().props().title).toEqual('scheduling.label')
+      expect(scheduleLinkList.first().props().children[0].props.children).toEqual(
         'scheduling.appointments.label',
       )
-      expect(hospitalRunNavbar.prop('navLinks')[1].children[1].label).toEqual(
+      expect(scheduleLinkList.first().props().children[1].props.children).toEqual(
         'scheduling.appointments.new',
       )
     })
 
     it('should navigate to to /appointments when the appointment list option is selected', () => {
-      const wrapper = setup()
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-
       act(() => {
-        ;(hospitalRunNavbar.prop('navLinks')[1].children[0] as any).onClick()
+        scheduleLinkList
+          .first()
+          .props()
+          .children[0].props.onClick()
       })
-
       expect(history.location.pathname).toEqual('/appointments')
     })
 
     it('should navigate to /appointments/new when the new appointment list option is selected', () => {
-      const wrapper = setup()
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-
       act(() => {
-        ;(hospitalRunNavbar.prop('navLinks')[1].children[1] as any).onClick()
+        scheduleLinkList
+          .first()
+          .props()
+          .children[1].props.onClick()
       })
-
       expect(history.location.pathname).toEqual('/appointments/new')
     })
   })
 
   describe('search', () => {
-    it('should render Search as the search button label', () => {
-      const wrapper = setup()
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-
-      expect(hospitalRunNavbar.prop('search').buttonText).toEqual('actions.search')
-    })
+    const navSearch = hospitalRunNavbar.find('.nav-search')
 
     it('should render Search as the search box placeholder', () => {
-      const wrapper = setup()
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+      expect(navSearch.at(2).props().children.props.children[0].props.placeholder).toEqual(
+        'actions.search',
+      )
+    })
 
-      expect(hospitalRunNavbar.prop('search').placeholderText).toEqual('actions.search')
+    it('should render Search as the search button label', () => {
+      expect(navSearch.at(2).props().children.props.children[1].props.children).toEqual(
+        'actions.search',
+      )
     })
   })
 })
