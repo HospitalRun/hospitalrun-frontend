@@ -120,6 +120,7 @@
   },
   "husky": {
     "hooks": {
+      "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
@@ -129,10 +130,9 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "npm run lint",
-      "npm run test:ci",
-      "git add ."
-    ]
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.js": "eslint --cache --fix"
   }
 }
