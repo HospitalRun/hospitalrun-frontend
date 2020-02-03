@@ -133,7 +133,7 @@ describe('patients slice', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'Success!',
-        `patients.successfullyCreated ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
+        `Successfully created patient ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
       )
     })
   })
