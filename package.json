@@ -66,7 +66,7 @@
     "@types/react-router-dom": "~5.1.0",
     "@types/redux-mock-store": "~1.0.1",
     "@typescript-eslint/eslint-plugin": "~2.18.0",
-    "@typescript-eslint/parser": "~2.18.0",
+    "@typescript-eslint/parser": "~2.19.0",
     "commitizen": "~4.0.3",
     "commitlint-config-cz": "~0.12.1",
     "coveralls": "~3.0.9",
