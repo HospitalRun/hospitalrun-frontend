@@ -12,4 +12,6 @@ export default interface Person extends AbstractDBModel, Name, ContactInformatio
   preferredLanguage?: string
   occupation?: string
   relatedPersons?: RelatedPerson[]
+  relatedPersonId?: string
+  relationType?: string
 }

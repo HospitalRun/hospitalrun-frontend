@@ -57,7 +57,7 @@ const ViewPatient = () => {
           <GeneralInformation patient={patient} />
         </Route>
         <Route exact path="/patients/:id/relatedpersons">
-          <RelatedPerson patient={patient} />
+          <RelatedPerson person={patient} />
         </Route>
       </Panel>
     </div>

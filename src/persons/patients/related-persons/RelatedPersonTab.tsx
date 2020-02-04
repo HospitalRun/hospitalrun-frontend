@@ -13,7 +13,6 @@ import Person from 'model/Person'
 interface Props {
   person: Person
 }
-
 const RelatedPersonTab = (props: Props) => {
   const dispatch = useDispatch()
   const { person } = props
@@ -29,7 +28,8 @@ const RelatedPersonTab = (props: Props) => {
         await Promise.all(
           person.relatedPersons.map(async (person) => {
             const fetchedRelatedPerson = await PersonRepository.find(person.relatedPersonId)
-            fetchedRelatedPersons.push(fetchedRelatedPerson)
+
+            fetchedRelatedPersons.push(fetchedRelatedPerson as RelatedPerson)
           }),
         )
 
@@ -38,7 +38,7 @@ const RelatedPersonTab = (props: Props) => {
     }
 
     fetchRelatedPersons()
-  }, [patient.relatedPersons])
+  }, [person.relatedPersons])
 
   const onNewRelatedPersonClick = () => {
     setShowRelatedPersonModal(true)
@@ -49,16 +49,16 @@ const RelatedPersonTab = (props: Props) => {
   }
 
   const onRelatedPersonSave = (relatedPerson: RelatedPerson) => {
-    const patientToUpdate = {
-      ...patient,
+    const personToUpdate = {
+      ...person,
     }
 
-    if (!patientToUpdate.relatedPersons) {
-      patientToUpdate.relatedPersons = []
+    if (!personToUpdate.relatedPersons) {
+      personToUpdate.relatedPersons = []
     }
 
-    patientToUpdate.relatedPersons.push(relatedPerson)
-    dispatch(updatePatient(patientToUpdate))
+    personToUpdate.relatedPersons.push(relatedPerson)
+    dispatch(updatePatient(personToUpdate))
     closeNewRelatedPersonModal()
   }
 

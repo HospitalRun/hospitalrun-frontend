@@ -1,6 +1,6 @@
 import Person from '../../model/Person'
 import Repository from './Repository'
-import { person } from '../../config/pouchdb'
+import { persons } from '../../config/pouchdb'
 
 const formatFriendlyId = (prefix: string, sequenceNumber: string) => `${prefix}${sequenceNumber}`
 
@@ -15,7 +15,7 @@ const generateSequenceNumber = (currentNumber: number): string => {
 
 export class PersonRepository extends Repository<Person> {
   constructor() {
-    super(person)
+    super(persons)
   }
 
   async search(text: string): Promise<Person[]> {
