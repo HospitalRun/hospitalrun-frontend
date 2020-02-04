@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { Spinner, TextInput, Button, List, ListItem, Container, Row } from '@hospitalrun/components'
 import { RootState } from '../../store'
