@@ -68,7 +68,7 @@
     "@typescript-eslint/eslint-plugin": "~2.18.0",
     "@typescript-eslint/parser": "~2.18.0",
     "commitizen": "~4.0.3",
-    "commitlint-config-cz": "~0.12.1",
+    "commitlint-config-cz": "~0.13.0",
     "coveralls": "~3.0.9",
     "cross-env": "~7.0.0",
     "cz-conventional-changelog": "~3.1.0",
