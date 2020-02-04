@@ -9,7 +9,7 @@ import configureStore from 'redux-mock-store'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import Patients from '../../../patients/list/Patients'
-import PatientRepository from '../../../clients/db/PatientRepository'
+import PersonRepository from '../../../clients/db/PersonRepository'
 import * as patientSlice from '../../../patients/patients-slice'
 
 const middlewares = [thunk]
@@ -17,7 +17,7 @@ const mockStore = configureStore(middlewares)
 
 describe('Patients', () => {
   const patients = [{ fullName: 'test test', friendlyId: 'P12345' }]
-  const mockedPatientRepository = mocked(PatientRepository, true)
+  const mockedPersonRepository = mocked(PersonRepository, true)
 
   const setup = (isLoading?: boolean) => {
     const store = mockStore({
@@ -37,8 +37,8 @@ describe('Patients', () => {
 
   beforeEach(() => {
     jest.resetAllMocks()
-    jest.spyOn(PatientRepository, 'findAll')
-    mockedPatientRepository.findAll.mockResolvedValue([])
+    jest.spyOn(PersonRepository, 'findAll')
+    mockedPersonRepository.findAll.mockResolvedValue([])
   })
 
   describe('layout', () => {

@@ -10,7 +10,7 @@ import GeneralInformation from 'patients/view/GeneralInformation'
 import { createMemoryHistory } from 'history'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import Patient from '../../../model/Patient'
-import PatientRepository from '../../../clients/db/PatientRepository'
+import PersonRepository from '../../../clients/db/PersonRepository'
 import * as titleUtil from '../../../page-header/useTitle'
 import ViewPatient from '../../../patients/view/ViewPatient'
 import store from '../../../store'
@@ -35,9 +35,9 @@ describe('ViewPatient', () => {
 
   let history = createMemoryHistory()
   const setup = () => {
-    jest.spyOn(PatientRepository, 'find')
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.find.mockResolvedValue(patient)
+    jest.spyOn(PersonRepository, 'find')
+    const mockedPersonRepository = mocked(PersonRepository, true)
+    mockedPersonRepository.find.mockResolvedValue(patient)
     jest.mock('react-router-dom', () => ({
       useParams: () => ({
         id: '123',

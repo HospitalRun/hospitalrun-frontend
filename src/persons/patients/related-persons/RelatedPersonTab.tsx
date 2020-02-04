@@ -3,32 +3,32 @@ import { Button, Panel, List, ListItem } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
-import Patient from 'model/Patient'
 import { updatePatient } from 'patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
-import PatientRepository from 'clients/db/PatientRepository'
+import PersonRepository from 'clients/db/PersonRepository'
+import Person from 'model/Person'
 
 interface Props {
-  patient: Patient
+  person: Person
 }
 
 const RelatedPersonTab = (props: Props) => {
   const dispatch = useDispatch()
-  const { patient } = props
+  const { person } = props
   const { t } = useTranslation()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
-  const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
+  const [relatedPersons, setRelatedPersons] = useState<RelatedPerson[] | undefined>(undefined)
 
   useEffect(() => {
     const fetchRelatedPersons = async () => {
-      const fetchedRelatedPersons: Patient[] = []
-      if (patient.relatedPersons) {
+      const fetchedRelatedPersons: RelatedPerson[] = []
+      if (person.relatedPersons) {
         await Promise.all(
           patient.relatedPersons.map(async (person) => {
-            const fetchedRelatedPerson = await PatientRepository.find(person.patientId)
+            const fetchedRelatedPerson = await PersonRepository.find(person.relatedPatientId)
             fetchedRelatedPersons.push(fetchedRelatedPerson)
           }),
         )

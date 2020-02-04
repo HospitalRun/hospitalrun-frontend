@@ -12,7 +12,7 @@ import store from '../../../store'
 import Patient from '../../../model/Patient'
 import * as patientSlice from '../../../patients/patients-slice'
 import * as titleUtil from '../../../page-header/useTitle'
-import PatientRepository from '../../../clients/db/PatientRepository'
+import PersonRepository from '../../../clients/db/PersonRepository'
 
 describe('New Patient', () => {
   it('should render a new patient form', () => {
@@ -42,8 +42,8 @@ describe('New Patient', () => {
 
   it('should call create patient when save button is clicked', async () => {
     jest.spyOn(patientSlice, 'createPatient')
-    jest.spyOn(PatientRepository, 'save')
-    const mockedPatientRepository = mocked(PatientRepository, true)
+    jest.spyOn(PersonRepository, 'save')
+    const mockedPersonRepository = mocked(PersonRepository, true)
     const patient = {
       id: '123',
       prefix: 'test',
@@ -51,7 +51,7 @@ describe('New Patient', () => {
       familyName: 'test',
       suffix: 'test',
     } as Patient
-    mockedPatientRepository.save.mockResolvedValue(patient)
+    mockedPersonRepository.save.mockResolvedValue(patient)
 
     const expectedPatient = {
       sex: 'male',

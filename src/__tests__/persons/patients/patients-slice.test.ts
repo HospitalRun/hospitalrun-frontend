@@ -12,7 +12,7 @@ import patients, {
   searchPatients,
 } from '../../patients/patients-slice'
 import Patient from '../../model/Patient'
-import PatientRepository from '../../clients/db/PatientRepository'
+import PersonRepository from '../../clients/db/PersonRepository'
 
 describe('patients slice', () => {
   beforeEach(() => {
@@ -67,24 +67,24 @@ describe('patients slice', () => {
       expect(dispatch).toHaveBeenCalledWith({ type: createPatientStart.type })
     })
 
-    it('should call the PatientRepository save method with the correct patient', async () => {
+    it('should call the PersonRepository save method with the correct patient', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'save')
+      jest.spyOn(PersonRepository, 'save')
       const expectedPatient = {
         id: 'id',
       } as Patient
 
       await createPatient(expectedPatient, createMemoryHistory())(dispatch, getState, null)
 
-      expect(PatientRepository.save).toHaveBeenCalledWith(expectedPatient)
+      expect(PersonRepository.save).toHaveBeenCalledWith(expectedPatient)
     })
 
     it('should dispatch the CREATE_PATIENT_SUCCESS action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.save.mockResolvedValue({ id: '12345' } as Patient)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.save.mockResolvedValue({ id: '12345' } as Patient)
       const expectedPatient = {
         id: 'id',
       } as Patient
@@ -96,8 +96,8 @@ describe('patients slice', () => {
 
     it('should navigate to the /patients/:id where id is the new patient id', async () => {
       const expectedPatientId = '12345'
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.save.mockResolvedValue({ id: expectedPatientId } as Patient)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.save.mockResolvedValue({ id: expectedPatientId } as Patient)
       const history = createMemoryHistory()
 
       const dispatch = jest.fn()
@@ -121,8 +121,8 @@ describe('patients slice', () => {
         familyName: expectedFamilyName,
         suffix: expectedSuffix,
       } as Patient
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.save.mockResolvedValue(expectedPatient)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.save.mockResolvedValue(expectedPatient)
       const mockedComponents = mocked(components, true)
       const history = createMemoryHistory()
       const dispatch = jest.fn()
@@ -148,25 +148,25 @@ describe('patients slice', () => {
       expect(dispatch).toHaveBeenCalledWith({ type: getPatientsStart.type })
     })
 
-    it('should call the PatientRepository search method with the correct search criteria', async () => {
+    it('should call the PersonRepository search method with the correct search criteria', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'search')
+      jest.spyOn(PersonRepository, 'search')
 
       const expectedSearchString = 'search string'
       await searchPatients(expectedSearchString)(dispatch, getState, null)
 
-      expect(PatientRepository.search).toHaveBeenCalledWith(expectedSearchString)
+      expect(PersonRepository.search).toHaveBeenCalledWith(expectedSearchString)
     })
 
-    it('should call the PatientRepository findALl method if there is no string text', async () => {
+    it('should call the PersonRepository findALl method if there is no string text', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'findAll')
+      jest.spyOn(PersonRepository, 'findAll')
 
       await searchPatients('')(dispatch, getState, null)
 
-      expect(PatientRepository.findAll).toHaveBeenCalledTimes(1)
+      expect(PersonRepository.findAll).toHaveBeenCalledTimes(1)
     })
 
     it('should dispatch the GET_ALL_PATIENTS_SUCCESS action', async () => {
@@ -179,8 +179,8 @@ describe('patients slice', () => {
         },
       ] as Patient[]
 
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.search.mockResolvedValue(expectedPatients)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.search.mockResolvedValue(expectedPatients)
 
       await searchPatients('search string')(dispatch, getState, null)
 

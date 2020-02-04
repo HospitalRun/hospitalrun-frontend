@@ -1,5 +1,5 @@
 import { patients } from 'config/pouchdb'
-import PatientRepository from 'clients/db/PatientRepository'
+import PersonRepository from 'clients/db/PersonRepository'
 import Patient from 'model/Patient'
 import { fromUnixTime } from 'date-fns'
 import { updatePatientStart } from 'patients/patient-slice'
@@ -10,7 +10,7 @@ describe('patient repository', () => {
       await patients.put({ _id: 'id5678' }) // store another patient just to make sure we pull back the right one
       const expectedPatient = await patients.put({ _id: 'id1234' })
 
-      const actualPatient = await PatientRepository.find('id1234')
+      const actualPatient = await PersonRepository.find('id1234')
 
       expect(actualPatient).toBeDefined()
       expect(actualPatient.id).toEqual(expectedPatient.id)
@@ -27,7 +27,7 @@ describe('patient repository', () => {
       await patients.put({ _id: 'id5678', friendlyId: expectedFriendlyId, fullName: 'test test' })
       await patients.put({ _id: 'id1234', friendlyId: 'P00002', fullName: 'test test' })
 
-      const result = await PatientRepository.search(expectedFriendlyId)
+      const result = await PersonRepository.search(expectedFriendlyId)
 
       expect(result).toHaveLength(1)
       expect(result[0].friendlyId).toEqual(expectedFriendlyId)
@@ -41,7 +41,7 @@ describe('patient repository', () => {
       await patients.put({ _id: 'id5678', friendlyId: 'P00001', fullName: 'test test' })
       await patients.put({ _id: 'id2345', friendlyId: 'P00003', fullName: 'not found' })
 
-      const result = await PatientRepository.search('test test')
+      const result = await PersonRepository.search('test test')
 
       expect(result).toHaveLength(2)
       expect(result[0].id).toEqual('id1234')
@@ -58,7 +58,7 @@ describe('patient repository', () => {
       const expectedPatient2 = await patients.put({ _id: 'id5678' })
       const expectedPatient1 = await patients.put({ _id: 'id1234' })
 
-      const result = await PatientRepository.findAll()
+      const result = await PersonRepository.findAll()
 
       expect(result).toHaveLength(2)
       expect(result[0].id).toEqual(expectedPatient1.id)
@@ -71,7 +71,7 @@ describe('patient repository', () => {
 
   describe('save', () => {
     it('should generate an id that is a timestamp for the patient', async () => {
-      const newPatient = await PatientRepository.save({
+      const newPatient = await PersonRepository.save({
         fullName: 'test test',
       } as Patient)
 
@@ -81,7 +81,7 @@ describe('patient repository', () => {
     })
 
     it('should generate a friendly id', async () => {
-      const newPatient = await PatientRepository.save({
+      const newPatient = await PersonRepository.save({
         fullName: 'test test',
       } as Patient)
 
@@ -91,11 +91,11 @@ describe('patient repository', () => {
     })
 
     it('should sequentially generate a friendly id', async () => {
-      const existingPatient = await PatientRepository.save({
+      const existingPatient = await PersonRepository.save({
         fullName: 'test test',
       } as Patient)
 
-      const newPatient = await PatientRepository.save({
+      const newPatient = await PersonRepository.save({
         fullName: 'test1 test1',
       } as Patient)
 
@@ -108,7 +108,7 @@ describe('patient repository', () => {
 
   describe('saveOrUpdate', () => {
     it('should save the patient if an id was not on the entity', async () => {
-      const newPatient = await PatientRepository.saveOrUpdate({
+      const newPatient = await PersonRepository.saveOrUpdate({
         fullName: 'test1 test1',
       } as Patient)
 
@@ -118,11 +118,11 @@ describe('patient repository', () => {
     })
 
     it('should update the patient if one was already existing', async () => {
-      const existingPatient = await PatientRepository.save({
+      const existingPatient = await PersonRepository.save({
         fullName: 'test test',
       } as Patient)
 
-      const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
+      const updatedPatient = await PersonRepository.saveOrUpdate(existingPatient)
 
       expect(updatedPatient.id).toEqual(existingPatient.id)
 
@@ -130,12 +130,12 @@ describe('patient repository', () => {
     })
 
     it('should update the existing fields', async () => {
-      const existingPatient = await PatientRepository.save({
+      const existingPatient = await PersonRepository.save({
         fullName: 'test test',
       } as Patient)
       existingPatient.fullName = 'changed'
 
-      const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
+      const updatedPatient = await PersonRepository.saveOrUpdate(existingPatient)
 
       expect(updatedPatient.fullName).toEqual('changed')
 
@@ -143,12 +143,12 @@ describe('patient repository', () => {
     })
 
     it('should add new fields without changing existing fields', async () => {
-      const existingPatient = await PatientRepository.save({
+      const existingPatient = await PersonRepository.save({
         fullName: 'test test',
       } as Patient)
       existingPatient.givenName = 'givenName'
 
-      const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
+      const updatedPatient = await PersonRepository.saveOrUpdate(existingPatient)
 
       expect(updatedPatient.fullName).toEqual(existingPatient.fullName)
       expect(updatedPatient.givenName).toEqual('givenName')
@@ -159,11 +159,11 @@ describe('patient repository', () => {
 
   describe('delete', () => {
     it('should delete the patient', async () => {
-      const patientToDelete = await PatientRepository.save({
+      const patientToDelete = await PersonRepository.save({
         fullName: 'test test',
       } as Patient)
 
-      await PatientRepository.delete(patientToDelete)
+      await PersonRepository.delete(patientToDelete)
 
       const allDocs = await patients.allDocs()
       expect(allDocs.total_rows).toEqual(0)

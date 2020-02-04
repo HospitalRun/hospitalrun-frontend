@@ -12,7 +12,7 @@ import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import NewPatient from '../patients/new/NewPatient'
 import ViewPatient from '../patients/view/ViewPatient'
-import PatientRepository from '../clients/db/PatientRepository'
+import PersonRepository from '../clients/db/PersonRepository'
 import Patient from '../model/Patient'
 import HospitalRun from '../HospitalRun'
 import Permissions from '../model/Permissions'
@@ -59,8 +59,8 @@ describe('HospitalRun', () => {
 
     describe('/patients/:id', () => {
       it('should render the view patient screen when /patients/:id is accessed', async () => {
-        jest.spyOn(PatientRepository, 'find')
-        const mockedPatientRepository = mocked(PatientRepository, true)
+        jest.spyOn(PersonRepository, 'find')
+        const mockedPersonRepository = mocked(PersonRepository, true)
         const patient = {
           id: '123',
           prefix: 'test',
@@ -70,7 +70,7 @@ describe('HospitalRun', () => {
           friendlyId: 'P00001',
         } as Patient
 
-        mockedPatientRepository.find.mockResolvedValue(patient)
+        mockedPersonRepository.find.mockResolvedValue(patient)
 
         const wrapper = mount(
           <Provider

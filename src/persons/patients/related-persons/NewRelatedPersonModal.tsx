@@ -3,7 +3,7 @@ import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 import RelatedPerson from 'model/RelatedPerson'
-import PatientRepository from 'clients/db/PatientRepository'
+import PersonRepository from 'clients/db/PersonRepository'
 import Patient from 'model/Patient'
 
 interface Props {
@@ -18,7 +18,7 @@ const NewRelatedPersonModal = (props: Props) => {
   const { t } = useTranslation()
   const [errorMessage, setErrorMessage] = useState('')
   const [relatedPerson, setRelatedPerson] = useState({
-    patientId: '',
+    relatedPatientId: '',
     type: '',
   })
 
@@ -34,7 +34,7 @@ const NewRelatedPersonModal = (props: Props) => {
   }
 
   const onPatientSelect = (patient: Patient[]) => {
-    setRelatedPerson({ ...relatedPerson, patientId: patient[0].id })
+    setRelatedPerson({ ...relatedPerson, relatedPatientId: patient[0].id })
   }
 
   const body = (
@@ -49,7 +49,7 @@ const NewRelatedPersonModal = (props: Props) => {
               searchAccessor="fullName"
               placeholder={t('patient.relatedPerson')}
               onChange={onPatientSelect}
-              onSearch={async (query: string) => PatientRepository.search(query)}
+              onSearch={async (query: string) => PersonRepository.search(query)}
               renderMenuItemChildren={(patient: Patient) => (
                 <div>{`${patient.fullName} (${patient.friendlyId})`}</div>
               )}
@@ -90,7 +90,7 @@ const NewRelatedPersonModal = (props: Props) => {
         iconLocation: 'left',
         onClick: () => {
           let newErrorMessage = ''
-          if (!relatedPerson.patientId) {
+          if (!relatedPerson.relatedPatientId) {
             newErrorMessage += `${t('patient.relatedPersons.error.relatedPersonRequired')} `
           }
 

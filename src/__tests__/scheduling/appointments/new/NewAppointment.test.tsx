@@ -11,7 +11,7 @@ import { createMemoryHistory } from 'history'
 import { act } from '@testing-library/react'
 import subDays from 'date-fns/subDays'
 import Patient from 'model/Patient'
-import PatientRepository from 'clients/db/PatientRepository'
+import PersonRepository from 'clients/db/PersonRepository'
 import AppointmentRepository from 'clients/db/AppointmentsRepository'
 import { mocked } from 'ts-jest/utils'
 import Appointment from 'model/Appointment'
@@ -125,9 +125,9 @@ describe('New Appointment', () => {
   })
 
   describe('typeahead search', () => {
-    it('should call the PatientRepository search when typeahead changes', () => {
+    it('should call the PersonRepository search when typeahead changes', () => {
       const patientTypeahead = wrapper.find(Typeahead)
-      const patientRepositorySearch = jest.spyOn(PatientRepository, 'search')
+      const patientRepositorySearch = jest.spyOn(PersonRepository, 'search')
       const expectedSearchString = 'search'
 
       act(() => {

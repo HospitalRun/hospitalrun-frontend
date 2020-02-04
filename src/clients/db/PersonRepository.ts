@@ -1,6 +1,6 @@
-import Patient from '../../model/Patient'
+import Person from '../../model/Person'
 import Repository from './Repository'
-import { patients } from '../../config/pouchdb'
+import { person } from '../../config/pouchdb'
 
 const formatFriendlyId = (prefix: string, sequenceNumber: string) => `${prefix}${sequenceNumber}`
 
@@ -13,12 +13,12 @@ const generateSequenceNumber = (currentNumber: number): string => {
   return newNumber.toString()
 }
 
-export class PersonRepository extends Repository<Patient> {
+export class PersonRepository extends Repository<Person> {
   constructor() {
-    super(patients)
+    super(person)
   }
 
-  async search(text: string): Promise<Patient[]> {
+  async search(text: string): Promise<Person[]> {
     return super.search({
       selector: {
         $or: [
@@ -36,20 +36,20 @@ export class PersonRepository extends Repository<Patient> {
   }
 
   async getFriendlyId(): Promise<string> {
-    const storedPatients = await this.findAll()
+    const storedPersons = await this.findAll()
 
-    if (storedPatients.length === 0) {
+    if (storedPersons.length === 0) {
       return formatFriendlyId('P', generateSequenceNumber(0))
     }
 
-    const maxPatient = storedPatients[storedPatients.length - 1]
+    const maxPatient = storedPersons[storedPersons.length - 1]
     const { friendlyId } = maxPatient
     const currentSequenceNumber = friendlyId.slice(1, friendlyId.length)
 
     return formatFriendlyId('P', generateSequenceNumber(parseInt(currentSequenceNumber, 10)))
   }
 
-  async save(entity: Patient): Promise<Patient> {
+  async save(entity: Person): Promise<Person> {
     const friendlyId = await this.getFriendlyId()
     entity.friendlyId = friendlyId
     return super.save(entity)

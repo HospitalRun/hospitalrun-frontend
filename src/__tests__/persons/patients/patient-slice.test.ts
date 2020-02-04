@@ -9,7 +9,7 @@ import patient, {
   updatePatient,
 } from '../../patients/patient-slice'
 import Patient from '../../model/Patient'
-import PatientRepository from '../../clients/db/PatientRepository'
+import PersonRepository from '../../clients/db/PersonRepository'
 
 describe('patients slice', () => {
   beforeEach(() => {
@@ -84,40 +84,40 @@ describe('patients slice', () => {
     it('should dispatch the GET_PATIENT_START action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'find')
+      jest.spyOn(PersonRepository, 'find')
       const expectedPatientId = '12345'
       const expectedPatient = { id: expectedPatientId } as Patient
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.find.mockResolvedValue(expectedPatient)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.find.mockResolvedValue(expectedPatient)
 
       await fetchPatient(expectedPatientId)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: getPatientStart.type })
     })
 
-    it('should call the PatientRepository find method with the correct patient id', async () => {
+    it('should call the PersonRepository find method with the correct patient id', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'find')
+      jest.spyOn(PersonRepository, 'find')
       const expectedPatientId = '12345'
       const expectedPatient = { id: expectedPatientId } as Patient
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.find.mockResolvedValue(expectedPatient)
-      jest.spyOn(PatientRepository, 'find')
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.find.mockResolvedValue(expectedPatient)
+      jest.spyOn(PersonRepository, 'find')
 
       await fetchPatient(expectedPatientId)(dispatch, getState, null)
 
-      expect(PatientRepository.find).toHaveBeenCalledWith(expectedPatientId)
+      expect(PersonRepository.find).toHaveBeenCalledWith(expectedPatientId)
     })
 
     it('should dispatch the GET_PATIENT_SUCCESS action with the correct data', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'find')
+      jest.spyOn(PersonRepository, 'find')
       const expectedPatientId = '12345'
       const expectedPatient = { id: expectedPatientId } as Patient
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.find.mockResolvedValue(expectedPatient)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.find.mockResolvedValue(expectedPatient)
 
       await fetchPatient(expectedPatientId)(dispatch, getState, null)
 
@@ -134,39 +134,39 @@ describe('patients slice', () => {
     it('should dispatch the UPDATE_PATIENT_START action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'saveOrUpdate')
+      jest.spyOn(PersonRepository, 'saveOrUpdate')
       const expectedPatientId = '12345'
       const expectedPatient = { id: expectedPatientId } as Patient
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
 
       await updatePatient(expectedPatient)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: updatePatientStart.type })
     })
 
-    it('should call the PatientRepository saveOrUpdate function with the correct data', async () => {
+    it('should call the PersonRepository saveOrUpdate function with the correct data', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'saveOrUpdate')
+      jest.spyOn(PersonRepository, 'saveOrUpdate')
       const expectedPatientId = '12345'
       const expectedPatient = { id: expectedPatientId } as Patient
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
 
       await updatePatient(expectedPatient)(dispatch, getState, null)
 
-      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedPatient)
+      expect(PersonRepository.saveOrUpdate).toHaveBeenCalledWith(expectedPatient)
     })
 
     it('should dispatch the UPDATE_PATIENT_SUCCESS action with the correct data', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(PatientRepository, 'saveOrUpdate')
+      jest.spyOn(PersonRepository, 'saveOrUpdate')
       const expectedPatientId = '12345'
       const expectedPatient = { id: expectedPatientId } as Patient
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
+      const mockedPersonRepository = mocked(PersonRepository, true)
+      mockedPersonRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
 
       await updatePatient(expectedPatient)(dispatch, getState, null)
 

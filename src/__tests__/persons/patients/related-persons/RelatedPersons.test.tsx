@@ -5,7 +5,7 @@ import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import { Button, List, ListItem } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import { act } from '@testing-library/react'
-import PatientRepository from 'clients/db/PatientRepository'
+import PersonRepository from 'clients/db/PersonRepository'
 import Patient from 'model/Patient'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -80,8 +80,8 @@ describe('Related Persons Tab', () => {
 
     it('should call update patient with the data from the modal', () => {
       jest.spyOn(patientSlice, 'updatePatient')
-      jest.spyOn(PatientRepository, 'saveOrUpdate')
-      const expectedRelatedPerson = { patientId: '123', type: 'type' }
+      jest.spyOn(PersonRepository, 'saveOrUpdate')
+      const expectedRelatedPerson = { relatedPatientId: '123', type: 'type' }
       const expectedPatient = {
         ...patient,
         relatedPersons: [expectedRelatedPerson],
@@ -120,7 +120,7 @@ describe('Related Persons Tab', () => {
       act(() => {
         const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
         const onSave = newRelatedPersonModal.prop('onSave') as any
-        onSave({ patientId: '123', type: 'type' })
+        onSave({ relatedPatientId: '123', type: 'type' })
       })
 
       wrapper.update()
@@ -134,7 +134,7 @@ describe('Related Persons Tab', () => {
     const patient = {
       id: '123',
       rev: '123',
-      relatedPersons: [{ patientId: '123', type: 'type' }],
+      relatedPersons: [{ relatedPatientId: '123', type: 'type' }],
     } as Patient
 
     const user = {
@@ -142,8 +142,8 @@ describe('Related Persons Tab', () => {
     }
 
     beforeEach(async () => {
-      jest.spyOn(PatientRepository, 'find')
-      mocked(PatientRepository.find).mockResolvedValue({ fullName: 'test test' } as Patient)
+      jest.spyOn(PersonRepository, 'find')
+      mocked(PersonRepository.find).mockResolvedValue({ fullName: 'test test' } as Patient)
 
       await act(async () => {
         wrapper = await mount(

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import DateTimePickerWithLabelFormGroup from 'components/input/DateTimePickerWithLabelFormGroup'
 import { Typeahead, Label, Button, Alert } from '@hospitalrun/components'
 import Patient from 'model/Patient'
-import PatientRepository from 'clients/db/PatientRepository'
+import PersonRepository from 'clients/db/PersonRepository'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
 import SelectWithLabelFormGroup from 'components/input/SelectWithLableFormGroup'
@@ -75,7 +75,7 @@ const NewAppointment = () => {
                 onChange={(patient: Patient[]) => {
                   setAppointment({ ...appointment, patientId: patient[0].id })
                 }}
-                onSearch={async (query: string) => PatientRepository.search(query)}
+                onSearch={async (query: string) => PersonRepository.search(query)}
                 searchAccessor="fullName"
                 renderMenuItemChildren={(patient: Patient) => (
                   <div>{`${patient.fullName} (${patient.friendlyId})`}</div>

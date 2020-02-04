@@ -1,15 +1,7 @@
-import AbstractDBModel from './AbstractDBModel'
-import Name from './Name'
-import ContactInformation from './ContactInformation'
 import RelatedPerson from './RelatedPerson'
+import Person from './Person'
 
-export default interface Patient extends AbstractDBModel, Name, ContactInformation {
-  sex: string
-  dateOfBirth: string
-  isApproximateDateOfBirth: boolean
-  preferredLanguage?: string
-  occupation?: string
-  type?: string
+export default interface Patient extends Person {
   friendlyId: string
   relatedPersons?: RelatedPerson[]
 }

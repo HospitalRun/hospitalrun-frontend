@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Toast } from '@hospitalrun/components'
 import Patient from '../model/Patient'
-import PatientRepository from '../clients/db/PatientRepository'
+import PersonRepository from '../clients/db/PersonRepository'
 import { AppThunk } from '../store'
 import il8n from '../i18n'
 
@@ -43,7 +43,7 @@ export const {
 
 export const createPatient = (patient: Patient, history: any): AppThunk => async (dispatch) => {
   dispatch(createPatientStart())
-  const newPatient = await PatientRepository.save(patient)
+  const newPatient = await PersonRepository.save(patient)
   dispatch(createPatientSuccess())
   history.push(`/patients/${newPatient.id}`)
   Toast(
@@ -57,7 +57,7 @@ export const createPatient = (patient: Patient, history: any): AppThunk => async
 
 export const fetchPatients = (): AppThunk => async (dispatch) => {
   dispatch(getPatientsStart())
-  const patients = await PatientRepository.findAll()
+  const patients = await PersonRepository.findAll()
   dispatch(getAllPatientsSuccess(patients))
 }
 
@@ -66,9 +66,9 @@ export const searchPatients = (searchString: string): AppThunk => async (dispatc
 
   let patients
   if (searchString.trim() === '') {
-    patients = await PatientRepository.findAll()
+    patients = await PersonRepository.findAll()
   } else {
-    patients = await PatientRepository.search(searchString)
+    patients = await PersonRepository.search(searchString)
   }
 
   dispatch(getAllPatientsSuccess(patients))
