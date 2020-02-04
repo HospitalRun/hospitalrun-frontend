@@ -1,5 +1,9 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
+import { Router } from 'react-router'
+
+import { createMemoryHistory } from 'history'
+
 import { mount, ReactWrapper } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import { Button, List, ListItem } from '@hospitalrun/components'
@@ -18,12 +22,23 @@ const mockStore = createMockStore([thunk])
 
 describe('Related Persons Tab', () => {
   let wrapper: ReactWrapper
-
+  let history = createMemoryHistory()
+  const setup = async (location: string, patient: Patient, user: any) => {
+    history = createMemoryHistory()
+    history.push(location)
+    return mount(
+      <Router history={history}>
+        <Provider store={mockStore({ patient, user })}>
+          <RelatedPersonTab patient={patient} />
+        </Provider>
+      </Router>,
+    )
+  }
   describe('Add New Related Person', () => {
     let patient: any
     let user: any
 
-    beforeEach(() => {
+    beforeEach(async () => {
       patient = {
         id: '123',
         rev: '123',
@@ -32,11 +47,8 @@ describe('Related Persons Tab', () => {
       user = {
         permissions: [Permissions.WritePatients, Permissions.ReadPatients],
       }
-      wrapper = mount(
-        <Provider store={mockStore({ patient, user })}>
-          <RelatedPersonTab patient={patient} />
-        </Provider>,
-      )
+      // general test wrapper
+      wrapper = await setup('/', patient, user)
     })
 
     it('should render a New Related Person button', () => {
@@ -46,14 +58,10 @@ describe('Related Persons Tab', () => {
       expect(newRelatedPersonButton.text().trim()).toEqual('patient.relatedPersons.new')
     })
 
-    it('should not render a New Related Person button if the user does not have write privileges for a patient', () => {
+    it('should not render a New Related Person button if the user does not have write privileges for a patient', async () => {
       user = { permissions: [Permissions.ReadPatients] }
-      wrapper = mount(
-        <Provider store={mockStore({ patient, user })}>
-          <RelatedPersonTab patient={patient} />
-        </Provider>,
-      )
 
+      wrapper = await setup('/', patient, user)
       const newRelatedPersonButton = wrapper.find(Button)
       expect(newRelatedPersonButton).toHaveLength(0)
     })
@@ -78,7 +86,7 @@ describe('Related Persons Tab', () => {
       expect(newRelatedPersonModal.prop('show')).toBeTruthy()
     })
 
-    it('should call update patient with the data from the modal', () => {
+    it('should call update patient with the data from the modal', async () => {
       jest.spyOn(patientSlice, 'updatePatient')
       jest.spyOn(PatientRepository, 'saveOrUpdate')
       const expectedRelatedPerson = { patientId: '123', type: 'type' }
@@ -86,26 +94,28 @@ describe('Related Persons Tab', () => {
         ...patient,
         relatedPersons: [expectedRelatedPerson],
       }
+      await act(async () => {
+        wrapper = await setup('/', patient, user)
+      }).then(() => {
+        act(() => {
+          const newRelatedPersonButton = wrapper.find(Button)
+          const onClick = newRelatedPersonButton.prop('onClick') as any
+          onClick()
+        })
 
-      act(() => {
-        const newRelatedPersonButton = wrapper.find(Button)
-        const onClick = newRelatedPersonButton.prop('onClick') as any
-        onClick()
+        wrapper.update()
+
+        act(() => {
+          const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+          const onSave = newRelatedPersonModal.prop('onSave') as any
+          onSave(expectedRelatedPerson)
+        })
+
+        wrapper.update()
+
+        expect(patientSlice.updatePatient).toHaveBeenCalledTimes(1)
+        expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient)
       })
-
-      wrapper.update()
-
-      act(() => {
-        const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
-
-        const onSave = newRelatedPersonModal.prop('onSave') as any
-        onSave(expectedRelatedPerson)
-      })
-
-      wrapper.update()
-
-      expect(patientSlice.updatePatient).toHaveBeenCalledTimes(1)
-      expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient)
     })
 
     it('should close the modal when the save button is clicked', () => {
@@ -146,11 +156,7 @@ describe('Related Persons Tab', () => {
       mocked(PatientRepository.find).mockResolvedValue({ fullName: 'test test' } as Patient)
 
       await act(async () => {
-        wrapper = await mount(
-          <Provider store={mockStore({ patient, user })}>
-            <RelatedPersonTab patient={patient} />
-          </Provider>,
-        )
+        wrapper = await setup('/', patient, user)
       })
 
       wrapper.update()
