@@ -10,9 +10,9 @@ import patients, {
   createPatientSuccess,
   createPatient,
   searchPatients,
-} from '../../patients/patients-slice'
-import Patient from '../../model/Patient'
-import PersonRepository from '../../clients/db/PersonRepository'
+} from '../../../persons/patients/patients-slice'
+import Patient from '../../../model/Persons/Patient'
+import PersonRepository from '../../../clients/db/PersonRepository'
 
 describe('patients slice', () => {
   beforeEach(() => {

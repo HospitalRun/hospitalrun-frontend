@@ -7,9 +7,9 @@ import patient, {
   updatePatientStart,
   updatePatientSuccess,
   updatePatient,
-} from '../../patients/patient-slice'
-import Patient from '../../model/Patient'
-import PersonRepository from '../../clients/db/PersonRepository'
+} from '../../../persons/patients/patient-slice'
+import Patient from '../../../model/Persons/Patient'
+import PersonRepository from '../../../clients/db/PersonRepository'
 
 describe('patients slice', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
-import AbstractDBModel from './AbstractDBModel'
-import Name from './Name'
-import ContactInformation from './ContactInformation'
+import AbstractDBModel from '../AbstractDBModel'
+import Name from '../Name'
+import ContactInformation from '../ContactInformation'
 import RelatedPerson from './RelatedPerson'
 
 export default interface Person extends AbstractDBModel, Name, ContactInformation {

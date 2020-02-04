@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import Patient from '../../model/Patient'
+import Patient from '../../model/Persons/Patient'
 import PersonRepository from '../../clients/db/PersonRepository'
 import { AppThunk } from '../../store'
 

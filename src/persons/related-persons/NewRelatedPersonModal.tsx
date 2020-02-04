@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
-import RelatedPerson from 'model/RelatedPerson'
+import RelatedPerson from 'model/Persons/RelatedPerson'
 import PersonRepository from 'clients/db/PersonRepository'
-import Patient from 'model/Patient'
+import Patient from 'model/Persons/Patient'
 
 interface Props {
   show: boolean

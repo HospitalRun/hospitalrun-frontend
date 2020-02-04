@@ -1,10 +1,10 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
-import { ReactWrapper, mount } from './node_modules/enzyme'
+import { ReactWrapper, mount } from 'enzyme'
 import { Modal, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { Typeahead } from 'react-bootstrap-typeahead'
-import NewRelatedPersonModal from '../../../patients/related-persons/NewRelatedPersonModal'
+import NewRelatedPersonModal from '../../../persons/related-persons/NewRelatedPersonModal'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
 
 describe('New Related Person Modal', () => {

@@ -6,7 +6,7 @@ import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableF
 import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
 import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
-import Patient from '../../../model/Patient'
+import Patient from '../../../model/Persons/Patient'
 import { getPatientName } from '../util/patient-name-util'
 
 interface Props {

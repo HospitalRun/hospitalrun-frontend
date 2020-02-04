@@ -4,13 +4,13 @@ import { shallow, mount } from 'enzyme'
 import { Button, Checkbox } from '@hospitalrun/components'
 import { render, act, fireEvent } from '@testing-library/react'
 import { isEqual, startOfDay, subYears } from 'date-fns'
-import NewPatientForm from '../../../patients/new/NewPatientForm'
-import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
-import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
-import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
-import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
-import Patient from '../../../model/Patient'
-import { getPatientName } from '../../../patients/util/patient-name-util'
+import NewPatientForm from '../../../../persons/patients/new/NewPatientForm'
+import TextInputWithLabelFormGroup from '../../../../components/input/TextInputWithLabelFormGroup'
+import SelectWithLabelFormGroup from '../../../../components/input/SelectWithLableFormGroup'
+import DatePickerWithLabelFormGroup from '../../../../components/input/DatePickerWithLabelFormGroup'
+import TextFieldWithLabelFormGroup from '../../../../components/input/TextFieldWithLabelFormGroup'
+import Patient from '../../../../model/Persons/Patient'
+import { getPatientName } from '../../../../persons/patients/util/patient-name-util'
 
 const onSave = jest.fn()
 const onCancel = jest.fn()
@@ -25,7 +25,11 @@ describe('New Patient Form', () => {
 
     it('should have a prefix text box', () => {
       const wrapper = shallow(<NewPatientForm onCancel={onCancel} onSave={onSave} />)
-      const prefixTextInput = wrapper.findWhere((w) => w.prop('name') === 'prefix')
+
+      const prefixTextInput = wrapper.findWhere((w) => {
+        console.log(w)
+        w.prop('name') === 'prefix'
+      })
 
       expect(prefixTextInput).toHaveLength(1)
       expect(prefixTextInput.type()).toBe(TextInputWithLabelFormGroup)

@@ -1,18 +1,17 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount, ReactWrapper } from 'enzyme'
-import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
+import { RelatedPersonTab, NewRelatedPersonModal } from '../../../persons/related-persons'
 import { Button, List, ListItem } from '@hospitalrun/components'
-import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import { act } from '@testing-library/react'
 import PersonRepository from 'clients/db/PersonRepository'
-import Patient from 'model/Patient'
+import { Patient, Person, User, RelatedPerson} from 'model/Persons'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
 import { mocked } from 'ts-jest/utils'
-import * as patientSlice from '../../../patients/patient-slice'
+import * as patientSlice from '../../../persons/patients/patient-slice'
 
 const mockStore = createMockStore([thunk])
 
@@ -20,8 +19,10 @@ describe('Related Persons Tab', () => {
   let wrapper: ReactWrapper
 
   describe('Add New Related Person', () => {
-    let patient: any
-    let user: any
+    let patient: Patient
+    let person: Person
+    let relatedPerson: RelatedPerson
+    let user: User
 
     beforeEach(() => {
       patient = {
@@ -33,8 +34,8 @@ describe('Related Persons Tab', () => {
         permissions: [Permissions.WritePatients, Permissions.ReadPatients],
       }
       wrapper = mount(
-        <Provider store={mockStore({ patient, user })}>
-          <RelatedPersonTab patient={patient} />
+        <Provider store={mockStore({ person, user })}>
+          <RelatedPersonTab person={person} />
         </Provider>,
       )
     })
@@ -49,8 +50,8 @@ describe('Related Persons Tab', () => {
     it('should not render a New Related Person button if the user does not have write privileges for a patient', () => {
       user = { permissions: [Permissions.ReadPatients] }
       wrapper = mount(
-        <Provider store={mockStore({ patient, user })}>
-          <RelatedPersonTab patient={patient} />
+        <Provider store={mockStore({ person, user })}>
+          <RelatedPersonTab person={person} />
         </Provider>,
       )
 

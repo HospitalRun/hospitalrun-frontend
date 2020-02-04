@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import NewPatientForm from './NewPatientForm'
 import useTitle from '../../../page-header/useTitle'
-import Patient from '../../../model/Patient'
+import Patient from '../../../model/Persons/Patient'
 import { createPatient } from '../patients-slice'
 
 const NewPatient = () => {

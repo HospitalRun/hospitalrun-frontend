@@ -1,4 +1,4 @@
-import '../../../__mocks__/matchMediaMock'
+import '../../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
 import { TextInput, Button, Spinner, ListItem } from '@hospitalrun/components'
@@ -8,9 +8,9 @@ import thunk from 'redux-thunk'
 import configureStore from 'redux-mock-store'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
-import Patients from '../../../patients/list/Patients'
-import PersonRepository from '../../../clients/db/PersonRepository'
-import * as patientSlice from '../../../patients/patients-slice'
+import Patients from '../../../../persons/patients/list/Patients'
+import PersonRepository from '../../../../clients/db/PersonRepository'
+import * as patientSlice from '../../../../persons/patients/patients-slice'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)

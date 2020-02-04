@@ -1,6 +1,6 @@
 import { patients } from 'config/pouchdb'
 import PersonRepository from 'clients/db/PersonRepository'
-import Patient from 'model/Patient'
+import Patient from 'model/Persons/Patient'
 import { fromUnixTime } from 'date-fns'
 import { updatePatientStart } from 'patients/patient-slice'
 

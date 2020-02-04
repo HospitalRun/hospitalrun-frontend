@@ -1,4 +1,4 @@
-import Person from '../../model/Person'
+import Person from '../../model/Persons/Person'
 import Repository from './Repository'
 import { persons } from '../../config/pouchdb'
 

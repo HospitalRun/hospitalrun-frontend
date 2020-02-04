@@ -1,7 +1,7 @@
 import React from 'react'
 import { Panel } from '@hospitalrun/components'
 import { differenceInYears } from 'date-fns'
-import Patient from 'model/Patient'
+import Patient from 'model/Persons/Patient'
 import { useTranslation } from 'react-i18next'
 import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'

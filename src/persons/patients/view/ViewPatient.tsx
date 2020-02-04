@@ -7,9 +7,9 @@ import useTitle from '../../../page-header/useTitle'
 import { fetchPatient } from '../patient-slice'
 import { RootState } from '../../../store'
 import { getPatientFullName } from '../util/patient-name-util'
-import Patient from '../../../model/Patient'
+import Patient from '../../../model/Persons/Patient'
 import GeneralInformation from './GeneralInformation'
-import RelatedPerson from '../related-persons/RelatedPersonTab'
+import RelatedPerson from '../../related-persons/RelatedPersonTab'
 
 const getFriendlyId = (p: Patient): string => {
   if (p) {

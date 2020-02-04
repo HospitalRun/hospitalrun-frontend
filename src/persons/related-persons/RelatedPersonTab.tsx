@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Panel, List, ListItem } from '@hospitalrun/components'
-import NewRelatedPersonModal from 'persons/patients/related-persons/NewRelatedPersonModal'
-import RelatedPerson from 'model/RelatedPerson'
+import NewRelatedPersonModal from 'persons/related-persons/NewRelatedPersonModal'
+import RelatedPerson from 'model/Persons/RelatedPerson'
 import { useTranslation } from 'react-i18next'
 import { updatePatient } from 'persons/patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
 import PersonRepository from 'clients/db/PersonRepository'
-import Person from 'model/Person'
+import Person from 'model/Persons/Person'
 
 interface Props {
   person: Person
