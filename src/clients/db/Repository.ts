@@ -57,15 +57,16 @@ export default class Repository<T extends AbstractDBModel> {
       return this.save(entity)
     }
 
+    const { id, rev, ...dataToSave } = entity
+
     try {
-      const existingEntity = await this.find(entity.id)
-      const { id, rev, ...restOfDoc } = existingEntity
+      await this.find(entity.id)
       const entityToUpdate = {
         _id: id,
         _rev: rev,
-        ...restOfDoc,
-        ...entity,
+        ...dataToSave,
       }
+
       await this.db.put(entityToUpdate)
       return this.find(entity.id)
     } catch (error) {
