@@ -3,16 +3,16 @@ import { Panel } from '@hospitalrun/components'
 import { differenceInYears } from 'date-fns'
 import Patient from 'model/Patient'
 import { useTranslation } from 'react-i18next'
-import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
-import DatePickerWithLabelFormGroup from '../../components/input/DatePickerWithLabelFormGroup'
+import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
+import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
+import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
 
 interface Props {
   patient: Patient
 }
 
-const getPatientAge = (dateOfBirth: string | undefined): string => {
+const getPersonAge = (dateOfBirth: string | undefined): string => {
   if (!dateOfBirth) {
     return ''
   }
@@ -21,7 +21,7 @@ const getPatientAge = (dateOfBirth: string | undefined): string => {
   return differenceInYears(new Date(), dob).toString()
 }
 
-const getPatientDateOfBirth = (dateOfBirth: string | undefined): Date | undefined => {
+const getPersonDateOfBirth = (dateOfBirth: string | undefined): Date | undefined => {
   if (!dateOfBirth) {
     return undefined
   }
@@ -70,7 +70,7 @@ const GeneralInformation = (props: Props) => {
                 patient.isApproximateDateOfBirth ? t('patient.approximateAge') : t('patient.age')
               }
               name="age"
-              value={getPatientAge(patient.dateOfBirth)}
+              value={getPersonAge(patient.dateOfBirth)}
               isEditable={false}
             />
           </div>
@@ -82,7 +82,7 @@ const GeneralInformation = (props: Props) => {
                   : t('patient.dateOfBirth')
               }
               name="dateOfBirth"
-              value={getPatientDateOfBirth(patient.dateOfBirth)}
+              value={getPersonDateOfBirth(patient.dateOfBirth)}
               isEditable={false}
             />
           </div>

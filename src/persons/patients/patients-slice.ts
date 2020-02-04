@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Toast } from '@hospitalrun/components'
-import Patient from '../model/Patient'
-import PersonRepository from '../clients/db/PersonRepository'
-import { AppThunk } from '../store'
-import il8n from '../i18n'
+import Patient from '../../model/Patient'
+import PersonRepository from '../../clients/db/PersonRepository'
+import { AppThunk } from '../../store'
+import il8n from '../../i18n'
 
 interface PatientsState {
   isLoading: boolean

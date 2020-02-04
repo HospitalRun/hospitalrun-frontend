@@ -81,7 +81,7 @@ describe('Related Persons Tab', () => {
     it('should call update patient with the data from the modal', () => {
       jest.spyOn(patientSlice, 'updatePatient')
       jest.spyOn(PersonRepository, 'saveOrUpdate')
-      const expectedRelatedPerson = { relatedPatientId: '123', type: 'type' }
+      const expectedRelatedPerson = { relatedPersonId: '123', type: 'type' }
       const expectedPatient = {
         ...patient,
         relatedPersons: [expectedRelatedPerson],
@@ -120,7 +120,7 @@ describe('Related Persons Tab', () => {
       act(() => {
         const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
         const onSave = newRelatedPersonModal.prop('onSave') as any
-        onSave({ relatedPatientId: '123', type: 'type' })
+        onSave({ relatedPersonId: '123', type: 'type' })
       })
 
       wrapper.update()
@@ -134,7 +134,7 @@ describe('Related Persons Tab', () => {
     const patient = {
       id: '123',
       rev: '123',
-      relatedPersons: [{ relatedPatientId: '123', type: 'type' }],
+      relatedPersons: [{ relatedPersonId: '123', type: 'type' }],
     } as Patient
 
     const user = {

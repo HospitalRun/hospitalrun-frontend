@@ -18,7 +18,7 @@ const NewRelatedPersonModal = (props: Props) => {
   const { t } = useTranslation()
   const [errorMessage, setErrorMessage] = useState('')
   const [relatedPerson, setRelatedPerson] = useState({
-    relatedPatientId: '',
+    relatedPersonId: '',
     type: '',
   })
 
@@ -34,7 +34,7 @@ const NewRelatedPersonModal = (props: Props) => {
   }
 
   const onPatientSelect = (patient: Patient[]) => {
-    setRelatedPerson({ ...relatedPerson, relatedPatientId: patient[0].id })
+    setRelatedPerson({ ...relatedPerson, relatedPersonId: patient[0].id })
   }
 
   const body = (
@@ -90,7 +90,7 @@ const NewRelatedPersonModal = (props: Props) => {
         iconLocation: 'left',
         onClick: () => {
           let newErrorMessage = ''
-          if (!relatedPerson.relatedPatientId) {
+          if (!relatedPerson.relatedPersonId) {
             newErrorMessage += `${t('patient.relatedPersons.error.relatedPersonRequired')} `
           }
 

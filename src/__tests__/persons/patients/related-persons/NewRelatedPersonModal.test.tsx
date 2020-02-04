@@ -94,7 +94,7 @@ describe('New Related Person Modal', () => {
       })
       expect(onSaveSpy).toHaveBeenCalledTimes(1)
       expect(onSaveSpy).toHaveBeenCalledWith({
-        relatedPatientId: '123',
+        relatedPersonId: '123',
         type: 'relationship',
       })
     })

@@ -1,7 +1,7 @@
 import { configureStore, combineReducers, Action } from '@reduxjs/toolkit'
 import ReduxThunk, { ThunkAction } from 'redux-thunk'
-import patient from '../patients/patient-slice'
-import patients from '../patients/patients-slice'
+import patient from '../persons/patients/patient-slice'
+import patients from '../persons/patients/patients-slice'
 import title from '../page-header/title-slice'
 import user from '../user/user-slice'
 

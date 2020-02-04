@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Panel, List, ListItem } from '@hospitalrun/components'
-import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
+import NewRelatedPersonModal from 'persons/patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
-import { updatePatient } from 'patients/patient-slice'
+import { updatePatient } from 'persons/patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
@@ -27,8 +27,8 @@ const RelatedPersonTab = (props: Props) => {
       const fetchedRelatedPersons: RelatedPerson[] = []
       if (person.relatedPersons) {
         await Promise.all(
-          patient.relatedPersons.map(async (person) => {
-            const fetchedRelatedPerson = await PersonRepository.find(person.relatedPatientId)
+          person.relatedPersons.map(async (person) => {
+            const fetchedRelatedPerson = await PersonRepository.find(person.relatedPersonId)
             fetchedRelatedPersons.push(fetchedRelatedPerson)
           }),
         )
