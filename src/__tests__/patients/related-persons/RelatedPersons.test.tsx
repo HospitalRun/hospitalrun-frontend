@@ -1,9 +1,7 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { Router } from 'react-router'
-
 import { createMemoryHistory } from 'history'
-
 import { mount, ReactWrapper } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import { Button, List, ListItem } from '@hospitalrun/components'
