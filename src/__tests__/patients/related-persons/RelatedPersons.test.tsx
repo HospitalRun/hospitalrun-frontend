@@ -153,7 +153,7 @@ describe('Related Persons Tab', () => {
 
     beforeEach(async () => {
       jest.spyOn(PatientRepository, 'find')
-      mocked(PatientRepository.find).mockResolvedValue({ fullName: 'test test' } as Patient)
+      mocked(PatientRepository.find).mockResolvedValue({ fullName: 'test test', id: '123001' } as Patient)
 
       await act(async () => {
         wrapper = await setup('/', patient, user)
@@ -169,6 +169,16 @@ describe('Related Persons Tab', () => {
       expect(list).toHaveLength(1)
       expect(listItems).toHaveLength(1)
       expect(listItems.at(0).text()).toEqual('test test')
+    })
+    it('should navigate to related person patient profile on related person click', () => {
+      const list = wrapper.find(List)
+      const listItems = wrapper.find(ListItem)
+      act(() => {
+        ;(listItems.at(0).prop('onClick') as any)()
+      })
+      expect(list).toHaveLength(1)
+      expect(listItems).toHaveLength(1)
+      expect(history.location.pathname).toEqual('/patients/123001')
     })
   })
 })
