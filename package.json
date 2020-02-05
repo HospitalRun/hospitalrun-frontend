@@ -129,10 +129,10 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint"
-    ],
-    "*.js": "eslint --cache"
+    "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "npm run lint",
+      "git add ."
+    ]
   }
-}
+ }
