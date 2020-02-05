@@ -10,7 +10,7 @@ import appointments, {
   getAppointmentsStart,
   getAppointmentsSuccess,
   fetchAppointments,
-} from '../../scheduling/appointments/appointments-slice'
+} from '../../../scheduling/appointments/appointments-slice'
 
 describe('appointments slice', () => {
   describe('appointments reducer', () => {

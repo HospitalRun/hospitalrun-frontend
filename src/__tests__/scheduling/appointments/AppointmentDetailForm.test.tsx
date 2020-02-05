@@ -8,25 +8,25 @@ import { Typeahead, Button } from '@hospitalrun/components'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import { act } from '@testing-library/react'
+import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 
 describe('AppointmentDetailForm', () => {
-  describe('layout', () => {
+  describe('layout - editable', () => {
     let wrapper: ReactWrapper
+    const expectedAppointment = {
+      startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+      endDateTime: addMinutes(
+        roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+        60,
+      ).toISOString(),
+      reason: 'reason',
+      location: 'location',
+      type: 'emergency',
+    } as Appointment
 
     beforeEach(() => {
       wrapper = mount(
-        <AppointmentDetailForm
-          appointment={
-            {
-              startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-              endDateTime: addMinutes(
-                roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-                60,
-              ).toISOString(),
-            } as Appointment
-          }
-          onAppointmentChange={jest.fn()}
-        />,
+        <AppointmentDetailForm appointment={expectedAppointment} onAppointmentChange={jest.fn()} />,
       )
     })
 
@@ -35,6 +35,7 @@ describe('AppointmentDetailForm', () => {
 
       expect(patientTypeahead).toHaveLength(1)
       expect(patientTypeahead.prop('placeholder')).toEqual('scheduling.appointment.patient')
+      expect(patientTypeahead.prop('value')).toEqual(expectedAppointment.patientId)
     })
 
     it('should render as start date date time picker', () => {
@@ -62,6 +63,7 @@ describe('AppointmentDetailForm', () => {
 
       expect(locationTextInputBox).toHaveLength(1)
       expect(locationTextInputBox.prop('label')).toEqual('scheduling.appointment.location')
+      expect(locationTextInputBox.prop('value')).toEqual(expectedAppointment.location)
     })
 
     it('should render a type select box', () => {
@@ -79,6 +81,7 @@ describe('AppointmentDetailForm', () => {
       expect(typeSelect.prop('options')[3].value).toEqual('routine')
       expect(typeSelect.prop('options')[4].label).toEqual('scheduling.appointment.types.walkUp')
       expect(typeSelect.prop('options')[4].value).toEqual('walk up')
+      expect(typeSelect.prop('value')).toEqual(expectedAppointment.type)
     })
 
     it('should render a reason text field input', () => {
@@ -89,9 +92,48 @@ describe('AppointmentDetailForm', () => {
     })
   })
 
+  describe('layout - not editable', () => {
+    let wrapper: ReactWrapper
+    const expectedAppointment = {
+      patientId: 'patientId',
+      startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+      endDateTime: addMinutes(
+        roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+        60,
+      ).toISOString(),
+    } as Appointment
+
+    beforeEach(() => {
+      wrapper = mount(
+        <AppointmentDetailForm
+          isEditable={false}
+          appointment={expectedAppointment}
+          onAppointmentChange={jest.fn()}
+        />,
+      )
+    })
+    it('should disabled fields', () => {
+      const patientInput = wrapper.findWhere((w) => w.prop('name') === 'patient')
+      const startDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
+      const endDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
+      const locationTextInputBox = wrapper.findWhere((w) => w.prop('name') === 'location')
+      const reasonTextField = wrapper.findWhere((w) => w.prop('name') === 'reason')
+      const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
+
+      expect(patientInput).toHaveLength(1)
+      expect(patientInput.prop('isEditable')).toBeFalsy()
+      expect(patientInput.prop('value')).toEqual(expectedAppointment.patientId)
+      expect(startDateTimePicker.prop('isEditable')).toBeFalsy()
+      expect(endDateTimePicker.prop('isEditable')).toBeFalsy()
+      expect(locationTextInputBox.prop('isEditable')).toBeFalsy()
+      expect(reasonTextField.prop('isEditable')).toBeFalsy()
+      expect(typeSelect.prop('isEditable')).toBeFalsy()
+    })
+  })
+
   describe('change handlers', () => {
     let wrapper: ReactWrapper
-    let appointment = {
+    const appointment = {
       startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
       endDateTime: addMinutes(
         roundToNearestMinutes(new Date(), { nearestTo: 15 }),

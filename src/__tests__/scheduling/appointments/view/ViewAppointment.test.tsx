@@ -6,40 +6,95 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import Appointment from 'model/Appointment'
 import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
-import * as titleUtil from '../../../../page-header/useTitle'
 import { Router, Route } from 'react-router'
 import { createMemoryHistory } from 'history'
+import AppointmentRepository from 'clients/db/AppointmentsRepository'
+import { mocked } from 'ts-jest/utils'
+import { act } from 'react-dom/test-utils'
+import { Spinner } from '@hospitalrun/components'
+import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
+import * as titleUtil from '../../../../page-header/useTitle'
+
+const appointment = {
+  id: '123',
+  startDateTime: new Date().toISOString(),
+  endDateTime: new Date().toISOString(),
+  reason: 'reason',
+  location: 'location',
+} as Appointment
 
 describe('View Appointment', () => {
-  describe('header', () => {
-    it('should use the correct title', () => {
-      jest.spyOn(titleUtil, 'default')
-      const history = createMemoryHistory()
-      const mockStore = createMockStore([thunk])
-      const store = mockStore({
-        appointment: {
-          appointment: {
-            id: '123',
-            patientId: 'patient',
-          } as Appointment,
-          isLoading: false,
-        },
-      })
-      mount(
-        <Provider store={store}>
-          <Router history={history}>
-            <Route path="appointments/:id">
-              <ViewAppointment />
-            </Route>
-          </Router>
-        </Provider>,
-      )
+  const setup = (isLoading: boolean) => {
+    jest.spyOn(AppointmentRepository, 'find')
+    const mockedAppointmentRepository = mocked(AppointmentRepository, true)
+    mockedAppointmentRepository.find.mockResolvedValue(appointment)
+    jest.mock('react-router-dom', () => ({
+      useParams: () => ({
+        id: '123',
+      }),
+    }))
 
-      expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.view.label')
+    const history = createMemoryHistory()
+    history.push('/appointments/123')
+
+    const mockStore = createMockStore([thunk])
+    const store = mockStore({
+      appointment: {
+        appointment,
+        isLoading,
+      },
+    })
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Route path="/appointments/:id">
+            <ViewAppointment />
+          </Route>
+        </Router>
+      </Provider>,
+    )
+
+    wrapper.update()
+    return wrapper
+  }
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+  })
+
+  it('should use the correct title', async () => {
+    jest.spyOn(titleUtil, 'default')
+    await act(async () => {
+      await setup(true)
+    })
+
+    expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.view')
+  })
+
+  it('should call the fetch appointment function if id is present', async () => {
+    await act(async () => {
+      await setup(true)
     })
   })
 
-  it('should render a loading spinner', () => {})
+  it('should render a loading spinner', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup(true)
+    })
 
-  it('should render a AppointmentDetailForm with the correct data', () => {})
+    expect(wrapper.find(Spinner)).toHaveLength(1)
+  })
+
+  it('should render a AppointmentDetailForm with the correct data', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup(false)
+    })
+
+    const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
+    expect(appointmentDetailForm.prop('appointment')).toEqual(appointment)
+    expect(appointmentDetailForm.prop('isEditable')).toBeFalsy()
+  })
 })

@@ -8,32 +8,46 @@ import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelForm
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
 import SelectWithLabelFormGroup from 'components/input/SelectWithLableFormGroup'
 import { useTranslation } from 'react-i18next'
+
 interface Props {
   appointment: Appointment
+  isEditable: boolean
   onAppointmentChange: (appointment: Appointment) => void
 }
 
 const AppointmentDetailForm = (props: Props) => {
-  const { onAppointmentChange, appointment } = props
+  const { onAppointmentChange, appointment, isEditable } = props
   const { t } = useTranslation()
   return (
     <>
       <div className="row">
         <div className="col">
           <div className="form-group">
-            <Label htmlFor="patientTypeahead" text={t('scheduling.appointment.patient')} />
-            <Typeahead
-              id="patientTypeahead"
-              placeholder={t('scheduling.appointment.patient')}
-              onChange={(patient: Patient[]) => {
-                onAppointmentChange({ ...appointment, patientId: patient[0].id })
-              }}
-              onSearch={async (query: string) => PatientRepository.search(query)}
-              searchAccessor="fullName"
-              renderMenuItemChildren={(patient: Patient) => (
-                <div>{`${patient.fullName} (${patient.friendlyId})`}</div>
-              )}
-            />
+            {isEditable ? (
+              <>
+                <Label htmlFor="patientTypeahead" text={t('scheduling.appointment.patient')} />
+                <Typeahead
+                  id="patientTypeahead"
+                  value={appointment.patientId}
+                  placeholder={t('scheduling.appointment.patient')}
+                  onChange={(patient: Patient[]) => {
+                    onAppointmentChange({ ...appointment, patientId: patient[0].id })
+                  }}
+                  onSearch={async (query: string) => PatientRepository.search(query)}
+                  searchAccessor="fullName"
+                  renderMenuItemChildren={(patient: Patient) => (
+                    <div>{`${patient.fullName} (${patient.friendlyId})`}</div>
+                  )}
+                />
+              </>
+            ) : (
+              <TextInputWithLabelFormGroup
+                name="patient"
+                label={t('scheduling.appointment.patient')}
+                value={appointment.patientId}
+                isEditable={isEditable}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -43,7 +57,7 @@ const AppointmentDetailForm = (props: Props) => {
             name="startDate"
             label={t('scheduling.appointment.startDate')}
             value={new Date(appointment.startDateTime)}
-            isEditable
+            isEditable={isEditable}
             onChange={(date) => {
               onAppointmentChange({ ...appointment, startDateTime: date.toISOString() })
             }}
@@ -54,7 +68,7 @@ const AppointmentDetailForm = (props: Props) => {
             name="endDate"
             label={t('scheduling.appointment.endDate')}
             value={new Date(appointment.endDateTime)}
-            isEditable
+            isEditable={isEditable}
             onChange={(date) => {
               onAppointmentChange({ ...appointment, endDateTime: date.toISOString() })
             }}
@@ -67,7 +81,7 @@ const AppointmentDetailForm = (props: Props) => {
             name="location"
             label={t('scheduling.appointment.location')}
             value={appointment.location}
-            isEditable
+            isEditable={isEditable}
             onChange={(event) => {
               onAppointmentChange({ ...appointment, location: event?.target.value })
             }}
@@ -80,6 +94,7 @@ const AppointmentDetailForm = (props: Props) => {
             name="type"
             label={t('scheduling.appointment.type')}
             value={appointment.type}
+            isEditable={isEditable}
             options={[
               { label: t('scheduling.appointment.types.checkup'), value: 'checkup' },
               { label: t('scheduling.appointment.types.emergency'), value: 'emergency' },
@@ -100,7 +115,7 @@ const AppointmentDetailForm = (props: Props) => {
               name="reason"
               label={t('scheduling.appointment.reason')}
               value={appointment.reason}
-              isEditable
+              isEditable={isEditable}
               onChange={(event) => {
                 onAppointmentChange({ ...appointment, reason: event?.target.value })
               }}
@@ -110,6 +125,10 @@ const AppointmentDetailForm = (props: Props) => {
       </div>
     </>
   )
+}
+
+AppointmentDetailForm.defaultProps = {
+  isEditable: true,
 }
 
 export default AppointmentDetailForm
