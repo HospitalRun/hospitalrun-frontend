@@ -9,21 +9,26 @@ import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
 import { mocked } from 'ts-jest/utils'
+import { createMemoryHistory } from 'history'
 import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = createMockStore([thunk])
 
 describe('Related Persons Tab', () => {
   let wrapper: ReactWrapper
+  let history = createMemoryHistory()
 
   describe('Add New Related Person', () => {
     let patient: any
     let user: any
 
     beforeEach(() => {
+      history = createMemoryHistory()
+
       patient = {
         id: '123',
         rev: '123',
@@ -34,7 +39,9 @@ describe('Related Persons Tab', () => {
       }
       wrapper = mount(
         <Provider store={mockStore({ patient, user })}>
-          <RelatedPersonTab patient={patient} />
+          <Router history={history}>
+            <RelatedPersonTab patient={patient} />
+          </Router>
         </Provider>,
       )
     })
@@ -50,7 +57,9 @@ describe('Related Persons Tab', () => {
       user = { permissions: [Permissions.ReadPatients] }
       wrapper = mount(
         <Provider store={mockStore({ patient, user })}>
-          <RelatedPersonTab patient={patient} />
+          <Router history={history}>
+            <RelatedPersonTab patient={patient} />
+          </Router>
         </Provider>,
       )
 
@@ -105,7 +114,7 @@ describe('Related Persons Tab', () => {
       wrapper.update()
 
       expect(patientSlice.updatePatient).toHaveBeenCalledTimes(1)
-      expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient)
+      expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient, history)
     })
 
     it('should close the modal when the save button is clicked', () => {
@@ -148,7 +157,9 @@ describe('Related Persons Tab', () => {
       await act(async () => {
         wrapper = await mount(
           <Provider store={mockStore({ patient, user })}>
-            <RelatedPersonTab patient={patient} />
+            <Router history={history}>
+              <RelatedPersonTab patient={patient} />
+            </Router>
           </Provider>,
         )
       })

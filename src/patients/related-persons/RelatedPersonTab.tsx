@@ -51,15 +51,19 @@ const RelatedPersonTab = (props: Props) => {
   }
 
   const onRelatedPersonSave = (relatedPerson: RelatedPerson) => {
+    const newRelatedPersons: RelatedPerson[] = []
+
+    if (patient.relatedPersons) {
+      newRelatedPersons.push(...patient.relatedPersons)
+    }
+
+    newRelatedPersons.push(relatedPerson)
+
     const patientToUpdate = {
       ...patient,
+      relatedPersons: newRelatedPersons,
     }
 
-    if (!patientToUpdate.relatedPersons) {
-      patientToUpdate.relatedPersons = []
-    }
-
-    patientToUpdate.relatedPersons.push(relatedPerson)
     dispatch(updatePatient(patientToUpdate, history))
     closeNewRelatedPersonModal()
   }

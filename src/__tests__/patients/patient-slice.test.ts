@@ -237,7 +237,6 @@ describe('patients slice', () => {
     })
   })
 
-  // should check for the Toast
   describe('update patient', () => {
     it('should dispatch the UPDATE_PATIENT_START action', async () => {
       const dispatch = jest.fn()
@@ -282,6 +281,34 @@ describe('patients slice', () => {
         type: updatePatientSuccess.type,
         payload: expectedPatient,
       })
+    })
+
+    it('should call the Toaster function with the correct data', async () => {
+      jest.spyOn(components, 'Toast')
+      const expectedPatientId = '12345'
+      const expectedGivenName = 'given'
+      const expectedFamilyName = 'family'
+      const expectedSuffix = 'suffix'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: expectedGivenName,
+        familyName: expectedFamilyName,
+        suffix: expectedSuffix,
+      } as Patient
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
+      const mockedComponents = mocked(components, true)
+      const history = createMemoryHistory()
+      const dispatch = jest.fn()
+      const getState = jest.fn()
+
+      await updatePatient(expectedPatient, history)(dispatch, getState, null)
+
+      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+        'success',
+        'Success!',
+        `Successfully updated patient ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
+      )
     })
   })
 })

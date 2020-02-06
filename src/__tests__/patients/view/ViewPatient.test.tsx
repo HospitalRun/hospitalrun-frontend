@@ -34,6 +34,7 @@ describe('ViewPatient', () => {
   } as Patient
 
   let history = createMemoryHistory()
+
   const setup = () => {
     jest.spyOn(PatientRepository, 'find')
     const mockedPatientRepository = mocked(PatientRepository, true)

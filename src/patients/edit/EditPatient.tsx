@@ -25,7 +25,8 @@ const EditPatient = () => {
   const dispatch = useDispatch()
 
   const [patient, setPatient] = useState({} as Patient)
-  const { patient: reduxPatient } = useSelector((state: RootState) => state.patient)
+  const [errorMessage, setErrorMessage] = useState('')
+  const { patient: reduxPatient, isLoading } = useSelector((state: RootState) => state.patient)
 
   useTitle(
     `${t('patients.editPatient')}: ${getPatientFullName(reduxPatient)} (${getFriendlyId(
@@ -49,15 +50,19 @@ const EditPatient = () => {
   }
 
   const onSave = () => {
-    dispatch(
-      updatePatient(
-        {
-          ...patient,
-          fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
-        },
-        history,
-      ),
-    )
+    if (!patient.givenName) {
+      setErrorMessage(t('patient.errors.patientGivenNameRequired'))
+    } else {
+      dispatch(
+        updatePatient(
+          {
+            ...patient,
+            fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
+          },
+          history,
+        ),
+      )
+    }
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {
@@ -67,8 +72,7 @@ const EditPatient = () => {
     })
   }
 
-  // see comment in ViewPatient
-  if (!reduxPatient) {
+  if (isLoading) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
@@ -79,6 +83,7 @@ const EditPatient = () => {
       onCancel={onCancel}
       onSave={onSave}
       onFieldChange={onFieldChange}
+      errorMessage={errorMessage}
     />
   )
 }

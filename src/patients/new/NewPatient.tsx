@@ -15,6 +15,7 @@ const NewPatient = () => {
   const dispatch = useDispatch()
 
   const [patient, setPatient] = useState({} as Patient)
+  const [errorMessage, setErrorMessage] = useState('')
 
   useTitle(t('patients.newPatient'))
 
@@ -23,15 +24,19 @@ const NewPatient = () => {
   }
 
   const onSave = () => {
-    dispatch(
-      createPatient(
-        {
-          ...patient,
-          fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
-        },
-        history,
-      ),
-    )
+    if (!patient.givenName) {
+      setErrorMessage(t('patient.errors.patientGivenNameRequired'))
+    } else {
+      dispatch(
+        createPatient(
+          {
+            ...patient,
+            fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
+          },
+          history,
+        ),
+      )
+    }
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {
@@ -48,6 +53,7 @@ const NewPatient = () => {
       onSave={onSave}
       patient={patient}
       onFieldChange={onFieldChange}
+      errorMessage={errorMessage}
     />
   )
 }

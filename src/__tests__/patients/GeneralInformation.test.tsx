@@ -2,10 +2,101 @@ import '../../__mocks__/matchMediaMock'
 import React from 'react'
 import { Router } from 'react-router'
 import { mount, ReactWrapper } from 'enzyme'
-import { act } from 'react-dom/test-utils'
 import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
+import { Alert } from '@hospitalrun/components'
+import { render, act, fireEvent } from '@testing-library/react'
 import Patient from '../../model/Patient'
+
+describe('Save button', () => {
+  it('should call the onSave prop', () => {
+    const onSave = jest.fn()
+    const history = createMemoryHistory()
+    const generalInformationWrapper = render(
+      <Router history={history}>
+        <GeneralInformation
+          isEditable
+          patient={{} as Patient}
+          onCancel={jest.fn()}
+          onSave={onSave}
+        />
+      </Router>,
+    )
+
+    const saveButton = generalInformationWrapper.getByText('actions.save')
+
+    act(() => {
+      fireEvent.click(saveButton)
+    })
+
+    expect(onSave).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('Cancel button', () => {
+  it('should call the onCancel prop', () => {
+    const onCancel = jest.fn()
+    const history = createMemoryHistory()
+    const generalInformationWrapper = render(
+      <Router history={history}>
+        <GeneralInformation
+          isEditable
+          patient={{} as Patient}
+          onCancel={onCancel}
+          onSave={jest.fn()}
+        />
+      </Router>,
+    )
+
+    const cancelButton = generalInformationWrapper.getByText('actions.cancel')
+
+    act(() => {
+      fireEvent.click(cancelButton)
+    })
+
+    expect(onCancel).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('Edit button', () => {
+  it('should navigate to edit patient route when clicked', () => {
+    const history = createMemoryHistory()
+    const generalInformationWrapper = render(
+      <Router history={history}>
+        <GeneralInformation patient={{ id: '12345' } as Patient} />
+      </Router>,
+    )
+
+    const editButton = generalInformationWrapper.getByText('actions.edit')
+
+    act(() => {
+      fireEvent.click(editButton)
+    })
+
+    expect(history.location.pathname).toEqual('/patients/edit/12345')
+  })
+})
+
+describe('Error handling', () => {
+  it('should display no given name error when errorMessage prop is non-empty string', () => {
+    const history = createMemoryHistory()
+    const wrapper = mount(
+      <Router history={history}>
+        <GeneralInformation
+          patient={{} as Patient}
+          isEditable
+          onSave={jest.fn()}
+          onCancel={jest.fn()}
+          errorMessage="patient.errors.patientGivenNameRequired"
+        />
+      </Router>,
+    )
+
+    const errorMessage = wrapper.find(Alert)
+    expect(errorMessage).toBeTruthy()
+    expect(errorMessage.prop('message')).toMatch('patient.errors.patientGivenNameRequired')
+  })
+})
 
 describe('General Information', () => {
   const patient = {
@@ -42,11 +133,48 @@ describe('General Information', () => {
     jest.restoreAllMocks()
   })
 
+  it('should render the prefix', () => {
+    const prefixInput = wrapper.findWhere((w: any) => w.prop('name') === 'prefix')
+    expect(prefixInput.prop('value')).toEqual(patient.prefix)
+    expect(prefixInput.prop('label')).toEqual('patient.prefix')
+    expect(prefixInput.prop('isEditable')).toBeFalsy()
+  })
+
+  it('should render the given name', () => {
+    const givenNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
+    expect(givenNameInput.prop('value')).toEqual(patient.givenName)
+    expect(givenNameInput.prop('label')).toEqual('patient.givenName')
+    expect(givenNameInput.prop('isEditable')).toBeFalsy()
+  })
+
+  it('should render the family name', () => {
+    const familyNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'familyName')
+    expect(familyNameInput.prop('value')).toEqual(patient.familyName)
+    expect(familyNameInput.prop('label')).toEqual('patient.familyName')
+    expect(familyNameInput.prop('isEditable')).toBeFalsy()
+  })
+
+  it('should render the suffix', () => {
+    const suffixInput = wrapper.findWhere((w: any) => w.prop('name') === 'suffix')
+    expect(suffixInput.prop('value')).toEqual(patient.suffix)
+    expect(suffixInput.prop('label')).toEqual('patient.suffix')
+    expect(suffixInput.prop('isEditable')).toBeFalsy()
+  })
+
   it('should render the sex select', () => {
     const sexSelect = wrapper.findWhere((w: any) => w.prop('name') === 'sex')
     expect(sexSelect.prop('value')).toEqual(patient.sex)
     expect(sexSelect.prop('label')).toEqual('patient.sex')
     expect(sexSelect.prop('isEditable')).toBeFalsy()
+    expect(sexSelect.prop('options')).toHaveLength(4)
+    expect(sexSelect.prop('options')[0].label).toEqual('sex.male')
+    expect(sexSelect.prop('options')[0].value).toEqual('male')
+    expect(sexSelect.prop('options')[1].label).toEqual('sex.female')
+    expect(sexSelect.prop('options')[1].value).toEqual('female')
+    expect(sexSelect.prop('options')[2].label).toEqual('sex.other')
+    expect(sexSelect.prop('options')[2].value).toEqual('other')
+    expect(sexSelect.prop('options')[3].label).toEqual('sex.unknown')
+    expect(sexSelect.prop('options')[3].value).toEqual('unknown')
   })
 
   it('should render the patient type select', () => {
@@ -54,6 +182,11 @@ describe('General Information', () => {
     expect(typeSelect.prop('value')).toEqual(patient.type)
     expect(typeSelect.prop('label')).toEqual('patient.type')
     expect(typeSelect.prop('isEditable')).toBeFalsy()
+    expect(typeSelect.prop('options')).toHaveLength(2)
+    expect(typeSelect.prop('options')[0].label).toEqual('patient.types.charity')
+    expect(typeSelect.prop('options')[0].value).toEqual('charity')
+    expect(typeSelect.prop('options')[1].label).toEqual('patient.types.private')
+    expect(typeSelect.prop('options')[1].value).toEqual('private')
   })
 
   it('should render the date of the birth of the patient', () => {
@@ -64,42 +197,43 @@ describe('General Information', () => {
   })
 
   it('should render the occupation of the patient', () => {
-    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'occupation')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.occupation)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.occupation')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
+    const occupationInput = wrapper.findWhere((w: any) => w.prop('name') === 'occupation')
+    expect(occupationInput.prop('value')).toEqual(patient.occupation)
+    expect(occupationInput.prop('label')).toEqual('patient.occupation')
+    expect(occupationInput.prop('isEditable')).toBeFalsy()
   })
 
   it('should render the preferred language of the patient', () => {
-    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'preferredLanguage')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.preferredLanguage)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.preferredLanguage')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
+    const preferredLanguageInput = wrapper.findWhere(
+      (w: any) => w.prop('name') === 'preferredLanguage',
+    )
+    expect(preferredLanguageInput.prop('value')).toEqual(patient.preferredLanguage)
+    expect(preferredLanguageInput.prop('label')).toEqual('patient.preferredLanguage')
+    expect(preferredLanguageInput.prop('isEditable')).toBeFalsy()
   })
 
   it('should render the phone number of the patient', () => {
-    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'phoneNumber')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.phoneNumber)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.phoneNumber')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
+    const phoneNumberInput = wrapper.findWhere((w: any) => w.prop('name') === 'phoneNumber')
+    expect(phoneNumberInput.prop('value')).toEqual(patient.phoneNumber)
+    expect(phoneNumberInput.prop('label')).toEqual('patient.phoneNumber')
+    expect(phoneNumberInput.prop('isEditable')).toBeFalsy()
   })
 
   it('should render the email of the patient', () => {
-    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'email')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.email)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.email')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
+    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'email')
+    expect(emailInput.prop('value')).toEqual(patient.email)
+    expect(emailInput.prop('label')).toEqual('patient.email')
+    expect(emailInput.prop('isEditable')).toBeFalsy()
   })
 
   it('should render the address of the patient', () => {
-    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'address')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.address)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.address')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
+    const addressInput = wrapper.findWhere((w: any) => w.prop('name') === 'address')
+    expect(addressInput.prop('value')).toEqual(patient.address)
+    expect(addressInput.prop('label')).toEqual('patient.address')
+    expect(addressInput.prop('isEditable')).toBeFalsy()
   })
 
   it('should render the age and date of birth as approximate if patient.isApproximateDateOfBirth is true', async () => {
-    let wrapper: any
     patient.isApproximateDateOfBirth = true
     await act(async () => {
       wrapper = await mount(

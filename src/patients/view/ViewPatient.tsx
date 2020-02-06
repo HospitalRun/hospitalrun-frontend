@@ -26,7 +26,7 @@ const ViewPatient = () => {
   const dispatch = useDispatch()
   const location = useLocation()
 
-  const { patient } = useSelector((state: RootState) => state.patient)
+  const { patient, isLoading } = useSelector((state: RootState) => state.patient)
 
   useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
 
@@ -37,9 +37,7 @@ const ViewPatient = () => {
     }
   }, [dispatch, id])
 
-  // this check doesn't work as an empty object isn't falsy. would it be more correct to display
-  // the spinner when the Redux patient state isLoading is true?
-  if (!patient) {
+  if (isLoading || !patient) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
