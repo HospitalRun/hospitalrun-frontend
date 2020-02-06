@@ -99,7 +99,7 @@ const RelatedPersonTab = (props: Props) => {
             {relatedPersons ? (
               <List>
                 {relatedPersons.map((r) => (
-                  <ListItem key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
+                  <ListItem action key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
                     {r.fullName}
                   </ListItem>
                 ))}
