@@ -13,6 +13,8 @@ import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import { Spinner } from '@hospitalrun/components'
 import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
+import PatientRepository from 'clients/db/PatientRepository'
+import Patient from 'model/Patient'
 import * as titleUtil from '../../../../page-header/useTitle'
 
 const appointment = {
@@ -23,11 +25,21 @@ const appointment = {
   location: 'location',
 } as Appointment
 
+const patient = {
+  id: '123',
+  fullName: 'full name',
+} as Patient
+
 describe('View Appointment', () => {
   const setup = (isLoading: boolean) => {
     jest.spyOn(AppointmentRepository, 'find')
     const mockedAppointmentRepository = mocked(AppointmentRepository, true)
     mockedAppointmentRepository.find.mockResolvedValue(appointment)
+
+    jest.spyOn(PatientRepository, 'find')
+    const mockedPatientRepository = mocked(PatientRepository, true)
+    mockedPatientRepository.find.mockResolvedValue(patient)
+
     jest.mock('react-router-dom', () => ({
       useParams: () => ({
         id: '123',
@@ -42,6 +54,7 @@ describe('View Appointment', () => {
       appointment: {
         appointment,
         isLoading,
+        patient,
       },
     })
 

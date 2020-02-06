@@ -8,6 +8,9 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Calendar } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
+import PatientRepository from 'clients/db/PatientRepository'
+import { mocked } from 'ts-jest/utils'
+import Patient from 'model/Patient'
 import * as titleUtil from '../../../page-header/useTitle'
 
 describe('Appointments', () => {
@@ -24,6 +27,12 @@ describe('Appointments', () => {
   ]
 
   const setup = async () => {
+    jest.spyOn(PatientRepository, 'find')
+    const mockedPatientRepository = mocked(PatientRepository, true)
+    mockedPatientRepository.find.mockResolvedValue({
+      id: '123',
+      fullName: 'patient full name',
+    } as Patient)
     const mockStore = createMockStore([thunk])
     return mount(
       <Provider store={mockStore({ appointments: { appointments: expectedAppointments } })}>
@@ -52,7 +61,7 @@ describe('Appointments', () => {
         id: expectedAppointments[0].id,
         start: new Date(expectedAppointments[0].startDateTime),
         end: new Date(expectedAppointments[0].endDateTime),
-        title: expectedAppointments[0].patientId,
+        title: 'patient full name',
         allDay: false,
       },
     ]

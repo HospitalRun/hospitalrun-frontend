@@ -11,32 +11,33 @@ import { useTranslation } from 'react-i18next'
 
 interface Props {
   appointment: Appointment
+  patient?: Patient
   isEditable: boolean
   onAppointmentChange: (appointment: Appointment) => void
 }
 
 const AppointmentDetailForm = (props: Props) => {
-  const { onAppointmentChange, appointment, isEditable } = props
+  const { onAppointmentChange, appointment, patient, isEditable } = props
   const { t } = useTranslation()
   return (
     <>
       <div className="row">
         <div className="col">
           <div className="form-group">
-            {isEditable ? (
+            {isEditable && !patient ? (
               <>
                 <Label htmlFor="patientTypeahead" text={t('scheduling.appointment.patient')} />
                 <Typeahead
                   id="patientTypeahead"
                   value={appointment.patientId}
                   placeholder={t('scheduling.appointment.patient')}
-                  onChange={(patient: Patient[]) => {
-                    onAppointmentChange({ ...appointment, patientId: patient[0].id })
+                  onChange={(p: Patient[]) => {
+                    onAppointmentChange({ ...appointment, patientId: p[0].id })
                   }}
                   onSearch={async (query: string) => PatientRepository.search(query)}
                   searchAccessor="fullName"
-                  renderMenuItemChildren={(patient: Patient) => (
-                    <div>{`${patient.fullName} (${patient.friendlyId})`}</div>
+                  renderMenuItemChildren={(p: Patient) => (
+                    <div>{`${p.fullName} (${p.friendlyId})`}</div>
                   )}
                 />
               </>
@@ -44,7 +45,7 @@ const AppointmentDetailForm = (props: Props) => {
               <TextInputWithLabelFormGroup
                 name="patient"
                 label={t('scheduling.appointment.patient')}
-                value={appointment.patientId}
+                value={patient?.fullName}
                 isEditable={isEditable}
               />
             )}

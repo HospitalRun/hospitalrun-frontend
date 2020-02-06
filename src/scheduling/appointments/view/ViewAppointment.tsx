@@ -13,7 +13,7 @@ const ViewAppointment = () => {
   useTitle(t('scheduling.appointments.view'))
   const dispatch = useDispatch()
   const { id } = useParams()
-  const { appointment, isLoading } = useSelector((state: RootState) => state.appointment)
+  const { appointment, patient, isLoading } = useSelector((state: RootState) => state.appointment)
 
   useEffect(() => {
     if (id) {
@@ -30,6 +30,7 @@ const ViewAppointment = () => {
       <AppointmentDetailForm
         appointment={appointment}
         isEditable={false}
+        patient={patient}
         onAppointmentChange={() => {
           // not editable
         }}

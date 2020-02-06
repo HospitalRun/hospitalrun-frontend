@@ -10,7 +10,7 @@ describe('Appointment Repository', () => {
 
   describe('find', () => {
     it('should find an appointment by id', async () => {
-      await appointments.put({ _id: 'id5678' }) // store another patient just to make sure we pull back the right one
+      await appointments.put({ _id: 'id5678' })
       const expectedAppointment = await appointments.put({ _id: 'id1234' })
 
       const actualAppointment = await AppointmentRepository.find('id1234')

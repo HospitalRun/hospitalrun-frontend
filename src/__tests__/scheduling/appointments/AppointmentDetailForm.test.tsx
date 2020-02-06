@@ -4,7 +4,7 @@ import { mount, ReactWrapper } from 'enzyme'
 import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
 import Appointment from 'model/Appointment'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
-import { Typeahead, Button } from '@hospitalrun/components'
+import { Typeahead } from '@hospitalrun/components'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import { act } from '@testing-library/react'
@@ -103,11 +103,17 @@ describe('AppointmentDetailForm', () => {
       ).toISOString(),
     } as Appointment
 
+    const expectedPatient = {
+      id: '123',
+      fullName: 'full name',
+    } as Patient
+
     beforeEach(() => {
       wrapper = mount(
         <AppointmentDetailForm
           isEditable={false}
           appointment={expectedAppointment}
+          patient={expectedPatient}
           onAppointmentChange={jest.fn()}
         />,
       )
@@ -122,7 +128,7 @@ describe('AppointmentDetailForm', () => {
 
       expect(patientInput).toHaveLength(1)
       expect(patientInput.prop('isEditable')).toBeFalsy()
-      expect(patientInput.prop('value')).toEqual(expectedAppointment.patientId)
+      expect(patientInput.prop('value')).toEqual(expectedPatient.fullName)
       expect(startDateTimePicker.prop('isEditable')).toBeFalsy()
       expect(endDateTimePicker.prop('isEditable')).toBeFalsy()
       expect(locationTextInputBox.prop('isEditable')).toBeFalsy()

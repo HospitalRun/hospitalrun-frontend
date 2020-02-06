@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
 import { useHistory } from 'react-router'
+import PatientRepository from 'clients/db/PatientRepository'
 import { fetchAppointments } from './appointments-slice'
 
 interface Event {
@@ -28,21 +29,25 @@ const Appointments = () => {
   }, [dispatch])
 
   useEffect(() => {
-    if (appointments) {
-      const newEvents: Event[] = []
-      appointments.forEach((a) => {
-        const event = {
-          id: a.id,
-          start: new Date(a.startDateTime),
-          end: new Date(a.endDateTime),
-          title: a.patientId,
-          allDay: false,
-        }
-
-        newEvents.push(event)
-      })
+    const getAppointments = async () => {
+      const newEvents = await Promise.all(
+        appointments.map(async (a) => {
+          const patient = await PatientRepository.find(a.patientId)
+          return {
+            id: a.id,
+            start: new Date(a.startDateTime),
+            end: new Date(a.endDateTime),
+            title: patient.fullName || '',
+            allDay: false,
+          }
+        }),
+      )
 
       setEvents(newEvents)
+    }
+
+    if (appointments) {
+      getAppointments()
     }
   }, [appointments])
 
