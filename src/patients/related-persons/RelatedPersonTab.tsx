@@ -32,9 +32,9 @@ const RelatedPersonTab = (props: Props) => {
             fetchedRelatedPersons.push(fetchedRelatedPerson)
           }),
         )
-
-        setRelatedPersons(fetchedRelatedPersons)
       }
+
+      setRelatedPersons(fetchedRelatedPersons)
     }
 
     fetchRelatedPersons()
@@ -88,14 +88,17 @@ const RelatedPersonTab = (props: Props) => {
         <div className="col-md-12">
           <Panel title={t('patient.relatedPersons.label')} color="primary" collapsible>
             {relatedPersons ? (
-              <List>
-                {relatedPersons.map((r) => (
-                  <ListItem key={r.id}>{r.fullName}</ListItem>
-                ))}
-              </List>
-            ) : (
-              <h1>Loading...</h1>
-            )}
+              (relatedPersons.length > 0) ? (
+                <List>
+                  {relatedPersons.map((r) => (
+                    <ListItem key={r.id}>{r.fullName}</ListItem>
+                  ))}
+                </List>
+                ) : (
+                  <h2>No related persons have been added yet.</h2>
+              )) : (
+                <h1>Loading...</h1>
+              )}
           </Panel>
         </div>
       </div>
