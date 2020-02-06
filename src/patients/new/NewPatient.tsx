@@ -19,7 +19,7 @@ const NewPatient = () => {
   useTitle(t('patients.newPatient'))
 
   const onCancel = () => {
-    history.goBack()
+    history.push('/patients')
   }
 
   const onSave = () => {

@@ -7,15 +7,15 @@ import { mocked } from 'ts-jest/utils'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
 import NewPatient from '../../../patients/new/NewPatient'
-import NewPatientForm from '../../../patients/new/NewPatientForm'
+import GeneralInformation from '../../../patients/GeneralInformation'
 import store from '../../../store'
 import Patient from '../../../model/Patient'
-import * as patientSlice from '../../../patients/patients-slice'
+import * as patientSlice from '../../../patients/patient-slice'
 import * as titleUtil from '../../../page-header/useTitle'
 import PatientRepository from '../../../clients/db/PatientRepository'
 
 describe('New Patient', () => {
-  it('should render a new patient form', () => {
+  it('should render a general information form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
@@ -24,7 +24,7 @@ describe('New Patient', () => {
       </Provider>,
     )
 
-    expect(wrapper.find(NewPatientForm)).toHaveLength(1)
+    expect(wrapper.find(GeneralInformation)).toHaveLength(1)
   })
 
   it('should use "New Patient" as the header', () => {
@@ -45,19 +45,9 @@ describe('New Patient', () => {
     jest.spyOn(PatientRepository, 'save')
     const mockedPatientRepository = mocked(PatientRepository, true)
     const patient = {
-      id: '123',
-      prefix: 'test',
-      givenName: 'test',
-      familyName: 'test',
-      suffix: 'test',
+      fullName: '',
     } as Patient
     mockedPatientRepository.save.mockResolvedValue(patient)
-
-    const expectedPatient = {
-      sex: 'male',
-      givenName: 'givenName',
-      familyName: 'familyName',
-    } as Patient
 
     const wrapper = mount(
       <Provider store={store}>
@@ -67,11 +57,9 @@ describe('New Patient', () => {
       </Provider>,
     )
 
-    const newPatientForm = wrapper.find(NewPatientForm)
-
-    await newPatientForm.prop('onSave')(expectedPatient)
-
-    expect(patientSlice.createPatient).toHaveBeenCalledWith(expectedPatient, expect.anything())
+    const generalInformationForm = wrapper.find(GeneralInformation)
+    await generalInformationForm.prop('onSave')()
+    expect(patientSlice.createPatient).toHaveBeenCalledWith(patient, expect.anything())
   })
 
   it('should navigate to /patients when cancel is clicked', () => {
@@ -85,7 +73,7 @@ describe('New Patient', () => {
     )
 
     act(() => {
-      wrapper.find(NewPatientForm).prop('onCancel')()
+      wrapper.find(GeneralInformation).prop('onCancel')()
     })
 
     wrapper.update()
