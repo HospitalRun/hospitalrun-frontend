@@ -70,7 +70,8 @@
     "label": "Scheduling",
     "appointments": {
       "label": "Appointments",
-      "new": "New Appointment"
+      "new": "New Appointment",
+      "view": "View Appointment"
     },
     "appointment": {
       "startDate": "Start Date",
