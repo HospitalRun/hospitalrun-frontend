@@ -2,7 +2,7 @@ import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { Router } from 'react-router'
 import { createMemoryHistory } from 'history'
-import { mount, ReactWrapper } from 'enzyme'
+import { mount, ReactWrapper, shallow } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import { Button, List, ListItem } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
@@ -21,22 +21,13 @@ const mockStore = createMockStore([thunk])
 describe('Related Persons Tab', () => {
   let wrapper: ReactWrapper
   let history = createMemoryHistory()
-  const setup = async (location: string, patient: Patient, user: any) => {
-    history = createMemoryHistory()
-    history.push(location)
-    return mount(
-      <Router history={history}>
-        <Provider store={mockStore({ patient, user })}>
-          <RelatedPersonTab patient={patient} />
-        </Provider>
-      </Router>,
-    )
-  }
+  history = createMemoryHistory()
+
   describe('Add New Related Person', () => {
     let patient: any
     let user: any
 
-    beforeEach(async () => {
+    beforeEach(() => {
       patient = {
         id: '123',
         rev: '123',
@@ -45,8 +36,15 @@ describe('Related Persons Tab', () => {
       user = {
         permissions: [Permissions.WritePatients, Permissions.ReadPatients],
       }
-      // general test wrapper
-      wrapper = await setup('/', patient, user)
+      act(() => {
+        wrapper = mount(
+          <Router history={history}>
+            <Provider store={mockStore({ patient, user })}>
+              <RelatedPersonTab patient={patient} />
+            </Provider>
+          </Router>,
+        )
+      })
     })
 
     it('should render a New Related Person button', () => {
@@ -56,10 +54,17 @@ describe('Related Persons Tab', () => {
       expect(newRelatedPersonButton.text().trim()).toEqual('patient.relatedPersons.new')
     })
 
-    it('should not render a New Related Person button if the user does not have write privileges for a patient', async () => {
+    it('should not render a New Related Person button if the user does not have write privileges for a patient', () => {
       user = { permissions: [Permissions.ReadPatients] }
-
-      wrapper = await setup('/', patient, user)
+      act(() => {
+        wrapper = mount(
+          <Router history={history}>
+            <Provider store={mockStore({ patient, user })}>
+              <RelatedPersonTab patient={patient} />
+            </Provider>
+          </Router>,
+        )
+      })
       const newRelatedPersonButton = wrapper.find(Button)
       expect(newRelatedPersonButton).toHaveLength(0)
     })
@@ -84,7 +89,7 @@ describe('Related Persons Tab', () => {
       expect(newRelatedPersonModal.prop('show')).toBeTruthy()
     })
 
-    it('should call update patient with the data from the modal', async () => {
+    it('should call update patient with the data from the modal', () => {
       jest.spyOn(patientSlice, 'updatePatient')
       jest.spyOn(PatientRepository, 'saveOrUpdate')
       const expectedRelatedPerson = { patientId: '123', type: 'type' }
@@ -92,28 +97,31 @@ describe('Related Persons Tab', () => {
         ...patient,
         relatedPersons: [expectedRelatedPerson],
       }
-      await act(async () => {
-        wrapper = await setup('/', patient, user)
-      }).then(() => {
-        act(() => {
-          const newRelatedPersonButton = wrapper.find(Button)
-          const onClick = newRelatedPersonButton.prop('onClick') as any
-          onClick()
-        })
-
-        wrapper.update()
-
-        act(() => {
-          const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
-          const onSave = newRelatedPersonModal.prop('onSave') as any
-          onSave(expectedRelatedPerson)
-        })
-
-        wrapper.update()
-
-        expect(patientSlice.updatePatient).toHaveBeenCalledTimes(1)
-        expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient)
+      act(() => {
+        wrapper = mount(
+          <Router history={history}>
+            <Provider store={mockStore({ patient, user })}>
+              <RelatedPersonTab patient={patient} />
+            </Provider>
+          </Router>,
+        )
       })
+      act(() => {
+        const newRelatedPersonButton = wrapper.find(Button)
+        const onClick = newRelatedPersonButton.prop('onClick') as any
+        onClick()
+      })
+      wrapper.update()
+
+      act(() => {
+        const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+        const onSave = newRelatedPersonModal.prop('onSave') as any
+        onSave(expectedRelatedPerson)
+      })
+      wrapper.update()
+
+      expect(patientSlice.updatePatient).toHaveBeenCalledTimes(1)
+      expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient)
     })
 
     it('should close the modal when the save button is clicked', () => {
@@ -151,19 +159,26 @@ describe('Related Persons Tab', () => {
 
     beforeEach(async () => {
       jest.spyOn(PatientRepository, 'find')
-      mocked(PatientRepository.find).mockResolvedValue({ fullName: 'test test', id: '123001' } as Patient)
+      mocked(PatientRepository.find).mockResolvedValue({
+        fullName: 'test test',
+        id: '123001',
+      } as Patient)
 
       await act(async () => {
-        wrapper = await setup('/', patient, user)
+        wrapper = await mount(
+          <Router history={history}>
+            <Provider store={mockStore({ patient, user })}>
+              <RelatedPersonTab patient={patient} />
+            </Provider>
+          </Router>,
+        )
       })
-
       wrapper.update()
     })
 
-    it('should render a list of of related persons with their full name being displayed', () => {
+    it('should render a list of related persons with their full name being displayed', () => {
       const list = wrapper.find(List)
       const listItems = wrapper.find(ListItem)
-
       expect(list).toHaveLength(1)
       expect(listItems).toHaveLength(1)
       expect(listItems.at(0).text()).toEqual('test test')
