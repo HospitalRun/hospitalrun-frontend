@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams, withRouter, Route, useHistory, useLocation } from 'react-router-dom'
 import { Panel, Spinner, TabsHeader, Tab } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
+
 import useTitle from '../../page-header/useTitle'
 import { fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
 import { getPatientFullName } from '../util/patient-name-util'
 import Patient from '../../model/Patient'
-import GeneralInformation from './GeneralInformation'
+import GeneralInformation from '../GeneralInformation'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
 
 const getFriendlyId = (p: Patient): string => {
@@ -20,11 +21,13 @@ const getFriendlyId = (p: Patient): string => {
 }
 
 const ViewPatient = () => {
-  const history = useHistory()
-  const location = useLocation()
   const { t } = useTranslation()
+  const history = useHistory()
   const dispatch = useDispatch()
+  const location = useLocation()
+
   const { patient } = useSelector((state: RootState) => state.patient)
+
   useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
 
   const { id } = useParams()
@@ -34,6 +37,8 @@ const ViewPatient = () => {
     }
   }, [dispatch, id])
 
+  // this check doesn't work as an empty object isn't falsy. would it be more correct to display
+  // the spinner when the Redux patient state isLoading is true?
   if (!patient) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }

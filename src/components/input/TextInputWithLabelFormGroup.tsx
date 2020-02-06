@@ -5,7 +5,7 @@ interface Props {
   value: string
   label: string
   name: string
-  isEditable: boolean
+  isEditable?: boolean
   type: 'text' | 'email' | 'number'
   placeholder?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -31,7 +31,6 @@ const TextInputWithLabelFormGroup = (props: Props) => {
 
 TextInputWithLabelFormGroup.defaultProps = {
   value: '',
-  isEditable: true,
   type: 'text',
 }
 

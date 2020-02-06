@@ -39,11 +39,11 @@ export default class Repository<T extends AbstractDBModel> {
   }
 
   async findAll(): Promise<T[]> {
-    const allPatients = await this.db.allDocs({
+    const allDocs = await this.db.allDocs({
       include_docs: true,
     })
 
-    return allPatients.rows.map(mapRow)
+    return allDocs.rows.map(mapRow)
   }
 
   async save(entity: T): Promise<T> {
@@ -57,16 +57,15 @@ export default class Repository<T extends AbstractDBModel> {
       return this.save(entity)
     }
 
-    const { id, rev, ...dataToSave } = entity
-
     try {
-      await this.find(entity.id)
+      const existingEntity = await this.find(entity.id)
+      const { id, rev, ...restOfDoc } = existingEntity
       const entityToUpdate = {
         _id: id,
         _rev: rev,
-        ...dataToSave,
+        ...restOfDoc,
+        ...entity,
       }
-
       await this.db.put(entityToUpdate)
       return this.find(entity.id)
     } catch (error) {
