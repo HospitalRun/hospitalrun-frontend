@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Panel, List, ListItem } from '@hospitalrun/components'
+import { Button, Panel, List, ListItem, Alert, Spinner } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +21,7 @@ const RelatedPersonTab = (props: Props) => {
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
   const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
-  const [dataFetched, setDataFetched] = useState<boolean>(false)
+  const [isLoading, setisLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchRelatedPersons = async () => {
@@ -36,7 +36,7 @@ const RelatedPersonTab = (props: Props) => {
 
         setRelatedPersons(fetchedRelatedPersons)
       }
-      setDataFetched(true)
+      setisLoading(false)
     }
     if(patient.id) {
       fetchRelatedPersons()
@@ -90,7 +90,9 @@ const RelatedPersonTab = (props: Props) => {
       <div className="row">
         <div className="col-md-12">
           <Panel title={t('patient.relatedPersons.label')} color="primary" collapsible>
-            {dataFetched ? (
+            {isLoading ? (
+                <Spinner color="blue" loading size={[10,25]} type="ScaleLoader"/>
+              ) : (
               relatedPersons ? (
                 <List>
                   {relatedPersons.map((r) => (
@@ -98,10 +100,8 @@ const RelatedPersonTab = (props: Props) => {
                   ))}
                 </List>
                   ) : (
-                <h1>No related persons have been added yet.</h1>
+                    <Alert color="warning" title={"No Related Persons Added"} message={"Click on the top-right button to add new related persons"}/>
                   )
-              ) : (
-                <h1>Loading...</h1>
             )}
           </Panel>
         </div>
