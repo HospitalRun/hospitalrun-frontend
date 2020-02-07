@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Panel, List, ListItem } from '@hospitalrun/components'
+import { Button, Panel, List, ListItem, Alert } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
@@ -95,7 +95,7 @@ const RelatedPersonTab = (props: Props) => {
                   ))}
                 </List>
                 ) : (
-                  <h2>No related persons have been added yet.</h2>
+                  <Alert color="warning" title="No Related Persons" message="Add a related person using the button above." />
               )) : (
                 <h1>Loading...</h1>
               )}
