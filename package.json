@@ -122,7 +122,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn test:ci",
+      "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
@@ -131,10 +131,11 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-    "lint-staged": {
+  "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "npm run lint",
+      "npm run lint:fix",
+      "npm run test:ci",
       "git add ."
     ]
   }
- }
+}
