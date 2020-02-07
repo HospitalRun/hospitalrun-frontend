@@ -22,7 +22,7 @@ describe('patient repository', () => {
 
   describe('search', () => {
     it('should return all records that friendly ids match search text', async () => {
-      // same full to prove that it is finding by friendly id
+      // same full name to prove that it is finding by friendly id
       const expectedFriendlyId = 'P00001'
       await patients.put({ _id: 'id5678', friendlyId: expectedFriendlyId, fullName: 'test test' })
       await patients.put({ _id: 'id1234', friendlyId: 'P00002', fullName: 'test test' })
@@ -37,7 +37,7 @@ describe('patient repository', () => {
     })
 
     it('should return all records that fullName contains search text', async () => {
-      await patients.put({ _id: 'id1234', friendlyId: 'P00002', fullName: 'blah test test blah' })
+      await patients.put({ _id: 'id1234', friendlyId: 'P00002', fullName: 'blh test test blah' })
       await patients.put({ _id: 'id5678', friendlyId: 'P00001', fullName: 'test test' })
       await patients.put({ _id: 'id2345', friendlyId: 'P00003', fullName: 'not found' })
 
@@ -50,6 +50,19 @@ describe('patient repository', () => {
       await patients.remove(await patients.get('id1234'))
       await patients.remove(await patients.get('id5678'))
       await patients.remove(await patients.get('id2345'))
+    })
+
+    it('should match search criteria with case insensitive match', async () => {
+      await patients.put({ _id: 'id5678', friendlyId: 'P00001', fullName: 'test test' })
+      await patients.put({ _id: 'id1234', friendlyId: 'P00002', fullName: 'not found' })
+
+      const result = await PatientRepository.search('TEST TEST')
+
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toEqual('id5678')
+
+      await patients.remove(await patients.get('id1234'))
+      await patients.remove(await patients.get('id5678'))
     })
   })
 
