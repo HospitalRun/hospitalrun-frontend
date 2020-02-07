@@ -1,7 +1,5 @@
 import React from 'react'
-import { Panel, Button, Checkbox, Alert } from '@hospitalrun/components'
-
-import { useHistory } from 'react-router'
+import { Panel, Checkbox, Alert } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import { startOfDay, subYears, differenceInYears } from 'date-fns'
 
@@ -14,16 +12,13 @@ import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabe
 interface Props {
   patient: Patient
   isEditable?: boolean
-  onCancel?: () => void
-  onSave?: () => void
-  onFieldChange?: (key: string, value: string | boolean) => void
   errorMessage?: string
+  onFieldChange?: (key: string, value: string | boolean) => void
 }
 
 const GeneralInformation = (props: Props) => {
   const { t } = useTranslation()
-  const { patient, isEditable, onCancel, onSave, onFieldChange, errorMessage } = props
-  const history = useHistory()
+  const { patient, isEditable, onFieldChange, errorMessage } = props
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
@@ -53,20 +48,6 @@ const GeneralInformation = (props: Props) => {
 
   return (
     <div>
-      {!isEditable && (
-        <div className="row">
-          <div className="col-md-12 d-flex justify-content-end">
-            <Button
-              color="success"
-              outlined
-              onClick={() => history.push(`/patients/edit/${patient.id}`)}
-            >
-              {t('actions.edit')}
-            </Button>
-          </div>
-        </div>
-      )}
-      <br />
       <Panel title={t('patient.basicInformation')} color="primary" collapsible>
         {errorMessage && <Alert className="alert" color="danger" message={errorMessage} />}
         <div className="row">
@@ -255,16 +236,6 @@ const GeneralInformation = (props: Props) => {
           </div>
         </div>
       </Panel>
-      {isEditable && (
-        <div className="row">
-          <div className="col-md-12 d-flex justify-content-start">
-            <Button onClick={() => onSave && onSave()}> {t('actions.save')}</Button>
-            <Button color="danger" onClick={onCancel && (() => onCancel())}>
-              {t('actions.cancel')}
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

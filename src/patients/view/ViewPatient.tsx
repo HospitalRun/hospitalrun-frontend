@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, withRouter, Route, useHistory, useLocation } from 'react-router-dom'
-import { Panel, Spinner, TabsHeader, Tab } from '@hospitalrun/components'
+import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 
 import useTitle from '../../page-header/useTitle'
@@ -57,6 +57,22 @@ const ViewPatient = () => {
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
+          <div className="row">
+            <div className="col-md-12 d-flex justify-content-end">
+              <Button
+                color="success"
+                outlined
+                onClick={() => {
+                  console.log('pushying to hsitory patient was:')
+                  console.log(patient)
+                  history.push(`/patients/edit/${patient.id}`)
+                }}
+              >
+                {t('actions.edit')}
+              </Button>
+            </div>
+          </div>
+          <br />
           <GeneralInformation patient={patient} />
         </Route>
         <Route exact path="/patients/:id/relatedpersons">

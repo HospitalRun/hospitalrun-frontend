@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { Button } from '@hospitalrun/components'
 
 import GeneralInformation from '../GeneralInformation'
 import useTitle from '../../page-header/useTitle'
@@ -47,14 +48,24 @@ const NewPatient = () => {
   }
 
   return (
-    <GeneralInformation
-      isEditable
-      onCancel={onCancel}
-      onSave={onSave}
-      patient={patient}
-      onFieldChange={onFieldChange}
-      errorMessage={errorMessage}
-    />
+    <div>
+      <GeneralInformation
+        isEditable
+        patient={patient}
+        onFieldChange={onFieldChange}
+        errorMessage={errorMessage}
+      />
+      <div className="row float-right">
+        <div className="btn-group btn-group-lg">
+          <Button className="mr-2" color="success" onClick={() => onSave()}>
+            {t('actions.save')}
+          </Button>
+          <Button color="danger" onClick={() => onCancel()}>
+            {t('actions.cancel')}
+          </Button>
+        </div>
+      </div>
+    </div>
   )
 }
 

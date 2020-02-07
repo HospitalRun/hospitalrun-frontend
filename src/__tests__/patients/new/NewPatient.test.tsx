@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
+import { Button } from '@hospitalrun/components'
 
 import NewPatient from '../../../patients/new/NewPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
@@ -56,8 +57,12 @@ describe('New Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
     expect(generalInformationForm.prop('errorMessage')).toBe('')
 
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
     act(() => {
-      generalInformationForm.prop('onSave')()
+      onClick()
     })
 
     wrapper.update()
@@ -91,7 +96,14 @@ describe('New Patient', () => {
     })
 
     wrapper.update()
-    wrapper.find(GeneralInformation).prop('onSave')()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
 
     expect(patientSlice.createPatient).toHaveBeenCalledWith(patient, expect.anything())
   })
@@ -106,8 +118,12 @@ describe('New Patient', () => {
       </Provider>,
     )
 
+    const cancelButton = wrapper.find(Button).at(1)
+    const onClick = cancelButton.prop('onClick') as any
+    expect(cancelButton.text().trim()).toEqual('actions.cancel')
+
     act(() => {
-      wrapper.find(GeneralInformation).prop('onCancel')()
+      onClick()
     })
 
     expect(history.location.pathname).toEqual('/patients')

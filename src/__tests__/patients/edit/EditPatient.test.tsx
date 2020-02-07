@@ -8,6 +8,7 @@ import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { Button } from '@hospitalrun/components'
 import EditPatient from '../../../patients/edit/EditPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import Patient from '../../../model/Patient'
@@ -98,24 +99,34 @@ describe('Edit Patient', () => {
 
     wrapper.update()
 
-    const generalInformationForm = wrapper.find(GeneralInformation)
-    await generalInformationForm.prop('onSave')(patient)
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
     expect(patientSlice.updatePatient).toHaveBeenCalledWith(patient, expect.anything())
   })
 
-  // should check that it's navigating to '/patients/:id' but can't figure out how to mock
-  // useParams to get the id
-  // it('should navigate to /patients when cancel is clicked', async () => {
-  //   let wrapper: any
-  //   await act(async () => {
-  //     wrapper = await setup()
-  //   })
+  it('should navigate to /patients/:id when cancel is clicked', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
 
-  //   act(() => {
-  //     wrapper.find(GeneralInformation).prop('onCancel')()
-  //   })
+    wrapper.update()
 
-  //   wrapper.update()
-  //   expect(history.location.pathname).toEqual('/patients')
-  // })
+    const cancelButton = wrapper.find(Button).at(1)
+    const onClick = cancelButton.prop('onClick') as any
+    expect(cancelButton.text().trim()).toEqual('actions.cancel')
+
+    act(() => {
+      onClick()
+    })
+
+    wrapper.update()
+    expect(history.location.pathname).toEqual('/patients/123')
+  })
 })

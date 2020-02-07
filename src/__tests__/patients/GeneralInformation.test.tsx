@@ -5,77 +5,8 @@ import { mount, ReactWrapper } from 'enzyme'
 import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
 import { Alert } from '@hospitalrun/components'
-import { render, act, fireEvent } from '@testing-library/react'
+import { act } from '@testing-library/react'
 import Patient from '../../model/Patient'
-
-describe('Save button', () => {
-  it('should call the onSave prop', () => {
-    const onSave = jest.fn()
-    const history = createMemoryHistory()
-    const generalInformationWrapper = render(
-      <Router history={history}>
-        <GeneralInformation
-          isEditable
-          patient={{} as Patient}
-          onCancel={jest.fn()}
-          onSave={onSave}
-        />
-      </Router>,
-    )
-
-    const saveButton = generalInformationWrapper.getByText('actions.save')
-
-    act(() => {
-      fireEvent.click(saveButton)
-    })
-
-    expect(onSave).toHaveBeenCalledTimes(1)
-  })
-})
-
-describe('Cancel button', () => {
-  it('should call the onCancel prop', () => {
-    const onCancel = jest.fn()
-    const history = createMemoryHistory()
-    const generalInformationWrapper = render(
-      <Router history={history}>
-        <GeneralInformation
-          isEditable
-          patient={{} as Patient}
-          onCancel={onCancel}
-          onSave={jest.fn()}
-        />
-      </Router>,
-    )
-
-    const cancelButton = generalInformationWrapper.getByText('actions.cancel')
-
-    act(() => {
-      fireEvent.click(cancelButton)
-    })
-
-    expect(onCancel).toHaveBeenCalledTimes(1)
-  })
-})
-
-describe('Edit button', () => {
-  it('should navigate to edit patient route when clicked', () => {
-    const history = createMemoryHistory()
-    const generalInformationWrapper = render(
-      <Router history={history}>
-        <GeneralInformation patient={{ id: '12345' } as Patient} />
-      </Router>,
-    )
-
-    const editButton = generalInformationWrapper.getByText('actions.edit')
-
-    act(() => {
-      fireEvent.click(editButton)
-    })
-
-    expect(history.location.pathname).toEqual('/patients/edit/12345')
-  })
-})
 
 describe('Error handling', () => {
   it('should display no given name error when errorMessage prop is non-empty string', () => {
@@ -85,8 +16,6 @@ describe('Error handling', () => {
         <GeneralInformation
           patient={{} as Patient}
           isEditable
-          onSave={jest.fn()}
-          onCancel={jest.fn()}
           errorMessage="patient.errors.patientGivenNameRequired"
         />
       </Router>,

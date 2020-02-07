@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Spinner } from '@hospitalrun/components'
+import { Spinner, Button } from '@hospitalrun/components'
 
 import GeneralInformation from '../GeneralInformation'
 import useTitle from '../../page-header/useTitle'
@@ -46,7 +46,7 @@ const EditPatient = () => {
   }, [id, dispatch])
 
   const onCancel = () => {
-    history.push(`/patients/${id}`)
+    history.push(`/patients/${patient.id}`)
   }
 
   const onSave = () => {
@@ -77,14 +77,24 @@ const EditPatient = () => {
   }
 
   return (
-    <GeneralInformation
-      isEditable
-      patient={patient}
-      onCancel={onCancel}
-      onSave={onSave}
-      onFieldChange={onFieldChange}
-      errorMessage={errorMessage}
-    />
+    <div>
+      <GeneralInformation
+        isEditable
+        patient={patient}
+        onFieldChange={onFieldChange}
+        errorMessage={errorMessage}
+      />
+      <div className="row float-right">
+        <div className="btn-group btn-group-lg">
+          <Button className="mr-2" color="success" onClick={() => onSave()}>
+            {t('actions.save')}
+          </Button>
+          <Button color="danger" onClick={() => onCancel()}>
+            {t('actions.cancel')}
+          </Button>
+        </div>
+      </div>
+    </div>
   )
 }
 

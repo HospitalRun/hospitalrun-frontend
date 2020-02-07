@@ -5,7 +5,7 @@ import { mount } from 'enzyme'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
-import { TabsHeader, Tab } from '@hospitalrun/components'
+import { TabsHeader, Tab, Button } from '@hospitalrun/components'
 import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
@@ -63,6 +63,25 @@ describe('ViewPatient', () => {
 
   beforeEach(() => {
     jest.restoreAllMocks()
+  })
+
+  it('should navigate to /patients/edit/:id when edit is clicked', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+
+    const editButton = wrapper.find(Button).at(2)
+    const onClick = editButton.prop('onClick') as any
+    expect(editButton.text().trim()).toEqual('actions.edit')
+
+    act(() => {
+      onClick()
+    })
+
+    expect(history.location.pathname).toEqual('/patients/edit/123')
   })
 
   it('should render a header with the patients given, family, and suffix', async () => {
