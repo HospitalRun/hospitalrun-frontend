@@ -1,15 +1,12 @@
 {
   "name": "@hospitalrun/frontend",
-  "version": "0.0.0-development",
+  "version": "2.0.0-alpha.0",
   "description": "React frontend for HospitalRun",
   "private": false,
   "license": "MIT",
   "dependencies": {
     "@hospitalrun/components": "^0.32.4",
     "@reduxjs/toolkit": "~1.2.1",
-    "@semantic-release/changelog": "~5.0.0",
-    "@semantic-release/git": "~7.0.16",
-    "@semantic-release/release-notes-generator": "~9.0.0",
     "@types/pouchdb-find": "~6.3.4",
     "bootstrap": "~4.4.1",
     "date-fns": "~2.9.0",
@@ -48,11 +45,6 @@
     "@commitlint/config-conventional": "~8.3.4",
     "@commitlint/core": "~8.3.5",
     "@commitlint/prompt": "~8.3.5",
-    "@semantic-release/changelog": "~5.0.0",
-    "@semantic-release/commit-analyzer": "~6.3.0",
-    "@semantic-release/git": "~7.0.16",
-    "@semantic-release/github": "~5.5.5",
-    "@semantic-release/release-notes-generator": "~9.0.0",
     "@testing-library/react": "~9.4.0",
     "@testing-library/react-hooks": "~3.2.1",
     "@types/jest": "~25.1.0",
@@ -90,8 +82,8 @@
     "memdown": "~5.1.0",
     "prettier": "~1.19.1",
     "redux-mock-store": "~1.5.4",
-    "semantic-release": "~15.14.0",
     "source-map-explorer": "^2.2.2",
+    "standard-version": "~7.1.0",
     "ts-jest": "~24.3.0"
   },
   "scripts": {
@@ -123,8 +115,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "pre-commit": "npm run lint-staged",
+      "commit-msg": "npm run commitlint -- -E HUSKY_GIT_PARAMS"
     }
   },
   "config": {
