@@ -21,6 +21,7 @@ const RelatedPersonTab = (props: Props) => {
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
   const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
+  const [dataFetched, setDataFetched] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchRelatedPersons = async () => {
@@ -35,10 +36,12 @@ const RelatedPersonTab = (props: Props) => {
 
         setRelatedPersons(fetchedRelatedPersons)
       }
+      setDataFetched(true)
     }
-
-    fetchRelatedPersons()
-  }, [patient.relatedPersons])
+    if(patient.id) {
+      fetchRelatedPersons()
+    }
+  }, [patient.relatedPersons, patient.id])
 
   const onNewRelatedPersonClick = () => {
     setShowRelatedPersonModal(true)
@@ -87,14 +90,18 @@ const RelatedPersonTab = (props: Props) => {
       <div className="row">
         <div className="col-md-12">
           <Panel title={t('patient.relatedPersons.label')} color="primary" collapsible>
-            {relatedPersons ? (
-              <List>
-                {relatedPersons.map((r) => (
-                  <ListItem key={r.id}>{r.fullName}</ListItem>
-                ))}
-              </List>
-            ) : (
-              <h1>Loading...</h1>
+            {dataFetched ? (
+              relatedPersons ? (
+                <List>
+                  {relatedPersons.map((r) => (
+                    <ListItem key={r.id}>{r.fullName}</ListItem>
+                  ))}
+                </List>
+                  ) : (
+                <h1>No related persons have been added yet.</h1>
+                  )
+              ) : (
+                <h1>Loading...</h1>
             )}
           </Panel>
         </div>
