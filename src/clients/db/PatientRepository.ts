@@ -24,7 +24,7 @@ export class PatientRepository extends Repository<Patient> {
         $or: [
           {
             fullName: {
-              $regex: `^(.)*${text}(.)*$`,
+              $regex: RegExp(text, 'i'),
             },
           },
           {

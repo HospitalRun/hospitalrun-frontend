@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 const Navbar = () => {
   const { t } = useTranslation()
   const history = useHistory()
-
   return (
     <HospitalRunNavbar
       bg="dark"
@@ -84,5 +83,4 @@ const Navbar = () => {
     />
   )
 }
-
 export default Navbar

@@ -1,5 +1,7 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
+import { Router } from 'react-router'
+import { createMemoryHistory } from 'history'
 import { mount, ReactWrapper } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import { Button, List, ListItem } from '@hospitalrun/components'
@@ -9,11 +11,10 @@ import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
 import { mocked } from 'ts-jest/utils'
-import { createMemoryHistory } from 'history'
+
 import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = createMockStore([thunk])
@@ -37,13 +38,15 @@ describe('Related Persons Tab', () => {
       user = {
         permissions: [Permissions.WritePatients, Permissions.ReadPatients],
       }
-      wrapper = mount(
-        <Provider store={mockStore({ patient, user })}>
+      act(() => {
+        wrapper = mount(
           <Router history={history}>
-            <RelatedPersonTab patient={patient} />
-          </Router>
-        </Provider>,
-      )
+            <Provider store={mockStore({ patient, user })}>
+              <RelatedPersonTab patient={patient} />
+            </Provider>
+          </Router>,
+        )
+      })
     })
 
     it('should render a New Related Person button', () => {
@@ -55,14 +58,15 @@ describe('Related Persons Tab', () => {
 
     it('should not render a New Related Person button if the user does not have write privileges for a patient', () => {
       user = { permissions: [Permissions.ReadPatients] }
-      wrapper = mount(
-        <Provider store={mockStore({ patient, user })}>
+      act(() => {
+        wrapper = mount(
           <Router history={history}>
-            <RelatedPersonTab patient={patient} />
-          </Router>
-        </Provider>,
-      )
-
+            <Provider store={mockStore({ patient, user })}>
+              <RelatedPersonTab patient={patient} />
+            </Provider>
+          </Router>,
+        )
+      })
       const newRelatedPersonButton = wrapper.find(Button)
       expect(newRelatedPersonButton).toHaveLength(0)
     })
@@ -95,22 +99,27 @@ describe('Related Persons Tab', () => {
         ...patient,
         relatedPersons: [expectedRelatedPerson],
       }
-
+      act(() => {
+        wrapper = mount(
+          <Router history={history}>
+            <Provider store={mockStore({ patient, user })}>
+              <RelatedPersonTab patient={patient} />
+            </Provider>
+          </Router>,
+        )
+      })
       act(() => {
         const newRelatedPersonButton = wrapper.find(Button)
         const onClick = newRelatedPersonButton.prop('onClick') as any
         onClick()
       })
-
       wrapper.update()
 
       act(() => {
         const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
-
         const onSave = newRelatedPersonModal.prop('onSave') as any
         onSave(expectedRelatedPerson)
       })
-
       wrapper.update()
 
       expect(patientSlice.updatePatient).toHaveBeenCalledTimes(1)
@@ -152,28 +161,39 @@ describe('Related Persons Tab', () => {
 
     beforeEach(async () => {
       jest.spyOn(PatientRepository, 'find')
-      mocked(PatientRepository.find).mockResolvedValue({ fullName: 'test test' } as Patient)
+      mocked(PatientRepository.find).mockResolvedValue({
+        fullName: 'test test',
+        id: '123001',
+      } as Patient)
 
       await act(async () => {
         wrapper = await mount(
-          <Provider store={mockStore({ patient, user })}>
-            <Router history={history}>
+          <Router history={history}>
+            <Provider store={mockStore({ patient, user })}>
               <RelatedPersonTab patient={patient} />
-            </Router>
-          </Provider>,
+            </Provider>
+          </Router>,
         )
       })
-
       wrapper.update()
     })
 
-    it('should render a list of of related persons with their full name being displayed', () => {
+    it('should render a list of related persons with their full name being displayed', () => {
       const list = wrapper.find(List)
       const listItems = wrapper.find(ListItem)
-
       expect(list).toHaveLength(1)
       expect(listItems).toHaveLength(1)
       expect(listItems.at(0).text()).toEqual('test test')
+    })
+    it('should navigate to related person patient profile on related person click', () => {
+      const list = wrapper.find(List)
+      const listItems = wrapper.find(ListItem)
+      act(() => {
+        ;(listItems.at(0).prop('onClick') as any)()
+      })
+      expect(list).toHaveLength(1)
+      expect(listItems).toHaveLength(1)
+      expect(history.location.pathname).toEqual('/patients/123001')
     })
   })
 })

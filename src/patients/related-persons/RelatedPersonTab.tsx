@@ -3,13 +3,13 @@ import { Button, Panel, List, ListItem } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router'
 import Patient from 'model/Patient'
 import { updatePatient } from 'patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
 import PatientRepository from 'clients/db/PatientRepository'
-import { useHistory } from 'react-router'
 
 interface Props {
   patient: Patient
@@ -18,6 +18,10 @@ interface Props {
 const RelatedPersonTab = (props: Props) => {
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const navigateTo = (location: string) => {
+    history.push(location)
+  }
   const { patient } = props
   const { t } = useTranslation()
   const { permissions } = useSelector((state: RootState) => state.user)
@@ -46,6 +50,9 @@ const RelatedPersonTab = (props: Props) => {
     setShowRelatedPersonModal(true)
   }
 
+  const onRelatedPersonClick = (id: string) => {
+    navigateTo(`/patients/${id}`)
+  }
   const closeNewRelatedPersonModal = () => {
     setShowRelatedPersonModal(false)
   }
@@ -92,7 +99,9 @@ const RelatedPersonTab = (props: Props) => {
             {relatedPersons ? (
               <List>
                 {relatedPersons.map((r) => (
-                  <ListItem key={r.id}>{r.fullName}</ListItem>
+                  <ListItem action key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
+                    {r.fullName}
+                  </ListItem>
                 ))}
               </List>
             ) : (

@@ -246,8 +246,11 @@ const GeneralInformation = (props: Props) => {
               name="address"
               value={patient.address}
               isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                onFieldChange && onFieldChange('address', event.currentTarget.value)}
+              onChange={
+                (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  onFieldChange && onFieldChange('address', event.currentTarget.value)
+                // eslint-disable-next-line react/jsx-curly-newline
+              }
             />
           </div>
         </div>
