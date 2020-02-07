@@ -103,7 +103,8 @@
     "prepublishOnly": "npm run build",
     "test": "react-scripts test --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "coveralls": "npm run test:ci -- --coverage --watchAll=false && cat ./coverage/lcov.info | coveralls",
     "semantic-release": "semantic-release"
   },
@@ -121,6 +122,7 @@
   },
   "husky": {
     "hooks": {
+      "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
@@ -131,7 +133,7 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "npm run lint",
+      "npm run lint:fix",
       "npm run test:ci",
       "git add ."
     ]
