@@ -10,6 +10,7 @@ module.exports = {
     'prettier',
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
+    'eslint-config-prettier'
   ],
   globals: {
     Atomics: 'readonly',
@@ -31,6 +32,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'jest'],
   rules: {
+    "prettier/prettier": "error",
     '@typescript-eslint/member-delimiter-style': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
