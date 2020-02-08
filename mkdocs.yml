@@ -17,7 +17,7 @@ nav:
       - License: https://github.com/HospitalRun/hospitalrun-frontend/blob/master/LICENSE
 
 theme:
-  name: flatly
+  name: readthedocs
   highlightjs: true
 
 plugins:
