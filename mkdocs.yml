@@ -6,7 +6,7 @@ site_author: HospitalRun Core Team
 repo_url: https://github.com/hospitalrun/hospitalrun/
 
 theme:
-  name: flatly
+  name: readthedocs
   highlightjs: true
 
 plugins:
