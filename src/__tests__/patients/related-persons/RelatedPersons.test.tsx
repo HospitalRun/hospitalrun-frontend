@@ -4,7 +4,7 @@ import { Router } from 'react-router'
 import { createMemoryHistory } from 'history'
 import { mount, ReactWrapper } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
-import { Button, List, ListItem } from '@hospitalrun/components'
+import { Button, List, ListItem, Alert } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import { act } from '@testing-library/react'
 import PatientRepository from 'clients/db/PatientRepository'
@@ -194,6 +194,41 @@ describe('Related Persons Tab', () => {
       expect(list).toHaveLength(1)
       expect(listItems).toHaveLength(1)
       expect(history.location.pathname).toEqual('/patients/123001')
+    })
+  })
+
+  describe('EmptyList', () => {
+    const patient = {
+      id: '123',
+      rev: '123',
+    } as Patient
+
+    const user = {
+      permissions: [Permissions.WritePatients, Permissions.ReadPatients],
+    }
+
+    beforeEach(async () => {
+      jest.spyOn(PatientRepository, 'find')
+      mocked(PatientRepository.find).mockResolvedValue({
+        fullName: 'test test',
+        id: '123001',
+      } as Patient)
+
+      await act(async () => {
+        wrapper = await mount(
+          <Router history={history}>
+            <Provider store={mockStore({ patient, user })}>
+              <RelatedPersonTab patient={patient} />
+            </Provider>
+          </Router>,
+        )
+      })
+      wrapper.update()
+    })
+
+    it('should display a warning if patient has no related persons', () => {
+      const warning = wrapper.find(Alert)
+      expect(warning).toBeDefined()
     })
   })
 })
