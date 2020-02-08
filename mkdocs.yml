@@ -1,0 +1,13 @@
+site_name: HospitalRun
+site_url: https://hospotalrun.io
+site_description: HospitalRun project documentation
+site_author: HospitalRun Core Team
+
+repo_url: https://github.com/hospitalrun/hospitalrun/
+
+theme:
+  name: flatly
+  highlightjs: true
+
+plugins:
+  - search
