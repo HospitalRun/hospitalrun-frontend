@@ -71,7 +71,7 @@ const RelatedPersonTab = (props: Props) => {
       relatedPersons: newRelatedPersons,
     }
 
-    dispatch(updatePatient(patientToUpdate))
+    dispatch(updatePatient(patientToUpdate, history))
     closeNewRelatedPersonModal()
   }
 

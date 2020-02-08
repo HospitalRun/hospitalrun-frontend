@@ -11,6 +11,7 @@ import Dashboard from 'dashboard/Dashboard'
 import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import NewPatient from '../patients/new/NewPatient'
+import EditPatient from '../patients/edit/EditPatient'
 import ViewPatient from '../patients/view/ViewPatient'
 import PatientRepository from '../clients/db/PatientRepository'
 import Patient from '../model/Patient'
@@ -48,6 +49,73 @@ describe('HospitalRun', () => {
             })}
           >
             <MemoryRouter initialEntries={['/patients/new']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
+    })
+
+    describe('/patients/edit/:id', () => {
+      it('should render the edit patient screen when /patients/edit/:id is accessed', () => {
+        jest.spyOn(PatientRepository, 'find')
+        const mockedPatientRepository = mocked(PatientRepository, true)
+        const patient = {
+          id: '123',
+          prefix: 'test',
+          givenName: 'test',
+          familyName: 'test',
+          suffix: 'test',
+          friendlyId: 'P00001',
+        } as Patient
+
+        mockedPatientRepository.find.mockResolvedValue(patient)
+
+        const wrapper = mount(
+          <Provider
+            store={mockStore({
+              title: 'test',
+              user: { permissions: [Permissions.WritePatients, Permissions.ReadPatients] },
+              patient: { patient: {} as Patient },
+            })}
+          >
+            <MemoryRouter initialEntries={['/patients/edit/123']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(EditPatient)).toHaveLength(1)
+      })
+
+      it('should render the Dashboard when the user does not have read patient privileges', () => {
+        const wrapper = mount(
+          <Provider
+            store={mockStore({
+              title: 'test',
+              user: { permissions: [Permissions.WritePatients] },
+            })}
+          >
+            <MemoryRouter initialEntries={['/patients/edit/123']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
+
+      it('should render the Dashboard when the user does not have read patient privileges', () => {
+        const wrapper = mount(
+          <Provider
+            store={mockStore({
+              title: 'test',
+              user: { permissions: [Permissions.ReadPatients] },
+            })}
+          >
+            <MemoryRouter initialEntries={['/patients/edit/123']}>
               <HospitalRun />
             </MemoryRouter>
           </Provider>,

@@ -7,7 +7,9 @@
     "viewPatients": "View Patients",
     "viewPatient": "View Patient",
     "newPatient": "New Patient",
-    "successfullyCreated": "Successfully created patient"
+    "editPatient": "Edit Patient",
+    "successfullyCreated": "Successfully created patient",
+    "successfullyUpdated": "Successfully updated patient"
   },
   "patient": {
     "suffix": "Suffix",

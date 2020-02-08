@@ -6,16 +6,18 @@ import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
+import { Button } from '@hospitalrun/components'
+
 import NewPatient from '../../../patients/new/NewPatient'
-import NewPatientForm from '../../../patients/new/NewPatientForm'
+import GeneralInformation from '../../../patients/GeneralInformation'
 import store from '../../../store'
 import Patient from '../../../model/Patient'
-import * as patientSlice from '../../../patients/patients-slice'
+import * as patientSlice from '../../../patients/patient-slice'
 import * as titleUtil from '../../../page-header/useTitle'
 import PatientRepository from '../../../clients/db/PatientRepository'
 
 describe('New Patient', () => {
-  it('should render a new patient form', () => {
+  it('should render a general information form', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
@@ -24,7 +26,7 @@ describe('New Patient', () => {
       </Provider>,
     )
 
-    expect(wrapper.find(NewPatientForm)).toHaveLength(1)
+    expect(wrapper.find(GeneralInformation)).toHaveLength(1)
   })
 
   it('should use "New Patient" as the header', () => {
@@ -40,24 +42,44 @@ describe('New Patient', () => {
     expect(titleUtil.default).toHaveBeenCalledWith('patients.newPatient')
   })
 
+  it('should pass no given name error when form doesnt contain a given name on save button click', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <NewPatient />,
+        </MemoryRouter>
+      </Provider>,
+    )
+
+    const givenName = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
+    expect(givenName.prop('value')).toBe('')
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+    expect(generalInformationForm.prop('errorMessage')).toBe('')
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
+    wrapper.update()
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.patientGivenNameRequired',
+    )
+  })
+
   it('should call create patient when save button is clicked', async () => {
     jest.spyOn(patientSlice, 'createPatient')
     jest.spyOn(PatientRepository, 'save')
     const mockedPatientRepository = mocked(PatientRepository, true)
     const patient = {
-      id: '123',
-      prefix: 'test',
-      givenName: 'test',
-      familyName: 'test',
-      suffix: 'test',
+      givenName: 'first',
+      fullName: 'first',
     } as Patient
     mockedPatientRepository.save.mockResolvedValue(patient)
-
-    const expectedPatient = {
-      sex: 'male',
-      givenName: 'givenName',
-      familyName: 'familyName',
-    } as Patient
 
     const wrapper = mount(
       <Provider store={store}>
@@ -67,11 +89,23 @@ describe('New Patient', () => {
       </Provider>,
     )
 
-    const newPatientForm = wrapper.find(NewPatientForm)
+    const generalInformationForm = wrapper.find(GeneralInformation)
 
-    await newPatientForm.prop('onSave')(expectedPatient)
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('givenName', 'first')
+    })
 
-    expect(patientSlice.createPatient).toHaveBeenCalledWith(expectedPatient, expect.anything())
+    wrapper.update()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
+    expect(patientSlice.createPatient).toHaveBeenCalledWith(patient, expect.anything())
   })
 
   it('should navigate to /patients when cancel is clicked', () => {
@@ -84,11 +118,13 @@ describe('New Patient', () => {
       </Provider>,
     )
 
-    act(() => {
-      wrapper.find(NewPatientForm).prop('onCancel')()
-    })
+    const cancelButton = wrapper.find(Button).at(1)
+    const onClick = cancelButton.prop('onClick') as any
+    expect(cancelButton.text().trim()).toEqual('actions.cancel')
 
-    wrapper.update()
+    act(() => {
+      onClick()
+    })
 
     expect(history.location.pathname).toEqual('/patients')
   })

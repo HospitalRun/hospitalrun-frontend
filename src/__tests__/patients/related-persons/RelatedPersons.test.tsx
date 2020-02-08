@@ -14,6 +14,7 @@ import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
 import { mocked } from 'ts-jest/utils'
+
 import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = createMockStore([thunk])
@@ -21,13 +22,14 @@ const mockStore = createMockStore([thunk])
 describe('Related Persons Tab', () => {
   let wrapper: ReactWrapper
   let history = createMemoryHistory()
-  history = createMemoryHistory()
 
   describe('Add New Related Person', () => {
     let patient: any
     let user: any
 
     beforeEach(() => {
+      history = createMemoryHistory()
+
       patient = {
         id: '123',
         rev: '123',
@@ -121,7 +123,7 @@ describe('Related Persons Tab', () => {
       wrapper.update()
 
       expect(patientSlice.updatePatient).toHaveBeenCalledTimes(1)
-      expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient)
+      expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient, history)
     })
 
     it('should close the modal when the save button is clicked', () => {

@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, withRouter, Route, useHistory, useLocation } from 'react-router-dom'
-import { Panel, Spinner, TabsHeader, Tab } from '@hospitalrun/components'
+import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
+
 import useTitle from '../../page-header/useTitle'
 import { fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
 import { getPatientFullName } from '../util/patient-name-util'
 import Patient from '../../model/Patient'
-import GeneralInformation from './GeneralInformation'
+import GeneralInformation from '../GeneralInformation'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
 
 const getFriendlyId = (p: Patient): string => {
@@ -20,11 +21,13 @@ const getFriendlyId = (p: Patient): string => {
 }
 
 const ViewPatient = () => {
-  const history = useHistory()
-  const location = useLocation()
   const { t } = useTranslation()
+  const history = useHistory()
   const dispatch = useDispatch()
-  const { patient } = useSelector((state: RootState) => state.patient)
+  const location = useLocation()
+
+  const { patient, isLoading } = useSelector((state: RootState) => state.patient)
+
   useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
 
   const { id } = useParams()
@@ -34,7 +37,7 @@ const ViewPatient = () => {
     }
   }, [dispatch, id])
 
-  if (!patient) {
+  if (isLoading || !patient) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
@@ -54,6 +57,22 @@ const ViewPatient = () => {
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
+          <div className="row">
+            <div className="col-md-12 d-flex justify-content-end">
+              <Button
+                color="success"
+                outlined
+                onClick={() => {
+                  console.log('pushying to hsitory patient was:')
+                  console.log(patient)
+                  history.push(`/patients/edit/${patient.id}`)
+                }}
+              >
+                {t('actions.edit')}
+              </Button>
+            </div>
+          </div>
+          <br />
           <GeneralInformation patient={patient} />
         </Route>
         <Route exact path="/patients/:id/relatedpersons">
