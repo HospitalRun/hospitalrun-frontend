@@ -30,12 +30,7 @@ Contributions are always welcome. Before contributing please read our [contribut
 In order to optimize the workflow and to prevent multiple contributors working on the same issue without interactions, a contributor must ask to be assigned to an issue by one of the core team members: it's enough to ask it inside the specific issue.
 
 ## How to commit
-
-This repo uses [Conventional Commits](https://www.conventionalcommits.org/). [Commitizen](https://github.com/commitizen/cz-cli) is recommended for development. Once you have changes staged
-you can run `git cz` from the root directory in order to commit to the proper standards.
-
-Alternatively, if you are using NPM 5.2+ you can use [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) instead of installing globally:
-`npx git-cz`
+This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run npm run commit or yarn commit from the root directory in order to commit following our standards.
 
 <hr />
 
