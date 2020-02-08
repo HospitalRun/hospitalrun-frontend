@@ -5,6 +5,7 @@ import { Toaster } from '@hospitalrun/components'
 import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
+import Breadcrumb from 'components/Breadcrumb'
 import Sidebar from './components/Sidebar'
 import Permissions from './model/Permissions'
 import Dashboard from './dashboard/Dashboard'
@@ -21,6 +22,7 @@ const HospitalRun = () => {
   return (
     <div>
       <Navbar />
+      <Breadcrumb />
       <div className="container-fluid">
         <Sidebar />
         <div className="row">

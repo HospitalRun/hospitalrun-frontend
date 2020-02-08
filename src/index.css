@@ -24,7 +24,7 @@ code {
   bottom: 0;
   left: 0;
   z-index: 0; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
+  padding: 75px 0 0; /* Height of navbar */
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
@@ -87,4 +87,16 @@ code {
 .form-control-dark:focus {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+.breadcrumb {
+	z-index: 1;
+	position: relative;
+	padding: .2rem 1rem;
+	background-color: white;
+	border-bottom: .1rem solid lightgray;
+}
+
+.breadcrumb-item > span, .breadcrumb-item > a {
+	text-transform: capitalize;
 }
