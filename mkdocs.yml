@@ -7,7 +7,7 @@ repo_url: https://github.com/hospitalrun/hospitalrun-frontend/
 
 nav:
   - Home: https://docs.hospitalrun.io
-  - Users Guide:
+  - Users Guide: https://hospitalrun.io
   - Devs Guide:
       - Frontend: https://docs.hospitalrun.io/projects/hospitalrun-frontend/en/latest/
       - Server: https://docs.hospitalrun.io/projects/hospitalrun-server/en/latest/
