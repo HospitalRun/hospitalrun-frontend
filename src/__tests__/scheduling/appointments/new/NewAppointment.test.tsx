@@ -51,7 +51,7 @@ describe('New Appointment', () => {
 
   describe('layout', () => {
     it('should render a Appointment Detail Component', () => {
-      expect(AppointmentDetailForm).toHaveLength(1)
+      expect(wrapper.find(AppointmentDetailForm)).toHaveLength(1)
     })
   })
 

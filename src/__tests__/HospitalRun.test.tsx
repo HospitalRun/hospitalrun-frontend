@@ -59,7 +59,20 @@ describe('HospitalRun', () => {
     })
 
     describe('/patients/edit/:id', () => {
-      it('should render the edit patient screen when /patients/edit is accessed', () => {
+      it('should render the edit patient screen when /patients/edit/:id is accessed', () => {
+        jest.spyOn(PatientRepository, 'find')
+        const mockedPatientRepository = mocked(PatientRepository, true)
+        const patient = {
+          id: '123',
+          prefix: 'test',
+          givenName: 'test',
+          familyName: 'test',
+          suffix: 'test',
+          friendlyId: 'P00001',
+        } as Patient
+
+        mockedPatientRepository.find.mockResolvedValue(patient)
+
         const wrapper = mount(
           <Provider
             store={mockStore({

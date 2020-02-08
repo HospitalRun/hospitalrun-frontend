@@ -12,7 +12,6 @@ import { Button } from '@hospitalrun/components'
 import EditPatient from '../../../patients/edit/EditPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import Patient from '../../../model/Patient'
-import * as patientSlice from '../../../patients/patient-slice'
 import * as titleUtil from '../../../page-header/useTitle'
 import PatientRepository from '../../../clients/db/PatientRepository'
 
@@ -39,9 +38,11 @@ describe('Edit Patient', () => {
 
   let history = createMemoryHistory()
   const setup = () => {
+    jest.spyOn(PatientRepository, 'saveOrUpdate')
     jest.spyOn(PatientRepository, 'find')
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
+    mockedPatientRepository.saveOrUpdate.mockResolvedValue(patient)
 
     history = createMemoryHistory()
     history.push('/patients/edit/123')
@@ -86,12 +87,7 @@ describe('Edit Patient', () => {
     )
   })
 
-  it('should call update patient when save button is clicked', async () => {
-    jest.spyOn(patientSlice, 'updatePatient')
-    jest.spyOn(PatientRepository, 'saveOrUpdate')
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.saveOrUpdate.mockResolvedValue(patient)
-
+  it('should call saveOrUpdate when save button is clicked', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = await setup()
@@ -107,7 +103,7 @@ describe('Edit Patient', () => {
       onClick()
     })
 
-    expect(patientSlice.updatePatient).toHaveBeenCalledWith(patient, expect.anything())
+    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
   })
 
   it('should navigate to /patients/:id when cancel is clicked', async () => {
