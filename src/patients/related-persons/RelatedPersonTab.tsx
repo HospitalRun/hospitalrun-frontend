@@ -3,6 +3,7 @@ import { Button, Panel, List, ListItem, Alert } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router'
 import Patient from 'model/Patient'
 import { updatePatient } from 'patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,6 +17,11 @@ interface Props {
 
 const RelatedPersonTab = (props: Props) => {
   const dispatch = useDispatch()
+  const history = useHistory()
+
+  const navigateTo = (location: string) => {
+    history.push(location)
+  }
   const { patient } = props
   const { t } = useTranslation()
   const { permissions } = useSelector((state: RootState) => state.user)
@@ -44,6 +50,9 @@ const RelatedPersonTab = (props: Props) => {
     setShowRelatedPersonModal(true)
   }
 
+  const onRelatedPersonClick = (id: string) => {
+    navigateTo(`/patients/${id}`)
+  }
   const closeNewRelatedPersonModal = () => {
     setShowRelatedPersonModal(false)
   }
@@ -62,7 +71,7 @@ const RelatedPersonTab = (props: Props) => {
       relatedPersons: newRelatedPersons,
     }
 
-    dispatch(updatePatient(patientToUpdate))
+    dispatch(updatePatient(patientToUpdate, history))
     closeNewRelatedPersonModal()
   }
 
@@ -88,17 +97,24 @@ const RelatedPersonTab = (props: Props) => {
         <div className="col-md-12">
           <Panel title={t('patient.relatedPersons.label')} color="primary" collapsible>
             {relatedPersons ? (
-              (relatedPersons.length > 0) ? (
+              relatedPersons.length > 0 ? (
                 <List>
                   {relatedPersons.map((r) => (
-                    <ListItem key={r.id}>{r.fullName}</ListItem>
+                    <ListItem action key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
+                      {r.fullName}
+                    </ListItem>
                   ))}
                 </List>
-                ) : (
-                  <Alert color="warning" title="No Related Persons" message="Add a related person using the button above." />
-              )) : (
-                <h1>Loading...</h1>
-              )}
+              ) : (
+                <Alert
+                  color="warning"
+                  title="No Related Persons"
+                  message="Add a related person using the button above."
+                />
+              )
+            ) : (
+              <h1>Loading...</h1>
+            )}
           </Panel>
         </div>
       </div>

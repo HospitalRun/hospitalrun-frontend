@@ -1,27 +1,52 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { Button } from '@hospitalrun/components'
+import { useDispatch, useSelector } from 'react-redux'
+import { Spinner, Button } from '@hospitalrun/components'
 
 import GeneralInformation from '../GeneralInformation'
 import useTitle from '../../page-header/useTitle'
 import Patient from '../../model/Patient'
-import { createPatient } from '../patient-slice'
-import { getPatientName } from '../util/patient-name-util'
+import { updatePatient, fetchPatient } from '../patient-slice'
+import { RootState } from '../../store'
+import { getPatientFullName, getPatientName } from '../util/patient-name-util'
 
-const NewPatient = () => {
+const getFriendlyId = (p: Patient): string => {
+  if (p) {
+    return p.friendlyId
+  }
+
+  return ''
+}
+
+const EditPatient = () => {
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
 
   const [patient, setPatient] = useState({} as Patient)
   const [errorMessage, setErrorMessage] = useState('')
+  const { patient: reduxPatient, isLoading } = useSelector((state: RootState) => state.patient)
 
-  useTitle(t('patients.newPatient'))
+  useTitle(
+    `${t('patients.editPatient')}: ${getPatientFullName(reduxPatient)} (${getFriendlyId(
+      reduxPatient,
+    )})`,
+  )
+
+  useEffect(() => {
+    setPatient(reduxPatient)
+  }, [reduxPatient])
+
+  const { id } = useParams()
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchPatient(id))
+    }
+  }, [id, dispatch])
 
   const onCancel = () => {
-    history.push('/patients')
+    history.push(`/patients/${patient.id}`)
   }
 
   const onSave = () => {
@@ -29,7 +54,7 @@ const NewPatient = () => {
       setErrorMessage(t('patient.errors.patientGivenNameRequired'))
     } else {
       dispatch(
-        createPatient(
+        updatePatient(
           {
             ...patient,
             fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
@@ -45,6 +70,10 @@ const NewPatient = () => {
       ...patient,
       [key]: value,
     })
+  }
+
+  if (isLoading) {
+    return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
   return (
@@ -69,4 +98,4 @@ const NewPatient = () => {
   )
 }
 
-export default NewPatient
+export default EditPatient

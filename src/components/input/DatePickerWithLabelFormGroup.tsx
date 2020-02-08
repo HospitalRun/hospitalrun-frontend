@@ -5,7 +5,7 @@ interface Props {
   name: string
   label: string
   value: Date | undefined
-  isEditable: boolean
+  isEditable?: boolean
   onChange?: (date: Date) => void
 }
 
