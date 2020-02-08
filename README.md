@@ -2,8 +2,9 @@
 
 <div align="center">
 
-![Status](https://img.shields.io/badge/Status-developing-brightgree) [![Release](https://img.shields.io/github/release/HospitalRun/hospitalrun-frontend.svg)](https://github.com/HospitalRun/hospitalrun-frontend/releases) [![Version](https://img.shields.io/github/package-json/v/hospitalrun/hospitalrun-frontend)](https://github.com/HospitalRun/hospitalrun-frontend/releases) 
- [![GitHub CI](https://github.com/HospitalRun/frontend/workflows/GitHub%20CI/badge.svg)](https://github.com/HospitalRun/frontend/actions) [![Build Status](https://dev.azure.com/HospitalRun/hospitalrun-frontend/_apis/build/status/HospitalRun.hospitalrun-frontend?branchName=master)](https://dev.azure.com/HospitalRun/hospitalrun-frontend/_build/latest?definitionId=3&branchName=master) [![Build Status](https://travis-ci.com/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.com/HospitalRun/hospitalrun-frontend) [![Coverage Status](https://coveralls.io/repos/github/HospitalRun/hospitalrun-frontend/badge.svg?branch=master)](https://coveralls.io/github/HospitalRun/hospitalrun-frontend?branch=master) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHospitalRun%2Fhospitalrun-frontend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHospitalRun%2Fhospitalrun-frontend?ref=badge_large) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+![Status](https://img.shields.io/badge/Status-developing-brightgree) [![Release](https://img.shields.io/github/release/HospitalRun/hospitalrun-frontend.svg)](https://github.com/HospitalRun/hospitalrun-frontend/releases) [![Version](https://img.shields.io/github/package-json/v/hospitalrun/hospitalrun-frontend)](https://github.com/HospitalRun/hospitalrun-frontend/releases)
+[![GitHub CI](https://github.com/HospitalRun/frontend/workflows/GitHub%20CI/badge.svg)](https://github.com/HospitalRun/frontend/actions) [![Build Status](https://dev.azure.com/HospitalRun/hospitalrun-frontend/_apis/build/status/HospitalRun.hospitalrun-frontend?branchName=master)](https://dev.azure.com/HospitalRun/hospitalrun-frontend/_build/latest?definitionId=3&branchName=master) [![Build Status](https://travis-ci.com/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.com/HospitalRun/hospitalrun-frontend) [![Coverage Status](https://coveralls.io/repos/github/HospitalRun/hospitalrun-frontend/badge.svg?branch=master)](https://coveralls.io/github/HospitalRun/hospitalrun-frontend?branch=master) [![Documentation Status](https://readthedocs.org/projects/hospitalrun-frontend/badge/?version=latest)](https://docs.hospitalrun.io/projects/hospitalrun-frontend/en/latest/?badge=latest)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHospitalRun%2Fhospitalrun-frontend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHospitalRun%2Fhospitalrun-frontend?ref=badge_large) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 ![dependabot](https://api.dependabot.com/badges/status?host=github&repo=HospitalRun/hospitalrun-frontend) [![Slack](https://hospitalrun-slack.herokuapp.com/badge.svg)](https://hospitalrun-slack.herokuapp.com) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun) [![Run on Repl.it](https://repl.it/badge/github/HospitalRun/hospitalrun-frontend)](https://repl.it/github/HospitalRun/hospitalrun-frontend)
 
 </div>
@@ -27,9 +28,11 @@ Contributions are always welcome. Before contributing please read our [contribut
 4. Run `yarn run start` to build and watch for code changes
 
 ## Working on an Issue
+
 In order to optimize the workflow and to prevent multiple contributors working on the same issue without interactions, a contributor must ask to be assigned to an issue by one of the core team members: it's enough to ask it inside the specific issue.
 
 ## How to commit
+
 This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run npm run commit or yarn commit from the root directory in order to commit following our standards.
 
 <hr />

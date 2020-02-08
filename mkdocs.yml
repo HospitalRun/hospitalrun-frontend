@@ -1,13 +1,27 @@
 site_name: HospitalRun
-site_url: https://hospotalrun.io
+site_url: https://hospitalrun.io
 site_description: HospitalRun project documentation
 site_author: HospitalRun Core Team
 
-repo_url: https://github.com/hospitalrun/hospitalrun/
+repo_url: https://github.com/hospitalrun/hospitalrun-frontend/
+
+nav:
+  - Home: https://docs.hospitalrun.io
+  - Users Guide:
+  - Devs Guide:
+      - Frontend: https://docs.hospitalrun.io/projects/hospitalrun-frontend/en/latest/
+      - Server: https://docs.hospitalrun.io/projects/hospitalrun-server/en/latest/
+  - About:
+      - Project: https://hospitalrun.io
+      - Contributing: https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md
+      - License: https://github.com/HospitalRun/hospitalrun-frontend/blob/master/LICENSE
 
 theme:
   name: readthedocs
   highlightjs: true
+
+extra_css:
+  - css/style.css
 
 plugins:
   - search
