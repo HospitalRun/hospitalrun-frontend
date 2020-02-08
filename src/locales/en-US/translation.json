@@ -38,9 +38,13 @@
         "relatedPersonRequired": "Related Person is required.",
         "relationshipTypeRequired": "Relationship Type is required."
       },
+      "warning": {
+        "noRelatedPersons": "No Related Persons"
+      },
       "label": "Related Persons",
       "new": "New Related Person",
-      "relationshipType": "Relationship Type"
+      "relationshipType": "Relationship Type",
+      "addRelatedPersonAbove": "Add a related person using the button above."
     },
     "types": {
       "charity": "Charity",
@@ -66,7 +70,8 @@
   },
   "states": {
     "success": "Success!",
-    "error": "Error!"
+    "error": "Error!",
+    "loading": "Loading..."
   },
   "scheduling": {
     "label": "Scheduling",

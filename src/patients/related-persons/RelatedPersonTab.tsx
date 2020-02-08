@@ -108,12 +108,12 @@ const RelatedPersonTab = (props: Props) => {
               ) : (
                 <Alert
                   color="warning"
-                  title="No Related Persons"
-                  message="Add a related person using the button above."
+                  title={t('patient.relatedPersons.warning.noRelatedPersons')}
+                  message={t('patient.relatedPersons.addRelatedPersonAbove')}
                 />
               )
             ) : (
-              <h1>Loading...</h1>
+            <h1>{t('states.loading')}</h1>
             )}
           </Panel>
         </div>
