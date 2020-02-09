@@ -77,7 +77,7 @@ describe('HospitalRun', () => {
             store={mockStore({
               title: 'test',
               user: { permissions: [Permissions.ReadPatients] },
-              patient,
+              patient: { patient },
             })}
           >
             <MemoryRouter initialEntries={['/patients/123']}>
@@ -95,6 +95,7 @@ describe('HospitalRun', () => {
             store={mockStore({
               title: 'test',
               user: { permissions: [] },
+              patient: { patient: {} },
             })}
           >
             <MemoryRouter initialEntries={['/patients/123']}>
@@ -133,6 +134,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [] },
               appointments: { appointments: [] },
+              appointment: { appointment: {} },
             })}
           >
             <MemoryRouter initialEntries={['/appointments']}>

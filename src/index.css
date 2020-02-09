@@ -94,9 +94,4 @@ code {
 	position: relative;
 	padding: .2rem 1rem;
 	background-color: white;
-	border-bottom: .1rem solid lightgray;
-}
-
-.breadcrumb-item > span, .breadcrumb-item > a {
-	text-transform: capitalize;
 }
