@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Panel, List, ListItem, Alert } from '@hospitalrun/components'
+import { Button, Panel, List, ListItem, Alert, Spinner } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
@@ -113,7 +113,7 @@ const RelatedPersonTab = (props: Props) => {
                 />
               )
             ) : (
-            <h1>{t('states.loading')}</h1>
+              <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
             )}
           </Panel>
         </div>
