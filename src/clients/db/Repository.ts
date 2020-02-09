@@ -39,11 +39,11 @@ export default class Repository<T extends AbstractDBModel> {
   }
 
   async findAll(): Promise<T[]> {
-    const allPatients = await this.db.allDocs({
+    const allDocs = await this.db.allDocs({
       include_docs: true,
     })
 
-    return allPatients.rows.map(mapRow)
+    return allDocs.rows.map(mapRow)
   }
 
   async save(entity: T): Promise<T> {

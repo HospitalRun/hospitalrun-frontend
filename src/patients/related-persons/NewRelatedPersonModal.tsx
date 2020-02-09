@@ -63,6 +63,7 @@ const NewRelatedPersonModal = (props: Props) => {
             name="type"
             label={t('patient.relatedPersons.relationshipType')}
             value={relatedPerson.type}
+            isEditable
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onInputElementChange(event, 'type')
             }}
