@@ -29,6 +29,7 @@ describe('HospitalRun', () => {
             store={mockStore({
               title: 'test',
               user: { permissions: [Permissions.WritePatients] },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/patients/new']}>
@@ -46,6 +47,7 @@ describe('HospitalRun', () => {
             store={mockStore({
               title: 'test',
               user: { permissions: [] },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/patients/new']}>
@@ -79,6 +81,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [Permissions.WritePatients, Permissions.ReadPatients] },
               patient: { patient: {} as Patient },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/patients/edit/123']}>
@@ -96,7 +99,7 @@ describe('HospitalRun', () => {
             store={mockStore({
               title: 'test',
               user: { permissions: [Permissions.WritePatients] },
-              patient: { patient: {} },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/patients/edit/123']}>
@@ -114,7 +117,7 @@ describe('HospitalRun', () => {
             store={mockStore({
               title: 'test',
               user: { permissions: [Permissions.ReadPatients] },
-              patient: { patient: {} },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/patients/edit/123']}>
@@ -148,6 +151,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [Permissions.ReadPatients] },
               patient: { patient },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/patients/123']}>
@@ -165,7 +169,7 @@ describe('HospitalRun', () => {
             store={mockStore({
               title: 'test',
               user: { permissions: [] },
-              patient: { patient: {} },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/patients/123']}>
@@ -186,6 +190,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [Permissions.ReadAppointments] },
               appointments: { appointments: [] },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/appointments']}>
@@ -203,8 +208,7 @@ describe('HospitalRun', () => {
             store={mockStore({
               title: 'test',
               user: { permissions: [] },
-              appointments: { appointments: [] },
-              appointment: { appointment: {} },
+              breadcrumbs: { breadcrumbs: [] },
             })}
           >
             <MemoryRouter initialEntries={['/appointments']}>
@@ -225,6 +229,7 @@ describe('HospitalRun', () => {
           store={mockStore({
             title: 'test',
             user: { permissions: [Permissions.WriteAppointments] },
+            breadcrumbs: { breadcrumbs: [] },
           })}
         >
           <MemoryRouter initialEntries={['/appointments/new']}>
@@ -242,6 +247,7 @@ describe('HospitalRun', () => {
           store={mockStore({
             title: 'test',
             user: { permissions: [] },
+            breadcrumbs: { breadcrumbs: [] },
           })}
         >
           <MemoryRouter initialEntries={['/appointments/new']}>
@@ -261,6 +267,7 @@ describe('HospitalRun', () => {
           store={mockStore({
             title: 'test',
             user: { permissions: [Permissions.WritePatients] },
+            breadcrumbs: { breadcrumbs: [] },
           })}
         >
           <MemoryRouter initialEntries={['/']}>

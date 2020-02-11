@@ -5,7 +5,7 @@ import { Toaster } from '@hospitalrun/components'
 import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
-import Breadcrumb from 'components/breadcrumb/Breadcrumb'
+import Breadcrumbs from 'breadcrumbs/Breadcrumbs'
 import Sidebar from './components/Sidebar'
 import Permissions from './model/Permissions'
 import Dashboard from './dashboard/Dashboard'
@@ -23,7 +23,6 @@ const HospitalRun = () => {
   return (
     <div>
       <Navbar />
-      <Breadcrumb />
       <div className="container-fluid">
         <Sidebar />
         <div className="row">
@@ -31,6 +30,7 @@ const HospitalRun = () => {
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
               <h1 className="h2">{title}</h1>
             </div>
+            <Breadcrumbs />
             <div>
               <Switch>
                 <Route exact path="/" component={Dashboard} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +10,7 @@ import Patient from '../../model/Patient'
 import { updatePatient, fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
 import { getPatientFullName, getPatientName } from '../util/patient-name-util'
+import useSetBreadcrumbs from '../../breadcrumbs/useSetBreadcrumbs'
 
 const getFriendlyId = (p: Patient): string => {
   if (p) {
@@ -33,6 +34,16 @@ const EditPatient = () => {
       reduxPatient,
     )})`,
   )
+
+  const breadcrumbs = useMemo(
+    () => [
+      { i18nKey: 'patients.label', location: '/patients' },
+      { text: getPatientFullName(patient), location: `/patients/${patient.id}` },
+      { i18nKey: 'patients.editPatient', location: `/patients/${patient.id}/edit` },
+    ],
+    [patient],
+  )
+  useSetBreadcrumbs(breadcrumbs)
 
   useEffect(() => {
     setPatient(reduxPatient)
