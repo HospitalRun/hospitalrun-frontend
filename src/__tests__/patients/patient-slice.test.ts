@@ -5,8 +5,8 @@ import { createMemoryHistory } from 'history'
 import * as components from '@hospitalrun/components'
 
 import patient, {
-  getPatientStart,
-  getPatientSuccess,
+  fetchPatientStart,
+  fetchPatientSuccess,
   fetchPatient,
   createPatientStart,
   createPatientSuccess,
@@ -30,15 +30,15 @@ describe('patients slice', () => {
       expect(patientStore.patient).toEqual({})
     })
 
-    it('should handle the GET_PATIENT_START action', () => {
+    it('should handle the FETCH_PATIENT_START action', () => {
       const patientStore = patient(undefined, {
-        type: getPatientStart.type,
+        type: fetchPatientStart.type,
       })
 
       expect(patientStore.isLoading).toBeTruthy()
     })
 
-    it('should handle the GET_PATIENT_SUCCESS actions', () => {
+    it('should handle the FETCH_PATIENT_SUCCESS actions', () => {
       const expectedPatient = {
         id: '123',
         rev: '123',
@@ -48,7 +48,7 @@ describe('patients slice', () => {
         familyName: 'test',
       }
       const patientStore = patient(undefined, {
-        type: getPatientSuccess.type,
+        type: fetchPatientSuccess.type,
         payload: {
           ...expectedPatient,
         },
@@ -182,13 +182,13 @@ describe('patients slice', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'Success!',
-        `Successfully created patient ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
+        `patients.successfullyCreated ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
       )
     })
   })
 
   describe('fetchPatient()', () => {
-    it('should dispatch the GET_PATIENT_START action', async () => {
+    it('should dispatch the FETCH_PATIENT_START action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       jest.spyOn(PatientRepository, 'find')
@@ -199,7 +199,7 @@ describe('patients slice', () => {
 
       await fetchPatient(expectedPatientId)(dispatch, getState, null)
 
-      expect(dispatch).toHaveBeenCalledWith({ type: getPatientStart.type })
+      expect(dispatch).toHaveBeenCalledWith({ type: fetchPatientStart.type })
     })
 
     it('should call the PatientRepository find method with the correct patient id', async () => {
@@ -217,7 +217,7 @@ describe('patients slice', () => {
       expect(PatientRepository.find).toHaveBeenCalledWith(expectedPatientId)
     })
 
-    it('should dispatch the GET_PATIENT_SUCCESS action with the correct data', async () => {
+    it('should dispatch the FETCH_PATIENT_SUCCESS action with the correct data', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       jest.spyOn(PatientRepository, 'find')
@@ -229,7 +229,7 @@ describe('patients slice', () => {
       await fetchPatient(expectedPatientId)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({
-        type: getPatientSuccess.type,
+        type: fetchPatientSuccess.type,
         payload: {
           ...expectedPatient,
         },
@@ -307,7 +307,7 @@ describe('patients slice', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'Success!',
-        `Successfully updated patient ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
+        `patients.successfullyUpdated ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
       )
     })
   })

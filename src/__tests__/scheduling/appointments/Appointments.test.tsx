@@ -4,7 +4,7 @@ import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import Appointments from 'scheduling/appointments/Appointments'
-import createMockStore from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Calendar } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
@@ -33,7 +33,7 @@ describe('Appointments', () => {
       id: '123',
       fullName: 'patient full name',
     } as Patient)
-    const mockStore = createMockStore([thunk])
+    const mockStore = configureMockStore([thunk])
     return mount(
       <Provider store={mockStore({ appointments: { appointments: expectedAppointments } })}>
         <MemoryRouter initialEntries={['/appointments']}>
@@ -43,9 +43,11 @@ describe('Appointments', () => {
     )
   }
 
-  it('should use "Appointments" as the header', () => {
+  it('should use "Appointments" as the header', async () => {
     jest.spyOn(titleUtil, 'default')
-    setup()
+    await act(async () => {
+      await setup()
+    })
     expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.label')
   })
 
