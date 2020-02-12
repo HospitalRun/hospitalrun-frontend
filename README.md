@@ -42,7 +42,7 @@ In order to optimize the workflow and to prevent multiple contributors working o
 
 ## How to commit
 
-This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run npm run commit or yarn commit from the root directory in order to commit following our standards.
+This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run `npm run commit` or `yarn commit` from the root directory in order to commit following our standards.
 
 <hr />
 
