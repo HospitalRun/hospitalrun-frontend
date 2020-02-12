@@ -4,6 +4,7 @@ import { Router } from 'react-router'
 import { mount, ReactWrapper } from 'enzyme'
 import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
+import { startOfDay, subYears } from 'date-fns'
 import { Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import Patient from '../../model/Patient'
@@ -42,7 +43,7 @@ describe('General Information, without isEditable', () => {
     email: 'email@email.com',
     address: 'address',
     friendlyId: 'P00001',
-    dateOfBirth: '1957-06-14T05:00:00.000Z',
+    dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
     isApproximateDateOfBirth: false,
   } as Patient
 
@@ -162,10 +163,7 @@ describe('General Information, without isEditable', () => {
     expect(addressInput.prop('isEditable')).toBeFalsy()
   })
 
-  it('should render the age and date of birth as approximate if patient.isApproximateDateOfBirth is true', async () => {
-    jest
-      .spyOn(global.Date, 'now')
-      .mockImplementation(() => new Date('1987-06-14T05:00:00.000Z').valueOf())
+  it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
     patient.isApproximateDateOfBirth = true
     await act(async () => {
       wrapper = await mount(
@@ -178,6 +176,7 @@ describe('General Information, without isEditable', () => {
     wrapper.update()
 
     const ageInput = wrapper.findWhere((w: any) => w.prop('name') === 'approximateAge')
+
     expect(ageInput.prop('value')).toEqual('30')
     expect(ageInput.prop('label')).toEqual('patient.approximateAge')
     expect(ageInput.prop('isEditable')).toBeFalsy()
@@ -199,7 +198,7 @@ describe('General Information, isEditable', () => {
     email: 'email@email.com',
     address: 'address',
     friendlyId: 'P00001',
-    dateOfBirth: '1957-06-14T05:00:00.000Z',
+    dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
     isApproximateDateOfBirth: false,
   } as Patient
 
@@ -449,11 +448,7 @@ describe('General Information, isEditable', () => {
     )
   })
 
-  it('should render the age and date of birth as approximate if patient.isApproximateDateOfBirth is true', async () => {
-    jest
-      .spyOn(global.Date, 'now')
-      .mockImplementation(() => new Date('1987-06-14T05:00:00.000Z').valueOf())
-
+  it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
     patient.isApproximateDateOfBirth = true
     await act(async () => {
       wrapper = await mount(
@@ -465,9 +460,6 @@ describe('General Information, isEditable', () => {
 
     wrapper.update()
 
-    // original patient born in '57, Date.now() mocked to '87, so value should be initially
-    // set to 30 years. when user changes to 20 years, onFieldChange should be called to
-    // set dateOfBirth to '67.
     const approximateAgeInput = wrapper.findWhere((w: any) => w.prop('name') === 'approximateAge')
     const generalInformation = wrapper.find(GeneralInformation)
     expect(approximateAgeInput.prop('value')).toEqual('30')
@@ -480,7 +472,7 @@ describe('General Information, isEditable', () => {
 
     expect(generalInformation.prop('onFieldChange')).toHaveBeenCalledWith(
       'dateOfBirth',
-      '1967-06-14T05:00:00.000Z',
+      startOfDay(subYears(new Date(Date.now()), 20)).toISOString(),
     )
   })
 })
