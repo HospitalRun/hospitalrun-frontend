@@ -33,8 +33,8 @@ __Note: The following instructions are for connecting to HospitalRun Server duri
 
 1. Configure [HospitalRun Server](https://github.com/HospitalRun/hospitalrun-server)
 2. Start the HospitalRun Development Server
-3. Copy the `.env.example` file to `.env.local` or `.env`
-4. Change the `REACT_APP_HOSPITALRUN_SERVER` variable to point to the HospitalRun Development Server.  
+3. Copy the `.env.example` file to `.env`
+4. Change the `REACT_APP_HOSPITALRUN_API` variable to point to the HospitalRun Development Server.  
 
 ## Working on an Issue
 

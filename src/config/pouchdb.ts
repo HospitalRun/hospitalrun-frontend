@@ -16,7 +16,7 @@ function createDb(name: string) {
   }
 
   const db = new PouchDB(name)
-  db.sync(`${process.env.REAC_APP_HOSPITALRUN_SERVER}/_db/${name}`, {
+  db.sync(`${process.env.REACT_APP_HOSPITALRUN_API}/_db/${name}`, {
     live: true,
     retry: true,
   }).on('change', (info) => {
