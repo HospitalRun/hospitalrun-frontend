@@ -79,7 +79,7 @@ describe('ViewPatient', () => {
 
     wrapper.update()
 
-    const editButton = wrapper.find(Button).at(2)
+    const editButton = wrapper.find(Button).at(3)
     const onClick = editButton.prop('onClick') as any
     expect(editButton.text().trim()).toEqual('actions.edit')
 
@@ -120,9 +120,10 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(2)
+    expect(tabs).toHaveLength(3)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
+    expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {

@@ -11,6 +11,7 @@ import { getPatientFullName } from '../util/patient-name-util'
 import Patient from '../../model/Patient'
 import GeneralInformation from '../GeneralInformation'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
+import AppointmentsList from '../appointments/AppointmentsList'
 
 const getFriendlyId = (p: Patient): string => {
   if (p) {
@@ -54,6 +55,11 @@ const ViewPatient = () => {
           label={t('patient.relatedPersons.label')}
           onClick={() => history.push(`/patients/${patient.id}/relatedpersons`)}
         />
+        <Tab
+          active={location.pathname === `/patients/${patient.id}/appointments`}
+          label={t('scheduling.appointments.label')}
+          onClick={() => history.push(`/patients/${patient.id}/appointments`)}
+        />
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
@@ -75,6 +81,9 @@ const ViewPatient = () => {
         </Route>
         <Route exact path="/patients/:id/relatedpersons">
           <RelatedPerson patient={patient} />
+        </Route>
+        <Route exact path="/patients/:id/appointments">
+          <AppointmentsList patientId={patient.id} />
         </Route>
       </Panel>
     </div>
