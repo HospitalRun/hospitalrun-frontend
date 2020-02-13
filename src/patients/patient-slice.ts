@@ -67,9 +67,7 @@ export const createPatient = (patient: Patient, history: any): AppThunk => async
   Toast(
     'success',
     il8n.t('Success!'),
-    `${il8n.t('patients.successfullyCreated')} ${patient.givenName} ${
-      patient.familyName ? patient.familyName : ''
-    } ${patient.suffix ? patient.suffix : ''}`.trimEnd(),
+    `${il8n.t('patients.successfullyCreated')} ${patient.fullName}`,
   )
 }
 
@@ -81,9 +79,7 @@ export const updatePatient = (patient: Patient, history: any): AppThunk => async
   Toast(
     'success',
     il8n.t('Success!'),
-    `${il8n.t('patients.successfullyUpdated')} ${patient.givenName} ${
-      patient.familyName ? patient.familyName : ''
-    } ${patient.suffix ? patient.suffix : ''}`.trimEnd(),
+    `${il8n.t('patients.successfullyUpdated')} ${patient.fullName}`,
   )
 }
 
