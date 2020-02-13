@@ -2,8 +2,8 @@ import '../../__mocks__/matchMediaMock'
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
 import patients, {
-  getPatientsStart,
-  getAllPatientsSuccess,
+  fetchPatientsStart,
+  fetchPatientsSuccess,
   searchPatients,
 } from '../../patients/patients-slice'
 import Patient from '../../model/Patient'
@@ -21,10 +21,10 @@ describe('patients slice', () => {
       expect(patientsStore.patients).toHaveLength(0)
     })
 
-    it('should handle the GET_ALL_PATIENTS_SUCCESS action', () => {
+    it('should handle the FETCH_PATIENTS_SUCCESS action', () => {
       const expectedPatients = [{ id: '1234' }]
       const patientsStore = patients(undefined, {
-        type: getAllPatientsSuccess.type,
+        type: fetchPatientsSuccess.type,
         payload: [{ id: '1234' }],
       })
 
@@ -34,13 +34,13 @@ describe('patients slice', () => {
   })
 
   describe('searchPatients', () => {
-    it('should dispatch the GET_PATIENTS_START action', async () => {
+    it('should dispatch the FETCH_PATIENTS_START action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
       await searchPatients('search string')(dispatch, getState, null)
 
-      expect(dispatch).toHaveBeenCalledWith({ type: getPatientsStart.type })
+      expect(dispatch).toHaveBeenCalledWith({ type: fetchPatientsStart.type })
     })
 
     it('should call the PatientRepository search method with the correct search criteria', async () => {
@@ -54,7 +54,7 @@ describe('patients slice', () => {
       expect(PatientRepository.search).toHaveBeenCalledWith(expectedSearchString)
     })
 
-    it('should call the PatientRepository findALl method if there is no string text', async () => {
+    it('should call the PatientRepository findAll method if there is no string text', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       jest.spyOn(PatientRepository, 'findAll')
@@ -64,7 +64,7 @@ describe('patients slice', () => {
       expect(PatientRepository.findAll).toHaveBeenCalledTimes(1)
     })
 
-    it('should dispatch the GET_ALL_PATIENTS_SUCCESS action', async () => {
+    it('should dispatch the FETCH_PATIENTS_SUCCESS action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
@@ -80,7 +80,7 @@ describe('patients slice', () => {
       await searchPatients('search string')(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenLastCalledWith({
-        type: getAllPatientsSuccess.type,
+        type: fetchPatientsSuccess.type,
         payload: expectedPatients,
       })
     })

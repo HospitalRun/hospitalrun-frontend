@@ -7,6 +7,7 @@ import { mocked } from 'ts-jest/utils'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Toaster } from '@hospitalrun/components'
+import { act } from 'react-dom/test-utils'
 import Dashboard from 'dashboard/Dashboard'
 import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
@@ -107,7 +108,7 @@ describe('HospitalRun', () => {
         expect(wrapper.find(Dashboard)).toHaveLength(1)
       })
 
-      it('should render the Dashboard when the user does not have read patient privileges', () => {
+      it('should render the Dashboard when the user does not have write patient privileges', () => {
         const wrapper = mount(
           <Provider
             store={mockStore({
@@ -190,6 +191,10 @@ describe('HospitalRun', () => {
             </MemoryRouter>
           </Provider>,
         )
+
+        await act(async () => {
+          wrapper.update()
+        })
 
         expect(wrapper.find(Appointments)).toHaveLength(1)
       })
