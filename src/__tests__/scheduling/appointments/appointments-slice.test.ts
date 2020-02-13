@@ -7,8 +7,8 @@ import AppointmentRepository from 'clients/db/AppointmentsRepository'
 import appointments, {
   createAppointmentStart,
   createAppointment,
-  getAppointmentsStart,
-  getAppointmentsSuccess,
+  fetchAppointmentsStart,
+  fetchAppointmentsSuccess,
   fetchAppointments,
 } from '../../../scheduling/appointments/appointments-slice'
 
@@ -29,7 +29,7 @@ describe('appointments slice', () => {
 
     it('should handle the GET_APPOINTMENTS_START action', () => {
       const appointmentsStore = appointments(undefined, {
-        type: getAppointmentsStart.type,
+        type: fetchAppointmentsStart.type,
       })
 
       expect(appointmentsStore.isLoading).toBeTruthy()
@@ -44,7 +44,7 @@ describe('appointments slice', () => {
         },
       ]
       const appointmentsStore = appointments(undefined, {
-        type: getAppointmentsSuccess.type,
+        type: fetchAppointmentsSuccess.type,
         payload: expectedAppointments,
       })
 
@@ -75,12 +75,12 @@ describe('appointments slice', () => {
       )
     })
 
-    it('should dispatch the GET_APPOINTMENTS_START event', async () => {
+    it('should dispatch the FETCH_APPOINTMENTS_START event', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       await fetchAppointments()(dispatch, getState, null)
 
-      expect(dispatch).toHaveBeenCalledWith({ type: getAppointmentsStart.type })
+      expect(dispatch).toHaveBeenCalledWith({ type: fetchAppointmentsStart.type })
     })
 
     it('should call the AppointmentsRepository findAll() function', async () => {
@@ -91,13 +91,13 @@ describe('appointments slice', () => {
       expect(findAllSpy).toHaveBeenCalled()
     })
 
-    it('should dispatch the GET_APPOINTMENTS_SUCCESS event', async () => {
+    it('should dispatch the FETCH_APPOINTMENTS_SUCCESS event', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       await fetchAppointments()(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({
-        type: getAppointmentsSuccess.type,
+        type: fetchAppointmentsSuccess.type,
         payload: expectedAppointments,
       })
     })

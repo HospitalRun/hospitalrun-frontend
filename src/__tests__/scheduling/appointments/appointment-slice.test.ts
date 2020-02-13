@@ -5,8 +5,8 @@ import { mocked } from 'ts-jest/utils'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import appointment, {
-  getAppointmentStart,
-  getAppointmentSuccess,
+  fetchAppointmentStart,
+  fetchAppointmentSuccess,
   fetchAppointment,
 } from '../../../scheduling/appointments/appointment-slice'
 
@@ -18,14 +18,14 @@ describe('appointment slice', () => {
       expect(appointmentStore.appointment).toEqual({} as Appointment)
       expect(appointmentStore.isLoading).toBeFalsy()
     })
-    it('should handle the GET_APPOINTMENT_START action', () => {
+    it('should handle the FETCH_APPOINTMENT_START action', () => {
       const appointmentStore = appointment(undefined, {
-        type: getAppointmentStart.type,
+        type: fetchAppointmentStart.type,
       })
 
       expect(appointmentStore.isLoading).toBeTruthy()
     })
-    it('should handle the GET_APPOINTMENT_SUCCESS action', () => {
+    it('should handle the FETCH_APPOINTMENT_SUCCESS action', () => {
       const expectedAppointment = {
         patientId: '1234',
         startDateTime: new Date().toISOString(),
@@ -38,7 +38,7 @@ describe('appointment slice', () => {
       }
 
       const appointmentStore = appointment(undefined, {
-        type: getAppointmentSuccess.type,
+        type: fetchAppointmentSuccess.type,
         payload: { appointment: expectedAppointment, patient: expectedPatient },
       })
 
@@ -75,12 +75,12 @@ describe('appointment slice', () => {
       mocked(PatientRepository, true).find.mockResolvedValue(expectedPatient)
     })
 
-    it('should dispatch the GET_APPOINTMENT_START action', async () => {
+    it('should dispatch the FETCH_APPOINTMENT_START action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       await fetchAppointment('id')(dispatch, getState, null)
 
-      expect(dispatch).toHaveBeenCalledWith({ type: getAppointmentStart.type })
+      expect(dispatch).toHaveBeenCalledWith({ type: fetchAppointmentStart.type })
     })
 
     it('should call appointment repository find', async () => {
@@ -103,13 +103,13 @@ describe('appointment slice', () => {
       expect(findPatientSpy).toHaveBeenCalledWith(expectedId)
     })
 
-    it('should dispatch the GET_APPOINTMENT_SUCCESS action', async () => {
+    it('should dispatch the FETCH_APPOINTMENT_SUCCESS action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       await fetchAppointment('id')(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({
-        type: getAppointmentSuccess.type,
+        type: fetchAppointmentSuccess.type,
         payload: { appointment: expectedAppointment, patient: expectedPatient },
       })
     })

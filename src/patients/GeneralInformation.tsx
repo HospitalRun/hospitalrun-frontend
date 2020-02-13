@@ -40,7 +40,7 @@ const GeneralInformation = (props: Props) => {
       approximateAgeNumber = parseFloat(event.target.value)
     }
 
-    const approximateDateOfBirth = subYears(new Date(), approximateAgeNumber)
+    const approximateDateOfBirth = subYears(new Date(Date.now()), approximateAgeNumber)
     if (onFieldChange) {
       onFieldChange('dateOfBirth', startOfDay(approximateDateOfBirth).toISOString())
     }
@@ -137,7 +137,7 @@ const GeneralInformation = (props: Props) => {
                 label={t('patient.approximateAge')}
                 name="approximateAge"
                 type="number"
-                value={`${differenceInYears(new Date(), new Date(patient.dateOfBirth))}`}
+                value={`${differenceInYears(new Date(Date.now()), new Date(patient.dateOfBirth))}`}
                 isEditable={isEditable}
                 onChange={onApproximateAgeChange}
               />
