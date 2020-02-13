@@ -63,8 +63,6 @@ const ViewPatient = () => {
                 color="success"
                 outlined
                 onClick={() => {
-                  console.log('pushying to hsitory patient was:')
-                  console.log(patient)
                   history.push(`/patients/edit/${patient.id}`)
                 }}
               >

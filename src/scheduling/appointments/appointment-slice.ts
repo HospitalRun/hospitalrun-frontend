@@ -21,10 +21,10 @@ const appointmentSlice = createSlice({
   name: 'appointment',
   initialState: initialAppointmentState,
   reducers: {
-    getAppointmentStart: (state: AppointmentState) => {
+    fetchAppointmentStart: (state: AppointmentState) => {
       state.isLoading = true
     },
-    getAppointmentSuccess: (
+    fetchAppointmentSuccess: (
       state,
       { payload }: PayloadAction<{ appointment: Appointment; patient: Patient }>,
     ) => {
@@ -35,14 +35,14 @@ const appointmentSlice = createSlice({
   },
 })
 
-export const { getAppointmentStart, getAppointmentSuccess } = appointmentSlice.actions
+export const { fetchAppointmentStart, fetchAppointmentSuccess } = appointmentSlice.actions
 
 export const fetchAppointment = (id: string): AppThunk => async (dispatch) => {
-  dispatch(getAppointmentStart())
+  dispatch(fetchAppointmentStart())
   const appointment = await AppointmentRepository.find(id)
   const patient = await PatientRepository.find(appointment.patientId)
 
-  dispatch(getAppointmentSuccess({ appointment, patient }))
+  dispatch(fetchAppointmentSuccess({ appointment, patient }))
 }
 
 export default appointmentSlice.reducer
