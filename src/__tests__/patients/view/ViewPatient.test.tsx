@@ -6,15 +6,19 @@ import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
 import { TabsHeader, Tab, Button } from '@hospitalrun/components'
+import configureMockStore, { MockStore } from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import Patient from '../../../model/Patient'
-import * as patientSlice from '../../../patients/patient-slice'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as titleUtil from '../../../page-header/useTitle'
 import ViewPatient from '../../../patients/view/ViewPatient'
-import store from '../../../store'
+import * as patientSlice from '../../../patients/patient-slice'
+import Permissions from '../../../model/Permissions'
+
+const mockStore = configureMockStore([thunk])
 
 describe('ViewPatient', () => {
   const patient = {
@@ -34,20 +38,20 @@ describe('ViewPatient', () => {
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
-  let history = createMemoryHistory()
+  let history: any
+  let store: MockStore
 
   const setup = () => {
     jest.spyOn(PatientRepository, 'find')
-    jest.spyOn(patientSlice, 'fetchPatient')
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
-    jest.mock('react-router-dom', () => ({
-      useParams: () => ({
-        id: '123',
-      }),
-    }))
 
     history = createMemoryHistory()
+    store = mockStore({
+      patient: { patient },
+      user: { permissions: [Permissions.ReadPatients] },
+    })
+
     history.push('/patients/123')
     const wrapper = mount(
       <Provider store={store}>
@@ -84,6 +88,16 @@ describe('ViewPatient', () => {
     })
 
     expect(history.location.pathname).toEqual('/patients/edit/123')
+  })
+
+  it('should dispatch fetchPatient when component loads', async () => {
+    await act(async () => {
+      await setup()
+    })
+
+    expect(PatientRepository.find).toHaveBeenCalledWith(patient.id)
+    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientStart())
+    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientSuccess(patient))
   })
 
   it('should render a header with the patients given, family, and suffix', async () => {

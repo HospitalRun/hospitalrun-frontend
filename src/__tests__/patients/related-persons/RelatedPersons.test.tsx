@@ -2,14 +2,14 @@ import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { Router } from 'react-router'
 import { createMemoryHistory } from 'history'
-import { mount, ReactWrapper } from 'enzyme'
+import { mount } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import { Button, List, ListItem, Alert } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import { act } from '@testing-library/react'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
-import createMockStore from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
@@ -17,10 +17,10 @@ import { mocked } from 'ts-jest/utils'
 
 import * as patientSlice from '../../../patients/patient-slice'
 
-const mockStore = createMockStore([thunk])
+const mockStore = configureMockStore([thunk])
 
 describe('Related Persons Tab', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   let history = createMemoryHistory()
 
   describe('Add New Related Person', () => {
@@ -91,18 +91,21 @@ describe('Related Persons Tab', () => {
       expect(newRelatedPersonModal.prop('show')).toBeTruthy()
     })
 
-    it('should call update patient with the data from the modal', () => {
-      jest.spyOn(patientSlice, 'updatePatient')
+    it('should call update patient with the data from the modal', async () => {
       jest.spyOn(PatientRepository, 'saveOrUpdate')
+      const store = mockStore({ patient, user })
       const expectedRelatedPerson = { patientId: '123', type: 'type' }
       const expectedPatient = {
         ...patient,
         relatedPersons: [expectedRelatedPerson],
       }
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
+
       act(() => {
         wrapper = mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={store}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,
@@ -115,15 +118,16 @@ describe('Related Persons Tab', () => {
       })
       wrapper.update()
 
-      act(() => {
+      await act(async () => {
         const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
         const onSave = newRelatedPersonModal.prop('onSave') as any
         onSave(expectedRelatedPerson)
       })
       wrapper.update()
 
-      expect(patientSlice.updatePatient).toHaveBeenCalledTimes(1)
-      expect(patientSlice.updatePatient).toHaveBeenCalledWith(expectedPatient, history)
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedPatient)
+      expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
+      expect(store.getActions()).toContainEqual(patientSlice.updatePatientSuccess(expectedPatient))
     })
 
     it('should close the modal when the save button is clicked', () => {
