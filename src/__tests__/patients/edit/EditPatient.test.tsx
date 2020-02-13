@@ -6,13 +6,14 @@ import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Button } from '@hospitalrun/components'
 import EditPatient from '../../../patients/edit/EditPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import Patient from '../../../model/Patient'
 import * as titleUtil from '../../../page-header/useTitle'
+import * as patientSlice from '../../../patients/patient-slice'
 import PatientRepository from '../../../clients/db/PatientRepository'
 
 const mockStore = configureMockStore([thunk])
@@ -36,7 +37,9 @@ describe('Edit Patient', () => {
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
-  let history = createMemoryHistory()
+  let history: any
+  let store: MockStore
+
   const setup = () => {
     jest.spyOn(PatientRepository, 'saveOrUpdate')
     jest.spyOn(PatientRepository, 'find')
@@ -45,15 +48,13 @@ describe('Edit Patient', () => {
     mockedPatientRepository.saveOrUpdate.mockResolvedValue(patient)
 
     history = createMemoryHistory()
+    store = mockStore({ patient: { patient } })
+
     history.push('/patients/edit/123')
     const wrapper = mount(
-      <Provider
-        store={mockStore({
-          patient: { patient },
-        })}
-      >
+      <Provider store={store}>
         <Router history={history}>
-          <Route path="/patients/edit/123">
+          <Route path="/patients/edit/:id">
             <EditPatient />
           </Route>
         </Router>
@@ -77,6 +78,16 @@ describe('Edit Patient', () => {
     expect(wrapper.find(GeneralInformation)).toHaveLength(1)
   })
 
+  it('should dispatch fetchPatient when component loads', async () => {
+    await act(async () => {
+      await setup()
+    })
+
+    expect(PatientRepository.find).toHaveBeenCalledWith(patient.id)
+    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientStart())
+    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientSuccess(patient))
+  })
+
   it('should use "Edit Patient: " plus patient full name as the title', async () => {
     jest.spyOn(titleUtil, 'default')
     await act(async () => {
@@ -87,7 +98,7 @@ describe('Edit Patient', () => {
     )
   })
 
-  it('should call saveOrUpdate when save button is clicked', async () => {
+  it('should dispatch updatePatient when save button is clicked', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = await setup()
@@ -99,11 +110,13 @@ describe('Edit Patient', () => {
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
-    act(() => {
-      onClick()
+    await act(async () => {
+      await onClick()
     })
 
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
+    expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
+    expect(store.getActions()).toContainEqual(patientSlice.updatePatientSuccess(patient))
   })
 
   it('should navigate to /patients/:id when cancel is clicked', async () => {
