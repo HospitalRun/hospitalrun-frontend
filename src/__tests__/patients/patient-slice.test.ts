@@ -161,14 +161,10 @@ describe('patients slice', () => {
     it('should call the Toaster function with the correct data', async () => {
       jest.spyOn(components, 'Toast')
       const expectedPatientId = '12345'
-      const expectedGivenName = 'given'
-      const expectedFamilyName = 'family'
-      const expectedSuffix = 'suffix'
+      const expectedFullName = 'John Doe II'
       const expectedPatient = {
         id: expectedPatientId,
-        givenName: expectedGivenName,
-        familyName: expectedFamilyName,
-        suffix: expectedSuffix,
+        fullName: expectedFullName,
       } as Patient
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.save.mockResolvedValue(expectedPatient)
@@ -182,7 +178,7 @@ describe('patients slice', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'Success!',
-        `patients.successfullyCreated ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
+        `patients.successfullyCreated ${expectedFullName}`,
       )
     })
   })
@@ -286,14 +282,10 @@ describe('patients slice', () => {
     it('should call the Toaster function with the correct data', async () => {
       jest.spyOn(components, 'Toast')
       const expectedPatientId = '12345'
-      const expectedGivenName = 'given'
-      const expectedFamilyName = 'family'
-      const expectedSuffix = 'suffix'
+      const fullName = 'John Doe II'
       const expectedPatient = {
         id: expectedPatientId,
-        givenName: expectedGivenName,
-        familyName: expectedFamilyName,
-        suffix: expectedSuffix,
+        fullName,
       } as Patient
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
@@ -307,31 +299,7 @@ describe('patients slice', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'Success!',
-        `patients.successfullyUpdated ${expectedGivenName} ${expectedFamilyName} ${expectedSuffix}`,
-      )
-    })
-
-    it('should call the Toaster with message only including given name', async () => {
-      jest.spyOn(components, 'Toast')
-      const expectedPatientId = '12345'
-      const expectedGivenName = 'John'
-      const expectedPatient = {
-        id: expectedPatientId,
-        givenName: expectedGivenName,
-      } as Patient
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
-      const mockedComponents = mocked(components, true)
-      const history = createMemoryHistory()
-      const dispatch = jest.fn()
-      const getState = jest.fn()
-
-      await updatePatient(expectedPatient, history)(dispatch, getState, null)
-
-      expect(mockedComponents.Toast).toHaveBeenCalledWith(
-        'success',
-        'Success!',
-        `Successfully updated patient ${expectedGivenName}`,
+        `patients.successfullyUpdated ${fullName}`,
       )
     })
   })
