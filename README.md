@@ -27,6 +27,15 @@ Contributions are always welcome. Before contributing please read our [contribut
 3. Install the dependencies: `yarn`
 4. Run `yarn run start` to build and watch for code changes
 
+## Connecting to HospitalRun Server
+
+__Note: The following instructions are for connecting to HospitalRun Server during development and are not intended to be for production use. For production deployments, see the deployment instructions.__
+
+1. Configure [HospitalRun Server](https://github.com/HospitalRun/hospitalrun-server)
+2. Start the HospitalRun Development Server
+3. Copy the `.env.example` file to `.env`
+4. Change the `REACT_APP_HOSPITALRUN_API` variable to point to the HospitalRun Development Server.  
+
 ## Working on an Issue
 
 In order to optimize the workflow and to prevent multiple contributors working on the same issue without interactions, a contributor must ask to be assigned to an issue by one of the core team members: it's enough to ask it inside the specific issue.
