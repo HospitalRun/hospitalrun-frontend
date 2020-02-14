@@ -28,11 +28,7 @@ const AppointmentsList = (props: Props) => {
     <ul style={{ whiteSpace: 'pre-line' }}>
       {appointments.map((a) => (
         <ListItem action key={a.id} onClick={() => history.push(`/appointments/${a.id}`)}>
-          {`${t('scheduling.appointment.location')}: ${a.location}
-          ${t('scheduling.appointment.reason')}: ${a.reason}
-          ${t('scheduling.appointment.type')}: ${a.type}
-          ${t('scheduling.appointment.startDate')}: ${new Date(a.startDateTime).toLocaleString()}
-          ${t('scheduling.appointment.endDate')}: ${new Date(a.endDateTime).toLocaleString()}`}
+          {new Date(a.startDateTime).toLocaleString()}
         </ListItem>
       ))}
     </ul>

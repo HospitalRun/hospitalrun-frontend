@@ -7,6 +7,7 @@ const Sidebar = () => {
   const { t } = useTranslation()
   const path = useLocation()
   const history = useHistory()
+  const pathname = path.pathname
 
   const navigateTo = (location: string) => {
     history.push(location)
@@ -21,7 +22,7 @@ const Sidebar = () => {
       <div className="sidebar-sticky">
         <List layout="flush" className="nav flex-column">
           <ListItem
-            active={path.pathname === '/'}
+            active={pathname === '/'}
             onClick={() => navigateTo('/')}
             className="nav-item"
             style={listItemStyle}
@@ -29,7 +30,7 @@ const Sidebar = () => {
             <Icon icon="dashboard" /> {t('dashboard.label')}
           </ListItem>
           <ListItem
-            active={path.pathname.includes('patient')}
+            active={pathname.split('/')[1].includes('patient')}
             onClick={() => navigateTo('/patients')}
             className="nav-item"
             style={listItemStyle}
@@ -37,7 +38,7 @@ const Sidebar = () => {
             <Icon icon="patients" /> {t('patients.label')}
           </ListItem>
           <ListItem
-            active={path.pathname.includes('appointments')}
+            active={pathname.split('/')[1].includes('appointments')}
             onClick={() => navigateTo('/appointments')}
             className="nav-item"
             style={listItemStyle}
