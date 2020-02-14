@@ -42,6 +42,23 @@ export const fetchAppointments = (): AppThunk => async (dispatch) => {
   dispatch(fetchAppointmentsSuccess(appointments))
 }
 
+export const fetchPatientAppointments = (
+  patientId: string,
+  searchString?: string,
+): AppThunk => async (dispatch) => {
+  dispatch(fetchAppointmentsStart())
+
+  let appointments
+  if (searchString === undefined || searchString.trim() === '') {
+    const query = { selector: { patientId } }
+    appointments = await AppointmentRepository.search(query)
+  } else {
+    appointments = await AppointmentRepository.searchPatientAppointments(patientId, searchString)
+  }
+
+  dispatch(fetchAppointmentsSuccess(appointments))
+}
+
 export const createAppointment = (appointment: Appointment, history: any): AppThunk => async (
   dispatch,
 ) => {
