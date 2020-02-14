@@ -2,7 +2,7 @@ import '../../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
-import createMockStore from 'redux-mock-store'
+import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import Appointment from 'model/Appointment'
 import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
@@ -16,6 +16,9 @@ import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import * as titleUtil from '../../../../page-header/useTitle'
+import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
+
+const mockStore = configureMockStore([thunk])
 
 const appointment = {
   id: '123',
@@ -31,6 +34,9 @@ const patient = {
 } as Patient
 
 describe('View Appointment', () => {
+  let history: any
+  let store: MockStore
+
   const setup = (isLoading: boolean) => {
     jest.spyOn(AppointmentRepository, 'find')
     const mockedAppointmentRepository = mocked(AppointmentRepository, true)
@@ -40,17 +46,10 @@ describe('View Appointment', () => {
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
 
-    jest.mock('react-router-dom', () => ({
-      useParams: () => ({
-        id: '123',
-      }),
-    }))
-
-    const history = createMemoryHistory()
+    history = createMemoryHistory()
     history.push('/appointments/123')
 
-    const mockStore = createMockStore([thunk])
-    const store = mockStore({
+    store = mockStore({
       appointment: {
         appointment,
         isLoading,
@@ -85,10 +84,16 @@ describe('View Appointment', () => {
     expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.view')
   })
 
-  it('should call the fetch appointment function if id is present', async () => {
+  it('should dispatch getAppointment if id is present', async () => {
     await act(async () => {
       await setup(true)
     })
+
+    expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
+    expect(store.getActions()).toContainEqual(appointmentSlice.fetchAppointmentStart())
+    expect(store.getActions()).toContainEqual(
+      appointmentSlice.fetchAppointmentSuccess({ appointment, patient }),
+    )
   })
 
   it('should render a loading spinner', async () => {

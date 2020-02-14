@@ -21,23 +21,23 @@ const patientsSlice = createSlice({
   name: 'patients',
   initialState,
   reducers: {
-    getPatientsStart: startLoading,
-    getAllPatientsSuccess(state, { payload }: PayloadAction<Patient[]>) {
+    fetchPatientsStart: startLoading,
+    fetchPatientsSuccess(state, { payload }: PayloadAction<Patient[]>) {
       state.isLoading = false
       state.patients = payload
     },
   },
 })
-export const { getPatientsStart, getAllPatientsSuccess } = patientsSlice.actions
+export const { fetchPatientsStart, fetchPatientsSuccess } = patientsSlice.actions
 
 export const fetchPatients = (): AppThunk => async (dispatch) => {
-  dispatch(getPatientsStart())
+  dispatch(fetchPatientsStart())
   const patients = await PatientRepository.findAll()
-  dispatch(getAllPatientsSuccess(patients))
+  dispatch(fetchPatientsSuccess(patients))
 }
 
 export const searchPatients = (searchString: string): AppThunk => async (dispatch) => {
-  dispatch(getPatientsStart())
+  dispatch(fetchPatientsStart())
 
   let patients
   if (searchString.trim() === '') {
@@ -46,7 +46,7 @@ export const searchPatients = (searchString: string): AppThunk => async (dispatc
     patients = await PatientRepository.search(searchString)
   }
 
-  dispatch(getAllPatientsSuccess(patients))
+  dispatch(fetchPatientsSuccess(patients))
 }
 
 export default patientsSlice.reducer

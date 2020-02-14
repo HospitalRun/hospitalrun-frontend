@@ -12,6 +12,7 @@ import Patient from '../../model/Patient'
 import GeneralInformation from '../GeneralInformation'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
 import useSetBreadcrumbs from '../../breadcrumbs/useSetBreadcrumbs'
+import AppointmentsList from '../appointments/AppointmentsList'
 
 const getFriendlyId = (p: Patient): string => {
   if (p) {
@@ -64,6 +65,11 @@ const ViewPatient = () => {
           label={t('patient.relatedPersons.label')}
           onClick={() => history.push(`/patients/${patient.id}/relatedpersons`)}
         />
+        <Tab
+          active={location.pathname === `/patients/${patient.id}/appointments`}
+          label={t('scheduling.appointments.label')}
+          onClick={() => history.push(`/patients/${patient.id}/appointments`)}
+        />
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
@@ -73,8 +79,6 @@ const ViewPatient = () => {
                 color="success"
                 outlined
                 onClick={() => {
-                  console.log('pushying to hsitory patient was:')
-                  console.log(patient)
                   history.push(`/patients/edit/${patient.id}`)
                 }}
               >
@@ -87,6 +91,9 @@ const ViewPatient = () => {
         </Route>
         <Route exact path="/patients/:id/relatedpersons">
           <RelatedPerson patient={patient} />
+        </Route>
+        <Route exact path="/patients/:id/appointments">
+          <AppointmentsList patientId={patient.id} />
         </Route>
       </Panel>
     </div>

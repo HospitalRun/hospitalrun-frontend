@@ -22,8 +22,8 @@ const appointmentsSlice = createSlice({
   initialState,
   reducers: {
     createAppointmentStart: startLoading,
-    getAppointmentsStart: startLoading,
-    getAppointmentsSuccess: (state, { payload }: PayloadAction<Appointment[]>) => {
+    fetchAppointmentsStart: startLoading,
+    fetchAppointmentsSuccess: (state, { payload }: PayloadAction<Appointment[]>) => {
       state.isLoading = false
       state.appointments = payload
     },
@@ -32,14 +32,31 @@ const appointmentsSlice = createSlice({
 
 export const {
   createAppointmentStart,
-  getAppointmentsStart,
-  getAppointmentsSuccess,
+  fetchAppointmentsStart,
+  fetchAppointmentsSuccess,
 } = appointmentsSlice.actions
 
 export const fetchAppointments = (): AppThunk => async (dispatch) => {
-  dispatch(getAppointmentsStart())
+  dispatch(fetchAppointmentsStart())
   const appointments = await AppointmentRepository.findAll()
-  dispatch(getAppointmentsSuccess(appointments))
+  dispatch(fetchAppointmentsSuccess(appointments))
+}
+
+export const fetchPatientAppointments = (
+  patientId: string,
+  searchString?: string,
+): AppThunk => async (dispatch) => {
+  dispatch(fetchAppointmentsStart())
+
+  let appointments
+  if (searchString === undefined || searchString.trim() === '') {
+    const query = { selector: { patientId } }
+    appointments = await AppointmentRepository.search(query)
+  } else {
+    appointments = await AppointmentRepository.searchPatientAppointments(patientId, searchString)
+  }
+
+  dispatch(fetchAppointmentsSuccess(appointments))
 }
 
 export const createAppointment = (appointment: Appointment, history: any): AppThunk => async (
