@@ -7,7 +7,7 @@ const Sidebar = () => {
   const { t } = useTranslation()
   const path = useLocation()
   const history = useHistory()
-  const pathname = path.pathname
+  const { pathname } = path
 
   const navigateTo = (location: string) => {
     history.push(location)
