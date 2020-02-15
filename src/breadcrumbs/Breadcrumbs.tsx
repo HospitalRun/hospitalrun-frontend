@@ -2,10 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import {
-  Breadcrumb as HrBreadcrumb,
-  BreadcrumbItem as HrBreadcrumbItem,
-} from '@hospitalrun/components'
+import { Breadcrumb, BreadcrumbItem } from '@hospitalrun/components'
 import { RootState } from '../store'
 
 const Breadcrumbs = () => {
@@ -14,7 +11,7 @@ const Breadcrumbs = () => {
   const { breadcrumbs } = useSelector((state: RootState) => state.breadcrumbs)
 
   return (
-    <HrBreadcrumb>
+    <Breadcrumb>
       {breadcrumbs
         .slice()
         .sort((b1, b2) => b1.location.length - b2.location.length)
@@ -23,12 +20,12 @@ const Breadcrumbs = () => {
           const onClick = !isLast ? () => history.push(location) : undefined
 
           return (
-            <HrBreadcrumbItem key={location} active={isLast} onClick={onClick}>
+            <BreadcrumbItem key={location} active={isLast} onClick={onClick}>
               {i18nKey ? t(i18nKey) : text}
-            </HrBreadcrumbItem>
+            </BreadcrumbItem>
           )
         })}
-    </HrBreadcrumb>
+    </Breadcrumb>
   )
 }
 

@@ -5,12 +5,14 @@ import { addBreadcrumbs, removeBreadcrumbs } from './breadcrumbs-slice'
 
 export default function useAddBreadcrumbs(breadcrumbs: Breadcrumb[]): void {
   const dispatch = useDispatch()
+  const breadcrumbsStringified = JSON.stringify(breadcrumbs)
 
   useEffect(() => {
-    dispatch(addBreadcrumbs(breadcrumbs))
+    const breadcrumbsParsed = JSON.parse(breadcrumbsStringified)
+    dispatch(addBreadcrumbs(breadcrumbsParsed))
 
     return () => {
-      dispatch(removeBreadcrumbs(breadcrumbs))
+      dispatch(removeBreadcrumbs(breadcrumbsParsed))
     }
-  }, [breadcrumbs, dispatch, JSON.stringify(breadcrumbs)])
+  }, [breadcrumbsStringified, dispatch])
 }

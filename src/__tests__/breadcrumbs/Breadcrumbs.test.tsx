@@ -1,5 +1,48 @@
 import '../../__mocks__/matchMediaMock'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import { BreadcrumbItem } from '@hospitalrun/components'
 
-it('should return true', () => {
-  expect(true).toBeTruthy()
+import Breadcrumbs from 'breadcrumbs/Breadcrumbs'
+import Breadcrumb from 'model/Breadcrumb'
+
+const mockStore = configureMockStore()
+
+describe('Breadcrumbs', () => {
+  const setup = (breadcrumbs: Breadcrumb[]) => {
+    const history = createMemoryHistory()
+    const store = mockStore({
+      breadcrumbs: { breadcrumbs },
+    })
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Breadcrumbs />
+        </Router>
+      </Provider>,
+    )
+
+    return wrapper
+  }
+
+  it('should render breadcrumbs items', () => {
+    const breadcrumbs = [
+      { text: 'Edit Patient', location: '/patient/1/edit' },
+      { i18nKey: 'patient.label', location: '/patient' },
+      { text: 'Bob', location: '/patient/1' },
+    ]
+    const wrapper = setup(breadcrumbs)
+
+    const items = wrapper.find(BreadcrumbItem)
+
+    expect(items).toHaveLength(3)
+    expect(items.at(0).text()).toEqual('patient.label')
+    expect(items.at(1).text()).toEqual('Bob')
+    expect(items.at(2).text()).toEqual('Edit Patient')
+  })
 })
