@@ -56,7 +56,6 @@ stages:
   - stage: Docker
     jobs:
       - job: docker_job
-        dependsOn: Build
         condition: succeeded('Build')
         continueOnError: false
         pool:
