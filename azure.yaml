@@ -6,7 +6,7 @@ trigger:
 pr: none
 
 stages:
-  - stage: Build, lint and test code
+  - stage: Build
     jobs:
       - job: npm_job
         continueOnError: false
@@ -53,7 +53,7 @@ stages:
           - bash: yarn test:ci
             displayName: 'Test compiled code'
 
-  - stage: Docker image build and push
+  - stage: Docker
     jobs:
       - job: docker_job
         dependsOn: [npm_job, yarn_job]
