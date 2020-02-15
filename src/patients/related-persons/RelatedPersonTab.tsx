@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
 import PatientRepository from 'clients/db/PatientRepository'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 interface Props {
   patient: Patient
@@ -27,6 +28,14 @@ const RelatedPersonTab = (props: Props) => {
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
   const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
+
+  const breadcrumbs = [
+    {
+      i18nKey: 'patient.relatedPersons.label',
+      location: `/patients/${patient.id}/relatedpersons`,
+    },
+  ]
+  useAddBreadcrumbs(breadcrumbs)
 
   useEffect(() => {
     const fetchRelatedPersons = async () => {

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
 import { useHistory } from 'react-router'
 import PatientRepository from 'clients/db/PatientRepository'
-import useSetBreadcrumbs from 'breadcrumbs/useSetBreadcrumbs'
+import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
 import { fetchAppointments } from './appointments-slice'
 
 interface Event {
@@ -23,7 +23,7 @@ const Appointments = () => {
   const { t } = useTranslation()
   const history = useHistory()
   useTitle(t('scheduling.appointments.label'))
-  useSetBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs)
   const dispatch = useDispatch()
   const { appointments } = useSelector((state: RootState) => state.appointments)
   const [events, setEvents] = useState<Event[]>([])

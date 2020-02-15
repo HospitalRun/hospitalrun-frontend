@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, withRouter, Route, useHistory, useLocation } from 'react-router-dom'
 import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components'
@@ -11,7 +11,7 @@ import { getPatientFullName } from '../util/patient-name-util'
 import Patient from '../../model/Patient'
 import GeneralInformation from '../GeneralInformation'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
-import useSetBreadcrumbs from '../../breadcrumbs/useSetBreadcrumbs'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import AppointmentsList from '../appointments/AppointmentsList'
 
 const getFriendlyId = (p: Patient): string => {
@@ -32,14 +32,11 @@ const ViewPatient = () => {
 
   useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
 
-  const breadcrumbs = useMemo(
-    () => [
-      { i18nKey: 'patients.label', location: '/patients' },
-      { text: getPatientFullName(patient), location: `/patients/${patient.id}` },
-    ],
-    [patient],
-  )
-  useSetBreadcrumbs(breadcrumbs)
+  const breadcrumbs = [
+    { i18nKey: 'patients.label', location: '/patients' },
+    { text: getPatientFullName(patient), location: `/patients/${patient.id}` },
+  ]
+  useAddBreadcrumbs(breadcrumbs)
 
   const { id } = useParams()
   useEffect(() => {

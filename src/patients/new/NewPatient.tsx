@@ -9,7 +9,7 @@ import useTitle from '../../page-header/useTitle'
 import Patient from '../../model/Patient'
 import { createPatient } from '../patient-slice'
 import { getPatientName } from '../util/patient-name-util'
-import useSetBreadcrumbs from '../../breadcrumbs/useSetBreadcrumbs'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 const breadcrumbs = [
   { i18nKey: 'patients.label', location: '/patients' },
@@ -25,7 +25,7 @@ const NewPatient = () => {
   const [errorMessage, setErrorMessage] = useState('')
 
   useTitle(t('patients.newPatient'))
-  useSetBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs)
 
   const onCancel = () => {
     history.push('/patients')

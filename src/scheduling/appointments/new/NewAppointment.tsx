@@ -8,7 +8,7 @@ import Appointment from 'model/Appointment'
 import addMinutes from 'date-fns/addMinutes'
 import { isBefore } from 'date-fns'
 import { Button, Alert } from '@hospitalrun/components'
-import useSetBreadcrumbs from '../../../breadcrumbs/useSetBreadcrumbs'
+import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 import { createAppointment } from '../appointments-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 
@@ -22,7 +22,7 @@ const NewAppointment = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   useTitle(t('scheduling.appointments.new'))
-  useSetBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs)
   const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
   const endDateTime = addMinutes(startDateTime, 60)
 

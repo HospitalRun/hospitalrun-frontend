@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import useTitle from 'page-header/useTitle'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import Appointment from 'model/Appointment'
 import { fetchAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
-import useSetBreadcrumbs from '../../../breadcrumbs/useSetBreadcrumbs'
+import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 
 function getAppointmentLabel(appointment: Appointment) {
   const { id, startDateTime, endDateTime } = appointment
@@ -25,14 +25,11 @@ const ViewAppointment = () => {
   const { id } = useParams()
   const { appointment, patient, isLoading } = useSelector((state: RootState) => state.appointment)
 
-  const breadcrumbs = useMemo(
-    () => [
-      { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
-      { text: getAppointmentLabel(appointment), location: `/patients/${appointment.id}` },
-    ],
-    [appointment],
-  )
-  useSetBreadcrumbs(breadcrumbs)
+  const breadcrumbs = [
+    { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
+    { text: getAppointmentLabel(appointment), location: `/patients/${appointment.id}` },
+  ]
+  useAddBreadcrumbs(breadcrumbs)
 
   useEffect(() => {
     if (id) {

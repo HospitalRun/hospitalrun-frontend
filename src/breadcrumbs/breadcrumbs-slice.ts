@@ -13,18 +13,18 @@ const breadcrumbsSlice = createSlice({
   name: 'breadcrumbs',
   initialState,
   reducers: {
-    setBreadcrumbs(state, { payload }: PayloadAction<Breadcrumb[]>) {
-      state.breadcrumbs = payload
+    addBreadcrumbs(state, { payload }: PayloadAction<Breadcrumb[]>) {
+      state.breadcrumbs = [...state.breadcrumbs, ...payload]
     },
-    addBreadcrumb(state, { payload }: PayloadAction<Breadcrumb>) {
-      state.breadcrumbs = [...state.breadcrumbs, payload]
-    },
-    removeBreadcrumb(state) {
-      state.breadcrumbs = state.breadcrumbs.slice(0, -1)
+    removeBreadcrumbs(state, { payload }: PayloadAction<Breadcrumb[]>) {
+      const locations = payload.map((b) => b.location)
+      state.breadcrumbs = state.breadcrumbs.filter(
+        (breadcrumb) => !locations.includes(breadcrumb.location),
+      )
     },
   },
 })
 
-export const { setBreadcrumbs, addBreadcrumb, removeBreadcrumb } = breadcrumbsSlice.actions
+export const { addBreadcrumbs, removeBreadcrumbs } = breadcrumbsSlice.actions
 
 export default breadcrumbsSlice.reducer

@@ -6,7 +6,7 @@ import { Spinner, TextInput, Button, List, ListItem, Container, Row } from '@hos
 import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
-import useSetBreadcrumbs from '../../breadcrumbs/useSetBreadcrumbs'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
@@ -14,7 +14,7 @@ const Patients = () => {
   const { t } = useTranslation()
   const history = useHistory()
   useTitle(t('patients.label'))
-  useSetBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs)
   const dispatch = useDispatch()
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 
