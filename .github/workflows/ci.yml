@@ -10,9 +10,9 @@ jobs:
       matrix:
         node-version: [12.x, 13.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        exclude:
-          - os: windows-latest
-            node-version: 13.x
+        # exclude:
+        #   - os: windows-latest
+        #     node-version: 13.x
 
     steps:
       - uses: actions/checkout@v1
