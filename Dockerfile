@@ -4,7 +4,7 @@ ENV HOME=/home/app
 COPY . $HOME/node/
 
 WORKDIR $HOME/node
-RUN npm ci -q
+RUN npm install -q
 
 RUN npm run build
 RUN npm prune --production
