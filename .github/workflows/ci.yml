@@ -51,9 +51,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Init yarn
+        run: |
+          npm install -g yarn
       - name: Install with yarn
         run: |
-          curl -o- -L https://yarnpkg.com/install.sh | bash
           yarn install
       - name: Lint code
         run: |
@@ -61,6 +63,9 @@ jobs:
       - name: Build
         run: |
           yarn build
+      - name: Storybook build
+        run: |
+          yarn build-storybook
       - name: Run tests
         run: |
           yarn test:ci
