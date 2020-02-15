@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0-alpha.2](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.1...v2.0.0-alpha.2) (2020-02-15)
+
+
+### Features
+
+* **appointmentslist:** add an appointments tab to the patient view ([deee00e](https://github.com/HospitalRun/hospitalrun-frontend/commit/deee00e52f2bab2fec8518d4e8cdfa6f67c2cf75)), closes [#1769](https://github.com/HospitalRun/hospitalrun-frontend/issues/1769)
+* **edit patient:** implement Edit Patient functionality ([8e3355f](https://github.com/HospitalRun/hospitalrun-frontend/commit/8e3355f2124186b6ead1a710abb3010695e51abf))
+* **edit patient:** moved buttons out of GeneralInformation ([403e49f](https://github.com/HospitalRun/hospitalrun-frontend/commit/403e49feb130d16718fb014e1a27ea218915bb7e))
+* **env:** adds hospitalrun server information ([7f0fe7f](https://github.com/HospitalRun/hospitalrun-frontend/commit/7f0fe7fa47d0705d585f7ca15d4796e1c90c2f16))
+* **env:** change env variable names ([cddc812](https://github.com/HospitalRun/hospitalrun-frontend/commit/cddc812ae5bd1f1b05e7310b5a504b51ecee1981))
+* add documentation folder ([d22300e](https://github.com/HospitalRun/hospitalrun-frontend/commit/d22300e8a56be56c7edef6f914d7b9c5381aea7f))
+* **navigation:** navigate to patients profile on related person click ([c6acecc](https://github.com/HospitalRun/hospitalrun-frontend/commit/c6acecc3c89b0aeb96fa6c6fea15b316ee0669a2)), closes [#1763](https://github.com/HospitalRun/hospitalrun-frontend/issues/1763)
+* **relatedpersontab:** add cursor icon to related persons list ([ef7e19c](https://github.com/HospitalRun/hospitalrun-frontend/commit/ef7e19cabf596afd08d4e15449a96285541149d1)), closes [#1792](https://github.com/HospitalRun/hospitalrun-frontend/issues/1792)
+* **test:** add navigate to related person profile onclick test ([29fbffe](https://github.com/HospitalRun/hospitalrun-frontend/commit/29fbffec0848f0e0fed54b133513cfb1471ddacb)), closes [#1792](https://github.com/HospitalRun/hospitalrun-frontend/issues/1792)
+
+
+### Bug Fixes
+
+* **patient-slice.ts:** conditionally render family name and suffix ([d20e294](https://github.com/HospitalRun/hospitalrun-frontend/commit/d20e294340a155cb90138ea9bf5210e6e697ea71)), closes [#1818](https://github.com/HospitalRun/hospitalrun-frontend/issues/1818)
+* **patients:** add test for displaying No Related Persons warning ([da6bdb1](https://github.com/HospitalRun/hospitalrun-frontend/commit/da6bdb19e3609e1d8fca6d08349c71814162f536)), closes [#1789](https://github.com/HospitalRun/hospitalrun-frontend/issues/1789)
+* **patients:** internationalize No Related Persons warning & loading ([099e50d](https://github.com/HospitalRun/hospitalrun-frontend/commit/099e50d846e1574dff2b28aafd77b7d01c4da955)), closes [#1789](https://github.com/HospitalRun/hospitalrun-frontend/issues/1789)
+* **patients:** replace "Loading..." text with Spinner component ([e6ce4cb](https://github.com/HospitalRun/hospitalrun-frontend/commit/e6ce4cb979d3f3cd7c3704490ad4251955f4922f)), closes [#1789](https://github.com/HospitalRun/hospitalrun-frontend/issues/1789)
+* **patients:** stop "Loading..." when patient has no related persons ([e513b17](https://github.com/HospitalRun/hospitalrun-frontend/commit/e513b172e25f24126969564a0e7d4f421758e626)), closes [#1789](https://github.com/HospitalRun/hospitalrun-frontend/issues/1789)
+* **persons:** replace "No related persons" message with a warning ([c156b5b](https://github.com/HospitalRun/hospitalrun-frontend/commit/c156b5bba25b008be3bd7d11cd393e2f12fb49cb)), closes [#1789](https://github.com/HospitalRun/hospitalrun-frontend/issues/1789)
+* **prettier:** changes endofline option ([1fbd965](https://github.com/HospitalRun/hospitalrun-frontend/commit/1fbd9658b4869d7f98b4ae918e731012e4b4b9a3))
+* **test:** add related test, and revert test changes ([9bead70](https://github.com/HospitalRun/hospitalrun-frontend/commit/9bead7078f8ea94680f24d865f576ae786ce5178)), closes [#1792](https://github.com/HospitalRun/hospitalrun-frontend/issues/1792)
+* **test:** remove extra whitespace ([155b4e9](https://github.com/HospitalRun/hospitalrun-frontend/commit/155b4e939151beb994808bae22dd2cd74845da39)), closes [#1792](https://github.com/HospitalRun/hospitalrun-frontend/issues/1792)
+* **test:** remove unused import ([fc3a78d](https://github.com/HospitalRun/hospitalrun-frontend/commit/fc3a78d70f285a120a9d0f690320d6c6fa5e5696)), closes [#1792](https://github.com/HospitalRun/hospitalrun-frontend/issues/1792)
+
 ## 2.0.0-alpha.1 (2020-02-07)
 
 
