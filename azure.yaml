@@ -3,6 +3,8 @@ trigger:
     include:
       - refs/tags/v*
 
+pr: none
+
 jobs:
   - job: npm_job
     continueOnError: false
@@ -20,7 +22,7 @@ jobs:
         displayName: 'Install Node.js'
       - bash: npm install
         displayName: 'Install dependencies'
-      - bash: npm lint
+      - bash: npm run lint
         displayName: 'Lint code'
       - bash: npm run build
         displayName: 'Build code'
@@ -67,7 +69,7 @@ jobs:
         displayName: 'Build an image'
         inputs:
           containerregistrytype: 'Container Registry'
-          dockerRegistryConnection: Docker
+          dockerRegistryConnection: Docker # it is necessary to create a new "service connection" via Azure DevOps portal
           dockerFile: ./Dockerfile
           buildArguments: '--rm --squash'
           imageName: '$(Build.Repository.Name):$(VERSION_TAG)'
@@ -75,6 +77,6 @@ jobs:
         displayName: 'Push an image'
         inputs:
           containerregistrytype: 'Container Registry'
-          dockerRegistryConnection: Docker
+          dockerRegistryConnection: Docker # it is necessary to create a new "service connection" via Azure DevOps portal
           action: 'Push an image'
           imageName: '$(Build.Repository.Name):$(VERSION_TAG)'
