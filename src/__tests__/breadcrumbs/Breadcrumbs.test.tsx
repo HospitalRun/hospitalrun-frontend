@@ -32,9 +32,9 @@ describe('Breadcrumbs', () => {
 
   it('should render breadcrumbs items', () => {
     const breadcrumbs = [
-      { text: 'Edit Patient', location: '/patient/1/edit' },
       { i18nKey: 'patient.label', location: '/patient' },
       { text: 'Bob', location: '/patient/1' },
+      { text: 'Edit Patient', location: '/patient/1/edit' },
     ]
     const wrapper = setup(breadcrumbs)
 

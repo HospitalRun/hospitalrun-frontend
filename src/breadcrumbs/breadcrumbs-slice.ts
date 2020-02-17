@@ -14,7 +14,9 @@ const breadcrumbsSlice = createSlice({
   initialState,
   reducers: {
     addBreadcrumbs(state, { payload }: PayloadAction<Breadcrumb[]>) {
-      state.breadcrumbs = [...state.breadcrumbs, ...payload]
+      state.breadcrumbs = [...state.breadcrumbs, ...payload].sort(
+        (b1, b2) => b1.location.length - b2.location.length,
+      )
     },
     removeBreadcrumbs(state, { payload }: PayloadAction<Breadcrumb[]>) {
       const locations = payload.map((b) => b.location)

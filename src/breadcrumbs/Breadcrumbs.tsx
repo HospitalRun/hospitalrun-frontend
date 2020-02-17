@@ -12,19 +12,16 @@ const Breadcrumbs = () => {
 
   return (
     <Breadcrumb>
-      {breadcrumbs
-        .slice()
-        .sort((b1, b2) => b1.location.length - b2.location.length)
-        .map(({ i18nKey, text, location }, index) => {
-          const isLast = index === breadcrumbs.length - 1
-          const onClick = !isLast ? () => history.push(location) : undefined
+      {breadcrumbs.map(({ i18nKey, text, location }, index) => {
+        const isLast = index === breadcrumbs.length - 1
+        const onClick = !isLast ? () => history.push(location) : undefined
 
-          return (
-            <BreadcrumbItem key={location} active={isLast} onClick={onClick}>
-              {i18nKey ? t(i18nKey) : text}
-            </BreadcrumbItem>
-          )
-        })}
+        return (
+          <BreadcrumbItem key={location} active={isLast} onClick={onClick}>
+            {i18nKey ? t(i18nKey) : text}
+          </BreadcrumbItem>
+        )
+      })}
     </Breadcrumb>
   )
 }

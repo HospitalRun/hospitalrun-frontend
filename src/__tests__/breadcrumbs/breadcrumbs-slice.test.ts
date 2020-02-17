@@ -24,7 +24,7 @@ describe('breadcrumbs slice', () => {
       expect(breadcrumbsStore.breadcrumbs).toEqual(breadcrumbsToAdd)
     })
 
-    it('should handle the ADD_BREADCRUMBS action with existing breadcreumbs', () => {
+    it('should handle the ADD_BREADCRUMBS action with existing breadcrumbs', () => {
       const breadcrumbsToAdd = [{ text: 'Bob', location: '/user/1' }]
 
       const state = {
@@ -37,6 +37,28 @@ describe('breadcrumbs slice', () => {
       })
 
       expect(breadcrumbsStore.breadcrumbs).toEqual([...state.breadcrumbs, ...breadcrumbsToAdd])
+    })
+
+    it('should handle the ADD_BREADCRUMBS action and sort the breadcrumbs by their location', () => {
+      const breadcrumbsToAdd = [{ text: 'Bob', location: '/user/1/' }]
+
+      const state = {
+        breadcrumbs: [
+          { text: 'user', location: '/user' },
+          { text: 'edit user', location: '/user/1/edit' },
+        ],
+      }
+
+      const breadcrumbsStore = breadcrumbs(state, {
+        type: addBreadcrumbs.type,
+        payload: breadcrumbsToAdd,
+      })
+
+      expect(breadcrumbsStore.breadcrumbs).toEqual([
+        { text: 'user', location: '/user' },
+        { text: 'Bob', location: '/user/1/' },
+        { text: 'edit user', location: '/user/1/edit' },
+      ])
     })
 
     it('should handle the REMOVE_BREADCRUMBS action', () => {
