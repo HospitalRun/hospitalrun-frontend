@@ -37,8 +37,8 @@ const EditPatient = () => {
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
-    { text: getPatientFullName(patient), location: `/patients/${patient.id}` },
-    { i18nKey: 'patients.editPatient', location: `/patients/${patient.id}/edit` },
+    { text: getPatientFullName(reduxPatient), location: `/patients/${reduxPatient.id}` },
+    { i18nKey: 'patients.editPatient', location: `/patients/${reduxPatient.id}/edit` },
   ]
   useAddBreadcrumbs(breadcrumbs)
 

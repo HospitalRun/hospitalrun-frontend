@@ -7,10 +7,12 @@ import { mocked } from 'ts-jest/utils'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Toaster } from '@hospitalrun/components'
+
 import { act } from 'react-dom/test-utils'
 import Dashboard from 'dashboard/Dashboard'
 import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
+import { addBreadcrumbs } from 'breadcrumbs/breadcrumbs-slice'
 import NewPatient from '../patients/new/NewPatient'
 import EditPatient from '../patients/edit/EditPatient'
 import ViewPatient from '../patients/view/ViewPatient'
@@ -76,15 +78,15 @@ describe('HospitalRun', () => {
 
         mockedPatientRepository.find.mockResolvedValue(patient)
 
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [Permissions.WritePatients, Permissions.ReadPatients] },
+          patient: { patient },
+          breadcrumbs: { breadcrumbs: [] },
+        })
+
         const wrapper = mount(
-          <Provider
-            store={mockStore({
-              title: 'test',
-              user: { permissions: [Permissions.WritePatients, Permissions.ReadPatients] },
-              patient: { patient: {} as Patient },
-              breadcrumbs: { breadcrumbs: [] },
-            })}
-          >
+          <Provider store={store}>
             <MemoryRouter initialEntries={['/patients/edit/123']}>
               <HospitalRun />
             </MemoryRouter>
@@ -92,6 +94,14 @@ describe('HospitalRun', () => {
         )
 
         expect(wrapper.find(EditPatient)).toHaveLength(1)
+
+        expect(store.getActions()).toContainEqual(
+          addBreadcrumbs([
+            { i18nKey: 'patients.label', location: '/patients' },
+            { text: 'test test test', location: `/patients/${patient.id}` },
+            { i18nKey: 'patients.editPatient', location: `/patients/${patient.id}/edit` },
+          ]),
+        )
       })
 
       it('should render the Dashboard when the user does not have read patient privileges', () => {
