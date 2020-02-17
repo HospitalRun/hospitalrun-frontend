@@ -17,7 +17,7 @@ interface Event {
   allDay: boolean
 }
 
-const breadcrumbs = [{ i18nKey: 'scheduling.appointments.label', location: '/patients' }]
+const breadcrumbs = [{ i18nKey: 'scheduling.appointments.label', location: '/appointments' }]
 
 const Appointments = () => {
   const { t } = useTranslation()

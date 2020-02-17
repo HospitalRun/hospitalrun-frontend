@@ -27,14 +27,14 @@ describe('HospitalRun', () => {
   describe('routing', () => {
     describe('/patients/new', () => {
       it('should render the new patient screen when /patients/new is accessed', () => {
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [Permissions.WritePatients] },
+          breadcrumbs: { breadcrumbs: [] },
+        })
+
         const wrapper = mount(
-          <Provider
-            store={mockStore({
-              title: 'test',
-              user: { permissions: [Permissions.WritePatients] },
-              breadcrumbs: { breadcrumbs: [] },
-            })}
-          >
+          <Provider store={store}>
             <MemoryRouter initialEntries={['/patients/new']}>
               <HospitalRun />
             </MemoryRouter>
@@ -42,6 +42,13 @@ describe('HospitalRun', () => {
         )
 
         expect(wrapper.find(NewPatient)).toHaveLength(1)
+
+        expect(store.getActions()).toContainEqual(
+          addBreadcrumbs([
+            { i18nKey: 'patients.label', location: '/patients' },
+            { i18nKey: 'patients.newPatient', location: '/patients/new' },
+          ]),
+        )
       })
 
       it('should render the Dashboard if the user does not have write patient privileges', () => {
@@ -156,15 +163,15 @@ describe('HospitalRun', () => {
 
         mockedPatientRepository.find.mockResolvedValue(patient)
 
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [Permissions.ReadPatients] },
+          patient: { patient },
+          breadcrumbs: { breadcrumbs: [] },
+        })
+
         const wrapper = mount(
-          <Provider
-            store={mockStore({
-              title: 'test',
-              user: { permissions: [Permissions.ReadPatients] },
-              patient: { patient },
-              breadcrumbs: { breadcrumbs: [] },
-            })}
-          >
+          <Provider store={store}>
             <MemoryRouter initialEntries={['/patients/123']}>
               <HospitalRun />
             </MemoryRouter>
@@ -172,6 +179,13 @@ describe('HospitalRun', () => {
         )
 
         expect(wrapper.find(ViewPatient)).toHaveLength(1)
+
+        expect(store.getActions()).toContainEqual(
+          addBreadcrumbs([
+            { i18nKey: 'patients.label', location: '/patients' },
+            { text: 'test test test', location: `/patients/${patient.id}` },
+          ]),
+        )
       })
 
       it('should render the Dashboard when the user does not have read patient privileges', () => {
@@ -195,15 +209,15 @@ describe('HospitalRun', () => {
 
     describe('/appointments', () => {
       it('should render the appointments screen when /appointments is accessed', async () => {
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [Permissions.ReadAppointments] },
+          appointments: { appointments: [] },
+          breadcrumbs: { breadcrumbs: [] },
+        })
+
         const wrapper = mount(
-          <Provider
-            store={mockStore({
-              title: 'test',
-              user: { permissions: [Permissions.ReadAppointments] },
-              appointments: { appointments: [] },
-              breadcrumbs: { breadcrumbs: [] },
-            })}
-          >
+          <Provider store={store}>
             <MemoryRouter initialEntries={['/appointments']}>
               <HospitalRun />
             </MemoryRouter>
@@ -215,6 +229,10 @@ describe('HospitalRun', () => {
         })
 
         expect(wrapper.find(Appointments)).toHaveLength(1)
+
+        expect(store.getActions()).toContainEqual(
+          addBreadcrumbs([{ i18nKey: 'scheduling.appointments.label', location: '/appointments' }]),
+        )
       })
 
       it('should render the Dashboard when the user does not have read appointment privileges', () => {
@@ -239,14 +257,14 @@ describe('HospitalRun', () => {
 
   describe('/appointments/new', () => {
     it('should render the new appointment screen when /appointments/new is accessed', async () => {
+      const store = mockStore({
+        title: 'test',
+        user: { permissions: [Permissions.WriteAppointments] },
+        breadcrumbs: { breadcrumbs: [] },
+      })
+
       const wrapper = mount(
-        <Provider
-          store={mockStore({
-            title: 'test',
-            user: { permissions: [Permissions.WriteAppointments] },
-            breadcrumbs: { breadcrumbs: [] },
-          })}
-        >
+        <Provider store={store}>
           <MemoryRouter initialEntries={['/appointments/new']}>
             <HospitalRun />
           </MemoryRouter>
@@ -254,6 +272,13 @@ describe('HospitalRun', () => {
       )
 
       expect(wrapper.find(NewAppointment)).toHaveLength(1)
+
+      expect(store.getActions()).toContainEqual(
+        addBreadcrumbs([
+          { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
+          { i18nKey: 'scheduling.appointments.new', location: '/appointments/new' },
+        ]),
+      )
     })
 
     it('should render the Dashboard when the user does not have read appointment privileges', () => {
