@@ -13,6 +13,7 @@ jobs:
         #   - os: windows-latest
         #     node-version: 13.x
     steps:
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
       - uses: actions/checkout@v1
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -46,6 +47,7 @@ jobs:
         #   - os: windows-latest
         #     node-version: 13.x
     steps:
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
       - uses: actions/checkout@v1
       - name: Use Node.js
         uses: actions/setup-node@v1
