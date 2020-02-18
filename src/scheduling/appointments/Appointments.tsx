@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
 import { useHistory } from 'react-router'
 import PatientRepository from 'clients/db/PatientRepository'
-import { useButtonToolbarSetter } from 'page-header/button-bar-context'
+import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import { fetchAppointments } from './appointments-slice'
 
 interface Event {
@@ -32,7 +32,7 @@ const Appointments = () => {
       icon="appointment-add"
       onClick={() => history.push('/appointments/new')}
     >
-      New Appointment
+      {t('scheduling.appointments.new')}
     </Button>,
   ])
 

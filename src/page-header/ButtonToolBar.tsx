@@ -1,5 +1,5 @@
 import React from 'react'
-import { useButtons } from './button-bar-context'
+import { useButtons } from './ButtonBarProvider'
 
 const ButtonToolBar = () => {
   const buttons = useButtons()

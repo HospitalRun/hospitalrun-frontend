@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 type Props = {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 type ButtonUpdater = (buttons: React.ReactNode[]) => void
@@ -19,16 +19,19 @@ function ButtonBarProvider(props: Props) {
   )
 }
 function useButtons() {
+  console.log('use buttons')
   const context = React.useContext(ButtonBarStateContext)
+  console.log('bug')
+  console.log(context)
   if (context === undefined) {
-    throw new Error('useCountState must be used within a CountProvider')
+    throw new Error('useButtons must be used within a Button Bar Context')
   }
   return context
 }
 function useButtonToolbarSetter() {
   const context = React.useContext(ButtonBarUpdateContext)
   if (context === undefined) {
-    throw new Error('useCountDispatch must be used within a CountProvider')
+    throw new Error('useButtonToolBarSetter must be used within a Button Bar Context')
   }
   return context
 }
