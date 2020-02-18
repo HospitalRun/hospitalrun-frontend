@@ -12,7 +12,10 @@ describe('Button Tool Bar', () => {
   })
 
   it('should render the buttons in the provider', () => {
-    const buttons: React.ReactNode[] = [<Button>Test 1</Button>, <Button>Test</Button>]
+    const buttons: React.ReactNode[] = [
+      <Button key="test1">Test 1</Button>,
+      <Button key="test2">Test 2</Button>,
+    ]
     jest.spyOn(ButtonBarProvider, 'useButtons')
     mocked(ButtonBarProvider).useButtons.mockReturnValue(buttons)
 

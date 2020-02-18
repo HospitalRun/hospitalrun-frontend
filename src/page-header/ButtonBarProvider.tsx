@@ -7,7 +7,9 @@ type Props = {
 type ButtonUpdater = (buttons: React.ReactNode[]) => void
 
 const ButtonBarStateContext = React.createContext<React.ReactNode[]>([])
-const ButtonBarUpdateContext = React.createContext<ButtonUpdater>(() => {})
+const ButtonBarUpdateContext = React.createContext<ButtonUpdater>(() => {
+  // empty initial state
+})
 
 function ButtonBarProvider(props: Props) {
   const { children } = props
@@ -19,10 +21,7 @@ function ButtonBarProvider(props: Props) {
   )
 }
 function useButtons() {
-  console.log('use buttons')
   const context = React.useContext(ButtonBarStateContext)
-  console.log('bug')
-  console.log(context)
   if (context === undefined) {
     throw new Error('useButtons must be used within a Button Bar Context')
   }

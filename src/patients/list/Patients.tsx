@@ -18,6 +18,7 @@ const Patients = () => {
   const setButtonToolBar = useButtonToolbarSetter()
   setButtonToolBar([
     <Button
+      key="newPatientButton"
       outlined
       color="success"
       icon="patient-add"

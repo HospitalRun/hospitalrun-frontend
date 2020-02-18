@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
+import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import Patient from '../../../model/Patient'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as titleUtil from '../../../page-header/useTitle'
@@ -71,25 +72,6 @@ describe('ViewPatient', () => {
     jest.restoreAllMocks()
   })
 
-  it('should navigate to /patients/edit/:id when edit is clicked', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
-
-    wrapper.update()
-
-    const editButton = wrapper.find(Button).at(3)
-    const onClick = editButton.prop('onClick') as any
-    expect(editButton.text().trim()).toEqual('actions.edit')
-
-    act(() => {
-      onClick()
-    })
-
-    expect(history.location.pathname).toEqual('/patients/edit/123')
-  })
-
   it('should dispatch fetchPatient when component loads', async () => {
     await act(async () => {
       await setup()
@@ -108,6 +90,17 @@ describe('ViewPatient', () => {
     expect(titleUtil.default).toHaveBeenCalledWith(
       `${patient.givenName} ${patient.familyName} ${patient.suffix} (${patient.friendlyId})`,
     )
+  })
+
+  it('should add a "Edit Patient" button to the button tool bar', () => {
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
+    const setButtonToolBarSpy = jest.fn()
+    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+
+    setup()
+
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+    expect((actualButtons[0] as any).props.children).toEqual('actions.edit')
   })
 
   it('should render a tabs header with the correct tabs', async () => {

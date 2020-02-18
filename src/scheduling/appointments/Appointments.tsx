@@ -27,6 +27,7 @@ const Appointments = () => {
   const setButtonToolBar = useButtonToolbarSetter()
   setButtonToolBar([
     <Button
+      key="newAppointmentButton"
       outlined
       color="success"
       icon="appointment-add"
