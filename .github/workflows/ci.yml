@@ -65,9 +65,6 @@ jobs:
       - name: Build
         run: |
           yarn build
-      - name: Storybook build
-        run: |
-          yarn build-storybook
       - name: Run tests
         run: |
           yarn test:ci
