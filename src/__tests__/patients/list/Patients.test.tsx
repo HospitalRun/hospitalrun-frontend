@@ -16,7 +16,7 @@ const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
 describe('Patients', () => {
-  const patients = [{ fullName: 'test test', friendlyId: 'P12345' }]
+  const patients = [{ id: '123', fullName: 'test test', friendlyId: 'P12345' }]
   const mockedPatientRepository = mocked(PatientRepository, true)
 
   const setup = (isLoading?: boolean) => {
