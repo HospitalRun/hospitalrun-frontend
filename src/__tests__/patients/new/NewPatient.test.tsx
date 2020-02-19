@@ -52,7 +52,7 @@ describe('New Patient', () => {
   }
 
   beforeEach(() => {
-    jest.restoreAllMocks()
+    jest.resetAllMocks()
   })
 
   it('should render a general information form', async () => {
