@@ -75,6 +75,7 @@ const ViewPatient = () => {
               <Button
                 color="success"
                 outlined
+                icon="edit"
                 onClick={() => {
                   history.push(`/patients/edit/${patient.id}`)
                 }}
