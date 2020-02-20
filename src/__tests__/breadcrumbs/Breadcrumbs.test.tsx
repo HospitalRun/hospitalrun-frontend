@@ -33,10 +33,11 @@ describe('Breadcrumbs', () => {
     return wrapper
   }
 
-  it('should not render the breadcrumb when there is no items in the store', () => {
+  it('should not render the breadcrumb when there are no items in the store', () => {
     const wrapper = setup([])
 
     expect(wrapper.find(HRBreadcrumb)).toHaveLength(0)
+    expect(wrapper.find(HRBreadcrumbItem)).toHaveLength(0)
   })
 
   it('should render breadcrumbs items', () => {
