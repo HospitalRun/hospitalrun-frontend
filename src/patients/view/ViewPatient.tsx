@@ -4,6 +4,7 @@ import { useParams, withRouter, Route, useHistory, useLocation } from 'react-rou
 import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 
+import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import useTitle from '../../page-header/useTitle'
 import { fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
@@ -31,12 +32,31 @@ const ViewPatient = () => {
 
   useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
 
+  const setButtonToolBar = useButtonToolbarSetter()
+  setButtonToolBar([
+    <Button
+      key="editPatientButton"
+      color="success"
+      icon="edit"
+      outlined
+      onClick={() => {
+        history.push(`/patients/edit/${patient.id}`)
+      }}
+    >
+      {t('actions.edit')}
+    </Button>,
+  ])
+
   const { id } = useParams()
   useEffect(() => {
     if (id) {
       dispatch(fetchPatient(id))
     }
-  }, [dispatch, id])
+
+    return () => {
+      setButtonToolBar([])
+    }
+  }, [dispatch, id, setButtonToolBar])
 
   if (isLoading || !patient) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
@@ -63,21 +83,6 @@ const ViewPatient = () => {
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
-          <div className="row">
-            <div className="col-md-12 d-flex justify-content-end">
-              <Button
-                color="success"
-                outlined
-                icon="edit"
-                onClick={() => {
-                  history.push(`/patients/edit/${patient.id}`)
-                }}
-              >
-                {t('actions.edit')}
-              </Button>
-            </div>
-          </div>
-          <br />
           <GeneralInformation patient={patient} />
         </Route>
         <Route exact path="/patients/:id/relatedpersons">
