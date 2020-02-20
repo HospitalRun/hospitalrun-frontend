@@ -40,7 +40,7 @@ const EditPatient = () => {
     { text: getPatientFullName(reduxPatient), location: `/patients/${reduxPatient.id}` },
     { i18nKey: 'patients.editPatient', location: `/patients/${reduxPatient.id}/edit` },
   ]
-  useAddBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
     setPatient(reduxPatient)

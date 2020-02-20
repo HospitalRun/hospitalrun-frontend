@@ -10,6 +10,10 @@ const Breadcrumbs = () => {
   const { t } = useTranslation()
   const { breadcrumbs } = useSelector((state: RootState) => state.breadcrumbs)
 
+  if (breadcrumbs.length === 0) {
+    return null
+  }
+
   return (
     <Breadcrumb>
       {breadcrumbs.map(({ i18nKey, text, location }, index) => {

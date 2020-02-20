@@ -5,7 +5,10 @@ import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-import { BreadcrumbItem } from '@hospitalrun/components'
+import {
+  Breadcrumb as HRBreadcrumb,
+  BreadcrumbItem as HRBreadcrumbItem,
+} from '@hospitalrun/components'
 
 import Breadcrumbs from 'breadcrumbs/Breadcrumbs'
 import Breadcrumb from 'model/Breadcrumb'
@@ -30,6 +33,12 @@ describe('Breadcrumbs', () => {
     return wrapper
   }
 
+  it('should not render the breadcrumb when there is no items in the store', () => {
+    const wrapper = setup([])
+
+    expect(wrapper.find(HRBreadcrumb)).toHaveLength(0)
+  })
+
   it('should render breadcrumbs items', () => {
     const breadcrumbs = [
       { i18nKey: 'patient.label', location: '/patient' },
@@ -38,7 +47,7 @@ describe('Breadcrumbs', () => {
     ]
     const wrapper = setup(breadcrumbs)
 
-    const items = wrapper.find(BreadcrumbItem)
+    const items = wrapper.find(HRBreadcrumbItem)
 
     expect(items).toHaveLength(3)
     expect(items.at(0).text()).toEqual('patient.label')

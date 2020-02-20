@@ -29,7 +29,7 @@ const ViewAppointment = () => {
     { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
     { text: getAppointmentLabel(appointment), location: `/patients/${appointment.id}` },
   ]
-  useAddBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
     if (id) {

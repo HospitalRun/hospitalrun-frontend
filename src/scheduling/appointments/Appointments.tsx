@@ -23,7 +23,7 @@ const Appointments = () => {
   const { t } = useTranslation()
   const history = useHistory()
   useTitle(t('scheduling.appointments.label'))
-  useAddBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs, true)
   const dispatch = useDispatch()
   const { appointments } = useSelector((state: RootState) => state.appointments)
   const [events, setEvents] = useState<Event[]>([])

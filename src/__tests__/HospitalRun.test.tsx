@@ -47,6 +47,7 @@ describe('HospitalRun', () => {
           addBreadcrumbs([
             { i18nKey: 'patients.label', location: '/patients' },
             { i18nKey: 'patients.newPatient', location: '/patients/new' },
+            { i18nKey: 'dashboard.label', location: '/' },
           ]),
         )
       })
@@ -107,6 +108,7 @@ describe('HospitalRun', () => {
             { i18nKey: 'patients.label', location: '/patients' },
             { text: 'test test test', location: `/patients/${patient.id}` },
             { i18nKey: 'patients.editPatient', location: `/patients/${patient.id}/edit` },
+            { i18nKey: 'dashboard.label', location: '/' },
           ]),
         )
       })
@@ -184,6 +186,7 @@ describe('HospitalRun', () => {
           addBreadcrumbs([
             { i18nKey: 'patients.label', location: '/patients' },
             { text: 'test test test', location: `/patients/${patient.id}` },
+            { i18nKey: 'dashboard.label', location: '/' },
           ]),
         )
       })
@@ -231,7 +234,10 @@ describe('HospitalRun', () => {
         expect(wrapper.find(Appointments)).toHaveLength(1)
 
         expect(store.getActions()).toContainEqual(
-          addBreadcrumbs([{ i18nKey: 'scheduling.appointments.label', location: '/appointments' }]),
+          addBreadcrumbs([
+            { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
+            { i18nKey: 'dashboard.label', location: '/' },
+          ]),
         )
       })
 
@@ -277,6 +283,7 @@ describe('HospitalRun', () => {
         addBreadcrumbs([
           { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
           { i18nKey: 'scheduling.appointments.new', location: '/appointments/new' },
+          { i18nKey: 'dashboard.label', location: '/' },
         ]),
       )
     })

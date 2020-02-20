@@ -26,6 +26,25 @@ describe('useAddBreadcrumbs', () => {
     expect(breadcrumbsSlice.addBreadcrumbs).toHaveBeenCalledWith(breadcrumbs)
   })
 
+  it('should call addBreadcrumbs with an additional dashboard breadcrumb', () => {
+    const wrapper = ({ children }: any) => <Provider store={store({})}>{children}</Provider>
+
+    jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
+    const breadcrumbs = [
+      {
+        text: 'Patients',
+        location: '/patients',
+      },
+    ]
+
+    renderHook(() => useAddBreadcrumbs(breadcrumbs, true), { wrapper } as any)
+    expect(breadcrumbsSlice.addBreadcrumbs).toHaveBeenCalledTimes(1)
+    expect(breadcrumbsSlice.addBreadcrumbs).toHaveBeenCalledWith([
+      ...breadcrumbs,
+      { i18nKey: 'dashboard.label', location: '/' },
+    ])
+  })
+
   it('should call removeBreadcrumbs with the correct data after unmount', () => {
     const wrapper = ({ children }: any) => <Provider store={store({})}>{children}</Provider>
 

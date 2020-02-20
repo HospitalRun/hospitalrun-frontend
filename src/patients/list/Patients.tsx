@@ -14,7 +14,7 @@ const Patients = () => {
   const { t } = useTranslation()
   const history = useHistory()
   useTitle(t('patients.label'))
-  useAddBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs, true)
   const dispatch = useDispatch()
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 

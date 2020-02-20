@@ -22,7 +22,7 @@ const NewAppointment = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   useTitle(t('scheduling.appointments.new'))
-  useAddBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs, true)
   const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
   const endDateTime = addMinutes(startDateTime, 60)
 

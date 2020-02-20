@@ -25,7 +25,7 @@ const NewPatient = () => {
   const [errorMessage, setErrorMessage] = useState('')
 
   useTitle(t('patients.newPatient'))
-  useAddBreadcrumbs(breadcrumbs)
+  useAddBreadcrumbs(breadcrumbs, true)
 
   const onCancel = () => {
     history.push('/patients')
