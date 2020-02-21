@@ -13,4 +13,4 @@ jobs:
         fetch-depth: 1
     - uses: preactjs/compressed-size-action@v1
       with:
-        repo-token: "${{ secrets.GH_TOKEN }}"
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
