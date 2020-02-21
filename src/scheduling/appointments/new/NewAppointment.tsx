@@ -8,15 +8,15 @@ import { useDispatch } from 'react-redux'
 import Appointment from 'model/Appointment'
 import addMinutes from 'date-fns/addMinutes'
 import { isBefore } from 'date-fns'
-import { Button, Alert } from '@hospitalrun/components'
-import { createAppointment } from '../appointments-slice'
+import { Button } from '@hospitalrun/components'
+import { createAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 
 const NewAppointment = () => {
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
-  useTitle(t('scheduling.appointments.new'))
+  useTitle(t('scheduling.appointments.newAppointment'))
   const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
   const endDateTime = addMinutes(startDateTime, 60)
 
@@ -34,7 +34,7 @@ const NewAppointment = () => {
     history.push('/appointments')
   }
 
-  const onSaveClick = () => {
+  const onSave = () => {
     let newErrorMessage = ''
     if (!appointment.patientId) {
       newErrorMessage += t('scheduling.appointment.errors.patientRequired')
@@ -51,24 +51,25 @@ const NewAppointment = () => {
     dispatch(createAppointment(appointment as Appointment, history))
   }
 
+  const onFieldChange = (key: string, value: string | boolean) => {
+    setAppointment({
+      ...appointment,
+      [key]: value,
+    })
+  }
+
   return (
     <div>
       <form>
-        {errorMessage && (
-          <Alert
-            color="danger"
-            title={t('scheduling.appointment.errors.errorCreatingAppointment')}
-            message={errorMessage}
-          />
-        )}
         <AppointmentDetailForm
           appointment={appointment as Appointment}
-          onAppointmentChange={setAppointment}
+          errorMessage={errorMessage}
+          onFieldChange={onFieldChange}
         />
 
         <div className="row float-right">
           <div className="btn-group btn-group-lg">
-            <Button className="mr-2" color="success" onClick={onSaveClick}>
+            <Button className="mr-2" color="success" onClick={onSave}>
               {t('actions.save')}
             </Button>
             <Button color="danger" onClick={onCancelClick}>

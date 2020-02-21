@@ -8,7 +8,7 @@ import Appointment from 'model/Appointment'
 import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
 import { Router, Route } from 'react-router'
 import { createMemoryHistory } from 'history'
-import AppointmentRepository from 'clients/db/AppointmentsRepository'
+import AppointmentRepository from 'clients/db/AppointmentRepository'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import { Spinner } from '@hospitalrun/components'
@@ -81,7 +81,7 @@ describe('View Appointment', () => {
       await setup(true)
     })
 
-    expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.view')
+    expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.viewAppointment')
   })
 
   it('should dispatch getAppointment if id is present', async () => {

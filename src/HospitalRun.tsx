@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { Toaster } from '@hospitalrun/components'
 import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
+import EditAppointment from 'scheduling/appointments/edit/EditAppointment'
 import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
 import Sidebar from './components/Sidebar'
 import Permissions from './model/Permissions'
@@ -69,6 +70,15 @@ const HospitalRun = () => {
                   exact
                   path="/appointments/new"
                   component={NewAppointment}
+                />
+                <PrivateRoute
+                  isAuthenticated={
+                    permissions.includes(Permissions.WriteAppointments) &&
+                    permissions.includes(Permissions.ReadAppointments)
+                  }
+                  exact
+                  path="/appointments/edit/:id"
+                  component={EditAppointment}
                 />
                 <PrivateRoute
                   isAuthenticated={permissions.includes(Permissions.ReadAppointments)}
