@@ -84,7 +84,7 @@ const HospitalRun = () => {
                     exact
                     path="/appointments/edit/:id"
                     component={EditAppointment}
-                  />                  
+                  />
                   <PrivateRoute
                     isAuthenticated={permissions.includes(Permissions.ReadAppointments)}
                     exact

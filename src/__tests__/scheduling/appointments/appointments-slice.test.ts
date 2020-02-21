@@ -73,7 +73,7 @@ describe('appointments slice', () => {
       expect(dispatch).toHaveBeenCalledWith({ type: fetchAppointmentsStart.type })
     })
 
-    it('should call the AppointmentsRepository findAll() function', async () => {
+    it('should call the AppointmentRepository findAll() function', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       await fetchAppointments()(dispatch, getState, null)
