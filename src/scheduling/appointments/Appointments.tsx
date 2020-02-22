@@ -33,7 +33,7 @@ const Appointments = () => {
       icon="appointment-add"
       onClick={() => history.push('/appointments/new')}
     >
-      {t('scheduling.appointments.new')}
+      {t('scheduling.appointments.newAppointment')}
     </Button>,
   ])
 

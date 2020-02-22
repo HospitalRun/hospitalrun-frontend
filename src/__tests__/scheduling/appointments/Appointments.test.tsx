@@ -62,7 +62,9 @@ describe('Appointments', () => {
     })
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
-    expect((actualButtons[0] as any).props.children).toEqual('scheduling.appointments.new')
+    expect((actualButtons[0] as any).props.children).toEqual(
+      'scheduling.appointments.newAppointment',
+    )
   })
 
   it('should render a calendar with the proper events', async () => {

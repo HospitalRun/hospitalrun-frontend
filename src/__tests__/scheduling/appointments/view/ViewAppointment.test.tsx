@@ -15,6 +15,7 @@ import { Spinner } from '@hospitalrun/components'
 import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
+import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 
@@ -72,7 +73,7 @@ describe('View Appointment', () => {
   }
 
   beforeEach(() => {
-    jest.resetAllMocks()
+    jest.restoreAllMocks()
   })
 
   it('should use the correct title', async () => {
@@ -82,6 +83,17 @@ describe('View Appointment', () => {
     })
 
     expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.viewAppointment')
+  })
+
+  it('should add a "Edit Appointment" button to the button tool bar', () => {
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
+    const setButtonToolBarSpy = jest.fn()
+    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+
+    setup(true)
+
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+    expect((actualButtons[0] as any).props.children).toEqual('actions.edit')
   })
 
   it('should dispatch getAppointment if id is present', async () => {

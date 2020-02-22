@@ -5,6 +5,8 @@ import { RootState } from 'store'
 import { useParams, useHistory } from 'react-router'
 import { Spinner, Button } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
+
+import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import { fetchAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 
@@ -16,35 +18,38 @@ const ViewAppointment = () => {
   const history = useHistory()
   const { appointment, patient, isLoading } = useSelector((state: RootState) => state.appointment)
 
+  const setButtonToolBar = useButtonToolbarSetter()
+  console.log('setButtonToolBar was: ')
+  console.log(setButtonToolBar)
+  setButtonToolBar([
+    <Button
+      key="editAppointmentButton"
+      color="success"
+      icon="edit"
+      outlined
+      onClick={() => {
+        history.push(`/appointments/edit/${appointment.id}`)
+      }}
+    >
+      {t('actions.edit')}
+    </Button>,
+  ])
+
   useEffect(() => {
     if (id) {
       dispatch(fetchAppointment(id))
     }
-  }, [dispatch, id])
+
+    return () => {
+      setButtonToolBar([])
+    }
+  }, [dispatch, id, setButtonToolBar])
 
   if (!appointment.id || isLoading) {
     return <Spinner type="BarLoader" loading />
   }
 
-  return (
-    <div>
-      <div className="row">
-        <div className="col-md-12 d-flex justify-content-end">
-          <Button
-            color="success"
-            outlined
-            icon="edit"
-            onClick={() => {
-              history.push(`/appointments/edit/${appointment.id}`)
-            }}
-          >
-            {t('actions.edit')}
-          </Button>
-        </div>
-      </div>
-      <AppointmentDetailForm appointment={appointment} isEditable={false} patient={patient} />
-    </div>
-  )
+  return <AppointmentDetailForm appointment={appointment} isEditable={false} patient={patient} />
 }
 
 export default ViewAppointment
