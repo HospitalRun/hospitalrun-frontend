@@ -12,6 +12,7 @@ import { getPatientFullName } from '../util/patient-name-util'
 import Patient from '../../model/Patient'
 import GeneralInformation from '../GeneralInformation'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import AppointmentsList from '../appointments/AppointmentsList'
 
 const getFriendlyId = (p: Patient): string => {
@@ -46,6 +47,12 @@ const ViewPatient = () => {
       {t('actions.edit')}
     </Button>,
   ])
+
+  const breadcrumbs = [
+    { i18nKey: 'patients.label', location: '/patients' },
+    { text: getPatientFullName(patient), location: `/patients/${patient.id}` },
+  ]
+  useAddBreadcrumbs(breadcrumbs, true)
 
   const { id } = useParams()
   useEffect(() => {

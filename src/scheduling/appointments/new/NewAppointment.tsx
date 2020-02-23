@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import useTitle from 'page-header/useTitle'
 import { useTranslation } from 'react-i18next'
-
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
@@ -9,14 +8,21 @@ import Appointment from 'model/Appointment'
 import addMinutes from 'date-fns/addMinutes'
 import { isBefore } from 'date-fns'
 import { Button, Alert } from '@hospitalrun/components'
+import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 import { createAppointment } from '../appointments-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
+
+const breadcrumbs = [
+  { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
+  { i18nKey: 'scheduling.appointments.new', location: '/appointments/new' },
+]
 
 const NewAppointment = () => {
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
   useTitle(t('scheduling.appointments.new'))
+  useAddBreadcrumbs(breadcrumbs, true)
   const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
   const endDateTime = addMinutes(startDateTime, 60)
 

@@ -5,6 +5,7 @@ import { Toaster } from '@hospitalrun/components'
 import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
+import Breadcrumbs from 'breadcrumbs/Breadcrumbs'
 import { ButtonBarProvider } from 'page-header/ButtonBarProvider'
 import ButtonToolBar from 'page-header/ButtonToolBar'
 import Sidebar from './components/Sidebar'
@@ -34,6 +35,7 @@ const HospitalRun = () => {
                 <h1 className="h2">{title}</h1>
                 <ButtonToolBar />
               </div>
+              <Breadcrumbs />
               <div>
                 <Switch>
                   <Route exact path="/" component={Dashboard} />

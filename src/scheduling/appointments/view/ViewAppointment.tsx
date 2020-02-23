@@ -8,7 +8,17 @@ import { useTranslation } from 'react-i18next'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import Permissions from 'model/Permissions'
 import { fetchAppointment, deleteAppointment } from '../appointment-slice'
+import Appointment from 'model/Appointment'
 import AppointmentDetailForm from '../AppointmentDetailForm'
+import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
+
+function getAppointmentLabel(appointment: Appointment) {
+  const { id, startDateTime, endDateTime } = appointment
+
+  return startDateTime && endDateTime
+    ? `${new Date(startDateTime).toLocaleString()} - ${new Date(endDateTime).toLocaleString()}`
+    : id
+}
 
 const ViewAppointment = () => {
   const { t } = useTranslation()
@@ -47,6 +57,12 @@ const ViewAppointment = () => {
   }
 
   setButtons(buttons)
+
+  const breadcrumbs = [
+    { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
+    { text: getAppointmentLabel(appointment), location: `/patients/${appointment.id}` },
+  ]
+  useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
     if (id) {

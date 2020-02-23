@@ -7,11 +7,15 @@ import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+
+const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
 const Patients = () => {
   const { t } = useTranslation()
   const history = useHistory()
   useTitle(t('patients.label'))
+  useAddBreadcrumbs(breadcrumbs, true)
   const dispatch = useDispatch()
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 
