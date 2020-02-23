@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
 import { useHistory } from 'react-router'
 import PatientRepository from 'clients/db/PatientRepository'
+import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import { fetchAppointments } from './appointments-slice'
 
@@ -16,6 +17,8 @@ interface Event {
   title: string
   allDay: boolean
 }
+
+const breadcrumbs = [{ i18nKey: 'scheduling.appointments.label', location: '/appointments' }]
 
 const Appointments = () => {
   const { t } = useTranslation()
@@ -36,6 +39,7 @@ const Appointments = () => {
       {t('scheduling.appointments.new')}
     </Button>,
   ])
+  useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
     dispatch(fetchAppointments())
