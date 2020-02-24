@@ -22,7 +22,7 @@ function getAppointmentLabel(appointment: Appointment) {
 
 const ViewAppointment = () => {
   const { t } = useTranslation()
-  useTitle(t('scheduling.appointments.view'))
+  useTitle(t('scheduling.appointments.viewAppointment'))
   const dispatch = useDispatch()
   const { id } = useParams()
   const history = useHistory()
@@ -30,7 +30,7 @@ const ViewAppointment = () => {
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false)
 
-  const setButtons = useButtonToolbarSetter()
+  const setButtonToolBar = useButtonToolbarSetter()
 
   const onAppointmentDeleteButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -43,6 +43,22 @@ const ViewAppointment = () => {
   }
 
   const buttons = []
+  if (permissions.includes(Permissions.WriteAppointments)) {
+    buttons.push(
+      <Button
+        key="editAppointmentButton"
+        color="success"
+        icon="edit"
+        outlined
+        onClick={() => {
+          history.push(`/appointments/edit/${appointment.id}`)
+        }}
+      >
+        {t('actions.edit')}
+      </Button>,
+    )
+  }
+
   if (permissions.includes(Permissions.DeleteAppointment)) {
     buttons.push(
       <Button
@@ -51,12 +67,12 @@ const ViewAppointment = () => {
         icon="appointment-remove"
         onClick={onAppointmentDeleteButtonClick}
       >
-        {t('scheduling.appointment.delete')}
+        {t('scheduling.appointments.deleteAppointment')}
       </Button>,
     )
   }
 
-  setButtons(buttons)
+  setButtonToolBar(buttons)
 
   const breadcrumbs = [
     { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
@@ -68,8 +84,11 @@ const ViewAppointment = () => {
     if (id) {
       dispatch(fetchAppointment(id))
     }
-    return () => setButtons([])
-  }, [dispatch, id, setButtons])
+
+    return () => {
+      setButtonToolBar([])
+    }
+  }, [dispatch, id, setButtonToolBar])
 
   if (!appointment.id || isLoading) {
     return <Spinner type="BarLoader" loading />
@@ -77,14 +96,7 @@ const ViewAppointment = () => {
 
   return (
     <div>
-      <AppointmentDetailForm
-        appointment={appointment}
-        isEditable={false}
-        patient={patient}
-        onAppointmentChange={() => {
-          // not editable
-        }}
-      />
+      <AppointmentDetailForm appointment={appointment} isEditable={false} patient={patient} />
       <Modal
         body={t('scheduling.appointment.deleteConfirmationMessage')}
         buttonsAlignment="right"

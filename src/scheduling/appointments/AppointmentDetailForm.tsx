@@ -1,7 +1,7 @@
 import React from 'react'
 import Appointment from 'model/Appointment'
 import DateTimePickerWithLabelFormGroup from 'components/input/DateTimePickerWithLabelFormGroup'
-import { Typeahead, Label } from '@hospitalrun/components'
+import { Typeahead, Label, Alert } from '@hospitalrun/components'
 import Patient from 'model/Patient'
 import PatientRepository from 'clients/db/PatientRepository'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
@@ -13,42 +13,42 @@ interface Props {
   appointment: Appointment
   patient?: Patient
   isEditable: boolean
-  onAppointmentChange: (appointment: Appointment) => void
+  errorMessage?: string
+  onFieldChange?: (key: string, value: string | boolean) => void
 }
 
 const AppointmentDetailForm = (props: Props) => {
-  const { onAppointmentChange, appointment, patient, isEditable } = props
+  const { onFieldChange, appointment, patient, isEditable, errorMessage } = props
   const { t } = useTranslation()
+
+  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
+    onFieldChange && onFieldChange(fieldName, event.target.value)
+
+  const onDateChange = (date: Date, fieldName: string) =>
+    onFieldChange && onFieldChange(fieldName, date.toISOString())
+
+  const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
+    onFieldChange && onFieldChange(fieldName, event.target.value)
+
   return (
     <>
+      {errorMessage && <Alert color="danger" message={errorMessage} />}
       <div className="row">
         <div className="col">
           <div className="form-group">
-            {isEditable && !patient ? (
-              <>
-                <Label htmlFor="patientTypeahead" text={t('scheduling.appointment.patient')} />
-                <Typeahead
-                  id="patientTypeahead"
-                  value={appointment.patientId}
-                  placeholder={t('scheduling.appointment.patient')}
-                  onChange={(p: Patient[]) => {
-                    onAppointmentChange({ ...appointment, patientId: p[0].id })
-                  }}
-                  onSearch={async (query: string) => PatientRepository.search(query)}
-                  searchAccessor="fullName"
-                  renderMenuItemChildren={(p: Patient) => (
-                    <div>{`${p.fullName} (${p.friendlyId})`}</div>
-                  )}
-                />
-              </>
-            ) : (
-              <TextInputWithLabelFormGroup
-                name="patient"
-                label={t('scheduling.appointment.patient')}
-                value={patient?.fullName}
-                isEditable={isEditable}
-              />
-            )}
+            <Label htmlFor="patientTypeahead" text={t('scheduling.appointment.patient')} />
+            <Typeahead
+              id="patientTypeahead"
+              disabled={!isEditable || patient !== undefined}
+              value={patient?.fullName}
+              placeholder={t('scheduling.appointment.patient')}
+              onChange={(p: Patient[]) => onFieldChange && onFieldChange('patientId', p[0].id)}
+              onSearch={async (query: string) => PatientRepository.search(query)}
+              searchAccessor="fullName"
+              renderMenuItemChildren={(p: Patient) => (
+                <div>{`${p.fullName} (${p.friendlyId})`}</div>
+              )}
+            />
           </div>
         </div>
       </div>
@@ -59,8 +59,8 @@ const AppointmentDetailForm = (props: Props) => {
             label={t('scheduling.appointment.startDate')}
             value={new Date(appointment.startDateTime)}
             isEditable={isEditable}
-            onChange={(date) => {
-              onAppointmentChange({ ...appointment, startDateTime: date.toISOString() })
+            onChange={(date: Date) => {
+              onDateChange(date, 'startDateTime')
             }}
           />
         </div>
@@ -70,8 +70,8 @@ const AppointmentDetailForm = (props: Props) => {
             label={t('scheduling.appointment.endDate')}
             value={new Date(appointment.endDateTime)}
             isEditable={isEditable}
-            onChange={(date) => {
-              onAppointmentChange({ ...appointment, endDateTime: date.toISOString() })
+            onChange={(date: Date) => {
+              onDateChange(date, 'endDateTime')
             }}
           />
         </div>
@@ -84,7 +84,7 @@ const AppointmentDetailForm = (props: Props) => {
             value={appointment.location}
             isEditable={isEditable}
             onChange={(event) => {
-              onAppointmentChange({ ...appointment, location: event?.target.value })
+              onInputElementChange(event, 'location')
             }}
           />
         </div>
@@ -104,7 +104,7 @@ const AppointmentDetailForm = (props: Props) => {
               { label: t('scheduling.appointment.types.walkUp'), value: 'walk up' },
             ]}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-              onAppointmentChange({ ...appointment, type: event.currentTarget.value })
+              onSelectChange(event, 'type')
             }}
           />
         </div>
@@ -117,9 +117,11 @@ const AppointmentDetailForm = (props: Props) => {
               label={t('scheduling.appointment.reason')}
               value={appointment.reason}
               isEditable={isEditable}
-              onChange={(event) => {
-                onAppointmentChange({ ...appointment, reason: event?.target.value })
-              }}
+              onChange={
+                (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  onFieldChange && onFieldChange('reason', event.currentTarget.value)
+                // eslint-disable-next-line react/jsx-curly-newline
+              }
             />
           </div>
         </div>
