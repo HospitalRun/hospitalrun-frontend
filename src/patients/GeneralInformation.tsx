@@ -205,6 +205,7 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'phoneNumber')
               }}
+              type="tel"
             />
           </div>
           <div className="col">
@@ -217,6 +218,7 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'email')
               }}
+              type="email"
             />
           </div>
         </div>
