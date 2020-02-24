@@ -5,7 +5,7 @@ import { mount } from 'enzyme'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
-import { TabsHeader, Tab, Button } from '@hospitalrun/components'
+import { TabsHeader, Tab } from '@hospitalrun/components'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import GeneralInformation from 'patients/GeneralInformation'
@@ -43,7 +43,7 @@ describe('ViewPatient', () => {
   let history: any
   let store: MockStore
 
-  const setup = () => {
+  const setup = (permissions = [Permissions.ReadPatients]) => {
     jest.spyOn(PatientRepository, 'find')
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
@@ -51,7 +51,7 @@ describe('ViewPatient', () => {
     history = createMemoryHistory()
     store = mockStore({
       patient: { patient },
-      user: { permissions: [Permissions.ReadPatients] },
+      user: { permissions },
     })
 
     history.push('/patients/123')
@@ -93,7 +93,18 @@ describe('ViewPatient', () => {
     )
   })
 
-  it('should add a "Edit Patient" button to the button tool bar', () => {
+  it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', () => {
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
+    const setButtonToolBarSpy = jest.fn()
+    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+
+    setup([Permissions.WritePatients])
+
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+    expect((actualButtons[0] as any).props.children).toEqual('actions.edit')
+  })
+
+  it('button toolbar empty if only has ReadPatients permission', () => {
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
     const setButtonToolBarSpy = jest.fn()
     mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
@@ -101,7 +112,8 @@ describe('ViewPatient', () => {
     setup()
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
-    expect((actualButtons[0] as any).props.children).toEqual('actions.edit')
+    console.log(actualButtons)
+    expect(actualButtons.length).toEqual(0)
   })
 
   it('should render a tabs header with the correct tabs', async () => {

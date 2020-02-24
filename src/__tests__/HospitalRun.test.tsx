@@ -12,12 +12,15 @@ import { act } from 'react-dom/test-utils'
 import Dashboard from 'dashboard/Dashboard'
 import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
+import EditAppointment from 'scheduling/appointments/edit/EditAppointment'
 import { addBreadcrumbs } from 'breadcrumbs/breadcrumbs-slice'
 import NewPatient from '../patients/new/NewPatient'
 import EditPatient from '../patients/edit/EditPatient'
 import ViewPatient from '../patients/view/ViewPatient'
 import PatientRepository from '../clients/db/PatientRepository'
+import AppointmentRepository from '../clients/db/AppointmentRepository'
 import Patient from '../model/Patient'
+import Appointment from '../model/Appointment'
 import HospitalRun from '../HospitalRun'
 import Permissions from '../model/Permissions'
 
@@ -259,51 +262,124 @@ describe('HospitalRun', () => {
         expect(wrapper.find(Dashboard)).toHaveLength(1)
       })
     })
-  })
 
-  describe('/appointments/new', () => {
-    it('should render the new appointment screen when /appointments/new is accessed', async () => {
-      const store = mockStore({
-        title: 'test',
-        user: { permissions: [Permissions.WriteAppointments] },
-        breadcrumbs: { breadcrumbs: [] },
+    describe('/appointments/new', () => {
+      it('should render the new appointment screen when /appointments/new is accessed', async () => {
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [Permissions.WriteAppointments] },
+          breadcrumbs: { breadcrumbs: [] },
+        })
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <MemoryRouter initialEntries={['/appointments/new']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        wrapper.update()
+
+        expect(wrapper.find(NewAppointment)).toHaveLength(1)
+        expect(store.getActions()).toContainEqual(
+          addBreadcrumbs([
+            { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
+            { i18nKey: 'scheduling.appointments.newAppointment', location: '/appointments/new' },
+            { i18nKey: 'dashboard.label', location: '/' },
+          ]),
+        )
       })
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={['/appointments/new']}>
-            <HospitalRun />
-          </MemoryRouter>
-        </Provider>,
-      )
+      it('should render the Dashboard when the user does not have read appointment privileges', () => {
+        const wrapper = mount(
+          <Provider
+            store={mockStore({
+              title: 'test',
+              user: { permissions: [] },
+              breadcrumbs: { breadcrumbs: [] },
+            })}
+          >
+            <MemoryRouter initialEntries={['/appointments/new']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
 
-      expect(wrapper.find(NewAppointment)).toHaveLength(1)
-
-      expect(store.getActions()).toContainEqual(
-        addBreadcrumbs([
-          { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
-          { i18nKey: 'scheduling.appointments.new', location: '/appointments/new' },
-          { i18nKey: 'dashboard.label', location: '/' },
-        ]),
-      )
+        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
     })
 
-    it('should render the Dashboard when the user does not have read appointment privileges', () => {
-      const wrapper = mount(
-        <Provider
-          store={mockStore({
-            title: 'test',
-            user: { permissions: [] },
-            breadcrumbs: { breadcrumbs: [] },
-          })}
-        >
-          <MemoryRouter initialEntries={['/appointments/new']}>
-            <HospitalRun />
-          </MemoryRouter>
-        </Provider>,
-      )
+    describe('/appointments/edit/:id', () => {
+      it('should render the edit appointment screen when /appointments/edit/:id is accessed', () => {
+        jest.spyOn(AppointmentRepository, 'find')
+        const mockedAppointmentRepository = mocked(AppointmentRepository, true)
+        const mockedPatientRepository = mocked(PatientRepository, true)
+        const appointment = {
+          id: '123',
+          patientId: '456',
+        } as Appointment
 
-      expect(wrapper.find(Dashboard)).toHaveLength(1)
+        const patient = {
+          id: '456',
+        } as Patient
+
+        mockedAppointmentRepository.find.mockResolvedValue(appointment)
+        mockedPatientRepository.find.mockResolvedValue(patient)
+
+        const wrapper = mount(
+          <Provider
+            store={mockStore({
+              title: 'test',
+              user: { permissions: [Permissions.WriteAppointments, Permissions.ReadAppointments] },
+              appointment: { appointment: {} as Appointment, patient: {} as Patient },
+              breadcrumbs: { breadcrumbs: [] },
+            })}
+          >
+            <MemoryRouter initialEntries={['/appointments/edit/123']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(EditAppointment)).toHaveLength(1)
+      })
+
+      it('should render the Dashboard when the user does not have read appointment privileges', () => {
+        const wrapper = mount(
+          <Provider
+            store={mockStore({
+              title: 'test',
+              user: { permissions: [Permissions.WriteAppointments] },
+              breadcrumbs: { breadcrumbs: [] },
+            })}
+          >
+            <MemoryRouter initialEntries={['/appointments/edit/123']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
+
+      it('should render the Dashboard when the user does not have write appointment privileges', () => {
+        const wrapper = mount(
+          <Provider
+            store={mockStore({
+              title: 'test',
+              user: { permissions: [Permissions.ReadAppointments] },
+              breadcrumbs: { breadcrumbs: [] },
+            })}
+          >
+            <MemoryRouter initialEntries={['/appointments/edit/123']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
     })
   })
 

@@ -89,8 +89,10 @@
     "label": "Scheduling",
     "appointments": {
       "label": "Appointments",
-      "new": "New Appointment",
-      "view": "View Appointment",
+      "newAppointment": "New Appointment",
+      "editAppointment": "Edit Appointment",
+      "viewAppointment": "View Appointment",
+      "deleteAppointment": "Delete Appointment",
       "successfullyDeleted": "Successfully deleted appointment!"
     },
     "appointment": {
@@ -107,12 +109,10 @@
       },
       "errors": {
         "patientRequired": "Patient is required.",
-        "errorCreatingAppointment": "Error Creating Appointment!",
         "startDateMustBeBeforeEndDate": "Start Time must be before End Time."
       },
       "reason": "Reason",
       "patient": "Patient",
-      "delete": "Delete Appointment",
       "deleteConfirmationMessage": "Are you sure you want to delete this appointment?"
     }
   }
