@@ -9,9 +9,11 @@ import useTitle from '../../page-header/useTitle'
 import { fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
 import { getPatientFullName } from '../util/patient-name-util'
+import Permissions from '../../model/Permissions'
 import Patient from '../../model/Patient'
 import GeneralInformation from '../GeneralInformation'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import AppointmentsList from '../appointments/AppointmentsList'
 
 const getFriendlyId = (p: Patient): string => {
@@ -29,23 +31,36 @@ const ViewPatient = () => {
   const location = useLocation()
 
   const { patient, isLoading } = useSelector((state: RootState) => state.patient)
+  const { permissions } = useSelector((state: RootState) => state.user)
 
   useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
 
   const setButtonToolBar = useButtonToolbarSetter()
-  setButtonToolBar([
-    <Button
-      key="editPatientButton"
-      color="success"
-      icon="edit"
-      outlined
-      onClick={() => {
-        history.push(`/patients/edit/${patient.id}`)
-      }}
-    >
-      {t('actions.edit')}
-    </Button>,
-  ])
+
+  const buttons = []
+  if (permissions.includes(Permissions.WritePatients)) {
+    buttons.push(
+      <Button
+        key="editPatientButton"
+        color="success"
+        icon="edit"
+        outlined
+        onClick={() => {
+          history.push(`/patients/edit/${patient.id}`)
+        }}
+      >
+        {t('actions.edit')}
+      </Button>,
+    )
+  }
+
+  setButtonToolBar(buttons)
+
+  const breadcrumbs = [
+    { i18nKey: 'patients.label', location: '/patients' },
+    { text: getPatientFullName(patient), location: `/patients/${patient.id}` },
+  ]
+  useAddBreadcrumbs(breadcrumbs, true)
 
   const { id } = useParams()
   useEffect(() => {

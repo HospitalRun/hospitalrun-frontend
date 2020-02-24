@@ -9,6 +9,12 @@ import useTitle from '../../page-header/useTitle'
 import Patient from '../../model/Patient'
 import { createPatient } from '../patient-slice'
 import { getPatientName } from '../util/patient-name-util'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+
+const breadcrumbs = [
+  { i18nKey: 'patients.label', location: '/patients' },
+  { i18nKey: 'patients.newPatient', location: '/patients/new' },
+]
 
 const NewPatient = () => {
   const { t } = useTranslation()
@@ -19,6 +25,7 @@ const NewPatient = () => {
   const [errorMessage, setErrorMessage] = useState('')
 
   useTitle(t('patients.newPatient'))
+  useAddBreadcrumbs(breadcrumbs, true)
 
   const onCancel = () => {
     history.push('/patients')

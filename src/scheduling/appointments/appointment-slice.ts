@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Appointment from 'model/Appointment'
 import { AppThunk } from 'store'
+import { Toast } from '@hospitalrun/components'
 import AppointmentRepository from 'clients/db/AppointmentRepository'
 import Patient from 'model/Patient'
 import PatientRepository from 'clients/db/PatientRepository'
+import il8n from '../../i18n'
 
 interface AppointmentState {
   appointment: Appointment
@@ -28,6 +30,10 @@ const appointmentSlice = createSlice({
     fetchAppointmentStart: startLoading,
     createAppointmentStart: startLoading,
     updateAppointmentStart: startLoading,
+    deleteAppointmentStart: startLoading,
+    deleteAppointmentSuccess: (state: AppointmentState) => {
+      state.isLoading = false
+    },
     fetchAppointmentSuccess: (
       state,
       { payload }: PayloadAction<{ appointment: Appointment; patient: Patient }>,
@@ -53,6 +59,8 @@ export const {
   updateAppointmentSuccess,
   fetchAppointmentStart,
   fetchAppointmentSuccess,
+  deleteAppointmentStart,
+  deleteAppointmentSuccess,
 } = appointmentSlice.actions
 
 export const fetchAppointment = (id: string): AppThunk => async (dispatch) => {
@@ -79,6 +87,20 @@ export const updateAppointment = (appointment: Appointment, history: any): AppTh
   const updatedAppointment = await AppointmentRepository.saveOrUpdate(appointment)
   dispatch(updateAppointmentSuccess(updatedAppointment))
   history.push(`/appointments/${updatedAppointment.id}`)
+}
+
+export const deleteAppointment = (appointment: Appointment, history: any): AppThunk => async (
+  dispatch,
+) => {
+  dispatch(deleteAppointmentStart())
+  await AppointmentRepository.delete(appointment)
+  history.push('/appointments')
+  Toast(
+    'success',
+    il8n.t('states.success'),
+    `${il8n.t('scheduling.appointments.successfullyDeleted')}`,
+  )
+  dispatch(deleteAppointmentSuccess())
 }
 
 export default appointmentSlice.reducer

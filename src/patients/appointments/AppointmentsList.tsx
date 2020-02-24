@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { TextInput, Button, List, ListItem, Container, Row } from '@hospitalrun/components'
 import { RootState } from '../../store'
 import { fetchPatientAppointments } from '../../scheduling/appointments/appointments-slice'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 interface Props {
   patientId: string
@@ -18,6 +19,14 @@ const AppointmentsList = (props: Props) => {
   const { patientId } = props
   const { appointments } = useSelector((state: RootState) => state.appointments)
   const [searchText, setSearchText] = useState<string>('')
+
+  const breadcrumbs = [
+    {
+      i18nKey: 'scheduling.appointments.label',
+      location: `/patients/${patientId}/appointments`,
+    },
+  ]
+  useAddBreadcrumbs(breadcrumbs)
 
   useEffect(() => {
     dispatch(fetchPatientAppointments(patientId))
