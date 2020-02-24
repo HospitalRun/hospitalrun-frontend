@@ -5,6 +5,7 @@ import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components
 import { useTranslation } from 'react-i18next'
 
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
+import Allergies from 'patients/allergies/Allergies'
 import useTitle from '../../page-header/useTitle'
 import { fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
@@ -87,6 +88,11 @@ const ViewPatient = () => {
           label={t('scheduling.appointments.label')}
           onClick={() => history.push(`/patients/${patient.id}/appointments`)}
         />
+        <Tab
+          active={location.pathname === `/patients/${patient.id}/allergies`}
+          label={t('patient.allergies.label')}
+          onClick={() => history.push(`/patients/${patient.id}/allergies`)}
+        />
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
@@ -97,6 +103,9 @@ const ViewPatient = () => {
         </Route>
         <Route exact path="/patients/:id/appointments">
           <AppointmentsList patientId={patient.id} />
+        </Route>
+        <Route exact path="/patients/:id/allergies">
+          <Allergies patient={patient} />
         </Route>
       </Panel>
     </div>
