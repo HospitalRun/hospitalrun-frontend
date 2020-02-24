@@ -12,6 +12,7 @@ import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
+import Allergies from 'patients/allergies/Allergies'
 import Patient from '../../../model/Patient'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as titleUtil from '../../../page-header/useTitle'
@@ -125,10 +126,11 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(3)
+    expect(tabs).toHaveLength(4)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
+    expect(tabs.at(3).prop('label')).toEqual('patient.allergies.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -184,5 +186,29 @@ describe('ViewPatient', () => {
     expect(tabs.at(1).prop('active')).toBeTruthy()
     expect(relatedPersonTab).toHaveLength(1)
     expect(relatedPersonTab.prop('patient')).toEqual(patient)
+  })
+
+  it('should mark the rallergies tab as active when it is clicked and render the allergies component when route is /patients/:id/allergies', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    await act(async () => {
+      const tabsHeader = wrapper.find(TabsHeader)
+      const tabs = tabsHeader.find(Tab)
+      tabs.at(3).prop('onClick')()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const allergiesTab = wrapper.find(Allergies)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/allergies`)
+    expect(tabs.at(3).prop('active')).toBeTruthy()
+    expect(allergiesTab).toHaveLength(1)
+    expect(allergiesTab.prop('patient')).toEqual(patient)
   })
 })

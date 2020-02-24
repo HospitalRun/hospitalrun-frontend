@@ -52,6 +52,17 @@
     },
     "errors": {
       "patientGivenNameRequired": "Patient Given Name is required."
+    },
+    "allergies": {
+      "label": "Allergies",
+      "new": "Add Allergy",
+      "error": {
+        "nameRequired": "Name is required."
+      },
+      "warning": {
+        "noAllergies": "No Allergies"
+      },
+      "addAllergyAbove": "Add an allergy using the button above."
     }
   },
   "sex": {
