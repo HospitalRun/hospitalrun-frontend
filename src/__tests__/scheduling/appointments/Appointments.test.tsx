@@ -11,6 +11,7 @@ import { act } from '@testing-library/react'
 import PatientRepository from 'clients/db/PatientRepository'
 import { mocked } from 'ts-jest/utils'
 import Patient from 'model/Patient'
+import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/useTitle'
 
 describe('Appointments', () => {
@@ -49,6 +50,19 @@ describe('Appointments', () => {
       await setup()
     })
     expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.label')
+  })
+
+  it('should add a "New Appointment" button to the button tool bar', async () => {
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
+    const setButtonToolBarSpy = jest.fn()
+    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+
+    await act(async () => {
+      await setup()
+    })
+
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+    expect((actualButtons[0] as any).props.children).toEqual('scheduling.appointments.new')
   })
 
   it('should render a calendar with the proper events', async () => {

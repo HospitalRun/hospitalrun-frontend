@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Appointment from 'model/Appointment'
 import { AppThunk } from 'store'
+import { Toast } from '@hospitalrun/components'
 import AppointmentRepository from 'clients/db/AppointmentsRepository'
 import Patient from 'model/Patient'
 import PatientRepository from 'clients/db/PatientRepository'
+import il8n from '../../i18n'
 
 interface AppointmentState {
   appointment: Appointment
@@ -24,6 +26,12 @@ const appointmentSlice = createSlice({
     fetchAppointmentStart: (state: AppointmentState) => {
       state.isLoading = true
     },
+    deleteAppointmentStart: (state: AppointmentState) => {
+      state.isLoading = true
+    },
+    deleteAppointmentSuccess: (state: AppointmentState) => {
+      state.isLoading = false
+    },
     fetchAppointmentSuccess: (
       state,
       { payload }: PayloadAction<{ appointment: Appointment; patient: Patient }>,
@@ -35,7 +43,12 @@ const appointmentSlice = createSlice({
   },
 })
 
-export const { fetchAppointmentStart, fetchAppointmentSuccess } = appointmentSlice.actions
+export const {
+  fetchAppointmentStart,
+  fetchAppointmentSuccess,
+  deleteAppointmentStart,
+  deleteAppointmentSuccess,
+} = appointmentSlice.actions
 
 export const fetchAppointment = (id: string): AppThunk => async (dispatch) => {
   dispatch(fetchAppointmentStart())
@@ -43,6 +56,20 @@ export const fetchAppointment = (id: string): AppThunk => async (dispatch) => {
   const patient = await PatientRepository.find(appointment.patientId)
 
   dispatch(fetchAppointmentSuccess({ appointment, patient }))
+}
+
+export const deleteAppointment = (appointment: Appointment, history: any): AppThunk => async (
+  dispatch,
+) => {
+  dispatch(deleteAppointmentStart())
+  await AppointmentRepository.delete(appointment)
+  history.push('/appointments')
+  Toast(
+    'success',
+    il8n.t('states.success'),
+    `${il8n.t('scheduling.appointments.successfullyDeleted')}`,
+  )
+  dispatch(deleteAppointmentSuccess())
 }
 
 export default appointmentSlice.reducer

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Calendar } from '@hospitalrun/components'
+import { Calendar, Button } from '@hospitalrun/components'
 import useTitle from 'page-header/useTitle'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
 import { useHistory } from 'react-router'
 import PatientRepository from 'clients/db/PatientRepository'
+import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
+import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import { fetchAppointments } from './appointments-slice'
 
 interface Event {
@@ -16,6 +18,8 @@ interface Event {
   allDay: boolean
 }
 
+const breadcrumbs = [{ i18nKey: 'scheduling.appointments.label', location: '/appointments' }]
+
 const Appointments = () => {
   const { t } = useTranslation()
   const history = useHistory()
@@ -23,10 +27,27 @@ const Appointments = () => {
   const dispatch = useDispatch()
   const { appointments } = useSelector((state: RootState) => state.appointments)
   const [events, setEvents] = useState<Event[]>([])
+  const setButtonToolBar = useButtonToolbarSetter()
+  setButtonToolBar([
+    <Button
+      key="newAppointmentButton"
+      outlined
+      color="success"
+      icon="appointment-add"
+      onClick={() => history.push('/appointments/new')}
+    >
+      {t('scheduling.appointments.new')}
+    </Button>,
+  ])
+  useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
     dispatch(fetchAppointments())
-  }, [dispatch])
+
+    return () => {
+      setButtonToolBar([])
+    }
+  }, [dispatch, setButtonToolBar])
 
   useEffect(() => {
     const getAppointments = async () => {
