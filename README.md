@@ -17,6 +17,7 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 
 - To contribute, follow the guidelines in the readme or alternatively ask for details on Slack channel [#contributors](https://hospitalrun-slack.herokuapp.com).
 - To use version 1.0.0-beta (not production ready) in a hospital facility, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com) or Spectrum channel [#support](https://spectrum.chat/hospitalrun).
+### [Join our slack development group](https://hospitalrun-slack.herokuapp.com)
 
 # Contributing
 
