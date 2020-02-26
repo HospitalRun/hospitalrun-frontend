@@ -63,6 +63,9 @@
         "noAllergies": "No Allergies"
       },
       "addAllergyAbove": "Add an allergy using the button above."
+    },
+    "diagnoses": {
+      "label": "Diagnoses"
     }
   },
   "sex": {
