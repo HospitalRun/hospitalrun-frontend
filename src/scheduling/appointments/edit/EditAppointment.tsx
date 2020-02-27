@@ -10,6 +10,8 @@ import useTitle from '../../../page-header/useTitle'
 import Appointment from '../../../model/Appointment'
 import { updateAppointment, fetchAppointment } from '../appointment-slice'
 import { RootState } from '../../../store'
+import { getAppointmentLabel } from '../util/scheduling-appointment.util'
+import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 
 const EditAppointment = () => {
   const { t } = useTranslation()
@@ -22,6 +24,18 @@ const EditAppointment = () => {
   const { appointment: reduxAppointment, patient, isLoading } = useSelector(
     (state: RootState) => state.appointment,
   )
+  const breadcrumbs = [
+    { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
+    {
+      text: getAppointmentLabel(reduxAppointment),
+      location: `/appointments/${reduxAppointment.id}`,
+    },
+    {
+      i18nKey: 'scheduling.appointments.editAppointment',
+      location: `/appointments/edit/${reduxAppointment.id}`,
+    },
+  ]
+  useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
     setAppointment(reduxAppointment)
