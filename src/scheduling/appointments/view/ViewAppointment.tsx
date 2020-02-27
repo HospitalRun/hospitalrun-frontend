@@ -7,18 +7,10 @@ import { Spinner, Button, Modal } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import Permissions from 'model/Permissions'
-import Appointment from 'model/Appointment'
 import { fetchAppointment, deleteAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
+import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
-
-function getAppointmentLabel(appointment: Appointment) {
-  const { id, startDateTime, endDateTime } = appointment
-
-  return startDateTime && endDateTime
-    ? `${new Date(startDateTime).toLocaleString()} - ${new Date(endDateTime).toLocaleString()}`
-    : id
-}
 
 const ViewAppointment = () => {
   const { t } = useTranslation()
