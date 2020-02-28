@@ -4,17 +4,24 @@ import { getAppointmentLabel } from '../../../../scheduling/appointments/util/sc
 describe('scheduling appointment util', () => {
   describe('getAppointmentLabel', () => {
     it('should return the locale string representation of the start time and end time', () => {
+      const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }
+
       const appointment = {
         id: '123',
         startDateTime: '2020-03-07T18:15:00.000Z',
         endDateTime: '2020-03-07T20:15:00.000Z',
       } as Appointment
 
-      expect(getAppointmentLabel(appointment)).toEqual(
-        `${new Date(appointment.startDateTime).toLocaleString()} - ${new Date(
-          appointment.endDateTime,
-        ).toLocaleString()}`,
-      )
+      const startDateLabel = new Date(appointment.startDateTime).toLocaleString([], options)
+      const endDateLabel = new Date(appointment.endDateTime).toLocaleString([], options)
+
+      expect(getAppointmentLabel(appointment)).toEqual(`${startDateLabel} - ${endDateLabel}`)
     })
 
     it('should return the appointment id when start time is not defined', () => {
