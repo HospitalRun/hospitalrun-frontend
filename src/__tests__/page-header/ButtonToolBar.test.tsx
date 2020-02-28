@@ -19,9 +19,18 @@ describe('Button Tool Bar', () => {
     jest.spyOn(ButtonBarProvider, 'useButtons')
     mocked(ButtonBarProvider).useButtons.mockReturnValue(buttons)
 
-    const wrapper = mount(<ButtonToolBar />)
+    const wrapper = mount(<ButtonToolBar />).find('.button-toolbar')
 
     expect(wrapper.childAt(0).getElement()).toEqual(buttons[0])
     expect(wrapper.childAt(1).getElement()).toEqual(buttons[1])
+  })
+
+  it('should return null when there is no button in the provider', () => {
+    jest.spyOn(ButtonBarProvider, 'useButtons')
+    mocked(ButtonBarProvider).useButtons.mockReturnValue([])
+
+    const wrapper = mount(<ButtonToolBar />)
+
+    expect(wrapper.html()).toBeNull()
   })
 })

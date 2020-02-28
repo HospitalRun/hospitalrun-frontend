@@ -93,3 +93,7 @@ code {
   padding: 0;
   background-color: white;
 }
+
+.button-toolbar > button {
+	margin-left: .5rem;
+}
