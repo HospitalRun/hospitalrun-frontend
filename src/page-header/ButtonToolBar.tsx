@@ -3,7 +3,12 @@ import { useButtons } from './ButtonBarProvider'
 
 const ButtonToolBar = () => {
   const buttons = useButtons()
-  return <>{buttons.map((button) => button)}</>
+
+  if (buttons.length === 0) {
+    return null
+  }
+
+  return <div className="button-toolbar">{buttons.map((button) => button)}</div>
 }
 
 export default ButtonToolBar
