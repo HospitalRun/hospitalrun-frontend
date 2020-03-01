@@ -88,3 +88,12 @@ code {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
+
+.breadcrumb {
+  padding: 0;
+  background-color: white;
+}
+
+.button-toolbar > button {
+	margin-left: .5rem;
+}

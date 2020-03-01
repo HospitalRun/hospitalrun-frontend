@@ -1,55 +1,83 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
-import { Router, MemoryRouter } from 'react-router-dom'
+import { Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
 import { Button } from '@hospitalrun/components'
+import configureMockStore, { MockStore } from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import NewPatient from '../../../patients/new/NewPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
-import store from '../../../store'
 import Patient from '../../../model/Patient'
 import * as patientSlice from '../../../patients/patient-slice'
 import * as titleUtil from '../../../page-header/useTitle'
 import PatientRepository from '../../../clients/db/PatientRepository'
 
+const mockStore = configureMockStore([thunk])
+
 describe('New Patient', () => {
-  it('should render a general information form', () => {
+  const patient = {
+    givenName: 'first',
+    fullName: 'first',
+  } as Patient
+
+  let history: any
+  let store: MockStore
+
+  const setup = () => {
+    jest.spyOn(PatientRepository, 'save')
+    const mockedPatientRepository = mocked(PatientRepository, true)
+    mockedPatientRepository.save.mockResolvedValue(patient)
+
+    history = createMemoryHistory()
+    store = mockStore({ patient: { patient: {} as Patient } })
+
+    history.push('/patients/new')
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter>
-          <NewPatient />
-        </MemoryRouter>
+        <Router history={history}>
+          <Route path="/patients/new">
+            <NewPatient />
+          </Route>
+        </Router>
       </Provider>,
     )
+
+    wrapper.update()
+    return wrapper
+  }
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+  })
+
+  it('should render a general information form', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
 
     expect(wrapper.find(GeneralInformation)).toHaveLength(1)
   })
 
-  it('should use "New Patient" as the header', () => {
+  it('should use "New Patient" as the header', async () => {
     jest.spyOn(titleUtil, 'default')
-    mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <NewPatient />
-        </MemoryRouter>
-      </Provider>,
-    )
+    await act(async () => {
+      await setup()
+    })
 
     expect(titleUtil.default).toHaveBeenCalledWith('patients.newPatient')
   })
 
-  it('should pass no given name error when form doesnt contain a given name on save button click', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <NewPatient />,
-        </MemoryRouter>
-      </Provider>,
-    )
+  it('should pass no given name error when form doesnt contain a given name on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
 
     const givenName = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
     expect(givenName.prop('value')).toBe('')
@@ -71,23 +99,11 @@ describe('New Patient', () => {
     )
   })
 
-  it('should call create patient when save button is clicked', async () => {
-    jest.spyOn(patientSlice, 'createPatient')
-    jest.spyOn(PatientRepository, 'save')
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    const patient = {
-      givenName: 'first',
-      fullName: 'first',
-    } as Patient
-    mockedPatientRepository.save.mockResolvedValue(patient)
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <NewPatient />
-        </MemoryRouter>
-      </Provider>,
-    )
+  it('should dispatch createPatient when save button is clicked', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
 
     const generalInformationForm = wrapper.find(GeneralInformation)
 
@@ -101,22 +117,20 @@ describe('New Patient', () => {
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
-    act(() => {
-      onClick()
+    await act(async () => {
+      await onClick()
     })
 
-    expect(patientSlice.createPatient).toHaveBeenCalledWith(patient, expect.anything())
+    expect(PatientRepository.save).toHaveBeenCalledWith(patient)
+    expect(store.getActions()).toContainEqual(patientSlice.createPatientStart())
+    expect(store.getActions()).toContainEqual(patientSlice.createPatientSuccess())
   })
 
-  it('should navigate to /patients when cancel is clicked', () => {
-    const history = createMemoryHistory()
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <NewPatient />
-        </Router>
-      </Provider>,
-    )
+  it('should navigate to /patients when cancel is clicked', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
 
     const cancelButton = wrapper.find(Button).at(1)
     const onClick = cancelButton.prop('onClick') as any

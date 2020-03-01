@@ -6,6 +6,7 @@ import appointment from '../scheduling/appointments/appointment-slice'
 import appointments from '../scheduling/appointments/appointments-slice'
 import title from '../page-header/title-slice'
 import user from '../user/user-slice'
+import breadcrumbs from '../breadcrumbs/breadcrumbs-slice'
 
 const reducer = combineReducers({
   patient,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   user,
   appointment,
   appointments,
+  breadcrumbs,
 })
 
 const store = configureStore({

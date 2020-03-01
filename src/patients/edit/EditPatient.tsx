@@ -10,6 +10,7 @@ import Patient from '../../model/Patient'
 import { updatePatient, fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
 import { getPatientFullName, getPatientName } from '../util/patient-name-util'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 const getFriendlyId = (p: Patient): string => {
   if (p) {
@@ -33,6 +34,13 @@ const EditPatient = () => {
       reduxPatient,
     )})`,
   )
+
+  const breadcrumbs = [
+    { i18nKey: 'patients.label', location: '/patients' },
+    { text: getPatientFullName(reduxPatient), location: `/patients/${reduxPatient.id}` },
+    { i18nKey: 'patients.editPatient', location: `/patients/${reduxPatient.id}/edit` },
+  ]
+  useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
     setPatient(reduxPatient)
@@ -86,10 +94,10 @@ const EditPatient = () => {
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">
-          <Button className="mr-2" color="success" onClick={() => onSave()}>
+          <Button className="mr-2" color="success" onClick={onSave}>
             {t('actions.save')}
           </Button>
-          <Button color="danger" onClick={() => onCancel()}>
+          <Button color="danger" onClick={onCancel}>
             {t('actions.cancel')}
           </Button>
         </div>

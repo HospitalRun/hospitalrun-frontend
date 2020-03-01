@@ -1,1 +1,19 @@
-node_modules
+# Items that don't need to be in a Docker image.
+# Anything not used by the build system should go here.
+.gitignore
+*.md
+*.yml
+.git
+*.js
+azure
+.editorconfig
+.github
+.npmrc
+.nvmrc
+.prettierrc
+.replit
+.vscode
+LICENSE
+docs
+*.log
+.env*

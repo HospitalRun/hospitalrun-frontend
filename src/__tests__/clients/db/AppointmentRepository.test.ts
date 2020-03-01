@@ -1,4 +1,4 @@
-import AppointmentRepository from 'clients/db/AppointmentsRepository'
+import AppointmentRepository from 'clients/db/AppointmentRepository'
 import { appointments } from 'config/pouchdb'
 import Appointment from 'model/Appointment'
 import { fromUnixTime } from 'date-fns'

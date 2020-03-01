@@ -27,10 +27,10 @@ const patientSlice = createSlice({
   name: 'patient',
   initialState,
   reducers: {
-    getPatientStart: startLoading,
+    fetchPatientStart: startLoading,
     createPatientStart: startLoading,
     updatePatientStart: startLoading,
-    getPatientSuccess(state, { payload }: PayloadAction<Patient>) {
+    fetchPatientSuccess(state, { payload }: PayloadAction<Patient>) {
       state.isLoading = false
       state.patient = payload
     },
@@ -45,8 +45,8 @@ const patientSlice = createSlice({
 })
 
 export const {
-  getPatientStart,
-  getPatientSuccess,
+  fetchPatientStart,
+  fetchPatientSuccess,
   createPatientStart,
   createPatientSuccess,
   updatePatientStart,
@@ -54,9 +54,9 @@ export const {
 } = patientSlice.actions
 
 export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
-  dispatch(getPatientStart())
+  dispatch(fetchPatientStart())
   const patient = await PatientRepository.find(id)
-  dispatch(getPatientSuccess(patient))
+  dispatch(fetchPatientSuccess(patient))
 }
 
 export const createPatient = (patient: Patient, history: any): AppThunk => async (dispatch) => {
@@ -67,9 +67,7 @@ export const createPatient = (patient: Patient, history: any): AppThunk => async
   Toast(
     'success',
     il8n.t('Success!'),
-    `${il8n.t('patients.successfullyCreated')} ${patient.givenName} ${patient.familyName} ${
-      patient.suffix
-    }`,
+    `${il8n.t('patients.successfullyCreated')} ${patient.fullName}`,
   )
 }
 
@@ -81,9 +79,7 @@ export const updatePatient = (patient: Patient, history: any): AppThunk => async
   Toast(
     'success',
     il8n.t('Success!'),
-    `${il8n.t('patients.successfullyUpdated')} ${patient.givenName} ${patient.familyName} ${
-      patient.suffix
-    }`,
+    `${il8n.t('patients.successfullyUpdated')} ${patient.fullName}`,
   )
 }
 

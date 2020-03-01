@@ -5,20 +5,20 @@ on: [push, pull_request]
 jobs:
   npm:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         node-version: [12.x, 13.x]
-        os: [ubuntu-18.04]
-
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        # exclude:
+        #   - os: windows-latest
+        #     node-version: 13.x
     steps:
-      - uses: actions/checkout@v1
-
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
+      - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
       - name: Install with npm
         run: |
           npm install
@@ -31,25 +31,33 @@ jobs:
       - name: Run tests
         run: |
           npm run test:ci
+      # - name: Coveralls Parallel
+      #   uses: coverallsapp/github-action@master
+      #   with:
+      #     github-token: ${{ secrets.GH_TOKEN }}
+      #     parallel: true
+
   yarn:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         node-version: [12.x, 13.x]
-        os: [ubuntu-18.04]
-
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        # exclude:
+        #   - os: windows-latest
+        #     node-version: 13.x
     steps:
-      - uses: actions/checkout@v1
-
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
+      - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
+      - name: Init yarn
+        run: |
+          npm install -g yarn
       - name: Install with yarn
         run: |
-          curl -o- -L https://yarnpkg.com/install.sh | bash
           yarn install
       - name: Lint code
         run: |
@@ -60,3 +68,12 @@ jobs:
       - name: Run tests
         run: |
           yarn test:ci
+  # coverage:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Coveralls Finished
+  #       uses: coverallsapp/github-action@master
+  #       with:
+  #         github-token: ${{ secrets.GH_TOKEN }}
+  #         parallel-finished: true

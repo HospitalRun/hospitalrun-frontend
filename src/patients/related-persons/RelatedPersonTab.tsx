@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Panel, List, ListItem } from '@hospitalrun/components'
+import { Button, Panel, List, ListItem, Alert, Spinner } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
 import PatientRepository from 'clients/db/PatientRepository'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 interface Props {
   patient: Patient
@@ -28,6 +29,14 @@ const RelatedPersonTab = (props: Props) => {
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
   const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
 
+  const breadcrumbs = [
+    {
+      i18nKey: 'patient.relatedPersons.label',
+      location: `/patients/${patient.id}/relatedpersons`,
+    },
+  ]
+  useAddBreadcrumbs(breadcrumbs)
+
   useEffect(() => {
     const fetchRelatedPersons = async () => {
       const fetchedRelatedPersons: Patient[] = []
@@ -38,9 +47,9 @@ const RelatedPersonTab = (props: Props) => {
             fetchedRelatedPersons.push(fetchedRelatedPerson)
           }),
         )
-
-        setRelatedPersons(fetchedRelatedPersons)
       }
+
+      setRelatedPersons(fetchedRelatedPersons)
     }
 
     fetchRelatedPersons()
@@ -97,15 +106,23 @@ const RelatedPersonTab = (props: Props) => {
         <div className="col-md-12">
           <Panel title={t('patient.relatedPersons.label')} color="primary" collapsible>
             {relatedPersons ? (
-              <List>
-                {relatedPersons.map((r) => (
-                  <ListItem action key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
-                    {r.fullName}
-                  </ListItem>
-                ))}
-              </List>
+              relatedPersons.length > 0 ? (
+                <List>
+                  {relatedPersons.map((r) => (
+                    <ListItem action key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
+                      {r.fullName}
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <Alert
+                  color="warning"
+                  title={t('patient.relatedPersons.warning.noRelatedPersons')}
+                  message={t('patient.relatedPersons.addRelatedPersonAbove')}
+                />
+              )
             ) : (
-              <h1>Loading...</h1>
+              <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
             )}
           </Panel>
         </div>
