@@ -78,8 +78,8 @@ describe('AppointmentDetailForm', () => {
       expect(typeSelect.prop('options')[2].value).toEqual('follow up')
       expect(typeSelect.prop('options')[3].label).toEqual('scheduling.appointment.types.routine')
       expect(typeSelect.prop('options')[3].value).toEqual('routine')
-      expect(typeSelect.prop('options')[4].label).toEqual('scheduling.appointment.types.walkUp')
-      expect(typeSelect.prop('options')[4].value).toEqual('walk up')
+      expect(typeSelect.prop('options')[4].label).toEqual('scheduling.appointment.types.walkIn')
+      expect(typeSelect.prop('options')[4].value).toEqual('walk in')
       expect(typeSelect.prop('value')).toEqual(expectedAppointment.type)
     })
 

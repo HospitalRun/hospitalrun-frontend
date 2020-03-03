@@ -101,7 +101,7 @@ const AppointmentDetailForm = (props: Props) => {
               { label: t('scheduling.appointment.types.emergency'), value: 'emergency' },
               { label: t('scheduling.appointment.types.followUp'), value: 'follow up' },
               { label: t('scheduling.appointment.types.routine'), value: 'routine' },
-              { label: t('scheduling.appointment.types.walkUp'), value: 'walk up' },
+              { label: t('scheduling.appointment.types.walkIn'), value: 'walk in' },
             ]}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
               onSelectChange(event, 'type')
