@@ -9,7 +9,8 @@
     "newPatient": "New Patient",
     "editPatient": "Edit Patient",
     "successfullyCreated": "Successfully created patient",
-    "successfullyUpdated": "Successfully updated patient"
+    "successfullyUpdated": "Successfully updated patient",
+    "successfullyAddedRelatedPerson": "Successfully added the new related person"
   },
   "patient": {
     "suffix": "Suffix",
