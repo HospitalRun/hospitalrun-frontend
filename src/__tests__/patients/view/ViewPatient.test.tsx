@@ -5,12 +5,14 @@ import { mount } from 'enzyme'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
-import { TabsHeader, Tab, Button } from '@hospitalrun/components'
+import { TabsHeader, Tab } from '@hospitalrun/components'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
+import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
+import Allergies from 'patients/allergies/Allergies'
 import Patient from '../../../model/Patient'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as titleUtil from '../../../page-header/useTitle'
@@ -41,7 +43,7 @@ describe('ViewPatient', () => {
   let history: any
   let store: MockStore
 
-  const setup = () => {
+  const setup = (permissions = [Permissions.ReadPatients]) => {
     jest.spyOn(PatientRepository, 'find')
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
@@ -49,7 +51,7 @@ describe('ViewPatient', () => {
     history = createMemoryHistory()
     store = mockStore({
       patient: { patient },
-      user: { permissions: [Permissions.ReadPatients] },
+      user: { permissions },
     })
 
     history.push('/patients/123')
@@ -69,25 +71,6 @@ describe('ViewPatient', () => {
 
   beforeEach(() => {
     jest.restoreAllMocks()
-  })
-
-  it('should navigate to /patients/edit/:id when edit is clicked', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
-
-    wrapper.update()
-
-    const editButton = wrapper.find(Button).at(3)
-    const onClick = editButton.prop('onClick') as any
-    expect(editButton.text().trim()).toEqual('actions.edit')
-
-    act(() => {
-      onClick()
-    })
-
-    expect(history.location.pathname).toEqual('/patients/edit/123')
   })
 
   it('should dispatch fetchPatient when component loads', async () => {
@@ -110,6 +93,29 @@ describe('ViewPatient', () => {
     )
   })
 
+  it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', () => {
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
+    const setButtonToolBarSpy = jest.fn()
+    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+
+    setup([Permissions.WritePatients])
+
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+    expect((actualButtons[0] as any).props.children).toEqual('actions.edit')
+  })
+
+  it('button toolbar empty if only has ReadPatients permission', () => {
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
+    const setButtonToolBarSpy = jest.fn()
+    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+
+    setup()
+
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+    console.log(actualButtons)
+    expect(actualButtons.length).toEqual(0)
+  })
+
   it('should render a tabs header with the correct tabs', async () => {
     let wrapper: any
     await act(async () => {
@@ -120,10 +126,11 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(3)
+    expect(tabs).toHaveLength(4)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
+    expect(tabs.at(3).prop('label')).toEqual('patient.allergies.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -179,5 +186,29 @@ describe('ViewPatient', () => {
     expect(tabs.at(1).prop('active')).toBeTruthy()
     expect(relatedPersonTab).toHaveLength(1)
     expect(relatedPersonTab.prop('patient')).toEqual(patient)
+  })
+
+  it('should mark the rallergies tab as active when it is clicked and render the allergies component when route is /patients/:id/allergies', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    await act(async () => {
+      const tabsHeader = wrapper.find(TabsHeader)
+      const tabs = tabsHeader.find(Tab)
+      tabs.at(3).prop('onClick')()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const allergiesTab = wrapper.find(Allergies)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/allergies`)
+    expect(tabs.at(3).prop('active')).toBeTruthy()
+    expect(allergiesTab).toHaveLength(1)
+    expect(allergiesTab.prop('patient')).toEqual(patient)
   })
 })

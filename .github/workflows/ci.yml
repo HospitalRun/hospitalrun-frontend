@@ -13,7 +13,8 @@ jobs:
         #   - os: windows-latest
         #     node-version: 13.x
     steps:
-      - uses: actions/checkout@v1
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
+      - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
@@ -46,7 +47,8 @@ jobs:
         #   - os: windows-latest
         #     node-version: 13.x
     steps:
-      - uses: actions/checkout@v1
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
+      - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
@@ -63,9 +65,6 @@ jobs:
       - name: Build
         run: |
           yarn build
-      - name: Storybook build
-        run: |
-          yarn build-storybook
       - name: Run tests
         run: |
           yarn test:ci

@@ -8,7 +8,6 @@ import { Typeahead } from '@hospitalrun/components'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import { act } from '@testing-library/react'
-import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 
 describe('AppointmentDetailForm', () => {
   describe('layout - editable', () => {
@@ -26,7 +25,7 @@ describe('AppointmentDetailForm', () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <AppointmentDetailForm appointment={expectedAppointment} onAppointmentChange={jest.fn()} />,
+        <AppointmentDetailForm appointment={expectedAppointment} onFieldChange={jest.fn()} />,
       )
     })
 
@@ -92,6 +91,29 @@ describe('AppointmentDetailForm', () => {
     })
   })
 
+  describe('layout - editable but patient prop passed (Edit Appointment functionality)', () => {
+    it('should disable patient typeahead if patient prop passed', () => {
+      const expectedAppointment = {
+        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+        endDateTime: addMinutes(
+          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+          60,
+        ).toISOString(),
+      } as Appointment
+
+      const wrapper = mount(
+        <AppointmentDetailForm
+          isEditable
+          appointment={expectedAppointment}
+          patient={{} as Patient}
+          onFieldChange={jest.fn()}
+        />,
+      )
+      const patientTypeahead = wrapper.find(Typeahead)
+      expect(patientTypeahead.prop('disabled')).toBeTruthy()
+    })
+  })
+
   describe('layout - not editable', () => {
     let wrapper: ReactWrapper
     const expectedAppointment = {
@@ -114,21 +136,21 @@ describe('AppointmentDetailForm', () => {
           isEditable={false}
           appointment={expectedAppointment}
           patient={expectedPatient}
-          onAppointmentChange={jest.fn()}
+          onFieldChange={jest.fn()}
         />,
       )
     })
-    it('should disabled fields', () => {
-      const patientInput = wrapper.findWhere((w) => w.prop('name') === 'patient')
+    it('should disable fields', () => {
+      const patientTypeahead = wrapper.find(Typeahead)
       const startDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
       const endDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
       const locationTextInputBox = wrapper.findWhere((w) => w.prop('name') === 'location')
       const reasonTextField = wrapper.findWhere((w) => w.prop('name') === 'reason')
       const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
 
-      expect(patientInput).toHaveLength(1)
-      expect(patientInput.prop('isEditable')).toBeFalsy()
-      expect(patientInput.prop('value')).toEqual(expectedPatient.fullName)
+      expect(patientTypeahead).toHaveLength(1)
+      expect(patientTypeahead.prop('disabled')).toBeTruthy()
+      expect(patientTypeahead.prop('value')).toEqual(expectedPatient.fullName)
       expect(startDateTimePicker.prop('isEditable')).toBeFalsy()
       expect(endDateTimePicker.prop('isEditable')).toBeFalsy()
       expect(locationTextInputBox.prop('isEditable')).toBeFalsy()
@@ -146,18 +168,15 @@ describe('AppointmentDetailForm', () => {
         30,
       ).toISOString(),
     } as Appointment
-    const onAppointmentChangeSpy = jest.fn()
+    const onFieldChange = jest.fn()
 
     beforeEach(() => {
       wrapper = mount(
-        <AppointmentDetailForm
-          appointment={appointment}
-          onAppointmentChange={onAppointmentChangeSpy}
-        />,
+        <AppointmentDetailForm appointment={appointment} onFieldChange={onFieldChange} />,
       )
     })
 
-    it('should call the onAppointmentChange when patient input changes', () => {
+    it('should call onFieldChange when patient input changes', () => {
       const expectedPatientId = '123'
 
       act(() => {
@@ -166,14 +185,10 @@ describe('AppointmentDetailForm', () => {
       })
       wrapper.update()
 
-      expect(onAppointmentChangeSpy).toHaveBeenLastCalledWith({
-        patientId: expectedPatientId,
-        startDateTime: appointment.startDateTime,
-        endDateTime: appointment.endDateTime,
-      })
+      expect(onFieldChange).toHaveBeenLastCalledWith('patientId', expectedPatientId)
     })
 
-    it('should call the onAppointmentChange when start date time changes', () => {
+    it('should call onFieldChange when start date time changes', () => {
       const expectedStartDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
 
       act(() => {
@@ -182,13 +197,13 @@ describe('AppointmentDetailForm', () => {
       })
       wrapper.update()
 
-      expect(onAppointmentChangeSpy).toHaveBeenLastCalledWith({
-        startDateTime: expectedStartDateTime.toISOString(),
-        endDateTime: appointment.endDateTime,
-      })
+      expect(onFieldChange).toHaveBeenLastCalledWith(
+        'startDateTime',
+        expectedStartDateTime.toISOString(),
+      )
     })
 
-    it('should call the onAppointmentChange when end date time changes', () => {
+    it('should call onFieldChange when end date time changes', () => {
       const expectedStartDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
       const expectedEndDateTime = addMinutes(expectedStartDateTime, 30)
 
@@ -198,13 +213,13 @@ describe('AppointmentDetailForm', () => {
       })
       wrapper.update()
 
-      expect(onAppointmentChangeSpy).toHaveBeenLastCalledWith({
-        startDateTime: appointment.startDateTime,
-        endDateTime: expectedEndDateTime.toISOString(),
-      })
+      expect(onFieldChange).toHaveBeenLastCalledWith(
+        'endDateTime',
+        expectedEndDateTime.toISOString(),
+      )
     })
 
-    it('should call the onAppointmentChange when location changes', () => {
+    it('should call onFieldChange when location changes', () => {
       const expectedLocation = 'location'
 
       act(() => {
@@ -213,43 +228,31 @@ describe('AppointmentDetailForm', () => {
       })
       wrapper.update()
 
-      expect(onAppointmentChangeSpy).toHaveBeenLastCalledWith({
-        startDateTime: appointment.startDateTime,
-        endDateTime: appointment.endDateTime,
-        location: expectedLocation,
-      })
+      expect(onFieldChange).toHaveBeenLastCalledWith('location', expectedLocation)
     })
 
-    it('should call the onAppointmentChange when type changes', () => {
+    it('should call onFieldChange when type changes', () => {
       const expectedType = 'follow up'
 
       act(() => {
         const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
-        typeSelect.prop('onChange')({ currentTarget: { value: expectedType } })
+        typeSelect.prop('onChange')({ target: { value: expectedType } })
       })
       wrapper.update()
 
-      expect(onAppointmentChangeSpy).toHaveBeenLastCalledWith({
-        startDateTime: appointment.startDateTime,
-        endDateTime: appointment.endDateTime,
-        type: expectedType,
-      })
+      expect(onFieldChange).toHaveBeenLastCalledWith('type', expectedType)
     })
 
-    it('should call the onAppointmentChange when reason changes', () => {
+    it('should call onFieldChange when reason changes', () => {
       const expectedReason = 'reason'
 
       act(() => {
         const reasonTextField = wrapper.findWhere((w) => w.prop('name') === 'reason')
-        reasonTextField.prop('onChange')({ target: { value: expectedReason } })
+        reasonTextField.prop('onChange')({ currentTarget: { value: expectedReason } })
       })
       wrapper.update()
 
-      expect(onAppointmentChangeSpy).toHaveBeenLastCalledWith({
-        startDateTime: appointment.startDateTime,
-        endDateTime: appointment.endDateTime,
-        reason: expectedReason,
-      })
+      expect(onFieldChange).toHaveBeenLastCalledWith('reason', expectedReason)
     })
   })
 
@@ -267,7 +270,7 @@ describe('AppointmentDetailForm', () => {
               ).toISOString(),
             } as Appointment
           }
-          onAppointmentChange={jest.fn()}
+          onFieldChange={jest.fn()}
         />,
       )
     })

@@ -52,6 +52,17 @@
     },
     "errors": {
       "patientGivenNameRequired": "Patient Given Name is required."
+    },
+    "allergies": {
+      "label": "Allergies",
+      "new": "Add Allergy",
+      "error": {
+        "nameRequired": "Name is required."
+      },
+      "warning": {
+        "noAllergies": "No Allergies"
+      },
+      "addAllergyAbove": "Add an allergy using the button above."
     }
   },
   "sex": {
@@ -66,7 +77,9 @@
     "cancel": "Cancel",
     "new": "New",
     "list": "List",
-    "search": "Search"
+    "search": "Search",
+    "delete": "Delete",
+    "confirmDelete": "Confirm Delete"
   },
   "states": {
     "success": "Success!",
@@ -76,8 +89,11 @@
     "label": "Scheduling",
     "appointments": {
       "label": "Appointments",
-      "new": "New Appointment",
-      "view": "View Appointment"
+      "newAppointment": "New Appointment",
+      "editAppointment": "Edit Appointment",
+      "viewAppointment": "View Appointment",
+      "deleteAppointment": "Delete Appointment",
+      "successfullyDeleted": "Successfully deleted appointment!"
     },
     "appointment": {
       "startDate": "Start Date",
@@ -93,11 +109,11 @@
       },
       "errors": {
         "patientRequired": "Patient is required.",
-        "errorCreatingAppointment": "Error Creating Appointment!",
         "startDateMustBeBeforeEndDate": "Start Time must be before End Time."
       },
       "reason": "Reason",
-      "patient": "Patient"
+      "patient": "Patient",
+      "deleteConfirmationMessage": "Are you sure you want to delete this appointment?"
     }
   }
 }
