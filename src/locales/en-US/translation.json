@@ -63,6 +63,21 @@
         "noAllergies": "No Allergies"
       },
       "addAllergyAbove": "Add an allergy using the button above."
+    },
+    "diagnoses": {
+      "label": "Diagnoses",
+      "new": "Add Diagnoses",
+      "diagnosisName": "Diagnosis Name",
+      "diagnosisDate": "Diagnosis Date",
+      "warning": {
+        "noDiagnoses": "No Diagnoses"
+      },
+      "error": {
+        "nameRequired": "Diagnosis Name is required.",
+        "dateRequired": "Diagnosis Date is required."
+      },
+      "addDiagnosisAbove": "Add a diagnosis using the button above."
+
     }
   },
   "sex": {
