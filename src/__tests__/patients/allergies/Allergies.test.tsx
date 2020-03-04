@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 import { Router } from 'react-router'
 import { Provider } from 'react-redux'
 import Patient from 'model/Patient'
-import User from 'model/User'
 import { Button, Modal, List, ListItem, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mocked } from 'ts-jest/utils'
@@ -33,7 +32,7 @@ let user: any
 let store: any
 
 const setup = (patient = expectedPatient, permissions = [Permissions.AddAllergy]) => {
-  user = { permissions } as User
+  user = { permissions }
   store = mockStore({ patient, user })
   const wrapper = mount(
     <Router history={history}>
