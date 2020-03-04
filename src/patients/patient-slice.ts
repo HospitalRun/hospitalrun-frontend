@@ -71,11 +71,7 @@ export const createPatient = (patient: Patient, history: any): AppThunk => async
   )
 }
 
-export const updatePatient = (
-  patient: Patient,
-  history: any,
-  relatedPerson?: boolean,
-): AppThunk => async (dispatch) => {
+export const updatePatient = (patient: Patient, history: any): AppThunk => async (dispatch) => {
   dispatch(updatePatientStart())
   const updatedPatient = await PatientRepository.saveOrUpdate(patient)
   dispatch(updatePatientSuccess(updatedPatient))
@@ -85,14 +81,24 @@ export const updatePatient = (
     il8n.t('Success!'),
     `${il8n.t('patients.successfullyUpdated')} ${patient.fullName}`,
   )
-  if (relatedPerson) {
-    Toast(
-      'success',
-      il8n.t('Success!'),
-      `${il8n.t('patients.successfullyAddedRelatedPerson')}`,
-      'top-left',
-    )
-  }
+}
+
+export const addRelatedPerson = (patient: Patient, history: any): AppThunk => async (dispatch) => {
+  dispatch(updatePatientStart())
+  const updatedPatient = await PatientRepository.saveOrUpdate(patient)
+  dispatch(updatePatientSuccess(updatedPatient))
+  history.push(`/patients/${updatedPatient.id}`)
+  Toast(
+    'success',
+    il8n.t('Success!'),
+    `${il8n.t('patients.successfullyUpdated')} ${patient.fullName}`,
+  )
+  Toast(
+    'success',
+    il8n.t('Success!'),
+    `${il8n.t('patients.successfullyAddedRelatedPerson')}`,
+    'top-left',
+  )
 }
 
 export default patientSlice.reducer

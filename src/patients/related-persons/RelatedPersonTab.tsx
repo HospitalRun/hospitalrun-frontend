@@ -5,7 +5,7 @@ import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import Patient from 'model/Patient'
-import { updatePatient } from 'patients/patient-slice'
+import { addRelatedPerson } from 'patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
@@ -80,7 +80,7 @@ const RelatedPersonTab = (props: Props) => {
       relatedPersons: newRelatedPersons,
     }
 
-    dispatch(updatePatient(patientToUpdate, history, true))
+    dispatch(addRelatedPerson(patientToUpdate, history))
     closeNewRelatedPersonModal()
   }
 
