@@ -182,10 +182,9 @@ describe('patient repository', () => {
     })
 
     it('should update the last updated date', async () => {
-      const existingPatient = await PatientRepository.save({
-        fullName: 'test7 test7',
-      } as Patient)
-      existingPatient.givenName = 'givenName'
+      const time = getTime(new Date(2020, 1, 1))
+      await patients.put({ _id: 'id2222222', createdDate: time, lastUpdatedDate: time })
+      const existingPatient = await PatientRepository.find('id2222222')
 
       const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
 
@@ -194,12 +193,9 @@ describe('patient repository', () => {
     })
 
     it('should not update the created date', async () => {
-      const existingPatient = await PatientRepository.save({
-        fullName: 'test7 test7',
-      } as Patient)
-      existingPatient.givenName = 'givenName'
-      existingPatient.createdDate = getTime(new Date())
-
+      const time = getTime(new Date(2020, 1, 1))
+      await patients.put({ _id: 'id111111', createdDate: time, lastUpdatedDate: time })
+      const existingPatient = await PatientRepository.find('id111111')
       const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
 
       expect(updatedPatient.createdDate).toEqual(existingPatient.createdDate)
