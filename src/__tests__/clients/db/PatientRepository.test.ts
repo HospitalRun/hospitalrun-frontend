@@ -1,8 +1,9 @@
 import { patients } from 'config/pouchdb'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
-import { fromUnixTime } from 'date-fns'
 import * as shortid from 'shortid'
+
+const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 
 async function removeAllDocs() {
   // eslint-disable-next-line
@@ -93,12 +94,12 @@ describe('patient repository', () => {
       await removeAllDocs()
     })
 
-    it('should generate an id that is a timestamp for the patient', async () => {
+    it('should generate an id that is a uuid for the patient', async () => {
       const newPatient = await PatientRepository.save({
         fullName: 'test test',
       } as Patient)
 
-      expect(fromUnixTime(parseInt(newPatient.id, 10)).getTime() > 0).toBeTruthy()
+      expect(uuidV4Regex.test(newPatient.id)).toBeTruthy()
     })
 
     it('should generate a patient code', async () => {
