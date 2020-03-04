@@ -45,9 +45,7 @@ const AppointmentDetailForm = (props: Props) => {
               onChange={(p: Patient[]) => onFieldChange && onFieldChange('patientId', p[0].id)}
               onSearch={async (query: string) => PatientRepository.search(query)}
               searchAccessor="fullName"
-              renderMenuItemChildren={(p: Patient) => (
-                <div>{`${p.fullName} (${p.friendlyId})`}</div>
-              )}
+              renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
             />
           </div>
         </div>

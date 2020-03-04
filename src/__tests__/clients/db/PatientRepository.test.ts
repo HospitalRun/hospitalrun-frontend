@@ -2,6 +2,7 @@ import { patients } from 'config/pouchdb'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import { fromUnixTime } from 'date-fns'
+import * as shortid from 'shortid'
 
 async function removeAllDocs() {
   // eslint-disable-next-line
@@ -36,22 +37,22 @@ describe('patient repository', () => {
       await removeAllDocs()
     })
 
-    it('should return all records that friendly ids match search text', async () => {
-      // same full name to prove that it is finding by friendly id
-      const expectedFriendlyId = 'P00001'
-      await patients.put({ _id: 'someId1', friendlyId: expectedFriendlyId, fullName: 'test test' })
-      await patients.put({ _id: 'someId2', friendlyId: 'P00002', fullName: 'test test' })
+    it('should return all records that patient code matches search text', async () => {
+      // same full name to prove that it is finding by patient code
+      const expectedPatientCode = 'P00001'
+      await patients.put({ _id: 'someId1', code: expectedPatientCode, fullName: 'test test' })
+      await patients.put({ _id: 'someId2', code: 'P00002', fullName: 'test test' })
 
-      const result = await PatientRepository.search(expectedFriendlyId)
+      const result = await PatientRepository.search(expectedPatientCode)
 
       expect(result).toHaveLength(1)
-      expect(result[0].friendlyId).toEqual(expectedFriendlyId)
+      expect(result[0].code).toEqual(expectedPatientCode)
     })
 
     it('should return all records that fullName contains search text', async () => {
-      await patients.put({ _id: 'id3333', friendlyId: 'P00002', fullName: 'blh test test blah' })
-      await patients.put({ _id: 'id4444', friendlyId: 'P00001', fullName: 'test test' })
-      await patients.put({ _id: 'id5555', friendlyId: 'P00003', fullName: 'not found' })
+      await patients.put({ _id: 'id3333', code: 'P00002', fullName: 'blh test test blah' })
+      await patients.put({ _id: 'id4444', code: 'P00001', fullName: 'test test' })
+      await patients.put({ _id: 'id5555', code: 'P00003', fullName: 'not found' })
 
       const result = await PatientRepository.search('test test')
 
@@ -61,8 +62,8 @@ describe('patient repository', () => {
     })
 
     it('should match search criteria with case insensitive match', async () => {
-      await patients.put({ _id: 'id6666', friendlyId: 'P00001', fullName: 'test test' })
-      await patients.put({ _id: 'id7777', friendlyId: 'P00002', fullName: 'not found' })
+      await patients.put({ _id: 'id6666', code: 'P00001', fullName: 'test test' })
+      await patients.put({ _id: 'id7777', code: 'P00002', fullName: 'not found' })
 
       const result = await PatientRepository.search('TEST TEST')
 
@@ -100,22 +101,12 @@ describe('patient repository', () => {
       expect(fromUnixTime(parseInt(newPatient.id, 10)).getTime() > 0).toBeTruthy()
     })
 
-    it('should generate a friendly id', async () => {
+    it('should generate a patient code', async () => {
       const newPatient = await PatientRepository.save({
         fullName: 'test1 test1',
       } as Patient)
 
-      expect(newPatient.friendlyId).toEqual('P00001')
-    })
-
-    it('should sequentially generate a friendly id', async () => {
-      await patients.put({ _id: 'id9999', friendlyId: 'P00001' })
-
-      const newPatient = await PatientRepository.save({
-        fullName: 'test3 test3',
-      } as Patient)
-
-      expect(newPatient.friendlyId).toEqual('P00002')
+      expect(shortid.isValid(newPatient.code)).toBeTruthy()
     })
   })
 

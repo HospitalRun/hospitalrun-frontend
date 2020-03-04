@@ -12,9 +12,9 @@ import { RootState } from '../../store'
 import { getPatientFullName, getPatientName } from '../util/patient-name-util'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
-const getFriendlyId = (p: Patient): string => {
+const getPatientCode = (p: Patient): string => {
   if (p) {
-    return p.friendlyId
+    return p.code
   }
 
   return ''
@@ -30,7 +30,7 @@ const EditPatient = () => {
   const { patient: reduxPatient, isLoading } = useSelector((state: RootState) => state.patient)
 
   useTitle(
-    `${t('patients.editPatient')}: ${getPatientFullName(reduxPatient)} (${getFriendlyId(
+    `${t('patients.editPatient')}: ${getPatientFullName(reduxPatient)} (${getPatientCode(
       reduxPatient,
     )})`,
   )
