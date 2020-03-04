@@ -1,6 +1,7 @@
 import AppointmentRepository from 'clients/db/AppointmentRepository'
 import { appointments } from 'config/pouchdb'
 import Appointment from 'model/Appointment'
+import { fromUnixTime } from 'date-fns'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 
@@ -33,6 +34,17 @@ describe('Appointment Repository', () => {
       expect(uuidV4Regex.test(newAppointment.id)).toBeTruthy()
 
       await appointments.remove(await appointments.get(newAppointment.id))
+    })
+
+    it('should generate a timestamp for created date and last updated date', async () => {
+      const newAppointment = await AppointmentRepository.save({
+        patientId: 'id',
+      } as Appointment)
+
+      expect(newAppointment.createdDate).toBeDefined()
+      expect(fromUnixTime(newAppointment.createdDate).getTime() > 0).toBeTruthy()
+      expect(newAppointment.lastUpdatedDate).toBeDefined()
+      expect(fromUnixTime(newAppointment.lastUpdatedDate).getTime() > 0).toBeTruthy()
     })
   })
 })

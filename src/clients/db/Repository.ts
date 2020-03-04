@@ -48,8 +48,15 @@ export default class Repository<T extends AbstractDBModel> {
   }
 
   async save(entity: T): Promise<T> {
+    const currentTime = getTime(new Date())
+
     const { id, rev, ...valuesToSave } = entity
-    const savedEntity = await this.db.put({ _id: uuidv4(), ...valuesToSave })
+    const savedEntity = await this.db.put({
+      _id: uuidv4(),
+      ...valuesToSave,
+      createdDate: currentTime,
+      lastUpdatedDate: currentTime,
+    })
     return this.find(savedEntity.id)
   }
 
@@ -66,6 +73,7 @@ export default class Repository<T extends AbstractDBModel> {
         _id: id,
         _rev: rev,
         ...dataToSave,
+        lastUpdatedDate: getTime(new Date()),
       }
 
       await this.db.put(entityToUpdate)
