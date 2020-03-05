@@ -52,6 +52,10 @@ const EditAppointment = () => {
     history.push(`/appointments/${appointment.id}`)
   }
 
+  const onSaveSuccess = () => {
+    history.push(`/appointments/${appointment.id}`)
+  }
+
   const onSave = () => {
     let newErrorMessage = ''
     if (isBefore(new Date(appointment.endDateTime), new Date(appointment.startDateTime))) {
@@ -63,7 +67,7 @@ const EditAppointment = () => {
       return
     }
 
-    dispatch(updateAppointment(appointment as Appointment, history))
+    dispatch(updateAppointment(appointment as Appointment, onSaveSuccess))
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {

@@ -40,6 +40,10 @@ const NewAppointment = () => {
     history.push('/appointments')
   }
 
+  const onNewAppointmentSaveSuccess = (newAppointment: Appointment) => {
+    history.push(`/appointments/${newAppointment.id}`)
+  }
+
   const onSave = () => {
     let newErrorMessage = ''
     if (!appointment.patientId) {
@@ -54,7 +58,7 @@ const NewAppointment = () => {
       return
     }
 
-    dispatch(createAppointment(appointment as Appointment, history))
+    dispatch(createAppointment(appointment as Appointment, onNewAppointmentSaveSuccess))
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {

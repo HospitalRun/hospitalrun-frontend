@@ -4,7 +4,8 @@ import { Router } from 'react-router'
 import { createMemoryHistory } from 'history'
 import { mount } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
-import { Button, List, ListItem, Alert } from '@hospitalrun/components'
+import * as components from '@hospitalrun/components'
+
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import { act } from '@testing-library/react'
 import PatientRepository from 'clients/db/PatientRepository'
@@ -26,8 +27,12 @@ describe('Related Persons Tab', () => {
   describe('Add New Related Person', () => {
     let patient: any
     let user: any
+    jest.spyOn(components, 'Toast')
+    let mockedComponents = mocked(components, true)
 
     beforeEach(() => {
+      jest.resetAllMocks()
+      mockedComponents = mocked(components, true)
       history = createMemoryHistory()
 
       patient = {
@@ -50,7 +55,7 @@ describe('Related Persons Tab', () => {
     })
 
     it('should render a New Related Person button', () => {
-      const newRelatedPersonButton = wrapper.find(Button)
+      const newRelatedPersonButton = wrapper.find(components.Button)
 
       expect(newRelatedPersonButton).toHaveLength(1)
       expect(newRelatedPersonButton.text().trim()).toEqual('patient.relatedPersons.new')
@@ -67,7 +72,7 @@ describe('Related Persons Tab', () => {
           </Router>,
         )
       })
-      const newRelatedPersonButton = wrapper.find(Button)
+      const newRelatedPersonButton = wrapper.find(components.Button)
       expect(newRelatedPersonButton).toHaveLength(0)
     })
 
@@ -79,7 +84,7 @@ describe('Related Persons Tab', () => {
     })
 
     it('should show the New Related Person modal when the New Related Person button is clicked', () => {
-      const newRelatedPersonButton = wrapper.find(Button)
+      const newRelatedPersonButton = wrapper.find(components.Button)
 
       act(() => {
         ;(newRelatedPersonButton.prop('onClick') as any)()
@@ -112,7 +117,7 @@ describe('Related Persons Tab', () => {
         )
       })
       act(() => {
-        const newRelatedPersonButton = wrapper.find(Button)
+        const newRelatedPersonButton = wrapper.find(components.Button)
         const onClick = newRelatedPersonButton.prop('onClick') as any
         onClick()
       })
@@ -132,7 +137,7 @@ describe('Related Persons Tab', () => {
 
     it('should close the modal when the save button is clicked', () => {
       act(() => {
-        const newRelatedPersonButton = wrapper.find(Button)
+        const newRelatedPersonButton = wrapper.find(components.Button)
         const onClick = newRelatedPersonButton.prop('onClick') as any
         onClick()
       })
@@ -149,6 +154,21 @@ describe('Related Persons Tab', () => {
 
       const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
       expect(newRelatedPersonModal.prop('show')).toBeFalsy()
+    })
+
+    it('should display a success message when the new related person is added', async () => {
+      await act(async () => {
+        const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+        const onSave = newRelatedPersonModal.prop('onSave') as any
+        await onSave({ patientId: 'testMessage', type: 'type' })
+      })
+      wrapper.update()
+
+      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+        'success',
+        'Success!',
+        'patient.relatedPersons.successfullyAdded',
+      )
     })
   })
 
@@ -183,15 +203,15 @@ describe('Related Persons Tab', () => {
     })
 
     it('should render a list of related persons with their full name being displayed', () => {
-      const list = wrapper.find(List)
-      const listItems = wrapper.find(ListItem)
+      const list = wrapper.find(components.List)
+      const listItems = wrapper.find(components.ListItem)
       expect(list).toHaveLength(1)
       expect(listItems).toHaveLength(1)
       expect(listItems.at(0).text()).toEqual('test test')
     })
     it('should navigate to related person patient profile on related person click', () => {
-      const list = wrapper.find(List)
-      const listItems = wrapper.find(ListItem)
+      const list = wrapper.find(components.List)
+      const listItems = wrapper.find(components.ListItem)
       act(() => {
         ;(listItems.at(0).prop('onClick') as any)()
       })
@@ -231,7 +251,7 @@ describe('Related Persons Tab', () => {
     })
 
     it('should display a warning if patient has no related persons', () => {
-      const warning = wrapper.find(Alert)
+      const warning = wrapper.find(components.Alert)
       expect(warning).toBeDefined()
     })
   })

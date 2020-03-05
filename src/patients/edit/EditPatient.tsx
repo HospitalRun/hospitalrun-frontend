@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Spinner, Button } from '@hospitalrun/components'
+import { Spinner, Button, Toast } from '@hospitalrun/components'
 
 import GeneralInformation from '../GeneralInformation'
 import useTitle from '../../page-header/useTitle'
@@ -57,6 +57,11 @@ const EditPatient = () => {
     history.push(`/patients/${patient.id}`)
   }
 
+  const onSuccessfulSave = (updatedPatient: Patient) => {
+    history.push(`/patients/${updatedPatient.id}`)
+    Toast('success', t('Success!'), `${t('patients.successfullyUpdated')} ${patient.fullName}`)
+  }
+
   const onSave = () => {
     if (!patient.givenName) {
       setErrorMessage(t('patient.errors.patientGivenNameRequired'))
@@ -67,7 +72,7 @@ const EditPatient = () => {
             ...patient,
             fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
           },
-          history,
+          onSuccessfulSave,
         ),
       )
     }
