@@ -18,9 +18,9 @@ import RelatedPerson from '../related-persons/RelatedPersonTab'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import AppointmentsList from '../appointments/AppointmentsList'
 
-const getFriendlyId = (p: Patient): string => {
+const getPatientCode = (p: Patient): string => {
   if (p) {
-    return p.friendlyId
+    return p.code
   }
 
   return ''
@@ -35,7 +35,7 @@ const ViewPatient = () => {
   const { patient, isLoading } = useSelector((state: RootState) => state.patient)
   const { permissions } = useSelector((state: RootState) => state.user)
 
-  useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
+  useTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
 
   const setButtonToolBar = useButtonToolbarSetter()
 
