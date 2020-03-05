@@ -42,7 +42,7 @@ describe('General Information, without isEditable', () => {
     phoneNumber: 'phoneNumber',
     email: 'email@email.com',
     address: 'address',
-    friendlyId: 'P00001',
+    code: 'P00001',
     dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
     isApproximateDateOfBirth: false,
   } as Patient
@@ -197,7 +197,7 @@ describe('General Information, isEditable', () => {
     phoneNumber: 'phoneNumber',
     email: 'email@email.com',
     address: 'address',
-    friendlyId: 'P00001',
+    code: 'P00001',
     dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
     isApproximateDateOfBirth: false,
   } as Patient

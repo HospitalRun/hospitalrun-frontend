@@ -17,7 +17,7 @@ const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
 describe('Patients', () => {
-  const patients = [{ id: '123', fullName: 'test test', friendlyId: 'P12345' }]
+  const patients = [{ id: '123', fullName: 'test test', code: 'P12345' }]
   const mockedPatientRepository = mocked(PatientRepository, true)
 
   const setup = (isLoading?: boolean) => {
@@ -67,9 +67,7 @@ describe('Patients', () => {
 
       const patientListItems = wrapper.find(ListItem)
       expect(patientListItems).toHaveLength(1)
-      expect(patientListItems.at(0).text()).toEqual(
-        `${patients[0].fullName} (${patients[0].friendlyId})`,
-      )
+      expect(patientListItems.at(0).text()).toEqual(`${patients[0].fullName} (${patients[0].code})`)
     })
 
     it('should add a "New Patient" button to the button tool bar', () => {
