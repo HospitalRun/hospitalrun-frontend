@@ -1,4 +1,4 @@
-import * as shortid from 'shortid'
+import shortid from 'shortid'
 import Patient from '../../model/Patient'
 import Repository from './Repository'
 import { patients } from '../../config/pouchdb'
