@@ -46,7 +46,7 @@ describe('Edit Appointment', () => {
     phoneNumber: 'phoneNumber',
     email: 'email@email.com',
     address: 'address',
-    friendlyId: 'P00001',
+    code: 'P00001',
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
