@@ -16,10 +16,10 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 **Version 1.0.0-beta is no longer supported. Version 2 is currently under development.**
 
 - To contribute, follow the guidelines in the readme or alternatively ask for details on Slack channel [#contributors](https://hospitalrun-slack.herokuapp.com).
-- To use version 1.0.0-beta (not production ready) in a hospital facility, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com) or Spectrum channel [#support](https://spectrum.chat/hospitalrun).
+- To use version 1.0.0-beta (not production ready) in a hospital facility, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com).
 
 <div align="center">
-  
+
 [![Slack](https://img.shields.io/badge/Slack-Join%20our%20devs%20group-blueviolet?style=for-the-badge&logo=slack)](https://hospitalrun-slack.herokuapp.com)
 
 </div>
@@ -35,12 +35,12 @@ Contributions are always welcome. Before contributing please read our [contribut
 
 ## Connecting to HospitalRun Server
 
-__Note: The following instructions are for connecting to HospitalRun Server during development and are not intended to be for production use. For production deployments, see the deployment instructions.__
+**Note: The following instructions are for connecting to HospitalRun Server during development and are not intended to be for production use. For production deployments, see the deployment instructions.**
 
 1. Configure [HospitalRun Server](https://github.com/HospitalRun/hospitalrun-server)
 2. Start the HospitalRun Development Server
 3. Copy the `.env.example` file to `.env`
-4. Change the `REACT_APP_HOSPITALRUN_API` variable to point to the HospitalRun Development Server.  
+4. Change the `REACT_APP_HOSPITALRUN_API` variable to point to the HospitalRun Development Server.
 
 ## Working on an Issue
 
