@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import Appointment from 'model/Appointment'
 import addMinutes from 'date-fns/addMinutes'
 import { isBefore } from 'date-fns'
-import { Button } from '@hospitalrun/components'
+import { Button, Toast } from '@hospitalrun/components'
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 import { createAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
@@ -40,6 +40,10 @@ const NewAppointment = () => {
     history.push('/appointments')
   }
 
+  const onNewAppointmentSaveSuccess = (newAppointment: Appointment) => {
+    history.push(`/appointments/${newAppointment.id}`)
+  }
+
   const onSave = () => {
     let newErrorMessage = ''
     if (!appointment.patientId) {
@@ -54,7 +58,7 @@ const NewAppointment = () => {
       return
     }
 
-    dispatch(createAppointment(appointment as Appointment, history))
+    dispatch(createAppointment(appointment as Appointment, onNewAppointmentSaveSuccess))
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {

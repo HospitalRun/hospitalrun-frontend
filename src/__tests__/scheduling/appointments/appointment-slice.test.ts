@@ -135,7 +135,7 @@ describe('appointment slice', () => {
         reason: 'reason',
       } as Appointment
 
-      await createAppointment(expectedAppointment, createMemoryHistory())(dispatch, getState, null)
+      await createAppointment(expectedAppointment)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: createAppointmentStart.type })
     })
@@ -155,18 +155,21 @@ describe('appointment slice', () => {
         reason: 'reason',
       } as Appointment
 
-      await createAppointment(expectedAppointment, createMemoryHistory())(dispatch, getState, null)
+      await createAppointment(expectedAppointment)(dispatch, getState, null)
 
       expect(appointmentRepositorySaveSpy).toHaveBeenCalled()
       expect(appointmentRepositorySaveSpy).toHaveBeenCalledWith(expectedAppointment)
     })
 
-    it('should navigate the /appointments when an appointment is successfully created', async () => {
+    it('should call the onSuccess function', async () => {
+      const onSuccessSpy = jest.fn()
       jest.spyOn(AppointmentRepository, 'save')
-      mocked(AppointmentRepository, true).save.mockResolvedValue({ id: '123' } as Appointment)
+      const expectedSavedAppointment = { id: '123' }
+      mocked(AppointmentRepository, true).save.mockResolvedValue(
+        expectedSavedAppointment as Appointment,
+      )
       const dispatch = jest.fn()
       const getState = jest.fn()
-      const history = createMemoryHistory()
 
       const expectedAppointment = {
         patientId: '123',
@@ -177,9 +180,9 @@ describe('appointment slice', () => {
         reason: 'reason',
       } as Appointment
 
-      await createAppointment(expectedAppointment, history)(dispatch, getState, null)
+      await createAppointment(expectedAppointment, onSuccessSpy)(dispatch, getState, null)
 
-      expect(history.location.pathname).toEqual('/appointments')
+      expect(onSuccessSpy).toHaveBeenCalledWith(expectedSavedAppointment)
     })
   })
 
@@ -247,22 +250,16 @@ describe('appointment slice', () => {
 
   describe('deleteAppointment()', () => {
     let deleteAppointmentSpy = jest.spyOn(AppointmentRepository, 'delete')
-    let toastSpy = jest.spyOn(components, 'Toast')
     beforeEach(() => {
       jest.resetAllMocks()
       deleteAppointmentSpy = jest.spyOn(AppointmentRepository, 'delete')
-      toastSpy = jest.spyOn(components, 'Toast')
     })
 
     it('should dispatch the DELETE_APPOINTMENT_START action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      await deleteAppointment({ id: 'test1' } as Appointment, createMemoryHistory())(
-        dispatch,
-        getState,
-        null,
-      )
+      await deleteAppointment({ id: 'test1' } as Appointment)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: deleteAppointmentStart.type })
     })
@@ -273,51 +270,31 @@ describe('appointment slice', () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      await deleteAppointment(expectedAppointment, createMemoryHistory())(dispatch, getState, null)
+      await deleteAppointment(expectedAppointment)(dispatch, getState, null)
 
       expect(deleteAppointmentSpy).toHaveBeenCalledTimes(1)
       expect(deleteAppointmentSpy).toHaveBeenCalledWith(expectedAppointment)
     })
 
-    it('should navigate to /appointments after deleting', async () => {
-      const history = createMemoryHistory()
-      const expectedAppointment = { id: 'appointmentId1' } as Appointment
-
+    it('should call the onSuccess function after successfully deleting', async () => {
+      const onSuccessSpy = jest.fn()
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      await deleteAppointment(expectedAppointment, history)(dispatch, getState, null)
-
-      expect(history.location.pathname).toEqual('/appointments')
-    })
-
-    it('should create a toast with a success message', async () => {
-      const dispatch = jest.fn()
-      const getState = jest.fn()
-
-      await deleteAppointment({ id: 'test1' } as Appointment, createMemoryHistory())(
+      await deleteAppointment({ id: 'test1' } as Appointment, onSuccessSpy)(
         dispatch,
         getState,
         null,
       )
 
-      expect(toastSpy).toHaveBeenCalledTimes(1)
-      expect(toastSpy).toHaveBeenLastCalledWith(
-        'success',
-        'states.success',
-        'scheduling.appointments.successfullyDeleted',
-      )
+      expect(onSuccessSpy).toHaveBeenCalled()
     })
 
     it('should dispatch the DELETE_APPOINTMENT_SUCCESS action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      await deleteAppointment({ id: 'test1' } as Appointment, createMemoryHistory())(
-        dispatch,
-        getState,
-        null,
-      )
+      await deleteAppointment({ id: 'test1' } as Appointment)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: deleteAppointmentSuccess.type })
     })
@@ -333,7 +310,7 @@ describe('appointment slice', () => {
       const mockedAppointmentRepository = mocked(AppointmentRepository, true)
       mockedAppointmentRepository.saveOrUpdate.mockResolvedValue(expectedAppointment)
 
-      await updateAppointment(expectedAppointment, createMemoryHistory())(dispatch, getState, null)
+      await updateAppointment(expectedAppointment)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: updateAppointmentStart.type })
     })
@@ -347,7 +324,7 @@ describe('appointment slice', () => {
       const mockedAppointmentRepository = mocked(AppointmentRepository, true)
       mockedAppointmentRepository.saveOrUpdate.mockResolvedValue(expectedAppointment)
 
-      await updateAppointment(expectedAppointment, createMemoryHistory())(dispatch, getState, null)
+      await updateAppointment(expectedAppointment)(dispatch, getState, null)
 
       expect(AppointmentRepository.saveOrUpdate).toHaveBeenCalledWith(expectedAppointment)
     })
@@ -361,12 +338,27 @@ describe('appointment slice', () => {
       const mockedAppointmentRepository = mocked(AppointmentRepository, true)
       mockedAppointmentRepository.saveOrUpdate.mockResolvedValue(expectedAppointment)
 
-      await updateAppointment(expectedAppointment, createMemoryHistory())(dispatch, getState, null)
+      await updateAppointment(expectedAppointment)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({
         type: updateAppointmentSuccess.type,
         payload: expectedAppointment,
       })
+    })
+
+    it('should call on the onSuccess function after successfully updating', async () => {
+      const onSuccessSpy = jest.fn()
+      const dispatch = jest.fn()
+      const getState = jest.fn()
+      jest.spyOn(AppointmentRepository, 'saveOrUpdate')
+      const expectedAppointmentId = 'sliceId11'
+      const expectedAppointment = { id: expectedAppointmentId } as Appointment
+      const mockedAppointmentRepository = mocked(AppointmentRepository, true)
+      mockedAppointmentRepository.saveOrUpdate.mockResolvedValue(expectedAppointment)
+
+      await updateAppointment(expectedAppointment, onSuccessSpy)(dispatch, getState, null)
+
+      expect(onSuccessSpy).toHaveBeenCalledWith(expectedAppointment)
     })
   })
 })

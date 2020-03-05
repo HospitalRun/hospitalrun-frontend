@@ -12,6 +12,7 @@ import AppointmentRepository from 'clients/db/AppointmentRepository'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import { Spinner, Modal } from '@hospitalrun/components'
+import * as components from '@hospitalrun/components'
 import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
@@ -260,6 +261,30 @@ describe('View Appointment', () => {
 
       expect(store.getActions()).toContainEqual(appointmentSlice.deleteAppointmentStart())
       expect(store.getActions()).toContainEqual(appointmentSlice.deleteAppointmentSuccess())
+    })
+
+    it('should navigate to /appointments and display a message when delete is successful', async () => {
+      jest.spyOn(components, 'Toast')
+      const mockedComponents = mocked(components, true)
+
+      let wrapper: any
+      await act(async () => {
+        wrapper = await setup(false, [Permissions.ReadAppointments, Permissions.DeleteAppointment])
+      })
+
+      const deleteConfirmationModal = wrapper.find(Modal)
+
+      await act(async () => {
+        await deleteConfirmationModal.prop('closeButton').onClick()
+      })
+      wrapper.update()
+
+      expect(history.location.pathname).toEqual('/appointments')
+      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+        'success',
+        'states.success',
+        'scheduling.appointments.successfullyDeleted',
+      )
     })
   })
 })

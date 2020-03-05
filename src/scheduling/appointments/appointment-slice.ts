@@ -71,36 +71,42 @@ export const fetchAppointment = (id: string): AppThunk => async (dispatch) => {
   dispatch(fetchAppointmentSuccess({ appointment, patient }))
 }
 
-export const createAppointment = (appointment: Appointment, history: any): AppThunk => async (
-  dispatch,
-) => {
+export const createAppointment = (
+  appointment: Appointment,
+  onSuccess?: (appointment: Appointment) => void,
+): AppThunk => async (dispatch) => {
   dispatch(createAppointmentStart())
-  await AppointmentRepository.save(appointment)
+  const newAppointment = await AppointmentRepository.save(appointment)
   dispatch(createAppointmentSuccess())
-  history.push('/appointments')
+  if (onSuccess) {
+    onSuccess(newAppointment)
+  }
 }
 
-export const updateAppointment = (appointment: Appointment, history: any): AppThunk => async (
-  dispatch,
-) => {
+export const updateAppointment = (
+  appointment: Appointment,
+  onSuccess?: (appointment: Appointment) => void,
+): AppThunk => async (dispatch) => {
   dispatch(updateAppointmentStart())
   const updatedAppointment = await AppointmentRepository.saveOrUpdate(appointment)
   dispatch(updateAppointmentSuccess(updatedAppointment))
-  history.push(`/appointments/${updatedAppointment.id}`)
+
+  if (onSuccess) {
+    onSuccess(updatedAppointment)
+  }
 }
 
-export const deleteAppointment = (appointment: Appointment, history: any): AppThunk => async (
-  dispatch,
-) => {
+export const deleteAppointment = (
+  appointment: Appointment,
+  onSuccess?: () => void,
+): AppThunk => async (dispatch) => {
   dispatch(deleteAppointmentStart())
   await AppointmentRepository.delete(appointment)
-  history.push('/appointments')
-  Toast(
-    'success',
-    il8n.t('states.success'),
-    `${il8n.t('scheduling.appointments.successfullyDeleted')}`,
-  )
   dispatch(deleteAppointmentSuccess())
+
+  if (onSuccess) {
+    onSuccess()
+  }
 }
 
 export default appointmentSlice.reducer
