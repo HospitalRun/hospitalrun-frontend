@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Appointment from 'model/Appointment'
 import { AppThunk } from 'store'
-import { Toast } from '@hospitalrun/components'
 import AppointmentRepository from 'clients/db/AppointmentRepository'
 import Patient from 'model/Patient'
 import PatientRepository from 'clients/db/PatientRepository'
-import il8n from '../../i18n'
 
 interface AppointmentState {
   appointment: Appointment
