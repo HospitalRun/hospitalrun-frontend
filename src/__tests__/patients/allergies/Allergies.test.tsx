@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 import { Router } from 'react-router'
 import { Provider } from 'react-redux'
 import Patient from 'model/Patient'
-import { Button, Modal, List, ListItem, Alert } from '@hospitalrun/components'
 import * as components from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mocked } from 'ts-jest/utils'
@@ -56,7 +55,7 @@ describe('Allergies', () => {
     it('should render a button to add new allergies', () => {
       const wrapper = setup()
 
-      const addAllergyButton = wrapper.find(Button)
+      const addAllergyButton = wrapper.find(components.Button)
       expect(addAllergyButton).toHaveLength(1)
       expect(addAllergyButton.text().trim()).toEqual('patient.allergies.new')
     })
@@ -64,7 +63,7 @@ describe('Allergies', () => {
     it('should not render a button to add new allergies if the user does not have permissions', () => {
       const wrapper = setup(expectedPatient, [])
 
-      const addAllergyButton = wrapper.find(Button)
+      const addAllergyButton = wrapper.find(components.Button)
       expect(addAllergyButton).toHaveLength(0)
     })
 
@@ -72,14 +71,14 @@ describe('Allergies', () => {
       const wrapper = setup()
 
       act(() => {
-        const addAllergyButton = wrapper.find(Button)
+        const addAllergyButton = wrapper.find(components.Button)
         const onClick = addAllergyButton.prop('onClick') as any
         onClick({} as React.MouseEvent<HTMLButtonElement>)
       })
 
       wrapper.update()
 
-      expect(wrapper.find(Modal).prop('show')).toBeTruthy()
+      expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
     })
 
     it('should update the patient with the new allergy when the save button is clicked', async () => {
@@ -139,8 +138,8 @@ describe('Allergies', () => {
       const allergies = expectedPatient.allergies as Allergy[]
       const wrapper = setup()
 
-      const list = wrapper.find(List)
-      const listItems = wrapper.find(ListItem)
+      const list = wrapper.find(components.List)
+      const listItems = wrapper.find(components.ListItem)
 
       expect(list).toHaveLength(1)
       expect(listItems).toHaveLength(allergies.length)
@@ -149,7 +148,7 @@ describe('Allergies', () => {
     it('should render a warning message if the patient does not have any allergies', () => {
       const wrapper = setup({ ...expectedPatient, allergies: [] })
 
-      const alert = wrapper.find(Alert)
+      const alert = wrapper.find(components.Alert)
 
       expect(alert).toHaveLength(1)
       expect(alert.prop('title')).toEqual('patient.allergies.warning.noAllergies')

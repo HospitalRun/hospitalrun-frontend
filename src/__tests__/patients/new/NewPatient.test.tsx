@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
-import { Button } from '@hospitalrun/components'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import * as components from '@hospitalrun/components'
@@ -86,7 +85,7 @@ describe('New Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
     expect(generalInformationForm.prop('errorMessage')).toBe('')
 
-    const saveButton = wrapper.find(Button).at(0)
+    const saveButton = wrapper.find(components.Button).at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -114,7 +113,7 @@ describe('New Patient', () => {
 
     wrapper.update()
 
-    const saveButton = wrapper.find(Button).at(0)
+    const saveButton = wrapper.find(components.Button).at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -143,7 +142,7 @@ describe('New Patient', () => {
 
     wrapper.update()
 
-    const saveButton = wrapper.find(Button).at(0)
+    const saveButton = wrapper.find(components.Button).at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -165,7 +164,7 @@ describe('New Patient', () => {
       wrapper = await setup()
     })
 
-    const cancelButton = wrapper.find(Button).at(1)
+    const cancelButton = wrapper.find(components.Button).at(1)
     const onClick = cancelButton.prop('onClick') as any
     expect(cancelButton.text().trim()).toEqual('actions.cancel')
 

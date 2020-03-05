@@ -11,7 +11,6 @@ import { createMemoryHistory } from 'history'
 import AppointmentRepository from 'clients/db/AppointmentRepository'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
-import { Spinner, Modal } from '@hospitalrun/components'
 import * as components from '@hospitalrun/components'
 import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
 import PatientRepository from 'clients/db/PatientRepository'
@@ -145,7 +144,7 @@ describe('View Appointment', () => {
       wrapper = await setup(true)
     })
 
-    expect(wrapper.find(Spinner)).toHaveLength(1)
+    expect(wrapper.find(components.Spinner)).toHaveLength(1)
   })
 
   it('should render a AppointmentDetailForm with the correct data', async () => {
@@ -165,7 +164,7 @@ describe('View Appointment', () => {
       wrapper = await setup(false)
     })
 
-    const deleteAppointmentConfirmationModal = wrapper.find(Modal)
+    const deleteAppointmentConfirmationModal = wrapper.find(components.Modal)
     expect(deleteAppointmentConfirmationModal).toHaveLength(1)
     expect(deleteAppointmentConfirmationModal.prop('closeButton').children).toEqual(
       'actions.delete',
@@ -214,7 +213,7 @@ describe('View Appointment', () => {
       })
       wrapper.update()
 
-      const deleteConfirmationModal = wrapper.find(Modal)
+      const deleteConfirmationModal = wrapper.find(components.Modal)
       expect(deleteConfirmationModal.prop('show')).toEqual(true)
     })
 
@@ -234,12 +233,12 @@ describe('View Appointment', () => {
       wrapper.update()
 
       act(() => {
-        const deleteConfirmationModal = wrapper.find(Modal)
+        const deleteConfirmationModal = wrapper.find(components.Modal)
         deleteConfirmationModal.prop('toggle')()
       })
       wrapper.update()
 
-      const deleteConfirmationModal = wrapper.find(Modal)
+      const deleteConfirmationModal = wrapper.find(components.Modal)
       expect(deleteConfirmationModal.prop('show')).toEqual(false)
     })
 
@@ -249,7 +248,7 @@ describe('View Appointment', () => {
         wrapper = await setup(false, [Permissions.ReadAppointments, Permissions.DeleteAppointment])
       })
 
-      const deleteConfirmationModal = wrapper.find(Modal)
+      const deleteConfirmationModal = wrapper.find(components.Modal)
 
       await act(async () => {
         await deleteConfirmationModal.prop('closeButton').onClick()
@@ -272,7 +271,7 @@ describe('View Appointment', () => {
         wrapper = await setup(false, [Permissions.ReadAppointments, Permissions.DeleteAppointment])
       })
 
-      const deleteConfirmationModal = wrapper.find(Modal)
+      const deleteConfirmationModal = wrapper.find(components.Modal)
 
       await act(async () => {
         await deleteConfirmationModal.prop('closeButton').onClick()
