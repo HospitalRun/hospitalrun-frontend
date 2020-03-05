@@ -1,7 +1,6 @@
 import AppointmentRepository from 'clients/db/AppointmentRepository'
 import { appointments } from 'config/pouchdb'
 import Appointment from 'model/Appointment'
-import { fromUnixTime } from 'date-fns'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 
@@ -41,10 +40,8 @@ describe('Appointment Repository', () => {
         patientId: 'id',
       } as Appointment)
 
-      expect(newAppointment.createdDate).toBeDefined()
-      expect(fromUnixTime(newAppointment.createdDate).getTime() > 0).toBeTruthy()
-      expect(newAppointment.lastUpdatedDate).toBeDefined()
-      expect(fromUnixTime(newAppointment.lastUpdatedDate).getTime() > 0).toBeTruthy()
+      expect(newAppointment.createdAt).toBeDefined()
+      expect(newAppointment.updatedAt).toBeDefined()
     })
   })
 })

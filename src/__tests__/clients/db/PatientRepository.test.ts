@@ -2,7 +2,7 @@ import { patients } from 'config/pouchdb'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import * as shortid from 'shortid'
-import { fromUnixTime, getTime, isAfter } from 'date-fns'
+import { getTime, isAfter } from 'date-fns'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 
@@ -116,22 +116,20 @@ describe('patient repository', () => {
         fullName: 'test1 test1',
       } as Patient)
 
-      expect(newPatient.createdDate).toBeDefined()
-      expect(fromUnixTime(newPatient.createdDate).getTime() > 0).toBeTruthy()
-      expect(newPatient.lastUpdatedDate).toBeDefined()
-      expect(fromUnixTime(newPatient.lastUpdatedDate).getTime() > 0).toBeTruthy()
+      expect(newPatient.createdAt).toBeDefined()
+      expect(newPatient.updatedAt).toBeDefined()
     })
 
     it('should override the created date and last updated date even if one was passed in', async () => {
-      const unexpectedTime = getTime(new Date(2020, 2, 1))
+      const unexpectedTime = new Date(2020, 2, 1).toISOString()
       const newPatient = await PatientRepository.save({
         fullName: 'test1 test1',
-        createdDate: unexpectedTime,
-        lastUpdatedDate: unexpectedTime,
+        createdAt: unexpectedTime,
+        updatedAt: unexpectedTime,
       } as Patient)
 
-      expect(newPatient.createdDate).not.toEqual(unexpectedTime)
-      expect(newPatient.lastUpdatedDate).not.toEqual(unexpectedTime)
+      expect(newPatient.createdAt).not.toEqual(unexpectedTime)
+      expect(newPatient.updatedAt).not.toEqual(unexpectedTime)
     })
   })
 
@@ -182,23 +180,25 @@ describe('patient repository', () => {
     })
 
     it('should update the last updated date', async () => {
-      const time = getTime(new Date(2020, 1, 1))
-      await patients.put({ _id: 'id2222222', createdDate: time, lastUpdatedDate: time })
+      const time = new Date(2020, 1, 1).toISOString()
+      await patients.put({ _id: 'id2222222', createdAt: time, updatedAt: time })
       const existingPatient = await PatientRepository.find('id2222222')
 
       const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
 
-      expect(isAfter(updatedPatient.lastUpdatedDate, updatedPatient.createdDate)).toBeTruthy()
-      expect(updatedPatient.lastUpdatedDate).not.toEqual(existingPatient.lastUpdatedDate)
+      expect(
+        isAfter(new Date(updatedPatient.updatedAt), new Date(updatedPatient.createdAt)),
+      ).toBeTruthy()
+      expect(updatedPatient.updatedAt).not.toEqual(existingPatient.updatedAt)
     })
 
     it('should not update the created date', async () => {
       const time = getTime(new Date(2020, 1, 1))
-      await patients.put({ _id: 'id111111', createdDate: time, lastUpdatedDate: time })
+      await patients.put({ _id: 'id111111', createdAt: time, updatedAt: time })
       const existingPatient = await PatientRepository.find('id111111')
       const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
 
-      expect(updatedPatient.createdDate).toEqual(existingPatient.createdDate)
+      expect(updatedPatient.createdAt).toEqual(existingPatient.createdAt)
     })
   })
 

@@ -1,5 +1,4 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
-import { getTime } from 'date-fns'
 import { v4 as uuidv4 } from 'uuid'
 import AbstractDBModel from '../../model/AbstractDBModel'
 
@@ -48,14 +47,14 @@ export default class Repository<T extends AbstractDBModel> {
   }
 
   async save(entity: T): Promise<T> {
-    const currentTime = getTime(new Date())
+    const currentTime = new Date().toISOString()
 
     const { id, rev, ...valuesToSave } = entity
     const savedEntity = await this.db.put({
       _id: uuidv4(),
       ...valuesToSave,
-      createdDate: currentTime,
-      lastUpdatedDate: currentTime,
+      createdAt: currentTime,
+      updatedAt: currentTime,
     })
     return this.find(savedEntity.id)
   }
@@ -73,7 +72,7 @@ export default class Repository<T extends AbstractDBModel> {
         _id: id,
         _rev: rev,
         ...dataToSave,
-        lastUpdatedDate: getTime(new Date()),
+        updatedAt: new Date().toISOString(),
       }
 
       await this.db.put(entityToUpdate)
