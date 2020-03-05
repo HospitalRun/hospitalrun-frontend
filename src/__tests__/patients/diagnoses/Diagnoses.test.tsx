@@ -10,7 +10,7 @@ import Permissions from 'model/Permissions'
 import { Router } from 'react-router'
 import { Provider } from 'react-redux'
 import Diagnoses from 'patients/diagnoses/Diagnoses'
-import { Button, Modal, List, ListItem, Alert } from '@hospitalrun/components'
+import * as components from '@hospitalrun/components'
 import { act } from 'react-dom/test-utils'
 import { mocked } from 'ts-jest/utils'
 import PatientRepository from 'clients/db/PatientRepository'
@@ -53,7 +53,7 @@ describe('Diagnoses', () => {
     it('should render a add diagnoses button', () => {
       const wrapper = setup()
 
-      const addDiagnosisButton = wrapper.find(Button)
+      const addDiagnosisButton = wrapper.find(components.Button)
       expect(addDiagnosisButton).toHaveLength(1)
       expect(addDiagnosisButton.text().trim()).toEqual('patient.diagnoses.new')
     })
@@ -61,7 +61,7 @@ describe('Diagnoses', () => {
     it('should not render a diagnoses button if the user does not have permissions', () => {
       const wrapper = setup(expectedPatient, [])
 
-      const addDiagnosisButton = wrapper.find(Button)
+      const addDiagnosisButton = wrapper.find(components.Button)
       expect(addDiagnosisButton).toHaveLength(0)
     })
 
@@ -69,11 +69,11 @@ describe('Diagnoses', () => {
       const wrapper = setup()
 
       act(() => {
-        wrapper.find(Button).prop('onClick')()
+        wrapper.find(components.Button).prop('onClick')()
       })
       wrapper.update()
 
-      expect(wrapper.find(Modal).prop('show')).toBeTruthy()
+      expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
     })
 
     it('should update the patient with the new diagnosis when the save button is clicked', async () => {
@@ -102,6 +102,36 @@ describe('Diagnoses', () => {
         patientSlice.updatePatientSuccess(expectedUpdatedPatient),
       )
     })
+
+    it('should display a success message when successfully added', async () => {
+      jest.spyOn(components, 'Toast')
+      const mockedComponents = mocked(components, true)
+
+      const expectedDiagnosis = {
+        name: 'name',
+        diagnosisDate: new Date().toISOString(),
+      } as Diagnosis
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        diagnoses: [...(expectedPatient.diagnoses as any), expectedDiagnosis],
+      } as Patient
+
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
+
+      const wrapper = setup()
+
+      await act(async () => {
+        const modal = wrapper.find(AddDiagnosisModal)
+        await modal.prop('onSave')(expectedDiagnosis)
+      })
+
+      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+        'success',
+        'Success!',
+        'patient.diagnoses.successfullyAdded',
+      )
+    })
   })
 
   describe('diagnoses list', () => {
@@ -109,8 +139,8 @@ describe('Diagnoses', () => {
       const diagnoses = expectedPatient.diagnoses as Diagnosis[]
       const wrapper = setup()
 
-      const list = wrapper.find(List)
-      const listItems = wrapper.find(ListItem)
+      const list = wrapper.find(components.List)
+      const listItems = wrapper.find(components.ListItem)
 
       expect(list).toHaveLength(1)
       expect(listItems).toHaveLength(diagnoses.length)
@@ -119,7 +149,7 @@ describe('Diagnoses', () => {
     it('should render a warning message if the patient does not have any diagnoses', () => {
       const wrapper = setup({ ...expectedPatient, diagnoses: [] })
 
-      const alert = wrapper.find(Alert)
+      const alert = wrapper.find(components.Alert)
 
       expect(alert).toHaveLength(1)
       expect(alert.prop('title')).toEqual('patient.diagnoses.warning.noDiagnoses')

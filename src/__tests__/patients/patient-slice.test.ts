@@ -1,7 +1,6 @@
 import '../../__mocks__/matchMediaMock'
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
-import { createMemoryHistory } from 'history'
 import * as components from '@hospitalrun/components'
 
 import patient, {
@@ -113,7 +112,7 @@ describe('patients slice', () => {
         id: 'sliceId1',
       } as Patient
 
-      await createPatient(expectedPatient, createMemoryHistory())(dispatch, getState, null)
+      await createPatient(expectedPatient)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: createPatientStart.type })
     })
@@ -127,7 +126,7 @@ describe('patients slice', () => {
         id: 'sliceId2',
       } as Patient
 
-      await createPatient(expectedPatient, createMemoryHistory())(dispatch, getState, null)
+      await createPatient(expectedPatient)(dispatch, getState, null)
 
       expect(PatientRepository.save).toHaveBeenCalledWith(expectedPatient)
     })
@@ -141,29 +140,13 @@ describe('patients slice', () => {
         id: 'slideId3',
       } as Patient
 
-      await createPatient(expectedPatient, createMemoryHistory())(dispatch, getState, null)
+      await createPatient(expectedPatient)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: createPatientSuccess.type })
     })
 
-    it('should navigate to the /patients/:id where id is the new patient id', async () => {
-      const expectedPatientId = 'sliceId4'
-      jest.spyOn(PatientRepository, 'save')
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.save.mockResolvedValue({ id: expectedPatientId } as Patient)
-      const history = createMemoryHistory()
-
-      const dispatch = jest.fn()
-      const getState = jest.fn()
-      const expectedPatient = {} as Patient
-
-      await createPatient(expectedPatient, history)(dispatch, getState, null)
-
-      expect(history.entries[1].pathname).toEqual(`/patients/${expectedPatientId}`)
-    })
-
-    it('should call the Toaster function with the correct data', async () => {
-      jest.spyOn(components, 'Toast')
+    it('should call the on success function', async () => {
+      const onSuccessSpy = jest.fn()
       const expectedPatientId = 'sliceId5'
       const expectedFullName = 'John Doe II'
       const expectedPatient = {
@@ -173,18 +156,13 @@ describe('patients slice', () => {
       jest.spyOn(PatientRepository, 'save')
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.save.mockResolvedValue(expectedPatient)
-      const mockedComponents = mocked(components, true)
-      const history = createMemoryHistory()
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      await createPatient(expectedPatient, history)(dispatch, getState, null)
+      await createPatient(expectedPatient, onSuccessSpy)(dispatch, getState, null)
 
-      expect(mockedComponents.Toast).toHaveBeenCalledWith(
-        'success',
-        'Success!',
-        `patients.successfullyCreated ${expectedFullName}`,
-      )
+      expect(onSuccessSpy).toHaveBeenCalled()
+      expect(onSuccessSpy).toHaveBeenCalledWith(expectedPatient)
     })
   })
 
@@ -248,7 +226,7 @@ describe('patients slice', () => {
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
 
-      await updatePatient(expectedPatient, createMemoryHistory())(dispatch, getState, null)
+      await updatePatient(expectedPatient)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: updatePatientStart.type })
     })
@@ -262,7 +240,7 @@ describe('patients slice', () => {
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
 
-      await updatePatient(expectedPatient, createMemoryHistory())(dispatch, getState, null)
+      await updatePatient(expectedPatient)(dispatch, getState, null)
 
       expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedPatient)
     })
@@ -276,7 +254,7 @@ describe('patients slice', () => {
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
 
-      await updatePatient(expectedPatient, createMemoryHistory())(dispatch, getState, null)
+      await updatePatient(expectedPatient)(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({
         type: updatePatientSuccess.type,
@@ -284,7 +262,8 @@ describe('patients slice', () => {
       })
     })
 
-    it('should call the Toaster function with the correct data', async () => {
+    it('should call the onSuccess function', async () => {
+      const onSuccessSpy = jest.fn()
       jest.spyOn(components, 'Toast')
       const expectedPatientId = 'sliceId11'
       const fullName = 'John Doe II'
@@ -294,18 +273,13 @@ describe('patients slice', () => {
       } as Patient
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
-      const mockedComponents = mocked(components, true)
-      const history = createMemoryHistory()
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      await updatePatient(expectedPatient, history)(dispatch, getState, null)
+      await updatePatient(expectedPatient, onSuccessSpy)(dispatch, getState, null)
 
-      expect(mockedComponents.Toast).toHaveBeenCalledWith(
-        'success',
-        'Success!',
-        `patients.successfullyUpdated ${fullName}`,
-      )
+      expect(onSuccessSpy).toHaveBeenCalled()
+      expect(onSuccessSpy).toHaveBeenCalledWith(expectedPatient)
     })
   })
 })
