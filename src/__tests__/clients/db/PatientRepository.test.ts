@@ -1,7 +1,10 @@
 import { patients } from 'config/pouchdb'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
-import { fromUnixTime } from 'date-fns'
+import shortid from 'shortid'
+import { getTime, isAfter } from 'date-fns'
+
+const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 
 async function removeAllDocs() {
   // eslint-disable-next-line
@@ -36,22 +39,22 @@ describe('patient repository', () => {
       await removeAllDocs()
     })
 
-    it('should return all records that friendly ids match search text', async () => {
-      // same full name to prove that it is finding by friendly id
-      const expectedFriendlyId = 'P00001'
-      await patients.put({ _id: 'someId1', friendlyId: expectedFriendlyId, fullName: 'test test' })
-      await patients.put({ _id: 'someId2', friendlyId: 'P00002', fullName: 'test test' })
+    it('should return all records that patient code matches search text', async () => {
+      // same full name to prove that it is finding by patient code
+      const expectedPatientCode = 'P00001'
+      await patients.put({ _id: 'someId1', code: expectedPatientCode, fullName: 'test test' })
+      await patients.put({ _id: 'someId2', code: 'P00002', fullName: 'test test' })
 
-      const result = await PatientRepository.search(expectedFriendlyId)
+      const result = await PatientRepository.search(expectedPatientCode)
 
       expect(result).toHaveLength(1)
-      expect(result[0].friendlyId).toEqual(expectedFriendlyId)
+      expect(result[0].code).toEqual(expectedPatientCode)
     })
 
     it('should return all records that fullName contains search text', async () => {
-      await patients.put({ _id: 'id3333', friendlyId: 'P00002', fullName: 'blh test test blah' })
-      await patients.put({ _id: 'id4444', friendlyId: 'P00001', fullName: 'test test' })
-      await patients.put({ _id: 'id5555', friendlyId: 'P00003', fullName: 'not found' })
+      await patients.put({ _id: 'id3333', code: 'P00002', fullName: 'blh test test blah' })
+      await patients.put({ _id: 'id4444', code: 'P00001', fullName: 'test test' })
+      await patients.put({ _id: 'id5555', code: 'P00003', fullName: 'not found' })
 
       const result = await PatientRepository.search('test test')
 
@@ -61,8 +64,8 @@ describe('patient repository', () => {
     })
 
     it('should match search criteria with case insensitive match', async () => {
-      await patients.put({ _id: 'id6666', friendlyId: 'P00001', fullName: 'test test' })
-      await patients.put({ _id: 'id7777', friendlyId: 'P00002', fullName: 'not found' })
+      await patients.put({ _id: 'id6666', code: 'P00001', fullName: 'test test' })
+      await patients.put({ _id: 'id7777', code: 'P00002', fullName: 'not found' })
 
       const result = await PatientRepository.search('TEST TEST')
 
@@ -92,30 +95,41 @@ describe('patient repository', () => {
       await removeAllDocs()
     })
 
-    it('should generate an id that is a timestamp for the patient', async () => {
+    it('should generate an id that is a uuid for the patient', async () => {
       const newPatient = await PatientRepository.save({
         fullName: 'test test',
       } as Patient)
 
-      expect(fromUnixTime(parseInt(newPatient.id, 10)).getTime() > 0).toBeTruthy()
+      expect(uuidV4Regex.test(newPatient.id)).toBeTruthy()
     })
 
-    it('should generate a friendly id', async () => {
+    it('should generate a patient code', async () => {
       const newPatient = await PatientRepository.save({
         fullName: 'test1 test1',
       } as Patient)
 
-      expect(newPatient.friendlyId).toEqual('P00001')
+      expect(shortid.isValid(newPatient.code)).toBeTruthy()
     })
 
-    it('should sequentially generate a friendly id', async () => {
-      await patients.put({ _id: 'id9999', friendlyId: 'P00001' })
-
+    it('should generate a timestamp for created date and last updated date', async () => {
       const newPatient = await PatientRepository.save({
-        fullName: 'test3 test3',
+        fullName: 'test1 test1',
       } as Patient)
 
-      expect(newPatient.friendlyId).toEqual('P00002')
+      expect(newPatient.createdAt).toBeDefined()
+      expect(newPatient.updatedAt).toBeDefined()
+    })
+
+    it('should override the created date and last updated date even if one was passed in', async () => {
+      const unexpectedTime = new Date(2020, 2, 1).toISOString()
+      const newPatient = await PatientRepository.save({
+        fullName: 'test1 test1',
+        createdAt: unexpectedTime,
+        updatedAt: unexpectedTime,
+      } as Patient)
+
+      expect(newPatient.createdAt).not.toEqual(unexpectedTime)
+      expect(newPatient.updatedAt).not.toEqual(unexpectedTime)
     })
   })
 
@@ -163,6 +177,28 @@ describe('patient repository', () => {
 
       expect(updatedPatient.fullName).toEqual(existingPatient.fullName)
       expect(updatedPatient.givenName).toEqual('givenName')
+    })
+
+    it('should update the last updated date', async () => {
+      const time = new Date(2020, 1, 1).toISOString()
+      await patients.put({ _id: 'id2222222', createdAt: time, updatedAt: time })
+      const existingPatient = await PatientRepository.find('id2222222')
+
+      const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
+
+      expect(
+        isAfter(new Date(updatedPatient.updatedAt), new Date(updatedPatient.createdAt)),
+      ).toBeTruthy()
+      expect(updatedPatient.updatedAt).not.toEqual(existingPatient.updatedAt)
+    })
+
+    it('should not update the created date', async () => {
+      const time = getTime(new Date(2020, 1, 1))
+      await patients.put({ _id: 'id111111', createdAt: time, updatedAt: time })
+      const existingPatient = await PatientRepository.find('id111111')
+      const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
+
+      expect(updatedPatient.createdAt).toEqual(existingPatient.createdAt)
     })
   })
 
