@@ -9,6 +9,7 @@ import { act } from 'react-dom/test-utils'
 import { Button } from '@hospitalrun/components'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import * as components from '@hospitalrun/components'
 
 import NewPatient from '../../../patients/new/NewPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
@@ -124,6 +125,38 @@ describe('New Patient', () => {
     expect(PatientRepository.save).toHaveBeenCalledWith(patient)
     expect(store.getActions()).toContainEqual(patientSlice.createPatientStart())
     expect(store.getActions()).toContainEqual(patientSlice.createPatientSuccess())
+  })
+
+  it('should navigate to /patients/:id and display a message after a new patient is successfully created', async () => {
+    jest.spyOn(components, 'Toast')
+    const mockedComponents = mocked(components, true)
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('givenName', 'first')
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    await act(async () => {
+      await onClick()
+    })
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}`)
+    expect(mockedComponents.Toast).toHaveBeenCalledWith(
+      'success',
+      'Success!',
+      `patients.successfullyCreated ${patient.fullName}`,
+    )
   })
 
   it('should navigate to /patients when cancel is clicked', async () => {

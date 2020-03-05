@@ -11,6 +11,7 @@ import { Router } from 'react-router'
 import { Provider } from 'react-redux'
 import Diagnoses from 'patients/diagnoses/Diagnoses'
 import { Button, Modal, List, ListItem, Alert } from '@hospitalrun/components'
+import * as components from '@hospitalrun/components'
 import { act } from 'react-dom/test-utils'
 import { mocked } from 'ts-jest/utils'
 import PatientRepository from 'clients/db/PatientRepository'
@@ -100,6 +101,36 @@ describe('Diagnoses', () => {
       expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
       expect(store.getActions()).toContainEqual(
         patientSlice.updatePatientSuccess(expectedUpdatedPatient),
+      )
+    })
+
+    it('should display a success message when successfully added', async () => {
+      jest.spyOn(components, 'Toast')
+      const mockedComponents = mocked(components, true)
+
+      const expectedDiagnosis = {
+        name: 'name',
+        diagnosisDate: new Date().toISOString(),
+      } as Diagnosis
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        diagnoses: [...(expectedPatient.diagnoses as any), expectedDiagnosis],
+      } as Patient
+
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
+
+      const wrapper = setup()
+
+      await act(async () => {
+        const modal = wrapper.find(AddDiagnosisModal)
+        await modal.prop('onSave')(expectedDiagnosis)
+      })
+
+      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+        'success',
+        'Success!',
+        'patient.diagnoses.successfullyAdded',
       )
     })
   })

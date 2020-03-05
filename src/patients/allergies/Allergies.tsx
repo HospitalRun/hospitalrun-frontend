@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
 import Patient from 'model/Patient'
-import { Button, List, ListItem, Alert } from '@hospitalrun/components'
+import { Button, List, ListItem, Alert, Toast } from '@hospitalrun/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
 import { useTranslation } from 'react-i18next'
 import Allergy from 'model/Allergy'
-import { useHistory } from 'react-router'
 import { updatePatient } from 'patients/patient-slice'
 import { getTimestampId } from 'patients/util/timestamp-id-generator'
 import NewAllergyModal from './NewAllergyModal'
@@ -18,7 +17,6 @@ interface AllergiesProps {
 
 const Allergies = (props: AllergiesProps) => {
   const { t } = useTranslation()
-  const history = useHistory()
   const dispatch = useDispatch()
   const { patient } = props
   const { permissions } = useSelector((state: RootState) => state.user)
@@ -32,6 +30,10 @@ const Allergies = (props: AllergiesProps) => {
   ]
   useAddBreadcrumbs(breadcrumbs)
 
+  const onAddAllergySuccess = () => {
+    Toast('success', t('Success!'), `${t('patient.allergies.successfullyAdded')}`)
+  }
+
   const onAddAllergy = (allergy: Allergy) => {
     allergy.id = getTimestampId()
     const allergies = []
@@ -41,7 +43,7 @@ const Allergies = (props: AllergiesProps) => {
 
     allergies.push(allergy)
     const patientToUpdate = { ...patient, allergies }
-    dispatch(updatePatient(patientToUpdate, history))
+    dispatch(updatePatient(patientToUpdate, onAddAllergySuccess))
   }
 
   return (

@@ -4,12 +4,11 @@ import Patient from 'model/Patient'
 import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
 import { useSelector, useDispatch } from 'react-redux'
 import Permissions from 'model/Permissions'
-import { Button, List, ListItem, Alert } from '@hospitalrun/components'
+import { Button, List, ListItem, Alert, Toast } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import Diagnosis from 'model/Diagnosis'
 import { getTimestampId } from 'patients/util/timestamp-id-generator'
 import { updatePatient } from 'patients/patient-slice'
-import { useHistory } from 'react-router'
 import AddDiagnosisModal from './AddDiagnosisModal'
 
 interface Props {
@@ -20,7 +19,6 @@ const Diagnoses = (props: Props) => {
   const { patient } = props
   const [showDiagnosisModal, setShowDiagnosisModal] = useState(false)
 
-  const history = useHistory()
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { permissions } = useSelector((state: RootState) => state.user)
@@ -37,6 +35,10 @@ const Diagnoses = (props: Props) => {
     setShowDiagnosisModal(false)
   }
 
+  const onAddDiagnosisSuccess = () => {
+    Toast('success', t('Success!'), t('patient.diagnoses.successfullyAdded'))
+  }
+
   const onDiagnosisSave = (diagnosis: Diagnosis) => {
     diagnosis.id = getTimestampId()
     const diagnoses = []
@@ -45,7 +47,7 @@ const Diagnoses = (props: Props) => {
     }
     diagnoses.push(diagnosis)
     const patientToUpdate = { ...patient, diagnoses }
-    dispatch(updatePatient(patientToUpdate, history))
+    dispatch(updatePatient(patientToUpdate, onAddDiagnosisSuccess))
     setShowDiagnosisModal(false)
   }
 

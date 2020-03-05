@@ -5,6 +5,8 @@ import { createMemoryHistory } from 'history'
 import { mount } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import { Button, List, ListItem, Alert } from '@hospitalrun/components'
+import * as components from '@hospitalrun/components'
+
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import { act } from '@testing-library/react'
 import PatientRepository from 'clients/db/PatientRepository'
@@ -26,8 +28,12 @@ describe('Related Persons Tab', () => {
   describe('Add New Related Person', () => {
     let patient: any
     let user: any
+    jest.spyOn(components, 'Toast')
+    let mockedComponents = mocked(components, true)
 
     beforeEach(() => {
+      jest.resetAllMocks()
+      mockedComponents = mocked(components, true)
       history = createMemoryHistory()
 
       patient = {
@@ -149,6 +155,21 @@ describe('Related Persons Tab', () => {
 
       const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
       expect(newRelatedPersonModal.prop('show')).toBeFalsy()
+    })
+
+    it('should display a success message when the new related person is added', async () => {
+      await act(async () => {
+        const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+        const onSave = newRelatedPersonModal.prop('onSave') as any
+        await onSave({ patientId: 'testMessage', type: 'type' })
+      })
+      wrapper.update()
+
+      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+        'success',
+        'Success!',
+        'patient.relatedPersons.successfullyAdded',
+      )
     })
   })
 
