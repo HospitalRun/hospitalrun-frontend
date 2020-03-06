@@ -97,7 +97,7 @@
     "build": "react-scripts build",
     "prepublishOnly": "npm run build",
     "test": "react-scripts test --detectOpenHandles",
-    "test:ci": "cross-env CI=true react-scripts test",
+    "test:ci": "cross-env CI=true react-scripts test --passWithNoTests",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint-staged": "lint-staged",
