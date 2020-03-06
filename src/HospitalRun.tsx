@@ -23,6 +23,7 @@ import PrivateRoute from './components/PrivateRoute'
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
   const { permissions } = useSelector((state: RootState) => state.user)
+  const { sidebarCollapsed } = useSelector((state: RootState) => state.components)
 
   return (
     <div>
@@ -31,7 +32,12 @@ const HospitalRun = () => {
         <Sidebar />
         <ButtonBarProvider>
           <div className="row">
-            <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <main
+              role="main"
+              className={`${
+                sidebarCollapsed ? 'col-md-10 col-lg-11' : 'col-md-9 col-lg-10'
+              } ml-sm-auto px-4`}
+            >
               <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 className="h2">{title}</h1>
                 <ButtonToolBar />
