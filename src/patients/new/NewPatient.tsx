@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Button } from '@hospitalrun/components'
+import { Button, Toast } from '@hospitalrun/components'
 
 import GeneralInformation from '../GeneralInformation'
 import useTitle from '../../page-header/useTitle'
@@ -31,6 +31,11 @@ const NewPatient = () => {
     history.push('/patients')
   }
 
+  const onSuccessfulSave = (newPatient: Patient) => {
+    history.push(`/patients/${newPatient.id}`)
+    Toast('success', t('Success!'), `${t('patients.successfullyCreated')} ${newPatient.fullName}`)
+  }
+
   const onSave = () => {
     if (!patient.givenName) {
       setErrorMessage(t('patient.errors.patientGivenNameRequired'))
@@ -41,7 +46,7 @@ const NewPatient = () => {
             ...patient,
             fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
           },
-          history,
+          onSuccessfulSave,
         ),
       )
     }

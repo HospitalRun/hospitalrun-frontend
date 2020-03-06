@@ -24,10 +24,13 @@ const mockStore = configureMockStore([thunk])
 describe('New Appointment', () => {
   let history: MemoryHistory
   let store: MockStore
+  const expectedNewAppointment = { id: '123' }
 
   const setup = () => {
     jest.spyOn(AppointmentRepository, 'save')
-    mocked(AppointmentRepository, true).save.mockResolvedValue({ id: '123' } as Appointment)
+    mocked(AppointmentRepository, true).save.mockResolvedValue(
+      expectedNewAppointment as Appointment,
+    )
 
     history = createMemoryHistory()
     store = mockStore({
@@ -152,6 +155,41 @@ describe('New Appointment', () => {
       expect(AppointmentRepository.save).toHaveBeenCalledWith(expectedAppointment)
       expect(store.getActions()).toContainEqual(appointmentSlice.createAppointmentStart())
       expect(store.getActions()).toContainEqual(appointmentSlice.createAppointmentSuccess())
+    })
+
+    it('should navigate to /appointments/:id when a new appointment is created', async () => {
+      let wrapper: any
+      await act(async () => {
+        wrapper = await setup()
+      })
+
+      const expectedAppointment = {
+        patientId: '123',
+        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+        endDateTime: addMinutes(
+          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+          60,
+        ).toISOString(),
+        location: 'location',
+        reason: 'reason',
+        type: 'type',
+      } as Appointment
+
+      act(() => {
+        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
+        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
+        onFieldChange('patientId', expectedAppointment.patientId)
+      })
+      wrapper.update()
+      const saveButton = wrapper.find(Button).at(0)
+      expect(saveButton.text().trim()).toEqual('actions.save')
+      const onClick = saveButton.prop('onClick') as any
+
+      await act(async () => {
+        await onClick()
+      })
+
+      expect(history.location.pathname).toEqual(`/appointments/${expectedNewAppointment.id}`)
     })
 
     it('should display an error if there is no patient id', async () => {

@@ -86,7 +86,7 @@ describe('HospitalRun', () => {
           givenName: 'test',
           familyName: 'test',
           suffix: 'test',
-          friendlyId: 'P00001',
+          code: 'P00001',
         } as Patient
 
         mockedPatientRepository.find.mockResolvedValue(patient)
@@ -168,7 +168,7 @@ describe('HospitalRun', () => {
           givenName: 'test',
           familyName: 'test',
           suffix: 'test',
-          friendlyId: 'P00001',
+          code: 'P00001',
         } as Patient
 
         mockedPatientRepository.find.mockResolvedValue(patient)

@@ -3,7 +3,7 @@ import useTitle from 'page-header/useTitle'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
 import { useParams, useHistory } from 'react-router'
-import { Spinner, Button, Modal } from '@hospitalrun/components'
+import { Spinner, Button, Modal, Toast } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import Permissions from 'model/Permissions'
@@ -29,8 +29,13 @@ const ViewAppointment = () => {
     setShowDeleteConfirmation(true)
   }
 
+  const onDeleteSuccess = () => {
+    history.push('/appointments')
+    Toast('success', t('states.success'), t('scheduling.appointments.successfullyDeleted'))
+  }
+
   const onDeleteConfirmationButtonClick = () => {
-    dispatch(deleteAppointment(appointment, history))
+    dispatch(deleteAppointment(appointment, onDeleteSuccess))
     setShowDeleteConfirmation(false)
   }
 
