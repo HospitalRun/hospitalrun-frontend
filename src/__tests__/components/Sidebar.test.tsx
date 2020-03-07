@@ -6,15 +6,25 @@ import Sidebar from 'components/Sidebar'
 import { Router } from 'react-router'
 import { ListItem } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import { Provider } from 'react-redux'
+
+const mockStore = configureMockStore([thunk])
 
 describe('Sidebar', () => {
   let history = createMemoryHistory()
+  const store = mockStore({
+    components: { sidebarCollapsed: false },
+  })
   const setup = (location: string) => {
     history = createMemoryHistory()
     history.push(location)
     return mount(
       <Router history={history}>
-        <Sidebar />
+        <Provider store={store}>
+          <Sidebar />
+        </Provider>
       </Router>,
     )
   }
@@ -27,7 +37,7 @@ describe('Sidebar', () => {
 
       expect(
         listItems
-          .at(0)
+          .at(1)
           .text()
           .trim(),
       ).toEqual('dashboard.label')
@@ -38,7 +48,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(0).prop('active')).toBeTruthy()
+      expect(listItems.at(1).prop('active')).toBeTruthy()
     })
 
     it('should navigate to / when the dashboard link is clicked', () => {
@@ -47,7 +57,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(0).prop('onClick') as any)()
+        ;(listItems.at(1).prop('onClick') as any)()
       })
 
       expect(history.location.pathname).toEqual('/')
@@ -62,7 +72,7 @@ describe('Sidebar', () => {
 
       expect(
         listItems
-          .at(1)
+          .at(2)
           .text()
           .trim(),
       ).toEqual('patients.label')
@@ -73,7 +83,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(1).prop('active')).toBeTruthy()
+      expect(listItems.at(2).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /patients when the patients link is clicked', () => {
@@ -82,7 +92,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(1).prop('onClick') as any)()
+        ;(listItems.at(2).prop('onClick') as any)()
       })
 
       expect(history.location.pathname).toEqual('/patients')
@@ -97,7 +107,7 @@ describe('Sidebar', () => {
 
       expect(
         listItems
-          .at(2)
+          .at(3)
           .text()
           .trim(),
       ).toEqual('scheduling.label')
@@ -108,7 +118,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(2).prop('active')).toBeTruthy()
+      expect(listItems.at(3).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /appointments when the scheduling link is clicked', () => {
@@ -117,7 +127,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(2).prop('onClick') as any)()
+        ;(listItems.at(3).prop('onClick') as any)()
       })
 
       expect(history.location.pathname).toEqual('/appointments')
