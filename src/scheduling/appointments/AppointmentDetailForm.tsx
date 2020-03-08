@@ -45,9 +45,7 @@ const AppointmentDetailForm = (props: Props) => {
               onChange={(p: Patient[]) => onFieldChange && onFieldChange('patientId', p[0].id)}
               onSearch={async (query: string) => PatientRepository.search(query)}
               searchAccessor="fullName"
-              renderMenuItemChildren={(p: Patient) => (
-                <div>{`${p.fullName} (${p.friendlyId})`}</div>
-              )}
+              renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
             />
           </div>
         </div>
@@ -101,7 +99,7 @@ const AppointmentDetailForm = (props: Props) => {
               { label: t('scheduling.appointment.types.emergency'), value: 'emergency' },
               { label: t('scheduling.appointment.types.followUp'), value: 'follow up' },
               { label: t('scheduling.appointment.types.routine'), value: 'routine' },
-              { label: t('scheduling.appointment.types.walkUp'), value: 'walk up' },
+              { label: t('scheduling.appointment.types.walkIn'), value: 'walk in' },
             ]}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
               onSelectChange(event, 'type')

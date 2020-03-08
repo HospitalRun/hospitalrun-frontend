@@ -3,9 +3,6 @@ contact_links:
   - name: Feature request
     url: https://github.com/HospitalRun/hospitalrun/issues/new?template=feature.md
     about: Submit a proposal for a new feature
-  - name: Spectrum Channel
-    url: https://spectrum.chat/hospitalrun
-    about: Please ask and answer questions here.
   - name: Slack Workspace
     url: https://hospitalrun-slack.herokuapp.com/
     about: Please ask and answer questions here.

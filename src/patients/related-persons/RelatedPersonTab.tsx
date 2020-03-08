@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Panel, List, ListItem, Alert, Spinner } from '@hospitalrun/components'
+import { Button, Panel, List, ListItem, Alert, Spinner, Toast } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
@@ -66,6 +66,10 @@ const RelatedPersonTab = (props: Props) => {
     setShowRelatedPersonModal(false)
   }
 
+  const onAddRelatedPersonSuccess = () => {
+    Toast('success', t('Success!'), t('patient.relatedPersons.successfullyAdded'))
+  }
+
   const onRelatedPersonSave = (relatedPerson: RelatedPerson) => {
     const newRelatedPersons: RelatedPerson[] = []
 
@@ -80,7 +84,7 @@ const RelatedPersonTab = (props: Props) => {
       relatedPersons: newRelatedPersons,
     }
 
-    dispatch(updatePatient(patientToUpdate, history))
+    dispatch(updatePatient(patientToUpdate, onAddRelatedPersonSuccess))
     closeNewRelatedPersonModal()
   }
 

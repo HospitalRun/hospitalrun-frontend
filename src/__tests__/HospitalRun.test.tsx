@@ -34,6 +34,7 @@ describe('HospitalRun', () => {
           title: 'test',
           user: { permissions: [Permissions.WritePatients] },
           breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
         })
 
         const wrapper = mount(
@@ -62,6 +63,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [] },
               breadcrumbs: { breadcrumbs: [] },
+              components: { sidebarCollapsed: false },
             })}
           >
             <MemoryRouter initialEntries={['/patients/new']}>
@@ -84,7 +86,7 @@ describe('HospitalRun', () => {
           givenName: 'test',
           familyName: 'test',
           suffix: 'test',
-          friendlyId: 'P00001',
+          code: 'P00001',
         } as Patient
 
         mockedPatientRepository.find.mockResolvedValue(patient)
@@ -94,6 +96,7 @@ describe('HospitalRun', () => {
           user: { permissions: [Permissions.WritePatients, Permissions.ReadPatients] },
           patient: { patient },
           breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
         })
 
         const wrapper = mount(
@@ -123,6 +126,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [Permissions.WritePatients] },
               breadcrumbs: { breadcrumbs: [] },
+              components: { sidebarCollapsed: false },
             })}
           >
             <MemoryRouter initialEntries={['/patients/edit/123']}>
@@ -141,6 +145,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [Permissions.ReadPatients] },
               breadcrumbs: { breadcrumbs: [] },
+              components: { sidebarCollapsed: false },
             })}
           >
             <MemoryRouter initialEntries={['/patients/edit/123']}>
@@ -163,7 +168,7 @@ describe('HospitalRun', () => {
           givenName: 'test',
           familyName: 'test',
           suffix: 'test',
-          friendlyId: 'P00001',
+          code: 'P00001',
         } as Patient
 
         mockedPatientRepository.find.mockResolvedValue(patient)
@@ -173,6 +178,7 @@ describe('HospitalRun', () => {
           user: { permissions: [Permissions.ReadPatients] },
           patient: { patient },
           breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
         })
 
         const wrapper = mount(
@@ -201,6 +207,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [] },
               breadcrumbs: { breadcrumbs: [] },
+              components: { sidebarCollapsed: false },
             })}
           >
             <MemoryRouter initialEntries={['/patients/123']}>
@@ -220,6 +227,7 @@ describe('HospitalRun', () => {
           user: { permissions: [Permissions.ReadAppointments] },
           appointments: { appointments: [] },
           breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
         })
 
         const wrapper = mount(
@@ -251,6 +259,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [] },
               breadcrumbs: { breadcrumbs: [] },
+              components: { sidebarCollapsed: false },
             })}
           >
             <MemoryRouter initialEntries={['/appointments']}>
@@ -269,6 +278,7 @@ describe('HospitalRun', () => {
           title: 'test',
           user: { permissions: [Permissions.WriteAppointments] },
           breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
         })
 
         const wrapper = mount(
@@ -298,6 +308,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [] },
               breadcrumbs: { breadcrumbs: [] },
+              components: { sidebarCollapsed: false },
             })}
           >
             <MemoryRouter initialEntries={['/appointments/new']}>
@@ -332,6 +343,7 @@ describe('HospitalRun', () => {
           user: { permissions: [Permissions.WriteAppointments, Permissions.ReadAppointments] },
           appointment: { appointment, patient: {} as Patient },
           breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
         })
 
         const wrapper = mount(
@@ -364,6 +376,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [Permissions.WriteAppointments] },
               breadcrumbs: { breadcrumbs: [] },
+              components: { sidebarCollapsed: false },
             })}
           >
             <MemoryRouter initialEntries={['/appointments/edit/123']}>
@@ -382,6 +395,7 @@ describe('HospitalRun', () => {
               title: 'test',
               user: { permissions: [Permissions.ReadAppointments] },
               breadcrumbs: { breadcrumbs: [] },
+              components: { sidebarCollapsed: false },
             })}
           >
             <MemoryRouter initialEntries={['/appointments/edit/123']}>
@@ -403,6 +417,7 @@ describe('HospitalRun', () => {
             title: 'test',
             user: { permissions: [Permissions.WritePatients] },
             breadcrumbs: { breadcrumbs: [] },
+            components: { sidebarCollapsed: false },
           })}
         >
           <MemoryRouter initialEntries={['/']}>

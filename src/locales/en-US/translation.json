@@ -44,7 +44,8 @@
       "label": "Related Persons",
       "new": "New Related Person",
       "relationshipType": "Relationship Type",
-      "addRelatedPersonAbove": "Add a related person using the button above."
+      "addRelatedPersonAbove": "Add a related person using the button above.",
+      "successfullyAdded": "Successfully added a new related person!"
     },
     "types": {
       "charity": "Charity",
@@ -62,7 +63,23 @@
       "warning": {
         "noAllergies": "No Allergies"
       },
-      "addAllergyAbove": "Add an allergy using the button above."
+      "addAllergyAbove": "Add an allergy using the button above.",
+      "successfullyAdded": "Successfully added a new allergy!"
+    },
+    "diagnoses": {
+      "label": "Diagnoses",
+      "new": "Add Diagnoses",
+      "diagnosisName": "Diagnosis Name",
+      "diagnosisDate": "Diagnosis Date",
+      "warning": {
+        "noDiagnoses": "No Diagnoses"
+      },
+      "error": {
+        "nameRequired": "Diagnosis Name is required.",
+        "dateRequired": "Diagnosis Date is required."
+      },
+      "addDiagnosisAbove": "Add a diagnosis using the button above.",
+      "successfullyAdded": "Successfully added a new diagnosis!"
     }
   },
   "sex": {
@@ -105,7 +122,7 @@
         "emergency": "Emergency",
         "followUp": "Follow Up",
         "routine": "Routine",
-        "walkUp": "Walk Up"
+        "walkIn": "Walk In"
       },
       "errors": {
         "patientRequired": "Patient is required.",

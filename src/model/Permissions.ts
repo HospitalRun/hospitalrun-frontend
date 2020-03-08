@@ -5,6 +5,7 @@ enum Permissions {
   WriteAppointments = 'write:appointments',
   DeleteAppointment = 'delete:appointment',
   AddAllergy = 'write:allergy',
+  AddDiagnosis = 'write:diagnosis',
 }
 
 export default Permissions
