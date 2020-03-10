@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Toast } from '@hospitalrun/components'
 import Patient from '../model/Patient'
 import PatientRepository from '../clients/db/PatientRepository'
 import { AppThunk } from '../store'
-import il8n from '../i18n'
 
 interface PatientState {
   isLoading: boolean
@@ -59,46 +57,30 @@ export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
   dispatch(fetchPatientSuccess(patient))
 }
 
-export const createPatient = (patient: Patient, history: any): AppThunk => async (dispatch) => {
+export const createPatient = (
+  patient: Patient,
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
   dispatch(createPatientStart())
   const newPatient = await PatientRepository.save(patient)
   dispatch(createPatientSuccess())
-  history.push(`/patients/${newPatient.id}`)
-  Toast(
-    'success',
-    il8n.t('Success!'),
-    `${il8n.t('patients.successfullyCreated')} ${patient.fullName}`,
-  )
+
+  if (onSuccess) {
+    onSuccess(newPatient)
+  }
 }
 
-export const updatePatient = (patient: Patient, history: any): AppThunk => async (dispatch) => {
+export const updatePatient = (
+  patient: Patient,
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
   dispatch(updatePatientStart())
   const updatedPatient = await PatientRepository.saveOrUpdate(patient)
   dispatch(updatePatientSuccess(updatedPatient))
-  history.push(`/patients/${updatedPatient.id}`)
-  Toast(
-    'success',
-    il8n.t('Success!'),
-    `${il8n.t('patients.successfullyUpdated')} ${patient.fullName}`,
-  )
-}
 
-export const addRelatedPerson = (patient: Patient, history: any): AppThunk => async (dispatch) => {
-  dispatch(updatePatientStart())
-  const updatedPatient = await PatientRepository.saveOrUpdate(patient)
-  dispatch(updatePatientSuccess(updatedPatient))
-  history.push(`/patients/${updatedPatient.id}`)
-  Toast(
-    'success',
-    il8n.t('Success!'),
-    `${il8n.t('patients.successfullyUpdated')} ${patient.fullName}`,
-  )
-  Toast(
-    'success',
-    il8n.t('Success!'),
-    `${il8n.t('patients.successfullyAddedRelatedPerson')}`,
-    'top-left',
-  )
+  if (onSuccess) {
+    onSuccess(updatedPatient)
+  }
 }
 
 export default patientSlice.reducer

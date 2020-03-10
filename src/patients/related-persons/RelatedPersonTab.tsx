@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Panel, List, ListItem, Alert, Spinner } from '@hospitalrun/components'
+import { Button, Panel, List, ListItem, Alert, Spinner, Toast } from '@hospitalrun/components'
 import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import Patient from 'model/Patient'
-import { addRelatedPerson } from 'patients/patient-slice'
+import { updatePatient } from 'patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
@@ -66,6 +66,11 @@ const RelatedPersonTab = (props: Props) => {
     setShowRelatedPersonModal(false)
   }
 
+  const onAddRelatedPersonSuccess = () => {
+    Toast('success', t('Success!'), t('patient.relatedPersons.successfullyAdded'))
+    Toast('success', t('Success!'), t('patients.successfullyAddedRelatedPerson'), 'top-left')
+  }
+
   const onRelatedPersonSave = (relatedPerson: RelatedPerson) => {
     const newRelatedPersons: RelatedPerson[] = []
 
@@ -80,7 +85,7 @@ const RelatedPersonTab = (props: Props) => {
       relatedPersons: newRelatedPersons,
     }
 
-    dispatch(addRelatedPerson(patientToUpdate, history))
+    dispatch(updatePatient(patientToUpdate, onAddRelatedPersonSuccess))
     closeNewRelatedPersonModal()
   }
 

@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [12.x, 13.x]
+        node-version: [12.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
         # exclude:
         #   - os: windows-latest
@@ -41,7 +41,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [12.x, 13.x]
+        node-version: [12.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
         # exclude:
         #   - os: windows-latest
