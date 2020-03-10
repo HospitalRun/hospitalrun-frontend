@@ -5,7 +5,7 @@
 ![Status](https://img.shields.io/badge/Status-developing-brightgree) [![Release](https://img.shields.io/github/release/HospitalRun/hospitalrun-frontend.svg)](https://github.com/HospitalRun/hospitalrun-frontend/releases) [![Version](https://img.shields.io/github/package-json/v/hospitalrun/hospitalrun-frontend)](https://github.com/HospitalRun/hospitalrun-frontend/releases)
 [![GitHub CI](https://github.com/HospitalRun/frontend/workflows/GitHub%20CI/badge.svg)](https://github.com/HospitalRun/frontend/actions) [![Build Status](https://travis-ci.com/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.com/HospitalRun/hospitalrun-frontend) [![Coverage Status](https://coveralls.io/repos/github/HospitalRun/hospitalrun-frontend/badge.svg?branch=master)](https://coveralls.io/github/HospitalRun/hospitalrun-frontend?branch=master) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/HospitalRun/hospitalrun-frontend.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/HospitalRun/hospitalrun-frontend/context:javascript) [![Documentation Status](https://readthedocs.org/projects/hospitalrun-frontend/badge/?version=latest)](https://hospitalrun-frontend.readthedocs.io)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHospitalRun%2Fhospitalrun-frontend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHospitalRun%2Fhospitalrun-frontend?ref=badge_large) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-![dependabot](https://api.dependabot.com/badges/status?host=github&repo=HospitalRun/hospitalrun-frontend) [![Slack](https://hospitalrun-slack.herokuapp.com/badge.svg)](https://hospitalrun-slack.herokuapp.com) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/hospitalrun) [![Run on Repl.it](https://repl.it/badge/github/HospitalRun/hospitalrun-frontend)](https://repl.it/github/HospitalRun/hospitalrun-frontend)
+![dependabot](https://api.dependabot.com/badges/status?host=github&repo=HospitalRun/hospitalrun-frontend) [![Slack](https://hospitalrun-slack.herokuapp.com/badge.svg)](https://hospitalrun-slack.herokuapp.com) [![Run on Repl.it](https://repl.it/badge/github/HospitalRun/hospitalrun-frontend)](https://repl.it/github/HospitalRun/hospitalrun-frontend)
 
 </div>
 
@@ -16,10 +16,10 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 **Version 1.0.0-beta is no longer supported. Version 2 is currently under development.**
 
 - To contribute, follow the guidelines in the readme or alternatively ask for details on Slack channel [#contributors](https://hospitalrun-slack.herokuapp.com).
-- To use version 1.0.0-beta (not production ready) in a hospital facility, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com) or Spectrum channel [#support](https://spectrum.chat/hospitalrun).
+- To use version 1.0.0-beta (not production ready) in a hospital facility, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com).
 
 <div align="center">
-  
+
 [![Slack](https://img.shields.io/badge/Slack-Join%20our%20devs%20group-blueviolet?style=for-the-badge&logo=slack)](https://hospitalrun-slack.herokuapp.com)
 
 </div>
@@ -35,12 +35,12 @@ Contributions are always welcome. Before contributing please read our [contribut
 
 ## Connecting to HospitalRun Server
 
-__Note: The following instructions are for connecting to HospitalRun Server during development and are not intended to be for production use. For production deployments, see the deployment instructions.__
+**Note: The following instructions are for connecting to HospitalRun Server during development and are not intended to be for production use. For production deployments, see the deployment instructions.**
 
 1. Configure [HospitalRun Server](https://github.com/HospitalRun/hospitalrun-server)
 2. Start the HospitalRun Development Server
 3. Copy the `.env.example` file to `.env`
-4. Change the `REACT_APP_HOSPITALRUN_API` variable to point to the HospitalRun Development Server.  
+4. Change the `REACT_APP_HOSPITALRUN_API` variable to point to the HospitalRun Development Server.
 
 ## Working on an Issue
 

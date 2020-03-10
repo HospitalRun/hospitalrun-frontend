@@ -36,7 +36,7 @@ const Appointments = () => {
       icon="appointment-add"
       onClick={() => history.push('/appointments/new')}
     >
-      {t('scheduling.appointments.newAppointment')}
+      {t('scheduling.appointments.new')}
     </Button>,
   ])
   useAddBreadcrumbs(breadcrumbs, true)

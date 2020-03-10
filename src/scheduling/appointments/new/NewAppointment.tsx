@@ -14,14 +14,14 @@ import AppointmentDetailForm from '../AppointmentDetailForm'
 
 const breadcrumbs = [
   { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
-  { i18nKey: 'scheduling.appointments.newAppointment', location: '/appointments/new' },
+  { i18nKey: 'scheduling.appointments.new', location: '/appointments/new' },
 ]
 
 const NewAppointment = () => {
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
-  useTitle(t('scheduling.appointments.newAppointment'))
+  useTitle(t('scheduling.appointments.new'))
   useAddBreadcrumbs(breadcrumbs, true)
   const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
   const endDateTime = addMinutes(startDateTime, 60)
@@ -40,6 +40,10 @@ const NewAppointment = () => {
     history.push('/appointments')
   }
 
+  const onNewAppointmentSaveSuccess = (newAppointment: Appointment) => {
+    history.push(`/appointments/${newAppointment.id}`)
+  }
+
   const onSave = () => {
     let newErrorMessage = ''
     if (!appointment.patientId) {
@@ -54,7 +58,7 @@ const NewAppointment = () => {
       return
     }
 
-    dispatch(createAppointment(appointment as Appointment, history))
+    dispatch(createAppointment(appointment as Appointment, onNewAppointmentSaveSuccess))
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {

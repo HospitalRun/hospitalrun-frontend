@@ -13,6 +13,7 @@ import { createMemoryHistory } from 'history'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import Allergies from 'patients/allergies/Allergies'
+import Diagnoses from 'patients/diagnoses/Diagnoses'
 import Patient from '../../../model/Patient'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as titleUtil from '../../../page-header/useTitle'
@@ -36,7 +37,7 @@ describe('ViewPatient', () => {
     phoneNumber: 'phoneNumber',
     email: 'email@email.com',
     address: 'address',
-    friendlyId: 'P00001',
+    code: 'P00001',
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
@@ -89,7 +90,7 @@ describe('ViewPatient', () => {
       await setup()
     })
     expect(titleUtil.default).toHaveBeenCalledWith(
-      `${patient.givenName} ${patient.familyName} ${patient.suffix} (${patient.friendlyId})`,
+      `${patient.givenName} ${patient.familyName} ${patient.suffix} (${patient.code})`,
     )
   })
 
@@ -126,11 +127,12 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(4)
+    expect(tabs).toHaveLength(5)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
     expect(tabs.at(3).prop('label')).toEqual('patient.allergies.label')
+    expect(tabs.at(4).prop('label')).toEqual('patient.diagnoses.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -188,7 +190,7 @@ describe('ViewPatient', () => {
     expect(relatedPersonTab.prop('patient')).toEqual(patient)
   })
 
-  it('should mark the rallergies tab as active when it is clicked and render the allergies component when route is /patients/:id/allergies', async () => {
+  it('should mark the allergies tab as active when it is clicked and render the allergies component when route is /patients/:id/allergies', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = await setup()
@@ -210,5 +212,29 @@ describe('ViewPatient', () => {
     expect(tabs.at(3).prop('active')).toBeTruthy()
     expect(allergiesTab).toHaveLength(1)
     expect(allergiesTab.prop('patient')).toEqual(patient)
+  })
+
+  it('should mark the diagnoses tab as active when it is clicked and render the diagnoses component when route is /patients/:id/diagnoses', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    await act(async () => {
+      const tabsHeader = wrapper.find(TabsHeader)
+      const tabs = tabsHeader.find(Tab)
+      tabs.at(4).prop('onClick')()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const diagnosesTab = wrapper.find(Diagnoses)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/diagnoses`)
+    expect(tabs.at(4).prop('active')).toBeTruthy()
+    expect(diagnosesTab).toHaveLength(1)
+    expect(diagnosesTab.prop('patient')).toEqual(patient)
   })
 })

@@ -46,7 +46,7 @@ describe('Edit Appointment', () => {
     phoneNumber: 'phoneNumber',
     email: 'email@email.com',
     address: 'address',
-    friendlyId: 'P00001',
+    code: 'P00001',
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
@@ -182,6 +182,24 @@ describe('Edit Appointment', () => {
     expect(store.getActions()).toContainEqual(
       appointmentSlice.updateAppointmentSuccess(appointment),
     )
+  })
+
+  it('should navigate to /appointments/:id when save is successful', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+
+    await act(async () => {
+      await onClick()
+    })
+
+    expect(history.location.pathname).toEqual('/appointments/123')
   })
 
   it('should navigate to /appointments/:id when cancel is clicked', async () => {

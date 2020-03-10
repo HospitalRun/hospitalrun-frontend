@@ -13,6 +13,7 @@ const initialState: UserState = {
     Permissions.WriteAppointments,
     Permissions.DeleteAppointment,
     Permissions.AddAllergy,
+    Permissions.AddDiagnosis,
   ],
 }
 

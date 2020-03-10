@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import Allergies from 'patients/allergies/Allergies'
+import Diagnoses from 'patients/diagnoses/Diagnoses'
 import useTitle from '../../page-header/useTitle'
 import { fetchPatient } from '../patient-slice'
 import { RootState } from '../../store'
@@ -17,9 +18,9 @@ import RelatedPerson from '../related-persons/RelatedPersonTab'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import AppointmentsList from '../appointments/AppointmentsList'
 
-const getFriendlyId = (p: Patient): string => {
+const getPatientCode = (p: Patient): string => {
   if (p) {
-    return p.friendlyId
+    return p.code
   }
 
   return ''
@@ -34,7 +35,7 @@ const ViewPatient = () => {
   const { patient, isLoading } = useSelector((state: RootState) => state.patient)
   const { permissions } = useSelector((state: RootState) => state.user)
 
-  useTitle(`${getPatientFullName(patient)} (${getFriendlyId(patient)})`)
+  useTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
 
   const setButtonToolBar = useButtonToolbarSetter()
 
@@ -101,6 +102,11 @@ const ViewPatient = () => {
           label={t('patient.allergies.label')}
           onClick={() => history.push(`/patients/${patient.id}/allergies`)}
         />
+        <Tab
+          active={location.pathname === `/patients/${patient.id}/diagnoses`}
+          label={t('patient.diagnoses.label')}
+          onClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
+        />
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
@@ -114,6 +120,9 @@ const ViewPatient = () => {
         </Route>
         <Route exact path="/patients/:id/allergies">
           <Allergies patient={patient} />
+        </Route>
+        <Route exact path="/patients/:id/diagnoses">
+          <Diagnoses patient={patient} />
         </Route>
       </Panel>
     </div>
