@@ -295,7 +295,7 @@ describe('HospitalRun', () => {
         expect(store.getActions()).toContainEqual(
           addBreadcrumbs([
             { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
-            { i18nKey: 'scheduling.appointments.newAppointment', location: '/appointments/new' },
+            { i18nKey: 'scheduling.appointments.new', location: '/appointments/new' },
             { i18nKey: 'dashboard.label', location: '/' },
           ]),
         )
