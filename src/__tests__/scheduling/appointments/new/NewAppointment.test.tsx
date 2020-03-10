@@ -62,7 +62,7 @@ describe('New Appointment', () => {
         await setup()
       })
 
-      expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.newAppointment')
+      expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.new')
     })
   })
 
