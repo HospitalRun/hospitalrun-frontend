@@ -63,7 +63,7 @@ const Navbar = () => {
             },
             {
               type: 'link',
-              label: t('scheduling.appointments.newAppointment'),
+              label: t('scheduling.appointments.new'),
               onClick: () => {
                 history.push('/appointments/new')
               },
