@@ -32,6 +32,33 @@ export default {
       new: 'New Related Person',
       relationshipType: 'Relationship Type',
     },
+    allergies: {
+      label: 'Allergies',
+      new: 'Add Allergy',
+      error: {
+        nameRequired: 'Name is required.',
+      },
+      warning: {
+        noAllergies: 'No Allergies',
+      },
+      addAllergyAbove: 'Add an allergy using the button above.',
+      successfullyAdded: 'Successfully added a new allergy!',
+    },
+    diagnoses: {
+      label: 'Diagnoses',
+      new: 'Add Diagnoses',
+      diagnosisName: 'Diagnosis Name',
+      diagnosisDate: 'Diagnosis Date',
+      warning: {
+        noDiagnoses: 'No Diagnoses',
+      },
+      error: {
+        nameRequired: 'Diagnosis Name is required.',
+        dateRequired: 'Diagnosis Date is required.',
+      },
+      addDiagnosisAbove: 'Add a diagnosis using the button above.',
+      successfullyAdded: 'Successfully added a new diagnosis!',
+    },
     types: {
       charity: 'Charity',
       private: 'Private',
