@@ -1,8 +1,8 @@
 export default {
   sex: {
-    male: "Male",
-    female: "Female",
-    other: "Other",
-    unknown: "Unknown"
+    male: 'Male',
+    female: 'Female',
+    other: 'Other',
+    unknown: 'Unknown',
   },
 }

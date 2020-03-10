@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 import configureStore from 'redux-mock-store'
 import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
+import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import Patients from '../../../patients/list/Patients'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as patientSlice from '../../../patients/patients-slice'
@@ -16,7 +17,7 @@ const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
 describe('Patients', () => {
-  const patients = [{ fullName: 'test test', friendlyId: 'P12345' }]
+  const patients = [{ id: '123', fullName: 'test test', code: 'P12345' }]
   const mockedPatientRepository = mocked(PatientRepository, true)
 
   const setup = (isLoading?: boolean) => {
@@ -42,6 +43,10 @@ describe('Patients', () => {
   })
 
   describe('layout', () => {
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
     it('should render a search input with button', () => {
       const wrapper = setup()
       const searchInput = wrapper.find(TextInput)
@@ -62,9 +67,18 @@ describe('Patients', () => {
 
       const patientListItems = wrapper.find(ListItem)
       expect(patientListItems).toHaveLength(1)
-      expect(patientListItems.at(0).text()).toEqual(
-        `${patients[0].fullName} (${patients[0].friendlyId})`,
-      )
+      expect(patientListItems.at(0).text()).toEqual(`${patients[0].fullName} (${patients[0].code})`)
+    })
+
+    it('should add a "New Patient" button to the button tool bar', () => {
+      jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
+      const setButtonToolBarSpy = jest.fn()
+      mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+
+      setup()
+
+      const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+      expect((actualButtons[0] as any).props.children).toEqual('patients.newPatient')
     })
   })
 

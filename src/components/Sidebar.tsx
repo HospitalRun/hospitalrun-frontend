@@ -2,11 +2,18 @@ import React, { CSSProperties } from 'react'
 import { List, ListItem, Icon } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useHistory } from 'react-router'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '../store'
+import { updateSidebar } from './component-slice'
 
 const Sidebar = () => {
+  const dispatch = useDispatch()
+  const { sidebarCollapsed } = useSelector((state: RootState) => state.components)
+
   const { t } = useTranslation()
   const path = useLocation()
   const history = useHistory()
+  const { pathname } = path
 
   const navigateTo = (location: string) => {
     history.push(location)
@@ -17,32 +24,45 @@ const Sidebar = () => {
   }
 
   return (
-    <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+    <nav
+      className="col-md-2 d-none d-md-block bg-light sidebar"
+      style={{ width: sidebarCollapsed ? '56px' : '' }}
+    >
       <div className="sidebar-sticky">
         <List layout="flush" className="nav flex-column">
           <ListItem
-            active={path.pathname === '/'}
+            onClick={() => dispatch(updateSidebar())}
+            className="nav-item"
+            style={listItemStyle}
+          >
+            <Icon
+              style={{ float: sidebarCollapsed ? 'left' : 'right' }}
+              icon={sidebarCollapsed ? 'right-arrow' : 'left-arrow'}
+            />
+          </ListItem>
+          <ListItem
+            active={pathname === '/'}
             onClick={() => navigateTo('/')}
             className="nav-item"
             style={listItemStyle}
           >
-            <Icon icon="dashboard" /> {t('dashboard.label')}
+            <Icon icon="dashboard" /> {!sidebarCollapsed && t('dashboard.label')}
           </ListItem>
           <ListItem
-            active={path.pathname.includes('patient')}
+            active={pathname.split('/')[1].includes('patient')}
             onClick={() => navigateTo('/patients')}
             className="nav-item"
             style={listItemStyle}
           >
-            <Icon icon="patients" /> {t('patients.label')}
+            <Icon icon="patients" /> {!sidebarCollapsed && t('patients.label')}
           </ListItem>
           <ListItem
-            active={path.pathname.includes('appointments')}
+            active={pathname.split('/')[1].includes('appointments')}
             onClick={() => navigateTo('/appointments')}
             className="nav-item"
             style={listItemStyle}
           >
-            <Icon icon="appointment" /> {t('scheduling.label')}
+            <Icon icon="appointment" /> {!sidebarCollapsed && t('scheduling.label')}
           </ListItem>
         </List>
       </div>

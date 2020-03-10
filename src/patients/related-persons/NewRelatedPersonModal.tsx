@@ -51,7 +51,7 @@ const NewRelatedPersonModal = (props: Props) => {
               onChange={onPatientSelect}
               onSearch={async (query: string) => PatientRepository.search(query)}
               renderMenuItemChildren={(patient: Patient) => (
-                <div>{`${patient.fullName} (${patient.friendlyId})`}</div>
+                <div>{`${patient.fullName} (${patient.code})`}</div>
               )}
             />
           </div>
@@ -63,6 +63,7 @@ const NewRelatedPersonModal = (props: Props) => {
             name="type"
             label={t('patient.relatedPersons.relationshipType')}
             value={relatedPerson.type}
+            isEditable
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onInputElementChange(event, 'type')
             }}

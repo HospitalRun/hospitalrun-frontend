@@ -10,6 +10,6 @@ Issues should only be posted in this repository after you have been able to repr
 them and confirm that they are a bug or incorrect/missing information in the [docs](https://github.com/HospitalRun/hospitalrun-docs).
 
 For all other questions, requests, help resolving an issue, or if you are not sure if this is
-the right place, please do not open an issue here. Instead, try to find a solution in our [Spectrum channel](https://spectrum.chat/hospitalrun).
+the right place, please do not open an issue here. Instead, try to find a solution in our [Slack workspace](https://hospitalrun-slack.herokuapp.com/).
 
 If you have issues with the [hospitalrun.io](https://www.hospitalrun.io) site, please open an issue [here](https://github.com/HospitalRun/hospitalrun.github.io/issues).

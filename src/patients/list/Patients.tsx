@@ -1,24 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { Spinner, TextInput, Button, List, ListItem, Container, Row } from '@hospitalrun/components'
+import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+
+const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
 const Patients = () => {
   const { t } = useTranslation()
   const history = useHistory()
   useTitle(t('patients.label'))
+  useAddBreadcrumbs(breadcrumbs, true)
   const dispatch = useDispatch()
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
+
+  const setButtonToolBar = useButtonToolbarSetter()
+  setButtonToolBar([
+    <Button
+      key="newPatientButton"
+      outlined
+      color="success"
+      icon="patient-add"
+      onClick={() => history.push('/patients/new')}
+    >
+      {t('patients.newPatient')}
+    </Button>,
+  ])
 
   const [searchText, setSearchText] = useState<string>('')
 
   useEffect(() => {
     dispatch(fetchPatients())
-  }, [dispatch])
+
+    return () => {
+      setButtonToolBar([])
+    }
+  }, [dispatch, setButtonToolBar])
 
   if (isLoading) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
@@ -28,7 +50,7 @@ const Patients = () => {
     <ul>
       {patients.map((p) => (
         <ListItem action key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
-          {p.fullName} ({p.friendlyId})
+          {p.fullName} ({p.code})
         </ListItem>
       ))}
     </ul>

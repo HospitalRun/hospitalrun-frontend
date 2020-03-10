@@ -1,6 +1,6 @@
 export default {
   states: {
-    success: "Sucesso!",
-    error: "Algo deu errado.."
+    success: 'Sucesso!',
+    error: 'Algo deu errado..',
   },
 }

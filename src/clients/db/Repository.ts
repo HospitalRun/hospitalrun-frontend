@@ -1,5 +1,5 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
-import { getTime } from 'date-fns'
+import { v4 as uuidv4 } from 'uuid'
 import AbstractDBModel from '../../model/AbstractDBModel'
 
 function mapRow(row: any): any {
@@ -39,16 +39,23 @@ export default class Repository<T extends AbstractDBModel> {
   }
 
   async findAll(): Promise<T[]> {
-    const allPatients = await this.db.allDocs({
+    const allDocs = await this.db.allDocs({
       include_docs: true,
     })
 
-    return allPatients.rows.map(mapRow)
+    return allDocs.rows.map(mapRow)
   }
 
   async save(entity: T): Promise<T> {
+    const currentTime = new Date().toISOString()
+
     const { id, rev, ...valuesToSave } = entity
-    const savedEntity = await this.db.put({ _id: getTime(new Date()).toString(), ...valuesToSave })
+    const savedEntity = await this.db.put({
+      _id: uuidv4(),
+      ...valuesToSave,
+      createdAt: currentTime,
+      updatedAt: currentTime,
+    })
     return this.find(savedEntity.id)
   }
 
@@ -57,15 +64,17 @@ export default class Repository<T extends AbstractDBModel> {
       return this.save(entity)
     }
 
+    const { id, rev, ...dataToSave } = entity
+
     try {
-      const existingEntity = await this.find(entity.id)
-      const { id, rev, ...restOfDoc } = existingEntity
+      await this.find(entity.id)
       const entityToUpdate = {
         _id: id,
         _rev: rev,
-        ...restOfDoc,
-        ...entity,
+        ...dataToSave,
+        updatedAt: new Date().toISOString(),
       }
+
       await this.db.put(entityToUpdate)
       return this.find(entity.id)
     } catch (error) {

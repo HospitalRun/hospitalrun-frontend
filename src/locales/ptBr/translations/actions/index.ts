@@ -5,6 +5,6 @@ export default {
     cancel: 'Cancelar',
     new: 'Novo',
     list: 'Lista',
-    search: 'Pesquisar'
+    search: 'Pesquisar',
   },
 }

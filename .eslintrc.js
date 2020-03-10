@@ -1,4 +1,5 @@
 module.exports = {
+  ignorePatterns: ['commitlint.config.js', 'jest.config.js'],
   env: {
     browser: true,
     es6: true,
@@ -10,6 +11,7 @@ module.exports = {
     'prettier',
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
+    'eslint-config-prettier',
   ],
   globals: {
     Atomics: 'readonly',
@@ -19,8 +21,6 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: './',
-    // TODO: we need this because of an issue with @typescript-eslint/parser: https://github.com/typescript-eslint/typescript-eslint/issues/864
-    createDefaultProgram: true,
   },
   settings: {
     'import/resolver': {
@@ -31,6 +31,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'jest'],
   rules: {
+    'prettier/prettier': 'error',
     '@typescript-eslint/member-delimiter-style': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',

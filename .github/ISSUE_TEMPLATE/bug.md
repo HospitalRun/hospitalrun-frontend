@@ -1,12 +1,10 @@
 ---
-name: 🐛 Bug report
+name: "\U0001F41B Bug report"
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: bug
 assignees: ''
----
-
-Before you submit an issue we recommend you drop into our [Spectrum channel](https://spectrum.chat/hospitalrun) and ask any questions you have or mention any problems you've had getting started with HospitalRun.
+---Before you submit an issue we recommend you drop into our [Slack workspace](https://hospitalrun-slack.herokuapp.com/) and ask any questions you have or mention any problems you've had getting started with HospitalRun.
 
 **Please read this entire template before posting any issue. If you ignore these instructions
 and post an issue here that does not follow the instructions, your issue might be closed,

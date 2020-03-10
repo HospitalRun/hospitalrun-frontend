@@ -1,12 +1,12 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
-import createMockStore from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import useTitle from '../../page-header/useTitle'
 import * as titleSlice from '../../page-header/title-slice'
 
-const store = createMockStore([thunk])
+const store = configureMockStore([thunk])
 
 describe('useTitle', () => {
   it('should call the updateTitle with the correct data', () => {
