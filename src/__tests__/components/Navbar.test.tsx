@@ -75,7 +75,7 @@ describe('Navbar', () => {
         'scheduling.appointments.label',
       )
       expect(scheduleLinkList.first().props().children[1].props.children).toEqual(
-        'scheduling.appointments.newAppointment',
+        'scheduling.appointments.new',
       )
     })
 
