@@ -17,6 +17,7 @@ export default {
         routine: 'Routine',
         walkUp: 'Walk Up',
       },
+      successfullyCreated: 'Appointment successfully created.',
       errors: {
         patientRequired: 'Patient is required.',
         errorCreatingAppointment: 'Error Creating Appointment!',
