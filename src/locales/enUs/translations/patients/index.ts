@@ -6,5 +6,6 @@ export default {
     newPatient: 'New Patient',
     successfullyCreated: 'Successfully created patient',
     successfullyAddedRelatedPerson: 'Successfully added the new related person',
+    successfullyAddedNote: 'Successfully added the new note',
   },
 }

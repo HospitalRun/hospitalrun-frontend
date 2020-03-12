@@ -17,6 +17,7 @@ import GeneralInformation from '../GeneralInformation'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import AppointmentsList from '../appointments/AppointmentsList'
+import Note from '../notes/NoteTab'
 
 const getPatientCode = (p: Patient): string => {
   if (p) {
@@ -107,6 +108,11 @@ const ViewPatient = () => {
           label={t('patient.diagnoses.label')}
           onClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
         />
+        <Tab
+          active={location.pathname === `/patients/${patient.id}/notes`}
+          label={t('patient.notes.label')}
+          onClick={() => history.push(`/patients/${patient.id}/notes`)}
+        />
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
@@ -123,6 +129,9 @@ const ViewPatient = () => {
         </Route>
         <Route exact path="/patients/:id/diagnoses">
           <Diagnoses patient={patient} />
+        </Route>
+        <Route exact path="/patients/:id/notes">
+          <Note patient={patient} />
         </Route>
       </Panel>
     </div>
