@@ -15,7 +15,7 @@ export default {
         emergency: 'Emergency',
         followUp: 'Follow Up',
         routine: 'Routine',
-        walkUp: 'Walk Up',
+        walkIn: 'Walk In',
       },
       successfullyCreated: 'Appointment successfully created.',
       errors: {
