@@ -68,7 +68,7 @@ const NewPatient = () => {
         errorMessage={errorMessage}
       />
       <div className="row float-right">
-        <div className="btn-group btn-group-lg">
+        <div className="btn-group btn-group-lg mt-3">
           <Button className="mr-2" color="success" onClick={onSave}>
             {t('actions.save')}
           </Button>
