@@ -31,6 +31,10 @@ export default {
       label: 'Related Persons',
       new: 'New Related Person',
       relationshipType: 'Relationship Type',
+      warning: {
+        noRelatedPersons: 'No related persons',
+      },
+      addRelatedPersonAbove: 'Add a related person using the button above.',
     },
     allergies: {
       label: 'Allergies',
