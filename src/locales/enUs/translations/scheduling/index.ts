@@ -4,6 +4,7 @@ export default {
     appointments: {
       label: 'Appointments',
       new: 'New Appointment',
+      deleteAppointment: 'Delete Appointment',
     },
     appointment: {
       startDate: 'Start Date',
