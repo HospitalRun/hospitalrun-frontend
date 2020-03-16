@@ -149,7 +149,7 @@ All notable changes to this project will be documented in this file. See [standa
 * **test:** updates coveralls script ([f8844ed](https://github.com/HospitalRun/hospitalrun-frontend/commit/f8844ed74345a6bf455bcfb28154ed03f21e6d51))
 * **tests:** fix matchMediaMock issue when running tests ([2edfe1b](https://github.com/HospitalRun/hospitalrun-frontend/commit/2edfe1b247ec5d0e5d5e372e0facb82be535af3f))
 * remove swap files inadverdently checked in ([9d2040d](https://github.com/HospitalRun/hospitalrun-frontend/commit/9d2040da45bf1e0a90d6468d4ab7d493e7a41e91))
-* when deleting patient records, also delete appointsments, payments, invoice line items and proc charges ([5939a73](https://github.com/HospitalRun/hospitalrun-frontend/commit/5939a738f3fce786dca84e32246236c4681767f4))
+* when deleting patient records, also delete appointments, payments, invoice line items and proc charges ([5939a73](https://github.com/HospitalRun/hospitalrun-frontend/commit/5939a738f3fce786dca84e32246236c4681767f4))
 
 
 * drop support for Node.js 0.10 ([#782](https://github.com/HospitalRun/hospitalrun-frontend/issues/782)) ([c3e2dae](https://github.com/HospitalRun/hospitalrun-frontend/commit/c3e2dae5f3f16010a572a046697be9372169daa5))
