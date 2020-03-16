@@ -4,6 +4,7 @@ export default {
     appointments: {
       label: 'Appointments',
       new: 'New Appointment',
+      deleteAppointment: 'Delete Appointment',
     },
     appointment: {
       startDate: 'Start Date',
@@ -15,7 +16,7 @@ export default {
         emergency: 'Emergency',
         followUp: 'Follow Up',
         routine: 'Routine',
-        walkUp: 'Walk Up',
+        walkIn: 'Walk In',
       },
       errors: {
         patientRequired: 'Patient is required.',
