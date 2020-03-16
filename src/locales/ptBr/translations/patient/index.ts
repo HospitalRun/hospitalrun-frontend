@@ -32,6 +32,33 @@ export default {
       new: 'Nova Pessoa Relacionada',
       relationshipType: 'Tipo de Relacionamento',
     },
+    allergies: {
+      label: 'Alergias',
+      new: 'Adicionar alergia',
+      error: {
+        nameRequired: 'Nome da alergia é necessário.',
+      },
+      warning: {
+        noAllergies: 'Sem alergias',
+      },
+      addAllergyAbove: 'Adicione uma alergia utilizando o botão acima.',
+      successfullyAdded: 'Uma nova alergia foi adicionada com sucesso!',
+    },
+    diagnoses: {
+      label: 'Diagnósticos',
+      new: 'Novo diagnósticos',
+      diagnosisName: 'Nome do diagnóstico',
+      diagnosisDate: 'Data do diagnóstico',
+      warning: {
+        noDiagnoses: 'Sem diagnósticos',
+      },
+      error: {
+        nameRequired: 'Nome do diagnóstico é necessário.',
+        dateRequired: 'Data do diagnóstico é necessária.',
+      },
+      addDiagnosisAbove: 'Adicione um diagnóstico utilizando o botão acima.',
+      successfullyAdded: 'Um novo diagnóstico foi adicionado com sucesso!',
+    },
     types: {
       charity: 'Caridade',
       private: 'Particular',
