@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "@hospitalrun/components": "^0.35.0",
+    "@hospitalrun/components": "^1.0.0",
     "@reduxjs/toolkit": "~1.2.1",
     "@types/pouchdb-find": "~6.3.4",
     "bootstrap": "~4.4.1",
