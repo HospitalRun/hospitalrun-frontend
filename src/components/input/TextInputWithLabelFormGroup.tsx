@@ -9,14 +9,15 @@ interface Props {
   type: 'text' | 'email' | 'number' | 'tel'
   placeholder?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  isRequired?: boolean
 }
 
 const TextInputWithLabelFormGroup = (props: Props) => {
-  const { value, label, name, isEditable, onChange, placeholder, type } = props
+  const { value, label, name, isEditable, onChange, placeholder, type, isRequired } = props
   const id = `${name}TextInput`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} />
+      <Label text={label} htmlFor={id} isRequired={isRequired} />
       <TextInput
         id={id}
         value={value}

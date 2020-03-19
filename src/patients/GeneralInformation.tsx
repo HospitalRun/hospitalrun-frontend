@@ -71,6 +71,7 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'givenName')
               }}
+              isRequired
             />
           </div>
           <div className="col-md-4">
