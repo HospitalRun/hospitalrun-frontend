@@ -1,10 +1,10 @@
 export default {
   actions: {
-    edit: 'Edit',
-    save: 'Save',
-    cancel: 'Cancel',
-    new: 'New',
-    list: 'List',
-    search: 'Search',
+    edit: 'Редагувати',
+    save: 'Сберегти',
+    cancel: 'Відмінити',
+    new: 'Новий',
+    list: 'Список',
+    search: 'Пошук',
   },
 }

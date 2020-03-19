@@ -1,10 +1,10 @@
 export default {
   patients: {
-    label: 'Patients',
-    viewPatients: 'View Patients',
-    viewPatient: 'View Patient',
-    newPatient: 'New Patient',
-    successfullyCreated: 'Successfully created patient',
-    successfullyAddedRelatedPerson: 'Successfully added the new related person',
+    label: 'Пацієнти',
+    viewPatients: 'Переглянути пацієнтів',
+    viewPatient: 'Переглянути пацієнта',
+    newPatient: 'Новий пацієнт',
+    successfullyCreated: 'Успішно додано нового пацієнта',
+    successfullyAddedRelatedPerson: 'Успішно створено нову пов’язану особу',
   },
 }
