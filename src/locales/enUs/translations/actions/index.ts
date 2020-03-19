@@ -1,7 +1,7 @@
 export default {
   actions: {
     edit: 'Редагувати',
-    save: 'Сберегти',
+    save: 'Зберегти',
     cancel: 'Відмінити',
     new: 'Новий',
     list: 'Список',
