@@ -1,4 +1,4 @@
-/* eslint "@typescript-eslint/camelcase": "off" */
+/* eslint "@typescript-eslint/camelcase": "off", "@typescript-eslint/no-unused-vars": "off" */
 import { v4 as uuidv4 } from 'uuid'
 import AbstractDBModel from '../../model/AbstractDBModel'
 

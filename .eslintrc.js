@@ -35,7 +35,7 @@ module.exports = {
     '@typescript-eslint/member-delimiter-style': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/unified-signatures': 'error',
     '@typescript-eslint/no-inferrable-types': ['error', { ignoreParameters: true }],
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
