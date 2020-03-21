@@ -14,7 +14,7 @@ const DateTimePickerWithLabelFormGroup = (props: Props) => {
   const id = `${name}DateTimePicker`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} />
+      <Label text={label} isRequired htmlFor={id} />
       <DateTimePicker
         dateFormat="MM/dd/yyyy h:mm aa"
         dateFormatCalendar="LLLL yyyy"
