@@ -7,14 +7,15 @@ interface Props {
   value: Date | undefined
   isEditable?: boolean
   onChange?: (date: Date) => void
+  isRequired?: boolean
 }
 
 const DatePickerWithLabelFormGroup = (props: Props) => {
-  const { onChange, label, name, isEditable, value } = props
+  const { onChange, label, name, isEditable, value, isRequired } = props
   const id = `${name}DatePicker`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} />
+      <Label text={label} htmlFor={id} isRequired={isRequired} />
       <DateTimePicker
         dateFormat="MM/dd/yyyy"
         dateFormatCalendar="LLLL yyyy"
