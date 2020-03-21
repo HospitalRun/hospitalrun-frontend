@@ -30,7 +30,7 @@ jobs:
           npm run build
       - name: Run tests
         run: |
-          npm run coveralls
+          npm run test:ci
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
