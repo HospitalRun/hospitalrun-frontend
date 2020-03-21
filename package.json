@@ -96,7 +96,7 @@
     "build": "react-scripts build",
     "prepublishOnly": "npm run build",
     "test": "react-scripts test --detectOpenHandles",
-    "test:ci": "react-scripts test --env=jsdom --coverage",
+    "test:ci": "cross-env CI=true react-scripts test --passWithNoTests --coverage",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint-staged": "lint-staged",
