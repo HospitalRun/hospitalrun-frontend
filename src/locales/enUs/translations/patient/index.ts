@@ -50,7 +50,7 @@ export default {
     },
     diagnoses: {
       label: 'Diagnoses',
-      new: 'Add Diagnoses',
+      new: 'Add Diagnosis',
       diagnosisName: 'Diagnosis Name',
       diagnosisDate: 'Diagnosis Date',
       warning: {
