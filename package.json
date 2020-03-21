@@ -96,12 +96,12 @@
     "build": "react-scripts build",
     "prepublishOnly": "npm run build",
     "test": "react-scripts test --detectOpenHandles",
-    "test:ci": "cross-env CI=true react-scripts test --passWithNoTests",
+    "test:ci": "react-scripts test --env=jsdom --coverage",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
-    "coveralls": "npm run test:ci -- --coverage --watchAll=false && cat ./coverage/lcov.info"
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "browserslist": {
     "production": [
