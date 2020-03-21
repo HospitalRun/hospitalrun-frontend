@@ -101,7 +101,7 @@
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
-    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+    "coveralls": "cat ./coverage/lcov.info"
   },
   "browserslist": {
     "production": [
