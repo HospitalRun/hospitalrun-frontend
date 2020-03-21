@@ -113,7 +113,6 @@ describe('ViewPatient', () => {
     setup()
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
-    console.log(actualButtons)
     expect(actualButtons.length).toEqual(0)
   })
 
