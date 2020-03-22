@@ -50,9 +50,9 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
       <form>
         <TextInputWithLabelFormGroup
           name="name"
-          label="Name"
+          label={t('patient.allergies.allergyName')}
           isEditable
-          placeholder="Allergy"
+          placeholder={t('patient.allergies.allergyName')}
           value={allergy.name}
           onChange={onNameChange}
         />

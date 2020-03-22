@@ -31,7 +31,7 @@ const Allergies = (props: AllergiesProps) => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onAddAllergySuccess = () => {
-    Toast('success', t('Success!'), `${t('patient.allergies.successfullyAdded')}`)
+    Toast('success', t('states.success'), `${t('patient.allergies.successfullyAdded')}`)
   }
 
   const onAddAllergy = (allergy: Allergy) => {
