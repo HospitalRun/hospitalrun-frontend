@@ -17,14 +17,14 @@ describe('Error handling', () => {
         <GeneralInformation
           patient={{} as Patient}
           isEditable
-          errorMessage="patient.errors.patientGivenNameRequired"
+          errorMessage="patient.errors.patientGivenNameRequiredOnCreate"
         />
       </Router>,
     )
 
     const errorMessage = wrapper.find(Alert)
     expect(errorMessage).toBeTruthy()
-    expect(errorMessage.prop('message')).toMatch('patient.errors.patientGivenNameRequired')
+    expect(errorMessage.prop('message')).toMatch('patient.errors.patientGivenNameRequiredOnCreate')
   })
 })
 
