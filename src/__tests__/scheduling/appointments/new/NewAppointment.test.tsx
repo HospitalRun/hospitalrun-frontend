@@ -194,7 +194,7 @@ describe('New Appointment', () => {
       expect(history.location.pathname).toEqual(`/appointments/${expectedNewAppointment.id}`)
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
-        'Success!',
+        'states.success',
         `scheduling.appointment.successfullyCreated ${expectedNewAppointment.id}`,
       )
     })
