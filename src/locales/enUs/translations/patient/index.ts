@@ -38,6 +38,7 @@ export default {
     },
     allergies: {
       label: 'Allergies',
+      allergyName: 'Allergy Name',
       new: 'Add Allergy',
       error: {
         nameRequired: 'Name is required.',
