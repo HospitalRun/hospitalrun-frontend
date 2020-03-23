@@ -6,5 +6,7 @@ export default {
     new: 'New',
     list: 'List',
     search: 'Search',
+    delete: 'Delete',
+    confirmDelete: 'Delete Confirmation',
   },
 }

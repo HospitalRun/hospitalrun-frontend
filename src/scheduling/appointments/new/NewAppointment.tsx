@@ -44,7 +44,7 @@ const NewAppointment = () => {
     history.push(`/appointments/${newAppointment.id}`)
     Toast(
       'success',
-      t('Success!'),
+      t('states.success'),
       `${t('scheduling.appointment.successfullyCreated')} ${newAppointment.id}`,
     )
   }

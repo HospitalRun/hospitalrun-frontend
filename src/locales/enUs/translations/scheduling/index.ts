@@ -5,6 +5,8 @@ export default {
       label: 'Appointments',
       new: 'New Appointment',
       deleteAppointment: 'Delete Appointment',
+      viewAppointment: 'Appointment',
+      editAppointment: 'Edit Appointment',
     },
     appointment: {
       startDate: 'Start Date',
@@ -26,6 +28,8 @@ export default {
       },
       reason: 'Reason',
       patient: 'Patient',
+      successfullyDeleted: 'Appointment successfully deleted.',
+      deleteConfirmationMessage: 'Are you sure you want to delete this appointment?',
     },
   },
 }

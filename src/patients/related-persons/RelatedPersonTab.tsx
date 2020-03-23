@@ -67,8 +67,7 @@ const RelatedPersonTab = (props: Props) => {
   }
 
   const onAddRelatedPersonSuccess = () => {
-    Toast('success', t('Success!'), t('patient.relatedPersons.successfullyAdded'))
-    Toast('success', t('Success!'), t('patients.successfullyAddedRelatedPerson'), 'top-left')
+    Toast('success', t('states.success'), t('patients.successfullyAddedRelatedPerson'), 'top-left')
   }
 
   const onRelatedPersonSave = (relatedPerson: RelatedPerson) => {
