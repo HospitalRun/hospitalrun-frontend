@@ -153,7 +153,7 @@ describe('New Patient', () => {
     expect(history.location.pathname).toEqual(`/patients/${patient.id}`)
     expect(mockedComponents.Toast).toHaveBeenCalledWith(
       'success',
-      'Success!',
+      'states.success',
       `patients.successfullyCreated ${patient.fullName}`,
     )
   })

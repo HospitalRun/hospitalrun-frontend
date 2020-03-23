@@ -59,7 +59,11 @@ const EditPatient = () => {
 
   const onSuccessfulSave = (updatedPatient: Patient) => {
     history.push(`/patients/${updatedPatient.id}`)
-    Toast('success', t('Success!'), `${t('patients.successfullyUpdated')} ${patient.fullName}`)
+    Toast(
+      'success',
+      t('states.success'),
+      `${t('patients.successfullyUpdated')} ${patient.fullName}`,
+    )
   }
 
   const onSave = () => {

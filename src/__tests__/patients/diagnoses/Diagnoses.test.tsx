@@ -128,7 +128,7 @@ describe('Diagnoses', () => {
 
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
-        'Success!',
+        'states.success',
         'patient.diagnoses.successfullyAdded',
       )
     })

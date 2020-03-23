@@ -127,7 +127,7 @@ describe('Allergies', () => {
 
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
-        'Success!',
+        'states.success',
         'patient.allergies.successfullyAdded',
       )
     })
