@@ -282,7 +282,7 @@ describe('View Appointment', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'states.success',
-        'scheduling.appointments.successfullyDeleted',
+        'scheduling.appointment.successfullyDeleted',
       )
     })
   })

@@ -33,7 +33,11 @@ const NewPatient = () => {
 
   const onSuccessfulSave = (newPatient: Patient) => {
     history.push(`/patients/${newPatient.id}`)
-    Toast('success', t('Success!'), `${t('patients.successfullyCreated')} ${newPatient.fullName}`)
+    Toast(
+      'success',
+      t('states.success'),
+      `${t('patients.successfullyCreated')} ${newPatient.fullName}`,
+    )
   }
 
   const onSave = () => {

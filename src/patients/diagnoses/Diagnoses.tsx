@@ -36,7 +36,7 @@ const Diagnoses = (props: Props) => {
   }
 
   const onAddDiagnosisSuccess = () => {
-    Toast('success', t('Success!'), t('patient.diagnoses.successfullyAdded'))
+    Toast('success', t('states.success'), t('patient.diagnoses.successfullyAdded'))
   }
 
   const onDiagnosisSave = (diagnosis: Diagnosis) => {
