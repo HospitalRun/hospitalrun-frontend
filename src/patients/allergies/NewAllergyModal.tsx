@@ -50,6 +50,7 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
       <form>
         <TextInputWithLabelFormGroup
           name="name"
+          isRequired
           label={t('patient.allergies.allergyName')}
           isEditable
           placeholder={t('patient.allergies.allergyName')}
