@@ -63,6 +63,7 @@ const AddDiagnosisModal = (props: Props) => {
                 placeholder={t('patient.diagnoses.diagnosisName')}
                 value={diagnosis.name}
                 onChange={onNameChange}
+                isRequired
               />
             </div>
           </div>
@@ -75,6 +76,7 @@ const AddDiagnosisModal = (props: Props) => {
               value={new Date(diagnosis.diagnosisDate)}
               isEditable
               onChange={onDiagnosisDateChange}
+              isRequired
             />
           </div>
         </div>

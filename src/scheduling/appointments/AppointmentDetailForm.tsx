@@ -36,7 +36,11 @@ const AppointmentDetailForm = (props: Props) => {
       <div className="row">
         <div className="col">
           <div className="form-group">
-            <Label htmlFor="patientTypeahead" text={t('scheduling.appointment.patient')} />
+            <Label
+              htmlFor="patientTypeahead"
+              isRequired
+              text={t('scheduling.appointment.patient')}
+            />
             <Typeahead
               id="patientTypeahead"
               disabled={!isEditable || patient !== undefined}
