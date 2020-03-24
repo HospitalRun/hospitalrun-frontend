@@ -64,7 +64,10 @@ export default {
       private: 'Particular',
     },
     errors: {
-      patientGivenNameRequired: 'Nome do Paciente é necessário.',
+      patientGivenNameRequiredOnCreate: 'Nome do Paciente é necessário.',
+      // todo Portuguese translation
+      patientGivenNameRequiredOnUpdate: '',
+      patientGivenNameFeedback: '',
     },
   },
 }
