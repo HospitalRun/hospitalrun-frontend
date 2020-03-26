@@ -14,7 +14,7 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
   const { show, onCloseButtonClick, onSave } = props
   const [allergy, setAllergy] = useState({ name: '' })
   const [errorMessage, setErrorMessage] = useState('')
-  const [isInvalid, setIsInvalid] = useState(false)
+  const [isAllergyNameInvalid, setIsAllergynameInvalid] = useState(false)
   const [nameRequiredFeedback, setNameRequiredFeedback] = useState('')
   const { t } = useTranslation()
 
@@ -32,7 +32,7 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
     let newErrorMessage = ''
     if (!allergy.name) {
       newErrorMessage += `${t('patient.allergies.error.unableToAdd')} `
-      setIsInvalid(true)
+      setIsAllergynameInvalid(true)
       setNameRequiredFeedback(`${t('patient.allergies.error.nameRequired')} `)
     }
 
@@ -61,7 +61,7 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
           placeholder={t('patient.allergies.allergyName')}
           value={allergy.name}
           onChange={onNameChange}
-          isInvalid={isInvalid}
+          isInvalid={isAllergyNameInvalid}
         />
       </form>
     </>
