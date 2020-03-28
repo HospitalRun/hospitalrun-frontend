@@ -6,8 +6,8 @@ import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import Appointment from 'model/Appointment'
 import addMinutes from 'date-fns/addMinutes'
-import { isBefore } from 'date-fns'
 import { Button, Toast } from '@hospitalrun/components'
+import errorMessageHandler from '../util/schedule-error-handling.util'
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 import { createAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
@@ -34,7 +34,8 @@ const NewAppointment = () => {
     reason: '',
     type: '',
   })
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessageState, setErrorMessageState] = useState({})
+  const [patient, setPatient] = useState<any>()
 
   const onCancelClick = () => {
     history.push('/appointments')
@@ -49,28 +50,42 @@ const NewAppointment = () => {
     )
   }
 
-  const onSave = () => {
-    let newErrorMessage = ''
-    if (!appointment.patientId) {
-      newErrorMessage += t('scheduling.appointment.errors.patientRequired')
-    }
-    if (isBefore(new Date(appointment.endDateTime), new Date(appointment.startDateTime))) {
-      newErrorMessage += ` ${t('scheduling.appointment.errors.startDateMustBeBeforeEndDate')}`
-    }
+  const onNewAppointmentSaveError = () => {
+    Toast('error', t('Error!'), `${t('scheduling.appointment.errorCreatingAppointment')}`)
+  }
 
-    if (newErrorMessage) {
-      setErrorMessage(newErrorMessage.trim())
+  const onSave = () => {
+    const errors = errorMessageHandler(appointment as Appointment)
+    const errorKeys = Object.keys(errors)
+
+    if (errorKeys.length) {
+      errorKeys.forEach((err) => {
+        errors[err] = t(errors[err])
+      })
+      setErrorMessageState(errors)
+
       return
     }
 
-    dispatch(createAppointment(appointment as Appointment, onNewAppointmentSaveSuccess))
+    dispatch(
+      createAppointment(
+        appointment as Appointment,
+        onNewAppointmentSaveSuccess,
+        onNewAppointmentSaveError,
+      ),
+    )
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {
-    setAppointment({
-      ...appointment,
-      [key]: value,
-    })
+    setErrorMessageState({})
+    if (key === 'patientFullName') {
+      setPatient(value)
+    } else {
+      setAppointment({
+        ...appointment,
+        [key]: value,
+      })
+    }
   }
 
   return (
@@ -78,8 +93,11 @@ const NewAppointment = () => {
       <form>
         <AppointmentDetailForm
           appointment={appointment as Appointment}
-          errorMessage={errorMessage}
+          patient={patient}
+          errorMessage="errorMessage"
+          errorMessageState={errorMessageState}
           onFieldChange={onFieldChange}
+          setErrorMessageState={setErrorMessageState}
         />
         <div className="row float-right">
           <div className="btn-group btn-group-lg">

@@ -3,8 +3,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Spinner, Button } from '@hospitalrun/components'
-import { isBefore } from 'date-fns'
-
+import errorMessageHandler from '../util/schedule-error-handling.util'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 import useTitle from '../../../page-header/useTitle'
 import Appointment from '../../../model/Appointment'
@@ -20,7 +19,8 @@ const EditAppointment = () => {
   const dispatch = useDispatch()
 
   const [appointment, setAppointment] = useState({} as Appointment)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessageState, setErrorMessageState] = useState({})
+
   const { appointment: reduxAppointment, patient, isLoading } = useSelector(
     (state: RootState) => state.appointment,
   )
@@ -57,13 +57,15 @@ const EditAppointment = () => {
   }
 
   const onSave = () => {
-    let newErrorMessage = ''
-    if (isBefore(new Date(appointment.endDateTime), new Date(appointment.startDateTime))) {
-      newErrorMessage += ` ${t('scheduling.appointment.errors.startDateMustBeBeforeEndDate')}`
-    }
+    const errors = errorMessageHandler(appointment as Appointment)
+    const errorKeys = Object.keys(errors)
 
-    if (newErrorMessage) {
-      setErrorMessage(newErrorMessage.trim())
+    if (errorKeys.length) {
+      errorKeys.forEach((err) => {
+        errors[err] = t(errors[err])
+      })
+      setErrorMessageState(errors)
+
       return
     }
 
@@ -87,8 +89,9 @@ const EditAppointment = () => {
         isEditable
         appointment={appointment}
         patient={patient}
+        errorMessageState={errorMessageState}
         onFieldChange={onFieldChange}
-        errorMessage={errorMessage}
+        setErrorMessageState={setErrorMessageState}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">

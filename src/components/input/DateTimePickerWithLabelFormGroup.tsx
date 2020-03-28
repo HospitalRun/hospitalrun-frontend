@@ -7,10 +7,11 @@ interface Props {
   value: Date | undefined
   isEditable?: boolean
   onChange?: (date: Date) => void
+  feedback?: string | undefined
 }
 
 const DateTimePickerWithLabelFormGroup = (props: Props) => {
-  const { onChange, label, name, isEditable, value } = props
+  const { onChange, label, name, isEditable, value, feedback } = props
   const id = `${name}DateTimePicker`
   return (
     <div className="form-group">
@@ -32,6 +33,7 @@ const DateTimePickerWithLabelFormGroup = (props: Props) => {
         timeIntervals={15}
         withPortal={false}
       />
+      <span className="small text-danger">{feedback}</span>
     </div>
   )
 }

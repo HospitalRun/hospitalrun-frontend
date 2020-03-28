@@ -1,7 +1,8 @@
 import React from 'react'
 import Appointment from 'model/Appointment'
 import DateTimePickerWithLabelFormGroup from 'components/input/DateTimePickerWithLabelFormGroup'
-import { Typeahead, Label, Alert } from '@hospitalrun/components'
+import TypeaheadWithFeedback from 'components/input/TypeaheadWithFeedback'
+import { Label } from '@hospitalrun/components'
 import Patient from 'model/Patient'
 import PatientRepository from 'clients/db/PatientRepository'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
@@ -14,25 +15,54 @@ interface Props {
   patient?: Patient
   isEditable: boolean
   errorMessage?: string
+  errorMessageState?: { [key: string]: string }
   onFieldChange?: (key: string, value: string | boolean) => void
+  setErrorMessageState?: (arg0: { [key: string]: string | undefined }) => void
 }
 
 const AppointmentDetailForm = (props: Props) => {
-  const { onFieldChange, appointment, patient, isEditable, errorMessage } = props
+  const {
+    onFieldChange,
+    appointment,
+    patient,
+    isEditable,
+    errorMessageState,
+    setErrorMessageState,
+  } = props
   const { t } = useTranslation()
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
 
-  const onDateChange = (date: Date, fieldName: string) =>
-    onFieldChange && onFieldChange(fieldName, date.toISOString())
+  const onDateChange = (date: Date, fieldName: string) => {
+    console.log(date)
+
+    if (setErrorMessageState && date === null) {
+      setErrorMessageState({
+        ...errorMessageState,
+        [fieldName]: t(`scheduling.appointment.errors.${fieldName}Required`),
+      })
+      return
+    }
+    if (onFieldChange) {
+      onFieldChange(fieldName, date.toISOString())
+    }
+  }
 
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
 
+  const onTypeaheadChange = (p: Patient[]) => {
+    const { id, fullName } = p[0] && p[0]
+    if (onFieldChange) {
+      onFieldChange('patientId', id)
+      onFieldChange('patientFullName', fullName as string)
+    }
+  }
+
   return (
     <>
-      {errorMessage && <Alert color="danger" message={errorMessage} />}
+      {/* {errorMessage && <Alert color="danger" message={errorMessage} />} */}
       <div className="row">
         <div className="col">
           <div className="form-group">
@@ -41,15 +71,16 @@ const AppointmentDetailForm = (props: Props) => {
               isRequired
               text={t('scheduling.appointment.patient')}
             />
-            <Typeahead
+            <TypeaheadWithFeedback
               id="patientTypeahead"
               disabled={!isEditable || patient !== undefined}
               value={patient?.fullName}
               placeholder={t('scheduling.appointment.patient')}
-              onChange={(p: Patient[]) => onFieldChange && onFieldChange('patientId', p[0].id)}
+              onChange={(p: Patient[]) => onTypeaheadChange(p)}
               onSearch={async (query: string) => PatientRepository.search(query)}
               searchAccessor="fullName"
               renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+              feedback={errorMessageState?.patient}
             />
           </div>
         </div>
@@ -64,6 +95,7 @@ const AppointmentDetailForm = (props: Props) => {
             onChange={(date: Date) => {
               onDateChange(date, 'startDateTime')
             }}
+            feedback={errorMessageState?.startDateTime}
           />
         </div>
         <div className="col">
@@ -75,6 +107,7 @@ const AppointmentDetailForm = (props: Props) => {
             onChange={(date: Date) => {
               onDateChange(date, 'endDateTime')
             }}
+            feedback={errorMessageState?.endDateTime}
           />
         </div>
       </div>

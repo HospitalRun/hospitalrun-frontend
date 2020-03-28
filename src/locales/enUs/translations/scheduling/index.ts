@@ -22,6 +22,8 @@ export default {
       errors: {
         patientRequired: 'Patient is required.',
         errorCreatingAppointment: 'Error Creating Appointment!',
+        startDateTimeRequired: 'Start Date is required.',
+        endDateTimeRequired: 'End Date is required.',
         startDateMustBeBeforeEndDate: 'Start Time must be before End Time.',
       },
       reason: 'Reason',

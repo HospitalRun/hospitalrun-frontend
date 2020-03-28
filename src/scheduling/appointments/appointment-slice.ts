@@ -9,12 +9,14 @@ interface AppointmentState {
   appointment: Appointment
   patient: Patient
   isLoading: boolean
+  createAppointmentError: boolean
 }
 
 const initialAppointmentState = {
   appointment: {} as Appointment,
   patient: {} as Patient,
   isLoading: false,
+  createAppointmentError: false,
 }
 
 function startLoading(state: AppointmentState) {
@@ -47,12 +49,16 @@ const appointmentSlice = createSlice({
       state.isLoading = false
       state.appointment = payload
     },
+    createAppointmentError: (state) => {
+      state.createAppointmentError = true
+    },
   },
 })
 
 export const {
   createAppointmentStart,
   createAppointmentSuccess,
+  createAppointmentError,
   updateAppointmentStart,
   updateAppointmentSuccess,
   fetchAppointmentStart,
@@ -72,12 +78,19 @@ export const fetchAppointment = (id: string): AppThunk => async (dispatch) => {
 export const createAppointment = (
   appointment: Appointment,
   onSuccess?: (appointment: Appointment) => void,
+  onError?: () => void,
 ): AppThunk => async (dispatch) => {
-  dispatch(createAppointmentStart())
-  const newAppointment = await AppointmentRepository.save(appointment)
-  dispatch(createAppointmentSuccess())
-  if (onSuccess) {
-    onSuccess(newAppointment)
+  try {
+    const newAppointment = await AppointmentRepository.save(appointment)
+    dispatch(createAppointmentStart())
+    dispatch(createAppointmentSuccess())
+    if (onSuccess) {
+      onSuccess(newAppointment)
+    }
+  } catch (e) {
+    if (onError) {
+      onError()
+    }
   }
 }
 
