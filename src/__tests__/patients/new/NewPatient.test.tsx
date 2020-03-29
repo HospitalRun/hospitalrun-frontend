@@ -95,8 +95,9 @@ describe('New Patient', () => {
 
     wrapper.update()
     expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
-      'patient.errors.patientGivenNameRequired',
+      'patient.errors.patientGivenNameRequiredOnCreate',
     )
+    expect(wrapper.update.isInvalid === true)
   })
 
   it('should dispatch createPatient when save button is clicked', async () => {
@@ -153,7 +154,7 @@ describe('New Patient', () => {
     expect(history.location.pathname).toEqual(`/patients/${patient.id}`)
     expect(mockedComponents.Toast).toHaveBeenCalledWith(
       'success',
-      'Success!',
+      'states.success',
       `patients.successfullyCreated ${patient.fullName}`,
     )
   })
