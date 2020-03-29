@@ -84,7 +84,7 @@ describe('New Allergy Modal', () => {
 
       expect(wrapper.find(Alert)).toHaveLength(1)
       expect(wrapper.find(Alert).prop('title')).toEqual('states.error')
-      expect(wrapper.find(Alert).prop('message')).toContain('patient.allergies.error.nameRequired')
+      expect(wrapper.find(Alert).prop('message')).toContain('patient.allergies.error.unableToAdd')
     })
   })
 })
