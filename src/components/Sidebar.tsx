@@ -164,28 +164,14 @@ const Sidebar = () => {
             />
             <Icon icon="appointment" /> {!sidebarCollapsed && t('scheduling.label')}
           </ListItem>
-          {splittedPath[1].includes('appointment') && expandedItem === 'appointment' && (
-            <List layout="flush" className="nav flex-column">
-              <ListItem
-                className="nav-item"
-                style={listSubItemStyleNew}
-                onClick={() => navigateTo('/appointments/new')}
-                active={splittedPath[1].includes('appointments') && splittedPath.length > 2}
-              >
-                <Icon icon="appointment-add" style={iconMargin} />
-                {!sidebarCollapsed && t('scheduling.appointments.new')}
-              </ListItem>
-              <ListItem
-                className="nav-item"
-                style={listSubItemStyle}
-                onClick={() => navigateTo('/appointments')}
-                active={splittedPath[1].includes('appointments') && splittedPath.length < 3}
-              >
-                <Icon icon="incident" style={iconMargin} />
-                {!sidebarCollapsed && t('scheduling.appointments.schedule')}
-              </ListItem>
-            </List>
-          )}
+          <ListItem
+            active={pathname.split('/')[1].includes('labs')}
+            onClick={() => navigateTo('/labs')}
+            className="nav-item"
+            style={listItemStyle}
+          >
+            <Icon icon="lab" /> {!sidebarCollapsed && t('labs.label')}
+          </ListItem>
         </List>
       </div>
     </nav>

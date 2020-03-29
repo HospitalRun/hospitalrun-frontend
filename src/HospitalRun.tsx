@@ -9,6 +9,7 @@ import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
 import Breadcrumbs from 'breadcrumbs/Breadcrumbs'
 import { ButtonBarProvider } from 'page-header/ButtonBarProvider'
 import ButtonToolBar from 'page-header/ButtonToolBar'
+import Labs from 'labs/Labs'
 import Sidebar from './components/Sidebar'
 import Permissions from './model/Permissions'
 import Dashboard from './dashboard/Dashboard'
@@ -99,6 +100,7 @@ const HospitalRun = () => {
                     path="/appointments/:id"
                     component={ViewAppointment}
                   />
+                  <PrivateRoute isAuthenticated exact path="/labs" component={Labs} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />
