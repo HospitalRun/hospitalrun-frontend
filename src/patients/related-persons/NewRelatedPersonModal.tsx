@@ -43,7 +43,7 @@ const NewRelatedPersonModal = (props: Props) => {
       <div className="row">
         <div className="col-md-12">
           <div className="form-group">
-            <Label text={t('patient.relatedPerson')} htmlFor="relatedPersonTypeAhead" />
+            <Label text={t('patient.relatedPerson')} htmlFor="relatedPersonTypeAhead" isRequired />
             <Typeahead
               id="relatedPersonTypeAhead"
               searchAccessor="fullName"
@@ -64,6 +64,7 @@ const NewRelatedPersonModal = (props: Props) => {
             label={t('patient.relatedPersons.relationshipType')}
             value={relatedPerson.type}
             isEditable
+            isRequired
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onInputElementChange(event, 'type')
             }}
