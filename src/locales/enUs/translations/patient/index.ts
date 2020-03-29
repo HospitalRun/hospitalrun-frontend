@@ -42,6 +42,7 @@ export default {
       new: 'Add Allergy',
       error: {
         nameRequired: 'Name is required.',
+        unableToAdd: 'Unable to add allergy.',
       },
       warning: {
         noAllergies: 'No Allergies',
