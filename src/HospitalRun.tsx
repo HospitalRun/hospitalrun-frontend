@@ -100,7 +100,7 @@ const HospitalRun = () => {
                     path="/appointments/:id"
                     component={ViewAppointment}
                   />
-                  <PrivateRoute isAuthenticated exact path="/labs" component={Labs} />
+                  <PrivateRoute isAuthenticated path="/labs" component={Labs} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />
