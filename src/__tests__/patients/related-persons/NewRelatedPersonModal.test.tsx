@@ -85,7 +85,6 @@ describe('New Related Person Modal', () => {
       })
       wrapper.update()
 
-      const addNewButton = wrapper.findWhere((w) => w.text() === 'patient.relatedPersons.new')
       act(() => {
         ;(wrapper.find(Modal).prop('successButton') as any).onClick(
           {} as React.MouseEvent<HTMLButtonElement, MouseEvent>,
