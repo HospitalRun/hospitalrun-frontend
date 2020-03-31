@@ -19,6 +19,8 @@ const AddRelatedPersonModal = (props: Props) => {
   const { show, toggle, onCloseButtonClick, onSave } = props
   const { t } = useTranslation()
   const [errorMessage, setErrorMessage] = useState('')
+  const [isRelatedPersonInvalid, setIsRelatedPersonInvalid] = useState(false)
+  const [isRelationshipInvalid, setIsRelationshipInvalid] = useState(false)
   const [relatedPerson, setRelatedPerson] = useState({
     patientId: '',
     type: '',
@@ -54,6 +56,7 @@ const AddRelatedPersonModal = (props: Props) => {
               searchAccessor="fullName"
               placeholder={t('patient.relatedPerson')}
               onChange={onPatientSelect}
+              isInvalid={isRelatedPersonInvalid}
               onSearch={async (query: string) => PatientRepository.search(query)}
               renderMenuItemChildren={(p: Patient) => {
                 if (patientId() === p.id) {
@@ -63,6 +66,11 @@ const AddRelatedPersonModal = (props: Props) => {
                 return <div>{`${p.fullName} (${p.code})`}</div>
               }}
             />
+            {isRelatedPersonInvalid && (
+              <div className="text-left ml-3 mt-1 text-small text-danger invalid-feedback d-block">
+                {t('patient.relatedPersons.error.relatedPersonRequired')}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -73,6 +81,8 @@ const AddRelatedPersonModal = (props: Props) => {
             label={t('patient.relatedPersons.relationshipType')}
             value={relatedPerson.type}
             isEditable
+            isInvalid={isRelationshipInvalid}
+            feedback={t('patient.relatedPersons.error.relationshipTypeRequired')}
             isRequired
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onInputElementChange(event, 'type')
@@ -100,19 +110,21 @@ const AddRelatedPersonModal = (props: Props) => {
         icon: 'add',
         iconLocation: 'left',
         onClick: () => {
-          let newErrorMessage = ''
+          let isValid = true
           if (!relatedPerson.patientId) {
-            newErrorMessage += `${t('patient.relatedPersons.error.relatedPersonRequired')} `
+            isValid = false
+            setIsRelatedPersonInvalid(true)
           }
 
           if (!relatedPerson.type) {
-            newErrorMessage += `${t('patient.relatedPersons.error.relationshipTypeRequired')}`
+            isValid = false
+            setIsRelationshipInvalid(true)
           }
 
-          if (!newErrorMessage) {
+          if (isValid) {
             onSave(relatedPerson as RelatedPerson)
           } else {
-            setErrorMessage(newErrorMessage.trim())
+            setErrorMessage(t('patient.relatedPersons.error.relatedPersonErrorBanner'))
           }
         },
       }}
