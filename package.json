@@ -83,7 +83,7 @@
     "jest": "~24.9.0",
     "lint-staged": "~10.1.0",
     "memdown": "~5.1.0",
-    "prettier": "~1.19.1",
+    "prettier": "~2.0.0",
     "redux-mock-store": "~1.5.4",
     "source-map-explorer": "^2.2.2",
     "standard-version": "~7.1.0",
