@@ -3,15 +3,15 @@ import React from 'react'
 import { ReactWrapper, mount } from 'enzyme'
 import { Modal, Alert, Typeahead } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import NewRelatedPersonModal from '../../../patients/related-persons/NewRelatedPersonModal'
+import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
 
-describe('New Related Person Modal', () => {
+describe('Add Related Person Modal', () => {
   describe('layout', () => {
     let wrapper: ReactWrapper
     beforeEach(() => {
       wrapper = mount(
-        <NewRelatedPersonModal
+        <AddRelatedPersonModal
           show
           onSave={jest.fn()}
           onCloseButtonClick={jest.fn()}
@@ -46,14 +46,16 @@ describe('New Related Person Modal', () => {
     })
 
     it('should render a cancel button', () => {
-      const cancelButton = wrapper.findWhere((w) => w.text() === 'actions.cancel')
+      const cancelButton = wrapper.findWhere(
+        (w: { text: () => string }) => w.text() === 'actions.cancel',
+      )
 
       expect(cancelButton).toHaveLength(1)
     })
 
     it('should render an add new related person button button', () => {
       const modal = wrapper.find(Modal)
-      expect(modal.prop('successButton').children).toEqual('patient.relatedPersons.new')
+      expect(modal.prop('successButton').children).toEqual('patient.relatedPersons.add')
     })
   })
 
@@ -63,7 +65,7 @@ describe('New Related Person Modal', () => {
     beforeEach(() => {
       onSaveSpy = jest.fn()
       wrapper = mount(
-        <NewRelatedPersonModal
+        <AddRelatedPersonModal
           show
           onSave={onSaveSpy}
           onCloseButtonClick={jest.fn()}
