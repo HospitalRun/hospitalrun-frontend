@@ -108,10 +108,11 @@ describe('New Related Person Modal', () => {
       wrapper.update()
 
       const errorAlert = wrapper.find(Alert)
+
       expect(onSaveSpy).not.toHaveBeenCalled()
       expect(errorAlert).toHaveLength(1)
       expect(errorAlert.prop('message')).toEqual(
-        'patient.relatedPersons.error.relatedPersonRequired patient.relatedPersons.error.relationshipTypeRequired',
+        'patient.relatedPersons.error.relatedPersonErrorBanner',
       )
     })
   })
