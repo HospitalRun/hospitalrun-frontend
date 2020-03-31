@@ -31,7 +31,7 @@ const ViewAppointment = () => {
 
   const onDeleteSuccess = () => {
     history.push('/appointments')
-    Toast('success', t('states.success'), t('scheduling.appointments.successfullyDeleted'))
+    Toast('success', t('states.success'), t('scheduling.appointment.successfullyDeleted'))
   }
 
   const onDeleteConfirmationButtonClick = () => {

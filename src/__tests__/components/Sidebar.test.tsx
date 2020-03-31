@@ -35,12 +35,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(1)
-          .text()
-          .trim(),
-      ).toEqual('dashboard.label')
+      expect(listItems.at(1).text().trim()).toEqual('dashboard.label')
     })
 
     it('should be active when the current path is /', () => {
@@ -70,12 +65,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(2)
-          .text()
-          .trim(),
-      ).toEqual('patients.label')
+      expect(listItems.at(2).text().trim()).toEqual('patients.label')
     })
 
     it('should be active when the current path is /', () => {
@@ -105,12 +95,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(3)
-          .text()
-          .trim(),
-      ).toEqual('scheduling.label')
+      expect(listItems.at(3).text().trim()).toEqual('scheduling.label')
     })
 
     it('should be active when the current path is /appointments', () => {

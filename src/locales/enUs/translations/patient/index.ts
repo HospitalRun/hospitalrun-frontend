@@ -38,9 +38,11 @@ export default {
     },
     allergies: {
       label: 'Allergies',
+      allergyName: 'Allergy Name',
       new: 'Add Allergy',
       error: {
         nameRequired: 'Name is required.',
+        unableToAdd: 'Unable to add allergy.',
       },
       warning: {
         noAllergies: 'No Allergies',
@@ -80,7 +82,9 @@ export default {
       private: 'Private',
     },
     errors: {
-      patientGivenNameRequired: 'Patient Given Name is required.',
+      patientGivenNameRequiredOnCreate: 'Could not create new patient.',
+      patientGivenNameRequiredOnUpdate: 'Could not update patient.',
+      patientGivenNameFeedback: 'Given Name is required.',
     },
   },
 }

@@ -166,8 +166,9 @@ describe('Related Persons Tab', () => {
 
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
-        'Success!',
-        'patient.relatedPersons.successfullyAdded',
+        'states.success',
+        'patients.successfullyAddedRelatedPerson',
+        'top-left',
       )
     })
   })
