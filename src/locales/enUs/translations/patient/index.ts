@@ -30,6 +30,7 @@ export default {
       },
       label: 'Related Persons',
       new: 'New Related Person',
+      add: 'Add Related Person',
       relationshipType: 'Relationship Type',
       warning: {
         noRelatedPersons: 'No related persons',

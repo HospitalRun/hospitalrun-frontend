@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Panel, List, ListItem, Alert, Spinner, Toast } from '@hospitalrun/components'
-import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
+import AddRelatedPersonModal from 'patients/related-persons/AddRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
@@ -100,7 +100,7 @@ const RelatedPersonTab = (props: Props) => {
               iconLocation="left"
               onClick={onNewRelatedPersonClick}
             >
-              {t('patient.relatedPersons.new')}
+              {t('patient.relatedPersons.add')}
             </Button>
           )}
         </div>
@@ -132,7 +132,7 @@ const RelatedPersonTab = (props: Props) => {
         </div>
       </div>
 
-      <NewRelatedPersonModal
+      <AddRelatedPersonModal
         show={showNewRelatedPersonModal}
         toggle={closeNewRelatedPersonModal}
         onCloseButtonClick={closeNewRelatedPersonModal}
