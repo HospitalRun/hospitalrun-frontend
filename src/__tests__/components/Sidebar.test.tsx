@@ -89,6 +89,66 @@ describe('Sidebar', () => {
     })
   })
 
+  describe('patients_list link', () => {
+    it('should render the patients_list link', () => {
+      const wrapper = setup('/patients')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(4).text().trim()).toEqual('patients.patientsList')
+    })
+
+    it('should be active when the current path is /patients', () => {
+      const wrapper = setup('/patients')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(4).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /patients when the patients link is clicked', () => {
+      const wrapper = setup('/patients')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        ;(listItems.at(4).prop('onClick') as any)()
+      })
+
+      expect(history.location.pathname).toEqual('/patients')
+    })
+  })
+
+  describe('new_patient link', () => {
+    it('should render the new_patient link', () => {
+      const wrapper = setup('/patients')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(3).text().trim()).toEqual('patients.newPatient')
+    })
+
+    it('should be active when the current path is /patients/new', () => {
+      const wrapper = setup('/patients/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(3).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /patients/new when the patients link is clicked', () => {
+      const wrapper = setup('/patients')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        ;(listItems.at(3).prop('onClick') as any)()
+      })
+
+      expect(history.location.pathname).toEqual('/patients/new')
+    })
+  })
+
   describe('appointments link', () => {
     it('should render the scheduling link', () => {
       const wrapper = setup('/appointments')
@@ -116,6 +176,66 @@ describe('Sidebar', () => {
       })
 
       expect(history.location.pathname).toEqual('/appointments')
+    })
+  })
+
+  describe('appointment_schedule link', () => {
+    it('should render the appointment_schedule link', () => {
+      const wrapper = setup('/appointments')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(5).text().trim()).toEqual('scheduling.appointments.schedule')
+    })
+
+    it('should be active when the current path is /appointments', () => {
+      const wrapper = setup('/appointments')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(5).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /appointments when the appointments_schedule link is clicked', () => {
+      const wrapper = setup('/appointments')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        ;(listItems.at(5).prop('onClick') as any)()
+      })
+
+      expect(history.location.pathname).toEqual('/appointments')
+    })
+  })
+
+  describe('new_appointment link', () => {
+    it('should render the new_appointment link', () => {
+      const wrapper = setup('/appointments/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(4).text().trim()).toEqual('scheduling.appointments.new')
+    })
+
+    it('should be active when the current path is /appointments/new', () => {
+      const wrapper = setup('/appointments/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(4).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /appointments/new when the new_appointment link is clicked', () => {
+      const wrapper = setup('/appointments')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        ;(listItems.at(4).prop('onClick') as any)()
+      })
+
+      expect(history.location.pathname).toEqual('/appointments/new')
     })
   })
 })

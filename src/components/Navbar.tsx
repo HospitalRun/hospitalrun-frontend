@@ -31,7 +31,7 @@ const Navbar = () => {
         {
           type: 'link-list',
           label: t('patients.label'),
-          className: 'patients-link-list',
+          className: 'patients-link-list d-md-none d-block',
           children: [
             {
               type: 'link',
@@ -52,7 +52,7 @@ const Navbar = () => {
         {
           type: 'link-list',
           label: t('scheduling.label'),
-          className: 'scheduling-link-list',
+          className: 'scheduling-link-list d-md-none d-block',
           children: [
             {
               type: 'link',
