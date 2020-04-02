@@ -25,7 +25,7 @@ const ViewLabs = () => {
 
     if (permissions.includes(Permissions.RequestLab)) {
       buttons.push(
-        <Button icon="add" onClick={() => history.push('/labs/new')}>
+        <Button icon="add" onClick={() => history.push('/labs/new')} outlined color="success">
           {t('labs.requests.new')}
         </Button>,
       )
@@ -34,7 +34,7 @@ const ViewLabs = () => {
     return buttons
   }
 
-  setButtons([getButtons()])
+  setButtons(getButtons())
 
   useEffect(() => {
     const fetch = async () => {
@@ -54,14 +54,14 @@ const ViewLabs = () => {
       <table className="table table-hover">
         <thead className="thead-light">
           <tr>
-            <th>Lab Type</th>
-            <th>Requested On</th>
-            <th>Status</th>
+            <th>{t('labs.lab.type')}</th>
+            <th>{t('labs.lab.requestedOn')}</th>
+            <th>{t('labs.lab.status')}</th>
           </tr>
         </thead>
         <tbody>
           {labs.map((lab) => (
-            <tr onClick={() => onTableRowClick(lab)}>
+            <tr onClick={() => onTableRowClick(lab)} key={lab.id}>
               <td>{lab.type}</td>
               <td>{format(new Date(lab.requestedOn), 'yyyy-MM-dd hh:mm a')}</td>
               <td>{lab.status}</td>

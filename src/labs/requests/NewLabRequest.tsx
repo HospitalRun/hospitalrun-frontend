@@ -63,6 +63,7 @@ const NewLabRequest = () => {
 
     if (!newLab.patientId) {
       setIsPatientInvalid(true)
+      return
     }
 
     if (!newLab.type) {
@@ -71,7 +72,7 @@ const NewLabRequest = () => {
       return
     }
 
-    newLab.requestedOn = new Date().toISOString()
+    newLab.requestedOn = new Date(Date.now().valueOf()).toISOString()
     const createdLab = await LabRepository.save(newLab)
     history.push(`/labs/${createdLab.id}`)
   }
@@ -89,15 +90,16 @@ const NewLabRequest = () => {
         />
       )}
       <form>
-        <div className="form-group">
-          <Label htmlFor="patientTypeahead" isRequired text={t('scheduling.appointment.patient')} />
+        <div className="form-group patient-typeahead">
+          <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
           <Typeahead
             id="patientTypeahead"
-            placeholder={t('scheduling.appointment.patient')}
+            placeholder={t('labs.lab.patient')}
             onChange={(p: Patient[]) => onPatientChange(p[0])}
             onSearch={async (query: string) => PatientRepository.search(query)}
             searchAccessor="fullName"
             renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+            isInvalid={isPatientInvalid}
           />
         </div>
         <TextInputWithLabelFormGroup

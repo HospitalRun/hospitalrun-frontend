@@ -148,22 +148,22 @@ const ViewLab = () => {
     }
 
     const getCanceledOnOrCompletedOnDate = () => {
-      if (lab.status === 'completed') {
+      if (lab.status === 'completed' && lab.completedOn) {
         return (
           <Column>
-            <div className="form-group">
+            <div className="form-group completed-on">
               <h4>{t('labs.lab.completedOn')}</h4>
               <h5>{format(new Date(lab.completedOn), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
         )
       }
-      if (lab.status === 'canceled') {
+      if (lab.status === 'canceled' && lab.canceledOn) {
         return (
           <Column>
-            <div className="form-group">
+            <div className="form-group canceled-on">
               <h4>{t('labs.lab.canceledOn')}</h4>
-              <h5>{format(new Date(lab.completedOn), 'yyyy-MM-dd hh:mm a')}</h5>
+              <h5>{format(new Date(lab.canceledOn), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
         )
@@ -178,7 +178,7 @@ const ViewLab = () => {
         )}
         <Row>
           <Column>
-            <div className="form-group">
+            <div className="form-group lab-status">
               <h4>{t('labs.lab.status')}</h4>
               <Badge color={getBadgeColor()}>
                 <h5>{lab.status}</h5>
@@ -186,21 +186,21 @@ const ViewLab = () => {
             </div>
           </Column>
           <Column>
-            <div className="form-group">
+            <div className="form-group for-patient">
               <h4>{t('labs.lab.for')}</h4>
               <h5>{patient.fullName}</h5>
             </div>
           </Column>
           <Column>
-            <div className="form-group">
+            <div className="form-group lab-type">
               <h4>{t('labs.lab.type')}</h4>
               <h5>{lab.type}</h5>
             </div>
           </Column>
           <Column>
-            <div className="form-group">
+            <div className="form-group requested-on">
               <h4>{t('labs.lab.requestedOn')}</h4>
-              <h5>{format(new Date(lab.requestedOn), 'yyyy/mm/dd hh:mm a')}</h5>
+              <h5>{format(new Date(lab.requestedOn), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
           {getCanceledOnOrCompletedOnDate()}
@@ -210,6 +210,7 @@ const ViewLab = () => {
           <TextFieldWithLabelFormGroup
             name="result"
             label={t('labs.lab.result')}
+            value={lab.result}
             isEditable={isEditable}
             isInvalid={isResultInvalid}
             feedback={resultFeedback}
