@@ -71,6 +71,27 @@ const Navbar = () => {
           ],
         },
         {
+          type: 'link-list',
+          label: t('labs.label'),
+          className: 'labs-link-list d-md-none d-block',
+          children: [
+            {
+              type: 'link',
+              label: t('labs.label'),
+              onClick: () => {
+                history.push('/labs')
+              },
+            },
+            {
+              type: 'link',
+              label: t('labs.requests.new'),
+              onClick: () => {
+                history.push('/labs/new')
+              },
+            },
+          ],
+        },
+        {
           type: 'search',
           placeholderText: t('actions.search'),
           className: 'ml-auto nav-search',
