@@ -66,6 +66,19 @@ export default {
       addDiagnosisAbove: 'Add a diagnosis using the button above.',
       successfullyAdded: 'Successfully added a new diagnosis!',
     },
+    note: 'Note',
+    notes: {
+      label: 'Notes',
+      new: 'Add New Note',
+      warning: {
+        noNotes: 'No Notes',
+      },
+      error: {
+        noteRequired: 'Note is required.',
+        unableToAdd: 'Unable to add new note.',
+      },
+      addNoteAbove: 'Add a note using the button above.',
+    },
     types: {
       charity: 'Charity',
       private: 'Private',
