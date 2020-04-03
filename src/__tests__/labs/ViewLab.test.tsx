@@ -13,9 +13,8 @@ import Lab from 'model/Lab'
 import Patient from 'model/Patient'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import createMockStore from 'redux-mock-store'
-import { Badge, Button } from '@hospitalrun/components'
+import { Badge, Button, Alert } from '@hospitalrun/components'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
-import ButtonToolBar from 'page-header/ButtonToolBar'
 import * as titleUtil from '../../page-header/useTitle'
 import ViewLab from '../../labs/ViewLab'
 
@@ -36,8 +35,10 @@ describe('View Labs', () => {
   let setButtonToolBarSpy: any
   let titleSpy: any
   let labRepositorySaveSpy: any
+  const expectedDate = new Date()
   const setup = async (lab: Lab, permissions: Permissions[]) => {
     jest.resetAllMocks()
+    Date.now = jest.fn(() => expectedDate.valueOf())
     setButtonToolBarSpy = jest.fn()
     titleSpy = jest.spyOn(titleUtil, 'default')
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
@@ -196,14 +197,36 @@ describe('View Labs', () => {
         expect(badge.text().trim()).toEqual(expectedLab.status)
       })
 
-      it('should display a complete lab and cancel lab button if the lab is in a requested state', async () => {
+      it('should display a update lab, complete lab, and cancel lab button if the lab is in a requested state', async () => {
         const expectedLab = { ...mockLab, notes: 'expected notes' } as Lab
 
-        setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
+        const wrapper = await setup(expectedLab, [
+          Permissions.ViewLab,
+          Permissions.CompleteLab,
+          Permissions.CancelLab,
+        ])
 
-        const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
-        expect((actualButtons[0] as any).props.children).toEqual('labs.requests.complete')
-        expect((actualButtons[1] as any).props.children).toEqual('labs.requests.cancel')
+        const buttons = wrapper.find(Button)
+        expect(
+          buttons
+            .at(0)
+            .text()
+            .trim(),
+        ).toEqual('actions.update')
+
+        expect(
+          buttons
+            .at(1)
+            .text()
+            .trim(),
+        ).toEqual('labs.requests.complete')
+
+        expect(
+          buttons
+            .at(2)
+            .text()
+            .trim(),
+        ).toEqual('labs.requests.cancel')
       })
     })
 
@@ -249,18 +272,17 @@ describe('View Labs', () => {
         ).toEqual('2020-03-29 11:45 PM')
       })
 
-      it('should not display complete and cancel button if the lab is canceled', async () => {
+      it('should not display update, complete, and cancel button if the lab is canceled', async () => {
         const expectedLab = { ...mockLab, status: 'canceled' } as Lab
 
-        await setup(expectedLab, [
+        const wrapper = await setup(expectedLab, [
           Permissions.ViewLab,
           Permissions.CompleteLab,
           Permissions.CancelLab,
         ])
 
-        const { calls } = setButtonToolBarSpy.mock
-        const actualButtons: React.ReactNode[] = calls[calls.length - 1][0]
-        expect(actualButtons as any).toEqual([])
+        const buttons = wrapper.find(Button)
+        expect(buttons).toHaveLength(0)
       })
 
       it('should not display an update button if the lab is canceled', async () => {
@@ -314,26 +336,17 @@ describe('View Labs', () => {
         ).toEqual('2020-03-29 11:44 PM')
       })
 
-      it('should not display complete and cancel button if the lab is completed', async () => {
+      it('should not display update, complete, and cancel buttons if the lab is completed', async () => {
         const expectedLab = { ...mockLab, status: 'completed' } as Lab
 
-        await setup(expectedLab, [
+        const wrapper = await setup(expectedLab, [
           Permissions.ViewLab,
           Permissions.CompleteLab,
           Permissions.CancelLab,
         ])
 
-        const { calls } = setButtonToolBarSpy.mock
-        const actualButtons: React.ReactNode[] = calls[calls.length - 1][0]
-        expect(actualButtons as any).toEqual([])
-      })
-
-      it('should not display an update button if the lab is completed', async () => {
-        const expectedLab = { ...mockLab, status: 'canceled' } as Lab
-        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
-
-        const updateButton = wrapper.find(Button)
-        expect(updateButton).toHaveLength(0)
+        const buttons = wrapper.find(Button)
+        expect(buttons).toHaveLength(0)
       })
     })
   })
@@ -385,25 +398,86 @@ describe('View Labs', () => {
         const onChange = resultTextField.prop('onChange')
         await onChange({ currentTarget: { value: expectedResult } })
       })
+      wrapper.update()
 
-      const completeButton = setButtonToolBarSpy.mock.calls[0][0][0]
+      const completeButton = wrapper.find(Button).at(1)
       await act(async () => {
-        const { onClick } = completeButton.props
+        const onClick = completeButton.prop('onClick')
         await onClick()
       })
       wrapper.update()
 
       expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
       expect(labRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ ...mockLab, result: expectedResult }),
+        expect.objectContaining({
+          ...mockLab,
+          result: expectedResult,
+          status: 'completed',
+          completedOn: expectedDate.toISOString(),
+        }),
       )
       expect(history.location.pathname).toEqual('/labs')
     })
 
-    it('should validate that the result has been filled in', () => {})
+    it('should validate that the result has been filled in', async () => {
+      const wrapper = await setup(mockLab, [
+        Permissions.ViewLab,
+        Permissions.CompleteLab,
+        Permissions.CancelLab,
+      ])
+
+      const completeButton = wrapper.find(Button).at(1)
+      await act(async () => {
+        const onClick = completeButton.prop('onClick')
+        await onClick()
+      })
+      wrapper.update()
+
+      const alert = wrapper.find(Alert)
+      const resultField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
+      expect(alert).toHaveLength(1)
+      expect(alert.prop('title')).toEqual('states.error')
+      expect(alert.prop('message')).toEqual('labs.requests.error.unableToComplete')
+      expect(resultField.prop('isInvalid')).toBeTruthy()
+      expect(resultField.prop('feedback')).toEqual('labs.requests.error.resultRequiredToComplete')
+
+      expect(labRepositorySaveSpy).not.toHaveBeenCalled()
+    })
   })
 
   describe('on cancel', () => {
-    it('should mark the status as completed and fill in the cancelled on date with the current time', () => {})
+    it('should mark the status as canceled and fill in the cancelled on date with the current time', async () => {
+      const wrapper = await setup(mockLab, [
+        Permissions.ViewLab,
+        Permissions.CompleteLab,
+        Permissions.CancelLab,
+      ])
+      const expectedResult = 'expected result'
+
+      const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
+      await act(async () => {
+        const onChange = resultTextField.prop('onChange')
+        await onChange({ currentTarget: { value: expectedResult } })
+      })
+      wrapper.update()
+
+      const cancelButton = wrapper.find(Button).at(2)
+      await act(async () => {
+        const onClick = cancelButton.prop('onClick')
+        await onClick()
+      })
+      wrapper.update()
+
+      expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
+      expect(labRepositorySaveSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...mockLab,
+          result: expectedResult,
+          status: 'canceled',
+          canceledOn: expectedDate.toISOString(),
+        }),
+      )
+      expect(history.location.pathname).toEqual('/labs')
+    })
   })
 })

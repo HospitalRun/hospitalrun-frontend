@@ -9,7 +9,6 @@ import useTitle from 'page-header/useTitle'
 import { useTranslation } from 'react-i18next'
 import { Row, Column, Badge, Button, Alert } from '@hospitalrun/components'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
-import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
 import { useSelector } from 'react-redux'
 import Permissions from 'model/Permissions'
@@ -22,8 +21,6 @@ const ViewLab = () => {
   const { id } = useParams()
   const { t } = useTranslation()
   const history = useHistory()
-  const setButtons = useButtonToolbarSetter()
-
   const { permissions } = useSelector((state: RootState) => state.user)
   const [patient, setPatient] = useState<Patient | undefined>()
   const [lab, setLab] = useState<Lab | undefined>()
@@ -93,7 +90,7 @@ const ViewLab = () => {
 
     await LabRepository.saveOrUpdate({
       ...newLab,
-      completedOn: new Date().toISOString(),
+      completedOn: new Date(Date.now().valueOf()).toISOString(),
       status: 'completed',
     })
     history.push('/labs')
@@ -103,7 +100,7 @@ const ViewLab = () => {
     const newLab = lab as Lab
     await LabRepository.saveOrUpdate({
       ...newLab,
-      canceledOn: new Date().toISOString(),
+      canceledOn: new Date(Date.now().valueOf()).toISOString(),
       status: 'canceled',
     })
     history.push('/labs')
@@ -115,9 +112,15 @@ const ViewLab = () => {
       return buttons
     }
 
+    buttons.push(
+      <Button className="mr-2" color="success" onClick={onUpdate}>
+        {t('actions.update')}
+      </Button>,
+    )
+
     if (permissions.includes(Permissions.CompleteLab)) {
       buttons.push(
-        <Button onClick={onComplete} color="primary">
+        <Button className="mr-2" onClick={onComplete} color="primary">
           {t('labs.requests.complete')}
         </Button>,
       )
@@ -133,8 +136,6 @@ const ViewLab = () => {
 
     return buttons
   }
-
-  setButtons(getButtons())
 
   if (lab && patient) {
     const getBadgeColor = () => {
@@ -225,11 +226,7 @@ const ViewLab = () => {
           />
           {isEditable && (
             <div className="row float-right">
-              <div className="btn-group btn-group-lg mt-3">
-                <Button className="mr-2" color="success" onClick={onUpdate}>
-                  {t('actions.update')}
-                </Button>
-              </div>
+              <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>
             </div>
           )}
         </form>
