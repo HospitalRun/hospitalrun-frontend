@@ -21,7 +21,6 @@ const mockStore = configureMockStore([thunk])
 
 describe('New Lab Request', () => {
   describe('title and breadcrumbs', () => {
-    let wrapper: ReactWrapper
     let titleSpy: any
     const history = createMemoryHistory()
 
@@ -30,7 +29,7 @@ describe('New Lab Request', () => {
       titleSpy = jest.spyOn(titleUtil, 'default')
       history.push('/labs/new')
 
-      wrapper = mount(
+      mount(
         <Provider store={store}>
           <Router history={history}>
             <NewLabRequest />
@@ -42,8 +41,6 @@ describe('New Lab Request', () => {
     it('should have New Lab Request as the title', () => {
       expect(titleSpy).toHaveBeenCalledWith('labs.requests.new')
     })
-
-    it('should render the breadcrumbs', () => {})
   })
 
   describe('form layout', () => {

@@ -131,47 +131,17 @@ describe('View Labs', () => {
       expect(table).toBeDefined()
       expect(tableHeader).toBeDefined()
       expect(tableBody).toBeDefined()
-      expect(
-        tableColumnHeaders
-          .at(0)
-          .text()
-          .trim(),
-      ).toEqual('labs.lab.type')
+      expect(tableColumnHeaders.at(0).text().trim()).toEqual('labs.lab.type')
 
-      expect(
-        tableColumnHeaders
-          .at(1)
-          .text()
-          .trim(),
-      ).toEqual('labs.lab.requestedOn')
+      expect(tableColumnHeaders.at(1).text().trim()).toEqual('labs.lab.requestedOn')
 
-      expect(
-        tableColumnHeaders
-          .at(2)
-          .text()
-          .trim(),
-      ).toEqual('labs.lab.status')
+      expect(tableColumnHeaders.at(2).text().trim()).toEqual('labs.lab.status')
 
-      expect(
-        tableDataColumns
-          .at(0)
-          .text()
-          .trim(),
-      ).toEqual(expectedLab.type)
+      expect(tableDataColumns.at(0).text().trim()).toEqual(expectedLab.type)
 
-      expect(
-        tableDataColumns
-          .at(1)
-          .text()
-          .trim(),
-      ).toEqual('2020-03-29 11:43 PM')
+      expect(tableDataColumns.at(1).text().trim()).toEqual('2020-03-29 11:43 PM')
 
-      expect(
-        tableDataColumns
-          .at(2)
-          .text()
-          .trim(),
-      ).toEqual(expectedLab.status)
+      expect(tableDataColumns.at(2).text().trim()).toEqual(expectedLab.status)
     })
 
     it('should navigate to the lab when the row is clicked', () => {

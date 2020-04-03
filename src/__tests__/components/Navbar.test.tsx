@@ -96,20 +96,14 @@ describe('Navbar', () => {
 
     it('should navigate to to /labs when the labs list option is selected', () => {
       act(() => {
-        labsLinkList
-          .first()
-          .props()
-          .children[0].props.onClick()
+        labsLinkList.first().props().children[0].props.onClick()
       })
       expect(history.location.pathname).toEqual('/labs')
     })
 
     it('should navigate to /labs/new when the new labs list option is selected', () => {
       act(() => {
-        labsLinkList
-          .first()
-          .props()
-          .children[1].props.onClick()
+        labsLinkList.first().props().children[1].props.onClick()
       })
       expect(history.location.pathname).toEqual('/labs/new')
     })
