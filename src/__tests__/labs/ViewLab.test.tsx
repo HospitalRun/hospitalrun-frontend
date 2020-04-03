@@ -15,6 +15,7 @@ import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import createMockStore from 'redux-mock-store'
 import { Badge, Button, Alert } from '@hospitalrun/components'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
+import format from 'date-fns/format'
 import * as titleUtil from '../../page-header/useTitle'
 import ViewLab from '../../labs/ViewLab'
 
@@ -104,7 +105,9 @@ describe('View Labs', () => {
       const requestedOnDiv = wrapper.find('.requested-on')
       expect(requestedOnDiv.find('h4').text().trim()).toEqual('labs.lab.requestedOn')
 
-      expect(requestedOnDiv.find('h5').text().trim()).toEqual('2020-03-29 11:43 PM')
+      expect(requestedOnDiv.find('h5').text().trim()).toEqual(
+        format(new Date(expectedLab.requestedOn), 'yyyy-MM-dd hh:mm a'),
+      )
     })
 
     it('should not display the completed date if the lab is not completed', async () => {
@@ -202,7 +205,9 @@ describe('View Labs', () => {
 
         expect(canceledOnDiv.find('h4').text().trim()).toEqual('labs.lab.canceledOn')
 
-        expect(canceledOnDiv.find('h5').text().trim()).toEqual('2020-03-29 11:45 PM')
+        expect(canceledOnDiv.find('h5').text().trim()).toEqual(
+          format(new Date(expectedLab.canceledOn as string), 'yyyy-MM-dd hh:mm a'),
+        )
       })
 
       it('should not display update, complete, and cancel button if the lab is canceled', async () => {
@@ -251,7 +256,9 @@ describe('View Labs', () => {
 
         expect(completedOnDiv.find('h4').text().trim()).toEqual('labs.lab.completedOn')
 
-        expect(completedOnDiv.find('h5').text().trim()).toEqual('2020-03-29 11:44 PM')
+        expect(completedOnDiv.find('h5').text().trim()).toEqual(
+          format(new Date(expectedLab.completedOn as string), 'yyyy-MM-dd hh:mm a'),
+        )
       })
 
       it('should not display update, complete, and cancel buttons if the lab is completed', async () => {

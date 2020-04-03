@@ -11,6 +11,7 @@ import Permissions from 'model/Permissions'
 import { act } from '@testing-library/react'
 import LabRepository from 'clients/db/LabRepository'
 import Lab from 'model/Lab'
+import format from 'date-fns/format'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import * as titleUtil from '../../page-header/useTitle'
 
@@ -139,7 +140,9 @@ describe('View Labs', () => {
 
       expect(tableDataColumns.at(0).text().trim()).toEqual(expectedLab.type)
 
-      expect(tableDataColumns.at(1).text().trim()).toEqual('2020-03-29 11:43 PM')
+      expect(tableDataColumns.at(1).text().trim()).toEqual(
+        format(new Date(expectedLab.requestedOn), 'yyyy-MM-dd hh:mm a'),
+      )
 
       expect(tableDataColumns.at(2).text().trim()).toEqual(expectedLab.status)
     })
