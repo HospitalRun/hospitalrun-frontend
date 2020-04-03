@@ -2,7 +2,7 @@ import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import NewNoteModal from 'patients/notes/NewNoteModal'
 import { shallow, mount } from 'enzyme'
-import { Modal, Label, RichText, TextField } from '@hospitalrun/components'
+import { Modal, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
 
@@ -86,18 +86,26 @@ describe('New Note Modal', () => {
       })
     })
 
-    it('should require a note be added', () => {
+    it('should require a note be added', async () => {
       const onSaveSpy = jest.fn()
       const wrapper = mount(
         <NewNoteModal show onCloseButtonClick={jest.fn()} onSave={onSaveSpy} toggle={jest.fn()} />,
       )
 
-      act(() => {
+      await act(async () => {
         const modal = wrapper.find(Modal)
         const { onClick } = modal.prop('successButton') as any
-        onClick()
+        await onClick()
       })
+      wrapper.update()
 
+      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
+      const errorAlert = wrapper.find(Alert)
+
+      expect(errorAlert).toHaveLength(1)
+      expect(errorAlert.prop('title')).toEqual('states.error')
+      expect(errorAlert.prop('message')).toEqual('patient.notes.error.unableToAdd')
+      expect(notesTextField.prop('feedback')).toEqual('patient.notes.error.noteRequired')
       expect(onSaveSpy).not.toHaveBeenCalled()
     })
   })

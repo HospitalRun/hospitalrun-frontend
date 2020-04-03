@@ -69,12 +69,13 @@ export default {
     note: 'Note',
     notes: {
       label: 'Notes',
-      new: 'New Note',
+      new: 'Add New Note',
       warning: {
         noNotes: 'No Notes',
       },
       error: {
         noteRequired: 'Note is required.',
+        unableToAdd: 'Unable to add new note.',
       },
       addNoteAbove: 'Add a note using the button above.',
     },
