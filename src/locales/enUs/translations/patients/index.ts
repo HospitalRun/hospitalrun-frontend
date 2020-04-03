@@ -1,8 +1,8 @@
 export default {
   patients: {
     label: 'Patients',
+    patientsList: 'Patients List',
     viewPatients: 'View Patients',
-    editPatient: 'Edit Patient',
     viewPatient: 'View Patient',
     newPatient: 'New Patient',
     successfullyCreated: 'Successfully created patient',

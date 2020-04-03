@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Modal, Alert, RichText, Label } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
+import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
 import Note from '../../model/Note'
 
 interface Props {
@@ -15,7 +16,7 @@ const NewNoteModal = (props: Props) => {
   const { t } = useTranslation()
   const [errorMessage, setErrorMessage] = useState('')
   const [note, setNote] = useState({
-    noteDate: new Date(),
+    date: new Date(Date.now().valueOf()).toISOString(),
     text: '',
   })
 
@@ -26,11 +27,23 @@ const NewNoteModal = (props: Props) => {
     })
   }
 
-  const onRichTextElementChange = (
-    event: React.KeyboardEvent<HTMLTextAreaElement>,
-    fieldName: string,
-  ) => {
-    onFieldChange(fieldName, event)
+  const onNoteTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = event.currentTarget.value
+    onFieldChange('text', text)
+  }
+
+  const onSaveButtonClick = () => {
+    let newErrorMessage = ''
+
+    if (!note) {
+      newErrorMessage += `${t('patient.notes.error.noteRequired')} `
+    }
+
+    if (!newErrorMessage) {
+      onSave(note as Note)
+    } else {
+      setErrorMessage(newErrorMessage.trim())
+    }
   }
 
   const body = (
@@ -39,13 +52,12 @@ const NewNoteModal = (props: Props) => {
       <div className="row">
         <div className="col-md-12">
           <div className="form-group">
-            <Label text={t('patient.note')} htmlFor="noteText" />
-            <RichText
-              id="noteText"
+            <TextFieldWithLabelFormGroup
+              isRequired
+              name="noteTextField"
+              label={t('patient.note')}
               value={note.text}
-              onChange={(event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-                onRichTextElementChange(event, 'text')
-              }}
+              onChange={onNoteTextChange}
             />
           </div>
         </div>
@@ -69,19 +81,7 @@ const NewNoteModal = (props: Props) => {
         color: 'success',
         icon: 'add',
         iconLocation: 'left',
-        onClick: () => {
-          let newErrorMessage = ''
-
-          if (!note) {
-            newErrorMessage += `${t('patient.notes.error.noteRequired')} `
-          }
-
-          if (!newErrorMessage) {
-            onSave(note as Note)
-          } else {
-            setErrorMessage(newErrorMessage.trim())
-          }
-        },
+        onClick: onSaveButtonClick,
       }}
     />
   )

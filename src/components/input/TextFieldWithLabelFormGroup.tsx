@@ -8,6 +8,7 @@ interface Props {
   isEditable?: boolean
   placeholder?: string
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+  isRequired: boolean
 }
 
 const TextFieldWithLabelFormGroup = (props: Props) => {
@@ -15,7 +16,7 @@ const TextFieldWithLabelFormGroup = (props: Props) => {
   const id = `${name}TextField`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} />
+      <Label text={label} htmlFor={id} isRequired />
       <TextField rows={4} value={value} disabled={!isEditable} onChange={onChange} />
     </div>
   )

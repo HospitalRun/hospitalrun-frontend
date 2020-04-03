@@ -4,9 +4,7 @@ export default {
     appointments: {
       label: 'Appointments',
       new: 'New Appointment',
-      deleteAppointment: 'Delete Appointment',
-      viewAppointment: 'Appointment',
-      editAppointment: 'Edit Appointment',
+      schedule: 'Appointment Schedule',
     },
     appointment: {
       startDate: 'Start Date',
@@ -20,7 +18,6 @@ export default {
         routine: 'Routine',
         walkIn: 'Walk In',
       },
-      successfullyCreated: 'Appointment successfully created.',
       errors: {
         patientRequired: 'Patient is required.',
         errorCreatingAppointment: 'Error Creating Appointment!',
@@ -28,8 +25,6 @@ export default {
       },
       reason: 'Reason',
       patient: 'Patient',
-      successfullyDeleted: 'Appointment successfully deleted.',
-      deleteConfirmationMessage: 'Are you sure you want to delete this appointment?',
     },
   },
 }

@@ -1,4 +1,4 @@
 export default interface Note {
-  noteDate: Date
+  date: string
   text: string
 }
