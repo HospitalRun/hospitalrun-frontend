@@ -73,7 +73,7 @@ const Navbar = () => {
         {
           type: 'link-list',
           label: t('labs.label'),
-          className: 'labs-link-list',
+          className: 'labs-link-list d-md-none d-block',
           children: [
             {
               type: 'link',
