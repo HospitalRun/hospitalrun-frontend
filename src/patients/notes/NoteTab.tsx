@@ -76,10 +76,10 @@ const NoteTab = (props: Props) => {
         />
       )}
       <List>
-        {patient.notes?.map((a: Note) => (
-          <ListItem>
-            {new Date(a.date).toLocaleString()}
-            <div dangerouslySetInnerHTML={{ __html: a.text }} />
+        {patient.notes?.map((note: Note) => (
+          <ListItem key={note.date}>
+            {new Date(note.date).toLocaleString()}
+            <p>{note.text}</p>
           </ListItem>
         ))}
       </List>
