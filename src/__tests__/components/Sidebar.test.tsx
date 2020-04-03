@@ -35,7 +35,12 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(1).text().trim()).toEqual('dashboard.label')
+      expect(
+        listItems
+          .at(1)
+          .text()
+          .trim(),
+      ).toEqual('dashboard.label')
     })
 
     it('should be active when the current path is /', () => {
@@ -52,7 +57,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(1).prop('onClick') as any)()
+        const onClick = listItems.at(1).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/')
@@ -65,7 +71,12 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(2).text().trim()).toEqual('patients.label')
+      expect(
+        listItems
+          .at(2)
+          .text()
+          .trim(),
+      ).toEqual('patients.label')
     })
 
     it('should be active when the current path is /', () => {
@@ -82,7 +93,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(2).prop('onClick') as any)()
+        const onClick = listItems.at(2).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/patients')
@@ -95,7 +107,12 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(4).text().trim()).toEqual('patients.patientsList')
+      expect(
+        listItems
+          .at(4)
+          .text()
+          .trim(),
+      ).toEqual('patients.patientsList')
     })
 
     it('should be active when the current path is /patients', () => {
@@ -112,7 +129,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(4).prop('onClick') as any)()
+        const onClick = listItems.at(4).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/patients')
@@ -125,7 +143,12 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(3).text().trim()).toEqual('patients.newPatient')
+      expect(
+        listItems
+          .at(3)
+          .text()
+          .trim(),
+      ).toEqual('patients.newPatient')
     })
 
     it('should be active when the current path is /patients/new', () => {
@@ -155,7 +178,12 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(3).text().trim()).toEqual('scheduling.label')
+      expect(
+        listItems
+          .at(3)
+          .text()
+          .trim(),
+      ).toEqual('scheduling.label')
     })
 
     it('should be active when the current path is /appointments', () => {
@@ -172,7 +200,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(3).prop('onClick') as any)()
+        const onClick = listItems.at(3).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/appointments')
@@ -185,7 +214,12 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(5).text().trim()).toEqual('scheduling.appointments.schedule')
+      expect(
+        listItems
+          .at(5)
+          .text()
+          .trim(),
+      ).toEqual('scheduling.appointments.schedule')
     })
 
     it('should be active when the current path is /appointments', () => {
@@ -202,7 +236,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(5).prop('onClick') as any)()
+        const onClick = listItems.at(5).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/appointments')
@@ -215,7 +250,12 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(4).text().trim()).toEqual('scheduling.appointments.new')
+      expect(
+        listItems
+          .at(4)
+          .text()
+          .trim(),
+      ).toEqual('scheduling.appointments.new')
     })
 
     it('should be active when the current path is /appointments/new', () => {
@@ -232,7 +272,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(4).prop('onClick') as any)()
+        const onClick = listItems.at(4).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/appointments/new')
