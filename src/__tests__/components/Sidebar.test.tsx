@@ -57,7 +57,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(1).prop('onClick') as any)()
+        const onClick = listItems.at(1).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/')
@@ -92,7 +93,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(2).prop('onClick') as any)()
+        const onClick = listItems.at(2).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/patients')
@@ -127,7 +129,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(4).prop('onClick') as any)()
+        const onClick = listItems.at(4).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/patients')
@@ -197,7 +200,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(3).prop('onClick') as any)()
+        const onClick = listItems.at(3).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/appointments')
@@ -232,7 +236,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(5).prop('onClick') as any)()
+        const onClick = listItems.at(5).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/appointments')
@@ -267,7 +272,8 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        ;(listItems.at(4).prop('onClick') as any)()
+        const onClick = listItems.at(4).prop('onClick') as any
+        onClick()
       })
 
       expect(history.location.pathname).toEqual('/appointments/new')
