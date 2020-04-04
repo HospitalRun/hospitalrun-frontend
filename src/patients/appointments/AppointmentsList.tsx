@@ -54,6 +54,20 @@ const AppointmentsList = (props: Props) => {
 
   return (
     <Container>
+      <div className="row">
+        <div className="col-md-12 d-flex justify-content-end">
+          <Button
+            outlined
+            color="success"
+            icon="add"
+            iconLocation="left"
+            onClick={() => history.push('/appointments/new')}
+          >
+            {t('patient.appointments.new')}
+          </Button>
+        </div>
+      </div>
+      <br />
       <form className="form-inline" onSubmit={onSearchFormSubmit}>
         <div className="input-group" style={{ width: '100%' }}>
           <TextInput

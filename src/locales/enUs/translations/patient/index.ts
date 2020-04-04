@@ -32,6 +32,9 @@ export default {
       new: 'New Related Person',
       relationshipType: 'Relationship Type',
     },
+    appointments: {
+      new: 'Add Appointment',
+    },
     allergies: {
       label: 'Allergies',
       new: 'Add Allergy',
