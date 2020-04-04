@@ -25,7 +25,7 @@ const AddRelatedPersonModal = (props: Props) => {
   })
   const { patient } = useSelector((state: RootState) => state.patient)
 
-  const patientCode = () => patient.code
+  const patientId = () => patient.id
 
   const onFieldChange = (key: string, value: string) => {
     setRelatedPerson({
@@ -38,8 +38,8 @@ const AddRelatedPersonModal = (props: Props) => {
     onFieldChange(fieldName, event.target.value)
   }
 
-  const onPatientSelect = (patients: Patient[]) => {
-    setRelatedPerson({ ...relatedPerson, patientId: patients[0].id })
+  const onPatientSelect = (p: Patient[]) => {
+    setRelatedPerson({ ...relatedPerson, patientId: p[0].id })
   }
 
   const body = (
@@ -55,12 +55,12 @@ const AddRelatedPersonModal = (props: Props) => {
               placeholder={t('patient.relatedPerson')}
               onChange={onPatientSelect}
               onSearch={async (query: string) => PatientRepository.search(query)}
-              renderMenuItemChildren={(patients: Patient) => {
-                if (patientCode() === patients.code) {
+              renderMenuItemChildren={(p: Patient) => {
+                if (patientId() === p.id) {
                   return <div />
                 }
 
-                return <div>{`${patients.fullName} (${patients.code})`}</div>
+                return <div>{`${p.fullName} (${p.code})`}</div>
               }}
             />
           </div>
