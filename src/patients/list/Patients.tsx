@@ -65,7 +65,7 @@ const Patients = () => {
             <td>{p.givenName}</td>
             <td>{p.familyName}</td>
             <td>{p.sex}</td>
-            <td>{p.dateOfBirth ? format(new Date(p.dateOfBirth), 'yyyy-MM-dd') : 'N/A'}</td>
+            <td>{p.dateOfBirth ? format(new Date(p.dateOfBirth), 'yyyy-MM-dd') : ''}</td>
           </tr>
         ))}
       </tbody>
