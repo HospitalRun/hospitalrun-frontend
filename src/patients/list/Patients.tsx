@@ -20,6 +20,18 @@ import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
+function useDebounce(value: any, delayInMilliseconds: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value)
+
+  useEffect(() => {
+    const debounceHandler = setTimeout(() => setDebouncedValue(value), delayInMilliseconds)
+
+    return () => clearTimeout(debounceHandler)
+  }, [value])
+
+  return debouncedValue
+}
+
 const Patients = () => {
   const { t } = useTranslation()
   const history = useHistory()
@@ -43,6 +55,12 @@ const Patients = () => {
 
   const [searchText, setSearchText] = useState<string>('')
 
+  const debouncedSearchText = useDebounce(searchText, 500)
+
+  useEffect(() => {
+    dispatch(searchPatients(debouncedSearchText))
+  }, [dispatch, debouncedSearchText])
+
   useEffect(() => {
     dispatch(fetchPatients())
 
@@ -51,9 +69,7 @@ const Patients = () => {
     }
   }, [dispatch, setButtonToolBar])
 
-  if (isLoading) {
-    return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
-  }
+  const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
 
   const list = (
     <ul>
@@ -69,35 +85,23 @@ const Patients = () => {
     setSearchText(event.target.value)
   }
 
-  const onSearchFormSubmit = (event: React.FormEvent | React.MouseEvent) => {
-    event.preventDefault()
-    dispatch(searchPatients(searchText))
-  }
-
   return (
     <Container>
-      <form className="form" onSubmit={onSearchFormSubmit}>
-        <Row>
-          <Column md={10}>
-            <TextInput
-              size="lg"
-              type="text"
-              onChange={onSearchBoxChange}
-              value={searchText}
-              placeholder={t('actions.search')}
-            />
-          </Column>
-          <Column md={2}>
-            <Button size="large" onClick={onSearchFormSubmit}>
-              {t('actions.search')}
-            </Button>
-          </Column>
-        </Row>
-      </form>
+      <Row>
+        <Column md={12}>
+          <TextInput
+            size="lg"
+            type="text"
+            onChange={onSearchBoxChange}
+            value={searchText}
+            placeholder={t('actions.search')}
+          />
+        </Column>
+      </Row>
 
       <Row>
         <List layout="flush" style={{ width: '100%', marginTop: '10px', marginLeft: '-25px' }}>
-          {list}
+          {isLoading ? loadingIndicator : list}
         </List>
       </Row>
     </Container>
