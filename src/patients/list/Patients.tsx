@@ -48,8 +48,8 @@ const Patients = () => {
   }
 
   const list = (
-    <table className="table">
-      <thead>
+    <table className="table table-hover">
+      <thead className="thead-light ">
         <tr>
           <th>{t('patient.code')}</th>
           <th>{t('patient.givenName')}</th>
