@@ -124,8 +124,8 @@ const RelatedPersonTab = (props: Props) => {
         <div className="col-md-12">
           {relatedPersons ? (
             relatedPersons.length > 0 ? (
-              <table className="table">
-                <thead>
+              <table className="table table-hover">
+                <thead className="thead-light">
                   <tr>
                     <th>{t('patient.givenName')}</th>
                     <th>{t('patient.familyName')}</th>
