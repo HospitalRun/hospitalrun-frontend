@@ -27,7 +27,7 @@ function useDebounce(value: any, delayInMilliseconds: number) {
     const debounceHandler = setTimeout(() => setDebouncedValue(value), delayInMilliseconds)
 
     return () => clearTimeout(debounceHandler)
-  }, [value])
+  }, [value, delayInMilliseconds])
 
   return debouncedValue
 }
