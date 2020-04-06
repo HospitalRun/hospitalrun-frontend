@@ -16,6 +16,8 @@ import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
 import { mocked } from 'ts-jest/utils'
 
+import RelatedPerson from 'model/RelatedPerson'
+import { Button } from '@hospitalrun/components'
 import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = configureMockStore([thunk])
@@ -173,23 +175,29 @@ describe('Related Persons Tab', () => {
     })
   })
 
-  describe('List', () => {
+  describe('Table', () => {
     const patient = {
       id: '123',
       rev: '123',
-      relatedPersons: [{ patientId: '123', type: 'type' }],
+      relatedPersons: [{ patientId: '123001', type: 'type' }],
+    } as Patient
+    const expectedRelatedPerson = {
+      givenName: 'test',
+      familyName: 'test',
+      fullName: 'test test',
+      id: '123001',
     } as Patient
 
     const user = {
       permissions: [Permissions.WritePatients, Permissions.ReadPatients],
     }
 
+    let patientSaveOrUpdateSpy: any
+
     beforeEach(async () => {
+      patientSaveOrUpdateSpy = jest.spyOn(PatientRepository, 'saveOrUpdate')
       jest.spyOn(PatientRepository, 'find')
-      mocked(PatientRepository.find).mockResolvedValue({
-        fullName: 'test test',
-        id: '123001',
-      } as Patient)
+      mocked(PatientRepository.find).mockResolvedValue(expectedRelatedPerson)
 
       await act(async () => {
         wrapper = await mount(
@@ -204,20 +212,53 @@ describe('Related Persons Tab', () => {
     })
 
     it('should render a list of related persons with their full name being displayed', () => {
-      const list = wrapper.find(components.List)
-      const listItems = wrapper.find(components.ListItem)
-      expect(list).toHaveLength(1)
-      expect(listItems).toHaveLength(1)
-      expect(listItems.at(0).text()).toEqual('test test')
+      const table = wrapper.find('table')
+      const tableHeader = wrapper.find('thead')
+      const tableHeaders = wrapper.find('th')
+      const tableBody = wrapper.find('tbody')
+      const tableData = wrapper.find('td')
+      const deleteButton = tableData.at(3).find(Button)
+      expect(table).toHaveLength(1)
+      expect(tableHeader).toHaveLength(1)
+      expect(tableBody).toHaveLength(1)
+      expect(tableHeaders.at(0).text()).toEqual('patient.givenName')
+      expect(tableHeaders.at(1).text()).toEqual('patient.familyName')
+      expect(tableHeaders.at(2).text()).toEqual('patient.relatedPersons.relationshipType')
+      expect(tableHeaders.at(3).text()).toEqual('actions.label')
+      expect(tableData.at(0).text()).toEqual(expectedRelatedPerson.givenName)
+      expect(tableData.at(1).text()).toEqual(expectedRelatedPerson.familyName)
+      expect(tableData.at(2).text()).toEqual((patient.relatedPersons as RelatedPerson[])[0].type)
+      expect(deleteButton).toHaveLength(1)
+      expect(deleteButton.text().trim()).toEqual('actions.delete')
+      expect(deleteButton.prop('color')).toEqual('danger')
     })
-    it('should navigate to related person patient profile on related person click', () => {
-      const list = wrapper.find(components.List)
-      const listItems = wrapper.find(components.ListItem)
-      act(() => {
-        ;(listItems.at(0).prop('onClick') as any)()
+
+    it('should remove the related person when the delete button is clicked', async () => {
+      const eventPropagationSpy = jest.fn()
+
+      const table = wrapper.find('table')
+      const tableBody = table.find('tbody')
+      const tableData = tableBody.find('td')
+      const deleteButton = tableData.at(3).find(Button)
+
+      await act(async () => {
+        const onClick = deleteButton.prop('onClick')
+        onClick({ stopPropagation: eventPropagationSpy })
       })
-      expect(list).toHaveLength(1)
-      expect(listItems).toHaveLength(1)
+
+      expect(eventPropagationSpy).toHaveBeenCalledTimes(1)
+      expect(patientSaveOrUpdateSpy).toHaveBeenLastCalledWith({ ...patient, relatedPersons: [] })
+    })
+
+    it('should navigate to related person patient profile on related person click', () => {
+      const table = wrapper.find('table')
+      const tableBody = table.find('tbody')
+      const row = tableBody.find('tr')
+      act(() => {
+        const onClick = row.prop('onClick')
+        onClick()
+      })
+
       expect(history.location.pathname).toEqual('/patients/123001')
     })
   })
