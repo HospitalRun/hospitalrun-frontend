@@ -13,7 +13,7 @@ interface Props {
   onSave: (relatedPerson: RelatedPerson) => void
 }
 
-const NewRelatedPersonModal = (props: Props) => {
+const AddRelatedPersonModal = (props: Props) => {
   const { show, toggle, onCloseButtonClick, onSave } = props
   const { t } = useTranslation()
   const [errorMessage, setErrorMessage] = useState('')
@@ -43,7 +43,7 @@ const NewRelatedPersonModal = (props: Props) => {
       <div className="row">
         <div className="col-md-12">
           <div className="form-group">
-            <Label text={t('patient.relatedPerson')} htmlFor="relatedPersonTypeAhead" />
+            <Label text={t('patient.relatedPerson')} htmlFor="relatedPersonTypeAhead" isRequired />
             <Typeahead
               id="relatedPersonTypeAhead"
               searchAccessor="fullName"
@@ -64,6 +64,7 @@ const NewRelatedPersonModal = (props: Props) => {
             label={t('patient.relatedPersons.relationshipType')}
             value={relatedPerson.type}
             isEditable
+            isRequired
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onInputElementChange(event, 'type')
             }}
@@ -77,7 +78,7 @@ const NewRelatedPersonModal = (props: Props) => {
     <Modal
       show={show}
       toggle={toggle}
-      title={t('patient.relatedPersons.new')}
+      title={t('patient.relatedPersons.add')}
       body={body}
       closeButton={{
         children: t('actions.cancel'),
@@ -85,7 +86,7 @@ const NewRelatedPersonModal = (props: Props) => {
         onClick: onCloseButtonClick,
       }}
       successButton={{
-        children: t('patient.relatedPersons.new'),
+        children: t('patient.relatedPersons.add'),
         color: 'success',
         icon: 'add',
         iconLocation: 'left',
@@ -110,4 +111,4 @@ const NewRelatedPersonModal = (props: Props) => {
   )
 }
 
-export default NewRelatedPersonModal
+export default AddRelatedPersonModal

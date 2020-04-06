@@ -23,6 +23,8 @@ const NewPatient = () => {
 
   const [patient, setPatient] = useState({} as Patient)
   const [errorMessage, setErrorMessage] = useState('')
+  const [isInvalid, setIsInvalid] = useState(false)
+  const [patientGivenNameFeedback, setPatientGivenNameFeedback] = useState('')
 
   useTitle(t('patients.newPatient'))
   useAddBreadcrumbs(breadcrumbs, true)
@@ -33,12 +35,18 @@ const NewPatient = () => {
 
   const onSuccessfulSave = (newPatient: Patient) => {
     history.push(`/patients/${newPatient.id}`)
-    Toast('success', t('Success!'), `${t('patients.successfullyCreated')} ${newPatient.fullName}`)
+    Toast(
+      'success',
+      t('states.success'),
+      `${t('patients.successfullyCreated')} ${newPatient.fullName}`,
+    )
   }
 
   const onSave = () => {
     if (!patient.givenName) {
-      setErrorMessage(t('patient.errors.patientGivenNameRequired'))
+      setErrorMessage(t('patient.errors.patientGivenNameRequiredOnCreate'))
+      setIsInvalid(true)
+      setPatientGivenNameFeedback(t('patient.errors.patientGivenNameFeedback'))
     } else {
       dispatch(
         createPatient(
@@ -66,9 +74,11 @@ const NewPatient = () => {
         patient={patient}
         onFieldChange={onFieldChange}
         errorMessage={errorMessage}
+        isInvalid={isInvalid}
+        patientGivenNameFeedback={patientGivenNameFeedback}
       />
       <div className="row float-right">
-        <div className="btn-group btn-group-lg">
+        <div className="btn-group btn-group-lg mt-3">
           <Button className="mr-2" color="success" onClick={onSave}>
             {t('actions.save')}
           </Button>

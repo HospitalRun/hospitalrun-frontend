@@ -4,7 +4,6 @@ import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import { Router, Route } from 'react-router'
 import { Provider } from 'react-redux'
 import { mount } from 'enzyme'
-import { Button, Alert } from '@hospitalrun/components'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { act } from '@testing-library/react'
@@ -16,10 +15,12 @@ import thunk from 'redux-thunk'
 import Appointment from 'model/Appointment'
 import Patient from 'model/Patient'
 import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
+import * as components from '@hospitalrun/components'
 import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 
 const mockStore = configureMockStore([thunk])
+const mockedComponents = mocked(components, true)
 
 describe('New Appointment', () => {
   let history: MemoryHistory
@@ -144,7 +145,7 @@ describe('New Appointment', () => {
 
       wrapper.update()
 
-      const saveButton = wrapper.find(Button).at(0)
+      const saveButton = wrapper.find(mockedComponents.Button).at(0)
       expect(saveButton.text().trim()).toEqual('actions.save')
       const onClick = saveButton.prop('onClick') as any
 
@@ -158,6 +159,7 @@ describe('New Appointment', () => {
     })
 
     it('should navigate to /appointments/:id when a new appointment is created', async () => {
+      jest.spyOn(components, 'Toast')
       let wrapper: any
       await act(async () => {
         wrapper = await setup()
@@ -181,7 +183,7 @@ describe('New Appointment', () => {
         onFieldChange('patientId', expectedAppointment.patientId)
       })
       wrapper.update()
-      const saveButton = wrapper.find(Button).at(0)
+      const saveButton = wrapper.find(mockedComponents.Button).at(0)
       expect(saveButton.text().trim()).toEqual('actions.save')
       const onClick = saveButton.prop('onClick') as any
 
@@ -190,6 +192,11 @@ describe('New Appointment', () => {
       })
 
       expect(history.location.pathname).toEqual(`/appointments/${expectedNewAppointment.id}`)
+      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+        'success',
+        'states.success',
+        `scheduling.appointment.successfullyCreated ${expectedNewAppointment.id}`,
+      )
     })
 
     it('should display an error if there is no patient id', async () => {
@@ -199,13 +206,13 @@ describe('New Appointment', () => {
       })
 
       act(() => {
-        const saveButton = wrapper.find(Button).at(0)
+        const saveButton = wrapper.find(mockedComponents.Button).at(0)
         const onClick = saveButton.prop('onClick') as any
         onClick()
       })
       wrapper.update()
 
-      const alert = wrapper.find(Alert)
+      const alert = wrapper.find(mockedComponents.Alert)
       expect(alert).toHaveLength(1)
       expect(alert.prop('message')).toEqual('scheduling.appointment.errors.patientRequired')
     })
@@ -245,14 +252,14 @@ describe('New Appointment', () => {
       wrapper.update()
 
       act(() => {
-        const saveButton = wrapper.find(Button).at(0)
+        const saveButton = wrapper.find(mockedComponents.Button).at(0)
         const onClick = saveButton.prop('onClick') as any
         onClick()
       })
 
       wrapper.update()
 
-      const alert = wrapper.find(Alert)
+      const alert = wrapper.find(mockedComponents.Alert)
       expect(alert).toHaveLength(1)
       expect(alert.prop('message')).toEqual(
         'scheduling.appointment.errors.startDateMustBeBeforeEndDate',
@@ -267,7 +274,7 @@ describe('New Appointment', () => {
         wrapper = await setup()
       })
 
-      const cancelButton = wrapper.find(Button).at(1)
+      const cancelButton = wrapper.find(mockedComponents.Button).at(1)
 
       act(() => {
         const onClick = cancelButton.prop('onClick') as any

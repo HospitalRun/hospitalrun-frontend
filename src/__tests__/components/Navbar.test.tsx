@@ -30,10 +30,7 @@ describe('Navbar', () => {
     })
     it('should navigate to / when the header is clicked', () => {
       act(() => {
-        header
-          .first()
-          .props()
-          .onClick()
+        header.first().props().onClick()
       })
       expect(history.location.pathname).toEqual('/')
     })
@@ -48,19 +45,13 @@ describe('Navbar', () => {
     })
     it('should navigate to /patients when the list option is selected', () => {
       act(() => {
-        patientsLinkList
-          .first()
-          .props()
-          .children[0].props.onClick()
+        patientsLinkList.first().props().children[0].props.onClick()
       })
       expect(history.location.pathname).toEqual('/patients')
     })
     it('should navigate to /patients/new when the list option is selected', () => {
       act(() => {
-        patientsLinkList
-          .first()
-          .props()
-          .children[1].props.onClick()
+        patientsLinkList.first().props().children[1].props.onClick()
       })
       expect(history.location.pathname).toEqual('/patients/new')
     })
@@ -81,22 +72,40 @@ describe('Navbar', () => {
 
     it('should navigate to to /appointments when the appointment list option is selected', () => {
       act(() => {
-        scheduleLinkList
-          .first()
-          .props()
-          .children[0].props.onClick()
+        scheduleLinkList.first().props().children[0].props.onClick()
       })
       expect(history.location.pathname).toEqual('/appointments')
     })
 
     it('should navigate to /appointments/new when the new appointment list option is selected', () => {
       act(() => {
-        scheduleLinkList
-          .first()
-          .props()
-          .children[1].props.onClick()
+        scheduleLinkList.first().props().children[1].props.onClick()
       })
       expect(history.location.pathname).toEqual('/appointments/new')
+    })
+  })
+
+  describe('labs', () => {
+    const labsLinkList = hospitalRunNavbar.find('.labs-link-list')
+
+    it('should render a labs dropdown', () => {
+      expect(labsLinkList.first().props().title).toEqual('labs.label')
+      expect(labsLinkList.first().props().children[0].props.children).toEqual('labs.label')
+      expect(labsLinkList.first().props().children[1].props.children).toEqual('labs.requests.new')
+    })
+
+    it('should navigate to to /labs when the labs list option is selected', () => {
+      act(() => {
+        labsLinkList.first().props().children[0].props.onClick()
+      })
+      expect(history.location.pathname).toEqual('/labs')
+    })
+
+    it('should navigate to /labs/new when the new labs list option is selected', () => {
+      act(() => {
+        labsLinkList.first().props().children[1].props.onClick()
+      })
+      expect(history.location.pathname).toEqual('/labs/new')
     })
   })
 

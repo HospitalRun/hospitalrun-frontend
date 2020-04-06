@@ -6,7 +6,7 @@ import { mount } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import * as components from '@hospitalrun/components'
 
-import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
+import AddRelatedPersonModal from 'patients/related-persons/AddRelatedPersonModal'
 import { act } from '@testing-library/react'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
@@ -58,7 +58,7 @@ describe('Related Persons Tab', () => {
       const newRelatedPersonButton = wrapper.find(components.Button)
 
       expect(newRelatedPersonButton).toHaveLength(1)
-      expect(newRelatedPersonButton.text().trim()).toEqual('patient.relatedPersons.new')
+      expect(newRelatedPersonButton.text().trim()).toEqual('patient.relatedPersons.add')
     })
 
     it('should not render a New Related Person button if the user does not have write privileges for a patient', () => {
@@ -77,7 +77,7 @@ describe('Related Persons Tab', () => {
     })
 
     it('should render a New Related Person modal', () => {
-      const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+      const newRelatedPersonModal = wrapper.find(AddRelatedPersonModal)
 
       expect(newRelatedPersonModal.prop('show')).toBeFalsy()
       expect(newRelatedPersonModal).toHaveLength(1)
@@ -92,7 +92,7 @@ describe('Related Persons Tab', () => {
 
       wrapper.update()
 
-      const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+      const newRelatedPersonModal = wrapper.find(AddRelatedPersonModal)
       expect(newRelatedPersonModal.prop('show')).toBeTruthy()
     })
 
@@ -124,7 +124,7 @@ describe('Related Persons Tab', () => {
       wrapper.update()
 
       await act(async () => {
-        const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+        const newRelatedPersonModal = wrapper.find(AddRelatedPersonModal)
         const onSave = newRelatedPersonModal.prop('onSave') as any
         onSave(expectedRelatedPerson)
       })
@@ -145,20 +145,20 @@ describe('Related Persons Tab', () => {
       wrapper.update()
 
       act(() => {
-        const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+        const newRelatedPersonModal = wrapper.find(AddRelatedPersonModal)
         const onSave = newRelatedPersonModal.prop('onSave') as any
         onSave({ patientId: '123', type: 'type' })
       })
 
       wrapper.update()
 
-      const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+      const newRelatedPersonModal = wrapper.find(AddRelatedPersonModal)
       expect(newRelatedPersonModal.prop('show')).toBeFalsy()
     })
 
     it('should display a success message when the new related person is added', async () => {
       await act(async () => {
-        const newRelatedPersonModal = wrapper.find(NewRelatedPersonModal)
+        const newRelatedPersonModal = wrapper.find(AddRelatedPersonModal)
         const onSave = newRelatedPersonModal.prop('onSave') as any
         await onSave({ patientId: 'testMessage', type: 'type' })
       })
@@ -166,8 +166,9 @@ describe('Related Persons Tab', () => {
 
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
-        'Success!',
-        'patient.relatedPersons.successfullyAdded',
+        'states.success',
+        'patients.successfullyAddedRelatedPerson',
+        'top-left',
       )
     })
   })

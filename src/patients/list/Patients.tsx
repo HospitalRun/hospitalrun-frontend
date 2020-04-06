@@ -2,7 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import { Spinner, TextInput, Button, List, ListItem, Container, Row } from '@hospitalrun/components'
+import {
+  Spinner,
+  Button,
+  List,
+  ListItem,
+  Container,
+  Row,
+  TextInput,
+  Column,
+} from '@hospitalrun/components'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
@@ -67,18 +76,23 @@ const Patients = () => {
 
   return (
     <Container>
-      <form className="form-inline" onSubmit={onSearchFormSubmit}>
-        <div className="input-group" style={{ width: '100%' }}>
-          <TextInput
-            size="lg"
-            value={searchText}
-            placeholder={t('actions.search')}
-            onChange={onSearchBoxChange}
-          />
-          <div className="input-group-append">
-            <Button onClick={onSearchFormSubmit}>{t('actions.search')}</Button>
-          </div>
-        </div>
+      <form className="form" onSubmit={onSearchFormSubmit}>
+        <Row>
+          <Column md={10}>
+            <TextInput
+              size="lg"
+              type="text"
+              onChange={onSearchBoxChange}
+              value={searchText}
+              placeholder={t('actions.search')}
+            />
+          </Column>
+          <Column md={2}>
+            <Button size="large" onClick={onSearchFormSubmit}>
+              {t('actions.search')}
+            </Button>
+          </Column>
+        </Row>
       </form>
 
       <Row>

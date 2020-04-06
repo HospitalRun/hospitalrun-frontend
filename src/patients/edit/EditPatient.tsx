@@ -27,6 +27,8 @@ const EditPatient = () => {
 
   const [patient, setPatient] = useState({} as Patient)
   const [errorMessage, setErrorMessage] = useState('')
+  const [isInvalid, setIsInvalid] = useState(false)
+  const [patientGivenNameFeedback, setPatientGivenNameFeedback] = useState('')
   const { patient: reduxPatient, isLoading } = useSelector((state: RootState) => state.patient)
 
   useTitle(
@@ -59,12 +61,18 @@ const EditPatient = () => {
 
   const onSuccessfulSave = (updatedPatient: Patient) => {
     history.push(`/patients/${updatedPatient.id}`)
-    Toast('success', t('Success!'), `${t('patients.successfullyUpdated')} ${patient.fullName}`)
+    Toast(
+      'success',
+      t('states.success'),
+      `${t('patients.successfullyUpdated')} ${patient.fullName}`,
+    )
   }
 
   const onSave = () => {
     if (!patient.givenName) {
-      setErrorMessage(t('patient.errors.patientGivenNameRequired'))
+      setErrorMessage(t('patient.errors.patientGivenNameRequiredOnUpdate'))
+      setIsInvalid(true)
+      setPatientGivenNameFeedback(t('patient.errors.patientGivenNameFeedback'))
     } else {
       dispatch(
         updatePatient(
@@ -96,6 +104,8 @@ const EditPatient = () => {
         patient={patient}
         onFieldChange={onFieldChange}
         errorMessage={errorMessage}
+        isInvalid={isInvalid}
+        patientGivenNameFeedback={patientGivenNameFeedback}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">
