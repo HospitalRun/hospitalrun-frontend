@@ -57,13 +57,13 @@ const AppointmentsList = (props: Props) => {
       <div className="row">
         <div className="col-md-12 d-flex justify-content-end">
           <Button
+            key="newAppointmentButton"
             outlined
             color="success"
-            icon="add"
-            iconLocation="left"
+            icon="appointment-add"
             onClick={() => history.push('/appointments/new')}
           >
-            {t('patient.appointments.new')}
+            {t('scheduling.appointments.new')}
           </Button>
         </div>
       </div>
