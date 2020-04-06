@@ -1,5 +1,6 @@
 export default {
   actions: {
+    label: 'Actions',
     edit: 'Edit',
     save: 'Save',
     update: 'Update',
