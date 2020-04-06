@@ -17,20 +17,9 @@ import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+import useDebounce from '../../hooks/debounce'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
-
-function useDebounce(value: any, delayInMilliseconds: number) {
-  const [debouncedValue, setDebouncedValue] = useState(value)
-
-  useEffect(() => {
-    const debounceHandler = setTimeout(() => setDebouncedValue(value), delayInMilliseconds)
-
-    return () => clearTimeout(debounceHandler)
-  }, [value, delayInMilliseconds])
-
-  return debouncedValue
-}
 
 const Patients = () => {
   const { t } = useTranslation()
