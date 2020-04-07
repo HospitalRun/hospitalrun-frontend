@@ -5,7 +5,6 @@ import { createMemoryHistory } from 'history'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import Patient from 'model/Patient'
-import Permissions from 'model/Permissions'
 import { Router } from 'react-router'
 import { Provider } from 'react-redux'
 import AppointmentsList from 'patients/appointments/AppointmentsList'
@@ -16,14 +15,25 @@ import PatientRepository from 'clients/db/PatientRepository'
 const expectedPatient = {
   id: '123',
 } as Patient
+const expectedAppointments = [
+  {
+    id: '123',
+    rev: '1',
+    patientId: '1234',
+    startDateTime: new Date().toISOString(),
+    endDateTime: new Date().toISOString(),
+    location: 'location',
+    reason: 'reason',
+  },
+]
 
 const mockStore = configureMockStore([thunk])
 const history = createMemoryHistory()
 
 let store: any
 
-const setup = (patient = expectedPatient) => {
-  store = mockStore({ patient })
+const setup = (patient = expectedPatient, appointments = expectedAppointments) => {
+  store = mockStore({ patient, appointments: { appointments } })
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>
@@ -45,7 +55,7 @@ describe('AppointmentsList', () => {
     it('should render a new appointment button', () => {
       const wrapper = setup()
 
-      const addNewAppointmentButton = wrapper.find(components.Button)
+      const addNewAppointmentButton = wrapper.find(components.Button).at(0)
       expect(addNewAppointmentButton).toHaveLength(1)
       expect(addNewAppointmentButton.text().trim()).toEqual('scheduling.appointments.new')
     })
@@ -54,7 +64,10 @@ describe('AppointmentsList', () => {
       const wrapper = setup()
 
       act(() => {
-        wrapper.find(components.Button).prop('onClick')()
+        wrapper
+          .find(components.Button)
+          .at(0)
+          .prop('onClick')()
       })
       wrapper.update()
 
