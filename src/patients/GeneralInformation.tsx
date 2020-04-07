@@ -14,11 +14,20 @@ interface Props {
   isEditable?: boolean
   errorMessage?: string
   onFieldChange?: (key: string, value: string | boolean) => void
+  isInvalid?: boolean
+  patientGivenNameFeedback?: string
 }
 
 const GeneralInformation = (props: Props) => {
   const { t } = useTranslation()
-  const { patient, isEditable, onFieldChange, errorMessage } = props
+  const {
+    patient,
+    isEditable,
+    onFieldChange,
+    errorMessage,
+    isInvalid,
+    patientGivenNameFeedback,
+  } = props
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
@@ -71,6 +80,9 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'givenName')
               }}
+              isRequired
+              isInvalid={isInvalid}
+              feedback={patientGivenNameFeedback}
             />
           </div>
           <div className="col-md-4">

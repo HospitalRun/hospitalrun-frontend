@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Panel, List, ListItem, Alert, Spinner, Toast } from '@hospitalrun/components'
-import NewRelatedPersonModal from 'patients/related-persons/NewRelatedPersonModal'
+import { Button, Alert, Spinner, Toast } from '@hospitalrun/components'
+import AddRelatedPersonModal from 'patients/related-persons/AddRelatedPersonModal'
 import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
@@ -44,7 +44,7 @@ const RelatedPersonTab = (props: Props) => {
         await Promise.all(
           patient.relatedPersons.map(async (person) => {
             const fetchedRelatedPerson = await PatientRepository.find(person.patientId)
-            fetchedRelatedPersons.push(fetchedRelatedPerson)
+            fetchedRelatedPersons.push({ ...fetchedRelatedPerson, type: person.type })
           }),
         )
       }
@@ -67,7 +67,7 @@ const RelatedPersonTab = (props: Props) => {
   }
 
   const onAddRelatedPersonSuccess = () => {
-    Toast('success', t('Success!'), t('patient.relatedPersons.successfullyAdded'))
+    Toast('success', t('states.success'), t('patients.successfullyAddedRelatedPerson'), 'top-left')
   }
 
   const onRelatedPersonSave = (relatedPerson: RelatedPerson) => {
@@ -88,6 +88,20 @@ const RelatedPersonTab = (props: Props) => {
     closeNewRelatedPersonModal()
   }
 
+  const onRelatedPersonDelete = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    relatedPerson: Patient,
+  ) => {
+    event.stopPropagation()
+    const patientToUpdate = { ...patient }
+    const newRelatedPersons = patientToUpdate.relatedPersons?.filter(
+      (r) => r.patientId !== relatedPerson.id,
+    )
+    patientToUpdate.relatedPersons = newRelatedPersons
+
+    dispatch(updatePatient(patientToUpdate))
+  }
+
   return (
     <div>
       <div className="row">
@@ -100,7 +114,7 @@ const RelatedPersonTab = (props: Props) => {
               iconLocation="left"
               onClick={onNewRelatedPersonClick}
             >
-              {t('patient.relatedPersons.new')}
+              {t('patient.relatedPersons.add')}
             </Button>
           )}
         </div>
@@ -108,31 +122,50 @@ const RelatedPersonTab = (props: Props) => {
       <br />
       <div className="row">
         <div className="col-md-12">
-          <Panel title={t('patient.relatedPersons.label')} color="primary" collapsible>
-            {relatedPersons ? (
-              relatedPersons.length > 0 ? (
-                <List>
+          {relatedPersons ? (
+            relatedPersons.length > 0 ? (
+              <table className="table table-hover">
+                <thead className="thead-light">
+                  <tr>
+                    <th>{t('patient.givenName')}</th>
+                    <th>{t('patient.familyName')}</th>
+                    <th>{t('patient.relatedPersons.relationshipType')}</th>
+                    <th>{t('actions.label')}</th>
+                  </tr>
+                </thead>
+                <tbody>
                   {relatedPersons.map((r) => (
-                    <ListItem action key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
-                      {r.fullName}
-                    </ListItem>
+                    <tr key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
+                      <td>{r.givenName}</td>
+                      <td>{r.familyName}</td>
+                      <td>{r.type}</td>
+                      <td>
+                        <Button
+                          icon="remove"
+                          color="danger"
+                          onClick={(e) => onRelatedPersonDelete(e, r)}
+                        >
+                          {t('actions.delete')}
+                        </Button>
+                      </td>
+                    </tr>
                   ))}
-                </List>
-              ) : (
-                <Alert
-                  color="warning"
-                  title={t('patient.relatedPersons.warning.noRelatedPersons')}
-                  message={t('patient.relatedPersons.addRelatedPersonAbove')}
-                />
-              )
+                </tbody>
+              </table>
             ) : (
-              <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
-            )}
-          </Panel>
+              <Alert
+                color="warning"
+                title={t('patient.relatedPersons.warning.noRelatedPersons')}
+                message={t('patient.relatedPersons.addRelatedPersonAbove')}
+              />
+            )
+          ) : (
+            <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
+          )}
         </div>
       </div>
 
-      <NewRelatedPersonModal
+      <AddRelatedPersonModal
         show={showNewRelatedPersonModal}
         toggle={closeNewRelatedPersonModal}
         onCloseButtonClick={closeNewRelatedPersonModal}

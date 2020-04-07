@@ -14,6 +14,8 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
   const { show, onCloseButtonClick, onSave } = props
   const [allergy, setAllergy] = useState({ name: '' })
   const [errorMessage, setErrorMessage] = useState('')
+  const [isAllergyNameInvalid, setIsAllergynameInvalid] = useState(false)
+  const [nameRequiredFeedback, setNameRequiredFeedback] = useState('')
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -29,7 +31,9 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
   const onSaveButtonClick = () => {
     let newErrorMessage = ''
     if (!allergy.name) {
-      newErrorMessage += `${t('patient.allergies.error.nameRequired')} `
+      newErrorMessage += `${t('patient.allergies.error.unableToAdd')} `
+      setIsAllergynameInvalid(true)
+      setNameRequiredFeedback(`${t('patient.allergies.error.nameRequired')} `)
     }
 
     if (newErrorMessage) {
@@ -49,12 +53,15 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
       {errorMessage && <Alert color="danger" title={t('states.error')} message={errorMessage} />}
       <form>
         <TextInputWithLabelFormGroup
+          feedback={nameRequiredFeedback}
           name="name"
-          label="Name"
+          isRequired
+          label={t('patient.allergies.allergyName')}
           isEditable
-          placeholder="Allergy"
+          placeholder={t('patient.allergies.allergyName')}
           value={allergy.name}
           onChange={onNameChange}
+          isInvalid={isAllergyNameInvalid}
         />
       </form>
     </>

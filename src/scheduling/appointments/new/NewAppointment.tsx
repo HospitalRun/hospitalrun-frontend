@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import Appointment from 'model/Appointment'
 import addMinutes from 'date-fns/addMinutes'
 import { isBefore } from 'date-fns'
-import { Button } from '@hospitalrun/components'
+import { Button, Toast } from '@hospitalrun/components'
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 import { createAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
@@ -42,6 +42,11 @@ const NewAppointment = () => {
 
   const onNewAppointmentSaveSuccess = (newAppointment: Appointment) => {
     history.push(`/appointments/${newAppointment.id}`)
+    Toast(
+      'success',
+      t('states.success'),
+      `${t('scheduling.appointment.successfullyCreated')} ${newAppointment.id}`,
+    )
   }
 
   const onSave = () => {
