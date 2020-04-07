@@ -9,6 +9,7 @@ import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+import useDebounce from '../../hooks/debounce'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
@@ -35,6 +36,12 @@ const Patients = () => {
 
   const [searchText, setSearchText] = useState<string>('')
 
+  const debouncedSearchText = useDebounce(searchText, 500)
+
+  useEffect(() => {
+    dispatch(searchPatients(debouncedSearchText))
+  }, [dispatch, debouncedSearchText])
+
   useEffect(() => {
     dispatch(fetchPatients())
 
@@ -43,9 +50,21 @@ const Patients = () => {
     }
   }, [dispatch, setButtonToolBar])
 
-  if (isLoading) {
-    return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
-  }
+  const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
+
+  const listBody = (
+    <tbody>
+      {patients.map((p) => (
+        <tr key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
+          <td>{p.code}</td>
+          <td>{p.givenName}</td>
+          <td>{p.familyName}</td>
+          <td>{p.sex}</td>
+          <td>{p.dateOfBirth ? format(new Date(p.dateOfBirth), 'yyyy-MM-dd') : ''}</td>
+        </tr>
+      ))}
+    </tbody>
+  )
 
   const list = (
     <table className="table table-hover">
@@ -58,17 +77,7 @@ const Patients = () => {
           <th>{t('patient.dateOfBirth')}</th>
         </tr>
       </thead>
-      <tbody>
-        {patients.map((p) => (
-          <tr key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
-            <td>{p.code}</td>
-            <td>{p.givenName}</td>
-            <td>{p.familyName}</td>
-            <td>{p.sex}</td>
-            <td>{p.dateOfBirth ? format(new Date(p.dateOfBirth), 'yyyy-MM-dd') : ''}</td>
-          </tr>
-        ))}
-      </tbody>
+      {isLoading ? loadingIndicator : listBody}
     </table>
   )
 
@@ -76,31 +85,19 @@ const Patients = () => {
     setSearchText(event.target.value)
   }
 
-  const onSearchFormSubmit = (event: React.FormEvent | React.MouseEvent) => {
-    event.preventDefault()
-    dispatch(searchPatients(searchText))
-  }
-
   return (
     <Container>
-      <form className="form" onSubmit={onSearchFormSubmit}>
-        <Row>
-          <Column md={10}>
-            <TextInput
-              size="lg"
-              type="text"
-              onChange={onSearchBoxChange}
-              value={searchText}
-              placeholder={t('actions.search')}
-            />
-          </Column>
-          <Column md={2}>
-            <Button size="large" onClick={onSearchFormSubmit}>
-              {t('actions.search')}
-            </Button>
-          </Column>
-        </Row>
-      </form>
+      <Row>
+        <Column md={12}>
+          <TextInput
+            size="lg"
+            type="text"
+            onChange={onSearchBoxChange}
+            value={searchText}
+            placeholder={t('actions.search')}
+          />
+        </Column>
+      </Row>
 
       <Row>{list}</Row>
     </Container>
