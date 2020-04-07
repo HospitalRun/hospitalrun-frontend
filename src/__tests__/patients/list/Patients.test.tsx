@@ -1,7 +1,7 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
-import { TextInput, Button, Spinner } from '@hospitalrun/components'
+import { TextInput, Spinner } from '@hospitalrun/components'
 import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
@@ -58,15 +58,6 @@ describe('Patients', () => {
       jest.restoreAllMocks()
     })
 
-    it('should render a search input with button', () => {
-      const wrapper = setup()
-      const searchInput = wrapper.find(TextInput)
-      const searchButton = wrapper.find(Button)
-      expect(searchInput).toHaveLength(1)
-      expect(searchInput.prop('placeholder')).toEqual('actions.search')
-      expect(searchButton.text().trim()).toEqual('actions.search')
-    })
-
     it('should render a loading bar if it is loading', () => {
       const wrapper = setup(true)
 
@@ -111,10 +102,15 @@ describe('Patients', () => {
   })
 
   describe('search functionality', () => {
-    it('should call the searchPatients() action with the correct data', () => {
+    beforeEach(() => jest.useFakeTimers())
+
+    afterEach(() => jest.useRealTimers())
+
+    it('should search for patients after the search text has not changed for 500 milliseconds', () => {
       const searchPatientsSpy = jest.spyOn(patientSlice, 'searchPatients')
-      const expectedSearchText = 'search text'
       const wrapper = setup()
+      searchPatientsSpy.mockClear()
+      const expectedSearchText = 'search text'
 
       act(() => {
         ;(wrapper.find(TextInput).prop('onChange') as any)({
@@ -127,14 +123,8 @@ describe('Patients', () => {
         } as React.ChangeEvent<HTMLInputElement>)
       })
 
-      wrapper.update()
-
       act(() => {
-        ;(wrapper.find(Button).prop('onClick') as any)({
-          preventDefault(): void {
-            // noop
-          },
-        } as React.MouseEvent<HTMLButtonElement>)
+        jest.advanceTimersByTime(500)
       })
 
       wrapper.update()
