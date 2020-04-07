@@ -95,7 +95,7 @@ describe('New Patient', () => {
 
     wrapper.update()
     expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
-      'patient.errors.patientGivenNameRequiredOnCreate',
+      'patient.errors.createPatientError',
     )
     expect(wrapper.update.isInvalid === true)
   })

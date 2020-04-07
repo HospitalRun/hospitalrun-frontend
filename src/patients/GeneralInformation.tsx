@@ -9,25 +9,28 @@ import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelF
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
 import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
 
+interface Feedback {
+  givenName: string
+  dateOfBirth: string
+}
+
+interface Invalids {
+  givenName: boolean
+  dateOfBirth: boolean
+}
+
 interface Props {
   patient: Patient
   isEditable?: boolean
   errorMessage?: string
   onFieldChange?: (key: string, value: string | boolean) => void
-  isInvalid?: boolean
-  patientGivenNameFeedback?: string
+  invalids?: Invalids
+  feedback?: Feedback
 }
 
 const GeneralInformation = (props: Props) => {
   const { t } = useTranslation()
-  const {
-    patient,
-    isEditable,
-    onFieldChange,
-    errorMessage,
-    isInvalid,
-    patientGivenNameFeedback,
-  } = props
+  const { patient, isEditable, onFieldChange, errorMessage, invalids, feedback } = props
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
@@ -81,8 +84,8 @@ const GeneralInformation = (props: Props) => {
                 onInputElementChange(event, 'givenName')
               }}
               isRequired
-              isInvalid={isInvalid}
-              feedback={patientGivenNameFeedback}
+              isInvalid={invalids?.givenName}
+              feedback={feedback?.givenName}
             />
           </div>
           <div className="col-md-4">
@@ -163,6 +166,8 @@ const GeneralInformation = (props: Props) => {
                     ? new Date(patient.dateOfBirth)
                     : undefined
                 }
+                isInvalid={invalids?.dateOfBirth}
+                feedback={feedback?.dateOfBirth}
                 onChange={(date: Date) => {
                   onDateOfBirthChange(date)
                 }}
