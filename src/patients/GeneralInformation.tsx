@@ -14,7 +14,7 @@ interface Feedback {
   dateOfBirth: string
 }
 
-interface Invalids {
+interface InvalidFields {
   givenName: boolean
   dateOfBirth: boolean
 }
@@ -24,13 +24,13 @@ interface Props {
   isEditable?: boolean
   errorMessage?: string
   onFieldChange?: (key: string, value: string | boolean) => void
-  invalids?: Invalids
+  invalidFields?: InvalidFields
   feedback?: Feedback
 }
 
 const GeneralInformation = (props: Props) => {
   const { t } = useTranslation()
-  const { patient, isEditable, onFieldChange, errorMessage, invalids, feedback } = props
+  const { patient, isEditable, onFieldChange, errorMessage, invalidFields, feedback } = props
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
@@ -84,7 +84,7 @@ const GeneralInformation = (props: Props) => {
                 onInputElementChange(event, 'givenName')
               }}
               isRequired
-              isInvalid={invalids?.givenName}
+              isInvalid={invalidFields?.givenName}
               feedback={feedback?.givenName}
             />
           </div>
@@ -166,7 +166,7 @@ const GeneralInformation = (props: Props) => {
                     ? new Date(patient.dateOfBirth)
                     : undefined
                 }
-                isInvalid={invalids?.dateOfBirth}
+                isInvalid={invalidFields?.dateOfBirth}
                 feedback={feedback?.dateOfBirth}
                 onChange={(date: Date) => {
                   onDateOfBirthChange(date)

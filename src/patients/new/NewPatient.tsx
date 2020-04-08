@@ -24,11 +24,11 @@ const NewPatient = () => {
 
   const [patient, setPatient] = useState({} as Patient)
   const [errorMessage, setErrorMessage] = useState('')
-  const [createInvalids, setCreateInvalids] = useState({
+  const [invalidFields, setInvalidFields] = useState({
     givenName: false,
     dateOfBirth: false,
   })
-  const [createFeedback, setCreateFeedback] = useState({
+  const [feedbackField, setFeedbackField] = useState({
     givenName: '',
     dateOfBirth: '',
   })
@@ -54,12 +54,12 @@ const NewPatient = () => {
 
     if (!patient.givenName) {
       inputIsValid = false
-      setErrorMessage(t('patient.errors.createPatientError'))
-      setCreateInvalids((prevState) => ({
+      setErrorMessage(t('patient.errors.updatePatientError'))
+      setInvalidFields((prevState) => ({
         ...prevState,
         givenName: true,
       }))
-      setCreateFeedback((prevState) => ({
+      setFeedbackField((prevState) => ({
         ...prevState,
         givenName: t('patient.errors.patientGivenNameFeedback'),
       }))
@@ -67,12 +67,12 @@ const NewPatient = () => {
     if (patient.dateOfBirth) {
       if (parseISO(patient.dateOfBirth) > new Date(Date.now())) {
         inputIsValid = false
-        setErrorMessage(t('patient.errors.createPatientError'))
-        setCreateInvalids((prevState) => ({
+        setErrorMessage(t('patient.errors.updatePatientError'))
+        setInvalidFields((prevState) => ({
           ...prevState,
           dateOfBirth: true,
         }))
-        setCreateFeedback((prevState) => ({
+        setFeedbackField((prevState) => ({
           ...prevState,
           dateOfBirth: t('patient.errors.patientDateOfBirthFeedback'),
         }))
@@ -110,8 +110,8 @@ const NewPatient = () => {
         patient={patient}
         onFieldChange={onFieldChange}
         errorMessage={errorMessage}
-        invalids={createInvalids}
-        feedback={createFeedback}
+        invalidFields={invalidFields}
+        feedback={feedbackField}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg mt-3">
