@@ -24,14 +24,15 @@ const mockStore = createMockStore([thunk])
 describe('View Labs', () => {
   let history: any
   const mockPatient = { fullName: 'test' }
-  const mockLab = {
-    id: '12456',
-    status: 'requested',
-    patientId: '1234',
-    type: 'lab type',
-    notes: 'lab notes',
-    requestedOn: '2020-03-30T04:43:20.102Z',
-  } as Lab
+  const mockLab =
+    {
+      id: '12456',
+      status: 'requested',
+      patientId: '1234',
+      type: 'lab type',
+      notes: 'lab notes',
+      requestedOn: '2020-03-30T04:43:20.102Z',
+    } as Lab
 
   let setButtonToolBarSpy: any
   let titleSpy: any
@@ -127,10 +128,11 @@ describe('View Labs', () => {
     })
 
     it('should render a result text field', async () => {
-      const expectedLab = {
-        ...mockLab,
-        result: 'expected results',
-      } as Lab
+      const expectedLab =
+        {
+          ...mockLab,
+          result: 'expected results',
+        } as Lab
       const wrapper = await setup(expectedLab, [Permissions.ViewLab])
 
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
@@ -195,11 +197,12 @@ describe('View Labs', () => {
       })
 
       it('should display the canceled on date if the lab request has been canceled', async () => {
-        const expectedLab = {
-          ...mockLab,
-          status: 'canceled',
-          canceledOn: '2020-03-30T04:45:20.102Z',
-        } as Lab
+        const expectedLab =
+          {
+            ...mockLab,
+            status: 'canceled',
+            canceledOn: '2020-03-30T04:45:20.102Z',
+          } as Lab
         const wrapper = await setup(expectedLab, [Permissions.ViewLab])
         const canceledOnDiv = wrapper.find('.canceled-on')
 
@@ -246,11 +249,12 @@ describe('View Labs', () => {
       })
 
       it('should display the completed on date if the lab request has been completed', async () => {
-        const expectedLab = {
-          ...mockLab,
-          status: 'completed',
-          completedOn: '2020-03-30T04:44:20.102Z',
-        } as Lab
+        const expectedLab =
+          {
+            ...mockLab,
+            status: 'completed',
+            completedOn: '2020-03-30T04:44:20.102Z',
+          } as Lab
         const wrapper = await setup(expectedLab, [Permissions.ViewLab])
         const completedOnDiv = wrapper.find('.completed-on')
 

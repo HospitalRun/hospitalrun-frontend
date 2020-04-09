@@ -85,17 +85,18 @@ describe('New Appointment', () => {
         wrapper = await setup()
       })
 
-      const expectedAppointment = {
-        patientId: '123',
-        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-        endDateTime: addMinutes(
-          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-          60,
-        ).toISOString(),
-        location: 'location',
-        reason: 'reason',
-        type: 'type',
-      } as Appointment
+      const expectedAppointment =
+        {
+          patientId: '123',
+          startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+          endDateTime: addMinutes(
+            roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+            60,
+          ).toISOString(),
+          location: 'location',
+          reason: 'reason',
+          type: 'type',
+        } as Appointment
 
       act(() => {
         const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
@@ -165,17 +166,18 @@ describe('New Appointment', () => {
         wrapper = await setup()
       })
 
-      const expectedAppointment = {
-        patientId: '123',
-        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-        endDateTime: addMinutes(
-          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-          60,
-        ).toISOString(),
-        location: 'location',
-        reason: 'reason',
-        type: 'type',
-      } as Appointment
+      const expectedAppointment =
+        {
+          patientId: '123',
+          startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+          endDateTime: addMinutes(
+            roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+            60,
+          ).toISOString(),
+          location: 'location',
+          reason: 'reason',
+          type: 'type',
+        } as Appointment
 
       act(() => {
         const appointmentDetailForm = wrapper.find(AppointmentDetailForm)

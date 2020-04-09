@@ -22,18 +22,20 @@ import * as appointmentSlice from '../../../../scheduling/appointments/appointme
 
 const mockStore = configureMockStore([thunk])
 
-const appointment = {
-  id: '123',
-  startDateTime: new Date().toISOString(),
-  endDateTime: new Date().toISOString(),
-  reason: 'reason',
-  location: 'location',
-} as Appointment
+const appointment =
+  {
+    id: '123',
+    startDateTime: new Date().toISOString(),
+    endDateTime: new Date().toISOString(),
+    reason: 'reason',
+    location: 'location',
+  } as Appointment
 
-const patient = {
-  id: '123',
-  fullName: 'full name',
-} as Patient
+const patient =
+  {
+    id: '123',
+    fullName: 'full name',
+  } as Patient
 
 describe('View Appointment', () => {
   let history: any

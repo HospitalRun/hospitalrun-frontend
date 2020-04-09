@@ -17,10 +17,11 @@ import NewNoteModal from 'patients/notes/NewNoteModal'
 import Permissions from '../../../model/Permissions'
 import * as patientSlice from '../../../patients/patient-slice'
 
-const expectedPatient = {
-  id: '123',
-  notes: [{ date: new Date().toISOString(), text: 'notes1' } as Note],
-} as Patient
+const expectedPatient =
+  {
+    id: '123',
+    notes: [{ date: new Date().toISOString(), text: 'notes1' } as Note],
+  } as Patient
 
 const mockStore = configureMockStore([thunk])
 const history = createMemoryHistory()
@@ -77,14 +78,16 @@ describe('Notes Tab', () => {
     })
 
     it('should update the patient with the new diagnosis when the save button is clicked', async () => {
-      const expectedNote = {
-        text: 'note text',
-        date: new Date().toISOString(),
-      } as Note
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        notes: [...(expectedPatient.notes as any), expectedNote],
-      } as Patient
+      const expectedNote =
+        {
+          text: 'note text',
+          date: new Date().toISOString(),
+        } as Note
+      const expectedUpdatedPatient =
+        {
+          ...expectedPatient,
+          notes: [...(expectedPatient.notes as any), expectedNote],
+        } as Patient
 
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)

@@ -139,14 +139,15 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
     let labRepositorySaveSpy: any
     const expectedDate = new Date()
-    const expectedLab = {
-      patientId: '12345',
-      type: 'expected type',
-      status: 'requested',
-      notes: 'expected notes',
-      id: '1234',
-      requestedOn: expectedDate.toISOString(),
-    } as Lab
+    const expectedLab =
+      {
+        patientId: '12345',
+        type: 'expected type',
+        status: 'requested',
+        notes: 'expected notes',
+        id: '1234',
+        requestedOn: expectedDate.toISOString(),
+      } as Lab
 
     beforeEach(() => {
       jest.resetAllMocks()

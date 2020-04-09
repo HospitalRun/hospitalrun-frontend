@@ -12,11 +12,12 @@ describe('scheduling appointment util', () => {
         minute: '2-digit',
       }
 
-      const appointment = {
-        id: '123',
-        startDateTime: '2020-03-07T18:15:00.000Z',
-        endDateTime: '2020-03-07T20:15:00.000Z',
-      } as Appointment
+      const appointment =
+        {
+          id: '123',
+          startDateTime: '2020-03-07T18:15:00.000Z',
+          endDateTime: '2020-03-07T20:15:00.000Z',
+        } as Appointment
 
       const startDateLabel = new Date(appointment.startDateTime).toLocaleString([], options)
       const endDateLabel = new Date(appointment.endDateTime).toLocaleString([], options)
@@ -25,27 +26,30 @@ describe('scheduling appointment util', () => {
     })
 
     it('should return the appointment id when start time is not defined', () => {
-      const appointment = {
-        id: '123',
-        startDateTime: '2020-03-07T18:15:00.000Z',
-      } as Appointment
+      const appointment =
+        {
+          id: '123',
+          startDateTime: '2020-03-07T18:15:00.000Z',
+        } as Appointment
 
       expect(getAppointmentLabel(appointment)).toEqual('123')
     })
 
     it('should return the appointment id when end time is not defined', () => {
-      const appointment = {
-        id: '123',
-        endDateTime: '2020-03-07T20:15:00.000Z',
-      } as Appointment
+      const appointment =
+        {
+          id: '123',
+          endDateTime: '2020-03-07T20:15:00.000Z',
+        } as Appointment
 
       expect(getAppointmentLabel(appointment)).toEqual('123')
     })
 
     it('should return the appointment id when start time and end time are not defined', () => {
-      const appointment = {
-        id: '123',
-      } as Appointment
+      const appointment =
+        {
+          id: '123',
+        } as Appointment
 
       expect(getAppointmentLabel(appointment)).toEqual('123')
     })

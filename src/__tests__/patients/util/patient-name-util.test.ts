@@ -50,11 +50,12 @@ describe('patient name util', () => {
   })
 
   describe('getPatientFullName', () => {
-    const patient = {
-      givenName: 'given',
-      familyName: 'family',
-      suffix: 'suffix',
-    } as Patient
+    const patient =
+      {
+        givenName: 'given',
+        familyName: 'family',
+        suffix: 'suffix',
+      } as Patient
 
     const expectedFullName = `${patient.givenName} ${patient.familyName} ${patient.suffix}`
 

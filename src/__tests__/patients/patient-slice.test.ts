@@ -108,9 +108,10 @@ describe('patients slice', () => {
       mocked(PatientRepository).save.mockResolvedValue({ id: 'sliceId1' } as Patient)
       const dispatch = jest.fn()
       const getState = jest.fn()
-      const expectedPatient = {
-        id: 'sliceId1',
-      } as Patient
+      const expectedPatient =
+        {
+          id: 'sliceId1',
+        } as Patient
 
       await createPatient(expectedPatient)(dispatch, getState, null)
 
@@ -122,9 +123,10 @@ describe('patients slice', () => {
       const getState = jest.fn()
       jest.spyOn(PatientRepository, 'save')
       mocked(PatientRepository).save.mockResolvedValue({ id: 'sliceId2' } as Patient)
-      const expectedPatient = {
-        id: 'sliceId2',
-      } as Patient
+      const expectedPatient =
+        {
+          id: 'sliceId2',
+        } as Patient
 
       await createPatient(expectedPatient)(dispatch, getState, null)
 
@@ -136,9 +138,10 @@ describe('patients slice', () => {
       const getState = jest.fn()
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.save.mockResolvedValue({ id: 'slideId3' } as Patient)
-      const expectedPatient = {
-        id: 'slideId3',
-      } as Patient
+      const expectedPatient =
+        {
+          id: 'slideId3',
+        } as Patient
 
       await createPatient(expectedPatient)(dispatch, getState, null)
 
@@ -149,10 +152,11 @@ describe('patients slice', () => {
       const onSuccessSpy = jest.fn()
       const expectedPatientId = 'sliceId5'
       const expectedFullName = 'John Doe II'
-      const expectedPatient = {
-        id: expectedPatientId,
-        fullName: expectedFullName,
-      } as Patient
+      const expectedPatient =
+        {
+          id: expectedPatientId,
+          fullName: expectedFullName,
+        } as Patient
       jest.spyOn(PatientRepository, 'save')
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.save.mockResolvedValue(expectedPatient)
@@ -267,10 +271,11 @@ describe('patients slice', () => {
       jest.spyOn(components, 'Toast')
       const expectedPatientId = 'sliceId11'
       const fullName = 'John Doe II'
-      const expectedPatient = {
-        id: expectedPatientId,
-        fullName,
-      } as Patient
+      const expectedPatient =
+        {
+          id: expectedPatientId,
+          fullName,
+        } as Patient
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedPatient)
       const dispatch = jest.fn()
