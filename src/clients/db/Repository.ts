@@ -25,23 +25,24 @@ export default class Repository<T extends AbstractDBModel> {
   }
 
   async findAll(sort = Unsorted): Promise<T[]> {
-    const selector = {
+    const selector: any = {
       _id: { $gt: null },
     }
 
-    return this.search({ selector }, sort)
+    sort.sorts.forEach((s) => {
+      selector[s.field] = { $gt: null }
+    })
+
+    const result = await this.db.find({
+      selector,
+      sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
+    })
+
+    return result.docs.map(mapDocument)
   }
 
-  async search(criteria: any, sort: SortRequest = Unsorted): Promise<T[]> {
-    // hack to get around the requirement that any sorted field must be in the selector list
-    sort.sorts.forEach((s) => {
-      criteria.selector[s.field] = { $gt: null }
-    })
-    const allCriteria = {
-      ...criteria,
-      sort: sort.sorts.map((s) => ({ [s.field]: s.direction })),
-    }
-    const response = await this.db.find(allCriteria)
+  async search(criteria: any): Promise<T[]> {
+    const response = await this.db.find(criteria)
     return response.docs.map(mapDocument)
   }
 
