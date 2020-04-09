@@ -32,7 +32,7 @@ const EditPatient = () => {
     givenName: false,
     dateOfBirth: false,
   })
-  const [feedbackField, setFeedbackField] = useState({
+  const [feedbackFields, setFeedbackFields] = useState({
     givenName: '',
     dateOfBirth: '',
   })
@@ -85,7 +85,7 @@ const EditPatient = () => {
         ...prevState,
         givenName: true,
       }))
-      setFeedbackField((prevState) => ({
+      setFeedbackFields((prevState) => ({
         ...prevState,
         givenName: t('patient.errors.patientGivenNameFeedback'),
       }))
@@ -98,7 +98,7 @@ const EditPatient = () => {
           ...prevState,
           dateOfBirth: true,
         }))
-        setFeedbackField((prevState) => ({
+        setFeedbackFields((prevState) => ({
           ...prevState,
           dateOfBirth: t('patient.errors.patientDateOfBirthFeedback'),
         }))
@@ -140,7 +140,7 @@ const EditPatient = () => {
         onFieldChange={onFieldChange}
         errorMessage={errorMessage}
         invalidFields={invalidFields}
-        feedback={feedbackField}
+        feedbackFields={feedbackFields}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">

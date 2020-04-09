@@ -28,7 +28,7 @@ const NewPatient = () => {
     givenName: false,
     dateOfBirth: false,
   })
-  const [feedbackField, setFeedbackField] = useState({
+  const [feedbackFields, setFeedbackFields] = useState({
     givenName: '',
     dateOfBirth: '',
   })
@@ -54,12 +54,12 @@ const NewPatient = () => {
 
     if (!patient.givenName) {
       inputIsValid = false
-      setErrorMessage(t('patient.errors.updatePatientError'))
+      setErrorMessage(t('patient.errors.createPatientError'))
       setInvalidFields((prevState) => ({
         ...prevState,
         givenName: true,
       }))
-      setFeedbackField((prevState) => ({
+      setFeedbackFields((prevState) => ({
         ...prevState,
         givenName: t('patient.errors.patientGivenNameFeedback'),
       }))
@@ -67,12 +67,12 @@ const NewPatient = () => {
     if (patient.dateOfBirth) {
       if (parseISO(patient.dateOfBirth) > new Date(Date.now())) {
         inputIsValid = false
-        setErrorMessage(t('patient.errors.updatePatientError'))
+        setErrorMessage(t('patient.errors.createPatientError'))
         setInvalidFields((prevState) => ({
           ...prevState,
           dateOfBirth: true,
         }))
-        setFeedbackField((prevState) => ({
+        setFeedbackFields((prevState) => ({
           ...prevState,
           dateOfBirth: t('patient.errors.patientDateOfBirthFeedback'),
         }))
@@ -111,7 +111,7 @@ const NewPatient = () => {
         onFieldChange={onFieldChange}
         errorMessage={errorMessage}
         invalidFields={invalidFields}
-        feedback={feedbackField}
+        feedbackFields={feedbackFields}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg mt-3">

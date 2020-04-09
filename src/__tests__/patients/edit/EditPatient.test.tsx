@@ -9,6 +9,7 @@ import { act } from 'react-dom/test-utils'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Button } from '@hospitalrun/components'
+import { addDays, endOfToday } from 'date-fns'
 import EditPatient from '../../../patients/edit/EditPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import Patient from '../../../model/Patient'
@@ -19,23 +20,24 @@ import PatientRepository from '../../../clients/db/PatientRepository'
 const mockStore = configureMockStore([thunk])
 
 describe('Edit Patient', () => {
-  const patient = {
-    id: '123',
-    prefix: 'prefix',
-    givenName: 'givenName',
-    familyName: 'familyName',
-    suffix: 'suffix',
-    fullName: 'givenName familyName suffix',
-    sex: 'male',
-    type: 'charity',
-    occupation: 'occupation',
-    preferredLanguage: 'preferredLanguage',
-    phoneNumber: 'phoneNumber',
-    email: 'email@email.com',
-    address: 'address',
-    code: 'P00001',
-    dateOfBirth: new Date().toISOString(),
-  } as Patient
+  const patient =
+    {
+      id: '123',
+      prefix: 'prefix',
+      givenName: 'givenName',
+      familyName: 'familyName',
+      suffix: 'suffix',
+      fullName: 'givenName familyName suffix',
+      sex: 'male',
+      type: 'charity',
+      occupation: 'occupation',
+      preferredLanguage: 'preferredLanguage',
+      phoneNumber: 'phoneNumber',
+      email: 'email@email.com',
+      address: 'address',
+      code: 'P00001',
+      dateOfBirth: new Date().toISOString(),
+    } as Patient
 
   let history: any
   let store: MockStore
@@ -117,6 +119,71 @@ describe('Edit Patient', () => {
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
     expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
     expect(store.getActions()).toContainEqual(patientSlice.updatePatientSuccess(patient))
+  })
+
+  it('should pass no given name error when form doesnt contain a given name on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const givenName = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
+    expect(givenName.prop('value')).toBe('')
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+    expect(generalInformationForm.prop('errorMessage')).toBe('')
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
+    wrapper.update()
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.updatePatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').givenName).toMatch(
+      'patient.errors.patientGivenNameFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
+
+  it('should pass invalid date of birth error when input date is grater than today on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')(
+        'dateOfBirth',
+        addDays(endOfToday(), 10).toISOString(),
+      )
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    await act(async () => {
+      await onClick()
+    })
+
+    wrapper.update()
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.updatePatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').dateOfBirth).toMatch(
+      'patient.errors.patientDateOfBirthFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
   })
 
   it('should navigate to /patients/:id when cancel is clicked', async () => {

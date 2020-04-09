@@ -25,12 +25,12 @@ interface Props {
   errorMessage?: string
   onFieldChange?: (key: string, value: string | boolean) => void
   invalidFields?: InvalidFields
-  feedback?: Feedback
+  feedbackFields?: Feedback
 }
 
 const GeneralInformation = (props: Props) => {
   const { t } = useTranslation()
-  const { patient, isEditable, onFieldChange, errorMessage, invalidFields, feedback } = props
+  const { patient, isEditable, onFieldChange, errorMessage, invalidFields, feedbackFields } = props
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
@@ -85,7 +85,7 @@ const GeneralInformation = (props: Props) => {
               }}
               isRequired
               isInvalid={invalidFields?.givenName}
-              feedback={feedback?.givenName}
+              feedback={feedbackFields?.givenName}
             />
           </div>
           <div className="col-md-4">
@@ -167,7 +167,7 @@ const GeneralInformation = (props: Props) => {
                     : undefined
                 }
                 isInvalid={invalidFields?.dateOfBirth}
-                feedback={feedback?.dateOfBirth}
+                feedback={feedbackFields?.dateOfBirth}
                 onChange={(date: Date) => {
                   onDateOfBirthChange(date)
                 }}
