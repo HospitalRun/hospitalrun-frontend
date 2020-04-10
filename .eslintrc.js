@@ -53,6 +53,7 @@ module.exports = {
     'no-nested-ternary': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': ['error', 'never'],
+    'newline-per-chained-call': 'off',
     curly: ['error', 'all'],
   },
 }

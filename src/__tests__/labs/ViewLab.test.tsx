@@ -85,29 +85,57 @@ describe('View Labs', () => {
       const expectedLab = { ...mockLab } as Lab
       const wrapper = await setup(expectedLab, [Permissions.ViewLab])
       const forPatientDiv = wrapper.find('.for-patient')
-      expect(forPatientDiv.find('h4').text().trim()).toEqual('labs.lab.for')
+      expect(
+        forPatientDiv
+          .find('h4')
+          .text()
+          .trim(),
+      ).toEqual('labs.lab.for')
 
-      expect(forPatientDiv.find('h5').text().trim()).toEqual(mockPatient.fullName)
+      expect(
+        forPatientDiv
+          .find('h5')
+          .text()
+          .trim(),
+      ).toEqual(mockPatient.fullName)
     })
 
     it('should display the lab type for type', async () => {
       const expectedLab = { ...mockLab, type: 'expected type' } as Lab
       const wrapper = await setup(expectedLab, [Permissions.ViewLab])
       const labTypeDiv = wrapper.find('.lab-type')
-      expect(labTypeDiv.find('h4').text().trim()).toEqual('labs.lab.type')
+      expect(
+        labTypeDiv
+          .find('h4')
+          .text()
+          .trim(),
+      ).toEqual('labs.lab.type')
 
-      expect(labTypeDiv.find('h5').text().trim()).toEqual(expectedLab.type)
+      expect(
+        labTypeDiv
+          .find('h5')
+          .text()
+          .trim(),
+      ).toEqual(expectedLab.type)
     })
 
     it('should display the requested on date', async () => {
       const expectedLab = { ...mockLab, requestedOn: '2020-03-30T04:43:20.102Z' } as Lab
       const wrapper = await setup(expectedLab, [Permissions.ViewLab])
       const requestedOnDiv = wrapper.find('.requested-on')
-      expect(requestedOnDiv.find('h4').text().trim()).toEqual('labs.lab.requestedOn')
+      expect(
+        requestedOnDiv
+          .find('h4')
+          .text()
+          .trim(),
+      ).toEqual('labs.lab.requestedOn')
 
-      expect(requestedOnDiv.find('h5').text().trim()).toEqual(
-        format(new Date(expectedLab.requestedOn), 'yyyy-MM-dd hh:mm a'),
-      )
+      expect(
+        requestedOnDiv
+          .find('h5')
+          .text()
+          .trim(),
+      ).toEqual(format(new Date(expectedLab.requestedOn), 'yyyy-MM-dd hh:mm a'))
     })
 
     it('should not display the completed date if the lab is not completed', async () => {
@@ -157,7 +185,12 @@ describe('View Labs', () => {
         const wrapper = await setup(expectedLab, [Permissions.ViewLab])
         const labStatusDiv = wrapper.find('.lab-status')
         const badge = labStatusDiv.find(Badge)
-        expect(labStatusDiv.find('h4').text().trim()).toEqual('labs.lab.status')
+        expect(
+          labStatusDiv
+            .find('h4')
+            .text()
+            .trim(),
+        ).toEqual('labs.lab.status')
 
         expect(badge.prop('color')).toEqual('warning')
         expect(badge.text().trim()).toEqual(expectedLab.status)
@@ -173,11 +206,26 @@ describe('View Labs', () => {
         ])
 
         const buttons = wrapper.find(Button)
-        expect(buttons.at(0).text().trim()).toEqual('actions.update')
+        expect(
+          buttons
+            .at(0)
+            .text()
+            .trim(),
+        ).toEqual('actions.update')
 
-        expect(buttons.at(1).text().trim()).toEqual('labs.requests.complete')
+        expect(
+          buttons
+            .at(1)
+            .text()
+            .trim(),
+        ).toEqual('labs.requests.complete')
 
-        expect(buttons.at(2).text().trim()).toEqual('labs.requests.cancel')
+        expect(
+          buttons
+            .at(2)
+            .text()
+            .trim(),
+        ).toEqual('labs.requests.cancel')
       })
     })
 
@@ -188,7 +236,12 @@ describe('View Labs', () => {
 
         const labStatusDiv = wrapper.find('.lab-status')
         const badge = labStatusDiv.find(Badge)
-        expect(labStatusDiv.find('h4').text().trim()).toEqual('labs.lab.status')
+        expect(
+          labStatusDiv
+            .find('h4')
+            .text()
+            .trim(),
+        ).toEqual('labs.lab.status')
 
         expect(badge.prop('color')).toEqual('danger')
         expect(badge.text().trim()).toEqual(expectedLab.status)
@@ -203,11 +256,19 @@ describe('View Labs', () => {
         const wrapper = await setup(expectedLab, [Permissions.ViewLab])
         const canceledOnDiv = wrapper.find('.canceled-on')
 
-        expect(canceledOnDiv.find('h4').text().trim()).toEqual('labs.lab.canceledOn')
+        expect(
+          canceledOnDiv
+            .find('h4')
+            .text()
+            .trim(),
+        ).toEqual('labs.lab.canceledOn')
 
-        expect(canceledOnDiv.find('h5').text().trim()).toEqual(
-          format(new Date(expectedLab.canceledOn as string), 'yyyy-MM-dd hh:mm a'),
-        )
+        expect(
+          canceledOnDiv
+            .find('h5')
+            .text()
+            .trim(),
+        ).toEqual(format(new Date(expectedLab.canceledOn as string), 'yyyy-MM-dd hh:mm a'))
       })
 
       it('should not display update, complete, and cancel button if the lab is canceled', async () => {
@@ -239,7 +300,12 @@ describe('View Labs', () => {
         const wrapper = await setup(expectedLab, [Permissions.ViewLab])
         const labStatusDiv = wrapper.find('.lab-status')
         const badge = labStatusDiv.find(Badge)
-        expect(labStatusDiv.find('h4').text().trim()).toEqual('labs.lab.status')
+        expect(
+          labStatusDiv
+            .find('h4')
+            .text()
+            .trim(),
+        ).toEqual('labs.lab.status')
 
         expect(badge.prop('color')).toEqual('primary')
         expect(badge.text().trim()).toEqual(expectedLab.status)
@@ -254,11 +320,19 @@ describe('View Labs', () => {
         const wrapper = await setup(expectedLab, [Permissions.ViewLab])
         const completedOnDiv = wrapper.find('.completed-on')
 
-        expect(completedOnDiv.find('h4').text().trim()).toEqual('labs.lab.completedOn')
+        expect(
+          completedOnDiv
+            .find('h4')
+            .text()
+            .trim(),
+        ).toEqual('labs.lab.completedOn')
 
-        expect(completedOnDiv.find('h5').text().trim()).toEqual(
-          format(new Date(expectedLab.completedOn as string), 'yyyy-MM-dd hh:mm a'),
-        )
+        expect(
+          completedOnDiv
+            .find('h5')
+            .text()
+            .trim(),
+        ).toEqual(format(new Date(expectedLab.completedOn as string), 'yyyy-MM-dd hh:mm a'))
       })
 
       it('should not display update, complete, and cancel buttons if the lab is completed', async () => {
