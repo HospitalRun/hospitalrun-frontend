@@ -35,12 +35,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(1)
-          .text()
-          .trim(),
-      ).toEqual('dashboard.label')
+      expect(listItems.at(1).text().trim()).toEqual('dashboard.label')
     })
 
     it('should be active when the current path is /', () => {
@@ -71,12 +66,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(2)
-          .text()
-          .trim(),
-      ).toEqual('patients.label')
+      expect(listItems.at(2).text().trim()).toEqual('patients.label')
     })
 
     it('should render the new_patient link', () => {
@@ -84,12 +74,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(3)
-          .text()
-          .trim(),
-      ).toEqual('patients.newPatient')
+      expect(listItems.at(3).text().trim()).toEqual('patients.newPatient')
     })
 
     it('should render the patients_list link', () => {
@@ -97,12 +82,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(4)
-          .text()
-          .trim(),
-      ).toEqual('patients.patientsList')
+      expect(listItems.at(4).text().trim()).toEqual('patients.patientsList')
     })
 
     it('main patients link should be active when the current path is /patients', () => {
@@ -175,12 +155,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(3)
-          .text()
-          .trim(),
-      ).toEqual('scheduling.label')
+      expect(listItems.at(3).text().trim()).toEqual('scheduling.label')
     })
 
     it('should render the new appointment link', () => {
@@ -188,12 +163,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(4)
-          .text()
-          .trim(),
-      ).toEqual('scheduling.appointments.new')
+      expect(listItems.at(4).text().trim()).toEqual('scheduling.appointments.new')
     })
 
     it('should render the appointments schedule link', () => {
@@ -201,12 +171,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(5)
-          .text()
-          .trim(),
-      ).toEqual('scheduling.appointments.schedule')
+      expect(listItems.at(5).text().trim()).toEqual('scheduling.appointments.schedule')
     })
 
     it('main scheduling link should be active when the current path is /appointments', () => {
@@ -279,12 +244,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(4)
-          .text()
-          .trim(),
-      ).toEqual('labs.label')
+      expect(listItems.at(4).text().trim()).toEqual('labs.label')
     })
 
     it('should render the new labs request link', () => {
@@ -292,12 +252,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(5)
-          .text()
-          .trim(),
-      ).toEqual('labs.requests.new')
+      expect(listItems.at(5).text().trim()).toEqual('labs.requests.new')
     })
 
     it('should render the labs list link', () => {
@@ -305,12 +260,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(
-        listItems
-          .at(6)
-          .text()
-          .trim(),
-      ).toEqual('labs.requests.label')
+      expect(listItems.at(6).text().trim()).toEqual('labs.requests.label')
     })
 
     it('main labs link should be active when the current path is /labs', () => {
