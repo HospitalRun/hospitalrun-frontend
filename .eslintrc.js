@@ -7,13 +7,11 @@ module.exports = {
   },
   extends: [
     'airbnb',
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
-    'plugin:prettier/recommended',
-    'eslint-config-prettier',
+    'prettier/@typescript-eslint'
   ],
   globals: {
     Atomics: 'readonly',
@@ -37,7 +35,7 @@ module.exports = {
     '@typescript-eslint/member-delimiter-style': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { "ignoreRestSiblings": true }],
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     '@typescript-eslint/unified-signatures': 'error',
     '@typescript-eslint/no-inferrable-types': ['error', { ignoreParameters: true }],
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
@@ -53,7 +51,6 @@ module.exports = {
     'no-nested-ternary': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': ['error', 'never'],
-    'newline-per-chained-call': 'off',
     curly: ['error', 'all'],
   },
 }
