@@ -40,7 +40,6 @@ describe('Add Related Person Modal', () => {
     })
     beforeEach(() => {
       wrapper = mount(
-        // ADD PROVIDER
         <Provider store={store}>
           <AddRelatedPersonModal
             show
