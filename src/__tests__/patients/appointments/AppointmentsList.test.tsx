@@ -47,11 +47,6 @@ const setup = (patient = expectedPatient, appointments = expectedAppointments) =
 
 describe('AppointmentsList', () => {
   describe('add new appointment button', () => {
-    beforeEach(() => {
-      jest.resetAllMocks()
-      jest.spyOn(PatientRepository, 'saveOrUpdate')
-    })
-
     it('should render a new appointment button', () => {
       const wrapper = setup()
 
