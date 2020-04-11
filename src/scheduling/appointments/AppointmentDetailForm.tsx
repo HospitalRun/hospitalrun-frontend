@@ -35,8 +35,6 @@ const AppointmentDetailForm = (props: Props) => {
     onFieldChange && onFieldChange(fieldName, event.target.value)
 
   const onDateChange = (date: Date, fieldName: string) => {
-    console.log(date)
-
     if (setErrorMessageState && date === null) {
       setErrorMessageState({
         ...errorMessageState,
@@ -62,7 +60,6 @@ const AppointmentDetailForm = (props: Props) => {
 
   return (
     <>
-      {/* {errorMessage && <Alert color="danger" message={errorMessage} />} */}
       <div className="row">
         <div className="col">
           <div className="form-group">

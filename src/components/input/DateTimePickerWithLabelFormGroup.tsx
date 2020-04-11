@@ -7,7 +7,7 @@ interface Props {
   value: Date | undefined
   isEditable?: boolean
   onChange?: (date: Date) => void
-  feedback?: string | undefined
+  feedback?: string
 }
 
 const DateTimePickerWithLabelFormGroup = (props: Props) => {

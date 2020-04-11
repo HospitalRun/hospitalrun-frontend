@@ -45,7 +45,7 @@ const TypeaheadWithFeebBack = (props: Props) => {
     selectedValues.push(value)
   }
 
-  return feedback ? (
+  return (
     <Form.Group>
       <AsyncTypeahead
         id={id}
@@ -59,24 +59,10 @@ const TypeaheadWithFeebBack = (props: Props) => {
         renderMenuItemChildren={renderMenuItemChildren}
         defaultSelected={selectedValues}
         disabled={disabled}
-        isInvalid
+        isInvalid={!!feedback}
       />
-      <span className="text-danger small">{feedback}</span>
+      {feedback && <span className="text-danger small">{feedback}</span>}
     </Form.Group>
-  ) : (
-    <AsyncTypeahead
-      id={id}
-      labelKey={searchAccessor}
-      options={options}
-      placeholder={placeholder}
-      isLoading={isLoading}
-      minLength={minLength}
-      onSearch={search}
-      onChange={onChange}
-      renderMenuItemChildren={renderMenuItemChildren}
-      defaultSelected={selectedValues}
-      disabled={disabled}
-    />
   )
 }
 
