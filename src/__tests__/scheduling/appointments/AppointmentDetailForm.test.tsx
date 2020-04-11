@@ -12,17 +12,16 @@ import { act } from '@testing-library/react'
 describe('AppointmentDetailForm', () => {
   describe('layout - editable', () => {
     let wrapper: ReactWrapper
-    const expectedAppointment =
-      {
-        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-        endDateTime: addMinutes(
-          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-          60,
-        ).toISOString(),
-        reason: 'reason',
-        location: 'location',
-        type: 'emergency',
-      } as Appointment
+    const expectedAppointment = {
+      startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+      endDateTime: addMinutes(
+        roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+        60,
+      ).toISOString(),
+      reason: 'reason',
+      location: 'location',
+      type: 'emergency',
+    } as Appointment
 
     beforeEach(() => {
       wrapper = mount(
@@ -94,14 +93,13 @@ describe('AppointmentDetailForm', () => {
 
   describe('layout - editable but patient prop passed (Edit Appointment functionality)', () => {
     it('should disable patient typeahead if patient prop passed', () => {
-      const expectedAppointment =
-        {
-          startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-          endDateTime: addMinutes(
-            roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-            60,
-          ).toISOString(),
-        } as Appointment
+      const expectedAppointment = {
+        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+        endDateTime: addMinutes(
+          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+          60,
+        ).toISOString(),
+      } as Appointment
 
       const wrapper = mount(
         <AppointmentDetailForm
@@ -118,21 +116,19 @@ describe('AppointmentDetailForm', () => {
 
   describe('layout - not editable', () => {
     let wrapper: ReactWrapper
-    const expectedAppointment =
-      {
-        patientId: 'patientId',
-        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-        endDateTime: addMinutes(
-          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-          60,
-        ).toISOString(),
-      } as Appointment
+    const expectedAppointment = {
+      patientId: 'patientId',
+      startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+      endDateTime: addMinutes(
+        roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+        60,
+      ).toISOString(),
+    } as Appointment
 
-    const expectedPatient =
-      {
-        id: '123',
-        fullName: 'full name',
-      } as Patient
+    const expectedPatient = {
+      id: '123',
+      fullName: 'full name',
+    } as Patient
 
     beforeEach(() => {
       wrapper = mount(
@@ -165,14 +161,13 @@ describe('AppointmentDetailForm', () => {
 
   describe('change handlers', () => {
     let wrapper: ReactWrapper
-    const appointment =
-      {
-        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-        endDateTime: addMinutes(
-          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-          30,
-        ).toISOString(),
-      } as Appointment
+    const appointment = {
+      startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+      endDateTime: addMinutes(
+        roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+        30,
+      ).toISOString(),
+    } as Appointment
     const onFieldChange = jest.fn()
 
     beforeEach(() => {

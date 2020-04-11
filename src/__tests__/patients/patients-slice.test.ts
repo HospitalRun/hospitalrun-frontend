@@ -68,12 +68,11 @@ describe('patients slice', () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      const expectedPatients =
-        [
-          {
-            id: '1234',
-          },
-        ] as Patient[]
+      const expectedPatients = [
+        {
+          id: '1234',
+        },
+      ] as Patient[]
 
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.search.mockResolvedValue(expectedPatients)

@@ -29,24 +29,23 @@ describe('Error handling', () => {
 })
 
 describe('General Information, without isEditable', () => {
-  const patient =
-    {
-      id: '123',
-      prefix: 'prefix',
-      givenName: 'givenName',
-      familyName: 'familyName',
-      suffix: 'suffix',
-      sex: 'male',
-      type: 'charity',
-      occupation: 'occupation',
-      preferredLanguage: 'preferredLanguage',
-      phoneNumber: 'phoneNumber',
-      email: 'email@email.com',
-      address: 'address',
-      code: 'P00001',
-      dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
-      isApproximateDateOfBirth: false,
-    } as Patient
+  const patient = {
+    id: '123',
+    prefix: 'prefix',
+    givenName: 'givenName',
+    familyName: 'familyName',
+    suffix: 'suffix',
+    sex: 'male',
+    type: 'charity',
+    occupation: 'occupation',
+    preferredLanguage: 'preferredLanguage',
+    phoneNumber: 'phoneNumber',
+    email: 'email@email.com',
+    address: 'address',
+    code: 'P00001',
+    dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
+    isApproximateDateOfBirth: false,
+  } as Patient
 
   let wrapper: ReactWrapper
   let history = createMemoryHistory()
@@ -185,24 +184,23 @@ describe('General Information, without isEditable', () => {
 })
 
 describe('General Information, isEditable', () => {
-  const patient =
-    {
-      id: '123',
-      prefix: 'prefix',
-      givenName: 'givenName',
-      familyName: 'familyName',
-      suffix: 'suffix',
-      sex: 'male',
-      type: 'charity',
-      occupation: 'occupation',
-      preferredLanguage: 'preferredLanguage',
-      phoneNumber: 'phoneNumber',
-      email: 'email@email.com',
-      address: 'address',
-      code: 'P00001',
-      dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
-      isApproximateDateOfBirth: false,
-    } as Patient
+  const patient = {
+    id: '123',
+    prefix: 'prefix',
+    givenName: 'givenName',
+    familyName: 'familyName',
+    suffix: 'suffix',
+    sex: 'male',
+    type: 'charity',
+    occupation: 'occupation',
+    preferredLanguage: 'preferredLanguage',
+    phoneNumber: 'phoneNumber',
+    email: 'email@email.com',
+    address: 'address',
+    code: 'P00001',
+    dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
+    isApproximateDateOfBirth: false,
+  } as Patient
 
   let wrapper: ReactWrapper
   let history = createMemoryHistory()

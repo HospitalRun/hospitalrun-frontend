@@ -21,11 +21,10 @@ import PatientRepository from '../../../clients/db/PatientRepository'
 const mockStore = configureMockStore([thunk])
 
 describe('New Patient', () => {
-  const patient =
-    {
-      givenName: 'first',
-      fullName: 'first',
-    } as Patient
+  const patient = {
+    givenName: 'first',
+    fullName: 'first',
+  } as Patient
 
   let history: any
   let store: MockStore

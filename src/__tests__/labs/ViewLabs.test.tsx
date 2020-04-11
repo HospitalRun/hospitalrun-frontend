@@ -92,14 +92,13 @@ describe('View Labs', () => {
   describe('table', () => {
     let wrapper: ReactWrapper
     let history: any
-    const expectedLab =
-      {
-        id: '1234',
-        type: 'lab type',
-        patientId: 'patientId',
-        status: 'requested',
-        requestedOn: '2020-03-30T04:43:20.102Z',
-      } as Lab
+    const expectedLab = {
+      id: '1234',
+      type: 'lab type',
+      patientId: 'patientId',
+      status: 'requested',
+      requestedOn: '2020-03-30T04:43:20.102Z',
+    } as Lab
 
     beforeEach(async () => {
       const store = mockStore({

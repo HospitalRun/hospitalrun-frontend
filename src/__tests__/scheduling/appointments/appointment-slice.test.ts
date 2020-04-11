@@ -53,15 +53,14 @@ describe('appointment slice', () => {
     })
 
     it('should handle the UPDATE_APPOINTMENT_SUCCESS action', () => {
-      const expectedAppointment =
-        {
-          patientId: '123',
-          startDateTime: new Date().toISOString(),
-          endDateTime: new Date().toISOString(),
-          location: 'location',
-          type: 'type',
-          reason: 'reason',
-        } as Appointment
+      const expectedAppointment = {
+        patientId: '123',
+        startDateTime: new Date().toISOString(),
+        endDateTime: new Date().toISOString(),
+        location: 'location',
+        type: 'type',
+        reason: 'reason',
+      } as Appointment
       const appointmentStore = appointment(undefined, {
         type: updateAppointmentSuccess.type,
         payload: {
@@ -125,15 +124,14 @@ describe('appointment slice', () => {
       mocked(AppointmentRepository, true).save.mockResolvedValue({ id: '123' } as Appointment)
       const dispatch = jest.fn()
       const getState = jest.fn()
-      const expectedAppointment =
-        {
-          patientId: '123',
-          startDateTime: new Date().toISOString(),
-          endDateTime: new Date().toISOString(),
-          location: 'location',
-          type: 'type',
-          reason: 'reason',
-        } as Appointment
+      const expectedAppointment = {
+        patientId: '123',
+        startDateTime: new Date().toISOString(),
+        endDateTime: new Date().toISOString(),
+        location: 'location',
+        type: 'type',
+        reason: 'reason',
+      } as Appointment
 
       await createAppointment(expectedAppointment)(dispatch, getState, null)
 
@@ -146,15 +144,14 @@ describe('appointment slice', () => {
       const appointmentRepositorySaveSpy = jest.spyOn(AppointmentRepository, 'save')
       mocked(AppointmentRepository, true).save.mockResolvedValue({ id: '123' } as Appointment)
 
-      const expectedAppointment =
-        {
-          patientId: '123',
-          startDateTime: new Date().toISOString(),
-          endDateTime: new Date().toISOString(),
-          location: 'location',
-          type: 'type',
-          reason: 'reason',
-        } as Appointment
+      const expectedAppointment = {
+        patientId: '123',
+        startDateTime: new Date().toISOString(),
+        endDateTime: new Date().toISOString(),
+        location: 'location',
+        type: 'type',
+        reason: 'reason',
+      } as Appointment
 
       await createAppointment(expectedAppointment)(dispatch, getState, null)
 
@@ -172,15 +169,14 @@ describe('appointment slice', () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      const expectedAppointment =
-        {
-          patientId: '123',
-          startDateTime: new Date().toISOString(),
-          endDateTime: new Date().toISOString(),
-          location: 'location',
-          type: 'type',
-          reason: 'reason',
-        } as Appointment
+      const expectedAppointment = {
+        patientId: '123',
+        startDateTime: new Date().toISOString(),
+        endDateTime: new Date().toISOString(),
+        location: 'location',
+        type: 'type',
+        reason: 'reason',
+      } as Appointment
 
       await createAppointment(expectedAppointment, onSuccessSpy)(dispatch, getState, null)
 
@@ -202,11 +198,10 @@ describe('appointment slice', () => {
       reason: 'reason',
     }
 
-    const expectedPatient: Patient =
-      {
-        id: '123',
-        fullName: 'expected full name',
-      } as Patient
+    const expectedPatient: Patient = {
+      id: '123',
+      fullName: 'expected full name',
+    } as Patient
 
     beforeEach(() => {
       jest.resetAllMocks()

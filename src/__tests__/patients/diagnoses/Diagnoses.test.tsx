@@ -17,13 +17,12 @@ import PatientRepository from 'clients/db/PatientRepository'
 import AddDiagnosisModal from 'patients/diagnoses/AddDiagnosisModal'
 import * as patientSlice from '../../../patients/patient-slice'
 
-const expectedPatient =
-  {
-    id: '123',
-    diagnoses: [
-      { id: '123', name: 'diagnosis1', diagnosisDate: new Date().toISOString() } as Diagnosis,
-    ],
-  } as Patient
+const expectedPatient = {
+  id: '123',
+  diagnoses: [
+    { id: '123', name: 'diagnosis1', diagnosisDate: new Date().toISOString() } as Diagnosis,
+  ],
+} as Patient
 
 const mockStore = configureMockStore([thunk])
 const history = createMemoryHistory()
@@ -78,16 +77,14 @@ describe('Diagnoses', () => {
     })
 
     it('should update the patient with the new diagnosis when the save button is clicked', async () => {
-      const expectedDiagnosis =
-        {
-          name: 'name',
-          diagnosisDate: new Date().toISOString(),
-        } as Diagnosis
-      const expectedUpdatedPatient =
-        {
-          ...expectedPatient,
-          diagnoses: [...(expectedPatient.diagnoses as any), expectedDiagnosis],
-        } as Patient
+      const expectedDiagnosis = {
+        name: 'name',
+        diagnosisDate: new Date().toISOString(),
+      } as Diagnosis
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        diagnoses: [...(expectedPatient.diagnoses as any), expectedDiagnosis],
+      } as Patient
 
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
@@ -110,16 +107,14 @@ describe('Diagnoses', () => {
       jest.spyOn(components, 'Toast')
       const mockedComponents = mocked(components, true)
 
-      const expectedDiagnosis =
-        {
-          name: 'name',
-          diagnosisDate: new Date().toISOString(),
-        } as Diagnosis
-      const expectedUpdatedPatient =
-        {
-          ...expectedPatient,
-          diagnoses: [...(expectedPatient.diagnoses as any), expectedDiagnosis],
-        } as Patient
+      const expectedDiagnosis = {
+        name: 'name',
+        diagnosisDate: new Date().toISOString(),
+      } as Diagnosis
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        diagnoses: [...(expectedPatient.diagnoses as any), expectedDiagnosis],
+      } as Patient
 
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)

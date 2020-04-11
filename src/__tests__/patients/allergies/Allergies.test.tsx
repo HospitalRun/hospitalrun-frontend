@@ -19,15 +19,14 @@ import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = configureMockStore([thunk])
 const history = createMemoryHistory()
-const expectedPatient =
-  {
-    id: '123',
-    rev: '123',
-    allergies: [
-      { id: '1', name: 'allergy1' },
-      { id: '2', name: 'allergy2' },
-    ],
-  } as Patient
+const expectedPatient = {
+  id: '123',
+  rev: '123',
+  allergies: [
+    { id: '1', name: 'allergy1' },
+    { id: '2', name: 'allergy2' },
+  ],
+} as Patient
 
 let user: any
 let store: any
@@ -84,11 +83,10 @@ describe('Allergies', () => {
 
     it('should update the patient with the new allergy when the save button is clicked', async () => {
       const expectedAllergy = { name: 'name' } as Allergy
-      const expectedUpdatedPatient =
-        {
-          ...expectedPatient,
-          allergies: [...(expectedPatient.allergies as any), expectedAllergy],
-        } as Patient
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        allergies: [...(expectedPatient.allergies as any), expectedAllergy],
+      } as Patient
 
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
@@ -112,11 +110,10 @@ describe('Allergies', () => {
       const mockedComponents = mocked(components, true)
 
       const expectedAllergy = { name: 'name' } as Allergy
-      const expectedUpdatedPatient =
-        {
-          ...expectedPatient,
-          allergies: [...(expectedPatient.allergies as any), expectedAllergy],
-        } as Patient
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        allergies: [...(expectedPatient.allergies as any), expectedAllergy],
+      } as Patient
 
       const mockedPatientRepository = mocked(PatientRepository, true)
       mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)

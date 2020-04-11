@@ -82,15 +82,14 @@ describe('HospitalRun', () => {
       it('should render the edit patient screen when /patients/edit/:id is accessed', () => {
         jest.spyOn(PatientRepository, 'find')
         const mockedPatientRepository = mocked(PatientRepository, true)
-        const patient =
-          {
-            id: '123',
-            prefix: 'test',
-            givenName: 'test',
-            familyName: 'test',
-            suffix: 'test',
-            code: 'P00001',
-          } as Patient
+        const patient = {
+          id: '123',
+          prefix: 'test',
+          givenName: 'test',
+          familyName: 'test',
+          suffix: 'test',
+          code: 'P00001',
+        } as Patient
 
         mockedPatientRepository.find.mockResolvedValue(patient)
 
@@ -165,15 +164,14 @@ describe('HospitalRun', () => {
       it('should render the view patient screen when /patients/:id is accessed', async () => {
         jest.spyOn(PatientRepository, 'find')
         const mockedPatientRepository = mocked(PatientRepository, true)
-        const patient =
-          {
-            id: '123',
-            prefix: 'test',
-            givenName: 'test',
-            familyName: 'test',
-            suffix: 'test',
-            code: 'P00001',
-          } as Patient
+        const patient = {
+          id: '123',
+          prefix: 'test',
+          givenName: 'test',
+          familyName: 'test',
+          suffix: 'test',
+          code: 'P00001',
+        } as Patient
 
         mockedPatientRepository.find.mockResolvedValue(patient)
 
@@ -330,16 +328,14 @@ describe('HospitalRun', () => {
         jest.spyOn(AppointmentRepository, 'find')
         const mockedAppointmentRepository = mocked(AppointmentRepository, true)
         const mockedPatientRepository = mocked(PatientRepository, true)
-        const appointment =
-          {
-            id: '123',
-            patientId: '456',
-          } as Appointment
+        const appointment = {
+          id: '123',
+          patientId: '456',
+        } as Appointment
 
-        const patient =
-          {
-            id: '456',
-          } as Patient
+        const patient = {
+          id: '456',
+        } as Patient
 
         mockedAppointmentRepository.find.mockResolvedValue(appointment)
         mockedPatientRepository.find.mockResolvedValue(patient)

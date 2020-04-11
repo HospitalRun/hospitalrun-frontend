@@ -25,23 +25,22 @@ import Permissions from '../../../model/Permissions'
 const mockStore = configureMockStore([thunk])
 
 describe('ViewPatient', () => {
-  const patient =
-    {
-      id: '123',
-      prefix: 'prefix',
-      givenName: 'givenName',
-      familyName: 'familyName',
-      suffix: 'suffix',
-      sex: 'male',
-      type: 'charity',
-      occupation: 'occupation',
-      preferredLanguage: 'preferredLanguage',
-      phoneNumber: 'phoneNumber',
-      email: 'email@email.com',
-      address: 'address',
-      code: 'P00001',
-      dateOfBirth: new Date().toISOString(),
-    } as Patient
+  const patient = {
+    id: '123',
+    prefix: 'prefix',
+    givenName: 'givenName',
+    familyName: 'familyName',
+    suffix: 'suffix',
+    sex: 'male',
+    type: 'charity',
+    occupation: 'occupation',
+    preferredLanguage: 'preferredLanguage',
+    phoneNumber: 'phoneNumber',
+    email: 'email@email.com',
+    address: 'address',
+    code: 'P00001',
+    dateOfBirth: new Date().toISOString(),
+  } as Patient
 
   let history: any
   let store: MockStore

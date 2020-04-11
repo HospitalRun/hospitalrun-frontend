@@ -37,11 +37,10 @@ describe('Related Persons Tab', () => {
       mockedComponents = mocked(components, true)
       history = createMemoryHistory()
 
-      patient =
-        {
-          id: '123',
-          rev: '123',
-        } as Patient
+      patient = {
+        id: '123',
+        rev: '123',
+      } as Patient
 
       user = {
         permissions: [Permissions.WritePatients, Permissions.ReadPatients],
@@ -177,19 +176,17 @@ describe('Related Persons Tab', () => {
   })
 
   describe('Table', () => {
-    const patient =
-      {
-        id: '123',
-        rev: '123',
-        relatedPersons: [{ patientId: '123001', type: 'type' }],
-      } as Patient
-    const expectedRelatedPerson =
-      {
-        givenName: 'test',
-        familyName: 'test',
-        fullName: 'test test',
-        id: '123001',
-      } as Patient
+    const patient = {
+      id: '123',
+      rev: '123',
+      relatedPersons: [{ patientId: '123001', type: 'type' }],
+    } as Patient
+    const expectedRelatedPerson = {
+      givenName: 'test',
+      familyName: 'test',
+      fullName: 'test test',
+      id: '123001',
+    } as Patient
 
     const user = {
       permissions: [Permissions.WritePatients, Permissions.ReadPatients],
@@ -267,11 +264,10 @@ describe('Related Persons Tab', () => {
   })
 
   describe('EmptyList', () => {
-    const patient =
-      {
-        id: '123',
-        rev: '123',
-      } as Patient
+    const patient = {
+      id: '123',
+      rev: '123',
+    } as Patient
 
     const user = {
       permissions: [Permissions.WritePatients, Permissions.ReadPatients],

@@ -22,38 +22,33 @@ import PatientRepository from '../../../../clients/db/PatientRepository'
 const mockStore = configureMockStore([thunk])
 
 describe('Edit Appointment', () => {
-  const appointment =
-    {
-      id: '123',
-      patientId: '456',
-      startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-      endDateTime: addMinutes(
-        roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-        60,
-      ).toISOString(),
-      location: 'location',
-      reason: 'reason',
-      type: 'type',
-    } as Appointment
+  const appointment = {
+    id: '123',
+    patientId: '456',
+    startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+    endDateTime: addMinutes(roundToNearestMinutes(new Date(), { nearestTo: 15 }), 60).toISOString(),
+    location: 'location',
+    reason: 'reason',
+    type: 'type',
+  } as Appointment
 
-  const patient =
-    {
-      id: '456',
-      prefix: 'prefix',
-      givenName: 'givenName',
-      familyName: 'familyName',
-      suffix: 'suffix',
-      fullName: 'givenName familyName suffix',
-      sex: 'male',
-      type: 'charity',
-      occupation: 'occupation',
-      preferredLanguage: 'preferredLanguage',
-      phoneNumber: 'phoneNumber',
-      email: 'email@email.com',
-      address: 'address',
-      code: 'P00001',
-      dateOfBirth: new Date().toISOString(),
-    } as Patient
+  const patient = {
+    id: '456',
+    prefix: 'prefix',
+    givenName: 'givenName',
+    familyName: 'familyName',
+    suffix: 'suffix',
+    fullName: 'givenName familyName suffix',
+    sex: 'male',
+    type: 'charity',
+    occupation: 'occupation',
+    preferredLanguage: 'preferredLanguage',
+    phoneNumber: 'phoneNumber',
+    email: 'email@email.com',
+    address: 'address',
+    code: 'P00001',
+    dateOfBirth: new Date().toISOString(),
+  } as Patient
 
   let history: any
   let store: MockStore
