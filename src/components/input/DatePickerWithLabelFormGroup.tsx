@@ -8,10 +8,12 @@ interface Props {
   isEditable?: boolean
   onChange?: (date: Date) => void
   isRequired?: boolean
+  feedback?: string
+  isInvalid?: boolean
 }
 
 const DatePickerWithLabelFormGroup = (props: Props) => {
-  const { onChange, label, name, isEditable, value, isRequired } = props
+  const { onChange, label, name, isEditable, value, isRequired, feedback, isInvalid } = props
   const id = `${name}DatePicker`
   return (
     <div className="form-group">
@@ -24,6 +26,8 @@ const DatePickerWithLabelFormGroup = (props: Props) => {
         timeIntervals={30}
         withPortal={false}
         disabled={!isEditable}
+        feedback={feedback}
+        isInvalid={isInvalid}
         onChange={(inputDate) => {
           if (onChange) {
             onChange(inputDate)

@@ -64,10 +64,10 @@ export default {
       private: 'Particular',
     },
     errors: {
-      patientGivenNameRequiredOnCreate: 'Nome do Paciente é necessário.',
-      // todo Portuguese translation
-      patientGivenNameRequiredOnUpdate: '',
-      patientGivenNameFeedback: '',
+      createPatientError: 'Não foi possível criar um paciente.',
+      updatePatientError: 'Não foi possível atualizar o paciente',
+      patientGivenNameFeedback: 'Nome do Paciente é necessário.',
+      patientDateOfBirthFeedback: 'Data de Nascimento não pode ser maior que hoje.',
     },
   },
 }
