@@ -10,6 +10,7 @@ import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import * as components from '@hospitalrun/components'
 
+import { addDays, endOfToday } from 'date-fns'
 import NewPatient from '../../../patients/new/NewPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import Patient from '../../../model/Patient'
@@ -95,7 +96,45 @@ describe('New Patient', () => {
 
     wrapper.update()
     expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
-      'patient.errors.patientGivenNameRequiredOnCreate',
+      'patient.errors.createPatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').givenName).toMatch(
+      'patient.errors.patientGivenNameFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
+
+  it('should pass invalid date of birth error when input date is grater than today on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')(
+        'dateOfBirth',
+        addDays(endOfToday(), 10).toISOString(),
+      )
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(components.Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    await act(async () => {
+      await onClick()
+    })
+
+    wrapper.update()
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.createPatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').dateOfBirth).toMatch(
+      'patient.errors.patientDateOfBirthFeedback',
     )
     expect(wrapper.update.isInvalid === true)
   })
