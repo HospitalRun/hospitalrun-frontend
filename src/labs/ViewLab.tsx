@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router'
 import format from 'date-fns/format'
-import LabRepository from 'clients/db/LabRepository'
 import Lab from 'model/Lab'
 import Patient from 'model/Patient'
-import PatientRepository from 'clients/db/PatientRepository'
 import useTitle from 'page-header/useTitle'
 import { useTranslation } from 'react-i18next'
 import { Row, Column, Badge, Button, Alert } from '@hospitalrun/components'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
 import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Permissions from 'model/Permissions'
 import { RootState } from '../store'
+import { cancelLab, completeLab, updateLab, fetchLab } from './lab-slice'
 
 const getTitle = (patient: Patient | undefined, lab: Lab | undefined) =>
   patient && lab ? `${lab.type} for ${patient.fullName}` : ''
@@ -21,94 +20,82 @@ const ViewLab = () => {
   const { id } = useParams()
   const { t } = useTranslation()
   const history = useHistory()
+  const dispatch = useDispatch()
   const { permissions } = useSelector((state: RootState) => state.user)
-  const [patient, setPatient] = useState<Patient | undefined>()
-  const [lab, setLab] = useState<Lab | undefined>()
-  const [isEditable, setIsEditable] = useState<boolean>(true)
-  const [isResultInvalid, setIsResultInvalid] = useState<boolean>(false)
-  const [resultFeedback, setResultFeedback] = useState()
-  const [errorMessage, setErrorMessage] = useState()
+  const { lab, patient, status, error } = useSelector((state: RootState) => state.lab)
 
-  useTitle(getTitle(patient, lab))
+  const [labToView, setLabToView] = useState<Lab>()
+  const [isEditable, setIsEditable] = useState<boolean>(true)
+
+  useTitle(getTitle(patient, labToView))
 
   const breadcrumbs = [
     {
       i18nKey: 'labs.requests.view',
-      location: `/labs/${lab?.id}`,
+      location: `/labs/${labToView?.id}`,
     },
   ]
   useAddBreadcrumbs(breadcrumbs)
 
   useEffect(() => {
-    const fetchLab = async () => {
-      if (id) {
-        const fetchedLab = await LabRepository.find(id)
-        setLab(fetchedLab)
-        setIsEditable(fetchedLab.status === 'requested')
-      }
+    if (id) {
+      dispatch(fetchLab(id))
     }
-    fetchLab()
-  }, [id])
+  }, [id, dispatch])
 
   useEffect(() => {
-    const fetchPatient = async () => {
-      if (lab) {
-        const fetchedPatient = await PatientRepository.find(lab.patientId)
-        setPatient(fetchedPatient)
-      }
+    if (lab) {
+      setLabToView({ ...lab })
+      setIsEditable(lab.status === 'requested')
     }
-
-    fetchPatient()
+    console.log('lab change')
+    console.log(lab)
   }, [lab])
 
   const onResultChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const result = event.currentTarget.value
-    const newLab = lab as Lab
-    setLab({ ...newLab, result })
+    const newLab = labToView as Lab
+    setLabToView({ ...newLab, result })
   }
 
   const onNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const notes = event.currentTarget.value
-    const newLab = lab as Lab
-    setLab({ ...newLab, notes })
+    const newLab = labToView as Lab
+    setLabToView({ ...newLab, notes })
   }
 
   const onUpdate = async () => {
-    await LabRepository.saveOrUpdate(lab as Lab)
-    history.push('/labs')
+    const onSuccess = () => {
+      history.push('/labs')
+    }
+    if (labToView) {
+      dispatch(updateLab(labToView, onSuccess))
+    }
   }
 
   const onComplete = async () => {
-    const newLab = lab as Lab
-
-    if (!newLab.result) {
-      setIsResultInvalid(true)
-      setResultFeedback(t('labs.requests.error.resultRequiredToComplete'))
-      setErrorMessage(t('labs.requests.error.unableToComplete'))
-      return
+    const onSuccess = () => {
+      history.push('/labs')
     }
 
-    await LabRepository.saveOrUpdate({
-      ...newLab,
-      completedOn: new Date(Date.now().valueOf()).toISOString(),
-      status: 'completed',
-    })
-    history.push('/labs')
+    if (labToView) {
+      dispatch(completeLab(labToView, onSuccess))
+    }
   }
 
   const onCancel = async () => {
-    const newLab = lab as Lab
-    await LabRepository.saveOrUpdate({
-      ...newLab,
-      canceledOn: new Date(Date.now().valueOf()).toISOString(),
-      status: 'canceled',
-    })
-    history.push('/labs')
+    const onSuccess = () => {
+      history.push('/labs')
+    }
+
+    if (labToView) {
+      dispatch(cancelLab(labToView, onSuccess))
+    }
   }
 
   const getButtons = () => {
     const buttons: React.ReactNode[] = []
-    if (lab?.status === 'completed' || lab?.status === 'canceled') {
+    if (labToView?.status === 'completed' || labToView?.status === 'canceled') {
       return buttons
     }
 
@@ -137,34 +124,34 @@ const ViewLab = () => {
     return buttons
   }
 
-  if (lab && patient) {
+  if (labToView && patient) {
     const getBadgeColor = () => {
-      if (lab.status === 'completed') {
+      if (labToView.status === 'completed') {
         return 'primary'
       }
-      if (lab.status === 'canceled') {
+      if (labToView.status === 'canceled') {
         return 'danger'
       }
       return 'warning'
     }
 
     const getCanceledOnOrCompletedOnDate = () => {
-      if (lab.status === 'completed' && lab.completedOn) {
+      if (labToView.status === 'completed' && labToView.completedOn) {
         return (
           <Column>
             <div className="form-group completed-on">
               <h4>{t('labs.lab.completedOn')}</h4>
-              <h5>{format(new Date(lab.completedOn), 'yyyy-MM-dd hh:mm a')}</h5>
+              <h5>{format(new Date(labToView.completedOn), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
         )
       }
-      if (lab.status === 'canceled' && lab.canceledOn) {
+      if (labToView.status === 'canceled' && labToView.canceledOn) {
         return (
           <Column>
             <div className="form-group canceled-on">
               <h4>{t('labs.lab.canceledOn')}</h4>
-              <h5>{format(new Date(lab.canceledOn), 'yyyy-MM-dd hh:mm a')}</h5>
+              <h5>{format(new Date(labToView.canceledOn), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
         )
@@ -174,15 +161,15 @@ const ViewLab = () => {
 
     return (
       <>
-        {isResultInvalid && (
-          <Alert color="danger" title={t('states.error')} message={errorMessage} />
+        {status === 'error' && (
+          <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
         )}
         <Row>
           <Column>
             <div className="form-group lab-status">
               <h4>{t('labs.lab.status')}</h4>
               <Badge color={getBadgeColor()}>
-                <h5>{lab.status}</h5>
+                <h5>{labToView.status}</h5>
               </Badge>
             </div>
           </Column>
@@ -195,13 +182,13 @@ const ViewLab = () => {
           <Column>
             <div className="form-group lab-type">
               <h4>{t('labs.lab.type')}</h4>
-              <h5>{lab.type}</h5>
+              <h5>{labToView.type}</h5>
             </div>
           </Column>
           <Column>
             <div className="form-group requested-on">
               <h4>{t('labs.lab.requestedOn')}</h4>
-              <h5>{format(new Date(lab.requestedOn), 'yyyy-MM-dd hh:mm a')}</h5>
+              <h5>{format(new Date(labToView.requestedOn), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
           {getCanceledOnOrCompletedOnDate()}
@@ -211,16 +198,16 @@ const ViewLab = () => {
           <TextFieldWithLabelFormGroup
             name="result"
             label={t('labs.lab.result')}
-            value={lab.result}
+            value={labToView.result}
             isEditable={isEditable}
-            isInvalid={isResultInvalid}
-            feedback={resultFeedback}
+            isInvalid={!!error.result}
+            feedback={t(error.result || '')}
             onChange={onResultChange}
           />
           <TextFieldWithLabelFormGroup
             name="notes"
             label={t('labs.lab.notes')}
-            value={lab.notes}
+            value={labToView.notes}
             isEditable={isEditable}
             onChange={onNotesChange}
           />
