@@ -104,7 +104,7 @@ describe('New Patient', () => {
     expect(wrapper.update.isInvalid === true)
   })
 
-  it('should pass invalid date of birth error when input date is grater than today on save button click', async () => {
+  it('should pass invalid date of birth error when input date is greater than today on save button click', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = await setup()
@@ -135,6 +135,70 @@ describe('New Patient', () => {
     )
     expect(wrapper.find(GeneralInformation).prop('feedbackFields').dateOfBirth).toMatch(
       'patient.errors.patientDateOfBirthFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
+
+  it('should pass invalid phone number error when input is not a number on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('phoneNumber', 'Not a Number')
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(components.Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    await act(async () => {
+      await onClick()
+    })
+
+    wrapper.update()
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.createPatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').phoneNumber).toMatch(
+      'patient.errors.patientPhoneNumberFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
+
+  it('should pass invalid email error when input is not an email on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('email', 'Not a email')
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(components.Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    await act(async () => {
+      await onClick()
+    })
+
+    wrapper.update()
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.createPatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').email).toMatch(
+      'patient.errors.patientEmailFeedback',
     )
     expect(wrapper.update.isInvalid === true)
   })

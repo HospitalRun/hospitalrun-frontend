@@ -31,10 +31,14 @@ const EditPatient = () => {
   const [invalidFields, setInvalidFields] = useState({
     givenName: false,
     dateOfBirth: false,
+    phoneNumber: false,
+    email: false,
   })
   const [feedbackFields, setFeedbackFields] = useState({
     givenName: '',
     dateOfBirth: '',
+    phoneNumber: '',
+    email: '',
   })
   const { patient: reduxPatient, isLoading } = useSelector((state: RootState) => state.patient)
 
@@ -81,27 +85,55 @@ const EditPatient = () => {
     if (!patient.givenName) {
       inputIsValid = false
       setErrorMessage(t('patient.errors.updatePatientError'))
-      setInvalidFields((prevState) => ({
-        ...prevState,
+      setInvalidFields({
+        ...invalidFields,
         givenName: true,
-      }))
-      setFeedbackFields((prevState) => ({
-        ...prevState,
+      })
+      setFeedbackFields({
+        ...feedbackFields,
         givenName: t('patient.errors.patientGivenNameFeedback'),
-      }))
+      })
     }
     if (patient.dateOfBirth) {
       if (parseISO(patient.dateOfBirth) > new Date(Date.now())) {
         inputIsValid = false
         setErrorMessage(t('patient.errors.updatePatientError'))
-        setInvalidFields((prevState) => ({
-          ...prevState,
+        setInvalidFields({
+          ...invalidFields,
           dateOfBirth: true,
-        }))
-        setFeedbackFields((prevState) => ({
-          ...prevState,
+        })
+        setFeedbackFields({
+          ...feedbackFields,
           dateOfBirth: t('patient.errors.patientDateOfBirthFeedback'),
-        }))
+        })
+      }
+    }
+    if (patient.phoneNumber) {
+      if (!patient.phoneNumber.match(/^\d+/)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.updatePatientError'))
+        setInvalidFields({
+          ...invalidFields,
+          phoneNumber: true,
+        })
+        setFeedbackFields({
+          ...feedbackFields,
+          phoneNumber: t('patient.errors.patientPhoneNumberFeedback'),
+        })
+      }
+    }
+    if (patient.email) {
+      if (!patient.email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.updatePatientError'))
+        setInvalidFields({
+          ...invalidFields,
+          email: true,
+        })
+        setFeedbackFields({
+          ...feedbackFields,
+          email: t('patient.errors.patientEmailFeedback'),
+        })
       }
     }
     return inputIsValid
@@ -125,6 +157,15 @@ const EditPatient = () => {
     setPatient({
       ...patient,
       [key]: value,
+    })
+    setErrorMessage('')
+    setInvalidFields({
+      ...invalidFields,
+      [key]: false,
+    })
+    setFeedbackFields({
+      ...feedbackFields,
+      [key]: '',
     })
   }
 

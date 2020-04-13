@@ -12,11 +12,15 @@ import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabe
 interface Feedback {
   givenName: string
   dateOfBirth: string
+  phoneNumber: string
+  email: string
 }
 
 interface InvalidFields {
   givenName: boolean
   dateOfBirth: boolean
+  phoneNumber: boolean
+  email: boolean
 }
 
 interface Props {
@@ -222,6 +226,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'phoneNumber')
               }}
+              isInvalid={invalidFields?.phoneNumber}
+              feedback={feedbackFields?.phoneNumber}
               type="tel"
             />
           </div>
@@ -235,6 +241,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'email')
               }}
+              isInvalid={invalidFields?.email}
+              feedback={feedbackFields?.email}
               type="email"
             />
           </div>

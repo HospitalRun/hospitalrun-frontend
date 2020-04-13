@@ -27,10 +27,14 @@ const NewPatient = () => {
   const [invalidFields, setInvalidFields] = useState({
     givenName: false,
     dateOfBirth: false,
+    phoneNumber: false,
+    email: false,
   })
   const [feedbackFields, setFeedbackFields] = useState({
     givenName: '',
     dateOfBirth: '',
+    phoneNumber: '',
+    email: '',
   })
 
   useTitle(t('patients.newPatient'))
@@ -78,6 +82,34 @@ const NewPatient = () => {
         }))
       }
     }
+    if (patient.phoneNumber) {
+      if (!patient.phoneNumber.match(/^\d+/)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.createPatientError'))
+        setInvalidFields((prevState) => ({
+          ...prevState,
+          phoneNumber: true,
+        }))
+        setFeedbackFields((prevState) => ({
+          ...prevState,
+          phoneNumber: t('patient.errors.patientPhoneNumberFeedback'),
+        }))
+      }
+    }
+    if (patient.email) {
+      if (!patient.email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.createPatientError'))
+        setInvalidFields((prevState) => ({
+          ...prevState,
+          email: true,
+        }))
+        setFeedbackFields((prevState) => ({
+          ...prevState,
+          email: t('patient.errors.patientEmailFeedback'),
+        }))
+      }
+    }
     return inputIsValid
   }
 
@@ -101,6 +133,14 @@ const NewPatient = () => {
       [key]: value,
     })
     setErrorMessage('')
+    setInvalidFields({
+      ...invalidFields,
+      [key]: false,
+    })
+    setFeedbackFields({
+      ...feedbackFields,
+      [key]: '',
+    })
   }
 
   return (
