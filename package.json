@@ -61,7 +61,7 @@
     "@types/shortid": "^0.0.29",
     "@types/uuid": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "~2.27.0",
-    "@typescript-eslint/parser": "~2.27.0",
+    "@typescript-eslint/parser": "~2.28.0",
     "commitizen": "~4.0.3",
     "commitlint-config-cz": "~0.13.0",
     "cross-env": "~7.0.0",
