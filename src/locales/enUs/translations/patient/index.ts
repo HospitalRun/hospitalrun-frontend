@@ -85,6 +85,14 @@ export default {
       },
       addNoteAbove: 'Add a note using the button above.',
     },
+    labs: {
+      label: 'Labs',
+      new: 'Add New Lab',
+      warning: {
+        noLabs: 'No Labs',
+      },
+      noLabsMessage: 'No labs requests for this person.',
+    },
     types: {
       charity: 'Charity',
       private: 'Private',

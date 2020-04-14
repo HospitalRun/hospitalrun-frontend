@@ -21,6 +21,7 @@ import * as titleUtil from '../../../page-header/useTitle'
 import ViewPatient from '../../../patients/view/ViewPatient'
 import * as patientSlice from '../../../patients/patient-slice'
 import Permissions from '../../../model/Permissions'
+import LabsTab from '../../../patients/labs/LabsTab'
 
 const mockStore = configureMockStore([thunk])
 
@@ -49,7 +50,6 @@ describe('ViewPatient', () => {
     jest.spyOn(PatientRepository, 'find')
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
-
     history = createMemoryHistory()
     store = mockStore({
       patient: { patient },
@@ -127,13 +127,14 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(6)
+    expect(tabs).toHaveLength(7)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
     expect(tabs.at(3).prop('label')).toEqual('patient.allergies.label')
     expect(tabs.at(4).prop('label')).toEqual('patient.diagnoses.label')
     expect(tabs.at(5).prop('label')).toEqual('patient.notes.label')
+    expect(tabs.at(6).prop('label')).toEqual('patient.labs.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -261,5 +262,29 @@ describe('ViewPatient', () => {
     expect(tabs.at(5).prop('active')).toBeTruthy()
     expect(notesTab).toHaveLength(1)
     expect(notesTab.prop('patient')).toEqual(patient)
+  })
+
+  it('should mark the labs tab as active when it is clicked and render the lab component when route is /patients/:id/labs', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    await act(async () => {
+      const tabsHeader = wrapper.find(TabsHeader)
+      const tabs = tabsHeader.find(Tab)
+      tabs.at(6).prop('onClick')()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const labsTab = wrapper.find(LabsTab)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/labs`)
+    expect(tabs.at(6).prop('active')).toBeTruthy()
+    expect(labsTab).toHaveLength(1)
+    expect(labsTab.prop('patientId')).toEqual(patient.id)
   })
 })
