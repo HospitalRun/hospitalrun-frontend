@@ -1,5 +1,6 @@
 import React from 'react'
 import { Label, DateTimePicker } from '@hospitalrun/components'
+import { addDays } from 'date-fns'
 
 interface Props {
   name: string
@@ -22,6 +23,7 @@ const DatePickerWithLabelFormGroup = (props: Props) => {
         dateFormat="MM/dd/yyyy"
         dateFormatCalendar="LLLL yyyy"
         dropdownMode="scroll"
+        maxDate={addDays(new Date(), 0)}
         selected={value}
         timeIntervals={30}
         withPortal={false}
