@@ -20,6 +20,7 @@ import ViewPatient from './patients/view/ViewPatient'
 import { RootState } from './store'
 import Navbar from './components/Navbar'
 import PrivateRoute from './components/PrivateRoute'
+import version from 'os'
 
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
