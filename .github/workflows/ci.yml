@@ -23,7 +23,7 @@ jobs:
         run: |
           npm install
       - name: Lint code
-        if: failure()
+        if: always()
         run: |
           npm run lint
       - name: Build
