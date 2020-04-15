@@ -26,9 +26,11 @@ jobs:
         run: |
           npm run lint
       - name: Build
+        if: always()
         run: |
           npm run build
       - name: Run tests
+        if: always()
         run: |
           npm run coveralls
       - name: Coveralls
