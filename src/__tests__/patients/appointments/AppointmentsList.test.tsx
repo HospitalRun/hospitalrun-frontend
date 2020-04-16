@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 import AppointmentsList from 'patients/appointments/AppointmentsList'
 import * as components from '@hospitalrun/components'
 import { act } from 'react-dom/test-utils'
-import PatientRepository from 'clients/db/PatientRepository'
+// import PatientRepository from 'clients/db/PatientRepository' # Lint warning: 'PatientRepository' is defined but never used
 
 const expectedPatient = {
   id: '123',
@@ -59,10 +59,7 @@ describe('AppointmentsList', () => {
       const wrapper = setup()
 
       act(() => {
-        wrapper
-          .find(components.Button)
-          .at(0)
-          .prop('onClick')()
+        wrapper.find(components.Button).at(0).prop('onClick')()
       })
       wrapper.update()
 
