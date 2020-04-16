@@ -37,6 +37,9 @@ export default {
       },
       addRelatedPersonAbove: 'Add a related person using the button above.',
     },
+    appointments: {
+      new: 'Add Appointment',
+    },
     allergies: {
       label: 'Allergies',
       allergyName: 'Allergy Name',
