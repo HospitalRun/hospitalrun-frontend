@@ -67,7 +67,7 @@ const AddRelatedPersonModal = (props: Props) => {
               }}
             />
             {isRelatedPersonInvalid && (
-              <div className="text-left ml-3 mt-1 text-small text-danger invalid-feedback d-block">
+              <div className="text-left ml-3 mt-1 text-small text-danger invalid-feedback d-block related-person-feedback">
                 {t('patient.relatedPersons.error.relatedPersonRequired')}
               </div>
             )}
@@ -124,7 +124,7 @@ const AddRelatedPersonModal = (props: Props) => {
           if (isValid) {
             onSave(relatedPerson as RelatedPerson)
           } else {
-            setErrorMessage(t('patient.relatedPersons.error.relatedPersonErrorBanner'))
+            setErrorMessage(t('patient.relatedPersons.error.unableToAddRelatedPerson'))
           }
         },
       }}
