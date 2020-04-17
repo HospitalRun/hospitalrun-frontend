@@ -5,6 +5,9 @@ import { labs } from '../../config/pouchdb'
 export class LabRepository extends Repository<Lab> {
   constructor() {
     super(labs)
+    labs.createIndex({
+      index: { fields: ['requestedOn'] },
+    })
   }
 }
 
