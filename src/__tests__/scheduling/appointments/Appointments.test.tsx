@@ -12,6 +12,8 @@ import PatientRepository from 'clients/db/PatientRepository'
 import { mocked } from 'ts-jest/utils'
 import Patient from 'model/Patient'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
+import AppointmentRepository from 'clients/db/AppointmentRepository'
+import Appointment from 'model/Appointment'
 import * as titleUtil from '../../../page-header/useTitle'
 
 describe('Appointments', () => {
@@ -25,9 +27,10 @@ describe('Appointments', () => {
       location: 'location',
       reason: 'reason',
     },
-  ]
+  ] as Appointment[]
 
   const setup = async () => {
+    jest.spyOn(AppointmentRepository, 'findAll').mockResolvedValue(expectedAppointments)
     jest.spyOn(PatientRepository, 'find')
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue({

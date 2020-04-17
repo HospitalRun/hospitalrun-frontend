@@ -1,16 +1,7 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
 import { v4 as uuidv4 } from 'uuid'
 import AbstractDBModel from '../../model/AbstractDBModel'
-
-function mapRow(row: any): any {
-  const { value, doc } = row
-  const { id, _rev, _id, rev, ...restOfDoc } = doc
-  return {
-    id: _id,
-    rev: value.rev,
-    ...restOfDoc,
-  }
-}
+import { Unsorted } from './SortRequest'
 
 function mapDocument(document: any): any {
   const { _id, _rev, ...values } = document
@@ -33,17 +24,26 @@ export default class Repository<T extends AbstractDBModel> {
     return mapDocument(document)
   }
 
+  async findAll(sort = Unsorted): Promise<T[]> {
+    const selector: any = {
+      _id: { $gt: null },
+    }
+
+    sort.sorts.forEach((s) => {
+      selector[s.field] = { $gt: null }
+    })
+
+    const result = await this.db.find({
+      selector,
+      sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
+    })
+
+    return result.docs.map(mapDocument)
+  }
+
   async search(criteria: any): Promise<T[]> {
     const response = await this.db.find(criteria)
     return response.docs.map(mapDocument)
-  }
-
-  async findAll(): Promise<T[]> {
-    const allDocs = await this.db.allDocs({
-      include_docs: true,
-    })
-
-    return allDocs.rows.map(mapRow)
   }
 
   async save(entity: T): Promise<T> {
