@@ -1,7 +1,7 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
 import { v4 as uuidv4 } from 'uuid'
 import AbstractDBModel from '../../model/AbstractDBModel'
-import SortRequest, { Unsorted } from './SortRequest'
+import { Unsorted } from './SortRequest'
 
 function mapDocument(document: any): any {
   const { _id, _rev, ...values } = document
