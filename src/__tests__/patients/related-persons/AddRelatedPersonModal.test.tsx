@@ -65,7 +65,7 @@ describe('Add Related Person Modal', () => {
     })
 
     it('should render a relationship type text input', () => {
-      const relationshipTypeTextInput = wrapper.findWhere((w) => w.prop('name') === 'type')
+      const relationshipTypeTextInput = wrapper.findWhere((w: any) => w.prop('name') === 'type')
 
       expect(relationshipTypeTextInput).toHaveLength(1)
       expect(relationshipTypeTextInput.type()).toBe(TextInputWithLabelFormGroup)
@@ -115,16 +115,16 @@ describe('Add Related Person Modal', () => {
       wrapper.update()
 
       act(() => {
-        const relationshipTypeTextInput = wrapper.findWhere((w) => w.prop('name') === 'type')
+        const relationshipTypeTextInput = wrapper.findWhere((w: any) => w.prop('name') === 'type')
         relationshipTypeTextInput.prop('onChange')({ target: { value: 'relationship' } })
       })
       wrapper.update()
 
       act(() => {
-        ;(wrapper.find(Modal).prop('successButton') as any).onClick(
-          {} as React.MouseEvent<HTMLButtonElement, MouseEvent>,
-        )
+        const { onClick } = wrapper.find(Modal).prop('successButton') as any
+        onClick({} as React.MouseEvent<HTMLButtonElement, MouseEvent>)
       })
+
       expect(onSaveSpy).toHaveBeenCalledTimes(1)
       expect(onSaveSpy).toHaveBeenCalledWith({
         patientId: '123',
@@ -132,7 +132,13 @@ describe('Add Related Person Modal', () => {
       })
     })
 
-    it('should display an error message if given name or relationship type is not entered.', () => {
+    it('should display an error message if given name is not entered', () => {
+      act(() => {
+        const patientTypeahead = wrapper.find(Typeahead)
+        patientTypeahead.prop('onChange')([{ id: '123' }])
+      })
+      wrapper.update()
+
       act(() => {
         wrapper
           .find(Modal)
@@ -143,10 +149,37 @@ describe('Add Related Person Modal', () => {
       wrapper.update()
 
       const errorAlert = wrapper.find(Alert)
-      expect(onSaveSpy).not.toHaveBeenCalled()
+      const relationshipTypeTextInput = wrapper.findWhere((w: any) => w.prop('name') === 'type')
       expect(errorAlert).toHaveLength(1)
       expect(errorAlert.prop('message')).toEqual(
-        'patient.relatedPersons.error.relatedPersonRequired patient.relatedPersons.error.relationshipTypeRequired',
+        'patient.relatedPersons.error.unableToAddRelatedPerson',
+      )
+      expect(relationshipTypeTextInput.prop('isInvalid')).toBeTruthy()
+      expect(relationshipTypeTextInput.prop('feedback')).toEqual(
+        'patient.relatedPersons.error.relationshipTypeRequired',
+      )
+    })
+
+    it('should display an error message if relationship type is not entered', () => {
+      act(() => {
+        wrapper
+          .find(Modal)
+          .prop('successButton')
+          .onClick({} as React.MouseEvent<HTMLButtonElement, MouseEvent>)
+      })
+
+      wrapper.update()
+
+      const errorAlert = wrapper.find(Alert)
+      const typeahead = wrapper.find(Typeahead)
+      const typeaheadError = wrapper.find('.related-person-feedback')
+      expect(errorAlert).toHaveLength(1)
+      expect(errorAlert.prop('message')).toEqual(
+        'patient.relatedPersons.error.unableToAddRelatedPerson',
+      )
+      expect(typeahead.prop('isInvalid')).toBeTruthy()
+      expect(typeaheadError.text().trim()).toEqual(
+        'patient.relatedPersons.error.relatedPersonRequired',
       )
     })
   })
