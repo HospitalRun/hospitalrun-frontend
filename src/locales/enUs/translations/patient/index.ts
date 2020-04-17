@@ -25,6 +25,7 @@ export default {
     relatedPerson: 'Related Person',
     relatedPersons: {
       error: {
+        unableToAddRelatedPerson: 'Unable to add new related person.',
         relatedPersonRequired: 'Related Person is required.',
         relationshipTypeRequired: 'Relationship Type is required.',
       },
