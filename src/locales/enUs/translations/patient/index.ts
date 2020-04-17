@@ -37,6 +37,9 @@ export default {
       },
       addRelatedPersonAbove: 'Add a related person using the button above.',
     },
+    appointments: {
+      new: 'Add Appointment',
+    },
     allergies: {
       label: 'Allergies',
       allergyName: 'Allergy Name',
@@ -84,9 +87,10 @@ export default {
       private: 'Private',
     },
     errors: {
-      patientGivenNameRequiredOnCreate: 'Could not create new patient.',
-      patientGivenNameRequiredOnUpdate: 'Could not update patient.',
+      createPatientError: 'Could not create new patient.',
+      updatePatientError: 'Could not update patient.',
       patientGivenNameFeedback: 'Given Name is required.',
+      patientDateOfBirthFeedback: 'Date of Birth can not be greater than today',
     },
   },
 }

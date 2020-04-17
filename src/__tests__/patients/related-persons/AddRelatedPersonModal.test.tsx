@@ -3,20 +3,51 @@ import React from 'react'
 import { ReactWrapper, mount } from 'enzyme'
 import { Modal, Alert, Typeahead } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore, { MockStore } from 'redux-mock-store'
+import Patient from 'model/Patient'
 import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
+import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
+
+const mockStore = configureMockStore([thunk])
 
 describe('Add Related Person Modal', () => {
+  const patient = {
+    id: '123',
+    prefix: 'prefix',
+    givenName: 'givenName',
+    familyName: 'familyName',
+    suffix: 'suffix',
+    sex: 'male',
+    type: 'charity',
+    occupation: 'occupation',
+    preferredLanguage: 'preferredLanguage',
+    phoneNumber: 'phoneNumber',
+    email: 'email@email.com',
+    address: 'address',
+    code: 'P00001',
+    dateOfBirth: new Date().toISOString(),
+  } as Patient
+
+  let store: MockStore
+
   describe('layout', () => {
     let wrapper: ReactWrapper
+
+    store = mockStore({
+      patient: { patient },
+    })
     beforeEach(() => {
       wrapper = mount(
-        <AddRelatedPersonModal
-          show
-          onSave={jest.fn()}
-          onCloseButtonClick={jest.fn()}
-          toggle={jest.fn()}
-        />,
+        <Provider store={store}>
+          <AddRelatedPersonModal
+            show
+            onSave={jest.fn()}
+            onCloseButtonClick={jest.fn()}
+            toggle={jest.fn()}
+          />
+        </Provider>,
       )
     })
 
@@ -65,12 +96,14 @@ describe('Add Related Person Modal', () => {
     beforeEach(() => {
       onSaveSpy = jest.fn()
       wrapper = mount(
-        <AddRelatedPersonModal
-          show
-          onSave={onSaveSpy}
-          onCloseButtonClick={jest.fn()}
-          toggle={jest.fn()}
-        />,
+        <Provider store={store}>
+          <AddRelatedPersonModal
+            show
+            onSave={onSaveSpy}
+            onCloseButtonClick={jest.fn()}
+            toggle={jest.fn()}
+          />
+        </Provider>,
       )
     })
 
