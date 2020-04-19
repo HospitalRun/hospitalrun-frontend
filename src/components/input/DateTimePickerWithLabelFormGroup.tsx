@@ -32,6 +32,7 @@ const DateTimePickerWithLabelFormGroup = (props: Props) => {
         timeFormat="h:mm aa"
         timeIntervals={15}
         withPortal={false}
+        feedback={feedback}
       />
       <span className="small text-danger">{feedback}</span>
     </div>

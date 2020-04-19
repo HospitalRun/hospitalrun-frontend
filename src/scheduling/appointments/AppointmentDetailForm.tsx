@@ -1,8 +1,7 @@
 import React from 'react'
 import Appointment from 'model/Appointment'
 import DateTimePickerWithLabelFormGroup from 'components/input/DateTimePickerWithLabelFormGroup'
-import TypeaheadWithFeedback from 'components/input/TypeaheadWithFeedback'
-import { Label } from '@hospitalrun/components'
+import { Label, Typeahead } from '@hospitalrun/components'
 import Patient from 'model/Patient'
 import PatientRepository from 'clients/db/PatientRepository'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
@@ -68,7 +67,7 @@ const AppointmentDetailForm = (props: Props) => {
               isRequired
               text={t('scheduling.appointment.patient')}
             />
-            <TypeaheadWithFeedback
+            <Typeahead
               id="patientTypeahead"
               disabled={!isEditable || patient !== undefined}
               value={patient?.fullName}
@@ -77,8 +76,10 @@ const AppointmentDetailForm = (props: Props) => {
               onSearch={async (query: string) => PatientRepository.search(query)}
               searchAccessor="fullName"
               renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
-              feedback={errorMessageState?.patient}
             />
+            {errorMessageState?.patient && (
+              <span className="small text-danger">{errorMessageState?.patient}</span>
+            )}
           </div>
         </div>
       </div>
