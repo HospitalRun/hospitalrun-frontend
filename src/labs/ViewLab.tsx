@@ -48,8 +48,6 @@ const ViewLab = () => {
       setLabToView({ ...lab })
       setIsEditable(lab.status === 'requested')
     }
-    console.log('lab change')
-    console.log(lab)
   }, [lab])
 
   const onResultChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

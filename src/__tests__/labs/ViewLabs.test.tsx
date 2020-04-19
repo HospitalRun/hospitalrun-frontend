@@ -38,7 +38,7 @@ describe('View Labs', () => {
       })
     })
 
-    it('should have New Lab Request as the title', () => {
+    it('should have the title', () => {
       expect(titleSpy).toHaveBeenCalledWith('labs.label')
     })
   })

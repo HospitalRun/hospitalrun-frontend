@@ -112,12 +112,13 @@ export const requestLab = (newLab: Lab, onSuccess?: (lab: Lab) => void): AppThun
     labRequestError.message = 'labs.requests.error.unableToRequest'
     dispatch(requestLabError(labRequestError))
   } else {
+    newLab.status = 'requested'
     newLab.requestedOn = new Date(Date.now().valueOf()).toISOString()
-    const requestedLab = await LabRepository.saveOrUpdate(newLab)
+    const requestedLab = await LabRepository.save(newLab)
     dispatch(requestLabSuccess(requestedLab))
 
     if (onSuccess) {
-      onSuccess(newLab)
+      onSuccess(requestedLab)
     }
   }
 }
@@ -150,7 +151,7 @@ const validateCompleteLab = (labToComplete: Lab): Error => {
 export const completeLab = (labToComplete: Lab, onSuccess?: (lab: Lab) => void): AppThunk => async (
   dispatch,
 ) => {
-  dispatch(cancelLabStart())
+  dispatch(completeLabStart())
 
   const completeLabErrors = validateCompleteLab(labToComplete)
   if (Object.keys(completeLabErrors).length > 0) {
@@ -160,7 +161,7 @@ export const completeLab = (labToComplete: Lab, onSuccess?: (lab: Lab) => void):
     labToComplete.completedOn = new Date(Date.now().valueOf()).toISOString()
     labToComplete.status = 'completed'
     const completedLab = await LabRepository.saveOrUpdate(labToComplete)
-    dispatch(cancelLabSuccess(completedLab))
+    dispatch(completeLabSuccess(completedLab))
 
     if (onSuccess) {
       onSuccess(completedLab)
