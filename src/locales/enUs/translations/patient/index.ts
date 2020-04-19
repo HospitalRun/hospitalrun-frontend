@@ -1,5 +1,6 @@
 export default {
   patient: {
+    code: 'Patient Code',
     firstName: 'First Name',
     lastName: 'Last Name',
     suffix: 'Suffix',
