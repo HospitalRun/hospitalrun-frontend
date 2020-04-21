@@ -53,32 +53,48 @@ const AppointmentsList = (props: Props) => {
   }
 
   return (
-    <Container>
-      <form className="form" onSubmit={onSearchFormSubmit}>
-        <Row>
-          <Column md={10}>
-            <TextInput
-              size="lg"
-              type="text"
-              onChange={onSearchBoxChange}
-              value={searchText}
-              placeholder={t('actions.search')}
-            />
-          </Column>
-          <Column md={2}>
-            <Button size="large" onClick={onSearchFormSubmit}>
-              {t('actions.search')}
-            </Button>
-          </Column>
-        </Row>
-      </form>
+    <>
+      <div className="row">
+        <div className="col-md-12 d-flex justify-content-end">
+          <Button
+            key="newAppointmentButton"
+            outlined
+            color="success"
+            icon="appointment-add"
+            onClick={() => history.push('/appointments/new')}
+          >
+            {t('scheduling.appointments.new')}
+          </Button>
+        </div>
+      </div>
+      <br />
+      <Container>
+        <form className="form" onSubmit={onSearchFormSubmit}>
+          <Row>
+            <Column md={10}>
+              <TextInput
+                size="lg"
+                type="text"
+                onChange={onSearchBoxChange}
+                value={searchText}
+                placeholder={t('actions.search')}
+              />
+            </Column>
+            <Column md={2}>
+              <Button size="large" onClick={onSearchFormSubmit}>
+                {t('actions.search')}
+              </Button>
+            </Column>
+          </Row>
+        </form>
 
-      <Row>
-        <List layout="flush" style={{ width: '100%', marginTop: '10px', marginLeft: '-25px' }}>
-          {list}
-        </List>
-      </Row>
-    </Container>
+        <Row>
+          <List layout="flush" style={{ width: '100%', marginTop: '10px', marginLeft: '-25px' }}>
+            {list}
+          </List>
+        </Row>
+      </Container>
+    </>
   )
 }
 
