@@ -6,6 +6,7 @@ import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import { Button } from '@hospitalrun/components'
 import { useHistory } from 'react-router'
 import LabRepository from 'clients/db/LabRepository'
+import SortRequest from 'clients/db/SortRequest'
 import Lab from 'model/Lab'
 import { useSelector } from 'react-redux'
 import Permissions from 'model/Permissions'
@@ -38,7 +39,15 @@ const ViewLabs = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const fetchedLabs = await LabRepository.findAll()
+      const sortRequest: SortRequest = {
+        sorts: [
+          {
+            field: 'requestedOn',
+            direction: 'desc',
+          },
+        ],
+      }
+      const fetchedLabs = await LabRepository.findAll(sortRequest)
       setLabs(fetchedLabs)
     }
 
