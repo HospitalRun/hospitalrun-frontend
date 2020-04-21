@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Button, Toast } from '@hospitalrun/components'
 
+import { parseISO } from 'date-fns'
 import GeneralInformation from '../GeneralInformation'
 import useTitle from '../../page-header/useTitle'
 import Patient from '../../model/Patient'
@@ -23,8 +24,14 @@ const NewPatient = () => {
 
   const [patient, setPatient] = useState({} as Patient)
   const [errorMessage, setErrorMessage] = useState('')
-  const [isInvalid, setIsInvalid] = useState(false)
-  const [patientGivenNameFeedback, setPatientGivenNameFeedback] = useState('')
+  const [invalidFields, setInvalidFields] = useState({
+    givenName: false,
+    dateOfBirth: false,
+  })
+  const [feedbackFields, setFeedbackFields] = useState({
+    givenName: '',
+    dateOfBirth: '',
+  })
 
   useTitle(t('patients.newPatient'))
   useAddBreadcrumbs(breadcrumbs, true)
@@ -42,12 +49,40 @@ const NewPatient = () => {
     )
   }
 
-  const onSave = () => {
+  const validateInput = () => {
+    let inputIsValid = true
+
     if (!patient.givenName) {
-      setErrorMessage(t('patient.errors.patientGivenNameRequiredOnCreate'))
-      setIsInvalid(true)
-      setPatientGivenNameFeedback(t('patient.errors.patientGivenNameFeedback'))
-    } else {
+      inputIsValid = false
+      setErrorMessage(t('patient.errors.createPatientError'))
+      setInvalidFields((prevState) => ({
+        ...prevState,
+        givenName: true,
+      }))
+      setFeedbackFields((prevState) => ({
+        ...prevState,
+        givenName: t('patient.errors.patientGivenNameFeedback'),
+      }))
+    }
+    if (patient.dateOfBirth) {
+      if (parseISO(patient.dateOfBirth) > new Date(Date.now())) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.createPatientError'))
+        setInvalidFields((prevState) => ({
+          ...prevState,
+          dateOfBirth: true,
+        }))
+        setFeedbackFields((prevState) => ({
+          ...prevState,
+          dateOfBirth: t('patient.errors.patientDateOfBirthFeedback'),
+        }))
+      }
+    }
+    return inputIsValid
+  }
+
+  const onSave = () => {
+    if (validateInput()) {
       dispatch(
         createPatient(
           {
@@ -65,6 +100,7 @@ const NewPatient = () => {
       ...patient,
       [key]: value,
     })
+    setErrorMessage('')
   }
 
   return (
@@ -74,8 +110,8 @@ const NewPatient = () => {
         patient={patient}
         onFieldChange={onFieldChange}
         errorMessage={errorMessage}
-        isInvalid={isInvalid}
-        patientGivenNameFeedback={patientGivenNameFeedback}
+        invalidFields={invalidFields}
+        feedbackFields={feedbackFields}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg mt-3">

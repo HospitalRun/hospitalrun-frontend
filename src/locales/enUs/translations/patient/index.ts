@@ -1,5 +1,6 @@
 export default {
   patient: {
+    code: 'Patient Code',
     firstName: 'First Name',
     lastName: 'Last Name',
     suffix: 'Suffix',
@@ -25,6 +26,7 @@ export default {
     relatedPerson: 'Related Person',
     relatedPersons: {
       error: {
+        unableToAddRelatedPerson: 'Unable to add new related person.',
         relatedPersonRequired: 'Related Person is required.',
         relationshipTypeRequired: 'Relationship Type is required.',
       },
@@ -36,6 +38,9 @@ export default {
         noRelatedPersons: 'No related persons',
       },
       addRelatedPersonAbove: 'Add a related person using the button above.',
+    },
+    appointments: {
+      new: 'Add Appointment',
     },
     allergies: {
       label: 'Allergies',
@@ -66,14 +71,28 @@ export default {
       addDiagnosisAbove: 'Add a diagnosis using the button above.',
       successfullyAdded: 'Successfully added a new diagnosis!',
     },
+    note: 'Note',
+    notes: {
+      label: 'Notes',
+      new: 'Add New Note',
+      warning: {
+        noNotes: 'No Notes',
+      },
+      error: {
+        noteRequired: 'Note is required.',
+        unableToAdd: 'Unable to add new note.',
+      },
+      addNoteAbove: 'Add a note using the button above.',
+    },
     types: {
       charity: 'Charity',
       private: 'Private',
     },
     errors: {
-      patientGivenNameRequiredOnCreate: 'Could not create new patient.',
-      patientGivenNameRequiredOnUpdate: 'Could not update patient.',
+      createPatientError: 'Could not create new patient.',
+      updatePatientError: 'Could not update patient.',
       patientGivenNameFeedback: 'Given Name is required.',
+      patientDateOfBirthFeedback: 'Date of Birth can not be greater than today',
     },
   },
 }

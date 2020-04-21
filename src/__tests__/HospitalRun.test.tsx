@@ -14,6 +14,8 @@ import Appointments from 'scheduling/appointments/Appointments'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import EditAppointment from 'scheduling/appointments/edit/EditAppointment'
 import { addBreadcrumbs } from 'breadcrumbs/breadcrumbs-slice'
+import ViewLabs from 'labs/ViewLabs'
+import LabRepository from 'clients/db/LabRepository'
 import NewPatient from '../patients/new/NewPatient'
 import EditPatient from '../patients/edit/EditPatient'
 import ViewPatient from '../patients/view/ViewPatient'
@@ -404,6 +406,49 @@ describe('HospitalRun', () => {
           </Provider>,
         )
 
+        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
+    })
+
+    describe('/labs', () => {
+      it('should render the Labs component when /labs is accessed', () => {
+        jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [Permissions.ViewLabs] },
+          breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
+        })
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <MemoryRouter initialEntries={['/labs']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(ViewLabs)).toHaveLength(1)
+      })
+
+      it('should render the dasboard if the user does not have permissions to view labs', () => {
+        jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [] },
+          breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
+        })
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <MemoryRouter initialEntries={['/labs']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(ViewLabs)).toHaveLength(0)
         expect(wrapper.find(Dashboard)).toHaveLength(1)
       })
     })

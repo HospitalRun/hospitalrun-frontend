@@ -14,6 +14,7 @@ import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import Allergies from 'patients/allergies/Allergies'
 import Diagnoses from 'patients/diagnoses/Diagnoses'
+import NotesTab from 'patients/notes/NoteTab'
 import Patient from '../../../model/Patient'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as titleUtil from '../../../page-header/useTitle'
@@ -126,12 +127,13 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(5)
+    expect(tabs).toHaveLength(6)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
     expect(tabs.at(3).prop('label')).toEqual('patient.allergies.label')
     expect(tabs.at(4).prop('label')).toEqual('patient.diagnoses.label')
+    expect(tabs.at(5).prop('label')).toEqual('patient.notes.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -235,5 +237,29 @@ describe('ViewPatient', () => {
     expect(tabs.at(4).prop('active')).toBeTruthy()
     expect(diagnosesTab).toHaveLength(1)
     expect(diagnosesTab.prop('patient')).toEqual(patient)
+  })
+
+  it('should mark the notes tab as active when it is clicked and render the note component when route is /patients/:id/notes', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    await act(async () => {
+      const tabsHeader = wrapper.find(TabsHeader)
+      const tabs = tabsHeader.find(Tab)
+      tabs.at(5).prop('onClick')()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const notesTab = wrapper.find(NotesTab)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/notes`)
+    expect(tabs.at(5).prop('active')).toBeTruthy()
+    expect(notesTab).toHaveLength(1)
+    expect(notesTab.prop('patient')).toEqual(patient)
   })
 })
