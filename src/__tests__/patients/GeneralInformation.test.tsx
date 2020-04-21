@@ -51,16 +51,14 @@ describe('General Information, without isEditable', () => {
   let history = createMemoryHistory()
 
   beforeEach(() => {
+    Date.now = jest.fn().mockReturnValue(new Date().valueOf())
+    jest.restoreAllMocks()
     history = createMemoryHistory()
     wrapper = mount(
       <Router history={history}>
         <GeneralInformation patient={patient} />)
       </Router>,
     )
-  })
-
-  beforeEach(() => {
-    jest.restoreAllMocks()
   })
 
   it('should render the prefix', () => {
@@ -123,6 +121,7 @@ describe('General Information, without isEditable', () => {
     const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
     expect(dateOfBirthInput.prop('value')).toEqual(new Date(patient.dateOfBirth))
     expect(dateOfBirthInput.prop('label')).toEqual('patient.dateOfBirth')
+    expect(dateOfBirthInput.prop('maxDate')).toEqual(new Date(Date.now()))
     expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
   })
 
@@ -208,16 +207,14 @@ describe('General Information, isEditable', () => {
   const onFieldChange = jest.fn()
 
   beforeEach(() => {
+    jest.restoreAllMocks()
+    Date.now = jest.fn().mockReturnValue(new Date().valueOf())
     history = createMemoryHistory()
     wrapper = mount(
       <Router history={history}>
         <GeneralInformation patient={patient} onFieldChange={onFieldChange} isEditable />)
       </Router>,
     )
-  })
-
-  beforeEach(() => {
-    jest.restoreAllMocks()
   })
 
   const expectedPrefix = 'expectedPrefix'
@@ -348,6 +345,7 @@ describe('General Information, isEditable', () => {
     expect(dateOfBirthInput.prop('value')).toEqual(new Date(patient.dateOfBirth))
     expect(dateOfBirthInput.prop('label')).toEqual('patient.dateOfBirth')
     expect(dateOfBirthInput.prop('isEditable')).toBeTruthy()
+    expect(dateOfBirthInput.prop('maxDate')).toEqual(new Date(Date.now()))
 
     act(() => {
       dateOfBirthInput.prop('onChange')(new Date(expectedDateOfBirth))
