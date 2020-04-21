@@ -167,7 +167,7 @@ const GeneralInformation = (props: Props) => {
                     : undefined
                 }
                 isInvalid={invalidFields?.dateOfBirth}
-                maxDate={new Date()}
+                maxDate={new Date(Date.now().valueOf())}
                 feedback={feedbackFields?.dateOfBirth}
                 onChange={(date: Date) => {
                   onDateOfBirthChange(date)
