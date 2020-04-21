@@ -4,9 +4,26 @@ import PatientRepository from '../../clients/db/PatientRepository'
 import LabRepository from '../../clients/db/LabRepository'
 import Lab from '../../model/Lab'
 import Patient from '../../model/Patient'
-import * as labSlice from '../../labs/lab-slice'
+import labSlice, {
+  requestLab,
+  fetchLabStart,
+  fetchLabSuccess,
+  updateLabStart,
+  updateLabSuccess,
+  requestLabStart,
+  requestLabSuccess,
+  completeLabStart,
+  completeLabSuccess,
+  cancelLabStart,
+  cancelLabSuccess,
+  fetchLab,
+  cancelLab,
+  completeLab,
+  completeLabError,
+  requestLabError,
+  updateLab,
+} from '../../labs/lab-slice'
 import { RootState } from '../../store'
-import { requestLab } from '../../labs/lab-slice'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -14,7 +31,7 @@ describe('lab slice', () => {
   describe('reducers', () => {
     describe('fetchLabStart', () => {
       it('should set status to loading', async () => {
-        const labStore = labSlice.default(undefined, labSlice.fetchLabStart())
+        const labStore = labSlice(undefined, fetchLabStart())
 
         expect(labStore.status).toEqual('loading')
       })
@@ -25,9 +42,9 @@ describe('lab slice', () => {
         const expectedLab = { id: 'labId' } as Lab
         const expectedPatient = { id: 'patientId' } as Patient
 
-        const labStore = labSlice.default(
+        const labStore = labSlice(
           undefined,
-          labSlice.fetchLabSuccess({ lab: expectedLab, patient: expectedPatient }),
+          fetchLabSuccess({ lab: expectedLab, patient: expectedPatient }),
         )
 
         expect(labStore.status).toEqual('success')
@@ -38,7 +55,7 @@ describe('lab slice', () => {
 
     describe('updateLabStart', () => {
       it('should set status to loading', async () => {
-        const labStore = labSlice.default(undefined, labSlice.updateLabStart())
+        const labStore = labSlice(undefined, updateLabStart())
 
         expect(labStore.status).toEqual('loading')
       })
@@ -48,7 +65,7 @@ describe('lab slice', () => {
       it('should set the lab and status to success', () => {
         const expectedLab = { id: 'labId' } as Lab
 
-        const labStore = labSlice.default(undefined, labSlice.updateLabSuccess(expectedLab))
+        const labStore = labSlice(undefined, updateLabSuccess(expectedLab))
 
         expect(labStore.status).toEqual('success')
         expect(labStore.lab).toEqual(expectedLab)
@@ -57,7 +74,7 @@ describe('lab slice', () => {
 
     describe('requestLabStart', () => {
       it('should set status to loading', async () => {
-        const labStore = labSlice.default(undefined, labSlice.requestLabStart())
+        const labStore = labSlice(undefined, requestLabStart())
 
         expect(labStore.status).toEqual('loading')
       })
@@ -67,7 +84,7 @@ describe('lab slice', () => {
       it('should set the lab and status to success', () => {
         const expectedLab = { id: 'labId' } as Lab
 
-        const labStore = labSlice.default(undefined, labSlice.requestLabSuccess(expectedLab))
+        const labStore = labSlice(undefined, requestLabSuccess(expectedLab))
 
         expect(labStore.status).toEqual('success')
         expect(labStore.lab).toEqual(expectedLab)
@@ -77,7 +94,7 @@ describe('lab slice', () => {
     describe('requestLabError', () => {
       const expectedError = { message: 'some message', result: 'some result error' }
 
-      const labStore = labSlice.default(undefined, labSlice.requestLabError(expectedError))
+      const labStore = labSlice(undefined, requestLabError(expectedError))
 
       expect(labStore.status).toEqual('error')
       expect(labStore.error).toEqual(expectedError)
@@ -85,7 +102,7 @@ describe('lab slice', () => {
 
     describe('completeLabStart', () => {
       it('should set status to loading', async () => {
-        const labStore = labSlice.default(undefined, labSlice.completeLabStart())
+        const labStore = labSlice(undefined, completeLabStart())
 
         expect(labStore.status).toEqual('loading')
       })
@@ -95,7 +112,7 @@ describe('lab slice', () => {
       it('should set the lab and status to success', () => {
         const expectedLab = { id: 'labId' } as Lab
 
-        const labStore = labSlice.default(undefined, labSlice.completeLabSuccess(expectedLab))
+        const labStore = labSlice(undefined, completeLabSuccess(expectedLab))
 
         expect(labStore.status).toEqual('success')
         expect(labStore.lab).toEqual(expectedLab)
@@ -105,7 +122,7 @@ describe('lab slice', () => {
     describe('completeLabError', () => {
       const expectedError = { message: 'some message', result: 'some result error' }
 
-      const labStore = labSlice.default(undefined, labSlice.completeLabError(expectedError))
+      const labStore = labSlice(undefined, completeLabError(expectedError))
 
       expect(labStore.status).toEqual('error')
       expect(labStore.error).toEqual(expectedError)
@@ -113,7 +130,7 @@ describe('lab slice', () => {
 
     describe('cancelLabStart', () => {
       it('should set status to loading', async () => {
-        const labStore = labSlice.default(undefined, labSlice.cancelLabStart())
+        const labStore = labSlice(undefined, cancelLabStart())
 
         expect(labStore.status).toEqual('loading')
       })
@@ -123,7 +140,7 @@ describe('lab slice', () => {
       it('should set the lab and status to success', () => {
         const expectedLab = { id: 'labId' } as Lab
 
-        const labStore = labSlice.default(undefined, labSlice.cancelLabSuccess(expectedLab))
+        const labStore = labSlice(undefined, cancelLabSuccess(expectedLab))
 
         expect(labStore.status).toEqual('success')
         expect(labStore.lab).toEqual(expectedLab)
@@ -152,13 +169,13 @@ describe('lab slice', () => {
     it('should fetch the lab and patient', async () => {
       const store = mockStore()
 
-      await store.dispatch(labSlice.fetchLab(mockLab.id))
+      await store.dispatch(fetchLab(mockLab.id))
       const actions = store.getActions()
 
-      expect(actions[0]).toEqual(labSlice.fetchLabStart())
+      expect(actions[0]).toEqual(fetchLabStart())
       expect(labRepositoryFindSpy).toHaveBeenCalledWith(mockLab.id)
       expect(patientRepositorySpy).toHaveBeenCalledWith(mockLab.patientId)
-      expect(actions[1]).toEqual(labSlice.fetchLabSuccess({ lab: mockLab, patient: mockPatient }))
+      expect(actions[1]).toEqual(fetchLabSuccess({ lab: mockLab, patient: mockPatient }))
     })
   })
 
@@ -185,12 +202,12 @@ describe('lab slice', () => {
 
       const store = mockStore()
 
-      await store.dispatch(labSlice.cancelLab(mockLab))
+      await store.dispatch(cancelLab(mockLab))
       const actions = store.getActions()
 
-      expect(actions[0]).toEqual(labSlice.cancelLabStart())
+      expect(actions[0]).toEqual(cancelLabStart())
       expect(labRepositorySaveOrUpdateSpy).toHaveBeenCalledWith(expectedCanceledLab)
-      expect(actions[1]).toEqual(labSlice.cancelLabSuccess(expectedCanceledLab))
+      expect(actions[1]).toEqual(cancelLabSuccess(expectedCanceledLab))
     })
 
     it('should call on success callback if provided', async () => {
@@ -202,7 +219,7 @@ describe('lab slice', () => {
 
       const store = mockStore()
       const onSuccessSpy = jest.fn()
-      await store.dispatch(labSlice.cancelLab(mockLab, onSuccessSpy))
+      await store.dispatch(cancelLab(mockLab, onSuccessSpy))
 
       expect(onSuccessSpy).toHaveBeenCalledWith(expectedCanceledLab)
     })
@@ -233,12 +250,12 @@ describe('lab slice', () => {
 
       const store = mockStore()
 
-      await store.dispatch(labSlice.completeLab(mockLab))
+      await store.dispatch(completeLab(mockLab))
       const actions = store.getActions()
 
-      expect(actions[0]).toEqual(labSlice.completeLabStart())
+      expect(actions[0]).toEqual(completeLabStart())
       expect(labRepositorySaveOrUpdateSpy).toHaveBeenCalledWith(expectedCompletedLab)
-      expect(actions[1]).toEqual(labSlice.completeLabSuccess(expectedCompletedLab))
+      expect(actions[1]).toEqual(completeLabSuccess(expectedCompletedLab))
     })
 
     it('should call on success callback if provided', async () => {
@@ -250,7 +267,7 @@ describe('lab slice', () => {
 
       const store = mockStore()
       const onSuccessSpy = jest.fn()
-      await store.dispatch(labSlice.completeLab(mockLab, onSuccessSpy))
+      await store.dispatch(completeLab(mockLab, onSuccessSpy))
 
       expect(onSuccessSpy).toHaveBeenCalledWith(expectedCompletedLab)
     })
@@ -258,11 +275,11 @@ describe('lab slice', () => {
     it('should validate that the lab can be completed', async () => {
       const store = mockStore()
       const onSuccessSpy = jest.fn()
-      await store.dispatch(labSlice.completeLab({ id: 'labId' } as Lab, onSuccessSpy))
+      await store.dispatch(completeLab({ id: 'labId' } as Lab, onSuccessSpy))
       const actions = store.getActions()
 
       expect(actions[1]).toEqual(
-        labSlice.completeLabError({
+        completeLabError({
           result: 'labs.requests.error.resultRequiredToComplete',
           message: 'labs.requests.error.unableToComplete',
         }),
@@ -297,9 +314,9 @@ describe('lab slice', () => {
 
       const actions = store.getActions()
 
-      expect(actions[0]).toEqual(labSlice.requestLabStart())
+      expect(actions[0]).toEqual(requestLabStart())
       expect(labRepositorySaveSpy).toHaveBeenCalledWith(expectedRequestedLab)
-      expect(actions[1]).toEqual(labSlice.requestLabSuccess(expectedRequestedLab))
+      expect(actions[1]).toEqual(requestLabSuccess(expectedRequestedLab))
     })
 
     it('should execute the onSuccess callback if provided', async () => {
@@ -318,9 +335,9 @@ describe('lab slice', () => {
 
       const actions = store.getActions()
 
-      expect(actions[0]).toEqual(labSlice.requestLabStart())
+      expect(actions[0]).toEqual(requestLabStart())
       expect(actions[1]).toEqual(
-        labSlice.requestLabError({
+        requestLabError({
           patient: 'labs.requests.error.patientRequired',
           type: 'labs.requests.error.typeRequired',
           message: 'labs.requests.error.unableToRequest',
@@ -354,19 +371,19 @@ describe('lab slice', () => {
     it('should update the lab', async () => {
       const store = mockStore()
 
-      await store.dispatch(labSlice.updateLab(expectedUpdatedLab))
+      await store.dispatch(updateLab(expectedUpdatedLab))
       const actions = store.getActions()
 
-      expect(actions[0]).toEqual(labSlice.updateLabStart())
+      expect(actions[0]).toEqual(updateLabStart())
       expect(labRepositorySaveOrUpdateSpy).toHaveBeenCalledWith(expectedUpdatedLab)
-      expect(actions[1]).toEqual(labSlice.updateLabSuccess(expectedUpdatedLab))
+      expect(actions[1]).toEqual(updateLabSuccess(expectedUpdatedLab))
     })
 
     it('should call the onSuccess callback if successful', async () => {
       const store = mockStore()
       const onSuccessSpy = jest.fn()
 
-      await store.dispatch(labSlice.updateLab(expectedUpdatedLab, onSuccessSpy))
+      await store.dispatch(updateLab(expectedUpdatedLab, onSuccessSpy))
 
       expect(onSuccessSpy).toHaveBeenCalledWith(expectedUpdatedLab)
     })
