@@ -26,6 +26,7 @@ describe('date picker with label form group', () => {
 
     it('should render and date time picker', () => {
       const expectedName = 'test'
+      const expectedDate = new Date()
       const wrapper = shallow(
         <DatePickerWithLabelFormGroup
           name={expectedName}
@@ -33,11 +34,13 @@ describe('date picker with label form group', () => {
           value={new Date()}
           isEditable
           onChange={jest.fn()}
+          maxDate={expectedDate}
         />,
       )
 
       const input = wrapper.find(DateTimePicker)
       expect(input).toHaveLength(1)
+      expect(input.prop('maxDate')).toEqual(expectedDate)
     })
 
     it('should render disabled is isDisable disabled is true', () => {
