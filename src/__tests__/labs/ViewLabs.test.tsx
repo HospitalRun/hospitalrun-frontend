@@ -13,6 +13,7 @@ import LabRepository from 'clients/db/LabRepository'
 import Lab from 'model/Lab'
 import format from 'date-fns/format'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
+import SortRequest from 'clients/db/SortRequest'
 import * as titleUtil from '../../page-header/useTitle'
 
 const mockStore = configureMockStore([thunk])
@@ -158,6 +159,39 @@ describe('View Labs', () => {
       })
 
       expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
+    })
+  })
+
+  describe('sort Request', () => {
+    let findAllSpy: any
+    beforeEach(async () => {
+      const store = mockStore({
+        title: '',
+        user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
+      })
+      findAllSpy = jest.spyOn(LabRepository, 'findAll')
+      findAllSpy.mockResolvedValue([])
+      await act(async () => {
+        await mount(
+          <Provider store={store}>
+            <Router history={createMemoryHistory()}>
+              <ViewLabs />
+            </Router>
+          </Provider>,
+        )
+      })
+    })
+
+    it('should have called findAll with sort request', () => {
+      const sortRequest: SortRequest = {
+        sorts: [
+          {
+            field: 'requestedOn',
+            direction: 'desc',
+          },
+        ],
+      }
+      expect(findAllSpy).toHaveBeenCalledWith(sortRequest)
     })
   })
 })
