@@ -6,19 +6,19 @@ import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 import { useHistory } from 'react-router'
-import LabRepository from 'clients/db/LabRepository'
 import Lab from 'model/Lab'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
 import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
+import { useDispatch, useSelector } from 'react-redux'
+import { requestLab } from 'labs/lab-slice'
+import { RootState } from 'store'
 
 const NewLabRequest = () => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const history = useHistory()
   useTitle(t('labs.requests.new'))
-
-  const [isPatientInvalid, setIsPatientInvalid] = useState(false)
-  const [isTypeInvalid, setIsTypeInvalid] = useState(false)
-  const [typeFeedback, setTypeFeedback] = useState()
+  const { status, error } = useSelector((state: RootState) => state.lab)
 
   const [newLabRequest, setNewLabRequest] = useState({
     patientId: '',
@@ -60,34 +60,21 @@ const NewLabRequest = () => {
 
   const onSave = async () => {
     const newLab = newLabRequest as Lab
-
-    if (!newLab.patientId) {
-      setIsPatientInvalid(true)
-      return
+    const onSuccess = (createdLab: Lab) => {
+      history.push(`/labs/${createdLab.id}`)
     }
 
-    if (!newLab.type) {
-      setIsTypeInvalid(true)
-      setTypeFeedback(t('labs.requests.error.typeRequired'))
-      return
-    }
-
-    newLab.requestedOn = new Date(Date.now().valueOf()).toISOString()
-    const createdLab = await LabRepository.save(newLab)
-    history.push(`/labs/${createdLab.id}`)
+    dispatch(requestLab(newLab, onSuccess))
   }
+
   const onCancel = () => {
     history.push('/labs')
   }
 
   return (
     <>
-      {(isTypeInvalid || isPatientInvalid) && (
-        <Alert
-          color="danger"
-          title={t('states.error')}
-          message={t('labs.requests.error.unableToRequest')}
-        />
+      {status === 'error' && (
+        <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
       )}
       <form>
         <div className="form-group patient-typeahead">
@@ -99,7 +86,7 @@ const NewLabRequest = () => {
             onSearch={async (query: string) => PatientRepository.search(query)}
             searchAccessor="fullName"
             renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
-            isInvalid={isPatientInvalid}
+            isInvalid={!!error.patient}
           />
         </div>
         <TextInputWithLabelFormGroup
@@ -107,8 +94,8 @@ const NewLabRequest = () => {
           label={t('labs.lab.type')}
           isRequired
           isEditable
-          isInvalid={isTypeInvalid}
-          feedback={typeFeedback}
+          isInvalid={!!error.type}
+          feedback={t(error.type || '')}
           value={newLabRequest.type}
           onChange={onLabTypeChange}
         />
