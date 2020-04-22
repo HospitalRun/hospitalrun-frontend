@@ -25,7 +25,7 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({ title: '' })
+      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } })
       titleSpy = jest.spyOn(titleUtil, 'default')
       history.push('/labs/new')
 
@@ -48,7 +48,7 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({ title: '' })
+      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } })
       history.push('/labs/new')
 
       wrapper = mount(
@@ -106,13 +106,50 @@ describe('New Lab Request', () => {
     })
   })
 
+  describe('errors', () => {
+    let wrapper: ReactWrapper
+    const history = createMemoryHistory()
+    const error = {
+      message: 'some message',
+      patient: 'some patient message',
+      type: 'some type error',
+    }
+
+    beforeEach(() => {
+      history.push('/labs/new')
+      const store = mockStore({ title: '', lab: { status: 'error', error } })
+      wrapper = mount(
+        <Provider store={store}>
+          <Router history={history}>
+            <NewLabRequest />
+          </Router>
+        </Provider>,
+      )
+    })
+
+    it('should display errors', () => {
+      const alert = wrapper.find(Alert)
+      const typeInput = wrapper.find(TextInputWithLabelFormGroup)
+      const patientTypeahead = wrapper.find(Typeahead)
+
+      expect(alert.prop('message')).toEqual(error.message)
+      expect(alert.prop('title')).toEqual('states.error')
+      expect(alert.prop('color')).toEqual('danger')
+
+      expect(patientTypeahead.prop('isInvalid')).toBeTruthy()
+
+      expect(typeInput.prop('feedback')).toEqual(error.type)
+      expect(typeInput.prop('isInvalid')).toBeTruthy()
+    })
+  })
+
   describe('on cancel', () => {
     let wrapper: ReactWrapper
     const history = createMemoryHistory()
 
     beforeEach(() => {
       history.push('/labs/new')
-      const store = mockStore({ title: '' })
+      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } })
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
@@ -158,7 +195,7 @@ describe('New Lab Request', () => {
         .mockResolvedValue([{ id: expectedLab.patientId, fullName: 'some full name' }] as Patient[])
 
       history.push('/labs/new')
-      const store = mockStore({ title: '' })
+      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } })
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
@@ -205,67 +242,6 @@ describe('New Lab Request', () => {
         }),
       )
       expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
-    })
-
-    it('should require a patient', async () => {
-      const typeInput = wrapper.find(TextInputWithLabelFormGroup)
-      act(() => {
-        const onChange = typeInput.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedLab.type } })
-      })
-
-      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
-      act(() => {
-        const onChange = notesTextField.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedLab.notes } })
-      })
-      wrapper.update()
-
-      const saveButton = wrapper.find(Button).at(0)
-      await act(async () => {
-        const onClick = saveButton.prop('onClick') as any
-        await onClick()
-      })
-      wrapper.update()
-
-      const alert = wrapper.find(Alert)
-      const typeahead = wrapper.find(Typeahead)
-      expect(alert).toBeDefined()
-      expect(alert.prop('title')).toEqual('states.error')
-      expect(alert.prop('message')).toEqual('labs.requests.error.unableToRequest')
-      expect(typeahead.prop('isInvalid')).toBeTruthy()
-      expect(labRepositorySaveSpy).not.toHaveBeenCalled()
-    })
-
-    it('should require a type', async () => {
-      const patientTypeahead = wrapper.find(Typeahead)
-      await act(async () => {
-        const onChange = patientTypeahead.prop('onChange')
-        await onChange([{ id: expectedLab.patientId }] as Patient[])
-      })
-
-      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
-      act(() => {
-        const onChange = notesTextField.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedLab.notes } })
-      })
-      wrapper.update()
-
-      const saveButton = wrapper.find(Button).at(0)
-      await act(async () => {
-        const onClick = saveButton.prop('onClick') as any
-        await onClick()
-      })
-      wrapper.update()
-
-      const alert = wrapper.find(Alert)
-      const typeInput = wrapper.find(TextInputWithLabelFormGroup)
-      expect(alert).toBeDefined()
-      expect(alert.prop('title')).toEqual('states.error')
-      expect(alert.prop('message')).toEqual('labs.requests.error.unableToRequest')
-      expect(typeInput.prop('isInvalid')).toBeTruthy()
-      expect(typeInput.prop('feedback')).toEqual('labs.requests.error.typeRequired')
-      expect(labRepositorySaveSpy).not.toHaveBeenCalled()
     })
   })
 })
