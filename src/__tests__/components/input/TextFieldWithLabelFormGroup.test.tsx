@@ -26,13 +26,14 @@ describe('text field with label form group', () => {
 
     it('should render label as required if isRequired is true', () => {
       const expectedName = 'test'
+      const expectedRequired = true
       const wrapper = shallow(
         <TextFieldWithLabelFormGroup
           name={expectedName}
           label="test"
           value=""
           isEditable
-          isRequired
+          isRequired={expectedRequired}
           onChange={jest.fn()}
         />,
       )
