@@ -37,7 +37,7 @@ describe('View Labs', () => {
   let titleSpy: any
   let labRepositorySaveSpy: any
   const expectedDate = new Date()
-  const setup = async (lab: Lab, permissions: Permissions[]) => {
+  const setup = async (lab: Lab, permissions: Permissions[], error = {}) => {
     jest.resetAllMocks()
     Date.now = jest.fn(() => expectedDate.valueOf())
     setButtonToolBarSpy = jest.fn()
@@ -53,6 +53,12 @@ describe('View Labs', () => {
       title: '',
       user: {
         permissions,
+      },
+      lab: {
+        lab,
+        patient: mockPatient,
+        error,
+        status: Object.keys(error).length > 0 ? 'error' : 'success',
       },
     })
 
@@ -133,11 +139,11 @@ describe('View Labs', () => {
       } as Lab
       const wrapper = await setup(expectedLab, [Permissions.ViewLab])
 
-      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
+      const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
 
-      expect(notesTextField).toBeDefined()
-      expect(notesTextField.prop('label')).toEqual('labs.lab.result')
-      expect(notesTextField.prop('value')).toEqual(expectedLab.result)
+      expect(resultTextField).toBeDefined()
+      expect(resultTextField.prop('label')).toEqual('labs.lab.result')
+      expect(resultTextField.prop('value')).toEqual(expectedLab.result)
     })
 
     it('should display the notes in the notes text field', async () => {
@@ -149,6 +155,20 @@ describe('View Labs', () => {
       expect(notesTextField).toBeDefined()
       expect(notesTextField.prop('label')).toEqual('labs.lab.notes')
       expect(notesTextField.prop('value')).toEqual(expectedLab.notes)
+    })
+
+    it('should display errors', async () => {
+      const expectedLab = { ...mockLab, status: 'requested' } as Lab
+      const expectedError = { message: 'some message', result: 'some result feedback' }
+      const wrapper = await setup(expectedLab, [Permissions.ViewLab], expectedError)
+
+      const alert = wrapper.find(Alert)
+      const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
+      expect(alert.prop('message')).toEqual(expectedError.message)
+      expect(alert.prop('title')).toEqual('states.error')
+      expect(alert.prop('color')).toEqual('danger')
+      expect(resultTextField.prop('isInvalid')).toBeTruthy()
+      expect(resultTextField.prop('feedback')).toEqual(expectedError.result)
     })
 
     describe('requested lab request', () => {
@@ -342,31 +362,6 @@ describe('View Labs', () => {
         }),
       )
       expect(history.location.pathname).toEqual('/labs')
-    })
-
-    it('should validate that the result has been filled in', async () => {
-      const wrapper = await setup(mockLab, [
-        Permissions.ViewLab,
-        Permissions.CompleteLab,
-        Permissions.CancelLab,
-      ])
-
-      const completeButton = wrapper.find(Button).at(1)
-      await act(async () => {
-        const onClick = completeButton.prop('onClick')
-        await onClick()
-      })
-      wrapper.update()
-
-      const alert = wrapper.find(Alert)
-      const resultField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('title')).toEqual('states.error')
-      expect(alert.prop('message')).toEqual('labs.requests.error.unableToComplete')
-      expect(resultField.prop('isInvalid')).toBeTruthy()
-      expect(resultField.prop('feedback')).toEqual('labs.requests.error.resultRequiredToComplete')
-
-      expect(labRepositorySaveSpy).not.toHaveBeenCalled()
     })
   })
 
