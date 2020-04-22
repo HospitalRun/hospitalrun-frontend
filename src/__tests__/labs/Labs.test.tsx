@@ -34,6 +34,11 @@ describe('Labs', () => {
           user: { permissions: [Permissions.RequestLab] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
+          lab: {
+            lab: { id: 'labId', patientId: 'patientId' } as Lab,
+            patient: { id: 'patientId', fullName: 'some name' },
+            error: {},
+          },
         })
 
         const wrapper = mount(
@@ -74,6 +79,15 @@ describe('Labs', () => {
           user: { permissions: [Permissions.ViewLab] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
+          lab: {
+            lab: {
+              id: 'labId',
+              patientId: 'patientId',
+              requestedOn: new Date().toISOString(),
+            } as Lab,
+            patient: { id: 'patientId', fullName: 'some name' },
+            error: {},
+          },
         })
 
         let wrapper: any
