@@ -24,6 +24,25 @@ describe('text field with label form group', () => {
       expect(label.prop('text')).toEqual(expectedName)
     })
 
+    it('should render label as required if isRequired is true', () => {
+      const expectedName = 'test'
+      const expectedRequired = true
+      const wrapper = shallow(
+        <TextFieldWithLabelFormGroup
+          name={expectedName}
+          label="test"
+          value=""
+          isEditable
+          isRequired={expectedRequired}
+          onChange={jest.fn()}
+        />,
+      )
+
+      const label = wrapper.find(Label)
+      expect(label).toHaveLength(1)
+      expect(label.prop('isRequired')).toBeTruthy()
+    })
+
     it('should render a text field', () => {
       const expectedName = 'test'
       const wrapper = shallow(

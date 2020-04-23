@@ -14,11 +14,11 @@ interface Props {
 }
 
 const TextFieldWithLabelFormGroup = (props: Props) => {
-  const { value, label, name, isEditable, isInvalid, feedback, onChange } = props
+  const { value, label, name, isEditable, isInvalid, isRequired, feedback, onChange } = props
   const id = `${name}TextField`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} isRequired />
+      <Label text={label} htmlFor={id} isRequired={isRequired} />
       <TextField
         rows={4}
         value={value}
