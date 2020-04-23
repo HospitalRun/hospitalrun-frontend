@@ -59,7 +59,10 @@ describe('AppointmentsList', () => {
       const wrapper = setup()
 
       act(() => {
-        wrapper.find(components.Button).at(0).prop('onClick')()
+        wrapper
+          .find(components.Button)
+          .at(0)
+          .prop('onClick')()
       })
       wrapper.update()
 

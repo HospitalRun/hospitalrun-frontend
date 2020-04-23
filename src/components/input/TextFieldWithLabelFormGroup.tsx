@@ -18,7 +18,7 @@ const TextFieldWithLabelFormGroup = (props: Props) => {
   const id = `${name}TextField`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} isRequired />
+      <Label text={label} htmlFor={id} />
       <TextField
         rows={4}
         value={value}
