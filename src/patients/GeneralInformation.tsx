@@ -12,11 +12,19 @@ import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabe
 interface Feedback {
   givenName: string
   dateOfBirth: string
+  suffix: string
+  prefix: string
+  familyName: string
+  preferredLanguage: string
 }
 
 interface InvalidFields {
   givenName: boolean
   dateOfBirth: boolean
+  suffix: boolean
+  prefix: boolean
+  familyName: boolean
+  preferredLanguage: boolean
 }
 
 interface Props {
@@ -72,6 +80,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'prefix')
               }}
+              isInvalid={invalidFields?.prefix}
+              feedback={feedbackFields?.prefix}
             />
           </div>
           <div className="col-md-4">
@@ -97,6 +107,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'familyName')
               }}
+              isInvalid={invalidFields?.familyName}
+              feedback={feedbackFields?.familyName}
             />
           </div>
           <div className="col-md-2">
@@ -108,6 +120,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'suffix')
               }}
+              isInvalid={invalidFields?.suffix}
+              feedback={feedbackFields?.suffix}
             />
           </div>
         </div>
@@ -207,6 +221,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'preferredLanguage')
               }}
+              isInvalid={invalidFields?.preferredLanguage}
+              feedback={feedbackFields?.preferredLanguage}
             />
           </div>
         </div>

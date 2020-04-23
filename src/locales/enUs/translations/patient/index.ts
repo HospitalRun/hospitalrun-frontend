@@ -93,6 +93,11 @@ export default {
       updatePatientError: 'Could not update patient.',
       patientGivenNameFeedback: 'Given Name is required.',
       patientDateOfBirthFeedback: 'Date of Birth can not be greater than today',
+      patientSuffixFeedback: 'Suffix cannot contain numbers.',
+      patientPrefixFeedback: 'Prefix cannot contain numbers.',
+      patientFamilyNameFeedback: 'Family Name cannot contain numbers.',
+      patientPreferredLanguageFeedback: 'Preferred Language cannot contain numbers.',
+      patientGivenNameContainNumFeedback: 'Given Name cannot contain numbers.',
     },
   },
 }

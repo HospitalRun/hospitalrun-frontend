@@ -27,10 +27,18 @@ const NewPatient = () => {
   const [invalidFields, setInvalidFields] = useState({
     givenName: false,
     dateOfBirth: false,
+    suffix: false,
+    prefix: false,
+    familyName: false,
+    preferredLanguage: false,
   })
   const [feedbackFields, setFeedbackFields] = useState({
     givenName: '',
     dateOfBirth: '',
+    suffix: '',
+    prefix: '',
+    familyName: '',
+    preferredLanguage: '',
   })
 
   useTitle(t('patients.newPatient'))
@@ -51,6 +59,7 @@ const NewPatient = () => {
 
   const validateInput = () => {
     let inputIsValid = true
+    const regexContainsNumber = /\d/
 
     if (!patient.givenName) {
       inputIsValid = false
@@ -78,6 +87,77 @@ const NewPatient = () => {
         }))
       }
     }
+    if (patient.suffix) {
+      if (regexContainsNumber.test(patient.suffix)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.createPatientError'))
+        setInvalidFields((prevState) => ({
+          ...prevState,
+          suffix: true,
+        }))
+        setFeedbackFields((prevState) => ({
+          ...prevState,
+          suffix: t('patient.errors.patientSuffixFeedback'),
+        }))
+      }
+    }
+    if (patient.prefix) {
+      if (regexContainsNumber.test(patient.prefix)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.createPatientError'))
+        setInvalidFields((prevState) => ({
+          ...prevState,
+          prefix: true,
+        }))
+        setFeedbackFields((prevState) => ({
+          ...prevState,
+          prefix: t('patient.errors.patientPrefixFeedback'),
+        }))
+      }
+    }
+    if (patient.familyName) {
+      if (regexContainsNumber.test(patient.familyName)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.createPatientError'))
+        setInvalidFields((prevState) => ({
+          ...prevState,
+          familyName: true,
+        }))
+        setFeedbackFields((prevState) => ({
+          ...prevState,
+          familyName: t('patient.errors.patientFamilyNameFeedback'),
+        }))
+      }
+    }
+    if (patient.givenName) {
+      if (regexContainsNumber.test(patient.givenName)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.createPatientError'))
+        setInvalidFields((prevState) => ({
+          ...prevState,
+          givenName: true,
+        }))
+        setFeedbackFields((prevState) => ({
+          ...prevState,
+          givenName: t('patient.errors.patientGivenNameContainNumFeedback'),
+        }))
+      }
+    }
+    if (patient.preferredLanguage) {
+      if (regexContainsNumber.test(patient.preferredLanguage)) {
+        inputIsValid = false
+        setErrorMessage(t('patient.errors.createPatientError'))
+        setInvalidFields((prevState) => ({
+          ...prevState,
+          preferredLanguage: true,
+        }))
+        setFeedbackFields((prevState) => ({
+          ...prevState,
+          preferredLanguage: t('patient.errors.patientPreferredLanguageFeedback'),
+        }))
+      }
+    }
+
     return inputIsValid
   }
 
