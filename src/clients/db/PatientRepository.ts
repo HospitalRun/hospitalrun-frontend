@@ -13,12 +13,13 @@ export class PatientRepository extends Repository<Patient> {
   }
 
   async search(text: string): Promise<Patient[]> {
+    const cleanText = text.replace(/\\/g, '')
     return super.search({
       selector: {
         $or: [
           {
             fullName: {
-              $regex: RegExp(text, 'i'),
+              $regex: RegExp(cleanText, 'i'),
             },
           },
           {
