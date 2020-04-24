@@ -6,5 +6,5 @@ github:
     pullRequestsFromForks: true
     addCheck: true
     addComment: true
-    addBadge: true
+    addBadge: false
     addLabel: false
