@@ -214,6 +214,12 @@ describe('Edit Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
     expect(generalInformationForm.prop('errorMessage')).toBe('')
 
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('suffix', '1234567890')
+    })
+
+    wrapper.update()
+
     const saveButton = wrapper.find(Button).at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
@@ -223,6 +229,7 @@ describe('Edit Patient', () => {
     })
 
     wrapper.update()
+    console.log(wrapper.find(GeneralInformation).prop('feedbackFields'))
     expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
       'patient.errors.updatePatientError',
     )
@@ -232,4 +239,139 @@ describe('Edit Patient', () => {
     expect(wrapper.update.isInvalid === true)
   })
 
+  it('should pass prefix contains number error when prefix form contains a number on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+    expect(generalInformationForm.prop('errorMessage')).toBe('')
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('prefix', '1234567890')
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
+    wrapper.update()
+    console.log(wrapper.find(GeneralInformation).prop('feedbackFields'))
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.updatePatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').prefix).toMatch(
+      'patient.errors.patientPrefixFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
+
+  it('should pass family name contains number error when family name form contains a number on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+    expect(generalInformationForm.prop('errorMessage')).toBe('')
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('familyName', '1234567890')
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
+    wrapper.update()
+    console.log(wrapper.find(GeneralInformation).prop('feedbackFields'))
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.updatePatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').familyName).toMatch(
+      'patient.errors.patientFamilyNameFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
+
+  it('should pass preferred language contains number error when preferred language form contains a number on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+    expect(generalInformationForm.prop('errorMessage')).toBe('')
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('preferredLanguage', '1234567890')
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
+    wrapper.update()
+    console.log(wrapper.find(GeneralInformation).prop('feedbackFields'))
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.updatePatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').preferredLanguage).toMatch(
+      'patient.errors.patientPreferredLanguageFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
+
+  it('should pass given name contains number error when given name form contains a number on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+    expect(generalInformationForm.prop('errorMessage')).toBe('')
+
+    act(() => {
+      generalInformationForm.prop('onFieldChange')('givenName', '1234567890')
+    })
+
+    wrapper.update()
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
+    wrapper.update()
+    console.log(wrapper.find(GeneralInformation).prop('feedbackFields'))
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.updatePatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').givenName).toMatch(
+      'patient.errors.patientGivenNameContainNumFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
 })
