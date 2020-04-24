@@ -204,4 +204,32 @@ describe('Edit Patient', () => {
     wrapper.update()
     expect(history.location.pathname).toEqual('/patients/123')
   })
+
+  it('should pass suffix contains number error when suffix form contains a number on save button click', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+    expect(generalInformationForm.prop('errorMessage')).toBe('')
+
+    const saveButton = wrapper.find(Button).at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+
+    wrapper.update()
+    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
+      'patient.errors.updatePatientError',
+    )
+    expect(wrapper.find(GeneralInformation).prop('feedbackFields').suffix).toMatch(
+      'patient.errors.patientSuffixFeedback',
+    )
+    expect(wrapper.update.isInvalid === true)
+  })
+
 })
