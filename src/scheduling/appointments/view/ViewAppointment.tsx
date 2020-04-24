@@ -14,7 +14,7 @@ import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 
 const ViewAppointment = () => {
   const { t } = useTranslation()
-  useTitle(t('scheduling.appointments.viewAppointment'))
+  useTitle(t('Appointments'))
   const dispatch = useDispatch()
   const { id } = useParams()
   const history = useHistory()
