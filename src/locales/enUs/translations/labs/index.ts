@@ -23,6 +23,7 @@ export default {
       requestedOn: 'Requested On',
       completedOn: 'Completed On',
       canceledOn: 'Canceled On',
+      patient: 'Patient',
     },
   },
 }
