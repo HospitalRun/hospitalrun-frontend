@@ -61,6 +61,16 @@ const NewPatient = () => {
     let inputIsValid = true
     const regexContainsNumber = /\d/
 
+    setInvalidFields((prevState) => ({
+      ...prevState,
+      givenName: false,
+      dateOfBirth: false,
+      suffix: false,
+      prefix: false,
+      familyName: false,
+      preferredLanguage: false,
+    }))
+
     if (!patient.givenName) {
       inputIsValid = false
       setErrorMessage(t('patient.errors.createPatientError'))
