@@ -6,6 +6,7 @@ import translationAR from './locales/ar/translations'
 import translationDE from './locales/de/translations'
 import translationEnUs from './locales/enUs/translations'
 import translationES from './locales/es/translations'
+import translationFR from './locales/fr/translations'
 import translationIN from './locales/in/translations'
 import translationJA from './locales/ja/translations'
 import translationPtBR from './locales/ptBr/translations'
@@ -24,6 +25,9 @@ const resources = {
   },
   es: {
     translation: translationES,
+  },
+  fr: {
+    translation: translationFR,
   },
   in: {
     translation: translationIN,
