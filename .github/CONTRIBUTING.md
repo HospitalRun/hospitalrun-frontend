@@ -22,6 +22,12 @@ To contribute,
 5. Install dependencies: `yarn`
 6. Run the application `yarn start`
 
+## Online one-click setup for contributing
+
+Contribute to HospitalRun using a fully featured online development environment that will automatically: clone the repo, install the dependencies and start the webserver.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
+
 ### Optionally configure HospitalRun Server
 
 In most cases, this is not needed to contribute to the HospitalRun Frontend Repository. The following instructions are for connecting to HospitalRun Server during development and are not intended to be for production use. For production deployments, see the deployment instructions/
