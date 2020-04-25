@@ -13,7 +13,7 @@
     "i18next": "~19.4.0",
     "i18next-browser-languagedetector": "~4.1.0",
     "i18next-xhr-backend": "~3.2.2",
-    "node-sass": "~4.13.0",
+    "node-sass": "~4.14.0",
     "pouchdb": "~7.2.1",
     "pouchdb-adapter-memory": "~7.2.1",
     "pouchdb-find": "~7.2.1",
