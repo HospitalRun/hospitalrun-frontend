@@ -1,8 +1,9 @@
 import '../../__mocks__/matchMediaMock'
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
-import * as components from '@hospitalrun/components'
-
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import * as uuid from '../../util/uuid'
 import patient, {
   fetchPatientStart,
   fetchPatientSuccess,
@@ -13,9 +14,19 @@ import patient, {
   updatePatientStart,
   updatePatientSuccess,
   updatePatient,
+  addRelatedPerson,
+  addDiagnosis,
+  addAllergy,
+  removeRelatedPerson,
 } from '../../patients/patient-slice'
 import Patient from '../../model/Patient'
 import PatientRepository from '../../clients/db/PatientRepository'
+import { RootState } from '../../store'
+import RelatedPerson from '../../model/RelatedPerson'
+import Diagnosis from '../../model/Diagnosis'
+import Allergy from '../../model/Allergy'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('patients slice', () => {
   beforeEach(() => {
@@ -264,7 +275,6 @@ describe('patients slice', () => {
 
     it('should call the onSuccess function', async () => {
       const onSuccessSpy = jest.fn()
-      jest.spyOn(components, 'Toast')
       const expectedPatientId = 'sliceId11'
       const fullName = 'John Doe II'
       const expectedPatient = {
@@ -280,6 +290,146 @@ describe('patients slice', () => {
 
       expect(onSuccessSpy).toHaveBeenCalled()
       expect(onSuccessSpy).toHaveBeenCalledWith(expectedPatient)
+    })
+  })
+
+  describe('add related person', () => {
+    it('should add the related person to the patient with the given id', async () => {
+      const expectedRelatedPersonId = 'expected id'
+      const store = mockStore()
+      const expectedPatientId = '123'
+
+      const expectedPatient = {
+        id: expectedPatientId,
+      } as Patient
+
+      const expectedRelatedPerson = {
+        patientId: '456',
+        type: '1234',
+      } as RelatedPerson
+
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        relatedPersons: [{ ...expectedRelatedPerson, id: expectedRelatedPersonId }],
+      } as Patient
+
+      const findPatientSpy = jest
+        .spyOn(PatientRepository, 'find')
+        .mockResolvedValue(expectedPatient)
+      jest.spyOn(uuid, 'uuid').mockReturnValue(expectedRelatedPersonId)
+      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(addRelatedPerson(expectedPatientId, expectedRelatedPerson, onSuccessSpy))
+
+      expect(findPatientSpy).toHaveBeenCalledWith(expectedPatientId)
+      expect(store.getActions()[1]).toEqual(updatePatientSuccess(expectedUpdatedPatient))
+      expect(onSuccessSpy).toHaveBeenCalledWith(expectedUpdatedPatient)
+    })
+  })
+
+  describe('remove related person', () => {
+    it('should remove the related related person rom patient with the given id', async () => {
+      const store = mockStore()
+
+      const expectedRelatedPersonPatientId = 'expected id'
+      const expectedPatientId = '123'
+
+      const expectedRelatedPerson = {
+        id: 'some id',
+        patientId: expectedRelatedPersonPatientId,
+        type: 'some type',
+      } as RelatedPerson
+
+      const expectedPatient = {
+        id: expectedPatientId,
+        relatedPersons: [expectedRelatedPerson],
+      } as Patient
+
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        relatedPersons: [],
+      } as Patient
+
+      const findPatientSpy = jest
+        .spyOn(PatientRepository, 'find')
+        .mockResolvedValue(expectedPatient)
+      jest.spyOn(uuid, 'uuid').mockReturnValue(expectedRelatedPersonPatientId)
+      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
+
+      await store.dispatch(removeRelatedPerson(expectedPatientId, expectedRelatedPersonPatientId))
+
+      expect(findPatientSpy).toHaveBeenCalledWith(expectedPatientId)
+      expect(store.getActions()[1]).toEqual(updatePatientSuccess(expectedUpdatedPatient))
+    })
+  })
+
+  describe('add diagnosis', () => {
+    it('should add the diagnosis to the patient with the given id', async () => {
+      const expectedDiagnosisId = 'expected id'
+      const store = mockStore()
+      const expectedPatientId = '123'
+
+      const expectedPatient = {
+        id: expectedPatientId,
+      } as Patient
+
+      const expectedDiagnosis = {
+        diagnosisDate: new Date().toISOString(),
+        name: 'diagnosis name',
+      } as Diagnosis
+
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        diagnoses: [{ ...expectedDiagnosis, id: expectedDiagnosisId }],
+      } as Patient
+
+      const findPatientSpy = jest
+        .spyOn(PatientRepository, 'find')
+        .mockResolvedValue(expectedPatient)
+      jest.spyOn(uuid, 'uuid').mockReturnValue(expectedDiagnosisId)
+      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(addDiagnosis(expectedPatientId, expectedDiagnosis, onSuccessSpy))
+
+      expect(findPatientSpy).toHaveBeenCalledWith(expectedPatientId)
+      expect(store.getActions()[1]).toEqual(updatePatientSuccess(expectedUpdatedPatient))
+      expect(onSuccessSpy).toHaveBeenCalledWith(expectedUpdatedPatient)
+    })
+  })
+
+  describe('add allergy', () => {
+    it('should add the allergy to the patient with the given id', async () => {
+      const expectedAllergyId = 'expected id'
+      const store = mockStore()
+      const expectedPatientId = '123'
+
+      const expectedPatient = {
+        id: expectedPatientId,
+      } as Patient
+
+      const expectedAllergy = {
+        name: 'allergy name',
+      } as Allergy
+
+      const expectedUpdatedPatient = {
+        ...expectedPatient,
+        allergies: [{ ...expectedAllergy, id: expectedAllergyId }],
+      } as Patient
+
+      const findPatientSpy = jest
+        .spyOn(PatientRepository, 'find')
+        .mockResolvedValue(expectedPatient)
+      jest.spyOn(uuid, 'uuid').mockReturnValue(expectedAllergyId)
+      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(addAllergy(expectedPatientId, expectedAllergy, onSuccessSpy))
+
+      expect(findPatientSpy).toHaveBeenCalledWith(expectedPatientId)
+      expect(store.getActions()[1]).toEqual(updatePatientSuccess(expectedUpdatedPatient))
+      expect(onSuccessSpy).toHaveBeenCalledWith(expectedUpdatedPatient)
     })
   })
 })

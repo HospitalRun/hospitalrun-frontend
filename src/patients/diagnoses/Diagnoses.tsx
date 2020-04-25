@@ -7,8 +7,7 @@ import Permissions from 'model/Permissions'
 import { Button, List, ListItem, Alert, Toast } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import Diagnosis from 'model/Diagnosis'
-import { getTimestampId } from 'patients/util/timestamp-id-generator'
-import { updatePatient } from 'patients/patient-slice'
+import { addDiagnosis } from 'patients/patient-slice'
 import AddDiagnosisModal from './AddDiagnosisModal'
 
 interface Props {
@@ -40,15 +39,7 @@ const Diagnoses = (props: Props) => {
   }
 
   const onDiagnosisSave = (diagnosis: Diagnosis) => {
-    diagnosis.id = getTimestampId()
-    const diagnoses = []
-    if (patient.diagnoses) {
-      diagnoses.push(...patient.diagnoses)
-    }
-    diagnoses.push(diagnosis)
-    const patientToUpdate = { ...patient, diagnoses }
-    dispatch(updatePatient(patientToUpdate, onAddDiagnosisSuccess))
-    setShowDiagnosisModal(false)
+    dispatch(addDiagnosis(patient.id, diagnosis, onAddDiagnosisSuccess))
   }
 
   return (

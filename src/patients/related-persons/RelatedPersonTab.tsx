@@ -5,7 +5,7 @@ import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import Patient from 'model/Patient'
-import { updatePatient } from 'patients/patient-slice'
+import { addRelatedPerson, removeRelatedPerson } from 'patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
@@ -71,20 +71,7 @@ const RelatedPersonTab = (props: Props) => {
   }
 
   const onRelatedPersonSave = (relatedPerson: RelatedPerson) => {
-    const newRelatedPersons: RelatedPerson[] = []
-
-    if (patient.relatedPersons) {
-      newRelatedPersons.push(...patient.relatedPersons)
-    }
-
-    newRelatedPersons.push(relatedPerson)
-
-    const patientToUpdate = {
-      ...patient,
-      relatedPersons: newRelatedPersons,
-    }
-
-    dispatch(updatePatient(patientToUpdate, onAddRelatedPersonSuccess))
+    dispatch(addRelatedPerson(patient.id, relatedPerson, onAddRelatedPersonSuccess))
     closeNewRelatedPersonModal()
   }
 
@@ -93,13 +80,7 @@ const RelatedPersonTab = (props: Props) => {
     relatedPerson: Patient,
   ) => {
     event.stopPropagation()
-    const patientToUpdate = { ...patient }
-    const newRelatedPersons = patientToUpdate.relatedPersons?.filter(
-      (r) => r.patientId !== relatedPerson.id,
-    )
-    patientToUpdate.relatedPersons = newRelatedPersons
-
-    dispatch(updatePatient(patientToUpdate))
+    dispatch(removeRelatedPerson(patient.id, relatedPerson.id))
   }
 
   return (

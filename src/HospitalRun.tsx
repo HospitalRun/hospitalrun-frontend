@@ -13,13 +13,10 @@ import Labs from 'labs/Labs'
 import Sidebar from './components/Sidebar'
 import Permissions from './model/Permissions'
 import Dashboard from './dashboard/Dashboard'
-import ViewPatients from './patients/list/ViewPatients'
-import NewPatient from './patients/new/NewPatient'
-import EditPatient from './patients/edit/EditPatient'
-import ViewPatient from './patients/view/ViewPatient'
 import { RootState } from './store'
 import Navbar from './components/Navbar'
 import PrivateRoute from './components/PrivateRoute'
+import Patients from './patients/Patients'
 
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
@@ -47,32 +44,7 @@ const HospitalRun = () => {
               <div>
                 <Switch>
                   <Route exact path="/" component={Dashboard} />
-                  <PrivateRoute
-                    isAuthenticated={permissions.includes(Permissions.ReadPatients)}
-                    exact
-                    path="/patients"
-                    component={ViewPatients}
-                  />
-                  <PrivateRoute
-                    isAuthenticated={permissions.includes(Permissions.WritePatients)}
-                    exact
-                    path="/patients/new"
-                    component={NewPatient}
-                  />
-                  <PrivateRoute
-                    isAuthenticated={
-                      permissions.includes(Permissions.WritePatients) &&
-                      permissions.includes(Permissions.ReadPatients)
-                    }
-                    exact
-                    path="/patients/edit/:id"
-                    component={EditPatient}
-                  />
-                  <PrivateRoute
-                    isAuthenticated={permissions.includes(Permissions.ReadPatients)}
-                    path="/patients/:id"
-                    component={ViewPatient}
-                  />
+
                   <PrivateRoute
                     isAuthenticated={permissions.includes(Permissions.ReadAppointments)}
                     exact
@@ -100,6 +72,7 @@ const HospitalRun = () => {
                     path="/appointments/:id"
                     component={ViewAppointment}
                   />
+                  <PrivateRoute isAuthenticated path="/patients" component={Patients} />
                   <PrivateRoute isAuthenticated path="/labs" component={Labs} />
                 </Switch>
               </div>

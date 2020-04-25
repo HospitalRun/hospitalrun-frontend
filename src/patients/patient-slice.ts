@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { uuid } from '../util/uuid'
 import Patient from '../model/Patient'
 import PatientRepository from '../clients/db/PatientRepository'
 import { AppThunk } from '../store'
+import RelatedPerson from '../model/RelatedPerson'
+import Diagnosis from '../model/Diagnosis'
+import Allergy from '../model/Allergy'
 
 interface PatientState {
   isLoading: boolean
@@ -81,6 +85,59 @@ export const updatePatient = (
   if (onSuccess) {
     onSuccess(updatedPatient)
   }
+}
+
+export const addRelatedPerson = (
+  patientId: string,
+  relatedPerson: RelatedPerson,
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  relatedPerson.id = uuid()
+  const patient = await PatientRepository.find(patientId)
+  const relatedPersons = patient.relatedPersons || []
+  relatedPersons.push(relatedPerson)
+  patient.relatedPersons = relatedPersons
+
+  await dispatch(updatePatient(patient, onSuccess))
+}
+
+export const removeRelatedPerson = (
+  patientId: string,
+  relatedPersonId: string,
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  const patient = await PatientRepository.find(patientId)
+  patient.relatedPersons = patient.relatedPersons?.filter((r) => r.patientId !== relatedPersonId)
+
+  await dispatch(updatePatient(patient, onSuccess))
+}
+
+export const addDiagnosis = (
+  patientId: string,
+  diagnosis: Diagnosis,
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  diagnosis.id = uuid()
+  const patient = await PatientRepository.find(patientId)
+  const diagnoses = patient.diagnoses || []
+  diagnoses.push(diagnosis)
+  patient.diagnoses = diagnoses
+
+  await dispatch(updatePatient(patient, onSuccess))
+}
+
+export const addAllergy = (
+  patientId: string,
+  allergy: Allergy,
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  allergy.id = uuid()
+  const patient = await PatientRepository.find(patientId)
+  const allergies = patient.allergies || []
+  allergies.push(allergy)
+  patient.allergies = allergies
+
+  await dispatch(updatePatient(patient, onSuccess))
 }
 
 export default patientSlice.reducer

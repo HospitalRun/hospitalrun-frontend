@@ -7,8 +7,7 @@ import { RootState } from 'store'
 import Permissions from 'model/Permissions'
 import { useTranslation } from 'react-i18next'
 import Allergy from 'model/Allergy'
-import { updatePatient } from 'patients/patient-slice'
-import { getTimestampId } from 'patients/util/timestamp-id-generator'
+import { addAllergy } from 'patients/patient-slice'
 import NewAllergyModal from './NewAllergyModal'
 
 interface AllergiesProps {
@@ -35,15 +34,7 @@ const Allergies = (props: AllergiesProps) => {
   }
 
   const onAddAllergy = (allergy: Allergy) => {
-    allergy.id = getTimestampId()
-    const allergies = []
-    if (patient.allergies) {
-      allergies.push(...patient.allergies)
-    }
-
-    allergies.push(allergy)
-    const patientToUpdate = { ...patient, allergies }
-    dispatch(updatePatient(patientToUpdate, onAddAllergySuccess))
+    dispatch(addAllergy(patient.id, allergy, onAddAllergySuccess))
   }
 
   return (

@@ -11,7 +11,6 @@ import { Provider } from 'react-redux'
 import Patient from 'model/Patient'
 import * as components from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { mocked } from 'ts-jest/utils'
 import PatientRepository from 'clients/db/PatientRepository'
 import Allergy from 'model/Allergy'
 import NewAllergyModal from 'patients/allergies/NewAllergyModal'
@@ -88,8 +87,8 @@ describe('Allergies', () => {
         allergies: [...(expectedPatient.allergies as any), expectedAllergy],
       } as Patient
 
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
+      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
+      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
 
       const wrapper = setup()
 
@@ -98,7 +97,7 @@ describe('Allergies', () => {
         await modal.prop('onSave')(expectedAllergy)
       })
 
-      expect(mockedPatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedUpdatedPatient)
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedUpdatedPatient)
       expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
       expect(store.getActions()).toContainEqual(
         patientSlice.updatePatientSuccess(expectedUpdatedPatient),
@@ -107,16 +106,14 @@ describe('Allergies', () => {
 
     it('should display a success message after the allergy is successfully added', async () => {
       jest.spyOn(components, 'Toast')
-      const mockedComponents = mocked(components, true)
-
       const expectedAllergy = { name: 'name' } as Allergy
       const expectedUpdatedPatient = {
         ...expectedPatient,
         allergies: [...(expectedPatient.allergies as any), expectedAllergy],
       } as Patient
 
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
+      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
+      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
 
       const wrapper = setup()
 
@@ -125,7 +122,7 @@ describe('Allergies', () => {
         await modal.prop('onSave')(expectedAllergy)
       })
 
-      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+      expect(components.Toast).toHaveBeenCalledWith(
         'success',
         'states.success',
         'patient.allergies.successfullyAdded',
