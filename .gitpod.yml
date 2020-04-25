@@ -1,3 +1,11 @@
+tasks:
+  - init: yarn
+    command: yarn run start
+
+ports:
+  - port: 3000
+    onOpen: open-preview
+
 github:
   prebuilds:
     master: true
