@@ -4,6 +4,10 @@ export default {
     appointments: {
       label: 'Agendamantos',
       new: 'Novo Agendamento',
+      schedule: 'Agenda de compromissos',
+      editAppointment: 'Editar um compromisso',
+      deleteAppointment: 'Eliminar um compromisso',
+      viewAppointment: 'Ver um compromisso',
     },
     appointment: {
       startDate: 'Data de início',
@@ -24,6 +28,8 @@ export default {
       },
       reason: 'Razão',
       patient: 'Paciente',
+      deleteConfirmationMessage: 'Tem a certeza de que deseja eliminar este compromisso?',
+      successfullyCreated: 'Compromisso criado com sucesso',
     },
   },
 }
