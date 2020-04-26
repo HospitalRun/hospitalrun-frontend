@@ -17,6 +17,7 @@ import { RootState } from './store'
 import Navbar from './components/Navbar'
 import PrivateRoute from './components/PrivateRoute'
 import Patients from './patients/Patients'
+import Incidents from './incidents/Incidents'
 
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
@@ -74,6 +75,7 @@ const HospitalRun = () => {
                   />
                   <PrivateRoute isAuthenticated path="/patients" component={Patients} />
                   <PrivateRoute isAuthenticated path="/labs" component={Labs} />
+                  <PrivateRoute isAuthenticated path="/incidents" component={Incidents} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />

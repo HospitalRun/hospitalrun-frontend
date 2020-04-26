@@ -20,6 +20,7 @@ import Patient from '../model/Patient'
 import Appointment from '../model/Appointment'
 import HospitalRun from '../HospitalRun'
 import Permissions from '../model/Permissions'
+import Incidents from '../incidents/Incidents'
 
 const mockStore = configureMockStore([thunk])
 
@@ -253,6 +254,52 @@ describe('HospitalRun', () => {
         )
 
         expect(wrapper.find(ViewLabs)).toHaveLength(0)
+        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
+    })
+
+    describe('/incidents', () => {
+      it('should render the Incidents component when /incidents is accessed', async () => {
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [Permissions.ViewIncidents] },
+          breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
+        })
+
+        let wrapper: any
+        await act(async () => {
+          wrapper = await mount(
+            <Provider store={store}>
+              <MemoryRouter initialEntries={['/incidents']}>
+                <HospitalRun />
+              </MemoryRouter>
+            </Provider>,
+          )
+        })
+        wrapper.update()
+
+        expect(wrapper.find(Incidents)).toHaveLength(1)
+      })
+
+      it('should render the dashboard if the user does not have permissions to view incidents', () => {
+        jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [] },
+          breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
+        })
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <MemoryRouter initialEntries={['/incidents']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(Incidents)).toHaveLength(0)
         expect(wrapper.find(Dashboard)).toHaveLength(1)
       })
     })

@@ -19,6 +19,9 @@ const initialState: UserState = {
     Permissions.RequestLab,
     Permissions.CompleteLab,
     Permissions.CancelLab,
+    Permissions.ViewIncident,
+    Permissions.ViewIncidents,
+    Permissions.ReportIncident,
   ],
 }
 
