@@ -28,26 +28,26 @@ const Appointments = () => {
   const { appointments } = useSelector((state: RootState) => state.appointments)
   const [events, setEvents] = useState<Event[]>([])
   const setButtonToolBar = useButtonToolbarSetter()
-  setButtonToolBar([
-    <Button
-      key="newAppointmentButton"
-      outlined
-      color="success"
-      icon="appointment-add"
-      onClick={() => history.push('/appointments/new')}
-    >
-      {t('scheduling.appointments.new')}
-    </Button>,
-  ])
   useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
     dispatch(fetchAppointments())
+    setButtonToolBar([
+      <Button
+        key="newAppointmentButton"
+        outlined
+        color="success"
+        icon="appointment-add"
+        onClick={() => history.push('/appointments/new')}
+      >
+        {t('scheduling.appointments.new')}
+      </Button>,
+    ])
 
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, setButtonToolBar])
+  }, [dispatch, setButtonToolBar, history, t])
 
   useEffect(() => {
     const getAppointments = async () => {
