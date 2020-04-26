@@ -411,7 +411,7 @@ describe('HospitalRun', () => {
     })
 
     describe('/labs', () => {
-      it('should render the Labs component when /labs is accessed', () => {
+      it('should render the Labs component when /labs is accessed', async () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
@@ -420,18 +420,22 @@ describe('HospitalRun', () => {
           components: { sidebarCollapsed: false },
         })
 
-        const wrapper = mount(
-          <Provider store={store}>
-            <MemoryRouter initialEntries={['/labs']}>
-              <HospitalRun />
-            </MemoryRouter>
-          </Provider>,
-        )
+        let wrapper: any
+        await act(async () => {
+          wrapper = await mount(
+            <Provider store={store}>
+              <MemoryRouter initialEntries={['/labs']}>
+                <HospitalRun />
+              </MemoryRouter>
+            </Provider>,
+          )
+        })
+        wrapper.update()
 
         expect(wrapper.find(ViewLabs)).toHaveLength(1)
       })
 
-      it('should render the dasboard if the user does not have permissions to view labs', () => {
+      it('should render the dashboard if the user does not have permissions to view labs', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',

@@ -95,7 +95,7 @@ const NewLabRequest = () => {
           isRequired
           isEditable
           isInvalid={!!error.type}
-          feedback={t(error.type || '')}
+          feedback={t(error.type as string)}
           value={newLabRequest.type}
           onChange={onLabTypeChange}
         />

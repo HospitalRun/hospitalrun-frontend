@@ -22,17 +22,6 @@ const Patients = () => {
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 
   const setButtonToolBar = useButtonToolbarSetter()
-  setButtonToolBar([
-    <Button
-      key="newPatientButton"
-      outlined
-      color="success"
-      icon="patient-add"
-      onClick={() => history.push('/patients/new')}
-    >
-      {t('patients.newPatient')}
-    </Button>,
-  ])
 
   const [searchText, setSearchText] = useState<string>('')
 
@@ -45,28 +34,25 @@ const Patients = () => {
   useEffect(() => {
     dispatch(fetchPatients())
 
+    setButtonToolBar([
+      <Button
+        key="newPatientButton"
+        outlined
+        color="success"
+        icon="patient-add"
+        onClick={() => history.push('/patients/new')}
+      >
+        {t('patients.newPatient')}
+      </Button>,
+    ])
+
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, setButtonToolBar])
+  }, [dispatch, setButtonToolBar, t, history])
 
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
-
-  const listBody = (
-    <tbody>
-      {patients.map((p) => (
-        <tr key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
-          <td>{p.code}</td>
-          <td>{p.givenName}</td>
-          <td>{p.familyName}</td>
-          <td>{p.sex}</td>
-          <td>{p.dateOfBirth ? format(new Date(p.dateOfBirth), 'yyyy-MM-dd') : ''}</td>
-        </tr>
-      ))}
-    </tbody>
-  )
-
-  const list = (
+  const table = (
     <table className="table table-hover">
       <thead className="thead-light ">
         <tr>
@@ -77,7 +63,17 @@ const Patients = () => {
           <th>{t('patient.dateOfBirth')}</th>
         </tr>
       </thead>
-      {isLoading ? loadingIndicator : listBody}
+      <tbody>
+        {patients.map((p) => (
+          <tr key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
+            <td>{p.code}</td>
+            <td>{p.givenName}</td>
+            <td>{p.familyName}</td>
+            <td>{p.sex}</td>
+            <td>{p.dateOfBirth ? format(new Date(p.dateOfBirth), 'yyyy-MM-dd') : ''}</td>
+          </tr>
+        ))}
+      </tbody>
     </table>
   )
 
@@ -99,7 +95,7 @@ const Patients = () => {
         </Column>
       </Row>
 
-      <Row>{list}</Row>
+      <Row> {isLoading ? loadingIndicator : table}</Row>
     </Container>
   )
 }
