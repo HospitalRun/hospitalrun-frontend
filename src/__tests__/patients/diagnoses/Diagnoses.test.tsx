@@ -13,8 +13,6 @@ import Diagnoses from 'patients/diagnoses/Diagnoses'
 import * as components from '@hospitalrun/components'
 import { act } from 'react-dom/test-utils'
 import PatientRepository from 'clients/db/PatientRepository'
-import AddDiagnosisModal from 'patients/diagnoses/AddDiagnosisModal'
-import * as patientSlice from '../../../patients/patient-slice'
 
 const expectedPatient = {
   id: '123',
@@ -74,62 +72,6 @@ describe('Diagnoses', () => {
       wrapper.update()
 
       expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
-    })
-
-    it('should update the patient with the new diagnosis when the save button is clicked', async () => {
-      const expectedDiagnosis = {
-        name: 'name',
-        diagnosisDate: new Date().toISOString(),
-      } as Diagnosis
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        diagnoses: [...(expectedPatient.diagnoses as any), expectedDiagnosis],
-      } as Patient
-
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
-      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
-
-      const wrapper = setup()
-
-      await act(async () => {
-        const modal = wrapper.find(AddDiagnosisModal)
-        await modal.prop('onSave')(expectedDiagnosis)
-      })
-
-      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedUpdatedPatient)
-      expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
-      expect(store.getActions()).toContainEqual(
-        patientSlice.updatePatientSuccess(expectedUpdatedPatient),
-      )
-    })
-
-    it('should display a success message when successfully added', async () => {
-      jest.spyOn(components, 'Toast')
-
-      const expectedDiagnosis = {
-        name: 'name',
-        diagnosisDate: new Date().toISOString(),
-      } as Diagnosis
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        diagnoses: [...(expectedPatient.diagnoses as any), expectedDiagnosis],
-      } as Patient
-
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
-      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
-
-      const wrapper = setup()
-
-      await act(async () => {
-        const modal = wrapper.find(AddDiagnosisModal)
-        await modal.prop('onSave')(expectedDiagnosis)
-      })
-
-      expect(components.Toast).toHaveBeenCalledWith(
-        'success',
-        'states.success',
-        'patient.diagnoses.successfullyAdded',
-      )
     })
   })
 

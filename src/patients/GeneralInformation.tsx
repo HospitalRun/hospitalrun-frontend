@@ -9,28 +9,16 @@ import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelF
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
 import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
 
-interface Feedback {
-  givenName: string
-  dateOfBirth: string
-}
-
-interface InvalidFields {
-  givenName: boolean
-  dateOfBirth: boolean
-}
-
 interface Props {
   patient: Patient
   isEditable?: boolean
-  errorMessage?: string
   onFieldChange?: (key: string, value: string | boolean) => void
-  invalidFields?: InvalidFields
-  feedbackFields?: Feedback
+  error?: any
 }
 
 const GeneralInformation = (props: Props) => {
   const { t } = useTranslation()
-  const { patient, isEditable, onFieldChange, errorMessage, invalidFields, feedbackFields } = props
+  const { patient, isEditable, onFieldChange, error } = props
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
@@ -61,7 +49,7 @@ const GeneralInformation = (props: Props) => {
   return (
     <div>
       <Panel title={t('patient.basicInformation')} color="primary" collapsible>
-        {errorMessage && <Alert className="alert" color="danger" message={errorMessage} />}
+        {error?.message && <Alert className="alert" color="danger" message={t(error?.message)} />}
         <div className="row">
           <div className="col-md-2">
             <TextInputWithLabelFormGroup
@@ -84,8 +72,8 @@ const GeneralInformation = (props: Props) => {
                 onInputElementChange(event, 'givenName')
               }}
               isRequired
-              isInvalid={invalidFields?.givenName}
-              feedback={feedbackFields?.givenName}
+              isInvalid={error?.givenName}
+              feedback={t(error?.givenName)}
             />
           </div>
           <div className="col-md-4">
@@ -166,9 +154,9 @@ const GeneralInformation = (props: Props) => {
                     ? new Date(patient.dateOfBirth)
                     : undefined
                 }
-                isInvalid={invalidFields?.dateOfBirth}
+                isInvalid={error?.dateOfBirth}
                 maxDate={new Date(Date.now().valueOf())}
-                feedback={feedbackFields?.dateOfBirth}
+                feedback={t(error?.dateOfBirth)}
                 onChange={(date: Date) => {
                   onDateOfBirthChange(date)
                 }}

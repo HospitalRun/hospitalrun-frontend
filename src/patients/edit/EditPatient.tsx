@@ -3,8 +3,6 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Spinner, Button, Toast } from '@hospitalrun/components'
-
-import { parseISO } from 'date-fns'
 import GeneralInformation from '../GeneralInformation'
 import useTitle from '../../page-header/useTitle'
 import Patient from '../../model/Patient'
@@ -27,16 +25,10 @@ const EditPatient = () => {
   const dispatch = useDispatch()
 
   const [patient, setPatient] = useState({} as Patient)
-  const [errorMessage, setErrorMessage] = useState('')
-  const [invalidFields, setInvalidFields] = useState({
-    givenName: false,
-    dateOfBirth: false,
-  })
-  const [feedbackFields, setFeedbackFields] = useState({
-    givenName: '',
-    dateOfBirth: '',
-  })
-  const { patient: reduxPatient, isLoading } = useSelector((state: RootState) => state.patient)
+
+  const { patient: reduxPatient, status, updateError } = useSelector(
+    (state: RootState) => state.patient,
+  )
 
   useTitle(
     `${t('patients.editPatient')}: ${getPatientFullName(reduxPatient)} (${getPatientCode(
@@ -75,50 +67,16 @@ const EditPatient = () => {
     )
   }
 
-  const validateInput = () => {
-    let inputIsValid = true
-
-    if (!patient.givenName) {
-      inputIsValid = false
-      setErrorMessage(t('patient.errors.updatePatientError'))
-      setInvalidFields((prevState) => ({
-        ...prevState,
-        givenName: true,
-      }))
-      setFeedbackFields((prevState) => ({
-        ...prevState,
-        givenName: t('patient.errors.patientGivenNameFeedback'),
-      }))
-    }
-    if (patient.dateOfBirth) {
-      if (parseISO(patient.dateOfBirth) > new Date(Date.now())) {
-        inputIsValid = false
-        setErrorMessage(t('patient.errors.updatePatientError'))
-        setInvalidFields((prevState) => ({
-          ...prevState,
-          dateOfBirth: true,
-        }))
-        setFeedbackFields((prevState) => ({
-          ...prevState,
-          dateOfBirth: t('patient.errors.patientDateOfBirthFeedback'),
-        }))
-      }
-    }
-    return inputIsValid
-  }
-
-  const onSave = () => {
-    if (validateInput()) {
-      dispatch(
-        updatePatient(
-          {
-            ...patient,
-            fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
-          },
-          onSuccessfulSave,
-        ),
-      )
-    }
+  const onSave = async () => {
+    await dispatch(
+      updatePatient(
+        {
+          ...patient,
+          fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
+        },
+        onSuccessfulSave,
+      ),
+    )
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {
@@ -128,7 +86,7 @@ const EditPatient = () => {
     })
   }
 
-  if (isLoading) {
+  if (status === 'loading') {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
@@ -138,9 +96,7 @@ const EditPatient = () => {
         isEditable
         patient={patient}
         onFieldChange={onFieldChange}
-        errorMessage={errorMessage}
-        invalidFields={invalidFields}
-        feedbackFields={feedbackFields}
+        error={updateError}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">

@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router'
 import configureMockStore from 'redux-mock-store'
 import { mount } from 'enzyme'
 import thunk from 'redux-thunk'
+import { act } from 'react-dom/test-utils'
 import Permissions from '../../model/Permissions'
 import HospitalRun from '../../HospitalRun'
 import NewPatient from '../../patients/new/NewPatient'
@@ -18,21 +19,26 @@ import ViewPatient from '../../patients/view/ViewPatient'
 const mockStore = configureMockStore([thunk])
 
 describe('/patients/new', () => {
-  it('should render the new patient screen when /patients/new is accessed', () => {
+  it('should render the new patient screen when /patients/new is accessed', async () => {
     const store = mockStore({
       title: 'test',
       user: { permissions: [Permissions.WritePatients] },
+      patient: {},
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
     })
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/patients/new']}>
-          <HospitalRun />
-        </MemoryRouter>
-      </Provider>,
-    )
+    let wrapper: any
+
+    await act(async () => {
+      wrapper = await mount(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={['/patients/new']}>
+            <HospitalRun />
+          </MemoryRouter>
+        </Provider>,
+      )
+    })
 
     expect(wrapper.find(NewPatient)).toHaveLength(1)
 
