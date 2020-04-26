@@ -1,5 +1,5 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import {
   ButtonBarProvider,
@@ -16,7 +16,10 @@ describe('Button Bar Provider', () => {
     const { result } = renderHook(
       () => {
         const update = useButtonToolbarSetter()
-        update(expectedButtons)
+        useEffect(() => {
+          update(expectedButtons)
+        }, [update])
+
         return useButtons()
       },
       { wrapper },

@@ -42,11 +42,7 @@ const NewAppointment = () => {
 
   const onNewAppointmentSaveSuccess = (newAppointment: Appointment) => {
     history.push(`/appointments/${newAppointment.id}`)
-    Toast(
-      'success',
-      t('states.success'),
-      `${t('scheduling.appointment.successfullyCreated')} ${newAppointment.id}`,
-    )
+    Toast('success', t('states.success'), `${t('scheduling.appointment.successfullyCreated')}`)
   }
 
   const onSave = () => {
