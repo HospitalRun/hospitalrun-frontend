@@ -40,25 +40,6 @@ const ViewPatient = () => {
 
   const setButtonToolBar = useButtonToolbarSetter()
 
-  const buttons = []
-  if (permissions.includes(Permissions.WritePatients)) {
-    buttons.push(
-      <Button
-        key="editPatientButton"
-        color="success"
-        icon="edit"
-        outlined
-        onClick={() => {
-          history.push(`/patients/edit/${patient.id}`)
-        }}
-      >
-        {t('actions.edit')}
-      </Button>,
-    )
-  }
-
-  setButtonToolBar(buttons)
-
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
     { text: getPatientFullName(patient), location: `/patients/${patient.id}` },
@@ -71,10 +52,29 @@ const ViewPatient = () => {
       dispatch(fetchPatient(id))
     }
 
+    const buttons = []
+    if (permissions.includes(Permissions.WritePatients)) {
+      buttons.push(
+        <Button
+          key="editPatientButton"
+          color="success"
+          icon="edit"
+          outlined
+          onClick={() => {
+            history.push(`/patients/edit/${patient.id}`)
+          }}
+        >
+          {t('actions.edit')}
+        </Button>,
+      )
+    }
+
+    setButtonToolBar(buttons)
+
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, id, setButtonToolBar])
+  }, [dispatch, id, setButtonToolBar, history, patient.id, permissions, t])
 
   if (isLoading || !patient) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
