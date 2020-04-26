@@ -98,14 +98,14 @@ const ViewLab = () => {
     }
 
     buttons.push(
-      <Button className="mr-2" color="success" onClick={onUpdate}>
+      <Button className="mr-2" color="success" onClick={onUpdate} key="actions.update">
         {t('actions.update')}
       </Button>,
     )
 
     if (permissions.includes(Permissions.CompleteLab)) {
       buttons.push(
-        <Button className="mr-2" onClick={onComplete} color="primary">
+        <Button className="mr-2" onClick={onComplete} color="primary" key="labs.requests.complete">
           {t('labs.requests.complete')}
         </Button>,
       )
@@ -113,7 +113,7 @@ const ViewLab = () => {
 
     if (permissions.includes(Permissions.CancelLab)) {
       buttons.push(
-        <Button onClick={onCancel} color="danger">
+        <Button onClick={onCancel} color="danger" key="labs.requests.cancel">
           {t('labs.requests.cancel')}
         </Button>,
       )
@@ -199,7 +199,7 @@ const ViewLab = () => {
             value={labToView.result}
             isEditable={isEditable}
             isInvalid={!!error.result}
-            feedback={t(error.result || '')}
+            feedback={t(error.result as string)}
             onChange={onResultChange}
           />
           <TextFieldWithLabelFormGroup

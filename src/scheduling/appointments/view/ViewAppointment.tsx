@@ -21,8 +21,13 @@ const ViewAppointment = () => {
   const { appointment, patient, isLoading } = useSelector((state: RootState) => state.appointment)
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false)
-
   const setButtonToolBar = useButtonToolbarSetter()
+
+  const breadcrumbs = [
+    { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
+    { text: getAppointmentLabel(appointment), location: `/patients/${appointment.id}` },
+  ]
+  useAddBreadcrumbs(breadcrumbs, true)
 
   const onAppointmentDeleteButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -39,43 +44,39 @@ const ViewAppointment = () => {
     setShowDeleteConfirmation(false)
   }
 
-  const buttons = []
-  if (permissions.includes(Permissions.WriteAppointments)) {
-    buttons.push(
-      <Button
-        key="editAppointmentButton"
-        color="success"
-        icon="edit"
-        outlined
-        onClick={() => {
-          history.push(`/appointments/edit/${appointment.id}`)
-        }}
-      >
-        {t('actions.edit')}
-      </Button>,
-    )
-  }
+  useEffect(() => {
+    const buttons = []
+    if (permissions.includes(Permissions.WriteAppointments)) {
+      buttons.push(
+        <Button
+          key="editAppointmentButton"
+          color="success"
+          icon="edit"
+          outlined
+          onClick={() => {
+            history.push(`/appointments/edit/${appointment.id}`)
+          }}
+        >
+          {t('actions.edit')}
+        </Button>,
+      )
+    }
 
-  if (permissions.includes(Permissions.DeleteAppointment)) {
-    buttons.push(
-      <Button
-        key="deleteAppointmentButton"
-        color="danger"
-        icon="appointment-remove"
-        onClick={onAppointmentDeleteButtonClick}
-      >
-        {t('scheduling.appointments.deleteAppointment')}
-      </Button>,
-    )
-  }
+    if (permissions.includes(Permissions.DeleteAppointment)) {
+      buttons.push(
+        <Button
+          key="deleteAppointmentButton"
+          color="danger"
+          icon="appointment-remove"
+          onClick={onAppointmentDeleteButtonClick}
+        >
+          {t('scheduling.appointments.deleteAppointment')}
+        </Button>,
+      )
+    }
 
-  setButtonToolBar(buttons)
-
-  const breadcrumbs = [
-    { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
-    { text: getAppointmentLabel(appointment), location: `/patients/${appointment.id}` },
-  ]
-  useAddBreadcrumbs(breadcrumbs, true)
+    setButtonToolBar(buttons)
+  }, [appointment.id, history, permissions, setButtonToolBar, t])
 
   useEffect(() => {
     if (id) {

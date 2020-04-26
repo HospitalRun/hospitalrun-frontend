@@ -195,7 +195,7 @@ describe('New Appointment', () => {
       expect(mockedComponents.Toast).toHaveBeenCalledWith(
         'success',
         'states.success',
-        `scheduling.appointment.successfullyCreated ${expectedNewAppointment.id}`,
+        `scheduling.appointment.successfullyCreated`,
       )
     })
 
