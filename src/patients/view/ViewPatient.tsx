@@ -33,7 +33,7 @@ const ViewPatient = () => {
   const dispatch = useDispatch()
   const location = useLocation()
 
-  const { patient, isLoading } = useSelector((state: RootState) => state.patient)
+  const { patient, status } = useSelector((state: RootState) => state.patient)
   const { permissions } = useSelector((state: RootState) => state.user)
 
   useTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
@@ -76,7 +76,7 @@ const ViewPatient = () => {
     }
   }, [dispatch, id, setButtonToolBar, history, patient.id, permissions, t])
 
-  if (isLoading || !patient) {
+  if (status === 'loading' || !patient) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 

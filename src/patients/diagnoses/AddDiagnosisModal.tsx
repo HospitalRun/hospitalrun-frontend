@@ -4,35 +4,29 @@ import { useTranslation } from 'react-i18next'
 import Diagnosis from 'model/Diagnosis'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 import DatePickerWithLabelFormGroup from 'components/input/DatePickerWithLabelFormGroup'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { addDiagnosis } from '../patient-slice'
 
 interface Props {
   show: boolean
   onCloseButtonClick: () => void
-  onSave: (diagnosis: Diagnosis) => void
 }
 
 const AddDiagnosisModal = (props: Props) => {
-  const { show, onCloseButtonClick, onSave } = props
-  const [diagnosis, setDiagnosis] = useState({ name: '', diagnosisDate: new Date().toISOString() })
-  const [errorMessage, setErrorMessage] = useState('')
-
+  const { show, onCloseButtonClick } = props
+  const dispatch = useDispatch()
+  const { diagnosisError, patient } = useSelector((state: RootState) => state.patient)
   const { t } = useTranslation()
 
+  const [diagnosis, setDiagnosis] = useState({ name: '', diagnosisDate: new Date().toISOString() })
+
   useEffect(() => {
-    setErrorMessage('')
     setDiagnosis({ name: '', diagnosisDate: new Date().toISOString() })
   }, [show])
 
   const onSaveButtonClick = () => {
-    let newErrorMessage = ''
-    if (!diagnosis.name) {
-      newErrorMessage += t('patient.diagnoses.error.nameRequired')
-    }
-    setErrorMessage(newErrorMessage)
-
-    if (!newErrorMessage) {
-      onSave(diagnosis as Diagnosis)
-    }
+    dispatch(addDiagnosis(patient.id, diagnosis as Diagnosis))
   }
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +46,13 @@ const AddDiagnosisModal = (props: Props) => {
   const body = (
     <>
       <form>
-        {errorMessage && <Alert color="danger" title={t('states.error')} message={errorMessage} />}
+        {diagnosisError && (
+          <Alert
+            color="danger"
+            title={t('states.error')}
+            message={t(diagnosisError?.message || '')}
+          />
+        )}
         <div className="row">
           <div className="col-md-12">
             <div className="form-group">
@@ -64,6 +64,8 @@ const AddDiagnosisModal = (props: Props) => {
                 value={diagnosis.name}
                 onChange={onNameChange}
                 isRequired
+                feedback={t(diagnosisError?.name || '')}
+                isInvalid={!!diagnosisError?.name}
               />
             </div>
           </div>
@@ -77,6 +79,8 @@ const AddDiagnosisModal = (props: Props) => {
               isEditable
               onChange={onDiagnosisDateChange}
               isRequired
+              feedback={t(diagnosisError?.date || '')}
+              isInvalid={!!diagnosisError?.date}
             />
           </div>
         </div>
