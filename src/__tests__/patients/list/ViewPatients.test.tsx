@@ -10,7 +10,7 @@ import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
-import Patients from '../../../patients/list/Patients'
+import ViewPatients from '../../../patients/list/ViewPatients'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as patientSlice from '../../../patients/patients-slice'
 
@@ -41,7 +41,7 @@ describe('Patients', () => {
     return mount(
       <Provider store={store}>
         <MemoryRouter>
-          <Patients />
+          <ViewPatients />
         </MemoryRouter>
       </Provider>,
     )

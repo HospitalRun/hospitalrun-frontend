@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Alert, Spinner, Toast } from '@hospitalrun/components'
+import { Button, Alert, Spinner } from '@hospitalrun/components'
 import AddRelatedPersonModal from 'patients/related-persons/AddRelatedPersonModal'
-import RelatedPerson from 'model/RelatedPerson'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import Patient from 'model/Patient'
-import { updatePatient } from 'patients/patient-slice'
+import { removeRelatedPerson } from 'patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Permissions from 'model/Permissions'
@@ -66,40 +65,12 @@ const RelatedPersonTab = (props: Props) => {
     setShowRelatedPersonModal(false)
   }
 
-  const onAddRelatedPersonSuccess = () => {
-    Toast('success', t('states.success'), t('patients.successfullyAddedRelatedPerson'), 'top-left')
-  }
-
-  const onRelatedPersonSave = (relatedPerson: RelatedPerson) => {
-    const newRelatedPersons: RelatedPerson[] = []
-
-    if (patient.relatedPersons) {
-      newRelatedPersons.push(...patient.relatedPersons)
-    }
-
-    newRelatedPersons.push(relatedPerson)
-
-    const patientToUpdate = {
-      ...patient,
-      relatedPersons: newRelatedPersons,
-    }
-
-    dispatch(updatePatient(patientToUpdate, onAddRelatedPersonSuccess))
-    closeNewRelatedPersonModal()
-  }
-
   const onRelatedPersonDelete = (
     event: React.MouseEvent<HTMLButtonElement>,
     relatedPerson: Patient,
   ) => {
     event.stopPropagation()
-    const patientToUpdate = { ...patient }
-    const newRelatedPersons = patientToUpdate.relatedPersons?.filter(
-      (r) => r.patientId !== relatedPerson.id,
-    )
-    patientToUpdate.relatedPersons = newRelatedPersons
-
-    dispatch(updatePatient(patientToUpdate))
+    dispatch(removeRelatedPerson(patient.id, relatedPerson.id))
   }
 
   return (
@@ -169,7 +140,6 @@ const RelatedPersonTab = (props: Props) => {
         show={showNewRelatedPersonModal}
         toggle={closeNewRelatedPersonModal}
         onCloseButtonClick={closeNewRelatedPersonModal}
-        onSave={onRelatedPersonSave}
       />
     </div>
   )

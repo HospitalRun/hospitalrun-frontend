@@ -13,7 +13,7 @@ import useDebounce from '../../hooks/debounce'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
-const Patients = () => {
+const ViewPatients = () => {
   const { t } = useTranslation()
   const history = useHistory()
   useTitle(t('patients.label'))
@@ -100,4 +100,4 @@ const Patients = () => {
   )
 }
 
-export default Patients
+export default ViewPatients
