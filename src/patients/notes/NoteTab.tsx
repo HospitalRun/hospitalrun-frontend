@@ -1,12 +1,11 @@
 /* eslint-disable react/no-danger */
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Button, List, ListItem, Toast, Alert } from '@hospitalrun/components'
+import { Button, List, ListItem, Alert } from '@hospitalrun/components'
 import NewNoteModal from 'patients/notes/NewNoteModal'
 import Note from 'model/Note'
 import Patient from 'model/Patient'
-import { updatePatient } from 'patients/patient-slice'
 import { RootState } from '../../store'
 import Permissions from '../../model/Permissions'
 
@@ -15,7 +14,6 @@ interface Props {
 }
 
 const NoteTab = (props: Props) => {
-  const dispatch = useDispatch()
   const { patient } = props
   const { t } = useTranslation()
   const { permissions } = useSelector((state: RootState) => state.user)
@@ -29,27 +27,6 @@ const NoteTab = (props: Props) => {
     setShowNoteModal(false)
   }
 
-  const onAddNoteSuccess = () => {
-    Toast('success', t('Success!'), t('patients.successfullyAddedNote'))
-  }
-
-  const onNoteSave = (note: Note) => {
-    const newNotes: Note[] = []
-
-    if (patient.notes) {
-      newNotes.push(...patient.notes)
-    }
-
-    newNotes.push(note)
-
-    const patientToUpdate = {
-      ...patient,
-      notes: newNotes,
-    }
-
-    dispatch(updatePatient(patientToUpdate, onAddNoteSuccess))
-    closeNewNoteModal()
-  }
   return (
     <div>
       <div className="row">
@@ -87,7 +64,6 @@ const NoteTab = (props: Props) => {
         show={showNewNoteModal}
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
-        onSave={onNoteSave}
       />
     </div>
   )

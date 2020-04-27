@@ -2,13 +2,11 @@ import React, { useState } from 'react'
 import { RootState } from 'store'
 import Patient from 'model/Patient'
 import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Permissions from 'model/Permissions'
-import { Button, List, ListItem, Alert, Toast } from '@hospitalrun/components'
+import { Button, List, ListItem, Alert } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import Diagnosis from 'model/Diagnosis'
-import { getTimestampId } from 'patients/util/timestamp-id-generator'
-import { updatePatient } from 'patients/patient-slice'
 import AddDiagnosisModal from './AddDiagnosisModal'
 
 interface Props {
@@ -17,11 +15,9 @@ interface Props {
 
 const Diagnoses = (props: Props) => {
   const { patient } = props
-  const [showDiagnosisModal, setShowDiagnosisModal] = useState(false)
-
-  const dispatch = useDispatch()
   const { t } = useTranslation()
   const { permissions } = useSelector((state: RootState) => state.user)
+  const [showDiagnosisModal, setShowDiagnosisModal] = useState(false)
 
   const breadcrumbs = [
     {
@@ -32,22 +28,6 @@ const Diagnoses = (props: Props) => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onAddDiagnosisModalClose = () => {
-    setShowDiagnosisModal(false)
-  }
-
-  const onAddDiagnosisSuccess = () => {
-    Toast('success', t('states.success'), t('patient.diagnoses.successfullyAdded'))
-  }
-
-  const onDiagnosisSave = (diagnosis: Diagnosis) => {
-    diagnosis.id = getTimestampId()
-    const diagnoses = []
-    if (patient.diagnoses) {
-      diagnoses.push(...patient.diagnoses)
-    }
-    diagnoses.push(diagnosis)
-    const patientToUpdate = { ...patient, diagnoses }
-    dispatch(updatePatient(patientToUpdate, onAddDiagnosisSuccess))
     setShowDiagnosisModal(false)
   }
 
@@ -81,11 +61,7 @@ const Diagnoses = (props: Props) => {
           <ListItem key={a.id}>{a.name}</ListItem>
         ))}
       </List>
-      <AddDiagnosisModal
-        show={showDiagnosisModal}
-        onCloseButtonClick={onAddDiagnosisModalClose}
-        onSave={onDiagnosisSave}
-      />
+      <AddDiagnosisModal show={showDiagnosisModal} onCloseButtonClick={onAddDiagnosisModalClose} />
     </>
   )
 }
