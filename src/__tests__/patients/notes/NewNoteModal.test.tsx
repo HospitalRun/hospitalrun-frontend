@@ -1,17 +1,40 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import NewNoteModal from 'patients/notes/NewNoteModal'
-import { shallow, mount } from 'enzyme'
-import { Modal, Alert } from '@hospitalrun/components'
+import { mount } from 'enzyme'
+import { Alert, Modal } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import { Provider } from 'react-redux'
+import * as patientSlice from '../../../patients/patient-slice'
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Patient from '../../../model/Patient'
+
+const mockStore = createMockStore([thunk])
 
 describe('New Note Modal', () => {
-  it('should render a modal with the correct labels', () => {
-    const wrapper = shallow(
-      <NewNoteModal show onCloseButtonClick={jest.fn()} onSave={jest.fn()} toggle={jest.fn()} />,
-    )
+  beforeEach(() => {
+    jest.spyOn(PatientRepository, 'find')
+    jest.spyOn(PatientRepository, 'saveOrUpdate')
+  })
 
+  it('should render a modal with the correct labels', () => {
+    const expectedPatient = {
+      id: '1234',
+      givenName: 'some name',
+    }
+    const store = mockStore({
+      patient: {
+        patient: expectedPatient,
+      },
+    })
+    const wrapper = mount(
+      <Provider store={store}>
+        <NewNoteModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
+      </Provider>,
+    )
     const modal = wrapper.find(Modal)
     expect(modal).toHaveLength(1)
     expect(modal.prop('title')).toEqual('patient.notes.new')
@@ -23,8 +46,19 @@ describe('New Note Modal', () => {
   })
 
   it('should render a notes rich text editor', () => {
+    const expectedPatient = {
+      id: '1234',
+      givenName: 'some name',
+    }
+    const store = mockStore({
+      patient: {
+        patient: expectedPatient,
+      },
+    })
     const wrapper = mount(
-      <NewNoteModal show onCloseButtonClick={jest.fn()} onSave={jest.fn()} toggle={jest.fn()} />,
+      <Provider store={store}>
+        <NewNoteModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
+      </Provider>,
     )
 
     const noteTextField = wrapper.find(TextFieldWithLabelFormGroup)
@@ -33,16 +67,51 @@ describe('New Note Modal', () => {
     expect(noteTextField).toHaveLength(1)
   })
 
+  it('should render note error', () => {
+    const expectedPatient = {
+      id: '1234',
+      givenName: 'some name',
+    }
+    const expectedError = {
+      message: 'some message',
+      note: 'some note error',
+    }
+    const store = mockStore({
+      patient: {
+        patient: expectedPatient,
+        noteError: expectedError,
+      },
+    })
+    const wrapper = mount(
+      <Provider store={store}>
+        <NewNoteModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
+      </Provider>,
+    )
+
+    const alert = wrapper.find(Alert)
+    const noteTextField = wrapper.find(TextFieldWithLabelFormGroup)
+    expect(alert.prop('title')).toEqual('states.error')
+    expect(alert.prop('message')).toEqual(expectedError.message)
+    expect(noteTextField.prop('isInvalid')).toBeTruthy()
+    expect(noteTextField.prop('feedback')).toEqual(expectedError.note)
+  })
+
   describe('on cancel', () => {
     it('should call the onCloseButtonCLick function when the cancel button is clicked', () => {
       const onCloseButtonClickSpy = jest.fn()
-      const wrapper = shallow(
-        <NewNoteModal
-          show
-          onCloseButtonClick={onCloseButtonClickSpy}
-          onSave={jest.fn()}
-          toggle={jest.fn()}
-        />,
+      const expectedPatient = {
+        id: '1234',
+        givenName: 'some name',
+      }
+      const store = mockStore({
+        patient: {
+          patient: expectedPatient,
+        },
+      })
+      const wrapper = mount(
+        <Provider store={store}>
+          <NewNoteModal show onCloseButtonClick={onCloseButtonClickSpy} toggle={jest.fn()} />
+        </Provider>,
       )
 
       act(() => {
@@ -56,14 +125,26 @@ describe('New Note Modal', () => {
   })
 
   describe('on save', () => {
-    const expectedDate = new Date()
-    const expectedNote = 'test'
+    it('should dispatch add note', () => {
+      const expectedNote = 'some note'
+      jest.spyOn(patientSlice, 'addNote')
+      const expectedPatient = {
+        id: '1234',
+        givenName: 'some name',
+      }
+      const store = mockStore({
+        patient: {
+          patient: expectedPatient,
+        },
+      })
 
-    Date.now = jest.fn(() => expectedDate.valueOf())
-    it('should call the onSave callback', () => {
-      const onSaveSpy = jest.fn()
+      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient as Patient)
+      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedPatient as Patient)
+
       const wrapper = mount(
-        <NewNoteModal show onCloseButtonClick={jest.fn()} onSave={onSaveSpy} toggle={jest.fn()} />,
+        <Provider store={store}>
+          <NewNoteModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
+        </Provider>,
       )
 
       act(() => {
@@ -79,34 +160,7 @@ describe('New Note Modal', () => {
         onClick()
       })
 
-      expect(onSaveSpy).toHaveBeenCalledTimes(1)
-      expect(onSaveSpy).toHaveBeenCalledWith({
-        text: expectedNote,
-        date: expectedDate.toISOString(),
-      })
-    })
-
-    it('should require a note be added', async () => {
-      const onSaveSpy = jest.fn()
-      const wrapper = mount(
-        <NewNoteModal show onCloseButtonClick={jest.fn()} onSave={onSaveSpy} toggle={jest.fn()} />,
-      )
-
-      await act(async () => {
-        const modal = wrapper.find(Modal)
-        const { onClick } = modal.prop('successButton') as any
-        await onClick()
-      })
-      wrapper.update()
-
-      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
-      const errorAlert = wrapper.find(Alert)
-
-      expect(errorAlert).toHaveLength(1)
-      expect(errorAlert.prop('title')).toEqual('states.error')
-      expect(errorAlert.prop('message')).toEqual('patient.notes.error.unableToAdd')
-      expect(notesTextField.prop('feedback')).toEqual('patient.notes.error.noteRequired')
-      expect(onSaveSpy).not.toHaveBeenCalled()
+      expect(patientSlice.addNote).toHaveBeenCalledWith(expectedPatient.id, { text: expectedNote })
     })
   })
 })

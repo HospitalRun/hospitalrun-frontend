@@ -2,22 +2,23 @@ import React, { useState } from 'react'
 import { Modal, Alert } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
+import { addNote } from 'patients/patient-slice'
+import { useDispatch, useSelector } from 'react-redux'
 import Note from '../../model/Note'
+import { RootState } from '../../store'
 
 interface Props {
   show: boolean
   toggle: () => void
   onCloseButtonClick: () => void
-  onSave: (note: Note) => void
 }
 
 const NewNoteModal = (props: Props) => {
-  const { show, toggle, onCloseButtonClick, onSave } = props
+  const { show, toggle, onCloseButtonClick } = props
+  const dispatch = useDispatch()
+  const { patient, noteError } = useSelector((state: RootState) => state.patient)
   const { t } = useTranslation()
-  const [isNoteInvalid, setIsNoteInvalid] = useState(false)
-  const [noteFeedback, setNoteFeedback] = useState()
   const [note, setNote] = useState({
-    date: new Date(Date.now().valueOf()).toISOString(),
     text: '',
   })
 
@@ -34,23 +35,13 @@ const NewNoteModal = (props: Props) => {
   }
 
   const onSaveButtonClick = () => {
-    if (!note.text) {
-      setIsNoteInvalid(true)
-      setNoteFeedback(t('patient.notes.error.noteRequired'))
-      return
-    }
-
-    onSave(note as Note)
+    dispatch(addNote(patient.id, note as Note))
   }
 
   const body = (
     <form>
-      {isNoteInvalid && (
-        <Alert
-          color="danger"
-          title={t('states.error')}
-          message={t('patient.notes.error.unableToAdd')}
-        />
+      {noteError?.message && (
+        <Alert color="danger" title={t('states.error')} message={t(noteError?.message || '')} />
       )}
       <div className="row">
         <div className="col-md-12">
@@ -61,8 +52,8 @@ const NewNoteModal = (props: Props) => {
               name="noteTextField"
               label={t('patient.note')}
               value={note.text}
-              isInvalid={isNoteInvalid}
-              feedback={noteFeedback}
+              isInvalid={!!noteError?.note}
+              feedback={t(noteError?.note || '')}
               onChange={onNoteTextChange}
             />
           </div>
