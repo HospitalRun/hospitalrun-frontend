@@ -10,25 +10,39 @@ import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
+import Page from 'clients/Page'
+import { Unsorted } from 'clients/db/SortRequest'
 import ViewPatients from '../../../patients/list/ViewPatients'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as patientSlice from '../../../patients/patients-slice'
+import Patient from '../../../model/Patient'
+import { UnpagedRequest } from '../../../clients/db/PageRequest'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
 describe('Patients', () => {
-  const patients = [
-    {
-      id: '123',
-      fullName: 'test test',
-      givenName: 'test',
-      familyName: 'test',
-      code: 'P12345',
-      sex: 'male',
-      dateOfBirth: new Date().toISOString(),
-    },
-  ]
+  const patients: Page<Patient> = {
+    content: [
+      {
+        id: '123',
+        fullName: 'test test',
+        isApproximateDateOfBirth: false,
+        givenName: 'test',
+        familyName: 'test',
+        code: 'P12345',
+        sex: 'male',
+        dateOfBirth: new Date().toISOString(),
+        phoneNumber: '99999999',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        rev: '',
+      },
+    ],
+    hasNext: false,
+    hasPrevious: false,
+    pageRequest: UnpagedRequest,
+  }
   const mockedPatientRepository = mocked(PatientRepository, true)
 
   const setup = (isLoading?: boolean) => {
@@ -36,6 +50,7 @@ describe('Patients', () => {
       patients: {
         patients,
         isLoading,
+        pageRequest: UnpagedRequest,
       },
     })
     return mount(
@@ -80,12 +95,12 @@ describe('Patients', () => {
       expect(tableHeaders.at(3).text()).toEqual('patient.sex')
       expect(tableHeaders.at(4).text()).toEqual('patient.dateOfBirth')
 
-      expect(tableColumns.at(0).text()).toEqual(patients[0].code)
-      expect(tableColumns.at(1).text()).toEqual(patients[0].givenName)
-      expect(tableColumns.at(2).text()).toEqual(patients[0].familyName)
-      expect(tableColumns.at(3).text()).toEqual(patients[0].sex)
+      expect(tableColumns.at(0).text()).toEqual(patients.content[0].code)
+      expect(tableColumns.at(1).text()).toEqual(patients.content[0].givenName)
+      expect(tableColumns.at(2).text()).toEqual(patients.content[0].familyName)
+      expect(tableColumns.at(3).text()).toEqual(patients.content[0].sex)
       expect(tableColumns.at(4).text()).toEqual(
-        format(new Date(patients[0].dateOfBirth), 'yyyy-MM-dd'),
+        format(new Date(patients.content[0].dateOfBirth), 'yyyy-MM-dd'),
       )
     })
 
@@ -130,7 +145,11 @@ describe('Patients', () => {
       wrapper.update()
 
       expect(searchPatientsSpy).toHaveBeenCalledTimes(1)
-      expect(searchPatientsSpy).toHaveBeenLastCalledWith(expectedSearchText)
+      expect(searchPatientsSpy).toHaveBeenLastCalledWith(
+        expectedSearchText,
+        Unsorted,
+        UnpagedRequest,
+      )
     })
   })
 })

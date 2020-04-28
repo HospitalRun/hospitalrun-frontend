@@ -1,7 +1,9 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
 import { v4 as uuidv4 } from 'uuid'
+import Page from 'clients/Page'
 import AbstractDBModel from '../../model/AbstractDBModel'
 import { Unsorted } from './SortRequest'
+import PageRequest, { UnpagedRequest } from './PageRequest'
 
 function mapDocument(document: any): any {
   const { _id, _rev, ...values } = document
@@ -39,6 +41,35 @@ export default class Repository<T extends AbstractDBModel> {
     })
 
     return result.docs.map(mapDocument)
+  }
+
+  async findAllPaged(sort = Unsorted, pageRequest: PageRequest = UnpagedRequest): Promise<Page<T>> {
+    const selector: any = {
+      _id: { $gt: null },
+    }
+
+    sort.sorts.forEach((s) => {
+      selector[s.field] = { $gt: null }
+    })
+
+    const result = await this.db.find({
+      selector,
+      sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
+      limit: pageRequest.limit,
+      skip: pageRequest.skip,
+    })
+    const mappedResult = result.docs.map(mapDocument)
+
+    const pagedResult: Page<T> = {
+      content: mappedResult,
+      hasNext: pageRequest.limit !== undefined && mappedResult.length === pageRequest.limit,
+      hasPrevious: pageRequest.skip > 0,
+      pageRequest: {
+        skip: pageRequest.skip,
+        limit: pageRequest.limit,
+      },
+    }
+    return pagedResult
   }
 
   async search(criteria: any): Promise<T[]> {

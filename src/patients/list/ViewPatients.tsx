@@ -5,6 +5,9 @@ import { useTranslation } from 'react-i18next'
 import { Spinner, Button, Container, Row, TextInput, Column } from '@hospitalrun/components'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
+import { Unsorted } from 'clients/db/SortRequest'
+import PageRequest from 'clients/db/PageRequest'
+import PageComponent from 'components/PageComponent'
 import { RootState } from '../../store'
 import { fetchPatients, searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
@@ -19,20 +22,45 @@ const ViewPatients = () => {
   useTitle(t('patients.label'))
   useAddBreadcrumbs(breadcrumbs, true)
   const dispatch = useDispatch()
-  const { patients, isLoading } = useSelector((state: RootState) => state.patients)
+  const { patients, isLoading, pageRequest } = useSelector((state: RootState) => state.patients)
 
   const setButtonToolBar = useButtonToolbarSetter()
+  const [userPageRequest, setUserPageRequest] = useState<PageRequest>(pageRequest)
 
+  const setNextPageRequest = () => {
+    setUserPageRequest((p) => {
+      if (p.limit) {
+        const newPageRequest: PageRequest = {
+          limit: p.limit,
+          skip: p.skip + p.limit,
+        }
+        return newPageRequest
+      }
+      return p
+    })
+  }
+
+  const setPreviousPageRequest = () => {
+    setUserPageRequest((p) => {
+      if (p.limit) {
+        return {
+          limit: p.limit,
+          skip: p.skip - p.limit,
+        }
+      }
+      return p
+    })
+  }
   const [searchText, setSearchText] = useState<string>('')
 
   const debouncedSearchText = useDebounce(searchText, 500)
 
   useEffect(() => {
-    dispatch(searchPatients(debouncedSearchText))
-  }, [dispatch, debouncedSearchText])
+    dispatch(searchPatients(debouncedSearchText, Unsorted, userPageRequest))
+  }, [dispatch, debouncedSearchText, userPageRequest])
 
   useEffect(() => {
-    dispatch(fetchPatients())
+    dispatch(fetchPatients(Unsorted, userPageRequest))
 
     setButtonToolBar([
       <Button
@@ -49,7 +77,7 @@ const ViewPatients = () => {
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, setButtonToolBar, t, history])
+  }, [dispatch, setButtonToolBar, t, history, userPageRequest])
 
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   const table = (
@@ -64,7 +92,7 @@ const ViewPatients = () => {
         </tr>
       </thead>
       <tbody>
-        {patients.map((p) => (
+        {patients.content.map((p) => (
           <tr key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
             <td>{p.code}</td>
             <td>{p.givenName}</td>
@@ -96,6 +124,13 @@ const ViewPatients = () => {
       </Row>
 
       <Row> {isLoading ? loadingIndicator : table}</Row>
+      <PageComponent
+        hasNext={patients.hasNext}
+        hasPrevious={patients.hasPrevious}
+        pageNumber={userPageRequest.limit && userPageRequest.skip / userPageRequest.limit + 1}
+        setPreviousPageRequest={setPreviousPageRequest}
+        setNextPageRequest={setNextPageRequest}
+      />
     </Container>
   )
 }
