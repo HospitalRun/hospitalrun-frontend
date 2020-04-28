@@ -86,7 +86,7 @@ const ViewPatients = () => {
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, setButtonToolBar, t, history])
+  }, [dispatch, setButtonToolBar, t, history, userPageRequest])
 
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   const table = (
