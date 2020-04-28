@@ -84,7 +84,7 @@
     "history": "~4.10.1",
     "husky": "~4.2.1",
     "jest": "~24.9.0",
-    "lint-staged": "~10.1.0",
+    "lint-staged": "~10.2.0",
     "memdown": "~5.1.0",
     "prettier": "~2.0.4",
     "redux-mock-store": "~1.5.4",
