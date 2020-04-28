@@ -51,26 +51,10 @@ const Sidebar = () => {
     setExpandedItem(item.toString())
   }
 
-  const listSubItemStyleNew: CSSProperties = {
-    cursor: 'pointer',
-    fontSize: 'small',
-    borderBottomWidth: 0,
-    color:
-      (splittedPath[1].includes('patients') || splittedPath[1].includes('appointments')) &&
-      splittedPath.length > 2
-        ? 'white'
-        : 'black',
-  }
-
   const listSubItemStyle: CSSProperties = {
     cursor: 'pointer',
     fontSize: 'small',
     borderBottomWidth: 0,
-    color:
-      (splittedPath[1].includes('patients') || splittedPath[1].includes('appointments')) &&
-      splittedPath.length < 3
-        ? 'white'
-        : 'black',
   }
 
   const getDashboardLink = () => (
@@ -119,7 +103,7 @@ const Sidebar = () => {
         <List layout="flush">
           <ListItem
             className="nav-item"
-            style={listSubItemStyleNew}
+            style={listSubItemStyle}
             onClick={() => navigateTo('/patients/new')}
             active={splittedPath[1].includes('patients') && splittedPath.length > 2}
           >
@@ -165,7 +149,7 @@ const Sidebar = () => {
         <List layout="flush" className="nav flex-column">
           <ListItem
             className="nav-item"
-            style={listSubItemStyleNew}
+            style={listSubItemStyle}
             onClick={() => navigateTo('/appointments/new')}
             active={splittedPath[1].includes('appointments') && splittedPath.length > 2}
           >
@@ -211,7 +195,7 @@ const Sidebar = () => {
         <List layout="flush" className="nav flex-column">
           <ListItem
             className="nav-item"
-            style={listSubItemStyleNew}
+            style={listSubItemStyle}
             onClick={() => navigateTo('/labs/new')}
             active={splittedPath[1].includes('labs') && splittedPath.length > 2}
           >
