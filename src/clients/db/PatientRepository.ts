@@ -1,3 +1,4 @@
+import escapeStringRegexp from 'escape-string-regexp'
 import shortid from 'shortid'
 import Patient from '../../model/Patient'
 import Repository from './Repository'
@@ -13,13 +14,13 @@ export class PatientRepository extends Repository<Patient> {
   }
 
   async search(text: string): Promise<Patient[]> {
-    const cleanText = text.replace(/[\\[\](){}?*]+/g, '')
+    const escapedString = escapeStringRegexp(text)
     return super.search({
       selector: {
         $or: [
           {
             fullName: {
-              $regex: RegExp(cleanText, 'i'),
+              $regex: RegExp(escapedString, 'i'),
             },
           },
           {

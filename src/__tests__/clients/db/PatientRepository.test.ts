@@ -39,10 +39,10 @@ describe('patient repository', () => {
       await removeAllDocs()
     })
 
-    it('should remove all breaking special chars from search text', async () => {
-      await patients.put({ _id: 'id9999', code: 'P00001', fullName: 'test test' })
+    it('should escape all special chars from search text', async () => {
+      await patients.put({ _id: 'id9999', code: 'P00001', fullName: 'test -]?}(){*[\\$+.^test' })
 
-      const result = await PatientRepository.search(']?t}e(s){t** te[\\st')
+      const result = await PatientRepository.search('test -]?}(){*[\\$+.^test')
 
       expect(result).toHaveLength(1)
       expect(result[0].id).toEqual('id9999')
