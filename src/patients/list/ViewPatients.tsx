@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Spinner, Button, Container, Row, TextInput, Column } from '@hospitalrun/components'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
-import { Unsorted } from 'clients/db/SortRequest'
+import SortRequest from 'clients/db/SortRequest'
 import PageRequest from 'clients/db/PageRequest'
 import PageComponent from 'components/PageComponent'
 import { RootState } from '../../store'
@@ -22,10 +22,13 @@ const ViewPatients = () => {
   useTitle(t('patients.label'))
   useAddBreadcrumbs(breadcrumbs, true)
   const dispatch = useDispatch()
-  const { patients, isLoading, pageRequest } = useSelector((state: RootState) => state.patients)
+  const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 
   const setButtonToolBar = useButtonToolbarSetter()
-  const [userPageRequest, setUserPageRequest] = useState<PageRequest>(pageRequest)
+  const [userPageRequest, setUserPageRequest] = useState<PageRequest>({
+    skip: 0,
+    limit: 1,
+  })
 
   const setNextPageRequest = () => {
     setUserPageRequest((p) => {
@@ -56,11 +59,17 @@ const ViewPatients = () => {
   const debouncedSearchText = useDebounce(searchText, 500)
 
   useEffect(() => {
-    dispatch(searchPatients(debouncedSearchText, Unsorted, userPageRequest))
+    const sortRequest: SortRequest = {
+      sorts: [{ field: 'code', direction: 'desc' }],
+    }
+    dispatch(searchPatients(debouncedSearchText, sortRequest, userPageRequest))
   }, [dispatch, debouncedSearchText, userPageRequest])
 
   useEffect(() => {
-    dispatch(fetchPatients(Unsorted, userPageRequest))
+    const sortRequest: SortRequest = {
+      sorts: [{ field: 'code', direction: 'desc' }],
+    }
+    dispatch(fetchPatients(sortRequest, userPageRequest))
 
     setButtonToolBar([
       <Button
@@ -77,7 +86,7 @@ const ViewPatients = () => {
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, setButtonToolBar, t, history, userPageRequest])
+  }, [dispatch, setButtonToolBar, t, history])
 
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   const table = (

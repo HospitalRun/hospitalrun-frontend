@@ -9,7 +9,6 @@ import { AppThunk } from '../store'
 interface PatientsState {
   isLoading: boolean
   patients: Page<Patient>
-  pageRequest: PageRequest
 }
 
 const initialState: PatientsState = {
@@ -20,12 +19,8 @@ const initialState: PatientsState = {
     hasPrevious: false,
     pageRequest: {
       skip: 0,
-      limit: 20,
+      limit: 1,
     },
-  },
-  pageRequest: {
-    skip: 0,
-    limit: 20,
   },
 }
 

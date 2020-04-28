@@ -11,7 +11,6 @@ import { act } from 'react-dom/test-utils'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
 import Page from 'clients/Page'
-import { Unsorted } from 'clients/db/SortRequest'
 import ViewPatients from '../../../patients/list/ViewPatients'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as patientSlice from '../../../patients/patients-slice'
@@ -147,8 +146,10 @@ describe('Patients', () => {
       expect(searchPatientsSpy).toHaveBeenCalledTimes(1)
       expect(searchPatientsSpy).toHaveBeenLastCalledWith(
         expectedSearchText,
-        Unsorted,
-        UnpagedRequest,
+        {
+          sorts: [{ field: 'code', direction: 'desc' }],
+        },
+        { limit: 1, skip: 0 },
       )
     })
   })
