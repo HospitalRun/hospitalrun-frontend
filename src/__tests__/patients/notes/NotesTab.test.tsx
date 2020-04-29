@@ -12,10 +12,7 @@ import { Provider } from 'react-redux'
 import NoteTab from 'patients/notes/NoteTab'
 import * as components from '@hospitalrun/components'
 import { act } from 'react-dom/test-utils'
-import { mocked } from 'ts-jest/utils'
-import NewNoteModal from 'patients/notes/NewNoteModal'
 import Permissions from '../../../model/Permissions'
-import * as patientSlice from '../../../patients/patient-slice'
 
 const expectedPatient = {
   id: '123',
@@ -74,33 +71,6 @@ describe('Notes Tab', () => {
       wrapper.update()
 
       expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
-    })
-
-    it('should update the patient with the new diagnosis when the save button is clicked', async () => {
-      const expectedNote = {
-        text: 'note text',
-        date: new Date().toISOString(),
-      } as Note
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        notes: [...(expectedPatient.notes as any), expectedNote],
-      } as Patient
-
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
-
-      const wrapper = setup()
-
-      await act(async () => {
-        const modal = wrapper.find(NewNoteModal)
-        await modal.prop('onSave')(expectedNote)
-      })
-
-      expect(mockedPatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedUpdatedPatient)
-      expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
-      expect(store.getActions()).toContainEqual(
-        patientSlice.updatePatientSuccess(expectedUpdatedPatient),
-      )
     })
   })
 

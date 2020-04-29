@@ -11,11 +11,8 @@ import { Provider } from 'react-redux'
 import Patient from 'model/Patient'
 import * as components from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { mocked } from 'ts-jest/utils'
 import PatientRepository from 'clients/db/PatientRepository'
 import Allergy from 'model/Allergy'
-import NewAllergyModal from 'patients/allergies/NewAllergyModal'
-import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = configureMockStore([thunk])
 const history = createMemoryHistory()
@@ -79,57 +76,6 @@ describe('Allergies', () => {
       wrapper.update()
 
       expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
-    })
-
-    it('should update the patient with the new allergy when the save button is clicked', async () => {
-      const expectedAllergy = { name: 'name' } as Allergy
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        allergies: [...(expectedPatient.allergies as any), expectedAllergy],
-      } as Patient
-
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
-
-      const wrapper = setup()
-
-      await act(async () => {
-        const modal = wrapper.find(NewAllergyModal)
-        await modal.prop('onSave')(expectedAllergy)
-      })
-
-      expect(mockedPatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedUpdatedPatient)
-      expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
-      expect(store.getActions()).toContainEqual(
-        patientSlice.updatePatientSuccess(expectedUpdatedPatient),
-      )
-    })
-
-    it('should display a success message after the allergy is successfully added', async () => {
-      jest.spyOn(components, 'Toast')
-      const mockedComponents = mocked(components, true)
-
-      const expectedAllergy = { name: 'name' } as Allergy
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        allergies: [...(expectedPatient.allergies as any), expectedAllergy],
-      } as Patient
-
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.saveOrUpdate.mockResolvedValue(expectedUpdatedPatient)
-
-      const wrapper = setup()
-
-      await act(async () => {
-        const modal = wrapper.find(NewAllergyModal)
-        await modal.prop('onSave')(expectedAllergy)
-      })
-
-      expect(mockedComponents.Toast).toHaveBeenCalledWith(
-        'success',
-        'states.success',
-        'patient.allergies.successfullyAdded',
-      )
     })
   })
 

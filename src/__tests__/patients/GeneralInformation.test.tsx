@@ -10,21 +10,29 @@ import { act } from '@testing-library/react'
 import Patient from '../../model/Patient'
 
 describe('Error handling', () => {
-  it('should display no given name error when errorMessage prop is non-empty string', () => {
+  it('should display errors', () => {
+    const error = {
+      message: 'some message',
+      givenName: 'given name message',
+      dateOfBirth: 'date of birth message',
+    }
     const history = createMemoryHistory()
     const wrapper = mount(
       <Router history={history}>
-        <GeneralInformation
-          patient={{} as Patient}
-          isEditable
-          errorMessage="patient.errors.patientGivenNameRequiredOnCreate"
-        />
+        <GeneralInformation patient={{} as Patient} isEditable error={error} />
       </Router>,
     )
+    wrapper.update()
 
     const errorMessage = wrapper.find(Alert)
+    const givenNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
+    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
     expect(errorMessage).toBeTruthy()
-    expect(errorMessage.prop('message')).toMatch('patient.errors.patientGivenNameRequiredOnCreate')
+    expect(errorMessage.prop('message')).toMatch(error.message)
+    expect(givenNameInput.prop('isInvalid')).toBeTruthy()
+    expect(givenNameInput.prop('feedback')).toEqual(error.givenName)
+    expect(dateOfBirthInput.prop('isInvalid')).toBeTruthy()
+    expect(dateOfBirthInput.prop('feedback')).toEqual(error.dateOfBirth)
   })
 })
 
