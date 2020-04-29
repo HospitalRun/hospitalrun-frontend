@@ -32,7 +32,7 @@
     "redux-thunk": "~2.3.0",
     "shortid": "^2.2.15",
     "typescript": "~3.8.2",
-    "uuid": "^7.0.1"
+    "uuid": "^8.0.0"
   },
   "repository": {
     "type": "git",
