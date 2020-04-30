@@ -3,23 +3,24 @@ import { Modal, Alert } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 import Allergy from 'model/Allergy'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { addAllergy } from '../patient-slice'
 
 interface NewAllergyModalProps {
   show: boolean
   onCloseButtonClick: () => void
-  onSave: (allergy: Allergy) => void
 }
 
 const NewAllergyModal = (props: NewAllergyModalProps) => {
-  const { show, onCloseButtonClick, onSave } = props
-  const [allergy, setAllergy] = useState({ name: '' })
-  const [errorMessage, setErrorMessage] = useState('')
-  const [isAllergyNameInvalid, setIsAllergynameInvalid] = useState(false)
-  const [nameRequiredFeedback, setNameRequiredFeedback] = useState('')
+  const { show, onCloseButtonClick } = props
+  const dispatch = useDispatch()
   const { t } = useTranslation()
+  const { allergyError, patient } = useSelector((state: RootState) => state.patient)
+
+  const [allergy, setAllergy] = useState({ name: '' })
 
   useEffect(() => {
-    setErrorMessage('')
     setAllergy({ name: '' })
   }, [show])
 
@@ -29,19 +30,7 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
   }
 
   const onSaveButtonClick = () => {
-    let newErrorMessage = ''
-    if (!allergy.name) {
-      newErrorMessage += `${t('patient.allergies.error.unableToAdd')} `
-      setIsAllergynameInvalid(true)
-      setNameRequiredFeedback(`${t('patient.allergies.error.nameRequired')} `)
-    }
-
-    if (newErrorMessage) {
-      setErrorMessage(newErrorMessage.trim())
-      return
-    }
-
-    onSave(allergy as Allergy)
+    dispatch(addAllergy(patient.id, allergy as Allergy))
   }
 
   const onClose = () => {
@@ -50,10 +39,11 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
 
   const body = (
     <>
-      {errorMessage && <Alert color="danger" title={t('states.error')} message={errorMessage} />}
+      {allergyError && (
+        <Alert color="danger" title={t('states.error')} message={t(allergyError?.message || '')} />
+      )}
       <form>
         <TextInputWithLabelFormGroup
-          feedback={nameRequiredFeedback}
           name="name"
           isRequired
           label={t('patient.allergies.allergyName')}
@@ -61,7 +51,8 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
           placeholder={t('patient.allergies.allergyName')}
           value={allergy.name}
           onChange={onNameChange}
-          isInvalid={isAllergyNameInvalid}
+          feedback={t(allergyError?.name || '')}
+          isInvalid={!!allergyError?.name}
         />
       </form>
     </>
