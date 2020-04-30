@@ -55,22 +55,20 @@ const Sidebar = () => {
     cursor: 'pointer',
     fontSize: 'small',
     borderBottomWidth: 0,
-    color:
-      (splittedPath[1].includes('patients') || splittedPath[1].includes('appointments')) &&
-      splittedPath.length > 2
-        ? 'white'
-        : 'black',
+    borderTopWidth: 0,
+    color: 'black',
+    padding: '.6rem 1.25rem',
+    backgroundColor: 'rgba(245,245,245,1)',
   }
 
   const listSubItemStyle: CSSProperties = {
     cursor: 'pointer',
     fontSize: 'small',
     borderBottomWidth: 0,
-    color:
-      (splittedPath[1].includes('patients') || splittedPath[1].includes('appointments')) &&
-      splittedPath.length < 3
-        ? 'white'
-        : 'black',
+    borderTopWidth: 0,
+    color: 'black',
+    padding: '.6rem 1.25rem',
+    backgroundColor: 'rgba(245,245,245,1)',
   }
 
   const getDashboardLink = () => (
