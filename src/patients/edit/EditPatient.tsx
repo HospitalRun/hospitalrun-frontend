@@ -3,8 +3,6 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Spinner, Button, Toast } from '@hospitalrun/components'
-
-import { parseISO } from 'date-fns'
 import GeneralInformation from '../GeneralInformation'
 import useTitle from '../../page-header/useTitle'
 import Patient from '../../model/Patient'
@@ -44,7 +42,10 @@ const EditPatient = () => {
     familyName: '',
     preferredLanguage: '',
   })
-  const { patient: reduxPatient, isLoading } = useSelector((state: RootState) => state.patient)
+
+  const { patient: reduxPatient, status, updateError } = useSelector(
+    (state: RootState) => state.patient,
+  )
 
   useTitle(
     `${t('patients.editPatient')}: ${getPatientFullName(reduxPatient)} (${getPatientCode(
@@ -197,9 +198,9 @@ const EditPatient = () => {
     return inputIsValid
   }
 
-  const onSave = () => {
+  const onSave = async () => {
     if (validateInput()) {
-      dispatch(
+      await dispatch(
         updatePatient(
           {
             ...patient,
@@ -209,6 +210,7 @@ const EditPatient = () => {
         ),
       )
     }
+
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {
@@ -218,7 +220,7 @@ const EditPatient = () => {
     })
   }
 
-  if (isLoading) {
+  if (status === 'loading') {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
@@ -228,9 +230,7 @@ const EditPatient = () => {
         isEditable
         patient={patient}
         onFieldChange={onFieldChange}
-        errorMessage={errorMessage}
-        invalidFields={invalidFields}
-        feedbackFields={feedbackFields}
+        error={updateError}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">

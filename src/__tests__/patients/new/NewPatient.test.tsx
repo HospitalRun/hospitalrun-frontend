@@ -9,8 +9,6 @@ import { act } from 'react-dom/test-utils'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import * as components from '@hospitalrun/components'
-
-import { addDays, endOfToday } from 'date-fns'
 import NewPatient from '../../../patients/new/NewPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import Patient from '../../../model/Patient'
@@ -29,13 +27,13 @@ describe('New Patient', () => {
   let history: any
   let store: MockStore
 
-  const setup = () => {
+  const setup = (error?: any) => {
     jest.spyOn(PatientRepository, 'save')
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.save.mockResolvedValue(patient)
 
     history = createMemoryHistory()
-    store = mockStore({ patient: { patient: {} as Patient } })
+    store = mockStore({ patient: { patient: {} as Patient, createError: error } })
 
     history.push('/patients/new')
     const wrapper = mount(
@@ -74,69 +72,16 @@ describe('New Patient', () => {
     expect(titleUtil.default).toHaveBeenCalledWith('patients.newPatient')
   })
 
-  it('should pass no given name error when form doesnt contain a given name on save button click', async () => {
+  it('should pass the error object to general information', async () => {
+    const expectedError = { message: 'some message' }
     let wrapper: any
     await act(async () => {
-      wrapper = await setup()
+      wrapper = await setup(expectedError)
     })
-
-    const givenName = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
-    expect(givenName.prop('value')).toBe('')
+    wrapper.update()
 
     const generalInformationForm = wrapper.find(GeneralInformation)
-    expect(generalInformationForm.prop('errorMessage')).toBe('')
-
-    const saveButton = wrapper.find(components.Button).at(0)
-    const onClick = saveButton.prop('onClick') as any
-    expect(saveButton.text().trim()).toEqual('actions.save')
-
-    act(() => {
-      onClick()
-    })
-
-    wrapper.update()
-    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
-      'patient.errors.createPatientError',
-    )
-    expect(wrapper.find(GeneralInformation).prop('feedbackFields').givenName).toMatch(
-      'patient.errors.patientGivenNameFeedback',
-    )
-    expect(wrapper.update.isInvalid === true)
-  })
-
-  it('should pass invalid date of birth error when input date is grater than today on save button click', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
-
-    const generalInformationForm = wrapper.find(GeneralInformation)
-
-    act(() => {
-      generalInformationForm.prop('onFieldChange')(
-        'dateOfBirth',
-        addDays(endOfToday(), 10).toISOString(),
-      )
-    })
-
-    wrapper.update()
-
-    const saveButton = wrapper.find(components.Button).at(0)
-    const onClick = saveButton.prop('onClick') as any
-    expect(saveButton.text().trim()).toEqual('actions.save')
-
-    await act(async () => {
-      await onClick()
-    })
-
-    wrapper.update()
-    expect(wrapper.find(GeneralInformation).prop('errorMessage')).toMatch(
-      'patient.errors.createPatientError',
-    )
-    expect(wrapper.find(GeneralInformation).prop('feedbackFields').dateOfBirth).toMatch(
-      'patient.errors.patientDateOfBirthFeedback',
-    )
-    expect(wrapper.update.isInvalid === true)
+    expect(generalInformationForm.prop('error')).toEqual(expectedError)
   })
 
   it('should dispatch createPatient when save button is clicked', async () => {

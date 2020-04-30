@@ -67,6 +67,7 @@ export default {
       error: {
         nameRequired: 'Diagnosis Name is required.',
         dateRequired: 'Diagnosis Date is required.',
+        unableToAdd: 'Unable to add new diagnosis',
       },
       addDiagnosisAbove: 'Add a diagnosis using the button above.',
       successfullyAdded: 'Successfully added a new diagnosis!',
