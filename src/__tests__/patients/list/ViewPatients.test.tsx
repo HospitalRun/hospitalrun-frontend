@@ -64,7 +64,31 @@ describe('Patients', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'findAll')
+    jest.spyOn(PatientRepository, 'searchPaged')
+    jest.spyOn(PatientRepository, 'findAllPaged')
+
     mockedPatientRepository.findAll.mockResolvedValue([])
+    mockedPatientRepository.findAllPaged.mockResolvedValue(
+      new Promise<Page<Patient>>((resolve) => {
+        const pagedResult: Page<Patient> = {
+          content: [],
+          hasPrevious: false,
+          hasNext: false,
+        }
+        resolve(pagedResult)
+      }),
+    )
+
+    mockedPatientRepository.searchPaged.mockResolvedValue(
+      new Promise<Page<Patient>>((resolve) => {
+        const pagedResult: Page<Patient> = {
+          content: [],
+          hasPrevious: false,
+          hasNext: false,
+        }
+        resolve(pagedResult)
+      }),
+    )
   })
 
   describe('layout', () => {
@@ -147,9 +171,12 @@ describe('Patients', () => {
       expect(searchPatientsSpy).toHaveBeenLastCalledWith(
         expectedSearchText,
         {
-          sorts: [{ field: 'code', direction: 'desc' }],
+          sorts: [
+            { field: 'fullName', direction: 'asc' },
+            { field: 'code', direction: 'asc' },
+          ],
         },
-        { limit: 1, skip: 0 },
+        { number: 1, size: 1 },
       )
     })
   })

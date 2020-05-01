@@ -2,6 +2,8 @@ import '../../__mocks__/matchMediaMock'
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
 import { UnpagedRequest } from 'clients/db/PageRequest'
+import Page from 'clients/Page'
+import Patient from 'model/Patient'
 import patients, {
   fetchPatientsStart,
   fetchPatientsSuccess,
@@ -54,6 +56,34 @@ describe('patients slice', () => {
   })
 
   describe('searchPatients', () => {
+    beforeEach(() => {
+      const mockedPatientRepository = mocked(PatientRepository, true)
+      jest.spyOn(PatientRepository, 'findAllPaged')
+      jest.spyOn(PatientRepository, 'searchPaged')
+
+      mockedPatientRepository.findAllPaged.mockResolvedValue(
+        new Promise<Page<Patient>>((resolve) => {
+          const pagedResult: Page<Patient> = {
+            content: [],
+            hasPrevious: false,
+            hasNext: false,
+          }
+          resolve(pagedResult)
+        }),
+      )
+
+      mockedPatientRepository.searchPaged.mockResolvedValue(
+        new Promise<Page<Patient>>((resolve) => {
+          const pagedResult: Page<Patient> = {
+            content: [],
+            hasPrevious: false,
+            hasNext: false,
+          }
+          resolve(pagedResult)
+        }),
+      )
+    })
+
     it('should dispatch the FETCH_PATIENTS_START action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
@@ -91,36 +121,15 @@ describe('patients slice', () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      const expectedPatients = {
-        content: [
-          {
-            id: '123',
-            fullName: 'test test',
-            isApproximateDateOfBirth: false,
-            givenName: 'test',
-            familyName: 'test',
-            code: 'P12345',
-            sex: 'male',
-            dateOfBirth: new Date().toISOString(),
-            phoneNumber: '99999999',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            rev: '',
-          },
-        ],
-        hasNext: false,
-        hasPrevious: false,
-        pageRequest: UnpagedRequest,
-      }
-
-      const mockedPatientRepository = mocked(PatientRepository, true)
-      mockedPatientRepository.searchPaged.mockResolvedValue(expectedPatients)
-
       await searchPatients('search string')(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenLastCalledWith({
         type: fetchPatientsSuccess.type,
-        payload: expectedPatients,
+        payload: {
+          content: [],
+          hasPrevious: false,
+          hasNext: false,
+        },
       })
     })
   })

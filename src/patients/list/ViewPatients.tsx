@@ -26,16 +26,16 @@ const ViewPatients = () => {
 
   const setButtonToolBar = useButtonToolbarSetter()
   const [userPageRequest, setUserPageRequest] = useState<PageRequest>({
-    skip: 0,
-    limit: 1,
+    size: 1,
+    number: 1,
   })
 
   const setNextPageRequest = () => {
     setUserPageRequest((p) => {
-      if (p.limit) {
+      if (p && p.number && p.number >= 0 && p.size) {
         const newPageRequest: PageRequest = {
-          limit: p.limit,
-          skip: p.skip + p.limit,
+          number: p.number + 1,
+          size: p.size,
         }
         return newPageRequest
       }
@@ -45,10 +45,10 @@ const ViewPatients = () => {
 
   const setPreviousPageRequest = () => {
     setUserPageRequest((p) => {
-      if (p.limit) {
+      if (p.number && p.size) {
         return {
-          limit: p.limit,
-          skip: p.skip - p.limit,
+          number: p.number - 1,
+          size: p.size,
         }
       }
       return p
@@ -60,14 +60,20 @@ const ViewPatients = () => {
 
   useEffect(() => {
     const sortRequest: SortRequest = {
-      sorts: [{ field: 'code', direction: 'desc' }],
+      sorts: [
+        { field: 'fullName', direction: 'asc' },
+        { field: 'code', direction: 'asc' },
+      ],
     }
     dispatch(searchPatients(debouncedSearchText, sortRequest, userPageRequest))
   }, [dispatch, debouncedSearchText, userPageRequest])
 
   useEffect(() => {
     const sortRequest: SortRequest = {
-      sorts: [{ field: 'code', direction: 'desc' }],
+      sorts: [
+        { field: 'fullName', direction: 'asc' },
+        { field: 'code', direction: 'asc' },
+      ],
     }
     dispatch(fetchPatients(sortRequest, userPageRequest))
 
@@ -136,7 +142,7 @@ const ViewPatients = () => {
       <PageComponent
         hasNext={patients.hasNext}
         hasPrevious={patients.hasPrevious}
-        pageNumber={userPageRequest.limit && userPageRequest.skip / userPageRequest.limit + 1}
+        pageNumber={userPageRequest.number}
         setPreviousPageRequest={setPreviousPageRequest}
         setNextPageRequest={setNextPageRequest}
       />

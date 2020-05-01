@@ -55,18 +55,19 @@ export default class Repository<T extends AbstractDBModel> {
     const result = await this.db.find({
       selector,
       sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
-      limit: pageRequest.limit,
-      skip: pageRequest.skip,
+      limit: pageRequest.size,
+      skip:
+        pageRequest.number && pageRequest.size ? (pageRequest.number - 1) * pageRequest.size : 0,
     })
     const mappedResult = result.docs.map(mapDocument)
 
     const pagedResult: Page<T> = {
       content: mappedResult,
-      hasNext: pageRequest.limit !== undefined && mappedResult.length === pageRequest.limit,
-      hasPrevious: pageRequest.skip > 0,
+      hasNext: pageRequest.size !== undefined && mappedResult.length === pageRequest.size,
+      hasPrevious: pageRequest.number !== undefined && pageRequest.number > 1,
       pageRequest: {
-        skip: pageRequest.skip,
-        limit: pageRequest.limit,
+        size: pageRequest.size,
+        number: pageRequest.number,
       },
     }
     return pagedResult

@@ -1,5 +1,8 @@
 export default interface PageRequest {
-  limit: number | undefined
-  skip: number
+  number: number | undefined
+  size: number | undefined
 }
-export const UnpagedRequest: PageRequest = { limit: undefined, skip: 0 }
+export const UnpagedRequest: PageRequest = {
+  number: undefined,
+  size: undefined,
+}

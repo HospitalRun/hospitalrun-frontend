@@ -4,6 +4,7 @@ import Patient from '../../model/Patient'
 import Repository from './Repository'
 import { patients } from '../../config/pouchdb'
 import PageRequest, { UnpagedRequest } from './PageRequest'
+import SortRequest, { Unsorted } from './SortRequest'
 
 const formatPatientCode = (prefix: string, sequenceNumber: string) => `${prefix}${sequenceNumber}`
 
@@ -13,7 +14,7 @@ export class PatientRepository extends Repository<Patient> {
   constructor() {
     super(patients)
     patients.createIndex({
-      index: { fields: ['code', 'fullName'] },
+      index: { fields: ['fullName', 'code'] },
     })
   }
 
@@ -37,40 +38,47 @@ export class PatientRepository extends Repository<Patient> {
   async searchPaged(
     text: string,
     pageRequest: PageRequest = UnpagedRequest,
+    sortRequest: SortRequest = Unsorted,
   ): Promise<Page<Patient>> {
-    return super
-      .search({
-        selector: {
-          $or: [
-            {
-              fullName: {
-                $regex: RegExp(text, 'i'),
-              },
-            },
-            {
-              code: text,
-            },
-          ],
+    const selector: any = {
+      $or: [
+        {
+          fullName: {
+            $regex: RegExp(text, 'i'),
+          },
         },
-        skip: pageRequest.skip,
-        limit: pageRequest.limit,
+        {
+          code: text,
+        },
+      ],
+    }
+    sortRequest.sorts.forEach((s) => {
+      selector[s.field] = { $gt: null }
+    })
+
+    const result = await super
+      .search({
+        selector,
+        limit: pageRequest.size,
+        skip:
+          pageRequest.number && pageRequest.size ? (pageRequest.number - 1) * pageRequest.size : 0,
+        sort:
+          sortRequest.sorts.length > 0
+            ? sortRequest.sorts.map((s) => ({ [s.field]: s.direction }))
+            : undefined,
       })
-      .then(
-        (searchedData) =>
-          new Promise<Page<Patient>>((resolve) => {
-            const pagedResult: Page<Patient> = {
-              content: searchedData,
-              pageRequest,
-              hasNext: pageRequest.limit !== undefined && searchedData.length === pageRequest.limit,
-              hasPrevious: pageRequest.skip > 0,
-            }
-            resolve(pagedResult)
-          }),
-      )
       .catch((err) => {
         console.log(err)
         return err
       })
+
+    const pagedResult: Page<Patient> = {
+      content: result,
+      pageRequest,
+      hasNext: pageRequest.size !== undefined && result.length === pageRequest.size,
+      hasPrevious: pageRequest.number !== undefined && pageRequest.number > 1,
+    }
+    return pagedResult
   }
 
   async save(entity: Patient): Promise<Patient> {

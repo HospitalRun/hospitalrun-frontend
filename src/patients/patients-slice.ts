@@ -17,10 +17,6 @@ const initialState: PatientsState = {
     content: [],
     hasNext: false,
     hasPrevious: false,
-    pageRequest: {
-      skip: 0,
-      limit: 1,
-    },
   },
 }
 
@@ -42,8 +38,8 @@ const patientsSlice = createSlice({
 export const { fetchPatientsStart, fetchPatientsSuccess } = patientsSlice.actions
 
 export const fetchPatients = (
-  sortRequest: SortRequest,
-  pageRequest: PageRequest,
+  sortRequest: SortRequest = Unsorted,
+  pageRequest: PageRequest = UnpagedRequest,
 ): AppThunk => async (dispatch) => {
   dispatch(fetchPatientsStart())
   const patients = await PatientRepository.findAllPaged(sortRequest, pageRequest)
