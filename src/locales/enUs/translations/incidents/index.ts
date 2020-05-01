@@ -1,10 +1,26 @@
 export default {
   incidents: {
     label: 'Incidents',
+    actions: {
+      report: 'Report',
+    },
     reports: {
       label: 'Reported Incidents',
       new: 'Report Incident',
       view: 'View Incident',
+      dateOfIncident: 'Date of Incident',
+      department: 'Department',
+      category: 'Category',
+      categoryItem: 'Category Item',
+      description: 'Description of Incident',
+      error: {
+        dateRequired: 'Date is required.',
+        dateMustBeInThePast: 'Date must be in the past.',
+        departmentRequired: 'Department is required.',
+        categoryRequired: 'Category is required',
+        categoryItemRequired: 'Category Item is required',
+        descriptionRequired: 'Description is required',
+      },
     },
   },
 }

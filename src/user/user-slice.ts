@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Permissions from '../model/Permissions'
+import User from '../model/User'
 
 interface UserState {
   permissions: Permissions[]
+  user: User
 }
 
 const initialState: UserState = {
@@ -23,6 +25,11 @@ const initialState: UserState = {
     Permissions.ViewIncidents,
     Permissions.ReportIncident,
   ],
+  user: {
+    id: 'some-hardcoded-id',
+    givenName: 'HospitalRun',
+    familyName: 'Fake User',
+  } as User,
 }
 
 const userSlice = createSlice({

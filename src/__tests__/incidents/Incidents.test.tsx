@@ -22,6 +22,7 @@ describe('Incidents', () => {
           user: { permissions: [Permissions.ReportIncident] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
+          incident: {},
         })
 
         const wrapper = mount(

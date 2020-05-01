@@ -6,15 +6,18 @@ interface Props {
   label: string
   value: Date | undefined
   isEditable?: boolean
+  isRequired?: boolean
   onChange?: (date: Date) => void
+  feedback?: string
+  isInvalid?: boolean
 }
 
 const DateTimePickerWithLabelFormGroup = (props: Props) => {
-  const { onChange, label, name, isEditable, value } = props
+  const { onChange, label, name, isEditable, value, isRequired, feedback, isInvalid } = props
   const id = `${name}DateTimePicker`
   return (
     <div className="form-group">
-      <Label text={label} isRequired htmlFor={id} />
+      <Label text={label} isRequired={isRequired} htmlFor={id} />
       <DateTimePicker
         dateFormat="MM/dd/yyyy h:mm aa"
         dateFormatCalendar="LLLL yyyy"
@@ -31,6 +34,8 @@ const DateTimePickerWithLabelFormGroup = (props: Props) => {
         timeFormat="h:mm aa"
         timeIntervals={15}
         withPortal={false}
+        feedback={feedback}
+        isInvalid={isInvalid}
       />
     </div>
   )
