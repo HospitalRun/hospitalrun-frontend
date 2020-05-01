@@ -68,3 +68,4 @@ package-lock.json
 .DS_Store
 yarn.lock
 .vscode/launch.json
+.vscode/tasks.json

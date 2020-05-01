@@ -11,9 +11,6 @@ interface SearchContainer {
 export class LabRepository extends Repository<Lab> {
   constructor() {
     super(labs)
-    labs.createIndex({
-      index: { fields: ['requestedOn', 'type', 'status'] },
-    })
   }
 
   async search(container: SearchContainer): Promise<Lab[]> {
