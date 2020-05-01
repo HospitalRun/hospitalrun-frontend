@@ -10,6 +10,15 @@ interface LabsState {
   statusFilter: 'requested' | 'completed' | 'canceled' | 'all'
 }
 
+const sortRequest: SortRequest = {
+  sorts: [
+    {
+      field: 'requestedOn',
+      direction: 'desc',
+    },
+  ],
+}
+
 const initialState: LabsState = {
   isLoading: false,
   labs: [],
@@ -49,14 +58,6 @@ export const setFilter = (selection: string): AppThunk => async (dispatch) => {
 
 export const fetchLabs = (): AppThunk => async (dispatch) => {
   dispatch(fetchLabsStart())
-  const sortRequest: SortRequest = {
-    sorts: [
-      {
-        field: 'requestedOn',
-        direction: 'desc',
-      },
-    ],
-  }
   const labs = await LabRepository.findAll(sortRequest)
   dispatch(fetchLabsSuccess(labs))
 }
@@ -65,12 +66,15 @@ export const searchLabs = (text: string): AppThunk => async (dispatch, getState)
   dispatch(fetchLabsStart())
 
   let labs
-  if (text.trim() === '' && getState().labs.statusFilter === initialState.statusFilter) {
-    labs = await LabRepository.findAll()
+  const status = !getState() ? 'all' : getState().labs.statusFilter
+
+  if (text.trim() === '' && status === initialState.statusFilter) {
+    labs = await LabRepository.findAll(sortRequest)
   } else {
     labs = await LabRepository.search({
       text,
-      status: getState().labs.statusFilter,
+      status,
+      sortRequest,
     })
   }
 

@@ -1,10 +1,12 @@
 import Lab from 'model/Lab'
 import Repository from './Repository'
 import { labs } from '../../config/pouchdb'
+import SortRequest from './SortRequest'
 
 interface SearchContainer {
   text: string
-  status: string
+  status: 'requested' | 'completed' | 'canceled' | 'all'
+  sortRequest: SortRequest
 }
 export class LabRepository extends Repository<Lab> {
   constructor() {
@@ -25,6 +27,7 @@ export class LabRepository extends Repository<Lab> {
           status: container.status,
         },
       ],
+      sorts: container.sortRequest.sorts,
     }
 
     if (container.status === 'all') {

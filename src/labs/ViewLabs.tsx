@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import useTitle from 'page-header/useTitle'
 import { useTranslation } from 'react-i18next'
@@ -27,29 +27,39 @@ const ViewLabs = () => {
 
   const debouncedSearchText = useDebounce(searchText, 500)
 
-  const getButtons = () => {
+  const getButtons = useCallback(() => {
     const buttons: React.ReactNode[] = []
 
     if (permissions.includes(Permissions.RequestLab)) {
       buttons.push(
-        <Button icon="add" onClick={() => history.push('/labs/new')} outlined color="success">
+        <Button
+          icon="add"
+          onClick={() => history.push('/labs/new')}
+          outlined
+          color="success"
+          key="lab.requests.new"
+        >
           {t('labs.requests.new')}
         </Button>,
       )
     }
 
     return buttons
-  }
-
-  setButtons(getButtons())
+  }, [permissions, history, t])
 
   useEffect(() => {
     dispatch(searchLabs(debouncedSearchText))
   }, [dispatch, debouncedSearchText])
 
   useEffect(() => {
+    setButtons(getButtons())
+
     dispatch(fetchLabs())
-  }, [dispatch])
+
+    return () => {
+      setButtons([])
+    }
+  }, [dispatch, getButtons, setButtons])
 
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
 
@@ -85,7 +95,7 @@ const ViewLabs = () => {
           <SelectWithLabelFormGroup
             name="type"
             value={statusFilter}
-            label={t('labs.filter_title')}
+            label={t('labs.filterTitle')}
             isEditable
             options={[
               { label: t('labs.status.requested'), value: 'requested' },
