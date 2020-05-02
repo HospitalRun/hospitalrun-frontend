@@ -94,6 +94,8 @@ export default {
       updatePatientError: 'Could not update patient.',
       patientGivenNameFeedback: 'Given Name is required.',
       patientDateOfBirthFeedback: 'Date of Birth can not be greater than today',
+      invalidEmail: 'Must be a valid email.',
+      invalidPhoneNumber: 'Must be a valid phone number.',
     },
   },
 }
