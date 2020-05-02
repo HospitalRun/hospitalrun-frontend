@@ -30,7 +30,7 @@ describe('Edit Patient', () => {
     type: 'charity',
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
-    phoneNumber: 'phoneNumber',
+    phoneNumber: '123456789',
     email: 'email@email.com',
     address: 'address',
     code: 'P00001',
