@@ -36,6 +36,12 @@
     "uuid": "^8.0.0",
     "validator": "^13.0.0"
   },
+   "resolutions": {
+    "moment": "2.24.0" 
+  },
+   "comments": {
+    "resolutions": "Added this key as temp fix https://github.com/moment/moment/issues/5484",
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/HospitalRun/hospitalrun-frontend.git"
