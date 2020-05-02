@@ -10,6 +10,6 @@ export default {
     new: 'Nuovo',
     list: 'Lista',
     search: 'Cerca',
-    confirmDelete: 'Cancella conferma',
+    confirmDelete: 'Conferma cancellazione',
   },
 }
