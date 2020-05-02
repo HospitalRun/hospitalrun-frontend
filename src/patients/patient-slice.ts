@@ -180,6 +180,8 @@ function validatePatient(patient: Patient) {
   if (patient.preferredLanguage) {
     if (regexContainsNumber.test(patient.preferredLanguage)) {
       error.preferredLanguage = 'patient.errors.patientNumInPreferredLanguageFeedback'
+    }
+  }
 
   if (patient.email) {
     if (!validator.isEmail(patient.email)) {
