@@ -1,6 +1,6 @@
 {
   "name": "@hospitalrun/frontend",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.3",
   "description": "React frontend for HospitalRun",
   "private": false,
   "license": "MIT",
@@ -36,10 +36,10 @@
     "uuid": "^8.0.0",
     "validator": "^13.0.0"
   },
-   "resolutions": {
-    "moment": "2.24.0" 
+  "resolutions": {
+    "moment": "2.24.0"
   },
-   "comments": {
+  "comments": {
     "resolutions": "Added this key as temp fix https://github.com/moment/moment/issues/5484"
   },
   "repository": {
