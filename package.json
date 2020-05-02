@@ -40,7 +40,7 @@
     "moment": "2.24.0" 
   },
    "comments": {
-    "resolutions": "Added this key as temp fix https://github.com/moment/moment/issues/5484",
+    "resolutions": "Added this key as temp fix https://github.com/moment/moment/issues/5484"
   },
   "repository": {
     "type": "git",
