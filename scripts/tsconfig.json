@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["./checkMissingTranslations.ts"],
+  "compilerOptions": {
+    "module": "commonjs"
+  }
+}

@@ -101,11 +101,12 @@
     "prepublishOnly": "npm run build",
     "test": "react-scripts test --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test --passWithNoTests",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/**/*.{js,ts}\"",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/**/*.{js,ts}\" --fix",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
-    "coveralls": "npm run test:ci -- --coverage --watchAll=false && cat ./coverage/lcov.info"
+    "coveralls": "npm run test:ci -- --coverage --watchAll=false && cat ./coverage/lcov.info",
+    "translation:check": "ts-node-script scripts/checkMissingTranslations.ts"
   },
   "browserslist": {
     "production": [
