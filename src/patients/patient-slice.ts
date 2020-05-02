@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isAfter, parseISO } from 'date-fns'
 import _ from 'lodash'
+import validator from 'validator'
 import { uuid } from '../util/uuid'
 import Patient from '../model/Patient'
 import PatientRepository from '../clients/db/PatientRepository'
@@ -31,6 +32,8 @@ interface Error {
   prefix?: string
   familyName?: string
   preferredLanguage?: string
+  email?: string
+  phoneNumber?: string
 }
 
 interface AddRelatedPersonError {
@@ -177,6 +180,16 @@ function validatePatient(patient: Patient) {
   if (patient.preferredLanguage) {
     if (regexContainsNumber.test(patient.preferredLanguage)) {
       error.preferredLanguage = 'patient.errors.patientNumInPreferredLanguageFeedback'
+
+  if (patient.email) {
+    if (!validator.isEmail(patient.email)) {
+      error.email = 'patient.errors.invalidEmail'
+    }
+  }
+
+  if (patient.phoneNumber) {
+    if (!validator.isMobilePhone(patient.phoneNumber)) {
+      error.phoneNumber = 'patient.errors.invalidPhoneNumber'
     }
   }
 

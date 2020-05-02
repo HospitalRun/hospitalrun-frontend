@@ -219,6 +219,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'phoneNumber')
               }}
+              feedback={t(error?.phoneNumber)}
+              isInvalid={!!error?.phoneNumber}
               type="tel"
             />
           </div>
@@ -233,6 +235,8 @@ const GeneralInformation = (props: Props) => {
                 onInputElementChange(event, 'email')
               }}
               type="email"
+              feedback={t(error?.email)}
+              isInvalid={!!error?.email}
             />
           </div>
         </div>

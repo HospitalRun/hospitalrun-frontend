@@ -98,6 +98,8 @@ export default {
       patientNumInPrefixFeedback: 'Cannot contain numbers.',
       patientNumInFamilyNameFeedback: 'Cannot contain numbers.',
       patientNumInPreferredLanguageFeedback: 'Cannot contain numbers.',
+      invalidEmail: 'Must be a valid email.',
+      invalidPhoneNumber: 'Must be a valid phone number.',
     },
   },
 }
