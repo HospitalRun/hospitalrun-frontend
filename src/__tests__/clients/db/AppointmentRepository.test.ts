@@ -1,5 +1,5 @@
 import AppointmentRepository from 'clients/db/AppointmentRepository'
-import { appointments } from 'config/pouchdb'
+import { appointments, patients } from 'config/pouchdb'
 import Appointment from 'model/Appointment'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
@@ -21,6 +21,21 @@ describe('Appointment Repository', () => {
 
       await appointments.remove(await appointments.get('id1234'))
       await appointments.remove(await appointments.get('id5678'))
+    })
+  })
+
+  describe('searchPatientAppointments', () => {
+    it('should escape all special chars from search text', async () => {
+      await patients.put({ _id: 'id2222' })
+      await appointments.put({ _id: 'id3333', patientId: 'id2222', location: 'id-]?}(){*[$+.^\\' })
+
+      const result = await AppointmentRepository.searchPatientAppointments(
+        'id2222',
+        'id-]?}(){*[$+.^\\',
+      )
+
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toEqual('id3333')
     })
   })
 
