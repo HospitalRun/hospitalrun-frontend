@@ -36,6 +36,7 @@ describe('Patients', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         rev: '',
+        index: 'test test P12345',
       },
     ],
     hasNext: false,
@@ -171,12 +172,9 @@ describe('Patients', () => {
       expect(searchPatientsSpy).toHaveBeenLastCalledWith(
         expectedSearchText,
         {
-          sorts: [
-            { field: 'fullName', direction: 'asc' },
-            { field: 'code', direction: 'asc' },
-          ],
+          sorts: [{ field: 'index', direction: 'asc' }],
         },
-        { number: 1, size: 1 },
+        { number: 1, size: 1, nextPageInfo: { index: null }, direction: 'next' },
       )
     })
   })
