@@ -28,6 +28,8 @@ const ViewPatients = () => {
   const [userPageRequest, setUserPageRequest] = useState<PageRequest>({
     size: 1,
     number: 1,
+    nextPageInfo: { index: null },
+    direction: 'next',
   })
 
   const setNextPageRequest = () => {
@@ -36,6 +38,8 @@ const ViewPatients = () => {
         const newPageRequest: PageRequest = {
           number: p.number + 1,
           size: p.size,
+          nextPageInfo: patients.pageRequest?.nextPageInfo,
+          direction: 'next',
         }
         return newPageRequest
       }
@@ -49,6 +53,8 @@ const ViewPatients = () => {
         return {
           number: p.number - 1,
           size: p.size,
+          nextPageInfo: patients.pageRequest?.nextPageInfo,
+          direction: 'previous',
         }
       }
       return p
@@ -60,20 +66,14 @@ const ViewPatients = () => {
 
   useEffect(() => {
     const sortRequest: SortRequest = {
-      sorts: [
-        { field: 'fullName', direction: 'asc' },
-        { field: 'code', direction: 'asc' },
-      ],
+      sorts: [{ field: 'index', direction: 'asc' }],
     }
     dispatch(searchPatients(debouncedSearchText, sortRequest, userPageRequest))
   }, [dispatch, debouncedSearchText, userPageRequest])
 
   useEffect(() => {
     const sortRequest: SortRequest = {
-      sorts: [
-        { field: 'fullName', direction: 'asc' },
-        { field: 'code', direction: 'asc' },
-      ],
+      sorts: [{ field: 'index', direction: 'asc' }],
     }
     dispatch(fetchPatients(sortRequest, userPageRequest))
 

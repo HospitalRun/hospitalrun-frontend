@@ -15,7 +15,7 @@ export class PatientRepository extends Repository<Patient> {
   constructor() {
     super(patients)
     patients.createIndex({
-      index: { fields: ['fullName', 'code'] },
+      index: { fields: ['index'] },
     })
   }
 
@@ -86,6 +86,7 @@ export class PatientRepository extends Repository<Patient> {
   async save(entity: Patient): Promise<Patient> {
     const patientCode = getPatientCode()
     entity.code = patientCode
+    entity.index = (entity.fullName ? entity.fullName : '') + patientCode
     return super.save(entity)
   }
 }
