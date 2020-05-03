@@ -16,7 +16,7 @@ export class LabRepository extends Repository<Lab> {
     entity.code = labCode
     return super.save(entity)
   }
-  
+
   async findAllByPatientId(patientId: string): Promise<Lab[]> {
     return super.search({
       selector: {
