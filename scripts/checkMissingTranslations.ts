@@ -3,14 +3,16 @@ import i18n from '../src/i18n'
 
 const checkRecursiveTranslation = (
   comparingLanguage: string,
-  searchingPath: string,
+  searchingPath: string[],
   defaultLanguageObject: ResourceKey,
   comparingLanguageObject: ResourceKey,
 ) => {
   if (typeof defaultLanguageObject === 'string' || typeof comparingLanguageObject === 'string') {
     if (typeof defaultLanguageObject === 'object') {
       console.log(
-        `📙 Found a string for path ${searchingPath} and language ${comparingLanguage} while is and object for the default language`,
+        `📙 Found a string for path ${searchingPath.join(
+          '-->',
+        )} and language ${comparingLanguage} while is and object for the default language`,
       )
     }
     return
@@ -23,12 +25,14 @@ const checkRecursiveTranslation = (
   defaultKeys.forEach((key) => {
     if (!comparingLanguageObject[key]) {
       console.log(
-        `📙 The key ${key} is not present for path ${searchingPath} and language ${comparingLanguage}`,
+        `📙 The key ${key} is not present for path ${searchingPath.join(
+          '-->',
+        )} and language ${comparingLanguage}`,
       )
     } else {
       checkRecursiveTranslation(
         comparingLanguage,
-        `${searchingPath}-->${key}`,
+        [...searchingPath, key],
         defaultLanguageObject[key],
         comparingLanguageObject[key],
       )
@@ -55,7 +59,7 @@ const run = () => {
     }
     console.log(`🤞Checking ${language}`)
     console.log('')
-    checkRecursiveTranslation(language, language, resources[defaultLanguage], resources[language])
+    checkRecursiveTranslation(language, [language], resources[defaultLanguage], resources[language])
     console.log('')
   })
 }
