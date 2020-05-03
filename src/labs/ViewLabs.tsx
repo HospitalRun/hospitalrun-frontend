@@ -72,6 +72,7 @@ const ViewLabs = () => {
       <table className="table table-hover">
         <thead className="thead-light">
           <tr>
+            <th>{t('labs.lab.code')}</th>
             <th>{t('labs.lab.type')}</th>
             <th>{t('labs.lab.requestedOn')}</th>
             <th>{t('labs.lab.status')}</th>
@@ -80,6 +81,7 @@ const ViewLabs = () => {
         <tbody>
           {labs.map((lab) => (
             <tr onClick={() => onTableRowClick(lab)} key={lab.id}>
+              <td>{lab.code}</td>
               <td>{lab.type}</td>
               <td>{format(new Date(lab.requestedOn), 'yyyy-MM-dd hh:mm a')}</td>
               <td>{lab.status}</td>

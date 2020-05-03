@@ -15,6 +15,7 @@ export default {
       },
     },
     lab: {
+      code: 'Code',
       status: 'Statut',
       for: 'Pour',
       type: 'Type',
