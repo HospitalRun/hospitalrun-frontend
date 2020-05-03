@@ -22,7 +22,7 @@ export default {
       notes: 'Note',
       requestedOn: 'Richiesta fatta il',
       completedOn: 'Completato il',
-      canceledOn: 'Cancellato il',
+      canceledOn: 'Annullata il',
       patient: 'Paziente',
     },
   },
