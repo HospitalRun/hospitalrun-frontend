@@ -94,6 +94,7 @@ describe('View Labs', () => {
     let wrapper: ReactWrapper
     let history: any
     const expectedLab = {
+      code: 'L-1234',
       id: '1234',
       type: 'lab type',
       patientId: 'patientId',
@@ -133,19 +134,23 @@ describe('View Labs', () => {
       expect(table).toBeDefined()
       expect(tableHeader).toBeDefined()
       expect(tableBody).toBeDefined()
-      expect(tableColumnHeaders.at(0).text().trim()).toEqual('labs.lab.type')
+      expect(tableColumnHeaders.at(0).text().trim()).toEqual('labs.lab.code')
 
-      expect(tableColumnHeaders.at(1).text().trim()).toEqual('labs.lab.requestedOn')
+      expect(tableColumnHeaders.at(1).text().trim()).toEqual('labs.lab.type')
 
-      expect(tableColumnHeaders.at(2).text().trim()).toEqual('labs.lab.status')
+      expect(tableColumnHeaders.at(2).text().trim()).toEqual('labs.lab.requestedOn')
 
-      expect(tableDataColumns.at(0).text().trim()).toEqual(expectedLab.type)
+      expect(tableColumnHeaders.at(3).text().trim()).toEqual('labs.lab.status')
 
-      expect(tableDataColumns.at(1).text().trim()).toEqual(
+      expect(tableDataColumns.at(0).text().trim()).toEqual(expectedLab.code)
+
+      expect(tableDataColumns.at(1).text().trim()).toEqual(expectedLab.type)
+
+      expect(tableDataColumns.at(2).text().trim()).toEqual(
         format(new Date(expectedLab.requestedOn), 'yyyy-MM-dd hh:mm a'),
       )
 
-      expect(tableDataColumns.at(2).text().trim()).toEqual(expectedLab.status)
+      expect(tableDataColumns.at(3).text().trim()).toEqual(expectedLab.status)
     })
 
     it('should navigate to the lab when the row is clicked', () => {
