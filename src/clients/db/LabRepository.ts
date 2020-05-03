@@ -9,6 +9,18 @@ export class LabRepository extends Repository<Lab> {
       index: { fields: ['requestedOn'] },
     })
   }
+
+  async findAllByPatientId(patientId: string): Promise<Lab[]> {
+    return super.search({
+      selector: {
+        $and: [
+          {
+            patientId,
+          },
+        ],
+      },
+    })
+  }
 }
 
 export default new LabRepository()
