@@ -10,7 +10,7 @@ export class LabRepository extends Repository<Lab> {
     })
   }
 
-  async findLabsByPatientId(patientId: string): Promise<Lab[]> {
+  async findAllByPatientId(patientId: string): Promise<Lab[]> {
     return super.search({
       selector: {
         $and: [

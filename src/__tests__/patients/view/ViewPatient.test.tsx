@@ -22,6 +22,7 @@ import ViewPatient from '../../../patients/view/ViewPatient'
 import * as patientSlice from '../../../patients/patient-slice'
 import Permissions from '../../../model/Permissions'
 import LabsTab from '../../../patients/labs/LabsTab'
+import LabRepository from '../../../clients/db/LabRepository'
 
 const mockStore = configureMockStore([thunk])
 
@@ -48,6 +49,7 @@ describe('ViewPatient', () => {
 
   const setup = (permissions = [Permissions.ReadPatients]) => {
     jest.spyOn(PatientRepository, 'find')
+    jest.spyOn(LabRepository, 'findAllByPatientId').mockResolvedValue([])
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
     history = createMemoryHistory()

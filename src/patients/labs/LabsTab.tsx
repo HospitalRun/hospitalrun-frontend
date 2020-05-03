@@ -19,7 +19,7 @@ const LabsTab = (props: Props) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const fetchedLabs = await LabRepository.findLabsByPatientId(patientId)
+      const fetchedLabs = await LabRepository.findAllByPatientId(patientId)
       setLabs(fetchedLabs)
     }
 

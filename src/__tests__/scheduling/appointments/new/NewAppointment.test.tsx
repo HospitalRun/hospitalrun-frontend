@@ -34,7 +34,7 @@ describe('New Appointment', () => {
     mocked(AppointmentRepository, true).save.mockResolvedValue(
       expectedNewAppointment as Appointment,
     )
-    jest.spyOn(LabRepository, 'findLabsByPatientId').mockResolvedValue([] as Lab[])
+    jest.spyOn(LabRepository, 'findAllByPatientId').mockResolvedValue([] as Lab[])
 
     history = createMemoryHistory()
     store = mockStore({

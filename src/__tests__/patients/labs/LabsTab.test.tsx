@@ -17,15 +17,17 @@ import LabRepository from '../../../clients/db/LabRepository'
 
 const expectedPatient = {
   id: '123',
-  labs: [
-    {
-      patientId: '123',
-      type: 'type',
-      status: 'requested',
-      requestedOn: new Date().toISOString(),
-    } as Lab,
-  ],
 } as Patient
+
+const labs = [
+  {
+    id: 'labId',
+    patientId: '123',
+    type: 'type',
+    status: 'requested',
+    requestedOn: new Date().toISOString(),
+  } as Lab,
+]
 
 const mockStore = configureMockStore([thunk])
 const history = createMemoryHistory()
@@ -36,7 +38,7 @@ let store: any
 const setup = (patient = expectedPatient, permissions = [Permissions.WritePatients]) => {
   user = { permissions }
   store = mockStore({ patient, user })
-  jest.spyOn(LabRepository, 'findLabsByPatientId').mockResolvedValue(expectedPatient.labs as Lab[])
+  jest.spyOn(LabRepository, 'findAllByPatientId').mockResolvedValue(labs)
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>
@@ -50,7 +52,7 @@ const setup = (patient = expectedPatient, permissions = [Permissions.WritePatien
 
 describe('Labs Tab', () => {
   it('should list the patients labs', async () => {
-    const expectedLabs = expectedPatient.labs as Lab[]
+    const expectedLabs = labs
     let wrapper: any
     await act(async () => {
       wrapper = await setup()
@@ -76,8 +78,12 @@ describe('Labs Tab', () => {
     expect(tableData.at(2).text()).toEqual(expectedLabs[0].status)
   })
 
-  it('should render a warning message if the patient does not have any labs', () => {
-    const wrapper = setup({ ...expectedPatient, labs: [] })
+  it('should render a warning message if the patient does not have any labs', async () => {
+    let wrapper: any
+
+    await act(async () => {
+      wrapper = await setup({ ...expectedPatient })
+    })
 
     const alert = wrapper.find(components.Alert)
 
