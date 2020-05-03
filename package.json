@@ -105,10 +105,10 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "commit": "npx git-cz",
-    "start": "react-scripts start",
+    "start": "yarn translation:check && react-scripts start",
     "build": "react-scripts build",
     "prepublishOnly": "npm run build",
-    "test": "react-scripts test --detectOpenHandles",
+    "test": "yarn translation:check && react-scripts test --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test --passWithNoTests",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/**/*.{js,ts}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/**/*.{js,ts}\" --fix",
