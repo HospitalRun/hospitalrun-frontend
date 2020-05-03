@@ -8,6 +8,7 @@ import title from '../page-header/title-slice'
 import user from '../user/user-slice'
 import lab from '../labs/lab-slice'
 import incident from '../incidents/incident-slice'
+import incidents from '../incidents/incidents-slice'
 import breadcrumbs from '../breadcrumbs/breadcrumbs-slice'
 import components from '../components/component-slice'
 
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   components,
   lab,
   incident,
+  incidents,
 })
 
 const store = configureStore({

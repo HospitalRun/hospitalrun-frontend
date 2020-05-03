@@ -13,6 +13,10 @@ export default {
       category: 'Category',
       categoryItem: 'Category Item',
       description: 'Description of Incident',
+      code: 'Code',
+      reportedBy: 'Reported By',
+      reportedOn: 'Reported On',
+      status: 'Status',
       error: {
         dateRequired: 'Date is required.',
         dateMustBeInThePast: 'Date must be in the past.',
