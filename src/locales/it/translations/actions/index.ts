@@ -4,7 +4,7 @@ export default {
     edit: 'Modifica',
     save: 'Salva',
     update: 'Aggiorna',
-    complete: 'Completo',
+    complete: 'Completa',
     delete: 'Rimuovi',
     cancel: 'Annulla',
     new: 'Nuovo',

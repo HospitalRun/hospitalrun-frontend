@@ -5,7 +5,7 @@ export default {
       label: 'Richieste di laboratorio',
       new: 'Nuova richiesta di laboratorio',
       view: 'Visualizza richiesta',
-      cancel: 'Cancella',
+      cancel: 'Annulla richiesta',
       complete: 'Completa',
       error: {
         unableToRequest: 'Impossibile creare la richiesta.',
