@@ -174,7 +174,13 @@ describe('Patients', () => {
         {
           sorts: [{ field: 'index', direction: 'asc' }],
         },
-        { number: 1, size: 1, nextPageInfo: { index: null }, direction: 'next' },
+        {
+          number: 1,
+          size: 1,
+          nextPageInfo: { index: null },
+          direction: 'next',
+          previousPageInfo: { index: null },
+        },
       )
     })
   })

@@ -2,6 +2,8 @@ export default interface PageRequest {
   number: number | undefined
   size: number | undefined
   nextPageInfo: { [key: string]: string | null } | undefined
+  previousPageInfo: { [key: string]: string | null } | undefined
+
   direction: 'previous' | 'next' | null
 }
 export const UnpagedRequest: PageRequest = {
@@ -9,4 +11,5 @@ export const UnpagedRequest: PageRequest = {
   size: undefined,
   nextPageInfo: undefined,
   direction: null,
+  previousPageInfo: undefined,
 }

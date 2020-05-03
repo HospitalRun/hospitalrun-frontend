@@ -61,8 +61,8 @@ export default class Repository<T extends AbstractDBModel> {
         s.direction = s.direction === 'asc' ? 'desc' : 'asc'
         selector[s.field] = {
           $lte:
-            pageRequest.nextPageInfo && pageRequest.nextPageInfo[s.field]
-              ? pageRequest.nextPageInfo[s.field]
+            pageRequest.previousPageInfo && pageRequest.previousPageInfo[s.field]
+              ? pageRequest.previousPageInfo[s.field]
               : null,
         }
       })
@@ -72,20 +72,23 @@ export default class Repository<T extends AbstractDBModel> {
       selector,
       sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
       limit: pageRequest.size ? pageRequest.size + 1 : undefined,
-      skip: pageRequest.direction === 'previous' ? pageRequest.size : undefined,
     })
     const mappedResult = result.docs.map(mapDocument)
-
     if (pageRequest.direction === 'previous') {
       mappedResult.reverse()
     }
-    const nextPageInfo: { [key: string]: string } = {}
 
+    const nextPageInfo: { [key: string]: string } = {}
     if (mappedResult.length > 0) {
       sort.sorts.forEach((s) => {
         nextPageInfo[s.field] = mappedResult[mappedResult.length - 1][s.field]
       })
     }
+
+    const previousPageInfo: { [key: string]: string } = {}
+    sort.sorts.forEach((s) => {
+      previousPageInfo[s.field] = mappedResult[0][s.field]
+    })
 
     const pagedResult: Page<T> = {
       content:
@@ -93,12 +96,12 @@ export default class Repository<T extends AbstractDBModel> {
           ? mappedResult.slice(0, mappedResult.length - 1)
           : mappedResult,
       hasNext: pageRequest.size !== undefined && mappedResult.length === pageRequest.size + 1,
-      // hasPrevious: pageRequest.number !== undefined && pageRequest.number > 1,
-      hasPrevious: false,
+      hasPrevious: pageRequest.number !== undefined && pageRequest.number > 1,
       pageRequest: {
         size: pageRequest.size,
         number: pageRequest.number,
         nextPageInfo,
+        previousPageInfo,
         direction: null,
       },
     }

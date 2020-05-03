@@ -29,6 +29,7 @@ const ViewPatients = () => {
     size: 1,
     number: 1,
     nextPageInfo: { index: null },
+    previousPageInfo: { index: null },
     direction: 'next',
   })
 
@@ -39,6 +40,7 @@ const ViewPatients = () => {
           number: p.number + 1,
           size: p.size,
           nextPageInfo: patients.pageRequest?.nextPageInfo,
+          previousPageInfo: undefined,
           direction: 'next',
         }
         return newPageRequest
@@ -53,7 +55,8 @@ const ViewPatients = () => {
         return {
           number: p.number - 1,
           size: p.size,
-          nextPageInfo: patients.pageRequest?.nextPageInfo,
+          nextPageInfo: undefined,
+          previousPageInfo: patients.pageRequest?.previousPageInfo,
           direction: 'previous',
         }
       }
