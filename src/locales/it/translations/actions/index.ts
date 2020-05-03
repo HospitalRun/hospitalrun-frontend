@@ -6,7 +6,7 @@ export default {
     update: 'Aggiorna',
     complete: 'Completo',
     delete: 'Rimuovi',
-    cancel: 'Cancella',
+    cancel: 'Annulla',
     new: 'Nuovo',
     list: 'Lista',
     search: 'Cerca',
