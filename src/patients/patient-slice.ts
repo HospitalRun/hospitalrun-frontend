@@ -28,6 +28,10 @@ interface Error {
   message?: string
   givenName?: string
   dateOfBirth?: string
+  suffix?: string
+  prefix?: string
+  familyName?: string
+  preferredLanguage?: string
   email?: string
   phoneNumber?: string
 }
@@ -141,6 +145,8 @@ export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
 function validatePatient(patient: Patient) {
   const error: Error = {}
 
+  const regexContainsNumber = /\d/
+
   if (!patient.givenName) {
     error.givenName = 'patient.errors.patientGivenNameFeedback'
   }
@@ -150,6 +156,30 @@ function validatePatient(patient: Patient) {
     const dob = parseISO(patient.dateOfBirth)
     if (isAfter(dob, today)) {
       error.dateOfBirth = 'patient.errors.patientDateOfBirthFeedback'
+    }
+  }
+
+  if (patient.suffix) {
+    if (regexContainsNumber.test(patient.suffix)) {
+      error.suffix = 'patient.errors.patientNumInSuffixFeedback'
+    }
+  }
+
+  if (patient.prefix) {
+    if (regexContainsNumber.test(patient.prefix)) {
+      error.prefix = 'patient.errors.patientNumInPrefixFeedback'
+    }
+  }
+
+  if (patient.familyName) {
+    if (regexContainsNumber.test(patient.familyName)) {
+      error.familyName = 'patient.errors.patientNumInFamilyNameFeedback'
+    }
+  }
+
+  if (patient.preferredLanguage) {
+    if (regexContainsNumber.test(patient.preferredLanguage)) {
+      error.preferredLanguage = 'patient.errors.patientNumInPreferredLanguageFeedback'
     }
   }
 

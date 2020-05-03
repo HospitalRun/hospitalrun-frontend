@@ -295,6 +295,37 @@ describe('patients slice', () => {
         }),
       )
     })
+
+    it('should validate fields that should only contian alpha characters', async () => {
+      const store = mockStore()
+      const expectedPatientId = 'sliceId10'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some given name',
+        suffix: 'A123',
+        familyName: 'B456',
+        prefix: 'C987',
+        preferredLanguage: 'D321',
+      } as Patient
+      const saveOrUpdateSpy = jest
+        .spyOn(PatientRepository, 'saveOrUpdate')
+        .mockResolvedValue(expectedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
+
+      expect(onSuccessSpy).not.toHaveBeenCalled()
+      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
+      expect(store.getActions()[1]).toEqual(
+        createPatientError({
+          message: 'patient.errors.createPatientError',
+          suffix: 'patient.errors.patientNumInSuffixFeedback',
+          familyName: 'patient.errors.patientNumInFamilyNameFeedback',
+          prefix: 'patient.errors.patientNumInPrefixFeedback',
+          preferredLanguage: 'patient.errors.patientNumInPreferredLanguageFeedback',
+        }),
+      )
+    })
   })
 
   describe('fetch patient', () => {
@@ -386,6 +417,10 @@ describe('patients slice', () => {
         id: expectedPatientId,
         givenName: undefined,
         dateOfBirth: addDays(new Date(), 4).toISOString(),
+        suffix: '061002',
+        prefix: '061002',
+        familyName: '061002',
+        preferredLanguage: '061002',
       } as Patient
       const saveOrUpdateSpy = jest
         .spyOn(PatientRepository, 'saveOrUpdate')
@@ -401,6 +436,10 @@ describe('patients slice', () => {
           message: 'patient.errors.updatePatientError',
           givenName: 'patient.errors.patientGivenNameFeedback',
           dateOfBirth: 'patient.errors.patientDateOfBirthFeedback',
+          suffix: 'patient.errors.patientNumInSuffixFeedback',
+          familyName: 'patient.errors.patientNumInFamilyNameFeedback',
+          prefix: 'patient.errors.patientNumInPrefixFeedback',
+          preferredLanguage: 'patient.errors.patientNumInPreferredLanguageFeedback',
         }),
       )
     })
