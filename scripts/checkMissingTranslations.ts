@@ -1,5 +1,10 @@
 import { Resource, ResourceKey } from 'i18next'
+import chalk from 'chalk'
 import i18n from '../src/i18n'
+
+const error = chalk.bold.red
+const warning = chalk.keyword('orange')
+const success = chalk.keyword('green')
 
 const checkRecursiveTranslation = (
   comparingLanguage: string,
@@ -10,9 +15,11 @@ const checkRecursiveTranslation = (
   if (typeof defaultLanguageObject === 'string' || typeof comparingLanguageObject === 'string') {
     if (typeof defaultLanguageObject === 'object') {
       console.log(
-        `📙 Found a string for path ${searchingPath.join(
-          '-->',
-        )} and language ${comparingLanguage} while is and object for the default language`,
+        warning(
+          `Found a string for path ${searchingPath.join(
+            '-->',
+          )} and language ${comparingLanguage} while is and object for the default language`,
+        ),
       )
     }
     return
@@ -24,10 +31,12 @@ const checkRecursiveTranslation = (
   }
   defaultKeys.forEach((key) => {
     if (!comparingLanguageObject[key]) {
-      console.log(
-        `📙 The key ${key} is not present for path ${searchingPath.join(
-          '-->',
-        )} and language ${comparingLanguage}`,
+      console.warn(
+        warning(
+          `The key ${key} is not present for path ${searchingPath.join(
+            '-->',
+          )} and language ${comparingLanguage}`,
+        ),
       )
     } else {
       checkRecursiveTranslation(
@@ -45,11 +54,13 @@ const run = () => {
   const languages = Object.keys(resources)
   const defaultLanguage = 'en'
   console.log(
-    '🏁 Start finding translation problem comparing all languages with the default one (English)',
+    success(
+      '🏁 Start finding translation problem comparing all languages with the default one (English)',
+    ),
   )
   console.log('')
   if (!resources[defaultLanguage]) {
-    console.log('📕 We have a big problem.... the english language is not found!')
+    console.log(error('We have a big problem.... the english language is not found!'))
     process.exit(1)
   }
 
@@ -57,7 +68,7 @@ const run = () => {
     if (language === defaultLanguage) {
       return
     }
-    console.log(`🤞Checking ${language}`)
+    console.log(success(`Checking ${language}`))
     console.log('')
     checkRecursiveTranslation(language, [language], resources[defaultLanguage], resources[language])
     console.log('')
