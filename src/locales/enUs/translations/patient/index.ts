@@ -85,6 +85,14 @@ export default {
       },
       addNoteAbove: 'Add a note using the button above.',
     },
+    labs: {
+      label: 'Labs',
+      new: 'Add New Lab',
+      warning: {
+        noLabs: 'No Labs',
+      },
+      noLabsMessage: 'No labs requests for this person.',
+    },
     types: {
       charity: 'Charity',
       private: 'Private',
@@ -94,6 +102,10 @@ export default {
       updatePatientError: 'Could not update patient.',
       patientGivenNameFeedback: 'Given Name is required.',
       patientDateOfBirthFeedback: 'Date of Birth can not be greater than today',
+      patientNumInSuffixFeedback: 'Cannot contain numbers.',
+      patientNumInPrefixFeedback: 'Cannot contain numbers.',
+      patientNumInFamilyNameFeedback: 'Cannot contain numbers.',
+      patientNumInPreferredLanguageFeedback: 'Cannot contain numbers.',
       invalidEmail: 'Must be a valid email.',
       invalidPhoneNumber: 'Must be a valid phone number.',
     },
