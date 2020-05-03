@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isAfter, parseISO } from 'date-fns'
 import _ from 'lodash'
+import validator from 'validator'
 import { uuid } from '../util/uuid'
 import Patient from '../model/Patient'
 import PatientRepository from '../clients/db/PatientRepository'
@@ -27,6 +28,8 @@ interface Error {
   message?: string
   givenName?: string
   dateOfBirth?: string
+  email?: string
+  phoneNumber?: string
 }
 
 interface AddRelatedPersonError {
@@ -147,6 +150,18 @@ function validatePatient(patient: Patient) {
     const dob = parseISO(patient.dateOfBirth)
     if (isAfter(dob, today)) {
       error.dateOfBirth = 'patient.errors.patientDateOfBirthFeedback'
+    }
+  }
+
+  if (patient.email) {
+    if (!validator.isEmail(patient.email)) {
+      error.email = 'patient.errors.invalidEmail'
+    }
+  }
+
+  if (patient.phoneNumber) {
+    if (!validator.isMobilePhone(patient.phoneNumber)) {
+      error.phoneNumber = 'patient.errors.invalidPhoneNumber'
     }
   }
 
