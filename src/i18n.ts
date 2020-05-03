@@ -12,8 +12,12 @@ import translationJA from './locales/ja/translations'
 import translationPtBR from './locales/ptBr/translations'
 import translationRU from './locales/ru/translations'
 import translationZR from './locales/zr/translations'
+import translationIT from './locales/it/translations'
 
 const resources = {
+  it: {
+    translation: translationIT,
+  },
   ar: {
     translation: translationAR,
   },
