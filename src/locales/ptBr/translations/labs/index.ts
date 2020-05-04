@@ -15,6 +15,7 @@ export default {
       },
     },
     lab: {
+      code: 'Código',
       status: 'Estado',
       for: 'Por',
       type: 'Tipo',

@@ -25,6 +25,7 @@ describe('View Labs', () => {
   let history: any
   const mockPatient = { fullName: 'test' }
   const mockLab = {
+    code: 'L-1234',
     id: '12456',
     status: 'requested',
     patientId: '1234',
@@ -83,7 +84,9 @@ describe('View Labs', () => {
   it('should set the title', async () => {
     await setup(mockLab, [Permissions.ViewLab])
 
-    expect(titleSpy).toHaveBeenCalledWith(`${mockLab.type} for ${mockPatient.fullName}`)
+    expect(titleSpy).toHaveBeenCalledWith(
+      `${mockLab.type} for ${mockPatient.fullName}(${mockLab.code})`,
+    )
   })
 
   describe('page content', () => {
