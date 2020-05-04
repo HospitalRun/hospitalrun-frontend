@@ -45,6 +45,8 @@ const incidentSlice = createSlice({
   name: 'incident',
   initialState,
   reducers: {
+    fetchIncidentStart: start,
+    fetchIncidentSuccess: finish,
     reportIncidentStart: start,
     reportIncidentSuccess: finish,
     reportIncidentError: error,
@@ -52,10 +54,18 @@ const incidentSlice = createSlice({
 })
 
 export const {
+  fetchIncidentStart,
+  fetchIncidentSuccess,
   reportIncidentStart,
   reportIncidentSuccess,
   reportIncidentError,
 } = incidentSlice.actions
+
+export const fetchIncident = (id: string): AppThunk => async (dispatch) => {
+  dispatch(fetchIncidentStart())
+  const incident = await IncidentRepository.find(id)
+  dispatch(fetchIncidentSuccess(incident))
+}
 
 function validateIncident(incident: Incident): Error {
   const newError: Error = {}
@@ -98,6 +108,7 @@ export const reportIncident = (
     incident.reportedOn = new Date(Date.now()).toISOString()
     incident.code = getIncidentCode()
     incident.reportedBy = getState().user.user.id
+    incident.status = 'reported'
     const newIncident = await IncidentRepository.save(incident)
     await dispatch(reportIncidentSuccess(newIncident))
     if (onSuccess) {

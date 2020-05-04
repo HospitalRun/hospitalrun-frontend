@@ -34,6 +34,7 @@ describe('HospitalRun', () => {
           appointments: { appointments: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
+          incidents: { incidents: [] },
         })
 
         const wrapper = mount(
@@ -265,6 +266,7 @@ describe('HospitalRun', () => {
           user: { permissions: [Permissions.ViewIncidents] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
+          incidents: { incidents: [] },
         })
 
         let wrapper: any

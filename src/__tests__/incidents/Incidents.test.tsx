@@ -10,19 +10,28 @@ import Permissions from 'model/Permissions'
 import ViewIncident from '../../incidents/view/ViewIncident'
 import Incidents from '../../incidents/Incidents'
 import ReportIncident from '../../incidents/report/ReportIncident'
+import Incident from '../../model/Incident'
+import IncidentRepository from '../../clients/db/IncidentRepository'
 
 const mockStore = configureMockStore([thunk])
 
 describe('Incidents', () => {
   describe('routing', () => {
     describe('/incidents/new', () => {
-      it('should render the new lab request screen when /incidents/new is accessed', () => {
+      it('should render the new incident screen when /incidents/new is accessed', () => {
+        const expectedIncident = {
+          id: '1234',
+          code: '1234',
+        } as Incident
+        jest.spyOn(IncidentRepository, 'find').mockResolvedValue(expectedIncident)
         const store = mockStore({
           title: 'test',
           user: { permissions: [Permissions.ReportIncident] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-          incident: {},
+          incident: {
+            incident: expectedIncident,
+          },
         })
 
         const wrapper = mount(
@@ -36,7 +45,7 @@ describe('Incidents', () => {
         expect(wrapper.find(ReportIncident)).toHaveLength(1)
       })
 
-      it('should not navigate to /incidents/new if the user does not have RequestLab permissions', () => {
+      it('should not navigate to /incidents/new if the user does not have ReportIncident permissions', () => {
         const store = mockStore({
           title: 'test',
           user: { permissions: [] },
@@ -57,12 +66,20 @@ describe('Incidents', () => {
     })
 
     describe('/incidents/:id', () => {
-      it('should render the view lab screen when /incidents/:id is accessed', async () => {
+      it('should render the view incident screen when /incidents/:id is accessed', async () => {
         const store = mockStore({
           title: 'test',
           user: { permissions: [Permissions.ViewIncident] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
+          incident: {
+            incident: {
+              id: '1234',
+              code: '1234 ',
+              date: new Date().toISOString(),
+              reportedOn: new Date().toISOString(),
+            },
+          },
         })
 
         let wrapper: any
