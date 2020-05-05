@@ -78,7 +78,7 @@
     "commitizen": "~4.1.2",
     "commitlint-config-cz": "~0.13.0",
     "cross-env": "~7.0.0",
-    "cz-conventional-changelog": "~3.1.0",
+    "cz-conventional-changelog": "~3.2.0",
     "dateformat": "~3.0.3",
     "enzyme": "~3.11.0",
     "enzyme-adapter-react-16": "~1.15.2",
