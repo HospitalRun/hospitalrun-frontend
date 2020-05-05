@@ -58,7 +58,7 @@ describe('View Labs', () => {
         lab,
         patient: mockPatient,
         error,
-        status: Object.keys(error).length > 0 ? 'error' : 'success',
+        status: Object.keys(error).length > 0 ? 'error' : 'completed',
       },
     })
 
