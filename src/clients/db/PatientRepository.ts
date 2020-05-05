@@ -57,7 +57,7 @@ export class PatientRepository extends Repository<Patient> {
     const result = await super
       .search({
         selector,
-        limit: pageRequest.size,
+        limit: pageRequest.size ? pageRequest.size + 1 : undefined,
         skip:
           pageRequest.number && pageRequest.size ? (pageRequest.number - 1) * pageRequest.size : 0,
         sort:
@@ -71,11 +71,19 @@ export class PatientRepository extends Repository<Patient> {
       })
 
     const pagedResult: Page<Patient> = {
-      content: result,
+      content: result.slice(
+        0,
+        pageRequest.size
+          ? result.length < pageRequest.size
+            ? result.length
+            : pageRequest.size
+          : result.length,
+      ),
       pageRequest,
-      hasNext: pageRequest.size !== undefined && result.length === pageRequest.size,
+      hasNext: pageRequest.size !== undefined && result.length === pageRequest.size + 1,
       hasPrevious: pageRequest.number !== undefined && pageRequest.number > 1,
     }
+
     return pagedResult
   }
 

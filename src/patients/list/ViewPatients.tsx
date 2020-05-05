@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next'
@@ -8,6 +8,7 @@ import format from 'date-fns/format'
 import SortRequest from 'clients/db/SortRequest'
 import PageRequest from 'clients/db/PageRequest'
 import PageComponent from 'components/PageComponent'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import { RootState } from '../../store'
 import { searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
@@ -25,7 +26,8 @@ const ViewPatients = () => {
   const { patients, isLoading } = useSelector((state: RootState) => state.patients)
 
   const setButtonToolBar = useButtonToolbarSetter()
-  const [userPageRequest, setUserPageRequest] = useState<PageRequest>({
+
+  const defaultPageRequest = useRef<PageRequest>({
     size: 1,
     number: 1,
     nextPageInfo: { index: null },
@@ -33,46 +35,53 @@ const ViewPatients = () => {
     direction: 'next',
   })
 
+  const [userPageRequest, setUserPageRequest] = useState<PageRequest>(defaultPageRequest.current)
+
   const setNextPageRequest = () => {
-    setUserPageRequest((p) => {
-      if (p && p.number && p.number >= 0 && p.size) {
-        const newPageRequest: PageRequest = {
-          number: p.number + 1,
-          size: p.size,
-          nextPageInfo: patients.pageRequest?.nextPageInfo,
-          previousPageInfo: undefined,
-          direction: 'next',
-        }
-        return newPageRequest
+    setUserPageRequest(() => {
+      const newPageRequest: PageRequest = {
+        number:
+          patients.pageRequest && patients.pageRequest.number ? patients.pageRequest.number + 1 : 1,
+        size: patients.pageRequest ? patients.pageRequest.size : undefined,
+        nextPageInfo: patients.pageRequest?.nextPageInfo,
+        previousPageInfo: undefined,
+        direction: 'next',
       }
-      return p
+      return newPageRequest
     })
   }
 
   const setPreviousPageRequest = () => {
-    setUserPageRequest((p) => {
-      if (p.number && p.size) {
-        return {
-          number: p.number - 1,
-          size: p.size,
-          nextPageInfo: undefined,
-          previousPageInfo: patients.pageRequest?.previousPageInfo,
-          direction: 'previous',
-        }
-      }
-      return p
-    })
+    setUserPageRequest(() => ({
+      number:
+        patients.pageRequest && patients.pageRequest.number ? patients.pageRequest.number - 1 : 1,
+      size: patients.pageRequest ? patients.pageRequest.size : undefined,
+      nextPageInfo: undefined,
+      previousPageInfo: patients.pageRequest?.previousPageInfo,
+      direction: 'previous',
+    }))
   }
+
   const [searchText, setSearchText] = useState<string>('')
 
   const debouncedSearchText = useDebounce(searchText, 500)
+  const debouncedSearchTextRef = useRef<string>('')
+
+  useUpdateEffect(() => {
+    const sortRequest: SortRequest = {
+      sorts: [{ field: 'index', direction: 'asc' }],
+    }
+    dispatch(searchPatients(debouncedSearchTextRef.current, sortRequest, userPageRequest))
+  }, [dispatch, userPageRequest])
 
   useEffect(() => {
     const sortRequest: SortRequest = {
       sorts: [{ field: 'index', direction: 'asc' }],
     }
-    dispatch(searchPatients(debouncedSearchText, sortRequest, userPageRequest))
-  }, [dispatch, debouncedSearchText, userPageRequest])
+
+    debouncedSearchTextRef.current = debouncedSearchText
+    dispatch(searchPatients(debouncedSearchText, sortRequest, defaultPageRequest.current))
+  }, [dispatch, debouncedSearchText])
 
   useEffect(() => {
     setButtonToolBar([
@@ -140,7 +149,7 @@ const ViewPatients = () => {
       <PageComponent
         hasNext={patients.hasNext}
         hasPrevious={patients.hasPrevious}
-        pageNumber={userPageRequest.number}
+        pageNumber={patients.pageRequest ? patients.pageRequest.number : 1}
         setPreviousPageRequest={setPreviousPageRequest}
         setNextPageRequest={setNextPageRequest}
       />
