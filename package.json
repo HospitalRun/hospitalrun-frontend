@@ -75,7 +75,7 @@
     "@types/validator": "~13.0.0",
     "@typescript-eslint/eslint-plugin": "~2.31.0",
     "@typescript-eslint/parser": "~2.31.0",
-    "commitizen": "~4.0.3",
+    "commitizen": "~4.1.2",
     "commitlint-config-cz": "~0.13.0",
     "cross-env": "~7.0.0",
     "cz-conventional-changelog": "~3.1.0",
