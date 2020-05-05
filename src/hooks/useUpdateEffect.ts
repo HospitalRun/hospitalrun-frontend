@@ -6,8 +6,9 @@ export default function (effect: Function, dependencies: any[]) {
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false
-    } else {
-      effect()
+      return
     }
-  }, dependencies)
+    // eslint-disable-next-line consistent-return
+    return effect && effect()
+  }, dependencies) //eslint-disable-line
 }
