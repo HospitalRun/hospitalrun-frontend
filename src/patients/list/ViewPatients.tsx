@@ -6,7 +6,7 @@ import { Spinner, Button, Container, Row, TextInput, Column } from '@hospitalrun
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
 import { RootState } from '../../store'
-import { fetchPatients, searchPatients } from '../patients-slice'
+import { searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import useDebounce from '../../hooks/debounce'
@@ -32,8 +32,6 @@ const ViewPatients = () => {
   }, [dispatch, debouncedSearchText])
 
   useEffect(() => {
-    dispatch(fetchPatients())
-
     setButtonToolBar([
       <Button
         key="newPatientButton"
