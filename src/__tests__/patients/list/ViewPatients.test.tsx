@@ -92,6 +92,18 @@ describe('Patients', () => {
     )
   })
 
+  describe('initalLoad', () => {
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    it('should call fetchPatients only once', () => {
+      setup()
+      const findAllPagedSpy = jest.spyOn(PatientRepository, 'findAllPaged')
+      expect(findAllPagedSpy).toHaveBeenCalledTimes(1)
+    })
+  })
+
   describe('layout', () => {
     afterEach(() => {
       jest.restoreAllMocks()

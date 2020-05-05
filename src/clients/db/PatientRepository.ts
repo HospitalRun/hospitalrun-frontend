@@ -1,15 +1,11 @@
 import escapeStringRegexp from 'escape-string-regexp'
-import shortid from 'shortid'
 import Page from 'clients/Page'
 import Patient from '../../model/Patient'
+import generateCode from '../../util/generateCode'
 import Repository from './Repository'
 import { patients } from '../../config/pouchdb'
 import PageRequest, { UnpagedRequest } from './PageRequest'
 import SortRequest, { Unsorted } from './SortRequest'
-
-const formatPatientCode = (prefix: string, sequenceNumber: string) => `${prefix}${sequenceNumber}`
-
-const getPatientCode = (): string => formatPatientCode('P-', shortid.generate())
 
 export class PatientRepository extends Repository<Patient> {
   constructor() {
@@ -84,7 +80,7 @@ export class PatientRepository extends Repository<Patient> {
   }
 
   async save(entity: Patient): Promise<Patient> {
-    const patientCode = getPatientCode()
+    const patientCode = generateCode('P')
     entity.code = patientCode
     entity.index = (entity.fullName ? entity.fullName : '') + patientCode
     return super.save(entity)

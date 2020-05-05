@@ -9,7 +9,7 @@ import SortRequest from 'clients/db/SortRequest'
 import PageRequest from 'clients/db/PageRequest'
 import PageComponent from 'components/PageComponent'
 import { RootState } from '../../store'
-import { fetchPatients, searchPatients } from '../patients-slice'
+import { searchPatients } from '../patients-slice'
 import useTitle from '../../page-header/useTitle'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import useDebounce from '../../hooks/debounce'
@@ -75,11 +75,6 @@ const ViewPatients = () => {
   }, [dispatch, debouncedSearchText, userPageRequest])
 
   useEffect(() => {
-    const sortRequest: SortRequest = {
-      sorts: [{ field: 'index', direction: 'asc' }],
-    }
-    dispatch(fetchPatients(sortRequest, userPageRequest))
-
     setButtonToolBar([
       <Button
         key="newPatientButton"
@@ -95,7 +90,7 @@ const ViewPatients = () => {
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, setButtonToolBar, t, history, userPageRequest])
+  }, [dispatch, setButtonToolBar, t, history])
 
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   const table = (
