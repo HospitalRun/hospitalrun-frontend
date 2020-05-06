@@ -24,7 +24,7 @@ export class LabRepository extends Repository<Lab> {
               type: searchValue,
             },
             {
-              code: container.text,
+              code: searchValue,
             },
           ],
         },
