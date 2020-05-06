@@ -1,14 +1,30 @@
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
 import SortRequest from 'clients/db/SortRequest'
-import labs, {
-  fetchLabsStart,
-  fetchLabsSuccess,
-  fetchLabs,
-  searchLabs,
-} from '../../labs/labs-slice'
+import labs, { fetchLabsStart, fetchLabsSuccess, searchLabs } from '../../labs/labs-slice'
 import Lab from '../../model/Lab'
 import LabRepository from '../../clients/db/LabRepository'
+
+interface SearchContainer {
+  text: string
+  status: 'requested' | 'completed' | 'canceled' | 'all'
+  defaultSortRequest: SortRequest
+}
+
+const defaultSortRequest: SortRequest = {
+  sorts: [
+    {
+      field: 'requestedOn',
+      direction: 'desc',
+    },
+  ],
+}
+
+const expectedSearchObject: SearchContainer = {
+  text: 'search string',
+  status: 'all',
+  defaultSortRequest,
+}
 
 describe('labs slice', () => {
   beforeEach(() => {
@@ -40,30 +56,21 @@ describe('labs slice', () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
 
-      await searchLabs('search string')(dispatch, getState, null)
+      await searchLabs('search string', 'all')(dispatch, getState, null)
 
       expect(dispatch).toHaveBeenCalledWith({ type: fetchLabsStart.type })
     })
 
     it('should call the LabRepository search method with the correct search criteria', async () => {
-      const sortRequest: SortRequest = {
-        sorts: [
-          {
-            field: 'requestedOn',
-            direction: 'desc',
-          },
-        ],
-      }
       const dispatch = jest.fn()
       const getState = jest.fn()
       jest.spyOn(LabRepository, 'search')
 
-      const expectedSearchObject = {
-        text: 'search string',
-        status: 'all',
-        sortRequest,
-      }
-      await searchLabs(expectedSearchObject.text)(dispatch, getState, null)
+      await searchLabs(expectedSearchObject.text, expectedSearchObject.status)(
+        dispatch,
+        getState,
+        null,
+      )
 
       expect(LabRepository.search).toHaveBeenCalledWith(expectedSearchObject)
     })
@@ -73,7 +80,7 @@ describe('labs slice', () => {
       const getState = jest.fn()
       jest.spyOn(LabRepository, 'findAll')
 
-      await searchLabs('')(dispatch, getState, null)
+      await searchLabs('', expectedSearchObject.status)(dispatch, getState, null)
 
       expect(LabRepository.findAll).toHaveBeenCalledTimes(1)
     })
@@ -91,7 +98,11 @@ describe('labs slice', () => {
       const mockedLabRepository = mocked(LabRepository, true)
       mockedLabRepository.search.mockResolvedValue(expectedLabs)
 
-      await searchLabs('search string')(dispatch, getState, null)
+      await searchLabs(expectedSearchObject.text, expectedSearchObject.status)(
+        dispatch,
+        getState,
+        null,
+      )
 
       expect(dispatch).toHaveBeenLastCalledWith({
         type: fetchLabsSuccess.type,
@@ -101,48 +112,28 @@ describe('labs slice', () => {
   })
 
   describe('sort Request', () => {
-    const sortRequest: SortRequest = {
-      sorts: [
-        {
-          field: 'requestedOn',
-          direction: 'desc',
-        },
-      ],
-    }
-
     it('should have called findAll with sort request in searchLabs method', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       jest.spyOn(LabRepository, 'findAll')
 
-      await searchLabs('')(dispatch, getState, null)
+      await searchLabs('', expectedSearchObject.status)(dispatch, getState, null)
 
-      expect(LabRepository.findAll).toHaveBeenCalledWith(sortRequest)
-    })
-
-    it('should have called findAll with sort request in fetchLabs method', async () => {
-      const dispatch = jest.fn()
-      const getState = jest.fn()
-      jest.spyOn(LabRepository, 'findAll')
-
-      await fetchLabs()(dispatch, getState, null)
-
-      expect(LabRepository.findAll).toHaveBeenCalledWith(sortRequest)
+      expect(LabRepository.findAll).toHaveBeenCalledWith(expectedSearchObject.defaultSortRequest)
     })
 
     it('should include sorts in the search criteria', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       jest.spyOn(LabRepository, 'search')
-      const expectedSearchObject = {
-        text: 'search text',
-        status: 'all',
-        sortRequest,
-      }
 
-      await searchLabs(expectedSearchObject.text)(dispatch, getState, null)
+      await searchLabs(expectedSearchObject.text, expectedSearchObject.status)(
+        dispatch,
+        getState,
+        null,
+      )
 
-      expect(LabRepository.search).toBeCalledWith(expectedSearchObject)
+      expect(LabRepository.search).toHaveBeenCalledWith(expectedSearchObject)
     })
   })
 })

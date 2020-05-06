@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import ViewLabs from 'labs/ViewLabs'
 import { mount, ReactWrapper } from 'enzyme'
-import { TextInput } from '@hospitalrun/components'
+import { TextInput, Select } from '@hospitalrun/components'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { createMemoryHistory } from 'history'
@@ -167,6 +167,55 @@ describe('View Labs', () => {
     })
   })
 
+  describe('dropdown', () => {
+    it.only('should search for labs when dropdown changes', () => {
+      const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
+      let wrapper: ReactWrapper
+      let history: any
+      const expectedLab = {
+        id: '1234',
+        type: 'lab type',
+        patientId: 'patientId',
+        status: 'requested',
+        requestedOn: '2020-03-30T04:43:20.102Z',
+      } as Lab
+
+      beforeEach(async () => {
+        const store = mockStore({
+          title: '',
+          user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
+          labs: { labs: [expectedLab] },
+        })
+        history = createMemoryHistory()
+
+        await act(async () => {
+          wrapper = await mount(
+            <Provider store={store}>
+              <Router history={history}>
+                <ViewLabs />
+              </Router>
+            </Provider>,
+          )
+        })
+
+        searchLabsSpy.mockClear()
+
+        act(() => {
+          const onChange = wrapper.find(Select).prop('onChange') as any
+          onChange({
+            target: {
+              value: 'requested',
+            },
+            preventDefault: jest.fn(),
+          })
+        })
+
+        wrapper.update()
+        expect(searchLabsSpy).toHaveBeenCalledTimes(1)
+      })
+    })
+  })
+
   describe('search functionality', () => {
     beforeEach(() => jest.useFakeTimers())
 
@@ -207,14 +256,13 @@ describe('View Labs', () => {
         const expectedSearchText = 'search text'
 
         act(() => {
-          ;(wrapper.find(TextInput).prop('onChange') as any)({
+          const onClick = wrapper.find(TextInput).prop('onChange') as any
+          onClick({
             target: {
               value: expectedSearchText,
             },
-            preventDefault(): void {
-              // noop
-            },
-          } as React.ChangeEvent<HTMLInputElement>)
+            preventDefault: jest.fn(),
+          })
         })
 
         act(() => {

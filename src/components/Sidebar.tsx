@@ -61,6 +61,16 @@ const Sidebar = () => {
     backgroundColor: 'rgba(245,245,245,1)',
   }
 
+  const listSubItemStyleNew: CSSProperties = {
+    cursor: 'pointer',
+    fontSize: 'small',
+    borderBottomWidth: 0,
+    borderTopWidth: 0,
+    color: 'black',
+    padding: '.6rem 1.25rem',
+    backgroundColor: 'rgba(245,245,245,1)',
+  }
+
   const getDashboardLink = () => (
     <>
       <ListItem
@@ -107,7 +117,7 @@ const Sidebar = () => {
         <List layout="flush">
           <ListItem
             className="nav-item"
-            style={listSubItemStyle}
+            style={listSubItemStyleNew}
             onClick={() => navigateTo('/patients/new')}
             active={splittedPath[1].includes('patients') && splittedPath.length > 2}
           >
@@ -153,7 +163,7 @@ const Sidebar = () => {
         <List layout="flush" className="nav flex-column">
           <ListItem
             className="nav-item"
-            style={listSubItemStyle}
+            style={listSubItemStyleNew}
             onClick={() => navigateTo('/appointments/new')}
             active={splittedPath[1].includes('appointments') && splittedPath.length > 2}
           >
@@ -199,7 +209,7 @@ const Sidebar = () => {
         <List layout="flush" className="nav flex-column">
           <ListItem
             className="nav-item"
-            style={listSubItemStyle}
+            style={listSubItemStyleNew}
             onClick={() => navigateTo('/labs/new')}
             active={splittedPath[1].includes('labs') && splittedPath.length > 2}
           >

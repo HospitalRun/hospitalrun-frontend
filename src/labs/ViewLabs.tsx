@@ -11,8 +11,10 @@ import Permissions from 'model/Permissions'
 import SelectWithLabelFormGroup from 'components/input/SelectWithLableFormGroup'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 import { RootState } from '../store'
-import { fetchLabs, searchLabs, setFilter } from './labs-slice'
+import { searchLabs } from './labs-slice'
 import useDebounce from '../hooks/debounce'
+
+type filter = 'requested' | 'completed' | 'canceled' | 'all'
 
 const ViewLabs = () => {
   const { t } = useTranslation()
@@ -22,9 +24,9 @@ const ViewLabs = () => {
 
   const { permissions } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
-  const { labs, isLoading, statusFilter } = useSelector((state: RootState) => state.labs)
+  const { labs, isLoading } = useSelector((state: RootState) => state.labs)
+  const [searchFilter, setSearchFilter] = useState<filter>('all')
   const [searchText, setSearchText] = useState<string>('')
-
   const debouncedSearchText = useDebounce(searchText, 500)
 
   const getButtons = useCallback(() => {
@@ -47,15 +49,21 @@ const ViewLabs = () => {
     return buttons
   }, [permissions, history, t])
 
+  const setFilter = (filter: string) =>
+    filter === 'requested'
+      ? 'requested'
+      : filter === 'completed'
+      ? 'completed'
+      : filter === 'canceled'
+      ? 'canceled'
+      : 'all'
+
   useEffect(() => {
-    dispatch(searchLabs(debouncedSearchText))
-  }, [dispatch, debouncedSearchText])
+    dispatch(searchLabs(debouncedSearchText, searchFilter))
+  }, [dispatch, debouncedSearchText, searchFilter])
 
   useEffect(() => {
     setButtons(getButtons())
-
-    dispatch(fetchLabs())
-
     return () => {
       setButtons([])
     }
@@ -68,8 +76,7 @@ const ViewLabs = () => {
   }
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setFilter(event.target.value))
-    dispatch(searchLabs(debouncedSearchText))
+    setSearchFilter(setFilter(event.target.value))
   }
 
   const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +101,7 @@ const ViewLabs = () => {
         <div className="col-md-3 col-lg-2">
           <SelectWithLabelFormGroup
             name="type"
-            value={statusFilter}
+            value={searchFilter}
             label={t('labs.filterTitle')}
             isEditable
             options={[
@@ -111,8 +118,8 @@ const ViewLabs = () => {
         <div className="col">
           <TextInputWithLabelFormGroup
             name="searchbox"
-            label="_"
-            placeholder="Search labs"
+            label="Search Labs"
+            placeholder="Search labs by type"
             value={searchText}
             isEditable
             onChange={onSearchBoxChange}

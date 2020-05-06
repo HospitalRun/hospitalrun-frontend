@@ -6,7 +6,7 @@ import SortRequest from './SortRequest'
 interface SearchContainer {
   text: string
   status: 'requested' | 'completed' | 'canceled' | 'all'
-  sortRequest: SortRequest
+  defaultSortRequest: SortRequest
 }
 export class LabRepository extends Repository<Lab> {
   constructor() {
@@ -20,15 +20,9 @@ export class LabRepository extends Repository<Lab> {
         {
           type: searchValue,
         },
-        {
-          status: container.status,
-        },
-      ],
-      sorts: container.sortRequest.sorts,
-    }
-
-    if (container.status === 'all') {
-      selector.$and.splice(1, 1)
+        ...(container.status !== 'all' ? [{ status: container.status }] : [undefined]),
+      ].filter((x) => x !== undefined),
+      sorts: container.defaultSortRequest,
     }
 
     return super.search({

@@ -6,7 +6,7 @@ import SortRequest from 'clients/db/SortRequest'
 interface SearchContainer {
   text: string
   status: 'requested' | 'completed' | 'canceled' | 'all'
-  sortRequest: SortRequest
+  defaultSortRequest: SortRequest
 }
 
 const removeAllDocs = async () => {
@@ -32,7 +32,7 @@ const sortRequest: SortRequest = {
 const searchObject: SearchContainer = {
   text: '',
   status: 'all',
-  sortRequest,
+  defaultSortRequest: sortRequest,
 }
 
 describe('lab repository', () => {
@@ -103,7 +103,7 @@ describe('lab repository', () => {
       const searchData: SearchContainer = {
         text: '',
         status: 'completed',
-        sortRequest,
+        defaultSortRequest: sortRequest,
       }
 
       const result = await LabRepository.search(searchData)
@@ -120,7 +120,7 @@ describe('lab repository', () => {
       const expectedSearch: SearchContainer = {
         text: 'the specific lab',
         status: 'requested',
-        sortRequest,
+        defaultSortRequest: sortRequest,
       }
 
       const result = await LabRepository.search(expectedSearch)
