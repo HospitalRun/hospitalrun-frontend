@@ -18,7 +18,7 @@ const ViewAppointment = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const history = useHistory()
-  const { appointment, patient, isLoading } = useSelector((state: RootState) => state.appointment)
+  const { appointment, patient, status } = useSelector((state: RootState) => state.appointment)
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false)
   const setButtonToolBar = useButtonToolbarSetter()
@@ -88,7 +88,7 @@ const ViewAppointment = () => {
     }
   }, [dispatch, id, setButtonToolBar])
 
-  if (!appointment.id || isLoading) {
+  if (status === 'loading') {
     return <Spinner type="BarLoader" loading />
   }
 
