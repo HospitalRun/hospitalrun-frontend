@@ -18,6 +18,8 @@ import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm
 import * as components from '@hospitalrun/components'
 import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
+import LabRepository from '../../../../clients/db/LabRepository'
+import Lab from '../../../../model/Lab'
 
 const mockStore = configureMockStore([thunk])
 const mockedComponents = mocked(components, true)
@@ -32,6 +34,7 @@ describe('New Appointment', () => {
     mocked(AppointmentRepository, true).save.mockResolvedValue(
       expectedNewAppointment as Appointment,
     )
+    jest.spyOn(LabRepository, 'findAllByPatientId').mockResolvedValue([] as Lab[])
 
     history = createMemoryHistory()
     store = mockStore({

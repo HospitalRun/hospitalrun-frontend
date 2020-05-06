@@ -1,4 +1,5 @@
 import Lab from 'model/Lab'
+import generateCode from '../../util/generateCode'
 import Repository from './Repository'
 import { labs } from '../../config/pouchdb'
 import SortRequest from './SortRequest'
@@ -18,7 +19,14 @@ export class LabRepository extends Repository<Lab> {
     const selector = {
       $and: [
         {
-          type: searchValue,
+          $or: [
+            {
+              type: searchValue,
+            },
+            {
+              code: container.text,
+            },
+          ],
         },
         ...(container.status !== 'all' ? [{ status: container.status }] : [undefined]),
       ].filter((x) => x !== undefined),
@@ -27,6 +35,24 @@ export class LabRepository extends Repository<Lab> {
 
     return super.search({
       selector,
+    })
+  }
+
+  async save(entity: Lab): Promise<Lab> {
+    const labCode = generateCode('L')
+    entity.code = labCode
+    return super.save(entity)
+  }
+
+  async findAllByPatientId(patientId: string): Promise<Lab[]> {
+    return super.search({
+      selector: {
+        $and: [
+          {
+            patientId,
+          },
+        ],
+      },
     })
   }
 }
