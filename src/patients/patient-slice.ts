@@ -71,7 +71,7 @@ const initialState: PatientState = {
   relatedPersonError: undefined,
 }
 
-function startLoading(state: PatientState) {
+function start(state: PatientState) {
   state.status = 'loading'
   state.createError = {}
 }
@@ -80,12 +80,12 @@ const patientSlice = createSlice({
   name: 'patient',
   initialState,
   reducers: {
-    fetchPatientStart: startLoading,
+    fetchPatientStart: start,
     fetchPatientSuccess(state, { payload }: PayloadAction<Patient>) {
       state.status = 'completed'
       state.patient = payload
     },
-    createPatientStart: startLoading,
+    createPatientStart: start,
     createPatientSuccess(state) {
       state.status = 'completed'
     },
@@ -93,7 +93,7 @@ const patientSlice = createSlice({
       state.status = 'error'
       state.createError = payload
     },
-    updatePatientStart: startLoading,
+    updatePatientStart: start,
     updatePatientSuccess(state, { payload }: PayloadAction<Patient>) {
       state.status = 'completed'
       state.patient = payload

@@ -3,7 +3,6 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Spinner, Button } from '@hospitalrun/components'
-import { isBefore } from 'date-fns'
 
 import AppointmentDetailForm from '../AppointmentDetailForm'
 import useTitle from '../../../page-header/useTitle'
@@ -20,8 +19,8 @@ const EditAppointment = () => {
   const dispatch = useDispatch()
 
   const [appointment, setAppointment] = useState({} as Appointment)
-  const [errorMessage, setErrorMessage] = useState('')
-  const { appointment: reduxAppointment, patient, isLoading } = useSelector(
+
+  const { appointment: reduxAppointment, patient, status, error } = useSelector(
     (state: RootState) => state.appointment,
   )
   const breadcrumbs = [
@@ -57,16 +56,6 @@ const EditAppointment = () => {
   }
 
   const onSave = () => {
-    let newErrorMessage = ''
-    if (isBefore(new Date(appointment.endDateTime), new Date(appointment.startDateTime))) {
-      newErrorMessage += ` ${t('scheduling.appointment.errors.startDateMustBeBeforeEndDate')}`
-    }
-
-    if (newErrorMessage) {
-      setErrorMessage(newErrorMessage.trim())
-      return
-    }
-
     dispatch(updateAppointment(appointment as Appointment, onSaveSuccess))
   }
 
@@ -77,7 +66,7 @@ const EditAppointment = () => {
     })
   }
 
-  if (isLoading || !appointment.id || !patient.id) {
+  if (status === 'loading') {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
@@ -88,7 +77,7 @@ const EditAppointment = () => {
         appointment={appointment}
         patient={patient}
         onFieldChange={onFieldChange}
-        errorMessage={errorMessage}
+        error={error}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">
