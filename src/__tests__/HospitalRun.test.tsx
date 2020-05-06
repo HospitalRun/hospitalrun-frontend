@@ -23,6 +23,7 @@ describe('HospitalRun', () => {
         const store = mockStore({
           title: 'test',
           user: { permissions: [Permissions.ViewLabs] },
+          labs: { labs: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         })
