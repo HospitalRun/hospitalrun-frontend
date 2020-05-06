@@ -18,12 +18,8 @@ describe('Error handling', () => {
       phoneNumber: 'phone number message',
       email: 'email message',
     }
-    const history = createMemoryHistory()
-    const wrapper = mount(
-      <Router history={history}>
-        <GeneralInformation patient={{} as Patient} isEditable error={error} />
-      </Router>,
-    )
+
+    const wrapper = mount(<GeneralInformation patient={{} as Patient} isEditable error={error} />)
     wrapper.update()
 
     const errorMessage = wrapper.find(Alert)

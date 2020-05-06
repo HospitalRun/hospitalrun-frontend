@@ -13,12 +13,12 @@ interface Props {
   appointment: Appointment
   patient?: Patient
   isEditable: boolean
-  errorMessage?: string
+  error?: any
   onFieldChange?: (key: string, value: string | boolean) => void
 }
 
 const AppointmentDetailForm = (props: Props) => {
-  const { onFieldChange, appointment, patient, isEditable, errorMessage } = props
+  const { onFieldChange, appointment, patient, isEditable, error } = props
   const { t } = useTranslation()
 
   const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
@@ -32,7 +32,7 @@ const AppointmentDetailForm = (props: Props) => {
 
   return (
     <>
-      {errorMessage && <Alert color="danger" message={errorMessage} />}
+      {error?.message && <Alert className="alert" color="danger" message={t(error?.message)} />}
       <div className="row">
         <div className="col">
           <div className="form-group">
@@ -46,10 +46,15 @@ const AppointmentDetailForm = (props: Props) => {
               disabled={!isEditable || patient !== undefined}
               value={patient?.fullName}
               placeholder={t('scheduling.appointment.patient')}
-              onChange={(p: Patient[]) => onFieldChange && onFieldChange('patientId', p[0].id)}
+              onChange={
+                (p: Patient[]) => onFieldChange && p[0] && onFieldChange('patientId', p[0].id)
+                // eslint-disable-next-line react/jsx-curly-newline
+              }
               onSearch={async (query: string) => PatientRepository.search(query)}
               searchAccessor="fullName"
               renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+              isInvalid={!!error?.patient}
+              feedback={t(error?.patient)}
             />
           </div>
         </div>
@@ -59,8 +64,14 @@ const AppointmentDetailForm = (props: Props) => {
           <DateTimePickerWithLabelFormGroup
             name="startDate"
             label={t('scheduling.appointment.startDate')}
-            value={new Date(appointment.startDateTime)}
+            value={
+              appointment.startDateTime && appointment.startDateTime.length > 0
+                ? new Date(appointment.startDateTime)
+                : undefined
+            }
             isEditable={isEditable}
+            isInvalid={error?.startDateTime}
+            feedback={t(error?.startDateTime)}
             onChange={(date: Date) => {
               onDateChange(date, 'startDateTime')
             }}
@@ -70,7 +81,11 @@ const AppointmentDetailForm = (props: Props) => {
           <DateTimePickerWithLabelFormGroup
             name="endDate"
             label={t('scheduling.appointment.endDate')}
-            value={new Date(appointment.endDateTime)}
+            value={
+              appointment.endDateTime && appointment.endDateTime.length > 0
+                ? new Date(appointment.endDateTime)
+                : undefined
+            }
             isEditable={isEditable}
             onChange={(date: Date) => {
               onDateChange(date, 'endDateTime')
