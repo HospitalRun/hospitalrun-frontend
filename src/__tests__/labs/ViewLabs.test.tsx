@@ -173,7 +173,7 @@ describe('View Labs', () => {
   })
 
   describe('dropdown', () => {
-    it.only('should search for labs when dropdown changes', () => {
+    it('should search for labs when dropdown changes', () => {
       const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
       let wrapper: ReactWrapper
       let history: any
