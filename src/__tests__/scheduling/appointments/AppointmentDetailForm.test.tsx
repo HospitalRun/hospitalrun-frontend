@@ -4,12 +4,42 @@ import { mount, ReactWrapper } from 'enzyme'
 import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
 import Appointment from 'model/Appointment'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
-import { Typeahead } from '@hospitalrun/components'
+import { Typeahead, Alert } from '@hospitalrun/components'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import { act } from '@testing-library/react'
 
 describe('AppointmentDetailForm', () => {
+  describe('Error handling', () => {
+    it('should display errors', () => {
+      const error = {
+        message: 'some message',
+        patient: 'patient message',
+        startDateTime: 'start date time message',
+      }
+
+      const wrapper = mount(
+        <AppointmentDetailForm
+          appointment={{} as Appointment}
+          patient={{} as Patient}
+          isEditable
+          error={error}
+        />,
+      )
+      wrapper.update()
+
+      const errorMessage = wrapper.find(Alert)
+      const patientTypeahead = wrapper.find(Typeahead)
+      const startDateInput = wrapper.findWhere((w: any) => w.prop('name') === 'startDate')
+      expect(errorMessage).toBeTruthy()
+      expect(errorMessage.prop('message')).toMatch(error.message)
+      expect(patientTypeahead.prop('isInvalid')).toBeTruthy()
+      expect(patientTypeahead.prop('feedback')).toEqual(error.patient)
+      expect(startDateInput.prop('isInvalid')).toBeTruthy()
+      expect(startDateInput.prop('feedback')).toEqual(error.startDateTime)
+    })
+  })
+
   describe('layout - editable', () => {
     let wrapper: ReactWrapper
     const expectedAppointment = {

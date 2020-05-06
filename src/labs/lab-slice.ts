@@ -16,7 +16,7 @@ interface LabState {
   error: Error
   lab?: Lab
   patient?: Patient
-  status: 'loading' | 'error' | 'success'
+  status: 'loading' | 'error' | 'completed'
 }
 
 const initialState: LabState = {
@@ -31,7 +31,7 @@ function start(state: LabState) {
 }
 
 function finish(state: LabState, { payload }: PayloadAction<Lab>) {
-  state.status = 'success'
+  state.status = 'completed'
   state.lab = payload
   state.error = {}
 }
@@ -50,7 +50,7 @@ const labSlice = createSlice({
       state: LabState,
       { payload }: PayloadAction<{ lab: Lab; patient: Patient }>,
     ) => {
-      state.status = 'success'
+      state.status = 'completed'
       state.lab = payload.lab
       state.patient = payload.patient
     },
