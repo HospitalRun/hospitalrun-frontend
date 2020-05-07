@@ -99,7 +99,7 @@
     "prettier": "~2.0.4",
     "redux-mock-store": "~1.5.4",
     "source-map-explorer": "^2.2.2",
-    "standard-version": "~7.1.0",
+    "standard-version": "~8.0.0",
     "ts-jest": "~24.3.0"
   },
   "scripts": {
