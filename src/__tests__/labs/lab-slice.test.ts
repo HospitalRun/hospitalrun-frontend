@@ -47,7 +47,7 @@ describe('lab slice', () => {
           fetchLabSuccess({ lab: expectedLab, patient: expectedPatient }),
         )
 
-        expect(labStore.status).toEqual('success')
+        expect(labStore.status).toEqual('completed')
         expect(labStore.lab).toEqual(expectedLab)
         expect(labStore.patient).toEqual(expectedPatient)
       })
@@ -67,7 +67,7 @@ describe('lab slice', () => {
 
         const labStore = labSlice(undefined, updateLabSuccess(expectedLab))
 
-        expect(labStore.status).toEqual('success')
+        expect(labStore.status).toEqual('completed')
         expect(labStore.lab).toEqual(expectedLab)
       })
     })
@@ -86,7 +86,7 @@ describe('lab slice', () => {
 
         const labStore = labSlice(undefined, requestLabSuccess(expectedLab))
 
-        expect(labStore.status).toEqual('success')
+        expect(labStore.status).toEqual('completed')
         expect(labStore.lab).toEqual(expectedLab)
       })
     })
@@ -114,7 +114,7 @@ describe('lab slice', () => {
 
         const labStore = labSlice(undefined, completeLabSuccess(expectedLab))
 
-        expect(labStore.status).toEqual('success')
+        expect(labStore.status).toEqual('completed')
         expect(labStore.lab).toEqual(expectedLab)
       })
     })
@@ -142,7 +142,7 @@ describe('lab slice', () => {
 
         const labStore = labSlice(undefined, cancelLabSuccess(expectedLab))
 
-        expect(labStore.status).toEqual('success')
+        expect(labStore.status).toEqual('completed')
         expect(labStore.lab).toEqual(expectedLab)
       })
     })

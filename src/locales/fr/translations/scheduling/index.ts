@@ -22,7 +22,6 @@ export default {
       },
       errors: {
         patientRequired: 'Le patient est requis.',
-        errorCreatingAppointment: 'Erreur lors de la création du rendez-vous !',
         startDateMustBeBeforeEndDate: "La date de début doit être inférieur à l'heure de fin.",
       },
       reason: 'Raison',

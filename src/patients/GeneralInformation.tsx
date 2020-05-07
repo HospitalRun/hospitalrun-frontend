@@ -60,6 +60,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'prefix')
               }}
+              isInvalid={error?.prefix}
+              feedback={t(error?.prefix)}
             />
           </div>
           <div className="col-md-4">
@@ -85,6 +87,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'familyName')
               }}
+              isInvalid={error?.familyName}
+              feedback={t(error?.familyName)}
             />
           </div>
           <div className="col-md-2">
@@ -96,6 +100,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'suffix')
               }}
+              isInvalid={error?.suffix}
+              feedback={t(error?.suffix)}
             />
           </div>
         </div>
@@ -195,6 +201,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'preferredLanguage')
               }}
+              isInvalid={error?.preferredLanguage}
+              feedback={t(error?.preferredLanguage)}
             />
           </div>
         </div>
@@ -211,6 +219,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'phoneNumber')
               }}
+              feedback={t(error?.phoneNumber)}
+              isInvalid={!!error?.phoneNumber}
               type="tel"
             />
           </div>
@@ -225,6 +235,8 @@ const GeneralInformation = (props: Props) => {
                 onInputElementChange(event, 'email')
               }}
               type="email"
+              feedback={t(error?.email)}
+              isInvalid={!!error?.email}
             />
           </div>
         </div>

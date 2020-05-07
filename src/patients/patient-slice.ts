@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isAfter, parseISO } from 'date-fns'
 import _ from 'lodash'
+import validator from 'validator'
 import { uuid } from '../util/uuid'
 import Patient from '../model/Patient'
 import PatientRepository from '../clients/db/PatientRepository'
@@ -27,6 +28,12 @@ interface Error {
   message?: string
   givenName?: string
   dateOfBirth?: string
+  suffix?: string
+  prefix?: string
+  familyName?: string
+  preferredLanguage?: string
+  email?: string
+  phoneNumber?: string
 }
 
 interface AddRelatedPersonError {
@@ -64,7 +71,7 @@ const initialState: PatientState = {
   relatedPersonError: undefined,
 }
 
-function startLoading(state: PatientState) {
+function start(state: PatientState) {
   state.status = 'loading'
   state.createError = {}
 }
@@ -73,12 +80,12 @@ const patientSlice = createSlice({
   name: 'patient',
   initialState,
   reducers: {
-    fetchPatientStart: startLoading,
+    fetchPatientStart: start,
     fetchPatientSuccess(state, { payload }: PayloadAction<Patient>) {
       state.status = 'completed'
       state.patient = payload
     },
-    createPatientStart: startLoading,
+    createPatientStart: start,
     createPatientSuccess(state) {
       state.status = 'completed'
     },
@@ -86,7 +93,7 @@ const patientSlice = createSlice({
       state.status = 'error'
       state.createError = payload
     },
-    updatePatientStart: startLoading,
+    updatePatientStart: start,
     updatePatientSuccess(state, { payload }: PayloadAction<Patient>) {
       state.status = 'completed'
       state.patient = payload
@@ -138,6 +145,8 @@ export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
 function validatePatient(patient: Patient) {
   const error: Error = {}
 
+  const regexContainsNumber = /\d/
+
   if (!patient.givenName) {
     error.givenName = 'patient.errors.patientGivenNameFeedback'
   }
@@ -147,6 +156,42 @@ function validatePatient(patient: Patient) {
     const dob = parseISO(patient.dateOfBirth)
     if (isAfter(dob, today)) {
       error.dateOfBirth = 'patient.errors.patientDateOfBirthFeedback'
+    }
+  }
+
+  if (patient.suffix) {
+    if (regexContainsNumber.test(patient.suffix)) {
+      error.suffix = 'patient.errors.patientNumInSuffixFeedback'
+    }
+  }
+
+  if (patient.prefix) {
+    if (regexContainsNumber.test(patient.prefix)) {
+      error.prefix = 'patient.errors.patientNumInPrefixFeedback'
+    }
+  }
+
+  if (patient.familyName) {
+    if (regexContainsNumber.test(patient.familyName)) {
+      error.familyName = 'patient.errors.patientNumInFamilyNameFeedback'
+    }
+  }
+
+  if (patient.preferredLanguage) {
+    if (regexContainsNumber.test(patient.preferredLanguage)) {
+      error.preferredLanguage = 'patient.errors.patientNumInPreferredLanguageFeedback'
+    }
+  }
+
+  if (patient.email) {
+    if (!validator.isEmail(patient.email)) {
+      error.email = 'patient.errors.invalidEmail'
+    }
+  }
+
+  if (patient.phoneNumber) {
+    if (!validator.isMobilePhone(patient.phoneNumber)) {
+      error.phoneNumber = 'patient.errors.invalidPhoneNumber'
     }
   }
 

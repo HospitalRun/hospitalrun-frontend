@@ -14,7 +14,7 @@ import { RootState } from '../store'
 import { cancelLab, completeLab, updateLab, fetchLab } from './lab-slice'
 
 const getTitle = (patient: Patient | undefined, lab: Lab | undefined) =>
-  patient && lab ? `${lab.type} for ${patient.fullName}` : ''
+  patient && lab ? `${lab.type} for ${patient.fullName}(${lab.code})` : ''
 
 const ViewLab = () => {
   const { id } = useParams()

@@ -1,6 +1,16 @@
 export default {
   labs: {
     label: 'Labs',
+    filterTitle: 'Filter by status',
+    search: 'Search labs',
+    status: {
+      requested: 'Requested',
+      completed: 'Completed',
+      canceled: 'Canceled',
+    },
+    filter: {
+      all: 'All statuses',
+    },
     requests: {
       label: 'Lab Requests',
       new: 'New Lab Request',
@@ -15,6 +25,7 @@ export default {
       },
     },
     lab: {
+      code: 'Lab Code',
       status: 'Status',
       for: 'For',
       type: 'Type',
