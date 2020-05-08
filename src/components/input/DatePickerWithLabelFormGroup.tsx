@@ -40,6 +40,7 @@ const DatePickerWithLabelFormGroup = (props: Props) => {
         disabled={!isEditable}
         feedback={feedback}
         isInvalid={isInvalid}
+        showYearDropdown
         onChange={(inputDate) => {
           if (onChange) {
             onChange(inputDate)
