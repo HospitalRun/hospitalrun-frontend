@@ -1,86 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import { Calendar, Button } from '@hospitalrun/components'
-import useTitle from 'page-header/useTitle'
-import { useTranslation } from 'react-i18next'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store'
-import { useHistory } from 'react-router'
-import PatientRepository from 'clients/db/PatientRepository'
-import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
-import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
-import { fetchAppointments } from './appointments-slice'
-
-interface Event {
-  id: string
-  start: Date
-  end: Date
-  title: string
-  allDay: boolean
-}
-
-const breadcrumbs = [{ i18nKey: 'scheduling.appointments.label', location: '/appointments' }]
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { Switch } from 'react-router'
+import NewAppointment from 'scheduling/appointments/new/NewAppointment'
+import EditAppointment from 'scheduling/appointments/edit/EditAppointment'
+import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
+import ViewAppointments from './ViewAppointments'
+import PrivateRoute from '../../components/PrivateRoute'
+import Permissions from '../../model/Permissions'
+import { RootState } from '../../store'
 
 const Appointments = () => {
-  const { t } = useTranslation()
-  const history = useHistory()
-  useTitle(t('scheduling.appointments.label'))
-  const dispatch = useDispatch()
-  const { appointments } = useSelector((state: RootState) => state.appointments)
-  const [events, setEvents] = useState<Event[]>([])
-  const setButtonToolBar = useButtonToolbarSetter()
-  useAddBreadcrumbs(breadcrumbs, true)
-
-  useEffect(() => {
-    dispatch(fetchAppointments())
-    setButtonToolBar([
-      <Button
-        key="newAppointmentButton"
-        outlined
-        color="success"
-        icon="appointment-add"
-        onClick={() => history.push('/appointments/new')}
-      >
-        {t('scheduling.appointments.new')}
-      </Button>,
-    ])
-
-    return () => {
-      setButtonToolBar([])
-    }
-  }, [dispatch, setButtonToolBar, history, t])
-
-  useEffect(() => {
-    const getAppointments = async () => {
-      const newEvents = await Promise.all(
-        appointments.map(async (a) => {
-          const patient = await PatientRepository.find(a.patientId)
-          return {
-            id: a.id,
-            start: new Date(a.startDateTime),
-            end: new Date(a.endDateTime),
-            title: patient.fullName || '',
-            allDay: false,
-          }
-        }),
-      )
-
-      setEvents(newEvents)
-    }
-
-    if (appointments) {
-      getAppointments()
-    }
-  }, [appointments])
-
+  const permissions = useSelector((state: RootState) => state.user.permissions)
   return (
-    <div>
-      <Calendar
-        events={events}
-        onEventClick={(event) => {
-          history.push(`/appointments/${event.id}`)
-        }}
+    <Switch>
+      <PrivateRoute
+        isAuthenticated={permissions.includes(Permissions.ReadAppointments)}
+        exact
+        path="/appointments"
+        component={ViewAppointments}
       />
-    </div>
+      <PrivateRoute
+        isAuthenticated={permissions.includes(Permissions.WriteAppointments)}
+        exact
+        path="/appointments/new"
+        component={NewAppointment}
+      />
+      <PrivateRoute
+        isAuthenticated={
+          permissions.includes(Permissions.WriteAppointments) &&
+          permissions.includes(Permissions.ReadAppointments)
+        }
+        exact
+        path="/appointments/edit/:id"
+        component={EditAppointment}
+      />
+      <PrivateRoute
+        isAuthenticated={permissions.includes(Permissions.ReadAppointments)}
+        exact
+        path="/appointments/:id"
+        component={ViewAppointment}
+      />
+    </Switch>
   )
 }
 

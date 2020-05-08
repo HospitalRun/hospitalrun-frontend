@@ -23,7 +23,6 @@ export default {
       },
       errors: {
         patientRequired: 'Paciente é necessario.',
-        errorCreatingAppointment: 'Algo deu errado criando o agendamento.',
         startDateMustBeBeforeEndDate: 'Horário de início deve ser antes do horário final.',
       },
       reason: 'Razão',

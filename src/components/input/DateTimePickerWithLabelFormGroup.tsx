@@ -14,6 +14,10 @@ interface Props {
 
 const DateTimePickerWithLabelFormGroup = (props: Props) => {
   const { onChange, label, name, isEditable, value, isRequired, feedback, isInvalid } = props
+  isInvalid?: boolean
+  feedback?: string
+}
+
   const id = `${name}DateTimePicker`
   return (
     <div className="form-group">
@@ -24,6 +28,8 @@ const DateTimePickerWithLabelFormGroup = (props: Props) => {
         dropdownMode="scroll"
         disabled={!isEditable}
         selected={value}
+        isInvalid={isInvalid}
+        feedback={feedback}
         onChange={(inputDate) => {
           if (onChange) {
             onChange(inputDate)

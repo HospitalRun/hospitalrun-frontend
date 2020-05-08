@@ -1,7 +1,7 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
 import { v4 as uuidv4 } from 'uuid'
 import AbstractDBModel from '../../model/AbstractDBModel'
-import { Unsorted } from './SortRequest'
+import SortRequest, { Unsorted } from './SortRequest'
 
 function mapDocument(document: any): any {
   const { _id, _rev, ...values } = document
@@ -32,6 +32,23 @@ export default class Repository<T extends AbstractDBModel> {
     sort.sorts.forEach((s) => {
       selector[s.field] = { $gt: null }
     })
+
+    // Adds an index to each of the fields coming from the sorting object
+    // allowing the algorithm to sort by any given SortRequest, by avoiding the default index error (lack of index)
+
+    await Promise.all(
+      sort.sorts.map(
+        async (s): Promise<SortRequest> => {
+          await this.db.createIndex({
+            index: {
+              fields: [s.field],
+            },
+          })
+
+          return sort
+        },
+      ),
+    )
 
     const result = await this.db.find({
       selector,
