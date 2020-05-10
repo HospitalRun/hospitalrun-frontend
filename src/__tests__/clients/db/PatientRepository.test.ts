@@ -3,6 +3,8 @@ import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
 import shortid from 'shortid'
 import { getTime, isAfter } from 'date-fns'
+import SortRequest from 'clients/db/SortRequest'
+import PageRequest, { UnpagedRequest } from 'clients/db/PageRequest'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 
@@ -221,6 +223,93 @@ describe('patient repository', () => {
 
       const allDocs = await patients.allDocs()
       expect(allDocs.total_rows).toEqual(0)
+    })
+  })
+
+  describe('findAllPaged', () => {
+    const patientsData = [
+      { _id: 'a', fullName: 'a', code: 'P-a', index: 'aP-a' },
+      { _id: 'b', fullName: 'b', code: 'P-b', index: 'bP-b' },
+      { _id: 'c', fullName: 'c', code: 'P-c', index: 'cP-c' },
+    ]
+
+    afterEach(async () => {
+      await removeAllDocs()
+    })
+
+    beforeEach(async () => {
+      await PatientRepository.createIndex()
+      patientsData.forEach((patientData) => patients.put(patientData))
+    })
+
+    it('should find all patients in the database', async () => {
+      const result = await PatientRepository.findAllPaged()
+
+      expect(result.hasNext).toEqual(false)
+      expect(result.hasPrevious).toEqual(false)
+      expect(result.content).toHaveLength(patientsData.length)
+    })
+
+    it('should find all patients in the database with sort request and page request', async () => {
+      const sortRequest: SortRequest = {
+        sorts: [{ field: 'index', direction: 'asc' }],
+      }
+      const pageRequest: PageRequest = {
+        number: 1,
+        size: 1,
+        direction: 'next',
+        nextPageInfo: undefined,
+        previousPageInfo: undefined,
+      }
+
+      const result = await PatientRepository.findAllPaged(sortRequest, pageRequest)
+
+      expect(result.content).toHaveLength(1)
+      expect(result.hasNext).toEqual(true)
+      expect(result.hasPrevious).toEqual(false)
+      expect(result.content.length).toEqual(1)
+      expect(result.pageRequest?.nextPageInfo).toEqual({ index: 'bP-b' })
+    })
+  })
+
+  describe('searchPaged', () => {
+    const patientsData = [
+      { _id: 'a', fullName: 'a', code: 'P-a', index: 'aP-a' },
+      { _id: 'b', fullName: 'b', code: 'P-b', index: 'bP-b' },
+      { _id: 'c', fullName: 'c', code: 'P-c', index: 'cP-c' },
+    ]
+
+    afterEach(async () => {
+      await removeAllDocs()
+    })
+
+    beforeEach(async () => {
+      await PatientRepository.createIndex()
+      patientsData.forEach((patientData) => patients.put(patientData))
+    })
+
+    it('should search patient in the database', async () => {
+      const result = await PatientRepository.searchPaged('a')
+
+      expect(result.content).toHaveLength(1)
+      expect(result.hasNext).toEqual(false)
+      expect(result.hasPrevious).toEqual(false)
+
+      expect(result.content.length).toEqual(1)
+    })
+
+    it('should search patient in the database with sort request', async () => {
+      const sortRequest: SortRequest = {
+        sorts: [{ field: 'index', direction: 'asc' }],
+      }
+
+      const result = await PatientRepository.searchPaged('a', UnpagedRequest, sortRequest)
+
+      expect(result.content).toHaveLength(1)
+      expect(result.hasNext).toEqual(false)
+      expect(result.hasPrevious).toEqual(false)
+
+      expect(result.content.length).toEqual(1)
     })
   })
 })

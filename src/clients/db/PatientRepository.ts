@@ -93,6 +93,12 @@ export class PatientRepository extends Repository<Patient> {
     entity.index = (entity.fullName ? entity.fullName : '') + patientCode
     return super.save(entity)
   }
+
+  async createIndex() {
+    return this.db.createIndex({
+      index: { fields: ['index'] },
+    })
+  }
 }
 
 export default new PatientRepository()
