@@ -10,7 +10,7 @@
     "@types/escape-string-regexp": "~2.0.1",
     "@types/pouchdb-find": "~6.3.4",
     "bootstrap": "~4.4.1",
-    "date-fns": "~2.12.0",
+    "date-fns": "~2.13.0",
     "escape-string-regexp": "~4.0.0",
     "i18next": "~19.4.0",
     "i18next-browser-languagedetector": "~4.1.0",
