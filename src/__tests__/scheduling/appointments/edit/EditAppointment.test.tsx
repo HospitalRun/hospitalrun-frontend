@@ -8,8 +8,8 @@ import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { roundToNearestMinutes, addMinutes, subDays } from 'date-fns'
-import { Button, Alert } from '@hospitalrun/components'
+import { roundToNearestMinutes, addMinutes } from 'date-fns'
+import { Button } from '@hospitalrun/components'
 import EditAppointment from '../../../../scheduling/appointments/edit/EditAppointment'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import Appointment from '../../../../model/Appointment'
@@ -117,48 +117,6 @@ describe('Edit Appointment', () => {
       await setup()
     })
     expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.editAppointment')
-  })
-
-  it('should display an error if the end date is before the start date', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
-
-    const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
-    const endDateTime = subDays(startDateTime, 1)
-
-    wrapper.update()
-
-    act(() => {
-      const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-      const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-      onFieldChange('startDateTime', startDateTime)
-    })
-
-    wrapper.update()
-
-    act(() => {
-      const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-      const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-      onFieldChange('endDateTime', endDateTime)
-    })
-
-    wrapper.update()
-
-    act(() => {
-      const saveButton = wrapper.find(Button).at(0)
-      const onClick = saveButton.prop('onClick') as any
-      onClick()
-    })
-
-    wrapper.update()
-
-    const alert = wrapper.find(Alert)
-    expect(alert).toHaveLength(1)
-    expect(alert.prop('message')).toEqual(
-      'scheduling.appointment.errors.startDateMustBeBeforeEndDate',
-    )
   })
 
   it('should dispatch updateAppointment when save button is clicked', async () => {

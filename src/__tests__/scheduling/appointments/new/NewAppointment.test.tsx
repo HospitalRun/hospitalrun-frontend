@@ -7,7 +7,6 @@ import { mount } from 'enzyme'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { act } from '@testing-library/react'
-import subDays from 'date-fns/subDays'
 import AppointmentRepository from 'clients/db/AppointmentRepository'
 import { mocked } from 'ts-jest/utils'
 import configureMockStore, { MockStore } from 'redux-mock-store'
@@ -199,73 +198,6 @@ describe('New Appointment', () => {
         'success',
         'states.success',
         `scheduling.appointment.successfullyCreated`,
-      )
-    })
-
-    it('should display an error if there is no patient id', async () => {
-      let wrapper: any
-      await act(async () => {
-        wrapper = await setup()
-      })
-
-      act(() => {
-        const saveButton = wrapper.find(mockedComponents.Button).at(0)
-        const onClick = saveButton.prop('onClick') as any
-        onClick()
-      })
-      wrapper.update()
-
-      const alert = wrapper.find(mockedComponents.Alert)
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('message')).toEqual('scheduling.appointment.errors.patientRequired')
-    })
-
-    it('should display an error if the end date is before the start date', async () => {
-      let wrapper: any
-      await act(async () => {
-        wrapper = await setup()
-      })
-
-      const patientId = '123'
-      const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
-      const endDateTime = subDays(startDateTime, 1)
-
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patientId', patientId)
-      })
-
-      wrapper.update()
-
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('startDateTime', startDateTime)
-      })
-
-      wrapper.update()
-
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('endDateTime', endDateTime)
-      })
-
-      wrapper.update()
-
-      act(() => {
-        const saveButton = wrapper.find(mockedComponents.Button).at(0)
-        const onClick = saveButton.prop('onClick') as any
-        onClick()
-      })
-
-      wrapper.update()
-
-      const alert = wrapper.find(mockedComponents.Alert)
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('message')).toEqual(
-        'scheduling.appointment.errors.startDateMustBeBeforeEndDate',
       )
     })
   })
