@@ -53,7 +53,7 @@ const Sidebar = () => {
     setExpandedItem(item.toString())
   }
 
-  const listSubItemStyleNew: CSSProperties = {
+  const listSubItemStyle: CSSProperties = {
     cursor: 'pointer',
     fontSize: 'small',
     borderBottomWidth: 0,
@@ -63,7 +63,7 @@ const Sidebar = () => {
     backgroundColor: 'rgba(245,245,245,1)',
   }
 
-  const listSubItemStyle: CSSProperties = {
+  const listSubItemStyleNew: CSSProperties = {
     cursor: 'pointer',
     fontSize: 'small',
     borderBottomWidth: 0,

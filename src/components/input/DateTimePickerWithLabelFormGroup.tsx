@@ -24,6 +24,8 @@ const DateTimePickerWithLabelFormGroup = (props: Props) => {
         dropdownMode="scroll"
         disabled={!isEditable}
         selected={value}
+        isInvalid={isInvalid}
+        feedback={feedback}
         onChange={(inputDate) => {
           if (onChange) {
             onChange(inputDate)
@@ -34,8 +36,6 @@ const DateTimePickerWithLabelFormGroup = (props: Props) => {
         timeFormat="h:mm aa"
         timeIntervals={15}
         withPortal={false}
-        feedback={feedback}
-        isInvalid={isInvalid}
       />
     </div>
   )

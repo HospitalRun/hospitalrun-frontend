@@ -14,7 +14,6 @@ import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
 import RelatedPerson from 'model/RelatedPerson'
-import { Button } from '@hospitalrun/components'
 import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = configureMockStore([thunk])
@@ -137,7 +136,7 @@ describe('Related Persons Tab', () => {
       const tableHeaders = wrapper.find('th')
       const tableBody = wrapper.find('tbody')
       const tableData = wrapper.find('td')
-      const deleteButton = tableData.at(3).find(Button)
+      const deleteButton = tableData.at(3).find(components.Button)
       expect(table).toHaveLength(1)
       expect(tableHeader).toHaveLength(1)
       expect(tableBody).toHaveLength(1)
@@ -160,7 +159,7 @@ describe('Related Persons Tab', () => {
       const table = wrapper.find('table')
       const tableBody = table.find('tbody')
       const tableData = tableBody.find('td')
-      const deleteButton = tableData.at(3).find(Button)
+      const deleteButton = tableData.at(3).find(components.Button)
 
       await act(async () => {
         const onClick = deleteButton.prop('onClick')
