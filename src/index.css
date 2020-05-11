@@ -97,3 +97,7 @@ code {
 .button-toolbar > button {
 	margin-left: .5rem;
 }
+
+.react-datepicker-wrapper {
+  flex-grow: 1;
+}
