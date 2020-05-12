@@ -73,6 +73,7 @@ export default class Repository<T extends AbstractDBModel> {
       sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
       limit: pageRequest.size ? pageRequest.size + 1 : undefined,
     })
+
     const mappedResult = result.docs.map(mapDocument)
     if (pageRequest.direction === 'previous') {
       mappedResult.reverse()
@@ -90,19 +91,22 @@ export default class Repository<T extends AbstractDBModel> {
       previousPageInfo[s.field] = mappedResult[0][s.field]
     })
 
+    const hasNext: boolean =
+      pageRequest.size !== undefined && mappedResult.length === pageRequest.size + 1
+    const hasPrevious: boolean = pageRequest.number !== undefined && pageRequest.number > 1
+
     const pagedResult: Page<T> = {
       content:
         pageRequest.size !== undefined && mappedResult.length === pageRequest.size + 1
           ? mappedResult.slice(0, mappedResult.length - 1)
           : mappedResult,
-      hasNext: pageRequest.size !== undefined && mappedResult.length === pageRequest.size + 1,
-      hasPrevious: pageRequest.number !== undefined && pageRequest.number > 1,
+      hasNext,
+      hasPrevious,
       pageRequest: {
         size: pageRequest.size,
         number: pageRequest.number,
-        nextPageInfo,
-        previousPageInfo,
-        direction: null,
+        nextPageInfo: hasNext ? nextPageInfo : undefined,
+        previousPageInfo: hasPrevious ? previousPageInfo : undefined,
       },
     }
     return pagedResult
