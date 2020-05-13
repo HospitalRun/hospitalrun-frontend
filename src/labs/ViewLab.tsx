@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router'
+import { useParams, useHistory } from 'react-router-dom'
 import format from 'date-fns/format'
 import Lab from 'model/Lab'
 import Patient from 'model/Patient'

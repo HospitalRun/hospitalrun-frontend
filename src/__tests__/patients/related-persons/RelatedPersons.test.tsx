@@ -1,6 +1,6 @@
 import '../../../__mocks__/matchMediaMock'
 import React from 'react'
-import { Router } from 'react-router'
+import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { mount } from 'enzyme'
 import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
