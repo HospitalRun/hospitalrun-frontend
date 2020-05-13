@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
 
