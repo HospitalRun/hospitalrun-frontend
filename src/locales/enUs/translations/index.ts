@@ -6,6 +6,7 @@ import scheduling from './scheduling'
 import states from './states'
 import sex from './sex'
 import labs from './labs'
+import incidents from './incidents'
 
 export default {
   ...actions,
@@ -16,4 +17,5 @@ export default {
   ...states,
   ...sex,
   ...labs,
+  ...incidents,
 }
