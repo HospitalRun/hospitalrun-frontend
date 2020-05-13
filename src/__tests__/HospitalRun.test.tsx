@@ -1,7 +1,7 @@
 import '../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
