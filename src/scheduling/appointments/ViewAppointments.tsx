@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
 import { Calendar, Button } from '@hospitalrun/components'
-import useTitle from 'page-header/useTitle'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store'
 import { useHistory } from 'react-router'
-import PatientRepository from 'clients/db/PatientRepository'
+
 import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
+import PatientRepository from 'clients/db/PatientRepository'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
-import { fetchAppointments } from './appointments-slice'
+import useTitle from 'page-header/useTitle'
+import { fetchAppointments } from 'scheduling/appointments/appointments-slice'
+import { RootState } from 'store'
 
 interface Event {
   id: string

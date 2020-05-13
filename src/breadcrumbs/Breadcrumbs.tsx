@@ -1,9 +1,10 @@
-import React from 'react'
-import { useHistory } from 'react-router'
-import { useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next'
 import { Breadcrumb, BreadcrumbItem } from '@hospitalrun/components'
-import { RootState } from '../store'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+
+import { RootState } from 'store'
 
 const Breadcrumbs = () => {
   const history = useHistory()

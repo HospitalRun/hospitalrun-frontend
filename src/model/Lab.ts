@@ -1,4 +1,4 @@
-import AbstractDBModel from './AbstractDBModel'
+import AbstractDBModel from 'model/AbstractDBModel'
 
 export default interface Lab extends AbstractDBModel {
   code: string

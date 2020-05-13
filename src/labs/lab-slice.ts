@@ -1,9 +1,10 @@
-import Lab from 'model/Lab'
-import Patient from 'model/Patient'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk } from 'store'
+
 import LabRepository from 'clients/db/LabRepository'
 import PatientRepository from 'clients/db/PatientRepository'
+import Lab from 'model/Lab'
+import Patient from 'model/Patient'
+import { AppThunk } from 'store'
 
 interface Error {
   result?: string

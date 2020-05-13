@@ -1,9 +1,10 @@
 import escapeStringRegexp from 'escape-string-regexp'
-import Appointment from 'model/Appointment'
-import { appointments } from 'config/pouchdb'
-import Repository from './Repository'
 
-export class AppointmentRepository extends Repository<Appointment> {
+import Repository from 'clients/db/Repository'
+import { appointments } from 'config/pouchdb'
+import Appointment from 'model/Appointment'
+
+class AppointmentRepository extends Repository<Appointment> {
   constructor() {
     super(appointments)
   }

@@ -1,22 +1,25 @@
+// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
+
+import { mount } from 'enzyme'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
 import configureMockStore from 'redux-mock-store'
-import { mount } from 'enzyme'
 import thunk from 'redux-thunk'
-import { act } from 'react-dom/test-utils'
-import NewAppointment from 'scheduling/appointments/new/NewAppointment'
+
+import { addBreadcrumbs } from 'breadcrumbs/breadcrumbs-slice'
+import AppointmentRepository from 'clients/db/AppointmentRepository'
+import PatientRepository from 'clients/db/PatientRepository'
+import Dashboard from 'dashboard/Dashboard'
+import HospitalRun from 'HospitalRun'
+import Appointment from 'model/Appointment'
+import Patient from 'model/Patient'
+import Permissions from 'model/Permissions'
 import EditAppointment from 'scheduling/appointments/edit/EditAppointment'
+import NewAppointment from 'scheduling/appointments/new/NewAppointment'
 import ViewAppointments from 'scheduling/appointments/ViewAppointments'
-import Permissions from '../../../model/Permissions'
-import HospitalRun from '../../../HospitalRun'
-import { addBreadcrumbs } from '../../../breadcrumbs/breadcrumbs-slice'
-import Dashboard from '../../../dashboard/Dashboard'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import AppointmentRepository from '../../../clients/db/AppointmentRepository'
-import Patient from '../../../model/Patient'
-import Appointment from '../../../model/Appointment'
 
 const mockStore = configureMockStore([thunk])
 

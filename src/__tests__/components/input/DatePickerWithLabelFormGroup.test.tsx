@@ -1,8 +1,11 @@
+// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-import React, { ChangeEvent } from 'react'
+
 import { DateTimePicker, Label } from '@hospitalrun/components'
 import { shallow } from 'enzyme'
-import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
+import React, { ChangeEvent } from 'react'
+
+import DatePickerWithLabelFormGroup from 'components/input/DatePickerWithLabelFormGroup'
 
 describe('date picker with label form group', () => {
   describe('layout', () => {

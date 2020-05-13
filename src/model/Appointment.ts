@@ -1,4 +1,4 @@
-import AbstractDBModel from './AbstractDBModel'
+import AbstractDBModel from 'model/AbstractDBModel'
 
 export default interface Appointment extends AbstractDBModel {
   startDateTime: string

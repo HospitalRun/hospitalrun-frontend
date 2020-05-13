@@ -1,10 +1,13 @@
+// eslint-disable-next-line no-restricted-imports
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
+
 import { Button } from '@hospitalrun/components'
-import { mocked } from 'ts-jest/utils'
 import { mount } from 'enzyme'
-import * as ButtonBarProvider from '../../page-header/ButtonBarProvider'
-import ButtonToolBar from '../../page-header/ButtonToolBar'
+import React from 'react'
+import { mocked } from 'ts-jest/utils'
+
+import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
+import ButtonToolBar from 'page-header/ButtonToolBar'
 
 describe('Button Tool Bar', () => {
   beforeEach(() => {

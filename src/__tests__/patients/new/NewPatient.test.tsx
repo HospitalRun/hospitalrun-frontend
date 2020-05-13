@@ -1,20 +1,23 @@
+// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
+
+import * as components from '@hospitalrun/components'
 import { mount } from 'enzyme'
-import { Router, Route } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import { mocked } from 'ts-jest/utils'
 import { createMemoryHistory } from 'history'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
+import { Router, Route } from 'react-router-dom'
 import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as components from '@hospitalrun/components'
-import NewPatient from '../../../patients/new/NewPatient'
-import GeneralInformation from '../../../patients/GeneralInformation'
-import Patient from '../../../model/Patient'
-import * as patientSlice from '../../../patients/patient-slice'
-import * as titleUtil from '../../../page-header/useTitle'
-import PatientRepository from '../../../clients/db/PatientRepository'
+import { mocked } from 'ts-jest/utils'
+
+import PatientRepository from 'clients/db/PatientRepository'
+import Patient from 'model/Patient'
+import * as titleUtil from 'page-header/useTitle'
+import GeneralInformation from 'patients/GeneralInformation'
+import NewPatient from 'patients/new/NewPatient'
+import * as patientSlice from 'patients/patient-slice'
 
 const mockStore = configureMockStore([thunk])
 

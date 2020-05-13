@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import Lab from '../model/Lab'
-import LabRepository from '../clients/db/LabRepository'
-import SortRequest from '../clients/db/SortRequest'
-import { AppThunk } from '../store'
+
+import LabRepository from 'clients/db/LabRepository'
+import SortRequest from 'clients/db/SortRequest'
+import Lab from 'model/Lab'
+import { AppThunk } from 'store'
 
 interface LabsState {
   isLoading: boolean

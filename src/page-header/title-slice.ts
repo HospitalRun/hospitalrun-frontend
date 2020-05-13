@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk } from '../store'
+
+import { AppThunk } from 'store'
 
 interface TitleState {
   title: string

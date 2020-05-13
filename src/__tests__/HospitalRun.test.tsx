@@ -1,17 +1,20 @@
+// eslint-disable-next-line no-restricted-imports
 import '../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { MemoryRouter } from 'react-router'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+
 import { Toaster } from '@hospitalrun/components'
+import { mount } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
-import Dashboard from 'dashboard/Dashboard'
-import ViewLabs from 'labs/ViewLabs'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import LabRepository from 'clients/db/LabRepository'
-import HospitalRun from '../HospitalRun'
-import Permissions from '../model/Permissions'
+import Dashboard from 'dashboard/Dashboard'
+import HospitalRun from 'HospitalRun'
+import ViewLabs from 'labs/ViewLabs'
+import Permissions from 'model/Permissions'
 
 const mockStore = configureMockStore([thunk])
 

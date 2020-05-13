@@ -1,20 +1,23 @@
+// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { MemoryRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import ViewAppointments from 'scheduling/appointments/ViewAppointments'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+
 import { Calendar } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import PatientRepository from 'clients/db/PatientRepository'
+import { mount } from 'enzyme'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
+
+import AppointmentRepository from 'clients/db/AppointmentRepository'
+import PatientRepository from 'clients/db/PatientRepository'
+import Appointment from 'model/Appointment'
 import Patient from 'model/Patient'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
-import AppointmentRepository from 'clients/db/AppointmentRepository'
-import Appointment from 'model/Appointment'
-import * as titleUtil from '../../../page-header/useTitle'
+import * as titleUtil from 'page-header/useTitle'
+import ViewAppointments from 'scheduling/appointments/ViewAppointments'
 
 describe('ViewAppointments', () => {
   const expectedAppointments = [

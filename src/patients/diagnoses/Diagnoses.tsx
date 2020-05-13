@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
-import { RootState } from 'store'
-import Patient from 'model/Patient'
-import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
-import { useSelector } from 'react-redux'
-import Permissions from 'model/Permissions'
 import { Button, List, ListItem, Alert } from '@hospitalrun/components'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+
+import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
 import Diagnosis from 'model/Diagnosis'
-import AddDiagnosisModal from './AddDiagnosisModal'
+import Patient from 'model/Patient'
+import Permissions from 'model/Permissions'
+import AddDiagnosisModal from 'patients/diagnoses/AddDiagnosisModal'
+import { RootState } from 'store'
 
 interface Props {
   patient: Patient

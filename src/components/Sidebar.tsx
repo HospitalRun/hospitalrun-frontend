@@ -1,10 +1,11 @@
-import React, { useState, CSSProperties } from 'react'
 import { List, ListItem, Icon } from '@hospitalrun/components'
+import React, { useState, CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useHistory } from 'react-router'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../store'
-import { updateSidebar } from './component-slice'
+import { useLocation, useHistory } from 'react-router'
+
+import { updateSidebar } from 'components/component-slice'
+import { RootState } from 'store'
 
 const Sidebar = () => {
   const dispatch = useDispatch()

@@ -1,11 +1,11 @@
-import actions from './actions'
-import dashboard from './dashboard'
-import patient from './patient'
-import patients from './patients'
-import scheduling from './scheduling'
-import states from './states'
-import sex from './sex'
-import labs from './labs'
+import actions from 'locales/it/translations/actions'
+import dashboard from 'locales/it/translations/dashboard'
+import labs from 'locales/it/translations/labs'
+import patient from 'locales/it/translations/patient'
+import patients from 'locales/it/translations/patients'
+import scheduling from 'locales/it/translations/scheduling'
+import sex from 'locales/it/translations/sex'
+import states from 'locales/it/translations/states'
 
 export default {
   ...actions,

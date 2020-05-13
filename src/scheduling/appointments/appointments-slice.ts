@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+import AppointmentRepository from 'clients/db/AppointmentRepository'
 import Appointment from 'model/Appointment'
 import { AppThunk } from 'store'
-import AppointmentRepository from 'clients/db/AppointmentRepository'
 
 interface AppointmentsState {
   isLoading: boolean

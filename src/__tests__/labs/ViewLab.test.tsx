@@ -1,23 +1,26 @@
+// eslint-disable-next-line no-restricted-imports
 import '../../__mocks__/matchMediaMock'
+
+import { Badge, Button, Alert } from '@hospitalrun/components'
+import { act } from '@testing-library/react'
+import format from 'date-fns/format'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router'
-import { mount } from 'enzyme'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { createMemoryHistory } from 'history'
-import Permissions from 'model/Permissions'
-import { act } from '@testing-library/react'
+
 import LabRepository from 'clients/db/LabRepository'
 import PatientRepository from 'clients/db/PatientRepository'
+import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
+import ViewLab from 'labs/ViewLab'
 import Lab from 'model/Lab'
 import Patient from 'model/Patient'
+import Permissions from 'model/Permissions'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
-import createMockStore from 'redux-mock-store'
-import { Badge, Button, Alert } from '@hospitalrun/components'
-import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
-import format from 'date-fns/format'
-import * as titleUtil from '../../page-header/useTitle'
-import ViewLab from '../../labs/ViewLab'
+import * as titleUtil from 'page-header/useTitle'
 
 const mockStore = createMockStore([thunk])
 

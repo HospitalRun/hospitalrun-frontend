@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import Breadcrumb from 'model/Breadcrumb'
 
 interface BreadcrumbsState {

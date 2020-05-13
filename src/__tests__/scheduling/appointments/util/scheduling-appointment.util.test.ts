@@ -1,5 +1,5 @@
 import Appointment from 'model/Appointment'
-import { getAppointmentLabel } from '../../../../scheduling/appointments/util/scheduling-appointment.util'
+import { getAppointmentLabel } from 'scheduling/appointments/util/scheduling-appointment.util'
 
 describe('scheduling appointment util', () => {
   describe('getAppointmentLabel', () => {

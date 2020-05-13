@@ -1,15 +1,15 @@
+import Repository from 'clients/db/Repository'
+import SortRequest from 'clients/db/SortRequest'
+import { labs } from 'config/pouchdb'
 import Lab from 'model/Lab'
-import generateCode from '../../util/generateCode'
-import Repository from './Repository'
-import { labs } from '../../config/pouchdb'
-import SortRequest from './SortRequest'
+import generateCode from 'util/generateCode'
 
 interface SearchContainer {
   text: string
   status: 'requested' | 'completed' | 'canceled' | 'all'
   defaultSortRequest: SortRequest
 }
-export class LabRepository extends Repository<Lab> {
+class LabRepository extends Repository<Lab> {
   constructor() {
     super(labs)
   }
