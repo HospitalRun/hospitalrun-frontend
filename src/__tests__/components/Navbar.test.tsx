@@ -1,10 +1,11 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
-import { Router } from 'react-router-dom'
-import { mount } from 'enzyme'
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
-import { act } from 'react-dom/test-utils'
+import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
+import { Router } from 'react-router-dom'
+
 import Navbar from '../../components/Navbar'
 
 describe('Navbar', () => {

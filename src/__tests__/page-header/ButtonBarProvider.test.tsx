@@ -1,12 +1,13 @@
 import '../../__mocks__/matchMediaMock'
-import React, { useEffect } from 'react'
+import { Button } from '@hospitalrun/components'
 import { renderHook } from '@testing-library/react-hooks'
+import React, { useEffect } from 'react'
+
 import {
   ButtonBarProvider,
   useButtons,
   useButtonToolbarSetter,
-} from 'page-header/ButtonBarProvider'
-import { Button } from '@hospitalrun/components'
+} from '../../page-header/ButtonBarProvider'
 
 describe('Button Bar Provider', () => {
   it('should update and fetch data from the button bar provider', () => {

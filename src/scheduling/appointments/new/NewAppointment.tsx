@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
-import useTitle from 'page-header/useTitle'
-import { useTranslation } from 'react-i18next'
-import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
-import { useHistory } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
-import Appointment from 'model/Appointment'
-import addMinutes from 'date-fns/addMinutes'
 import { Button, Toast } from '@hospitalrun/components'
+import addMinutes from 'date-fns/addMinutes'
+import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
+import Appointment from '../../../model/Appointment'
+import useTitle from '../../../page-header/useTitle'
+import { RootState } from '../../../store'
 import { createAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
-import { RootState } from '../../../store'
 
 const breadcrumbs = [
   { i18nKey: 'scheduling.appointments.label', location: '/appointments' },

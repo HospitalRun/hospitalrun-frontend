@@ -1,15 +1,16 @@
+import { Button, Toast } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Toast } from '@hospitalrun/components'
-import GeneralInformation from '../GeneralInformation'
-import useTitle from '../../page-header/useTitle'
+import { useHistory } from 'react-router'
+
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import Patient from '../../model/Patient'
+import useTitle from '../../page-header/useTitle'
+import { RootState } from '../../store'
+import GeneralInformation from '../GeneralInformation'
 import { createPatient } from '../patient-slice'
 import { getPatientName } from '../util/patient-name-util'
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
-import { RootState } from '../../store'
 
 const breadcrumbs = [
   { i18nKey: 'patients.label', location: '/patients' },

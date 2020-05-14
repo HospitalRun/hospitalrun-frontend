@@ -1,8 +1,9 @@
 import '../__mocks__/matchMediaMock'
-import React from 'react'
 import { mount } from 'enzyme'
-import HospitalRun from '../HospitalRun'
+import React from 'react'
+
 import App from '../App'
+import HospitalRun from '../HospitalRun'
 
 it('renders without crashing', () => {
   const wrapper = mount(<App />)

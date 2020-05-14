@@ -1,13 +1,14 @@
 /* eslint-disable react/no-danger */
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next'
 import { Button, List, ListItem, Alert } from '@hospitalrun/components'
-import NewNoteModal from 'patients/notes/NewNoteModal'
-import Note from 'model/Note'
-import Patient from 'model/Patient'
-import { RootState } from '../../store'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+
+import Note from '../../model/Note'
+import Patient from '../../model/Patient'
 import Permissions from '../../model/Permissions'
+import { RootState } from '../../store'
+import NewNoteModal from './NewNoteModal'
 
 interface Props {
   patient: Patient

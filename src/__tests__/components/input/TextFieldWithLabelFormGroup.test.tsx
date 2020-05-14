@@ -1,7 +1,8 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
 import { Label, TextField } from '@hospitalrun/components'
 import { shallow } from 'enzyme'
+import React from 'react'
+
 import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 
 describe('text field with label form group', () => {

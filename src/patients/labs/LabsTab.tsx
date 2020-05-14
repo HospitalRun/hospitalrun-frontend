@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
 import { Alert } from '@hospitalrun/components'
-import { useTranslation } from 'react-i18next'
 import format from 'date-fns/format'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
-import Lab from '../../model/Lab'
+
 import LabRepository from '../../clients/db/LabRepository'
+import Lab from '../../model/Lab'
 
 interface Props {
   patientId: string

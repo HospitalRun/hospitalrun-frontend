@@ -1,13 +1,15 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount, ReactWrapper } from 'enzyme'
-import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
-import Appointment from 'model/Appointment'
-import { roundToNearestMinutes, addMinutes } from 'date-fns'
+
 import { Typeahead, Alert } from '@hospitalrun/components'
-import PatientRepository from 'clients/db/PatientRepository'
-import Patient from 'model/Patient'
 import { act } from '@testing-library/react'
+import { roundToNearestMinutes, addMinutes } from 'date-fns'
+import { mount, ReactWrapper } from 'enzyme'
+import React from 'react'
+
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Appointment from '../../../model/Appointment'
+import Patient from '../../../model/Patient'
+import AppointmentDetailForm from '../../../scheduling/appointments/AppointmentDetailForm'
 
 describe('AppointmentDetailForm', () => {
   describe('Error handling', () => {

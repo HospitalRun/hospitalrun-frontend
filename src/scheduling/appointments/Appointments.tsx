@@ -1,13 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Switch } from 'react-router'
-import NewAppointment from 'scheduling/appointments/new/NewAppointment'
-import EditAppointment from 'scheduling/appointments/edit/EditAppointment'
-import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
-import ViewAppointments from './ViewAppointments'
+
 import PrivateRoute from '../../components/PrivateRoute'
 import Permissions from '../../model/Permissions'
 import { RootState } from '../../store'
+import EditAppointment from './edit/EditAppointment'
+import NewAppointment from './new/NewAppointment'
+import ViewAppointment from './view/ViewAppointment'
+import ViewAppointments from './ViewAppointments'
 
 const Appointments = () => {
   const permissions = useSelector((state: RootState) => state.user.permissions)

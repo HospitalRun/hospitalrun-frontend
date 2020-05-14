@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import useTitle from 'page-header/useTitle'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from 'store'
-import { useParams, useHistory } from 'react-router'
 import { Spinner, Button, Modal, Toast } from '@hospitalrun/components'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
-import Permissions from 'model/Permissions'
+import { useSelector, useDispatch } from 'react-redux'
+import { useParams, useHistory } from 'react-router'
+
+import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
+import Permissions from '../../../model/Permissions'
+import { useButtonToolbarSetter } from '../../../page-header/ButtonBarProvider'
+import useTitle from '../../../page-header/useTitle'
+import { RootState } from '../../../store'
 import { fetchAppointment, deleteAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 import { getAppointmentLabel } from '../util/scheduling-appointment.util'
-import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 
 const ViewAppointment = () => {
   const { t } = useTranslation()

@@ -1,16 +1,18 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import NewNoteModal from 'patients/notes/NewNoteModal'
-import { mount } from 'enzyme'
+
 import { Alert, Modal } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
+import { mount } from 'enzyme'
+import React from 'react'
+import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { Provider } from 'react-redux'
-import * as patientSlice from '../../../patients/patient-slice'
+
 import PatientRepository from '../../../clients/db/PatientRepository'
+import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
 import Patient from '../../../model/Patient'
+import NewNoteModal from '../../../patients/notes/NewNoteModal'
+import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = createMockStore([thunk])
 
