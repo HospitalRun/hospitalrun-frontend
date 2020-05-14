@@ -67,5 +67,5 @@ typings/
 package-lock.json
 .DS_Store
 yarn.lock
-
-.vscode/
+.vscode/launch.json
+.vscode/tasks.json

@@ -1,7 +1,7 @@
 import '../../../../__mocks__/matchMediaMock'
 import React from 'react'
 import NewAppointment from 'scheduling/appointments/new/NewAppointment'
-import { Router, Route } from 'react-router'
+import { Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { mount } from 'enzyme'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
