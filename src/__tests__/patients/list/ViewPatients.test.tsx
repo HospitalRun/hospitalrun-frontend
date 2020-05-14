@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
 import Page from 'clients/Page'
+import { defaultPageSize } from 'components/PageComponent'
 import ViewPatients from '../../../patients/list/ViewPatients'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import * as patientSlice from '../../../patients/patients-slice'
@@ -188,7 +189,7 @@ describe('Patients', () => {
         },
         {
           number: 1,
-          size: 1,
+          size: defaultPageSize.value,
           nextPageInfo: { index: null },
           direction: 'next',
           previousPageInfo: { index: null },

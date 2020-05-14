@@ -7,7 +7,7 @@ import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
 import SortRequest from 'clients/db/SortRequest'
 import PageRequest from 'clients/db/PageRequest'
-import PageComponent from 'components/PageComponent'
+import PageComponent, { defaultPageSize } from 'components/PageComponent'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import { RootState } from '../../store'
 import { searchPatients } from '../patients-slice'
@@ -28,7 +28,7 @@ const ViewPatients = () => {
   const setButtonToolBar = useButtonToolbarSetter()
 
   const defaultPageRequest = useRef<PageRequest>({
-    size: 1,
+    size: defaultPageSize.value,
     number: 1,
     nextPageInfo: { index: null },
     previousPageInfo: { index: null },
@@ -131,29 +131,43 @@ const ViewPatients = () => {
     setSearchText(event.target.value)
   }
 
-  return (
-    <Container>
-      <Row>
-        <Column md={12}>
-          <TextInput
-            size="lg"
-            type="text"
-            onChange={onSearchBoxChange}
-            value={searchText}
-            placeholder={t('actions.search')}
-          />
-        </Column>
-      </Row>
+  const onPageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newPageSize = parseInt(event.target.value, 10)
+    setUserPageRequest(() => ({
+      size: newPageSize,
+      number: 1,
+      nextPageInfo: { index: null },
+      previousPageInfo: { index: null },
+      direction: 'next',
+    }))
+  }
 
-      <Row> {isLoading ? loadingIndicator : table}</Row>
+  return (
+    <div>
+      <Container>
+        <Row>
+          <Column md={12}>
+            <TextInput
+              size="lg"
+              type="text"
+              onChange={onSearchBoxChange}
+              value={searchText}
+              placeholder={t('actions.search')}
+            />
+          </Column>
+        </Row>
+
+        <Row> {isLoading ? loadingIndicator : table}</Row>
+      </Container>
       <PageComponent
         hasNext={patients.hasNext}
         hasPrevious={patients.hasPrevious}
         pageNumber={patients.pageRequest ? patients.pageRequest.number : 1}
         setPreviousPageRequest={setPreviousPageRequest}
         setNextPageRequest={setNextPageRequest}
+        onPageSizeChange={onPageSizeChange}
       />
-    </Container>
+    </div>
   )
 }
 
