@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import { mocked } from 'ts-jest/utils'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
 import { Button } from '@hospitalrun/components'
@@ -18,8 +18,9 @@ import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentRepository from '../../../../clients/db/AppointmentRepository'
 import PatientRepository from '../../../../clients/db/PatientRepository'
+import { RootState } from '../../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Edit Appointment', () => {
   const appointment = {
@@ -66,7 +67,7 @@ describe('Edit Appointment', () => {
     mockedPatientRepository.find.mockResolvedValue(patient)
 
     history = createMemoryHistory()
-    store = mockStore({ appointment: { appointment, patient } })
+    store = mockStore({ appointment: { appointment, patient } } as any)
 
     history.push('/appointments/edit/123')
     const wrapper = mount(

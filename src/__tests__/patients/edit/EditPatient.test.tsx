@@ -5,7 +5,7 @@ import { Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { createMemoryHistory } from 'history'
 import { act } from 'react-dom/test-utils'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Button } from '@hospitalrun/components'
 import { subDays } from 'date-fns'
@@ -15,8 +15,9 @@ import Patient from '../../../model/Patient'
 import * as titleUtil from '../../../page-header/useTitle'
 import * as patientSlice from '../../../patients/patient-slice'
 import PatientRepository from '../../../clients/db/PatientRepository'
+import { RootState } from '../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Edit Patient', () => {
   const patient = {
@@ -45,7 +46,7 @@ describe('Edit Patient', () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
 
     history = createMemoryHistory()
-    store = mockStore({ patient: { patient } })
+    store = mockStore({ patient: { patient } } as any)
 
     history.push('/patients/edit/123')
     const wrapper = mount(

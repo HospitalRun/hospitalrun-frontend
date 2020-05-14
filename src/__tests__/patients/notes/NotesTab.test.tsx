@@ -3,7 +3,7 @@ import React from 'react'
 import PatientRepository from 'clients/db/PatientRepository'
 import Note from 'model/Note'
 import { createMemoryHistory } from 'history'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import Patient from 'model/Patient'
 import thunk from 'redux-thunk'
 import { mount } from 'enzyme'
@@ -13,13 +13,14 @@ import NoteTab from 'patients/notes/NoteTab'
 import * as components from '@hospitalrun/components'
 import { act } from 'react-dom/test-utils'
 import Permissions from '../../../model/Permissions'
+import { RootState } from '../../../store'
 
 const expectedPatient = {
   id: '123',
   notes: [{ date: new Date().toISOString(), text: 'notes1' } as Note],
 } as Patient
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 const history = createMemoryHistory()
 
 let user: any
@@ -27,7 +28,7 @@ let store: any
 
 const setup = (patient = expectedPatient, permissions = [Permissions.WritePatients]) => {
   user = { permissions }
-  store = mockStore({ patient, user })
+  store = mockStore({ patient, user } as any)
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>

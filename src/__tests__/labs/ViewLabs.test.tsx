@@ -5,7 +5,7 @@ import { Router } from 'react-router-dom'
 import ViewLabs from 'labs/ViewLabs'
 import { mount, ReactWrapper } from 'enzyme'
 import { TextInput, Select } from '@hospitalrun/components'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { createMemoryHistory } from 'history'
 import Permissions from 'model/Permissions'
@@ -16,8 +16,9 @@ import Lab from 'model/Lab'
 import format from 'date-fns/format'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import * as titleUtil from '../../page-header/useTitle'
+import { RootState } from '../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Labs', () => {
   describe('title', () => {
@@ -27,7 +28,7 @@ describe('View Labs', () => {
         title: '',
         user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
         labs: { labs: [] },
-      })
+      } as any)
       titleSpy = jest.spyOn(titleUtil, 'default')
       jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
       await act(async () => {
@@ -52,7 +53,7 @@ describe('View Labs', () => {
         title: '',
         user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
         labs: { labs: [] },
-      })
+      } as any)
       const setButtonToolBarSpy = jest.fn()
       jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
       jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
@@ -75,7 +76,7 @@ describe('View Labs', () => {
         title: '',
         user: { permissions: [Permissions.ViewLabs] },
         labs: { labs: [] },
-      })
+      } as any)
       const setButtonToolBarSpy = jest.fn()
       jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
       jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
@@ -111,7 +112,7 @@ describe('View Labs', () => {
         title: '',
         user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
         labs: { labs: [expectedLab] },
-      })
+      } as any)
       history = createMemoryHistory()
 
       jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
@@ -190,7 +191,7 @@ describe('View Labs', () => {
           title: '',
           user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
           labs: { labs: [expectedLab] },
-        })
+        } as any)
         history = createMemoryHistory()
 
         await act(async () => {
@@ -243,7 +244,7 @@ describe('View Labs', () => {
           title: '',
           user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
           labs: { labs: [expectedLab] },
-        })
+        } as any)
         history = createMemoryHistory()
 
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])

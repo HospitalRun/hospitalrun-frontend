@@ -3,7 +3,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import Allergies from 'patients/allergies/Allergies'
 import Permissions from 'model/Permissions'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import { createMemoryHistory } from 'history'
 import thunk from 'redux-thunk'
 import { Router } from 'react-router-dom'
@@ -13,8 +13,9 @@ import * as components from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import PatientRepository from 'clients/db/PatientRepository'
 import Allergy from 'model/Allergy'
+import { RootState } from '../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 const history = createMemoryHistory()
 const expectedPatient = {
   id: '123',
@@ -30,7 +31,7 @@ let store: any
 
 const setup = (patient = expectedPatient, permissions = [Permissions.AddAllergy]) => {
   user = { permissions }
-  store = mockStore({ patient, user })
+  store = mockStore({ patient, user } as any)
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>

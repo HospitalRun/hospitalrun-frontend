@@ -6,7 +6,7 @@ import { mocked } from 'ts-jest/utils'
 import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
 import { TabsHeader, Tab } from '@hospitalrun/components'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import GeneralInformation from 'patients/GeneralInformation'
 import { createMemoryHistory } from 'history'
@@ -23,8 +23,9 @@ import * as patientSlice from '../../../patients/patient-slice'
 import Permissions from '../../../model/Permissions'
 import LabsTab from '../../../patients/labs/LabsTab'
 import LabRepository from '../../../clients/db/LabRepository'
+import { RootState } from '../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('ViewPatient', () => {
   const patient = {
@@ -56,7 +57,7 @@ describe('ViewPatient', () => {
     store = mockStore({
       patient: { patient },
       user: { permissions },
-    })
+    } as any)
 
     history.push('/patients/123')
     const wrapper = mount(

@@ -6,17 +6,18 @@ import Sidebar from 'components/Sidebar'
 import { Router } from 'react-router-dom'
 import { ListItem } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
+import { RootState } from '../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Sidebar', () => {
   let history = createMemoryHistory()
   const store = mockStore({
     components: { sidebarCollapsed: false },
-  })
+  } as any)
   const setup = (location: string) => {
     history = createMemoryHistory()
     history.push(location)

@@ -4,7 +4,7 @@ import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import { act } from '@testing-library/react'
 import Permissions from 'model/Permissions'
 import ViewIncident from '../../incidents/view/ViewIncident'
@@ -12,8 +12,9 @@ import Incidents from '../../incidents/Incidents'
 import ReportIncident from '../../incidents/report/ReportIncident'
 import Incident from '../../model/Incident'
 import IncidentRepository from '../../clients/db/IncidentRepository'
+import { RootState } from '../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Incidents', () => {
   describe('routing', () => {
@@ -32,7 +33,7 @@ describe('Incidents', () => {
           incident: {
             incident: expectedIncident,
           },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -51,7 +52,7 @@ describe('Incidents', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -80,7 +81,7 @@ describe('Incidents', () => {
               reportedOn: new Date().toISOString(),
             },
           },
-        })
+        } as any)
 
         let wrapper: any
 
@@ -103,7 +104,7 @@ describe('Incidents', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         const wrapper = await mount(
           <Provider store={store}>

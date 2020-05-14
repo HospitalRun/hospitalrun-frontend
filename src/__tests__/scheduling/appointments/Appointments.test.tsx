@@ -2,7 +2,7 @@ import '../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import { mount } from 'enzyme'
 import thunk from 'redux-thunk'
 import { act } from 'react-dom/test-utils'
@@ -17,8 +17,9 @@ import PatientRepository from '../../../clients/db/PatientRepository'
 import AppointmentRepository from '../../../clients/db/AppointmentRepository'
 import Patient from '../../../model/Patient'
 import Appointment from '../../../model/Appointment'
+import { RootState } from '../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('/appointments', () => {
   it('should render the appointments screen when /appointments is accessed', async () => {
@@ -28,7 +29,7 @@ describe('/appointments', () => {
       appointments: { appointments: [] },
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
-    })
+    } as any)
 
     const wrapper = mount(
       <Provider store={store}>
@@ -60,7 +61,7 @@ describe('/appointments', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })}
+        } as any)}
       >
         <MemoryRouter initialEntries={['/appointments']}>
           <HospitalRun />
@@ -80,7 +81,7 @@ describe('/appointments/new', () => {
       appointment: {},
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
-    })
+    } as any)
 
     const wrapper = mount(
       <Provider store={store}>
@@ -110,7 +111,7 @@ describe('/appointments/new', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })}
+        } as any)}
       >
         <MemoryRouter initialEntries={['/appointments/new']}>
           <HospitalRun />
@@ -142,7 +143,7 @@ describe('/appointments/edit/:id', () => {
       appointment: { appointment, patient: {} as Patient },
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
-    })
+    } as any)
 
     const wrapper = mount(
       <Provider store={store}>
@@ -175,7 +176,7 @@ describe('/appointments/edit/:id', () => {
           user: { permissions: [Permissions.WriteAppointments] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })}
+        } as any)}
       >
         <MemoryRouter initialEntries={['/appointments/edit/123']}>
           <HospitalRun />
@@ -194,7 +195,7 @@ describe('/appointments/edit/:id', () => {
           user: { permissions: [Permissions.ReadAppointments] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })}
+        } as any)}
       >
         <MemoryRouter initialEntries={['/appointments/edit/123']}>
           <HospitalRun />

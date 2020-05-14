@@ -2,7 +2,7 @@ import '../../../../__mocks__/matchMediaMock'
 import React from 'react'
 import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import Appointment from 'model/Appointment'
 import ViewAppointment from 'scheduling/appointments/view/ViewAppointment'
@@ -19,8 +19,9 @@ import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
 import Permissions from 'model/Permissions'
 import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
+import { RootState } from '../../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 const appointment = {
   id: '123',
@@ -62,7 +63,7 @@ describe('View Appointment', () => {
         status,
         patient,
       },
-    })
+    } as any)
 
     const wrapper = mount(
       <Provider store={store}>
