@@ -1,11 +1,12 @@
 import '../../../__mocks__/matchMediaMock'
+
 import * as components from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 

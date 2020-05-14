@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Switch } from 'react-router'
+import { Switch } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../breadcrumbs/useAddBreadcrumbs'
 import PrivateRoute from '../components/PrivateRoute'

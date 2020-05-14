@@ -1,4 +1,5 @@
 import '../../../__mocks__/matchMediaMock'
+
 import { Button, Typeahead, Label, Alert } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'

@@ -1,4 +1,5 @@
 import '../../__mocks__/matchMediaMock'
+
 import { Button } from '@hospitalrun/components'
 import { renderHook } from '@testing-library/react-hooks'
 import React, { useEffect } from 'react'

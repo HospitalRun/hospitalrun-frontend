@@ -2,7 +2,7 @@ import { List, ListItem, Icon } from '@hospitalrun/components'
 import React, { useState, CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation, useHistory } from 'react-router'
+import { useLocation, useHistory } from 'react-router-dom'
 
 import { RootState } from '../store'
 import { updateSidebar } from './component-slice'
@@ -40,6 +40,8 @@ const Sidebar = () => {
       ? 'appointment'
       : splittedPath[1].includes('labs')
       ? 'labs'
+      : splittedPath[1].includes('incidents')
+      ? 'incidents'
       : 'none',
   )
 
@@ -231,6 +233,52 @@ const Sidebar = () => {
     </>
   )
 
+  const getIncidentLinks = () => (
+    <>
+      <ListItem
+        active={splittedPath[1].includes('incidents')}
+        onClick={() => {
+          navigateTo('/incidents')
+          setExpansion('incidents')
+        }}
+        className="nav-item"
+        style={listItemStyle}
+      >
+        <Icon
+          icon={
+            splittedPath[1].includes('incidents') && expandedItem === 'incidents'
+              ? 'down-arrow'
+              : 'right-arrow'
+          }
+          style={expandibleArrow}
+        />
+        <Icon icon="lab" /> {!sidebarCollapsed && t('incidents.label')}
+      </ListItem>
+      {splittedPath[1].includes('incidents') && expandedItem === 'incidents' && (
+        <List layout="flush" className="nav flex-column">
+          <ListItem
+            className="nav-item"
+            style={listSubItemStyleNew}
+            onClick={() => navigateTo('/incidents/new')}
+            active={splittedPath[1].includes('incidents') && splittedPath.length > 2}
+          >
+            <Icon icon="add" style={iconMargin} />
+            {!sidebarCollapsed && t('incidents.reports.new')}
+          </ListItem>
+          <ListItem
+            className="nav-item"
+            style={listSubItemStyle}
+            onClick={() => navigateTo('/incidents')}
+            active={splittedPath[1].includes('incidents') && splittedPath.length < 3}
+          >
+            <Icon icon="incident" style={iconMargin} />
+            {!sidebarCollapsed && t('incidents.reports.label')}
+          </ListItem>
+        </List>
+      )}
+    </>
+  )
+
   return (
     <nav
       className="col-md-2 d-none d-md-block bg-light sidebar"
@@ -252,6 +300,7 @@ const Sidebar = () => {
           {getPatientLinks()}
           {getAppointmentLinks()}
           {getLabLinks()}
+          {getIncidentLinks()}
         </List>
       </div>
     </nav>

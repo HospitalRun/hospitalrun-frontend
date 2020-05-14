@@ -2,7 +2,7 @@ import { Breadcrumb, BreadcrumbItem } from '@hospitalrun/components'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 import { RootState } from '../store'
 

@@ -1,5 +1,6 @@
 import actions from './actions'
 import dashboard from './dashboard'
+import incidents from './incidents'
 import labs from './labs'
 import patient from './patient'
 import patients from './patients'
@@ -16,4 +17,5 @@ export default {
   ...states,
   ...sex,
   ...labs,
+  ...incidents,
 }

@@ -1,4 +1,5 @@
 import '../../__mocks__/matchMediaMock'
+
 import { addDays } from 'date-fns'
 import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'

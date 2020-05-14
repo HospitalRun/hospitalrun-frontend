@@ -1,4 +1,5 @@
 import '../../__mocks__/matchMediaMock'
+
 import { TextInput, Select } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import format from 'date-fns/format'
@@ -6,7 +7,7 @@ import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 

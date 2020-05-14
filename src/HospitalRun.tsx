@@ -8,6 +8,7 @@ import Navbar from './components/Navbar'
 import PrivateRoute from './components/PrivateRoute'
 import Sidebar from './components/Sidebar'
 import Dashboard from './dashboard/Dashboard'
+import Incidents from './incidents/Incidents'
 import Labs from './labs/Labs'
 import { ButtonBarProvider } from './page-header/ButtonBarProvider'
 import ButtonToolBar from './page-header/ButtonToolBar'
@@ -43,6 +44,7 @@ const HospitalRun = () => {
                   <PrivateRoute isAuthenticated path="/appointments" component={Appointments} />
                   <PrivateRoute isAuthenticated path="/patients" component={Patients} />
                   <PrivateRoute isAuthenticated path="/labs" component={Labs} />
+                  <PrivateRoute isAuthenticated path="/incidents" component={Incidents} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />

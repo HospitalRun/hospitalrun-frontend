@@ -2,7 +2,7 @@ import { Alert } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 import LabRepository from '../../clients/db/LabRepository'
 import Lab from '../../model/Lab'

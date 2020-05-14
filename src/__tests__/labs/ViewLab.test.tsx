@@ -1,4 +1,5 @@
 import '../../__mocks__/matchMediaMock'
+
 import { Badge, Button, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import format from 'date-fns/format'
@@ -6,7 +7,7 @@ import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router, Route } from 'react-router'
+import { Router, Route } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 

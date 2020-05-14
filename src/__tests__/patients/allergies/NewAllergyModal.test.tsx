@@ -1,4 +1,5 @@
 import '../../../__mocks__/matchMediaMock'
+
 import { Modal, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount } from 'enzyme'

@@ -3,7 +3,7 @@ import format from 'date-fns/format'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
 import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'

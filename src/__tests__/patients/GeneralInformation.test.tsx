@@ -1,4 +1,5 @@
 import '../../__mocks__/matchMediaMock'
+
 import { Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { startOfDay, subYears } from 'date-fns'

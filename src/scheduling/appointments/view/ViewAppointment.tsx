@@ -2,7 +2,7 @@ import { Spinner, Button, Modal, Toast } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useHistory } from 'react-router'
+import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 import Permissions from '../../../model/Permissions'

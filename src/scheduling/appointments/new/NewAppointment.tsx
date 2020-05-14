@@ -4,7 +4,7 @@ import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 import Appointment from '../../../model/Appointment'

@@ -1,4 +1,5 @@
 import '../../__mocks__/matchMediaMock'
+
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
 

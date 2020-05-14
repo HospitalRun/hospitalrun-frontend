@@ -3,7 +3,7 @@ import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useHistory } from 'react-router'
+import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../breadcrumbs/useAddBreadcrumbs'
 import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'

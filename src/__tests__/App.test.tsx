@@ -1,4 +1,5 @@
 import '../__mocks__/matchMediaMock'
+
 import { mount } from 'enzyme'
 import React from 'react'
 

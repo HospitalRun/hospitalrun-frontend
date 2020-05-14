@@ -6,7 +6,7 @@ import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 

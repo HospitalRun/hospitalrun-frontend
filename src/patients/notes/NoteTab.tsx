@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 import { Button, List, ListItem, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'

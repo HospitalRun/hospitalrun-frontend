@@ -3,6 +3,8 @@ import ReduxThunk, { ThunkAction } from 'redux-thunk'
 
 import breadcrumbs from '../breadcrumbs/breadcrumbs-slice'
 import components from '../components/component-slice'
+import incident from '../incidents/incident-slice'
+import incidents from '../incidents/incidents-slice'
 import lab from '../labs/lab-slice'
 import labs from '../labs/labs-slice'
 import title from '../page-header/title-slice'
@@ -22,6 +24,8 @@ const reducer = combineReducers({
   breadcrumbs,
   components,
   lab,
+  incident,
+  incidents,
   labs,
 })
 

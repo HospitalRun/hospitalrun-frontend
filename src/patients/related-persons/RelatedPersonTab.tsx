@@ -2,7 +2,7 @@ import { Button, Alert, Spinner } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import PatientRepository from '../../clients/db/PatientRepository'

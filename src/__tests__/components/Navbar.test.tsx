@@ -1,4 +1,5 @@
 import '../../__mocks__/matchMediaMock'
+
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'

@@ -1,4 +1,5 @@
 import '../../../__mocks__/matchMediaMock'
+
 import { Label, TextInput } from '@hospitalrun/components'
 import { shallow } from 'enzyme'
 import React from 'react'

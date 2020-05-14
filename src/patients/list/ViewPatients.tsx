@@ -3,7 +3,7 @@ import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import useDebounce from '../../hooks/debounce'
