@@ -13,8 +13,9 @@ import Diagnosis from '../../../model/Diagnosis'
 import * as patientSlice from '../../../patients/patient-slice'
 import PatientRepository from '../../../clients/db/PatientRepository'
 import Patient from '../../../model/Patient'
+import { RootState } from '../../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Add Diagnosis Modal', () => {
   beforeEach(() => {
@@ -29,7 +30,7 @@ describe('Add Diagnosis Modal', () => {
           id: '1234',
         },
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <AddDiagnosisModal show onCloseButtonClick={jest.fn()} />
@@ -56,7 +57,7 @@ describe('Add Diagnosis Modal', () => {
       patient: {
         diagnosisError: expectedDiagnosisError,
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <AddDiagnosisModal show onCloseButtonClick={jest.fn()} />
@@ -87,7 +88,7 @@ describe('Add Diagnosis Modal', () => {
             id: '1234',
           },
         },
-      })
+      } as any)
       const wrapper = mount(
         <Provider store={store}>
           <AddDiagnosisModal show onCloseButtonClick={onCloseButtonClickSpy} />
@@ -127,7 +128,7 @@ describe('Add Diagnosis Modal', () => {
         patient: {
           patient,
         },
-      })
+      } as any)
       const wrapper = mount(
         <Provider store={store}>
           <AddDiagnosisModal show onCloseButtonClick={jest.fn()} />

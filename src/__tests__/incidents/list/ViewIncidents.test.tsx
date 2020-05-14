@@ -14,8 +14,9 @@ import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
 import Incident from '../../../model/Incident'
 import IncidentRepository from '../../../clients/db/IncidentRepository'
+import { RootState } from '../../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Incidents', () => {
   let history: any
@@ -50,7 +51,7 @@ describe('View Incidents', () => {
       incidents: {
         incidents: expectedIncidents,
       },
-    })
+    } as any)
 
     let wrapper: any
     await act(async () => {

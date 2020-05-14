@@ -18,8 +18,9 @@ import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelForm
 import format from 'date-fns/format'
 import * as titleUtil from '../../page-header/useTitle'
 import ViewLab from '../../labs/ViewLab'
+import { RootState } from '../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Labs', () => {
   let history: any
@@ -61,7 +62,7 @@ describe('View Labs', () => {
         error,
         status: Object.keys(error).length > 0 ? 'error' : 'completed',
       },
-    })
+    } as any)
 
     let wrapper: any
     await act(async () => {

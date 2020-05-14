@@ -14,8 +14,9 @@ import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
 import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
 import ReportIncident from '../../../incidents/report/ReportIncident'
 import IncidentRepository from '../../../clients/db/IncidentRepository'
+import { RootState } from '../../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Report Incident', () => {
   let history: any
@@ -41,7 +42,7 @@ describe('Report Incident', () => {
       incident: {
         error,
       },
-    })
+    } as any)
 
     let wrapper: any
     await act(async () => {
