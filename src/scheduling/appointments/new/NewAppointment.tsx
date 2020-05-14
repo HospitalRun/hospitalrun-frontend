@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import useTitle from 'page-header/useTitle'
 import { useTranslation } from 'react-i18next'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
-import { useHistory } from 'react-router'
-import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import Appointment from 'model/Appointment'
 import addMinutes from 'date-fns/addMinutes'
-import { isBefore } from 'date-fns'
 import { Button, Toast } from '@hospitalrun/components'
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
 import { createAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
+import { RootState } from '../../../store'
 
 const breadcrumbs = [
   { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
@@ -25,6 +25,7 @@ const NewAppointment = () => {
   useAddBreadcrumbs(breadcrumbs, true)
   const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
   const endDateTime = addMinutes(startDateTime, 60)
+  const { error } = useSelector((state: RootState) => state.appointment)
 
   const [appointment, setAppointment] = useState({
     patientId: '',
@@ -34,32 +35,18 @@ const NewAppointment = () => {
     reason: '',
     type: '',
   })
-  const [errorMessage, setErrorMessage] = useState('')
 
   const onCancelClick = () => {
     history.push('/appointments')
   }
 
-  const onNewAppointmentSaveSuccess = (newAppointment: Appointment) => {
+  const onSaveSuccess = (newAppointment: Appointment) => {
     history.push(`/appointments/${newAppointment.id}`)
     Toast('success', t('states.success'), `${t('scheduling.appointment.successfullyCreated')}`)
   }
 
   const onSave = () => {
-    let newErrorMessage = ''
-    if (!appointment.patientId) {
-      newErrorMessage += t('scheduling.appointment.errors.patientRequired')
-    }
-    if (isBefore(new Date(appointment.endDateTime), new Date(appointment.startDateTime))) {
-      newErrorMessage += ` ${t('scheduling.appointment.errors.startDateMustBeBeforeEndDate')}`
-    }
-
-    if (newErrorMessage) {
-      setErrorMessage(newErrorMessage.trim())
-      return
-    }
-
-    dispatch(createAppointment(appointment as Appointment, onNewAppointmentSaveSuccess))
+    dispatch(createAppointment(appointment as Appointment, onSaveSuccess))
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {
@@ -74,7 +61,7 @@ const NewAppointment = () => {
       <form>
         <AppointmentDetailForm
           appointment={appointment as Appointment}
-          errorMessage={errorMessage}
+          error={error}
           onFieldChange={onFieldChange}
         />
         <div className="row float-right">

@@ -3,7 +3,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import Sidebar from 'components/Sidebar'
-import { Router } from 'react-router'
+import { Router } from 'react-router-dom'
 import { ListItem } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
@@ -324,6 +324,95 @@ describe('Sidebar', () => {
       })
 
       expect(history.location.pathname).toEqual('/labs')
+    })
+  })
+
+  describe('incident links', () => {
+    it('should render the main incidents link', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(5).text().trim()).toEqual('incidents.label')
+    })
+
+    it('should render the new incident report link', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(6).text().trim()).toEqual('incidents.reports.new')
+    })
+
+    it('should render the incidents list link', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(7).text().trim()).toEqual('incidents.reports.label')
+    })
+
+    it('main incidents link should be active when the current path is /incidents', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(5).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /incidents when the main incident link is clicked', () => {
+      const wrapper = setup('/')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(5).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/incidents')
+    })
+
+    it('new incident report link should be active when the current path is /incidents/new', () => {
+      const wrapper = setup('/incidents/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(6).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /incidents/new when the new labs link is clicked', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(6).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/incidents/new')
+    })
+
+    it('incidents list link should be active when the current path is /incidents', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(7).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /labs when the labs list link is clicked', () => {
+      const wrapper = setup('/incidents/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(7).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/incidents')
     })
   })
 })
