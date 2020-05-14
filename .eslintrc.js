@@ -59,7 +59,7 @@ module.exports = {
     'eol-last': ['error', 'always'],
     'no-debugger': 'error',
     'no-nested-ternary': 'off',
-    'import/no-unresolved': 'error',
+    'import/no-unresolved': 'off',
     'import/extensions': ['error', 'never'],
     'import/order': ["error", {
       "groups": [
