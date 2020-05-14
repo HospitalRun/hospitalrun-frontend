@@ -6,7 +6,7 @@ import { startOfDay, subYears } from 'date-fns'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { Router } from 'react-router'
+import { Router } from 'react-router-dom'
 
 import Patient from '../../model/Patient'
 import GeneralInformation from '../../patients/GeneralInformation'
