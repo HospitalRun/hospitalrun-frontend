@@ -1,21 +1,18 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-
-import { TextInput, Spinner } from '@hospitalrun/components'
-import format from 'date-fns/format'
-import { mount } from 'enzyme'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
+import { mount } from 'enzyme'
+import { TextInput, Spinner } from '@hospitalrun/components'
 import { MemoryRouter } from 'react-router-dom'
-import configureStore from 'redux-mock-store'
+import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+import configureStore from 'redux-mock-store'
 import { mocked } from 'ts-jest/utils'
-
-import PatientRepository from 'clients/db/PatientRepository'
+import { act } from 'react-dom/test-utils'
 import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
-import ViewPatients from 'patients/list/ViewPatients'
-import * as patientSlice from 'patients/patients-slice'
+import format from 'date-fns/format'
+import ViewPatients from '../../../patients/list/ViewPatients'
+import PatientRepository from '../../../clients/db/PatientRepository'
+import * as patientSlice from '../../../patients/patients-slice'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)

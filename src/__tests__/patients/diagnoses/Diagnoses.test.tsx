@@ -1,21 +1,18 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-
-import * as components from '@hospitalrun/components'
+import React from 'react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
-import React from 'react'
-import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import PatientRepository from 'clients/db/PatientRepository'
-import Diagnosis from 'model/Diagnosis'
 import Patient from 'model/Patient'
+import Diagnosis from 'model/Diagnosis'
 import Permissions from 'model/Permissions'
+import { Router } from 'react-router'
+import { Provider } from 'react-redux'
 import Diagnoses from 'patients/diagnoses/Diagnoses'
+import * as components from '@hospitalrun/components'
+import { act } from 'react-dom/test-utils'
+import PatientRepository from 'clients/db/PatientRepository'
 
 const expectedPatient = {
   id: '123',

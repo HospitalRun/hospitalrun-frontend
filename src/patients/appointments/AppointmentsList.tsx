@@ -1,12 +1,11 @@
-import { TextInput, Button, List, ListItem, Container, Row, Column } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-
-import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
-import { fetchPatientAppointments } from 'scheduling/appointments/appointments-slice'
-import { RootState } from 'store'
+import { useTranslation } from 'react-i18next'
+import { TextInput, Button, List, ListItem, Container, Row, Column } from '@hospitalrun/components'
+import { RootState } from '../../store'
+import { fetchPatientAppointments } from '../../scheduling/appointments/appointments-slice'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 interface Props {
   patientId: string

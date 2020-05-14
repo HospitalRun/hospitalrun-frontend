@@ -1,7 +1,7 @@
-import actions from 'locales/in/translations/actions'
-import dashboard from 'locales/in/translations/dashboard'
-import patient from 'locales/in/translations/patient'
-import patients from 'locales/in/translations/patients'
+import actions from './actions'
+import dashboard from './dashboard'
+import patient from './patient'
+import patients from './patients'
 
 export default {
   ...actions,

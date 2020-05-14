@@ -1,5 +1,5 @@
-import Permissions from 'model/Permissions'
-import user, { fetchPermissions } from 'user/user-slice'
+import user, { fetchPermissions } from '../../user/user-slice'
+import Permissions from '../../model/Permissions'
 
 describe('user slice', () => {
   it('should handle the FETCH_PERMISSIONS action', () => {

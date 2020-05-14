@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-import { AppThunk } from 'store'
+import { AppThunk } from '../store'
 
 interface ComponentState {
   sidebarCollapsed: boolean

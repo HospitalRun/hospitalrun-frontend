@@ -1,13 +1,12 @@
-import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
+import { Modal, Alert } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-
-import DatePickerWithLabelFormGroup from 'components/input/DatePickerWithLabelFormGroup'
-import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 import Diagnosis from 'model/Diagnosis'
-import { addDiagnosis } from 'patients/patient-slice'
-import { RootState } from 'store'
+import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
+import DatePickerWithLabelFormGroup from 'components/input/DatePickerWithLabelFormGroup'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { addDiagnosis } from '../patient-slice'
 
 interface Props {
   show: boolean

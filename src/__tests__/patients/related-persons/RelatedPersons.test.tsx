@@ -1,23 +1,20 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-
-import * as components from '@hospitalrun/components'
-import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
 import React from 'react'
-import { Provider } from 'react-redux'
 import { Router } from 'react-router'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
+import { createMemoryHistory } from 'history'
+import { mount } from 'enzyme'
+import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
+import * as components from '@hospitalrun/components'
+import AddRelatedPersonModal from 'patients/related-persons/AddRelatedPersonModal'
+import { act } from '@testing-library/react'
 import PatientRepository from 'clients/db/PatientRepository'
 import Patient from 'model/Patient'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import { Provider } from 'react-redux'
 import Permissions from 'model/Permissions'
 import RelatedPerson from 'model/RelatedPerson'
-import * as patientSlice from 'patients/patient-slice'
-import AddRelatedPersonModal from 'patients/related-persons/AddRelatedPersonModal'
-import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
+import * as patientSlice from '../../../patients/patient-slice'
 
 const mockStore = configureMockStore([thunk])
 

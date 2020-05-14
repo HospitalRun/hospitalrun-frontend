@@ -1,11 +1,8 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-
-import { Label, Select } from '@hospitalrun/components'
-import { shallow } from 'enzyme'
 import React from 'react'
-
-import SelectWithLabelFormGroup from 'components/input/SelectWithLableFormGroup'
+import { shallow } from 'enzyme'
+import { Label, Select } from '@hospitalrun/components'
+import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
 
 describe('select with label form group', () => {
   describe('layout', () => {

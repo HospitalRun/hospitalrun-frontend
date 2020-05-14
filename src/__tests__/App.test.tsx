@@ -1,11 +1,8 @@
-// eslint-disable-next-line no-restricted-imports
 import '../__mocks__/matchMediaMock'
-
-import { mount } from 'enzyme'
 import React from 'react'
-
-import App from 'App'
-import HospitalRun from 'HospitalRun'
+import { mount } from 'enzyme'
+import HospitalRun from '../HospitalRun'
+import App from '../App'
 
 it('renders without crashing', () => {
   const wrapper = mount(<App />)

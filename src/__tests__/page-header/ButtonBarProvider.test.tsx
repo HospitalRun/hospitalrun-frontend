@@ -1,15 +1,12 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../__mocks__/matchMediaMock'
-
-import { Button } from '@hospitalrun/components'
-import { renderHook } from '@testing-library/react-hooks'
 import React, { useEffect } from 'react'
-
+import { renderHook } from '@testing-library/react-hooks'
 import {
   ButtonBarProvider,
   useButtons,
   useButtonToolbarSetter,
 } from 'page-header/ButtonBarProvider'
+import { Button } from '@hospitalrun/components'
 
 describe('Button Bar Provider', () => {
   it('should update and fetch data from the button bar provider', () => {

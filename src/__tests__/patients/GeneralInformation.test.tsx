@@ -1,16 +1,13 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../__mocks__/matchMediaMock'
-
-import { Alert } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
-import { startOfDay, subYears } from 'date-fns'
-import { mount, ReactWrapper } from 'enzyme'
-import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router'
-
-import Patient from 'model/Patient'
+import { mount, ReactWrapper } from 'enzyme'
 import GeneralInformation from 'patients/GeneralInformation'
+import { createMemoryHistory } from 'history'
+import { startOfDay, subYears } from 'date-fns'
+import { Alert } from '@hospitalrun/components'
+import { act } from '@testing-library/react'
+import Patient from '../../model/Patient'
 
 describe('Error handling', () => {
   it('should display errors', () => {

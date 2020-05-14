@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-
-import { addBreadcrumbs, removeBreadcrumbs } from 'breadcrumbs/breadcrumbs-slice'
 import Breadcrumb from 'model/Breadcrumb'
+import { addBreadcrumbs, removeBreadcrumbs } from './breadcrumbs-slice'
 
 export default function useAddBreadcrumbs(breadcrumbs: Breadcrumb[], withDashboard = false): void {
   const dispatch = useDispatch()

@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import Appointment from 'model/Appointment'
+import { AppThunk } from 'store'
+import AppointmentRepository from 'clients/db/AppointmentRepository'
+import Patient from 'model/Patient'
+import PatientRepository from 'clients/db/PatientRepository'
 import { isBefore } from 'date-fns'
 import _ from 'lodash'
-
-import AppointmentRepository from 'clients/db/AppointmentRepository'
-import PatientRepository from 'clients/db/PatientRepository'
-import Appointment from 'model/Appointment'
-import Patient from 'model/Patient'
-import { AppThunk } from 'store'
 
 function validateAppointment(appointment: Appointment) {
   const err: Error = {}

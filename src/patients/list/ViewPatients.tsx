@@ -1,16 +1,15 @@
-import { Spinner, Button, Container, Row, TextInput, Column } from '@hospitalrun/components'
-import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-
-import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
-import useDebounce from 'hooks/debounce'
+import { useTranslation } from 'react-i18next'
+import { Spinner, Button, Container, Row, TextInput, Column } from '@hospitalrun/components'
 import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
-import useTitle from 'page-header/useTitle'
-import { searchPatients } from 'patients/patients-slice'
-import { RootState } from 'store'
+import format from 'date-fns/format'
+import { RootState } from '../../store'
+import { searchPatients } from '../patients-slice'
+import useTitle from '../../page-header/useTitle'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+import useDebounce from '../../hooks/debounce'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 

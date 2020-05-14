@@ -1,9 +1,6 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../__mocks__/matchMediaMock'
-
 import { AnyAction } from 'redux'
-
-import breadcrumbs, { addBreadcrumbs, removeBreadcrumbs } from 'breadcrumbs/breadcrumbs-slice'
+import breadcrumbs, { addBreadcrumbs, removeBreadcrumbs } from '../../breadcrumbs/breadcrumbs-slice'
 
 describe('breadcrumbs slice', () => {
   describe('breadcrumbs reducer', () => {

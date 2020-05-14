@@ -1,14 +1,13 @@
-import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
 import React, { useState } from 'react'
+import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-
-import PatientRepository from 'clients/db/PatientRepository'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
-import Patient from 'model/Patient'
 import RelatedPerson from 'model/RelatedPerson'
-import { addRelatedPerson } from 'patients/patient-slice'
-import { RootState } from 'store'
+import PatientRepository from 'clients/db/PatientRepository'
+import Patient from 'model/Patient'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { addRelatedPerson } from '../patient-slice'
 
 interface Props {
   show: boolean

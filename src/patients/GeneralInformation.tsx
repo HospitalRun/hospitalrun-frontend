@@ -1,13 +1,13 @@
-import { Panel, Checkbox, Alert } from '@hospitalrun/components'
-import { startOfDay, subYears, differenceInYears } from 'date-fns'
 import React from 'react'
+import { Panel, Checkbox, Alert } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
+import { startOfDay, subYears, differenceInYears } from 'date-fns'
 
-import DatePickerWithLabelFormGroup from 'components/input/DatePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup from 'components/input/SelectWithLableFormGroup'
-import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
-import Patient from 'model/Patient'
+import Patient from '../model/Patient'
+import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
+import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
+import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
 
 interface Props {
   patient: Patient

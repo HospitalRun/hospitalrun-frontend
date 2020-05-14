@@ -1,8 +1,9 @@
-import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import LabRepository from 'clients/db/LabRepository'
-import PatientRepository from 'clients/db/PatientRepository'
+import createMockStore from 'redux-mock-store'
+import PatientRepository from '../../clients/db/PatientRepository'
+import LabRepository from '../../clients/db/LabRepository'
+import Lab from '../../model/Lab'
+import Patient from '../../model/Patient'
 import labSlice, {
   requestLab,
   fetchLabStart,
@@ -21,10 +22,8 @@ import labSlice, {
   completeLabError,
   requestLabError,
   updateLab,
-} from 'labs/lab-slice'
-import Lab from 'model/Lab'
-import Patient from 'model/Patient'
-import { RootState } from 'store'
+} from '../../labs/lab-slice'
+import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

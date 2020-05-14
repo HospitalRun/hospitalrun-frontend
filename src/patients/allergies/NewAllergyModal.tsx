@@ -1,12 +1,11 @@
-import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
+import { Modal, Alert } from '@hospitalrun/components'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-
-import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
 import Allergy from 'model/Allergy'
-import { addAllergy } from 'patients/patient-slice'
-import { RootState } from 'store'
+import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { addAllergy } from '../patient-slice'
 
 interface NewAllergyModalProps {
   show: boolean

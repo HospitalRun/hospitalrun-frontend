@@ -1,14 +1,11 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../__mocks__/matchMediaMock'
-
-import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router-dom'
-
-import Navbar from 'components/Navbar'
+import { mount } from 'enzyme'
+import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
+import { act } from 'react-dom/test-utils'
+import { createMemoryHistory } from 'history'
+import Navbar from '../../components/Navbar'
 
 describe('Navbar', () => {
   const history = createMemoryHistory()

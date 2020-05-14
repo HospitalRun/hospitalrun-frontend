@@ -1,21 +1,18 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-
+import React from 'react'
+import { mount } from 'enzyme'
+import Allergies from 'patients/allergies/Allergies'
+import Permissions from 'model/Permissions'
+import configureMockStore from 'redux-mock-store'
+import { createMemoryHistory } from 'history'
+import thunk from 'redux-thunk'
+import { Router } from 'react-router'
+import { Provider } from 'react-redux'
+import Patient from 'model/Patient'
 import * as components from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
-import React from 'react'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
 import PatientRepository from 'clients/db/PatientRepository'
 import Allergy from 'model/Allergy'
-import Patient from 'model/Patient'
-import Permissions from 'model/Permissions'
-import Allergies from 'patients/allergies/Allergies'
 
 const mockStore = configureMockStore([thunk])
 const history = createMemoryHistory()

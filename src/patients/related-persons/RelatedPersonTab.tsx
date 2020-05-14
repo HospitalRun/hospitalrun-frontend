@@ -1,16 +1,15 @@
-import { Button, Alert, Spinner } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
-
-import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
-import PatientRepository from 'clients/db/PatientRepository'
-import Patient from 'model/Patient'
-import Permissions from 'model/Permissions'
-import { removeRelatedPerson } from 'patients/patient-slice'
+import { Button, Alert, Spinner } from '@hospitalrun/components'
 import AddRelatedPersonModal from 'patients/related-persons/AddRelatedPersonModal'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router'
+import Patient from 'model/Patient'
+import { removeRelatedPerson } from 'patients/patient-slice'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
+import Permissions from 'model/Permissions'
+import PatientRepository from 'clients/db/PatientRepository'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 
 interface Props {
   patient: Patient

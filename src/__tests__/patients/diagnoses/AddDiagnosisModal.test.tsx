@@ -1,21 +1,18 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-
+import React from 'react'
+import { mount } from 'enzyme'
 import { Modal, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
-import React from 'react'
-import { Provider } from 'react-redux'
+import AddDiagnosisModal from 'patients/diagnoses/AddDiagnosisModal'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import PatientRepository from 'clients/db/PatientRepository'
-import DatePickerWithLabelFormGroup from 'components/input/DatePickerWithLabelFormGroup'
-import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
-import Diagnosis from 'model/Diagnosis'
-import Patient from 'model/Patient'
-import AddDiagnosisModal from 'patients/diagnoses/AddDiagnosisModal'
-import * as patientSlice from 'patients/patient-slice'
+import { Provider } from 'react-redux'
+import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
+import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
+import Diagnosis from '../../../model/Diagnosis'
+import * as patientSlice from '../../../patients/patient-slice'
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Patient from '../../../model/Patient'
 
 const mockStore = createMockStore([thunk])
 

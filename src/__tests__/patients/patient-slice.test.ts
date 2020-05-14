@@ -1,16 +1,9 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../__mocks__/matchMediaMock'
-
-import { addDays } from 'date-fns'
 import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import PatientRepository from 'clients/db/PatientRepository'
-import Allergy from 'model/Allergy'
-import Diagnosis from 'model/Diagnosis'
-import Patient from 'model/Patient'
-import RelatedPerson from 'model/RelatedPerson'
+import { addDays } from 'date-fns'
+import * as uuid from '../../util/uuid'
 import patient, {
   fetchPatientStart,
   fetchPatientSuccess,
@@ -30,9 +23,13 @@ import patient, {
   addAllergyError,
   addDiagnosisError,
   addRelatedPersonError,
-} from 'patients/patient-slice'
-import { RootState } from 'store'
-import * as uuid from 'util/uuid'
+} from '../../patients/patient-slice'
+import Patient from '../../model/Patient'
+import PatientRepository from '../../clients/db/PatientRepository'
+import { RootState } from '../../store'
+import RelatedPerson from '../../model/RelatedPerson'
+import Diagnosis from '../../model/Diagnosis'
+import Allergy from '../../model/Allergy'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

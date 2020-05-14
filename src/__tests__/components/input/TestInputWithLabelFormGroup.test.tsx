@@ -1,11 +1,8 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-
+import React from 'react'
 import { Label, TextInput } from '@hospitalrun/components'
 import { shallow } from 'enzyme'
-import React from 'react'
-
-import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
 
 describe('text input with label form group', () => {
   describe('layout', () => {

@@ -1,10 +1,10 @@
-import { Spinner } from '@hospitalrun/components'
 import React, { Suspense } from 'react'
-import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { Spinner } from '@hospitalrun/components'
+import HospitalRun from './HospitalRun'
 
-import HospitalRun from 'HospitalRun'
-import store from 'store'
+import store from './store'
 
 const App: React.FC = () => (
   <div>

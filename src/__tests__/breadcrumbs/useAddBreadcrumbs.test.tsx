@@ -1,10 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
 import React from 'react'
-import { Provider } from 'react-redux'
+import { renderHook } from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
-
-import * as breadcrumbsSlice from 'breadcrumbs/breadcrumbs-slice'
-import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
+import { Provider } from 'react-redux'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+import * as breadcrumbsSlice from '../../breadcrumbs/breadcrumbs-slice'
 
 const store = configureMockStore()
 

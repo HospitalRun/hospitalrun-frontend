@@ -1,11 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
 import '@hospitalrun/components/scss/main.scss'
-import 'index.css'
-import App from 'App'
-import * as serviceWorker from 'serviceWorker'
-import 'i18n'
+import './index.css'
+import App from './App'
+import * as serviceWorker from './serviceWorker'
+import './i18n'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

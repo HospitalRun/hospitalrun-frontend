@@ -1,4 +1,4 @@
-import Patient from 'model/Patient'
+import Patient from '../../model/Patient'
 
 const getNamePartString = (namePart: string | undefined) => {
   if (!namePart) {

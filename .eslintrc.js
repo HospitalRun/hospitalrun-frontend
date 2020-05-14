@@ -28,17 +28,10 @@ module.exports = {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        moduleDirectory: ["node_modules", "src/"],
       },
-      "typescript": {
-        alwaysTryTypes: true,
-      }
-    },
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
   },
-  plugins: ['react', '@typescript-eslint', 'prettier', 'jest', 'import'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'jest'],
   rules: {
     'prettier/prettier': 'error',
     '@typescript-eslint/member-delimiter-style': 'off',
@@ -54,27 +47,12 @@ module.exports = {
     'arrow-body-style': ['warn', 'as-needed'],
     'no-param-reassign': ['error', { props: false }],
     'import/prefer-default-export': 'off',
-    'import/no-cycle': 'off',
     'no-console': 'off',
     'eol-last': ['error', 'always'],
     'no-debugger': 'error',
     'no-nested-ternary': 'off',
     'import/no-unresolved': 'off',
-    'no-restricted-imports': ['error', { patterns: ['../', './']}],
     'import/extensions': ['error', 'never'],
-    'import/order': ["error", {
-      "groups": [
-        "external",
-        ["sibling","parent","internal"],
-        "builtin",
-        "unknown",
-      ],
-      "newlines-between": "always",
-      "alphabetize": {
-        "order": 'asc',
-        "caseInsensitive": true,
-      },
-    }],
     curly: ['error', 'all'],
   },
 }

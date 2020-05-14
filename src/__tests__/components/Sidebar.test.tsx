@@ -1,17 +1,14 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../__mocks__/matchMediaMock'
-
-import { ListItem } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
+import React from 'react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
-import React from 'react'
-import { Provider } from 'react-redux'
+import Sidebar from 'components/Sidebar'
 import { Router } from 'react-router'
+import { ListItem } from '@hospitalrun/components'
+import { act } from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import Sidebar from 'components/Sidebar'
+import { Provider } from 'react-redux'
 
 const mockStore = configureMockStore([thunk])
 

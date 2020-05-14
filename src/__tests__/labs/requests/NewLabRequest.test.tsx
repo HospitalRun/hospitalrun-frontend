@@ -1,24 +1,21 @@
-// eslint-disable-next-line no-restricted-imports
 import '../../../__mocks__/matchMediaMock'
-
-import { Button, Typeahead, Label, Alert } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
-import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
-import LabRepository from 'clients/db/LabRepository'
-import PatientRepository from 'clients/db/PatientRepository'
+import NewLabRequest from 'labs/requests/NewLabRequest'
 import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
-import NewLabRequest from 'labs/requests/NewLabRequest'
+import { mount, ReactWrapper } from 'enzyme'
+import { Button, Typeahead, Label, Alert } from '@hospitalrun/components'
+import { Router } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import { createMemoryHistory } from 'history'
+import { act } from 'react-dom/test-utils'
+import LabRepository from 'clients/db/LabRepository'
+import PatientRepository from 'clients/db/PatientRepository'
 import Lab from 'model/Lab'
 import Patient from 'model/Patient'
-import * as titleUtil from 'page-header/useTitle'
+import * as titleUtil from '../../../page-header/useTitle'
 
 const mockStore = configureMockStore([thunk])
 
