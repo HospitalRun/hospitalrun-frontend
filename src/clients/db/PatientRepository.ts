@@ -1,10 +1,11 @@
 import escapeStringRegexp from 'escape-string-regexp'
+
+import { patients } from '../../config/pouchdb'
 import Patient from '../../model/Patient'
 import generateCode from '../../util/generateCode'
 import Repository from './Repository'
-import { patients } from '../../config/pouchdb'
 
-export class PatientRepository extends Repository<Patient> {
+class PatientRepository extends Repository<Patient> {
   constructor() {
     super(patients)
   }

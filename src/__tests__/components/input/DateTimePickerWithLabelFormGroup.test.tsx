@@ -1,7 +1,9 @@
 import '../../../__mocks__/matchMediaMock'
-import React, { ChangeEvent } from 'react'
+
 import { DateTimePicker, Label } from '@hospitalrun/components'
 import { shallow } from 'enzyme'
+import React, { ChangeEvent } from 'react'
+
 import DateTimePickerWithLabelFormGroup from '../../../components/input/DateTimePickerWithLabelFormGroup'
 
 describe('date picker with label form group', () => {

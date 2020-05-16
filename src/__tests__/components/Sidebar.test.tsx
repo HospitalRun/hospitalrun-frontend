@@ -1,14 +1,16 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
-import Sidebar from 'components/Sidebar'
-import { Router } from 'react-router-dom'
+
 import { ListItem } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { Provider } from 'react-redux'
+
+import Sidebar from '../../components/Sidebar'
 
 const mockStore = configureMockStore([thunk])
 

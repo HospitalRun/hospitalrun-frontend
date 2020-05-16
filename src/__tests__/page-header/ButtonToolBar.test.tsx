@@ -1,8 +1,10 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
+
 import { Button } from '@hospitalrun/components'
-import { mocked } from 'ts-jest/utils'
 import { mount } from 'enzyme'
+import React from 'react'
+import { mocked } from 'ts-jest/utils'
+
 import * as ButtonBarProvider from '../../page-header/ButtonBarProvider'
 import ButtonToolBar from '../../page-header/ButtonToolBar'
 
