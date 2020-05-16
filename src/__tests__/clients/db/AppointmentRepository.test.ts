@@ -1,6 +1,6 @@
-import AppointmentRepository from 'clients/db/AppointmentRepository'
-import { appointments, patients } from 'config/pouchdb'
-import Appointment from 'model/Appointment'
+import AppointmentRepository from '../../../clients/db/AppointmentRepository'
+import { appointments, patients } from '../../../config/pouchdb'
+import Appointment from '../../../model/Appointment'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 

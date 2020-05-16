@@ -1,16 +1,17 @@
+import { Button, Row, Column } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Row, Column } from '@hospitalrun/components'
-import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import useTitle from '../../page-header/useTitle'
+import { useHistory } from 'react-router-dom'
+
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import DateTimePickerWithLabelFormGroup from '../../components/input/DateTimePickerWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import { reportIncident } from '../incident-slice'
 import Incident from '../../model/Incident'
+import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
+import { reportIncident } from '../incident-slice'
 
 const ReportIncident = () => {
   const dispatch = useDispatch()
