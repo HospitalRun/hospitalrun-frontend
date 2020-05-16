@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+
 import { AppThunk } from '../store'
 
 interface ComponentState {

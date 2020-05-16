@@ -1,16 +1,16 @@
+import { Spinner, Button } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Spinner, Button } from '@hospitalrun/components'
+import { useHistory, useParams } from 'react-router-dom'
 
-import AppointmentDetailForm from '../AppointmentDetailForm'
-import useTitle from '../../../page-header/useTitle'
-import Appointment from '../../../model/Appointment'
-import { updateAppointment, fetchAppointment } from '../appointment-slice'
-import { RootState } from '../../../store'
-import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
+import Appointment from '../../../model/Appointment'
+import useTitle from '../../../page-header/useTitle'
+import { RootState } from '../../../store'
+import { updateAppointment, fetchAppointment } from '../appointment-slice'
+import AppointmentDetailForm from '../AppointmentDetailForm'
+import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 
 const EditAppointment = () => {
   const { t } = useTranslation()

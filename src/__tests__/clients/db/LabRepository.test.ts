@@ -1,8 +1,10 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
+
 import shortid from 'shortid'
-import { labs } from 'config/pouchdb'
-import LabRepository from 'clients/db/LabRepository'
-import SortRequest from 'clients/db/SortRequest'
+
+import LabRepository from '../../../clients/db/LabRepository'
+import SortRequest from '../../../clients/db/SortRequest'
+import { labs } from '../../../config/pouchdb'
 import Lab from '../../../model/Lab'
 
 interface SearchContainer {

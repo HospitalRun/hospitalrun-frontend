@@ -1,8 +1,8 @@
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
-import Appointment from 'model/Appointment'
-import AppointmentRepository from 'clients/db/AppointmentRepository'
 
+import AppointmentRepository from '../../../clients/db/AppointmentRepository'
+import Appointment from '../../../model/Appointment'
 import appointments, {
   fetchAppointmentsStart,
   fetchAppointmentsSuccess,
