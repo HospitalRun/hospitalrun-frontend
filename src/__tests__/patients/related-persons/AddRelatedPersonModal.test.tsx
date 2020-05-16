@@ -1,16 +1,18 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { ReactWrapper, mount } from 'enzyme'
+
 import { Modal, Alert, Typeahead } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
+import { ReactWrapper, mount } from 'enzyme'
+import React from 'react'
 import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore, { MockStore } from 'redux-mock-store'
-import Patient from 'model/Patient'
-import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
-import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
-import * as patientSlice from '../../../patients/patient-slice'
+import thunk from 'redux-thunk'
+
 import PatientRepository from '../../../clients/db/PatientRepository'
+import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
+import Patient from '../../../model/Patient'
+import * as patientSlice from '../../../patients/patient-slice'
+import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
 
 const mockStore = configureMockStore([thunk])
 

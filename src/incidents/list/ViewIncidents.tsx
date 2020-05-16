@@ -1,12 +1,13 @@
+import format from 'date-fns/format'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import format from 'date-fns/format'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
+
+import Incident from '../../model/Incident'
 import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
 import { fetchIncidents } from '../incidents-slice'
-import Incident from '../../model/Incident'
 
 const ViewIncidents = () => {
   const { t } = useTranslation()

@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+
 import '@hospitalrun/components/scss/main.scss'
 import './index.css'
 import App from './App'
