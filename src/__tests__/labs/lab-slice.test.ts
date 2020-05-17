@@ -304,11 +304,19 @@ describe('lab slice', () => {
     })
 
     it('should request a new lab', async () => {
-      const store = mockStore()
+      const store = mockStore({
+        user: {
+          user: {
+            id: 'fake id',
+          },
+        },
+      } as any)
+
       const expectedRequestedLab = {
         ...mockLab,
         requestedOn: new Date(Date.now()).toISOString(),
         status: 'requested',
+        requestedBy: store.getState().user.user.id,
       } as Lab
 
       await store.dispatch(requestLab(mockLab))
@@ -321,7 +329,13 @@ describe('lab slice', () => {
     })
 
     it('should execute the onSuccess callback if provided', async () => {
-      const store = mockStore()
+      const store = mockStore({
+        user: {
+          user: {
+            id: 'fake id',
+          },
+        },
+      } as any)
       const onSuccessSpy = jest.fn()
 
       await store.dispatch(requestLab(mockLab, onSuccessSpy))

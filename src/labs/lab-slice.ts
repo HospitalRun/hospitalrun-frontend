@@ -105,6 +105,7 @@ const validateLabRequest = (newLab: Lab): Error => {
 
 export const requestLab = (newLab: Lab, onSuccess?: (lab: Lab) => void): AppThunk => async (
   dispatch,
+  getState,
 ) => {
   dispatch(requestLabStart())
 
@@ -115,6 +116,7 @@ export const requestLab = (newLab: Lab, onSuccess?: (lab: Lab) => void): AppThun
   } else {
     newLab.status = 'requested'
     newLab.requestedOn = new Date(Date.now().valueOf()).toISOString()
+    newLab.requestedBy = getState().user.user.id
     const requestedLab = await LabRepository.save(newLab)
     dispatch(requestLabSuccess(requestedLab))
 
