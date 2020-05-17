@@ -7,18 +7,19 @@ import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Sidebar from '../../components/Sidebar'
+import { RootState } from '../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Sidebar', () => {
   let history = createMemoryHistory()
   const store = mockStore({
     components: { sidebarCollapsed: false },
-  })
+  } as any)
   const setup = (location: string) => {
     history = createMemoryHistory()
     history.push(location)
