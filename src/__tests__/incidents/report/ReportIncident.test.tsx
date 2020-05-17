@@ -16,8 +16,9 @@ import ReportIncident from '../../../incidents/report/ReportIncident'
 import Permissions from '../../../model/Permissions'
 import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/useTitle'
+import { RootState } from '../../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Report Incident', () => {
   let history: any
@@ -43,7 +44,7 @@ describe('Report Incident', () => {
       incident: {
         error,
       },
-    })
+    } as any)
 
     let wrapper: any
     await act(async () => {

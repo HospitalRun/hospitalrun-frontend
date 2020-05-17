@@ -13,8 +13,9 @@ import TextInputWithLabelFormGroup from '../../../components/input/TextInputWith
 import Patient from '../../../model/Patient'
 import NewAllergyModal from '../../../patients/allergies/NewAllergyModal'
 import * as patientSlice from '../../../patients/patient-slice'
+import { RootState } from '../../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Allergy Modal', () => {
   const mockPatient = {
@@ -34,7 +35,7 @@ describe('New Allergy Modal', () => {
           id: '123',
         },
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <NewAllergyModal show onCloseButtonClick={jest.fn()} />
@@ -63,7 +64,7 @@ describe('New Allergy Modal', () => {
         },
         allergyError: expectedError,
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <NewAllergyModal show onCloseButtonClick={jest.fn()} />
@@ -89,7 +90,7 @@ describe('New Allergy Modal', () => {
             id: '123',
           },
         },
-      })
+      } as any)
       const wrapper = mount(
         <Provider store={store}>
           <NewAllergyModal show onCloseButtonClick={onCloseButtonClickSpy} />
@@ -116,7 +117,7 @@ describe('New Allergy Modal', () => {
         patient: {
           patient,
         },
-      })
+      } as any)
       const wrapper = mount(
         <Provider store={store}>
           <NewAllergyModal show onCloseButtonClick={jest.fn()} />

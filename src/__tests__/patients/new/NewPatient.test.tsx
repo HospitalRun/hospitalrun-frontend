@@ -7,7 +7,7 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
@@ -17,8 +17,9 @@ import * as titleUtil from '../../../page-header/useTitle'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import NewPatient from '../../../patients/new/NewPatient'
 import * as patientSlice from '../../../patients/patient-slice'
+import { RootState } from '../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Patient', () => {
   const patient = {
@@ -35,7 +36,7 @@ describe('New Patient', () => {
     mockedPatientRepository.save.mockResolvedValue(patient)
 
     history = createMemoryHistory()
-    store = mockStore({ patient: { patient: {} as Patient, createError: error } })
+    store = mockStore({ patient: { patient: {} as Patient, createError: error } } as any)
 
     history.push('/patients/new')
     const wrapper = mount(

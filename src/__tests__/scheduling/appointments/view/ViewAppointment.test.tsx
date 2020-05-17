@@ -7,7 +7,7 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
@@ -21,8 +21,9 @@ import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import ViewAppointment from '../../../../scheduling/appointments/view/ViewAppointment'
+import { RootState } from '../../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 const appointment = {
   id: '123',
@@ -64,7 +65,7 @@ describe('View Appointment', () => {
         status,
         patient,
       },
-    })
+    } as any)
 
     const wrapper = mount(
       <Provider store={store}>
