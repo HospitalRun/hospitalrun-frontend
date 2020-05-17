@@ -9,6 +9,11 @@ interface IncidentsState {
   status: 'loading' | 'completed'
 }
 
+export enum filter {
+  reported = 'reported',
+  all = 'all',
+}
+
 const initialState: IncidentsState = {
   incidents: [],
   status: 'loading',
@@ -34,10 +39,16 @@ const incidentSlice = createSlice({
 
 export const { fetchIncidentsStart, fetchIncidentsSuccess } = incidentSlice.actions
 
-export const fetchIncidents = (): AppThunk => async (dispatch) => {
+export const searchIncidents = (status: filter): AppThunk => async (dispatch) => {
   dispatch(fetchIncidentsStart())
-
-  const incidents = await IncidentRepository.findAll()
+  let incidents
+  if (status === filter.all) {
+    incidents = await IncidentRepository.findAll()
+  } else {
+    incidents = await IncidentRepository.search({
+      status,
+    })
+  }
 
   dispatch(fetchIncidentsSuccess(incidents))
 }

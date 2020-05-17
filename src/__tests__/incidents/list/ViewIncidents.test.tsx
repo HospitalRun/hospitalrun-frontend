@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 
 import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
 import IncidentRepository from '../../../clients/db/IncidentRepository'
+import { filter } from '../../../incidents/incidents-slice'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
 import Incident from '../../../model/Incident'
 import Permissions from '../../../model/Permissions'
@@ -41,6 +42,7 @@ describe('View Incidents', () => {
     jest.spyOn(titleUtil, 'default')
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(IncidentRepository, 'findAll').mockResolvedValue(expectedIncidents)
+    jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
 
     history = createMemoryHistory()
     history.push(`/incidents`)
@@ -71,7 +73,23 @@ describe('View Incidents', () => {
     wrapper.update()
     return wrapper
   }
-
+  it('should filter incidents by status=reported on first load ', async () => {
+    const wrapper = await setup([Permissions.ViewIncidents])
+    const filterSelect = wrapper.find('select')
+    expect(filterSelect.props().value).toBe(filter.reported)
+    expect(IncidentRepository.search).toHaveBeenCalled()
+    expect(IncidentRepository.search).toHaveBeenCalledWith({ status: filter.reported })
+  })
+  it('should call IncidentRepository after changing filter', async () => {
+    const wrapper = await setup([Permissions.ViewIncidents])
+    const filterSelect = wrapper.find('select')
+    expect(IncidentRepository.findAll).not.toHaveBeenCalled()
+    filterSelect.simulate('change', { target: { value: filter.all } })
+    expect(IncidentRepository.findAll).toHaveBeenCalled()
+    filterSelect.simulate('change', { target: { value: filter.reported } })
+    expect(IncidentRepository.search).toHaveBeenCalledTimes(2)
+    expect(IncidentRepository.search).toHaveBeenLastCalledWith({ status: filter.reported })
+  })
   describe('layout', () => {
     it('should set the title', async () => {
       await setup([Permissions.ViewIncidents])

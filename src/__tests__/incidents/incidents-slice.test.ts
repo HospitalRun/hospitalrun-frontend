@@ -4,9 +4,10 @@ import thunk from 'redux-thunk'
 
 import IncidentRepository from '../../clients/db/IncidentRepository'
 import incidents, {
-  fetchIncidents,
   fetchIncidentsStart,
   fetchIncidentsSuccess,
+  searchIncidents,
+  filter,
 } from '../../incidents/incidents-slice'
 import Incident from '../../model/Incident'
 import { RootState } from '../../store'
@@ -39,10 +40,22 @@ describe('Incidents Slice', () => {
         jest.spyOn(IncidentRepository, 'findAll').mockResolvedValue(expectedIncidents)
         const store = mockStore()
 
-        await store.dispatch(fetchIncidents())
+        await store.dispatch(searchIncidents(filter.all))
 
         expect(store.getActions()[0]).toEqual(fetchIncidentsStart())
         expect(IncidentRepository.findAll).toHaveBeenCalledTimes(1)
+        expect(store.getActions()[1]).toEqual(fetchIncidentsSuccess(expectedIncidents))
+      })
+
+      it('should fetch incidents filtering by status', async () => {
+        const expectedIncidents = [{ id: '123' }] as Incident[]
+        jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
+        const store = mockStore()
+
+        await store.dispatch(searchIncidents(filter.reported))
+
+        expect(store.getActions()[0]).toEqual(fetchIncidentsStart())
+        expect(IncidentRepository.search).toHaveBeenCalledTimes(1)
         expect(store.getActions()[1]).toEqual(fetchIncidentsSuccess(expectedIncidents))
       })
     })
