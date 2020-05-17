@@ -5,7 +5,7 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import LabRepository from '../../clients/db/LabRepository'
@@ -16,8 +16,9 @@ import ViewLab from '../../labs/ViewLab'
 import Lab from '../../model/Lab'
 import Patient from '../../model/Patient'
 import Permissions from '../../model/Permissions'
+import { RootState } from '../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Labs', () => {
   jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
@@ -41,7 +42,7 @@ describe('Labs', () => {
             patient: { id: 'patientId', fullName: 'some name' },
             error: {},
           },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -60,7 +61,7 @@ describe('Labs', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -90,7 +91,7 @@ describe('Labs', () => {
             patient: { id: 'patientId', fullName: 'some name' },
             error: {},
           },
-        })
+        } as any)
 
         let wrapper: any
 
@@ -113,7 +114,7 @@ describe('Labs', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         const wrapper = await mount(
           <Provider store={store}>
