@@ -7,7 +7,7 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import PatientRepository from '../../../clients/db/PatientRepository'
@@ -15,6 +15,7 @@ import Diagnosis from '../../../model/Diagnosis'
 import Patient from '../../../model/Patient'
 import Permissions from '../../../model/Permissions'
 import Diagnoses from '../../../patients/diagnoses/Diagnoses'
+import { RootState } from '../../../store'
 
 const expectedPatient = {
   id: '123',
@@ -23,7 +24,7 @@ const expectedPatient = {
   ],
 } as Patient
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 const history = createMemoryHistory()
 
 let user: any
@@ -31,7 +32,7 @@ let store: any
 
 const setup = (patient = expectedPatient, permissions = [Permissions.AddDiagnosis]) => {
   user = { permissions }
-  store = mockStore({ patient, user })
+  store = mockStore({ patient, user } as any)
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>

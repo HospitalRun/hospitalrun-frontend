@@ -20,8 +20,9 @@ import Patient from '../../model/Patient'
 import Permissions from '../../model/Permissions'
 import * as ButtonBarProvider from '../../page-header/ButtonBarProvider'
 import * as titleUtil from '../../page-header/useTitle'
+import { RootState } from '../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Labs', () => {
   let history: any
@@ -63,7 +64,7 @@ describe('View Labs', () => {
         error,
         status: Object.keys(error).length > 0 ? 'error' : 'completed',
       },
-    })
+    } as any)
 
     let wrapper: any
     await act(async () => {
