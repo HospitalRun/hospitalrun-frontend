@@ -27,7 +27,10 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } })
+      const store = mockStore({
+        title: '',
+        lab: { status: 'loading', error: {} },
+      })
       titleSpy = jest.spyOn(titleUtil, 'default')
       history.push('/labs/new')
 
@@ -197,7 +200,11 @@ describe('New Lab Request', () => {
         .mockResolvedValue([{ id: expectedLab.patientId, fullName: 'some full name' }] as Patient[])
 
       history.push('/labs/new')
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } })
+      const store = mockStore({
+        title: '',
+        lab: { status: 'loading', error: {} },
+        user: { user: { id: 'fake id' } },
+      })
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
