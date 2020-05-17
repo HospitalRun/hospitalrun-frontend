@@ -6,7 +6,7 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
@@ -17,6 +17,7 @@ import Patient from '../../../model/Patient'
 import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/useTitle'
 import ViewAppointments from '../../../scheduling/appointments/ViewAppointments'
+import { RootState } from '../../../store'
 
 describe('ViewAppointments', () => {
   const expectedAppointments = [
@@ -39,9 +40,9 @@ describe('ViewAppointments', () => {
       id: '123',
       fullName: 'patient full name',
     } as Patient)
-    const mockStore = configureMockStore([thunk])
+    const mockStore = createMockStore<RootState, any>([thunk])
     return mount(
-      <Provider store={mockStore({ appointments: { appointments: expectedAppointments } })}>
+      <Provider store={mockStore({ appointments: { appointments: expectedAppointments } } as any)}>
         <MemoryRouter initialEntries={['/appointments']}>
           <ViewAppointments />
         </MemoryRouter>
