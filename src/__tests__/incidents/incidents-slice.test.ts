@@ -1,14 +1,15 @@
+import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { AnyAction } from 'redux'
-import { RootState } from '../../store'
+
+import IncidentRepository from '../../clients/db/IncidentRepository'
 import incidents, {
   fetchIncidents,
   fetchIncidentsStart,
   fetchIncidentsSuccess,
 } from '../../incidents/incidents-slice'
-import IncidentRepository from '../../clients/db/IncidentRepository'
 import Incident from '../../model/Incident'
+import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

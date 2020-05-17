@@ -8,11 +8,11 @@ import translationEnUs from './locales/enUs/translations'
 import translationES from './locales/es/translations'
 import translationFR from './locales/fr/translations'
 import translationIN from './locales/in/translations'
+import translationIT from './locales/it/translations'
 import translationJA from './locales/ja/translations'
 import translationPtBR from './locales/ptBr/translations'
 import translationRU from './locales/ru/translations'
 import translationZR from './locales/zr/translations'
-import translationIT from './locales/it/translations'
 
 const resources = {
   it: {

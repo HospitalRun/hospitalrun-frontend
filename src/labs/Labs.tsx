@@ -1,13 +1,14 @@
 import React from 'react'
-import PrivateRoute from 'components/PrivateRoute'
-import { Switch } from 'react-router-dom'
-import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
 import { useSelector } from 'react-redux'
-import Permissions from 'model/Permissions'
-import LabRequests from './ViewLabs'
+import { Switch } from 'react-router-dom'
+
+import useAddBreadcrumbs from '../breadcrumbs/useAddBreadcrumbs'
+import PrivateRoute from '../components/PrivateRoute'
+import Permissions from '../model/Permissions'
+import { RootState } from '../store'
 import NewLabRequest from './requests/NewLabRequest'
 import ViewLab from './ViewLab'
-import { RootState } from '../store'
+import LabRequests from './ViewLabs'
 
 const Labs = () => {
   const { permissions } = useSelector((state: RootState) => state.user)

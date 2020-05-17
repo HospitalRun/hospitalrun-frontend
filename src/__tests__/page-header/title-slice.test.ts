@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux'
+
 import title, { updateTitle, changeTitle } from '../../page-header/title-slice'
 
 describe('title slice', () => {

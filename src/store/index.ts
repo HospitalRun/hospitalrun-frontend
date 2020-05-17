@@ -1,17 +1,18 @@
 import { configureStore, combineReducers, Action } from '@reduxjs/toolkit'
 import ReduxThunk, { ThunkAction } from 'redux-thunk'
+
+import breadcrumbs from '../breadcrumbs/breadcrumbs-slice'
+import components from '../components/component-slice'
+import incident from '../incidents/incident-slice'
+import incidents from '../incidents/incidents-slice'
+import lab from '../labs/lab-slice'
+import labs from '../labs/labs-slice'
+import title from '../page-header/title-slice'
 import patient from '../patients/patient-slice'
 import patients from '../patients/patients-slice'
 import appointment from '../scheduling/appointments/appointment-slice'
 import appointments from '../scheduling/appointments/appointments-slice'
-import title from '../page-header/title-slice'
 import user from '../user/user-slice'
-import lab from '../labs/lab-slice'
-import incident from '../incidents/incident-slice'
-import incidents from '../incidents/incidents-slice'
-import labs from '../labs/labs-slice'
-import breadcrumbs from '../breadcrumbs/breadcrumbs-slice'
-import components from '../components/component-slice'
 
 const reducer = combineReducers({
   patient,

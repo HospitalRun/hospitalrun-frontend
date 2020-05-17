@@ -1,20 +1,22 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import NewLabRequest from 'labs/requests/NewLabRequest'
-import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from 'components/input/TextInputWithLabelFormGroup'
-import { mount, ReactWrapper } from 'enzyme'
+
 import { Button, Typeahead, Label, Alert } from '@hospitalrun/components'
-import { Router } from 'react-router-dom'
+import { mount, ReactWrapper } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { createMemoryHistory } from 'history'
-import { act } from 'react-dom/test-utils'
-import LabRepository from 'clients/db/LabRepository'
-import PatientRepository from 'clients/db/PatientRepository'
-import Lab from 'model/Lab'
-import Patient from 'model/Patient'
+
+import LabRepository from '../../../clients/db/LabRepository'
+import PatientRepository from '../../../clients/db/PatientRepository'
+import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
+import NewLabRequest from '../../../labs/requests/NewLabRequest'
+import Lab from '../../../model/Lab'
+import Patient from '../../../model/Patient'
 import * as titleUtil from '../../../page-header/useTitle'
 import { RootState } from '../../../store'
 
@@ -196,7 +198,11 @@ describe('New Lab Request', () => {
         .mockResolvedValue([{ id: expectedLab.patientId, fullName: 'some full name' }] as Patient[])
 
       history.push('/labs/new')
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
+      const store = mockStore({
+        title: '',
+        lab: { status: 'loading', error: {} },
+        user: { user: { id: 'fake id' } },
+      } as any)
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
