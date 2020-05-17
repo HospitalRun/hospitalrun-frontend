@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import PatientRepository from '../../../clients/db/PatientRepository'
@@ -17,8 +17,9 @@ import RelatedPerson from '../../../model/RelatedPerson'
 import * as patientSlice from '../../../patients/patient-slice'
 import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
+import { RootState } from '../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Related Persons Tab', () => {
   let wrapper: any
@@ -47,7 +48,7 @@ describe('Related Persons Tab', () => {
       act(() => {
         wrapper = mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={mockStore({ patient, user } as any)}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,
@@ -67,7 +68,7 @@ describe('Related Persons Tab', () => {
       act(() => {
         wrapper = mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={mockStore({ patient, user } as any)}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,
@@ -123,7 +124,7 @@ describe('Related Persons Tab', () => {
       await act(async () => {
         wrapper = await mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={mockStore({ patient, user } as any)}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,
@@ -203,7 +204,7 @@ describe('Related Persons Tab', () => {
       await act(async () => {
         wrapper = await mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={mockStore({ patient, user } as any)}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,

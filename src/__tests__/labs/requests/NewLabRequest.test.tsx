@@ -7,7 +7,7 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import LabRepository from '../../../clients/db/LabRepository'
@@ -18,8 +18,9 @@ import NewLabRequest from '../../../labs/requests/NewLabRequest'
 import Lab from '../../../model/Lab'
 import Patient from '../../../model/Patient'
 import * as titleUtil from '../../../page-header/useTitle'
+import { RootState } from '../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Lab Request', () => {
   describe('title and breadcrumbs', () => {
@@ -27,10 +28,7 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({
-        title: '',
-        lab: { status: 'loading', error: {} },
-      })
+      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
       titleSpy = jest.spyOn(titleUtil, 'default')
       history.push('/labs/new')
 
@@ -53,7 +51,7 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } })
+      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
       history.push('/labs/new')
 
       wrapper = mount(
@@ -122,7 +120,7 @@ describe('New Lab Request', () => {
 
     beforeEach(() => {
       history.push('/labs/new')
-      const store = mockStore({ title: '', lab: { status: 'error', error } })
+      const store = mockStore({ title: '', lab: { status: 'error', error } } as any)
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
@@ -154,7 +152,7 @@ describe('New Lab Request', () => {
 
     beforeEach(() => {
       history.push('/labs/new')
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } })
+      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
@@ -204,7 +202,7 @@ describe('New Lab Request', () => {
         title: '',
         lab: { status: 'loading', error: {} },
         user: { user: { id: 'fake id' } },
-      })
+      } as any)
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
