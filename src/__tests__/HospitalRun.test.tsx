@@ -1,22 +1,25 @@
 import '../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { MemoryRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import { Toaster } from '@hospitalrun/components'
-import { act } from 'react-dom/test-utils'
-import Dashboard from 'dashboard/Dashboard'
-import ViewLabs from 'labs/ViewLabs'
-import LabRepository from 'clients/db/LabRepository'
-import { addBreadcrumbs } from 'breadcrumbs/breadcrumbs-slice'
-import Appointments from 'scheduling/appointments/Appointments'
-import HospitalRun from '../HospitalRun'
-import Permissions from '../model/Permissions'
-import Incidents from '../incidents/Incidents'
 
-const mockStore = configureMockStore([thunk])
+import { Toaster } from '@hospitalrun/components'
+import { mount } from 'enzyme'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { addBreadcrumbs } from '../breadcrumbs/breadcrumbs-slice'
+import LabRepository from '../clients/db/LabRepository'
+import Dashboard from '../dashboard/Dashboard'
+import HospitalRun from '../HospitalRun'
+import Incidents from '../incidents/Incidents'
+import ViewLabs from '../labs/ViewLabs'
+import Permissions from '../model/Permissions'
+import Appointments from '../scheduling/appointments/Appointments'
+import { RootState } from '../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('HospitalRun', () => {
   describe('routing', () => {
@@ -29,7 +32,7 @@ describe('HospitalRun', () => {
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
           incidents: { incidents: [] },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -61,7 +64,7 @@ describe('HospitalRun', () => {
               user: { permissions: [] },
               breadcrumbs: { breadcrumbs: [] },
               components: { sidebarCollapsed: false },
-            })}
+            } as any)}
           >
             <MemoryRouter initialEntries={['/appointments']}>
               <HospitalRun />
@@ -82,7 +85,7 @@ describe('HospitalRun', () => {
           labs: { labs: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         let wrapper: any
         await act(async () => {
@@ -106,7 +109,7 @@ describe('HospitalRun', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -129,7 +132,7 @@ describe('HospitalRun', () => {
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
           incidents: { incidents: [] },
-        })
+        } as any)
 
         let wrapper: any
         await act(async () => {
@@ -153,7 +156,7 @@ describe('HospitalRun', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -178,7 +181,7 @@ describe('HospitalRun', () => {
             user: { permissions: [Permissions.WritePatients] },
             breadcrumbs: { breadcrumbs: [] },
             components: { sidebarCollapsed: false },
-          })}
+          } as any)}
         >
           <MemoryRouter initialEntries={['/']}>
             <HospitalRun />

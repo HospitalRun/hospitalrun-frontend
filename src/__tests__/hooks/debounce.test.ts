@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import useDebounce from 'hooks/debounce'
+
+import useDebounce from '../../hooks/debounce'
 
 describe('useDebounce', () => {
   beforeAll(() => jest.useFakeTimers())

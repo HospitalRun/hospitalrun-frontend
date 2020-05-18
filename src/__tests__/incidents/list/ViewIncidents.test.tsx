@@ -1,21 +1,24 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
+
+import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
-import { act } from '@testing-library/react'
+import React from 'react'
 import { Provider } from 'react-redux'
-import { Route, Router } from 'react-router'
+import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import Permissions from '../../../model/Permissions'
-import * as titleUtil from '../../../page-header/useTitle'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
+
 import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
+import IncidentRepository from '../../../clients/db/IncidentRepository'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
 import Incident from '../../../model/Incident'
-import IncidentRepository from '../../../clients/db/IncidentRepository'
+import Permissions from '../../../model/Permissions'
+import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/useTitle'
+import { RootState } from '../../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Incidents', () => {
   let history: any
@@ -50,7 +53,7 @@ describe('View Incidents', () => {
       incidents: {
         incidents: expectedIncidents,
       },
-    })
+    } as any)
 
     let wrapper: any
     await act(async () => {

@@ -1,15 +1,17 @@
 import '../../__mocks__/matchMediaMock'
+
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
-import { UnpagedRequest } from 'clients/db/PageRequest'
-import Page from 'clients/Page'
-import Patient from 'model/Patient'
+
+import { UnpagedRequest } from '../../clients/db/PageRequest'
+import PatientRepository from '../../clients/db/PatientRepository'
+import Page from '../../clients/Page'
+import Patient from '../../model/Patient'
 import patients, {
   fetchPatientsStart,
   fetchPatientsSuccess,
   searchPatients,
 } from '../../patients/patients-slice'
-import PatientRepository from '../../clients/db/PatientRepository'
 
 describe('patients slice', () => {
   beforeEach(() => {

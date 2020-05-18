@@ -1,22 +1,25 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { Router, Route } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import { mocked } from 'ts-jest/utils'
-import { createMemoryHistory } from 'history'
-import { act } from 'react-dom/test-utils'
-import configureMockStore, { MockStore } from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import * as components from '@hospitalrun/components'
-import NewPatient from '../../../patients/new/NewPatient'
-import GeneralInformation from '../../../patients/GeneralInformation'
-import Patient from '../../../model/Patient'
-import * as patientSlice from '../../../patients/patient-slice'
-import * as titleUtil from '../../../page-header/useTitle'
-import PatientRepository from '../../../clients/db/PatientRepository'
 
-const mockStore = configureMockStore([thunk])
+import * as components from '@hospitalrun/components'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
+import { Router, Route } from 'react-router-dom'
+import createMockStore, { MockStore } from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import { mocked } from 'ts-jest/utils'
+
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Patient from '../../../model/Patient'
+import * as titleUtil from '../../../page-header/useTitle'
+import GeneralInformation from '../../../patients/GeneralInformation'
+import NewPatient from '../../../patients/new/NewPatient'
+import * as patientSlice from '../../../patients/patient-slice'
+import { RootState } from '../../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Patient', () => {
   const patient = {
@@ -33,7 +36,7 @@ describe('New Patient', () => {
     mockedPatientRepository.save.mockResolvedValue(patient)
 
     history = createMemoryHistory()
-    store = mockStore({ patient: { patient: {} as Patient, createError: error } })
+    store = mockStore({ patient: { patient: {} as Patient, createError: error } } as any)
 
     history.push('/patients/new')
     const wrapper = mount(

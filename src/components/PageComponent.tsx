@@ -1,5 +1,5 @@
-import React from 'react'
 import { Button, Select } from '@hospitalrun/components'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 const pageSizes = [

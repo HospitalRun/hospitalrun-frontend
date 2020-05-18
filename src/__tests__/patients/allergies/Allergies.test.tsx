@@ -1,20 +1,23 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import Allergies from 'patients/allergies/Allergies'
-import Permissions from 'model/Permissions'
-import configureMockStore from 'redux-mock-store'
-import { createMemoryHistory } from 'history'
-import thunk from 'redux-thunk'
-import { Router } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import Patient from 'model/Patient'
+
 import * as components from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import PatientRepository from 'clients/db/PatientRepository'
-import Allergy from 'model/Allergy'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-const mockStore = configureMockStore([thunk])
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Allergy from '../../../model/Allergy'
+import Patient from '../../../model/Patient'
+import Permissions from '../../../model/Permissions'
+import Allergies from '../../../patients/allergies/Allergies'
+import { RootState } from '../../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 const history = createMemoryHistory()
 const expectedPatient = {
   id: '123',
@@ -30,7 +33,7 @@ let store: any
 
 const setup = (patient = expectedPatient, permissions = [Permissions.AddAllergy]) => {
   user = { permissions }
-  store = mockStore({ patient, user })
+  store = mockStore({ patient, user } as any)
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>

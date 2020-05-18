@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import SortRequest, { Unsorted } from 'clients/db/SortRequest'
-import PageRequest, { UnpagedRequest } from 'clients/db/PageRequest'
-import Page from 'clients/Page'
-import Patient from '../model/Patient'
+
+import PageRequest, { UnpagedRequest } from '../clients/db/PageRequest'
 import PatientRepository from '../clients/db/PatientRepository'
+import SortRequest, { Unsorted } from '../clients/db/SortRequest'
+import Page from '../clients/Page'
+import Patient from '../model/Patient'
 import { AppThunk } from '../store'
 
 interface PatientsState {

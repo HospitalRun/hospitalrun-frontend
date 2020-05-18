@@ -1,18 +1,21 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import NewAllergyModal from 'patients/allergies/NewAllergyModal'
-import { mount } from 'enzyme'
+
 import { Modal, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
+import { mount } from 'enzyme'
+import React from 'react'
+import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { Provider } from 'react-redux'
-import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
-import * as patientSlice from '../../../patients/patient-slice'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Patient from '../../../model/Patient'
 
-const mockStore = createMockStore([thunk])
+import PatientRepository from '../../../clients/db/PatientRepository'
+import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
+import Patient from '../../../model/Patient'
+import NewAllergyModal from '../../../patients/allergies/NewAllergyModal'
+import * as patientSlice from '../../../patients/patient-slice'
+import { RootState } from '../../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Allergy Modal', () => {
   const mockPatient = {
@@ -32,7 +35,7 @@ describe('New Allergy Modal', () => {
           id: '123',
         },
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <NewAllergyModal show onCloseButtonClick={jest.fn()} />
@@ -61,7 +64,7 @@ describe('New Allergy Modal', () => {
         },
         allergyError: expectedError,
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <NewAllergyModal show onCloseButtonClick={jest.fn()} />
@@ -87,7 +90,7 @@ describe('New Allergy Modal', () => {
             id: '123',
           },
         },
-      })
+      } as any)
       const wrapper = mount(
         <Provider store={store}>
           <NewAllergyModal show onCloseButtonClick={onCloseButtonClickSpy} />
@@ -114,7 +117,7 @@ describe('New Allergy Modal', () => {
         patient: {
           patient,
         },
-      })
+      } as any)
       const wrapper = mount(
         <Provider store={store}>
           <NewAllergyModal show onCloseButtonClick={jest.fn()} />

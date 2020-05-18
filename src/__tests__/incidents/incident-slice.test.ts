@@ -1,8 +1,10 @@
+import { addDays } from 'date-fns'
 import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import shortid from 'shortid'
-import { addDays } from 'date-fns'
+
+import IncidentRepository from '../../clients/db/IncidentRepository'
 import incident, {
   reportIncidentStart,
   reportIncidentSuccess,
@@ -13,10 +15,9 @@ import incident, {
   fetchIncident,
 } from '../../incidents/incident-slice'
 import Incident from '../../model/Incident'
-import { RootState } from '../../store'
-import IncidentRepository from '../../clients/db/IncidentRepository'
 import Permissions from '../../model/Permissions'
 import User from '../../model/User'
+import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

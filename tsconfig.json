@@ -29,7 +29,7 @@
     "resolveJsonModule": true,
     "importHelpers": true,
     "jsx": "react",
-    "baseUrl": "./src",
+    // "baseUrl": "./src",
     "allowJs": true,
     "skipLibCheck": true,
     "noEmit": true,

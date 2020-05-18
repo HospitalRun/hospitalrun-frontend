@@ -1,10 +1,11 @@
-import { patients } from 'config/pouchdb'
-import PatientRepository from 'clients/db/PatientRepository'
-import Patient from 'model/Patient'
-import shortid from 'shortid'
 import { getTime, isAfter } from 'date-fns'
-import SortRequest from 'clients/db/SortRequest'
-import PageRequest, { UnpagedRequest } from 'clients/db/PageRequest'
+import shortid from 'shortid'
+
+import PageRequest, { UnpagedRequest } from '../../../clients/db/PageRequest'
+import PatientRepository from '../../../clients/db/PatientRepository'
+import SortRequest from '../../../clients/db/SortRequest'
+import { patients } from '../../../config/pouchdb'
+import Patient from '../../../model/Patient'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 

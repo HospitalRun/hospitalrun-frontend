@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk } from 'store'
-import Incident from '../model/Incident'
+
 import IncidentRepository from '../clients/db/IncidentRepository'
+import Incident from '../model/Incident'
+import { AppThunk } from '../store'
 
 interface IncidentsState {
   incidents: Incident[]
