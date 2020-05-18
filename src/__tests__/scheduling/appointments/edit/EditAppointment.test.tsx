@@ -8,7 +8,7 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
@@ -20,8 +20,9 @@ import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import EditAppointment from '../../../../scheduling/appointments/edit/EditAppointment'
+import { RootState } from '../../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Edit Appointment', () => {
   const appointment = {
@@ -68,7 +69,7 @@ describe('Edit Appointment', () => {
     mockedPatientRepository.find.mockResolvedValue(patient)
 
     history = createMemoryHistory()
-    store = mockStore({ appointment: { appointment, patient } })
+    store = mockStore({ appointment: { appointment, patient } } as any)
 
     history.push('/appointments/edit/123')
     const wrapper = mount(

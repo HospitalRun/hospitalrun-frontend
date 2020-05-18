@@ -13,8 +13,9 @@ import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWith
 import Patient from '../../../model/Patient'
 import NewNoteModal from '../../../patients/notes/NewNoteModal'
 import * as patientSlice from '../../../patients/patient-slice'
+import { RootState } from '../../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Note Modal', () => {
   beforeEach(() => {
@@ -31,7 +32,7 @@ describe('New Note Modal', () => {
       patient: {
         patient: expectedPatient,
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <NewNoteModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
@@ -56,7 +57,7 @@ describe('New Note Modal', () => {
       patient: {
         patient: expectedPatient,
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <NewNoteModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
@@ -83,7 +84,7 @@ describe('New Note Modal', () => {
         patient: expectedPatient,
         noteError: expectedError,
       },
-    })
+    } as any)
     const wrapper = mount(
       <Provider store={store}>
         <NewNoteModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
@@ -109,7 +110,7 @@ describe('New Note Modal', () => {
         patient: {
           patient: expectedPatient,
         },
-      })
+      } as any)
       const wrapper = mount(
         <Provider store={store}>
           <NewNoteModal show onCloseButtonClick={onCloseButtonClickSpy} toggle={jest.fn()} />
@@ -138,7 +139,7 @@ describe('New Note Modal', () => {
         patient: {
           patient: expectedPatient,
         },
-      })
+      } as any)
 
       jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient as Patient)
       jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedPatient as Patient)

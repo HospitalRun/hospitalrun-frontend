@@ -8,7 +8,7 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
@@ -21,8 +21,9 @@ import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import NewAppointment from '../../../../scheduling/appointments/new/NewAppointment'
+import { RootState } from '../../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 const mockedComponents = mocked(components, true)
 
 describe('New Appointment', () => {
@@ -43,7 +44,7 @@ describe('New Appointment', () => {
         appointment: {} as Appointment,
         patient: {} as Patient,
       },
-    })
+    } as any)
 
     history.push('/appointments/new')
     const wrapper = mount(
