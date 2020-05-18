@@ -1,26 +1,28 @@
 import { incidents } from '../../config/pouchdb'
-import { filter } from '../../incidents/incidents-slice'
+import IncidentFilter from '../../incidents/IncidentFilter'
 import Incident from '../../model/Incident'
 import Repository from './Repository'
 
-interface SearchContainer {
-  status: filter
+interface SearchOptions {
+  status: IncidentFilter
 }
 class IncidentRepository extends Repository<Incident> {
   constructor() {
     super(incidents)
   }
 
-  async search(container: SearchContainer): Promise<Incident[]> {
-    const selector = {
-      $and: [...(container.status !== 'all' ? [{ status: container.status }] : [undefined])].filter(
-        (x) => x !== undefined,
-      ),
-    }
+  async search(options: SearchOptions): Promise<Incident[]> {
+    return super.search(IncidentRepository.getSearchCriteria(options))
+  }
 
-    return super.search({
+  private static getSearchCriteria(options: SearchOptions): any {
+    const statusFilter = options.status !== IncidentFilter.all ? [{ status: options.status }] : []
+    const selector = {
+      $and: statusFilter,
+    }
+    return {
       selector,
-    })
+    }
   }
 }
 

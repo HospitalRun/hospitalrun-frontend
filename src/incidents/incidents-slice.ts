@@ -3,15 +3,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import IncidentRepository from '../clients/db/IncidentRepository'
 import Incident from '../model/Incident'
 import { AppThunk } from '../store'
+import IncidentFilter from './IncidentFilter'
 
 interface IncidentsState {
   incidents: Incident[]
   status: 'loading' | 'completed'
-}
-
-export enum filter {
-  reported = 'reported',
-  all = 'all',
 }
 
 const initialState: IncidentsState = {
@@ -39,10 +35,10 @@ const incidentSlice = createSlice({
 
 export const { fetchIncidentsStart, fetchIncidentsSuccess } = incidentSlice.actions
 
-export const searchIncidents = (status: filter): AppThunk => async (dispatch) => {
+export const searchIncidents = (status: IncidentFilter): AppThunk => async (dispatch) => {
   dispatch(fetchIncidentsStart())
   let incidents
-  if (status === filter.all) {
+  if (status === IncidentFilter.all) {
     incidents = await IncidentRepository.findAll()
   } else {
     incidents = await IncidentRepository.search({

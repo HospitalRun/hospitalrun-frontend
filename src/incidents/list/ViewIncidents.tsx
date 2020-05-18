@@ -8,14 +8,15 @@ import SelectWithLabelFormGroup from '../../components/input/SelectWithLableForm
 import Incident from '../../model/Incident'
 import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
-import { searchIncidents, filter } from '../incidents-slice'
+import IncidentFilter from '../IncidentFilter'
+import { searchIncidents } from '../incidents-slice'
 
 const ViewIncidents = () => {
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
   useTitle(t('incidents.reports.label'))
-  const [searchFilter, setSearchFilter] = useState<filter>(filter.reported)
+  const [searchFilter, setSearchFilter] = useState(IncidentFilter.reported)
   const { incidents } = useSelector((state: RootState) => state.incidents)
 
   useEffect(() => {
@@ -25,11 +26,15 @@ const ViewIncidents = () => {
   const onTableRowClick = (incident: Incident) => {
     history.push(`incidents/${incident.id}`)
   }
-  const setFilter = (value: string) => (value === 'reported' ? filter.reported : filter.all)
 
   const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchFilter(setFilter(event.target.value))
+    setSearchFilter(event.target.value as IncidentFilter)
   }
+
+  const filterOptions = Object.values(IncidentFilter).map((filter) => ({
+    label: t(`incidents.status.${filter}`),
+    value: `${filter}`,
+  }))
 
   return (
     <>
@@ -40,10 +45,7 @@ const ViewIncidents = () => {
             value={searchFilter}
             label={t('incidents.filterTitle')}
             isEditable
-            options={[
-              { label: t('incidents.status.reported'), value: `${filter.reported}` },
-              { label: t('incidents.status.all'), value: `${filter.all}` },
-            ]}
+            options={filterOptions}
             onChange={onFilterChange}
           />
         </div>
