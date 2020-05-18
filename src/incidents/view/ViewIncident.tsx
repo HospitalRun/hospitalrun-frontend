@@ -1,4 +1,4 @@
-import { Column, Row } from '@hospitalrun/components'
+import { Column, Row, Spinner } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -38,25 +38,25 @@ const ViewIncident = () => {
           <Column>
             <div className="form-group incident-date">
               <h4>{t('incidents.reports.dateOfIncident')}</h4>
-              <h5>{format(new Date(incident?.date || ''), 'yyyy-MM-dd hh:mm a')}</h5>
+              <h5>{format(new Date(incident.date || ''), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
           <Column>
             <div className="form-group incident-status">
               <h4>{t('incidents.reports.status')}</h4>
-              <h5>{incident?.status}</h5>
+              <h5>{incident.status}</h5>
             </div>
           </Column>
           <Column>
             <div className="form-group incident-reported-by">
               <h4>{t('incidents.reports.reportedBy')}</h4>
-              <h5>{incident?.reportedBy}</h5>
+              <h5>{incident.reportedBy}</h5>
             </div>
           </Column>
           <Column>
             <div className="form-group incident-reported-on">
               <h4>{t('incidents.reports.reportedOn')}</h4>
-              <h5>{format(new Date(incident?.reportedOn || ''), 'yyyy-MM-dd hh:mm a')}</h5>
+              <h5>{format(new Date(incident.reportedOn || ''), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
         </Row>
@@ -66,7 +66,7 @@ const ViewIncident = () => {
             <TextInputWithLabelFormGroup
               label={t('incidents.reports.department')}
               name="department"
-              value={incident?.department}
+              value={incident.department}
             />
           </Column>
         </Row>
@@ -75,14 +75,14 @@ const ViewIncident = () => {
             <TextInputWithLabelFormGroup
               name="category"
               label={t('incidents.reports.category')}
-              value={incident?.category}
+              value={incident.category}
             />
           </Column>
           <Column md={6}>
             <TextInputWithLabelFormGroup
               label={t('incidents.reports.categoryItem')}
               name="categoryItem"
-              value={incident?.categoryItem}
+              value={incident.categoryItem}
             />
           </Column>
         </Row>
@@ -91,14 +91,14 @@ const ViewIncident = () => {
             <TextFieldWithLabelFormGroup
               label={t('incidents.reports.description')}
               name="description"
-              value={incident?.description}
+              value={incident.description}
             />
           </Column>
         </Row>
       </>
     )
   }
-  return <h1>Loading...</h1>
+  return <Spinner type="BarLoader" loading />
 }
 
 export default ViewIncident
