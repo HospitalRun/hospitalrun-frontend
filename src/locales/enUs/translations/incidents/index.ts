@@ -1,8 +1,13 @@
 export default {
   incidents: {
+    filterTitle: ' Filter by status',
     label: 'Incidents',
     actions: {
       report: 'Report',
+    },
+    status: {
+      reported: 'reported',
+      all: 'all',
     },
     reports: {
       label: 'Reported Incidents',
