@@ -1,6 +1,6 @@
 import '../../../__mocks__/matchMediaMock'
 
-import { TextInput, Spinner } from '@hospitalrun/components'
+import { TextInput, Spinner, Select } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import { mount } from 'enzyme'
 import React from 'react'
@@ -13,6 +13,7 @@ import { mocked } from 'ts-jest/utils'
 
 import { UnpagedRequest } from '../../../clients/db/PageRequest'
 import PatientRepository from '../../../clients/db/PatientRepository'
+import SortRequest from '../../../clients/db/SortRequest'
 import Page from '../../../clients/Page'
 import { defaultPageSize } from '../../../components/PageComponent'
 import Patient from '../../../model/Patient'
@@ -152,6 +153,47 @@ describe('Patients', () => {
 
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect((actualButtons[0] as any).props.children).toEqual('patients.newPatient')
+    })
+  })
+
+  describe('change page size', () => {
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+    it('should call the change handler on change', () => {
+      const searchPagedSpy = jest.spyOn(patientSlice, 'searchPatients')
+      const wrapper = setup()
+      const sortRequest: SortRequest = {
+        sorts: [{ field: 'index', direction: 'asc' }],
+      }
+
+      expect(searchPagedSpy).toBeCalledWith('', sortRequest, {
+        direction: 'next',
+        nextPageInfo: { index: null },
+        number: 1,
+        previousPageInfo: { index: null },
+        size: defaultPageSize.value,
+      })
+
+      act(() => {
+        ;(wrapper.find(Select).prop('onChange') as any)({
+          target: {
+            value: '50',
+          },
+        } as React.ChangeEvent<HTMLInputElement>)
+      })
+
+      wrapper.update()
+
+      expect(searchPagedSpy).toHaveBeenCalledTimes(2)
+
+      expect(searchPagedSpy).toBeCalledWith('', sortRequest, {
+        direction: 'next',
+        nextPageInfo: { index: null },
+        number: 1,
+        previousPageInfo: { index: null },
+        size: 50,
+      })
     })
   })
 

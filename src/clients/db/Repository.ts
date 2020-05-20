@@ -98,16 +98,16 @@ export default class Repository<T extends AbstractDBModel> {
     }
 
     const nextPageInfo: { [key: string]: string } = {}
+    const previousPageInfo: { [key: string]: string } = {}
+
     if (mappedResult.length > 0) {
       sort.sorts.forEach((s) => {
         nextPageInfo[s.field] = mappedResult[mappedResult.length - 1][s.field]
       })
+      sort.sorts.forEach((s) => {
+        previousPageInfo[s.field] = mappedResult[0][s.field]
+      })
     }
-
-    const previousPageInfo: { [key: string]: string } = {}
-    sort.sorts.forEach((s) => {
-      previousPageInfo[s.field] = mappedResult[0][s.field]
-    })
 
     const hasNext: boolean =
       pageRequest.size !== undefined && mappedResult.length === pageRequest.size + 1
