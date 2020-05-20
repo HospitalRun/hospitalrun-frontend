@@ -25,6 +25,8 @@ const initialState: UserState = {
     Permissions.ViewIncident,
     Permissions.ViewIncidents,
     Permissions.ReportIncident,
+    Permissions.AddCarePlan,
+    Permissions.ReadCarePlan
   ],
   user: {
     id: 'some-hardcoded-id',

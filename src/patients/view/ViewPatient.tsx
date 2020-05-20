@@ -19,6 +19,7 @@ import Note from '../notes/NoteTab'
 import { fetchPatient } from '../patient-slice'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
 import { getPatientFullName } from '../util/patient-name-util'
+import CarePlanTab from "../care-plans/CarePlanTab";
 
 const getPatientCode = (p: Patient): string => {
   if (p) {
@@ -119,6 +120,11 @@ const ViewPatient = () => {
           label={t('patient.labs.label')}
           onClick={() => history.push(`/patients/${patient.id}/labs`)}
         />
+        <Tab
+          active={location.pathname === `/patients/${patient.id}/care-plans`}
+          label={t('patient.carePlan.label')}
+          onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
+        />
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
@@ -141,6 +147,9 @@ const ViewPatient = () => {
         </Route>
         <Route exact path="/patients/:id/labs">
           <Labs patientId={patient.id} />
+        </Route>
+        <Route exact path="/patients/:id/care-plans">
+          <CarePlanTab patientId={patient.id} />
         </Route>
       </Panel>
     </div>

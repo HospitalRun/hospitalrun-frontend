@@ -93,6 +93,18 @@ export default {
       },
       noLabsMessage: 'No labs requests for this person.',
     },
+    carePlan: {
+      new: 'Add Care Plan',
+      label: 'Care Plans',
+      title: 'Title',
+      description: 'Description',
+      status: 'Status',
+      condition: 'Condition',
+      intent: 'Intent',
+      startDate: 'Start Date',
+      endDate: 'End Date',
+      note: 'Note',
+    },
     types: {
       charity: 'Charity',
       private: 'Private',

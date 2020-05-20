@@ -5,6 +5,7 @@ import validator from 'validator'
 
 import PatientRepository from '../clients/db/PatientRepository'
 import Allergy from '../model/Allergy'
+import CarePlan from '../model/CarePlan'
 import Diagnosis from '../model/Diagnosis'
 import Note from '../model/Note'
 import Patient from '../model/Patient'
@@ -23,6 +24,7 @@ interface PatientState {
   diagnosisError?: AddDiagnosisError
   noteError?: AddNoteError
   relatedPersonError?: AddRelatedPersonError
+  carePlanError?: AddCarePlanError
 }
 
 interface Error {
@@ -59,6 +61,17 @@ interface AddNoteError {
   note?: string
 }
 
+interface AddCarePlanError {
+  title?: string
+  description?: string
+  status?: string
+  intent?: string
+  startDate?: string
+  endDate?: string
+  note?: string
+  condition?: string
+}
+
 const initialState: PatientState = {
   status: 'loading',
   isUpdatedSuccessfully: false,
@@ -70,6 +83,7 @@ const initialState: PatientState = {
   diagnosisError: undefined,
   noteError: undefined,
   relatedPersonError: undefined,
+  carePlanError: undefined,
 }
 
 function start(state: PatientState) {
@@ -375,6 +389,23 @@ export const addNote = (
     newNoteError.message = 'patient.notes.error.unableToAdd'
     dispatch(addNoteError(newNoteError))
   }
+}
+
+export const addCarePlan = (
+  patientId: string,
+  carePlan: CarePlan,
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  const patient = await PatientRepository.find(patientId)
+  const carePlans = patient.carePlans || ([] as CarePlan[])
+  carePlans.push({
+    id: uuid(),
+    createdOn: new Date(Date.now().valueOf()).toISOString(),
+    ...carePlan,
+  })
+  patient.carePlans = carePlans
+
+  await dispatch(updatePatient(patient, onSuccess))
 }
 
 export default patientSlice.reducer
