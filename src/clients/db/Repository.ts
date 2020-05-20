@@ -1,28 +1,29 @@
 /* eslint "@typescript-eslint/camelcase": "off" */
 import { v4 as uuidv4 } from 'uuid'
 
+import db from '../../config/pouchdb'
 import AbstractDBModel from '../../model/AbstractDBModel'
 import SortRequest, { Unsorted } from './SortRequest'
 
 function mapDocument(document: any): any {
-  const { _id, _rev, ...values } = document
+  const { _id, _rev } = document
+  console.log(document)
   return {
-    id: _id,
+    id: db.rel.parseDocID(_id).id,
     rev: _rev,
-    ...values,
+    ...document.data,
   }
 }
-
 export default class Repository<T extends AbstractDBModel> {
-  db: PouchDB.Database
+  type: string
 
-  constructor(db: PouchDB.Database) {
-    this.db = db
+  constructor(type: string) {
+    this.type = type
   }
 
   async find(id: string): Promise<T> {
-    const document = await this.db.get(id)
-    return mapDocument(document)
+    const response = await db.rel.find(this.type, id)
+    return response[`${this.type}s`][0]
   }
 
   async findAll(sort = Unsorted): Promise<T[]> {
@@ -40,7 +41,7 @@ export default class Repository<T extends AbstractDBModel> {
     await Promise.all(
       sort.sorts.map(
         async (s): Promise<SortRequest> => {
-          await this.db.createIndex({
+          await db.createIndex({
             index: {
               fields: [s.field],
             },
@@ -51,57 +52,50 @@ export default class Repository<T extends AbstractDBModel> {
       ),
     )
 
-    const result = await this.db.find({
+    const result = await db.find({
       selector,
       sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
     })
 
+    const temp = await db.rel.find('lab')
+    const temp2 = await db.allDocs({ include_docs: true})
+    console.log(temp)
+    console.log(temp2)
     return result.docs.map(mapDocument)
   }
 
   async search(criteria: any): Promise<T[]> {
-    const response = await this.db.find(criteria)
+    const response = await db.find(criteria)
+    console.log(response)
     return response.docs.map(mapDocument)
   }
 
   async save(entity: T): Promise<T> {
     const currentTime = new Date().toISOString()
-
     const { id, rev, ...valuesToSave } = entity
-    const savedEntity = await this.db.put({
-      _id: uuidv4(),
-      ...valuesToSave,
-      createdAt: currentTime,
-      updatedAt: currentTime,
-    })
+
+    let savedEntity
+    if (entity.id) {
+      savedEntity = await db.rel.save(this.type, {
+        ...entity,
+        id,
+        rev,
+      })
+    } else {
+      savedEntity = await db.rel.save(this.type, {
+        id: uuidv4(),
+        ...valuesToSave,
+        createdAt: currentTime,
+        updatedAt: currentTime,
+      })
+    }
+
     return this.find(savedEntity.id)
   }
 
-  async saveOrUpdate(entity: T): Promise<T> {
-    if (!entity.id) {
-      return this.save(entity)
-    }
-
-    const { id, rev, ...dataToSave } = entity
-
-    try {
-      await this.find(entity.id)
-      const entityToUpdate = {
-        _id: id,
-        _rev: rev,
-        ...dataToSave,
-        updatedAt: new Date().toISOString(),
-      }
-
-      await this.db.put(entityToUpdate)
-      return this.find(entity.id)
-    } catch (error) {
-      return this.save(entity)
-    }
-  }
-
   async delete(entity: T): Promise<T> {
-    const e = entity as any
-    return mapDocument(this.db.remove(e.id, e.rev))
+    const toDelete = await this.find(entity.id)
+    await db.rel.del(this.type, toDelete)
+    return this.find(entity.id)
   }
 }

@@ -1,4 +1,3 @@
-import { labs } from '../../config/pouchdb'
 import Lab from '../../model/Lab'
 import generateCode from '../../util/generateCode'
 import Repository from './Repository'
@@ -11,7 +10,7 @@ interface SearchContainer {
 }
 class LabRepository extends Repository<Lab> {
   constructor() {
-    super(labs)
+    super('lab')
   }
 
   async search(container: SearchContainer): Promise<Lab[]> {
@@ -21,14 +20,14 @@ class LabRepository extends Repository<Lab> {
         {
           $or: [
             {
-              type: searchValue,
+              'data.type': searchValue,
             },
             {
-              code: searchValue,
+              'data.code': searchValue,
             },
           ],
         },
-        ...(container.status !== 'all' ? [{ status: container.status }] : [undefined]),
+        ...(container.status !== 'all' ? [{ 'data.status': container.status }] : [undefined]),
       ].filter((x) => x !== undefined),
       sorts: container.defaultSortRequest,
     }
@@ -49,7 +48,7 @@ class LabRepository extends Repository<Lab> {
       selector: {
         $and: [
           {
-            patientId,
+            'data.patientId': patientId,
           },
         ],
       },

@@ -1,13 +1,12 @@
 import escapeStringRegexp from 'escape-string-regexp'
 
-import { patients } from '../../config/pouchdb'
 import Patient from '../../model/Patient'
 import generateCode from '../../util/generateCode'
 import Repository from './Repository'
 
 class PatientRepository extends Repository<Patient> {
   constructor() {
-    super(patients)
+    super('patient')
   }
 
   async search(text: string): Promise<Patient[]> {
@@ -16,12 +15,12 @@ class PatientRepository extends Repository<Patient> {
       selector: {
         $or: [
           {
-            fullName: {
+            'data.fullName': {
               $regex: RegExp(escapedString, 'i'),
             },
           },
           {
-            code: text,
+            'data.code': text,
           },
         ],
       },

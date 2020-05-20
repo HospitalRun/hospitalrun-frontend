@@ -133,7 +133,7 @@ export const cancelLab = (labToCancel: Lab, onSuccess?: (lab: Lab) => void): App
 
   labToCancel.canceledOn = new Date(Date.now().valueOf()).toISOString()
   labToCancel.status = 'canceled'
-  const canceledLab = await LabRepository.saveOrUpdate(labToCancel)
+  const canceledLab = await LabRepository.save(labToCancel)
   dispatch(cancelLabSuccess(canceledLab))
 
   if (onSuccess) {
@@ -163,7 +163,7 @@ export const completeLab = (labToComplete: Lab, onSuccess?: (lab: Lab) => void):
   } else {
     labToComplete.completedOn = new Date(Date.now().valueOf()).toISOString()
     labToComplete.status = 'completed'
-    const completedLab = await LabRepository.saveOrUpdate(labToComplete)
+    const completedLab = await LabRepository.save(labToComplete)
     dispatch(completeLabSuccess(completedLab))
 
     if (onSuccess) {
@@ -176,7 +176,7 @@ export const updateLab = (labToUpdate: Lab, onSuccess?: (lab: Lab) => void): App
   dispatch,
 ) => {
   dispatch(updateLabStart())
-  const updatedLab = await LabRepository.saveOrUpdate(labToUpdate)
+  const updatedLab = await LabRepository.save(labToUpdate)
   dispatch(updateLabSuccess(updatedLab))
 
   if (onSuccess) {

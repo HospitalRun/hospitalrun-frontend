@@ -227,7 +227,7 @@ export const updatePatient = (
   dispatch(updatePatientStart())
   const updateError = validatePatient(patient)
   if (_.isEmpty(updateError)) {
-    const updatedPatient = await PatientRepository.saveOrUpdate(patient)
+    const updatedPatient = await PatientRepository.save(patient)
     dispatch(updatePatientSuccess(updatedPatient))
 
     if (onSuccess) {

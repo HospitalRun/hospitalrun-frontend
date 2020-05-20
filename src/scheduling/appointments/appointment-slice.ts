@@ -133,7 +133,7 @@ export const updateAppointment = (
   const updatedAppointmentError = validateAppointment(appointment)
 
   if (_.isEmpty(updatedAppointmentError)) {
-    const updatedAppointment = await AppointmentRepository.saveOrUpdate(appointment)
+    const updatedAppointment = await AppointmentRepository.save(appointment)
     dispatch(updateAppointmentSuccess(updatedAppointment))
 
     if (onSuccess) {
