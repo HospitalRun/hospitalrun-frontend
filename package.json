@@ -73,7 +73,7 @@
     "@types/shortid": "^0.0.29",
     "@types/uuid": "^8.0.0",
     "@types/validator": "~13.0.0",
-    "@typescript-eslint/eslint-plugin": "~2.33.0",
+    "@typescript-eslint/eslint-plugin": "~2.34.0",
     "@typescript-eslint/parser": "~2.33.0",
     "commitizen": "~4.1.2",
     "commitlint-config-cz": "~0.13.0",
