@@ -3,6 +3,7 @@ import dashboard from './dashboard'
 import labs from './labs'
 import patient from './patient'
 import patients from './patients'
+import settings from './settings'
 
 export default {
   ...actions,
@@ -10,4 +11,5 @@ export default {
   ...labs,
   ...patient,
   ...patients,
+  ...settings,
 }

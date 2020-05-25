@@ -1,21 +1,25 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
+import i18n, { resources } from '../i18n'
 import useTitle from '../page-header/useTitle'
 
 const Settings = () => {
-  useTitle('Settings') // todo: get from translation
+  const { t } = useTranslation()
+  useTitle(t('settings.label'))
 
-  // todo: pull from real file
-  const languageOptions = [
-    { label: 'English', value: 'en' },
-    { label: 'Italian', value: 'it' },
-  ]
-
-  const [language, setLanguage] = useState(languageOptions[0].value)
+  // Language section
+  const languageOptions = Object.keys(resources)
+    .map((abbr) => ({
+      label: resources[abbr].name,
+      value: abbr,
+    }))
+    .sort((a, b) => (a.label > b.label ? 1 : -1))
 
   const onLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(event.target.value)
+    const selected = event.target.value
+    i18n.changeLanguage(selected)
   }
 
   // Temp
@@ -36,8 +40,8 @@ const Settings = () => {
       <div className="w-75" style={{ minWidth: '350px', maxWidth: '500px' }}>
         <SelectWithLabelFormGroup
           name="language"
-          value={language}
-          label="Language"
+          value={i18n.language}
+          label={t('settings.language.label')}
           isEditable
           options={languageOptions}
           onChange={onLanguageChange}

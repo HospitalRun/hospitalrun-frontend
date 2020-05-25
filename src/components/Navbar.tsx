@@ -106,7 +106,7 @@ const Navbar = () => {
           children: [
             {
               type: 'link',
-              label: 'Settings', // todo: add to translation
+              label: t('settings.label'),
               onClick: () => {
                 history.push('/settings')
               },

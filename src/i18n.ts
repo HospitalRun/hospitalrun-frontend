@@ -14,38 +14,49 @@ import translationPtBR from './locales/ptBr/translations'
 import translationRU from './locales/ru/translations'
 import translationZR from './locales/zr/translations'
 
-const resources = {
+const resources: { [language: string]: any } = {
   it: {
+    name: 'Italian',
     translation: translationIT,
   },
   ar: {
+    name: 'Arabic',
     translation: translationAR,
   },
   de: {
+    name: 'German',
     translation: translationDE,
   },
   en: {
+    name: 'English, American',
     translation: translationEnUs,
   },
   es: {
+    name: 'Spanish',
     translation: translationES,
   },
   fr: {
+    name: 'French',
     translation: translationFR,
   },
   in: {
+    name: 'Indonesian',
     translation: translationIN,
   },
   ja: {
+    name: 'Japanese',
     translation: translationJA,
   },
   pt: {
+    name: 'Portuguese',
     translation: translationPtBR,
   },
   ru: {
+    name: 'Russian',
     translation: translationRU,
   },
   zr: {
+    name: 'Chinese',
     translation: translationZR,
   },
 }
@@ -70,3 +81,4 @@ i18n
   })
 
 export default i18n
+export { resources }
