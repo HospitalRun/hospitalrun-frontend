@@ -105,11 +105,11 @@ const Navbar = () => {
           alignRight: true,
           children: [
             {
-              label: 'Settings',
-              onClick: () => {
-                history.push('/') // todo: to 'settings'
-              },
               type: 'link',
+              label: 'Settings', // todo: add to translation
+              onClick: () => {
+                history.push('/settings')
+              },
             },
           ],
           className: 'pl-4',
