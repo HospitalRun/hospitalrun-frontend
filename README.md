@@ -31,8 +31,12 @@ Contributions are always welcome. Before contributing please read our [contribut
 
 1. Fork this repository to your own GitHub account and then clone it to your local device
 2. Navigate to the cloned folder: `cd hospitalrun-frontend`
-3. Install the dependencies: `yarn`
-4. Run `yarn run start` to build and watch for code changes
+3. Install the dependencies: `npm install`
+4. Run `npm run start` to build and watch for code changes
+
+## Translation
+
+Use the stadards in [this readme](https://github.com/HospitalRun/hospitalrun-frontend/tree/master/src/locales/README.md).
 
 ## Online one-click setup for contributing
 
@@ -77,13 +81,13 @@ To fix this issue, add `SKIP_PREFLIGHT_CHECK=true` to the `.env` file.
 
 ## Running Tests and Linter
 
-`yarn test:ci` will run the entire test suite
+`npm run test:ci` will run the entire test suite
 
-`yarn test` will run the test suite in watch mode
+`npm run test` will run the test suite in watch mode
 
-`yarn lint` will run the linter
+`npm run lint` will run the linter
 
-`yarn lint:fix` will run the linter and fix fixable errors
+`npm run lint:fix` will run the linter and fix fixable errors
 
 ## Useful Developer Tools
 
@@ -98,7 +102,7 @@ In order to optimize the workflow and to prevent multiple contributors working o
 
 ## How to commit
 
-This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run `npm run commit` or `yarn commit` from the root directory in order to commit following our standards.
+This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run `npm run commit` from the root directory in order to commit following our standards.
 
 <hr />
 
