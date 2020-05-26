@@ -1,5 +1,3 @@
 export default {
-  settings: {
-    label: '???',
-  },
+  settings: {},
 }
