@@ -7,12 +7,12 @@ import translationDE from './locales/de/translations'
 import translationEnUs from './locales/enUs/translations'
 import translationES from './locales/es/translations'
 import translationFR from './locales/fr/translations'
-import translationIN from './locales/in/translations'
+import translationID from './locales/id/translations'
 import translationIT from './locales/it/translations'
 import translationJA from './locales/ja/translations'
 import translationPtBR from './locales/ptBr/translations'
 import translationRU from './locales/ru/translations'
-import translationZR from './locales/zr/translations'
+import translationZhCN from './locales/zhCN/translations'
 
 const resources = {
   it: {
@@ -33,20 +33,20 @@ const resources = {
   fr: {
     translation: translationFR,
   },
-  in: {
-    translation: translationIN,
+  id: {
+    translation: translationID,
   },
   ja: {
     translation: translationJA,
   },
-  pt: {
+  ptBR: {
     translation: translationPtBR,
   },
   ru: {
     translation: translationRU,
   },
-  zr: {
-    translation: translationZR,
+  zhCN: {
+    translation: translationZhCN,
   },
 }
 
