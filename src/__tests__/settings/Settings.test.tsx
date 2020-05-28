@@ -15,20 +15,29 @@ import { RootState } from '../../store'
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Settings', () => {
-  const store = mockStore({ title: 'test' } as any)
-  const history = createMemoryHistory()
-  const titleSpy: any = jest.spyOn(titleUtil, 'default')
-  history.push('/settings')
+  const setup = () => {
+    jest.spyOn(titleUtil, 'default')
 
-  mount(
-    <Provider store={store}>
-      <Router history={history}>
-        <Settings />
-      </Router>
-    </Provider>,
-  )
+    const store = mockStore({ title: 'test' } as any)
 
-  it('should have Settings as the title', () => {
-    expect(titleSpy).toHaveBeenCalledWith('settings.label')
+    const history = createMemoryHistory()
+    history.push('/settings')
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <Settings />
+        </Router>
+      </Provider>,
+    )
+
+    return wrapper
+  }
+
+  describe('layout', () => {
+    it('should set the title', () => {
+      setup()
+      expect(titleUtil.default).toHaveBeenCalledWith('settings.label')
+    })
   })
 })
