@@ -17,6 +17,7 @@ import Incidents from '../incidents/Incidents'
 import ViewLabs from '../labs/ViewLabs'
 import Permissions from '../model/Permissions'
 import Appointments from '../scheduling/appointments/Appointments'
+import Settings from '../settings/Settings'
 import { RootState } from '../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -168,6 +169,27 @@ describe('HospitalRun', () => {
 
         expect(wrapper.find(Incidents)).toHaveLength(0)
         expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
+    })
+
+    describe('/settings', () => {
+      it('should render the Settings component when /settings is accessed', async () => {
+        const store = mockStore({
+          title: 'test',
+          user: { permissions: [] },
+          breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
+        } as any)
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <MemoryRouter initialEntries={['/settings']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(Settings)).toHaveLength(1)
       })
     })
   })
