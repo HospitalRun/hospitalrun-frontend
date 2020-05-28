@@ -4,6 +4,7 @@ import labs from './labs'
 import patient from './patient'
 import patients from './patients'
 import scheduling from './scheduling'
+import settings from './settings'
 import sex from './sex'
 import states from './states'
 
@@ -16,4 +17,5 @@ export default {
   ...states,
   ...sex,
   ...labs,
+  ...settings,
 }
