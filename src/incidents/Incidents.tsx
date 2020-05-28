@@ -1,13 +1,14 @@
 import React from 'react'
-import { Switch } from 'react-router'
 import { useSelector } from 'react-redux'
+import { Switch } from 'react-router-dom'
+
+import useAddBreadcrumbs from '../breadcrumbs/useAddBreadcrumbs'
 import PrivateRoute from '../components/PrivateRoute'
-import { RootState } from '../store'
 import Permissions from '../model/Permissions'
+import { RootState } from '../store'
 import ViewIncidents from './list/ViewIncidents'
 import ReportIncident from './report/ReportIncident'
 import ViewIncident from './view/ViewIncident'
-import useAddBreadcrumbs from '../breadcrumbs/useAddBreadcrumbs'
 
 const Incidents = () => {
   const { permissions } = useSelector((state: RootState) => state.user)

@@ -1,22 +1,25 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
-import Sidebar from 'components/Sidebar'
-import { Router } from 'react-router-dom'
+
 import { ListItem } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
 import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-const mockStore = configureMockStore([thunk])
+import Sidebar from '../../components/Sidebar'
+import { RootState } from '../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Sidebar', () => {
   let history = createMemoryHistory()
   const store = mockStore({
     components: { sidebarCollapsed: false },
-  })
+  } as any)
   const setup = (location: string) => {
     history = createMemoryHistory()
     history.push(location)

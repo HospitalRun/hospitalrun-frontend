@@ -1,12 +1,13 @@
 import '../../../__mocks__/matchMediaMock'
-import { AnyAction } from 'redux'
-import Appointment from 'model/Appointment'
-import AppointmentRepository from 'clients/db/AppointmentRepository'
-import { mocked } from 'ts-jest/utils'
-import PatientRepository from 'clients/db/PatientRepository'
-import Patient from 'model/Patient'
-import { subDays } from 'date-fns'
 
+import { subDays } from 'date-fns'
+import { AnyAction } from 'redux'
+import { mocked } from 'ts-jest/utils'
+
+import AppointmentRepository from '../../../clients/db/AppointmentRepository'
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Appointment from '../../../model/Appointment'
+import Patient from '../../../model/Patient'
 import appointment, {
   fetchAppointmentStart,
   fetchAppointmentSuccess,

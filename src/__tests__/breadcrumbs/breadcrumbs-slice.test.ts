@@ -1,5 +1,7 @@
 import '../../__mocks__/matchMediaMock'
+
 import { AnyAction } from 'redux'
+
 import breadcrumbs, { addBreadcrumbs, removeBreadcrumbs } from '../../breadcrumbs/breadcrumbs-slice'
 
 describe('breadcrumbs slice', () => {

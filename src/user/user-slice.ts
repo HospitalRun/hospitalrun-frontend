@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import Permissions from '../model/Permissions'
 import User from '../model/User'
 

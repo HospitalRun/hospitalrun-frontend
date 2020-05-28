@@ -1,19 +1,21 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
-import { Router } from 'react-router-dom'
-import { Provider } from 'react-redux'
 import * as components from '@hospitalrun/components'
 import format from 'date-fns/format'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
-import LabsTab from '../../../patients/labs/LabsTab'
-import Patient from '../../../model/Patient'
-import Lab from '../../../model/Lab'
-import Permissions from '../../../model/Permissions'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import LabRepository from '../../../clients/db/LabRepository'
+import Lab from '../../../model/Lab'
+import Patient from '../../../model/Patient'
+import Permissions from '../../../model/Permissions'
+import LabsTab from '../../../patients/labs/LabsTab'
+import { RootState } from '../../../store'
 
 const expectedPatient = {
   id: '123',
@@ -29,7 +31,7 @@ const labs = [
   } as Lab,
 ]
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 const history = createMemoryHistory()
 
 let user: any
@@ -37,7 +39,7 @@ let store: any
 
 const setup = (patient = expectedPatient, permissions = [Permissions.WritePatients]) => {
   user = { permissions }
-  store = mockStore({ patient, user })
+  store = mockStore({ patient, user } as any)
   jest.spyOn(LabRepository, 'findAllByPatientId').mockResolvedValue(labs)
   const wrapper = mount(
     <Router history={history}>

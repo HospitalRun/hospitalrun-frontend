@@ -1,14 +1,16 @@
+import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { AnyAction } from 'redux'
-import { RootState } from '../../store'
+
+import IncidentRepository from '../../clients/db/IncidentRepository'
+import IncidentFilter from '../../incidents/IncidentFilter'
 import incidents, {
-  fetchIncidents,
   fetchIncidentsStart,
   fetchIncidentsSuccess,
+  searchIncidents,
 } from '../../incidents/incidents-slice'
-import IncidentRepository from '../../clients/db/IncidentRepository'
 import Incident from '../../model/Incident'
+import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -38,10 +40,22 @@ describe('Incidents Slice', () => {
         jest.spyOn(IncidentRepository, 'findAll').mockResolvedValue(expectedIncidents)
         const store = mockStore()
 
-        await store.dispatch(fetchIncidents())
+        await store.dispatch(searchIncidents(IncidentFilter.all))
 
         expect(store.getActions()[0]).toEqual(fetchIncidentsStart())
         expect(IncidentRepository.findAll).toHaveBeenCalledTimes(1)
+        expect(store.getActions()[1]).toEqual(fetchIncidentsSuccess(expectedIncidents))
+      })
+
+      it('should fetch incidents filtering by status', async () => {
+        const expectedIncidents = [{ id: '123' }] as Incident[]
+        jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
+        const store = mockStore()
+
+        await store.dispatch(searchIncidents(IncidentFilter.reported))
+
+        expect(store.getActions()[0]).toEqual(fetchIncidentsStart())
+        expect(IncidentRepository.search).toHaveBeenCalledTimes(1)
         expect(store.getActions()[1]).toEqual(fetchIncidentsSuccess(expectedIncidents))
       })
     })

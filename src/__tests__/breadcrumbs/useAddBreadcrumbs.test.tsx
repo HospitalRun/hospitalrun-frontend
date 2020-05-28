@@ -1,17 +1,20 @@
-import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import { Provider } from 'react-redux'
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
-import * as breadcrumbsSlice from '../../breadcrumbs/breadcrumbs-slice'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-const store = configureMockStore()
+import * as breadcrumbsSlice from '../../breadcrumbs/breadcrumbs-slice'
+import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+import { RootState } from '../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('useAddBreadcrumbs', () => {
   beforeEach(() => jest.clearAllMocks())
 
   it('should call addBreadcrumbs with the correct data', () => {
-    const wrapper = ({ children }: any) => <Provider store={store({})}>{children}</Provider>
+    const wrapper = ({ children }: any) => <Provider store={mockStore({})}>{children}</Provider>
 
     jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
     const breadcrumbs = [
@@ -27,7 +30,7 @@ describe('useAddBreadcrumbs', () => {
   })
 
   it('should call addBreadcrumbs with an additional dashboard breadcrumb', () => {
-    const wrapper = ({ children }: any) => <Provider store={store({})}>{children}</Provider>
+    const wrapper = ({ children }: any) => <Provider store={mockStore({})}>{children}</Provider>
 
     jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
     const breadcrumbs = [
@@ -46,7 +49,7 @@ describe('useAddBreadcrumbs', () => {
   })
 
   it('should call removeBreadcrumbs with the correct data after unmount', () => {
-    const wrapper = ({ children }: any) => <Provider store={store({})}>{children}</Provider>
+    const wrapper = ({ children }: any) => <Provider store={mockStore({})}>{children}</Provider>
 
     jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
     jest.spyOn(breadcrumbsSlice, 'removeBreadcrumbs')

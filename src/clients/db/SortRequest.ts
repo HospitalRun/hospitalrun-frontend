@@ -1,4 +1,4 @@
-import Sort from 'clients/Sort'
+import Sort from '../Sort'
 
 export default interface SortRequest {
   sorts: Sort[]

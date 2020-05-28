@@ -1,9 +1,8 @@
-import thunk from 'redux-thunk'
 import createMockStore from 'redux-mock-store'
-import PatientRepository from '../../clients/db/PatientRepository'
+import thunk from 'redux-thunk'
+
 import LabRepository from '../../clients/db/LabRepository'
-import Lab from '../../model/Lab'
-import Patient from '../../model/Patient'
+import PatientRepository from '../../clients/db/PatientRepository'
 import labSlice, {
   requestLab,
   fetchLabStart,
@@ -23,6 +22,8 @@ import labSlice, {
   requestLabError,
   updateLab,
 } from '../../labs/lab-slice'
+import Lab from '../../model/Lab'
+import Patient from '../../model/Patient'
 import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -303,11 +304,19 @@ describe('lab slice', () => {
     })
 
     it('should request a new lab', async () => {
-      const store = mockStore()
+      const store = mockStore({
+        user: {
+          user: {
+            id: 'fake id',
+          },
+        },
+      } as any)
+
       const expectedRequestedLab = {
         ...mockLab,
         requestedOn: new Date(Date.now()).toISOString(),
         status: 'requested',
+        requestedBy: store.getState().user.user.id,
       } as Lab
 
       await store.dispatch(requestLab(mockLab))
@@ -320,7 +329,13 @@ describe('lab slice', () => {
     })
 
     it('should execute the onSuccess callback if provided', async () => {
-      const store = mockStore()
+      const store = mockStore({
+        user: {
+          user: {
+            id: 'fake id',
+          },
+        },
+      } as any)
       const onSuccessSpy = jest.fn()
 
       await store.dispatch(requestLab(mockLab, onSuccessSpy))

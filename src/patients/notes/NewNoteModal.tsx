@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
 import { Modal, Alert } from '@hospitalrun/components'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
-import { addNote } from 'patients/patient-slice'
 import { useDispatch, useSelector } from 'react-redux'
+
+import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import Note from '../../model/Note'
 import { RootState } from '../../store'
+import { addNote } from '../patient-slice'
 
 interface Props {
   show: boolean

@@ -1,30 +1,33 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { Provider } from 'react-redux'
-import { mount } from 'enzyme'
-import { mocked } from 'ts-jest/utils'
-import { act } from 'react-dom/test-utils'
-import { Route, Router } from 'react-router-dom'
-import { TabsHeader, Tab } from '@hospitalrun/components'
-import configureMockStore, { MockStore } from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import GeneralInformation from 'patients/GeneralInformation'
-import { createMemoryHistory } from 'history'
-import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
-import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
-import Allergies from 'patients/allergies/Allergies'
-import Diagnoses from 'patients/diagnoses/Diagnoses'
-import NotesTab from 'patients/notes/NoteTab'
-import Patient from '../../../model/Patient'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import * as titleUtil from '../../../page-header/useTitle'
-import ViewPatient from '../../../patients/view/ViewPatient'
-import * as patientSlice from '../../../patients/patient-slice'
-import Permissions from '../../../model/Permissions'
-import LabsTab from '../../../patients/labs/LabsTab'
-import LabRepository from '../../../clients/db/LabRepository'
 
-const mockStore = configureMockStore([thunk])
+import { TabsHeader, Tab } from '@hospitalrun/components'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
+import { Route, Router } from 'react-router-dom'
+import createMockStore, { MockStore } from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import { mocked } from 'ts-jest/utils'
+
+import LabRepository from '../../../clients/db/LabRepository'
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Patient from '../../../model/Patient'
+import Permissions from '../../../model/Permissions'
+import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/useTitle'
+import Allergies from '../../../patients/allergies/Allergies'
+import Diagnoses from '../../../patients/diagnoses/Diagnoses'
+import GeneralInformation from '../../../patients/GeneralInformation'
+import LabsTab from '../../../patients/labs/LabsTab'
+import NotesTab from '../../../patients/notes/NoteTab'
+import * as patientSlice from '../../../patients/patient-slice'
+import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
+import ViewPatient from '../../../patients/view/ViewPatient'
+import { RootState } from '../../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('ViewPatient', () => {
   const patient = {
@@ -56,7 +59,7 @@ describe('ViewPatient', () => {
     store = mockStore({
       patient: { patient },
       user: { permissions },
-    })
+    } as any)
 
     history.push('/patients/123')
     const wrapper = mount(
