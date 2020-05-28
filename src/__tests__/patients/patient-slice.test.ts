@@ -254,7 +254,13 @@ describe('patients slice', () => {
       const expectedPatient = {
         id: expectedPatientId,
         givenName: 'some given name',
-        phoneNumber: 'not a phone number',
+        phoneNumber: [
+          {
+            id: '1234',
+            phoneNumber: 'not a phone number',
+            type: 'Home',
+          },
+        ],
       } as Patient
       const saveOrUpdateSpy = jest
         .spyOn(PatientRepository, 'saveOrUpdate')
@@ -279,7 +285,13 @@ describe('patients slice', () => {
       const expectedPatient = {
         id: expectedPatientId,
         givenName: 'some given name',
-        phoneNumber: 'not a phone number',
+        phoneNumber: [
+          {
+            id: '1234',
+            phoneNumber: 'not a phone number',
+            type: 'Home',
+          },
+        ],
       } as Patient
       const saveOrUpdateSpy = jest
         .spyOn(PatientRepository, 'saveOrUpdate')

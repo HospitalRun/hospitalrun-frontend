@@ -13,9 +13,18 @@ export default {
     approximateAge: 'Approximate Age',
     placeOfBirth: 'Place of Birth',
     sex: 'Sex',
-    phoneNumber: 'Phone Number',
-    email: 'Email',
-    address: 'Address',
+    phoneNumber: {
+      type: 'Phone Number Type',
+      phoneNumber: 'Phone Number',
+    },
+    email: {
+      type: 'Email Type',
+      email: 'Email',
+    },
+    address: {
+      type: 'Address Type',
+      address: 'Address',
+    },
     occupation: 'Occupation',
     type: 'Patient Type',
     preferredLanguage: 'Preferred Language',
@@ -106,8 +115,8 @@ export default {
       patientNumInPrefixFeedback: 'Cannot contain numbers.',
       patientNumInFamilyNameFeedback: 'Cannot contain numbers.',
       patientNumInPreferredLanguageFeedback: 'Cannot contain numbers.',
-      invalidEmail: 'Must be a valid email.',
-      invalidPhoneNumber: 'Must be a valid phone number.',
+      invalidEmail: 'One or more Emails entered is invalid.',
+      invalidPhoneNumber: 'One or more Phone Numbers entered is invalid.',
     },
   },
 }

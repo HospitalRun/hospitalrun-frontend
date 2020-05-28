@@ -101,7 +101,7 @@ describe('New Patient', () => {
 
     wrapper.update()
 
-    const saveButton = wrapper.find(components.Button).at(0)
+    const saveButton = wrapper.find(components.Button).at(3)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -130,7 +130,7 @@ describe('New Patient', () => {
 
     wrapper.update()
 
-    const saveButton = wrapper.find(components.Button).at(0)
+    const saveButton = wrapper.find(components.Button).at(3)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -152,7 +152,7 @@ describe('New Patient', () => {
       wrapper = await setup()
     })
 
-    const cancelButton = wrapper.find(components.Button).at(1)
+    const cancelButton = wrapper.find(components.Button).at(4)
     const onClick = cancelButton.prop('onClick') as any
     expect(cancelButton.text().trim()).toEqual('actions.cancel')
 

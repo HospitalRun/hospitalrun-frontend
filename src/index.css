@@ -103,3 +103,8 @@ code {
 .react-datepicker-wrapper {
   flex-grow: 1;
 }
+
+.addButton{
+  margin-top: 2em;
+  top: 50%
+}

@@ -40,9 +40,27 @@ describe('ViewPatient', () => {
     type: 'charity',
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
-    phoneNumber: 'phoneNumber',
-    email: 'email@email.com',
-    address: 'address',
+    phoneNumber: [
+      {
+        id: '1234',
+        phoneNumber: 'phoneNumber',
+        type: 'Home',
+      },
+    ],
+    email: [
+      {
+        id: '1234',
+        email: 'email@email.com',
+        type: 'Home',
+      },
+    ],
+    address: [
+      {
+        id: '1234',
+        address: 'address',
+        type: 'Home',
+      },
+    ],
     code: 'P00001',
     dateOfBirth: new Date().toISOString(),
   } as Patient

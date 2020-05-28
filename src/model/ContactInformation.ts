@@ -1,5 +1,9 @@
+import Address from './Address'
+import Email from './Email'
+import PhoneNumber from './PhoneNumber'
+
 export default interface ContactInformation {
-  phoneNumber: string
-  email?: string
-  address?: string
+  phoneNumber: PhoneNumber[]
+  email?: Email[]
+  address?: Address[]
 }

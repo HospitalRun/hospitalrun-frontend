@@ -4,10 +4,13 @@ import _ from 'lodash'
 import validator from 'validator'
 
 import PatientRepository from '../clients/db/PatientRepository'
+import Address from '../model/Address'
 import Allergy from '../model/Allergy'
 import Diagnosis from '../model/Diagnosis'
+import Email from '../model/Email'
 import Note from '../model/Note'
 import Patient from '../model/Patient'
+import PhoneNumber from '../model/PhoneNumber'
 import RelatedPerson from '../model/RelatedPerson'
 import { AppThunk } from '../store'
 import { uuid } from '../util/uuid'
@@ -19,6 +22,8 @@ interface PatientState {
   relatedPersons: Patient[]
   createError?: Error
   updateError?: Error
+  phoneNumberError?: AddPhoneNumberError
+  emailError?: AddEmailError
   allergyError?: AddAllergyError
   diagnosisError?: AddDiagnosisError
   noteError?: AddNoteError
@@ -41,6 +46,16 @@ interface AddRelatedPersonError {
   message?: string
   relatedPerson?: string
   relationshipType?: string
+}
+
+interface AddPhoneNumberError {
+  message?: string
+  name?: string
+}
+
+interface AddEmailError {
+  message?: string
+  name?: string
 }
 
 interface AddAllergyError {
@@ -103,6 +118,14 @@ const patientSlice = createSlice({
       state.status = 'error'
       state.updateError = payload
     },
+    addPhoneNumberError(state, { payload }: PayloadAction<AddPhoneNumberError>) {
+      state.status = 'error'
+      state.phoneNumberError = payload
+    },
+    addEmailError(state, { payload }: PayloadAction<AddEmailError>) {
+      state.status = 'error'
+      state.emailError = payload
+    },
     addAllergyError(state, { payload }: PayloadAction<AddAllergyError>) {
       state.status = 'error'
       state.allergyError = payload
@@ -131,6 +154,8 @@ export const {
   updatePatientStart,
   updatePatientSuccess,
   updatePatientError,
+  addPhoneNumberError,
+  addEmailError,
   addAllergyError,
   addDiagnosisError,
   addRelatedPersonError,
@@ -184,15 +209,23 @@ function validatePatient(patient: Patient) {
     }
   }
 
-  if (patient.email) {
-    if (!validator.isEmail(patient.email)) {
-      error.email = 'patient.errors.invalidEmail'
+  if (patient.phoneNumber) {
+    for (let i = 0; i < patient.phoneNumber.length; i += 1) {
+      if (patient.phoneNumber[i].phoneNumber) {
+        if (!validator.isMobilePhone(patient.phoneNumber[i].phoneNumber)) {
+          error.phoneNumber = 'patient.errors.invalidPhoneNumber'
+        }
+      }
     }
   }
 
-  if (patient.phoneNumber) {
-    if (!validator.isMobilePhone(patient.phoneNumber)) {
-      error.phoneNumber = 'patient.errors.invalidPhoneNumber'
+  if (patient.email) {
+    for (let i = 0; i < patient.email.length; i += 1) {
+      if (patient.email[i].email) {
+        if (!validator.isEmail(patient.email[i].email)) {
+          error.email = 'patient.errors.invalidEmail'
+        }
+      }
     }
   }
 
@@ -316,6 +349,80 @@ export const addDiagnosis = (
     newDiagnosisError.message = 'patient.diagnoses.error.unableToAdd'
     dispatch(addDiagnosisError(newDiagnosisError))
   }
+}
+
+function validatePhoneNumber(phoneNumber: PhoneNumber) {
+  const error: AddPhoneNumberError = {}
+
+  if (!phoneNumber.phoneNumber) {
+    error.name = 'patient.phoneNumber.error.phoneNumberRequired'
+  }
+
+  return error
+}
+
+export const addPhoneNumber = (
+  patientId: string,
+  phoneNumber: PhoneNumber,
+
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  const newPhoneNumberError = validatePhoneNumber(phoneNumber)
+  if (_.isEmpty(newPhoneNumberError)) {
+    const patient = await PatientRepository.find(patientId)
+    const phoneNumbers = patient.phoneNumber || []
+    phoneNumbers.push({ id: uuid(), ...phoneNumber })
+    patient.phoneNumber = phoneNumbers
+
+    await dispatch(updatePatient(patient, onSuccess))
+  } else {
+    newPhoneNumberError.message = 'patient.phoneNumbers.error.unableToAdd'
+    dispatch(addPhoneNumberError(newPhoneNumberError))
+  }
+}
+
+function validateEmail(email: Email) {
+  const error: AddEmailError = {}
+
+  if (!email.email) {
+    error.name = 'patient.email.error.emailRequired'
+  }
+
+  return error
+}
+
+export const addEmail = (
+  patientId: string,
+  email: Email,
+
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  const newEmailError = validateEmail(email)
+  if (_.isEmpty(newEmailError)) {
+    const patient = await PatientRepository.find(patientId)
+    const emails = patient.email || []
+    emails.push({ id: uuid(), ...email })
+    patient.email = emails
+
+    await dispatch(updatePatient(patient, onSuccess))
+  } else {
+    newEmailError.message = 'patient.email.error.unableToAdd'
+    dispatch(addEmailError(newEmailError))
+  }
+}
+
+export const addAddress = (
+  patientId: string,
+  address: Address,
+
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  const patient = await PatientRepository.find(patientId)
+  const addresses = patient.address || []
+  addresses.push({ id: uuid(), ...address })
+  patient.address = addresses
+
+  await dispatch(updatePatient(patient, onSuccess))
 }
 
 function validateAllergy(allergy: Allergy) {
