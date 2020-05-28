@@ -12,6 +12,7 @@ import { RootState } from './store'
 import Navbar from './components/Navbar'
 import PrivateRoute from './components/PrivateRoute'
 import Patients from './patients/Patients'
+import Incidents from './incidents/Incidents'
 import Appointments from './scheduling/appointments/Appointments'
 
 const HospitalRun = () => {
@@ -42,6 +43,7 @@ const HospitalRun = () => {
                   <PrivateRoute isAuthenticated path="/appointments" component={Appointments} />
                   <PrivateRoute isAuthenticated path="/patients" component={Patients} />
                   <PrivateRoute isAuthenticated path="/labs" component={Labs} />
+                  <PrivateRoute isAuthenticated path="/incidents" component={Incidents} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />

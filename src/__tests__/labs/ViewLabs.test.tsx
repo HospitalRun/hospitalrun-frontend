@@ -1,7 +1,7 @@
 import '../../__mocks__/matchMediaMock'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router'
+import { Router } from 'react-router-dom'
 import ViewLabs from 'labs/ViewLabs'
 import { mount, ReactWrapper } from 'enzyme'
 import { TextInput, Select } from '@hospitalrun/components'
