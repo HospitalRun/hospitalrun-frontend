@@ -14,6 +14,7 @@ import { ButtonBarProvider } from './page-header/ButtonBarProvider'
 import ButtonToolBar from './page-header/ButtonToolBar'
 import Patients from './patients/Patients'
 import Appointments from './scheduling/appointments/Appointments'
+import Settings from './settings/Settings'
 import { RootState } from './store'
 
 const HospitalRun = () => {
@@ -45,6 +46,7 @@ const HospitalRun = () => {
                   <PrivateRoute isAuthenticated path="/patients" component={Patients} />
                   <PrivateRoute isAuthenticated path="/labs" component={Labs} />
                   <PrivateRoute isAuthenticated path="/incidents" component={Incidents} />
+                  <PrivateRoute isAuthenticated path="/settings" component={Settings} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />
