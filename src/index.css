@@ -106,5 +106,10 @@ code {
 
 .addButton{
   margin-top: 2em;
-  top: 50%
+  top: 50%;
+  right: 0px;
+}
+
+.tableButton{
+  float: right;
 }

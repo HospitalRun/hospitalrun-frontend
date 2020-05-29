@@ -14,14 +14,17 @@ export default {
     placeOfBirth: 'Place of Birth',
     sex: 'Sex',
     phoneNumber: {
+      panel: 'Phone Number',
       type: 'Phone Number Type',
       phoneNumber: 'Phone Number',
     },
     email: {
+      panel: 'Email',
       type: 'Email Type',
       email: 'Email',
     },
     address: {
+      panel: 'Address',
       type: 'Address Type',
       address: 'Address',
     },

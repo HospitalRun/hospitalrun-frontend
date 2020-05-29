@@ -241,335 +241,460 @@ const GeneralInformation = (props: Props) => {
       </Panel>
       <br />
       <Panel title={t('patient.contactInformation')} color="primary" collapsible>
-        <div>
-          {phoneNumbers?.map((p: PhoneNumber, index: number) => (
-            <div key={p.id} className="row">
-              <div className="col-md-4">
-                <SelectWithLabelFormGroup
-                  name="phoneNumberType"
-                  label={t('patient.phoneNumber.type')}
-                  value={p.type}
-                  isEditable={isEditable}
-                  options={[
-                    { label: 'Home', value: 'Home' },
-                    { label: 'Work', value: 'Work' },
-                    { label: 'Temp', value: 'Temp' },
-                    { label: 'Old', value: 'Old' },
-                    { label: 'Mobile', value: 'Mobile' },
-                  ]}
-                  onChange={(event) => {
-                    const type = event.target.value
-                    setPhoneNumbers((currentPhoneNumber) =>
-                      produce(currentPhoneNumber, (v) => {
-                        v[index].type = type
-                      }),
-                    )
-                  }}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextInputWithLabelFormGroup
-                  name="phoneNumber"
-                  isRequired
-                  label={t('patient.phoneNumber.phoneNumber')}
-                  isEditable={isEditable}
-                  placeholder="PhoneNumber"
-                  value={p.phoneNumber}
-                  onChange={(event) => {
-                    const phoneNumber = event.target.value
-                    setPhoneNumbers((currentPhoneNumber) =>
-                      produce(currentPhoneNumber, (v) => {
-                        v[index].phoneNumber = phoneNumber
-                      }),
-                    )
-                  }}
-                  feedback={t(error?.phoneNumber)}
-                  isInvalid={!!error?.phoneNumber}
-                  type="tel"
-                />
-              </div>
-
-              <div className="col-md-2">
-                {!patient.id && (
-                  <Button
-                    outlined
-                    className="addButton"
-                    color="success"
-                    icon="add"
-                    iconLocation="left"
-                    onClick={() => {
-                      if (patient.phoneNumber) {
-                        patient.phoneNumber = patient.phoneNumber.concat(phoneNumbers)
-                      } else {
-                        patient.phoneNumber = phoneNumbers
-                      }
-                      setPhoneNumbers([
-                        {
-                          id: generate(),
-                          phoneNumber: '',
-                          type: '',
-                        },
-                      ])
-                    }}
-                  >
-                    Add
-                  </Button>
-                )}
-                {patient.id && (
-                  <Button
-                    outlined
-                    className="addButton"
-                    color="success"
-                    icon="add"
-                    iconLocation="left"
-                    onClick={() => {
-                      dispatch(addPhoneNumber(patient.id, p as PhoneNumber))
-                    }}
-                  >
-                    Add
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))}
-          {patient.phoneNumber && (
-            <table className="table table-hover">
-              <thead className="thead-light">
-                <tr>
-                  <th>Type</th>
-                  <th>PhoneNumber</th>
-                </tr>
-              </thead>
-              <tbody>
-                {patient.phoneNumber.map((a: PhoneNumber) => (
+        <Panel title={t('patient.phoneNumber.panel')} color="primary" collapsible>
+          <table className="table table-hover">
+            <thead className="thead-light">
+              <tr>
+                <th>Type</th>
+                <th>PhoneNumber</th>
+              </tr>
+            </thead>
+            <tbody>
+              {patient.id &&
+                patient.phoneNumber &&
+                patient.phoneNumber.map((a: PhoneNumber, index: number) => (
                   <tr key={a.id}>
-                    <td>{a.type}</td>
-                    <td>{a.phoneNumber}</td>
+                    <td>
+                      <SelectWithLabelFormGroup
+                        name="phoneNumberType"
+                        label={t('patient.phoneNumber.type')}
+                        value={a.type}
+                        isEditable={isEditable}
+                        options={[
+                          { label: 'Home', value: 'Home' },
+                          { label: 'Work', value: 'Work' },
+                          { label: 'Temp', value: 'Temp' },
+                          { label: 'Old', value: 'Old' },
+                          { label: 'Mobile', value: 'Mobile' },
+                        ]}
+                        onChange={(event) => {
+                          const type = event.target.value
+                          setPhoneNumbers((currentPhoneNumber) =>
+                            produce(currentPhoneNumber, (v) => {
+                              v[index].type = type
+                            }),
+                          )
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <TextInputWithLabelFormGroup
+                        name="phoneNumber"
+                        isRequired
+                        label={t('patient.phoneNumber.phoneNumber')}
+                        isEditable={isEditable}
+                        placeholder="PhoneNumber"
+                        value={a.phoneNumber}
+                        onChange={(event) => {
+                          const phoneNumber = event.target.value
+                          setPhoneNumbers((currentPhoneNumber) =>
+                            produce(currentPhoneNumber, (v) => {
+                              v[index].phoneNumber = phoneNumber
+                            }),
+                          )
+                        }}
+                        feedback={t(error?.phoneNumber)}
+                        isInvalid={!!error?.phoneNumber}
+                        type="tel"
+                      />
+                    </td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-        <div>
-          <br />
+              {phoneNumbers?.map(
+                (p: PhoneNumber, index: number) =>
+                  isEditable && (
+                    <tr key={p.id}>
+                      <td>
+                        <SelectWithLabelFormGroup
+                          name="phoneNumberType"
+                          label={t('patient.phoneNumber.type')}
+                          value={p.type}
+                          isEditable={isEditable}
+                          options={[
+                            { label: 'Home', value: 'Home' },
+                            { label: 'Work', value: 'Work' },
+                            { label: 'Temp', value: 'Temp' },
+                            { label: 'Old', value: 'Old' },
+                            { label: 'Mobile', value: 'Mobile' },
+                          ]}
+                          onChange={(event) => {
+                            const type = event.target.value
+                            setPhoneNumbers((currentPhoneNumber) =>
+                              produce(currentPhoneNumber, (v) => {
+                                v[index].type = type
+                              }),
+                            )
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <TextInputWithLabelFormGroup
+                          name="phoneNumber"
+                          isRequired
+                          label={t('patient.phoneNumber.phoneNumber')}
+                          isEditable={isEditable}
+                          placeholder="PhoneNumber"
+                          value={p.phoneNumber}
+                          onChange={(event) => {
+                            const phoneNumber = event.target.value
+                            setPhoneNumbers((currentPhoneNumber) =>
+                              produce(currentPhoneNumber, (v) => {
+                                v[index].phoneNumber = phoneNumber
+                              }),
+                            )
+                          }}
+                          feedback={t(error?.phoneNumber)}
+                          isInvalid={!!error?.phoneNumber}
+                          type="tel"
+                        />
+                      </td>
+                      <td className="tableButton">
+                        {index === phoneNumbers.length - 1 && (
+                          <Button
+                            outlined
+                            className="addButton"
+                            color="success"
+                            icon="add"
+                            iconLocation="left"
+                            onClick={() => {
+                              if (patient.phoneNumber) {
+                                if (patient.id) {
+                                  dispatch(
+                                    addPhoneNumber(
+                                      patient.id,
+                                      phoneNumbers[phoneNumbers.length - 1] as PhoneNumber,
+                                    ),
+                                  )
+                                } else {
+                                  patient.phoneNumber = patient.phoneNumber.concat(
+                                    phoneNumbers[phoneNumbers.length - 1],
+                                  )
+                                }
+                              } else {
+                                patient.phoneNumber = phoneNumbers
+                              }
+                              setPhoneNumbers([
+                                ...phoneNumbers,
+                                {
+                                  id: generate(),
+                                  phoneNumber: '',
+                                  type: '',
+                                },
+                              ])
+                            }}
+                          >
+                            Add Phone Number
+                          </Button>
+                        )}
+                      </td>
+                    </tr>
+                  ),
+              )}
+            </tbody>
+          </table>
+        </Panel>
 
-          {emails?.map((p: Email, index: number) => (
-            <div key={p.id} className="row">
-              <div className="col-md-4">
-                <SelectWithLabelFormGroup
-                  name="emailType"
-                  label={t('patient.email.type')}
-                  value={p.type}
-                  isEditable={isEditable}
-                  options={[
-                    { label: 'Home', value: 'Home' },
-                    { label: 'Work', value: 'Work' },
-                    { label: 'Temp', value: 'Temp' },
-                    { label: 'Old', value: 'Old' },
-                    { label: 'Mobile', value: 'Mobile' },
-                  ]}
-                  onChange={(event) => {
-                    const type = event.target.value
-                    setEmails((currentEmail) =>
-                      produce(currentEmail, (v) => {
-                        v[index].type = type
-                      }),
-                    )
-                  }}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextInputWithLabelFormGroup
-                  name="email"
-                  label={t('patient.email.email')}
-                  isEditable={isEditable}
-                  placeholder="Email"
-                  value={p.email}
-                  onChange={(event) => {
-                    const email = event.target.value
-                    setEmails((currentEmail) =>
-                      produce(currentEmail, (v) => {
-                        v[index].email = email
-                      }),
-                    )
-                  }}
-                  type="email"
-                  feedback={t(error?.email)}
-                  isInvalid={!!error?.email}
-                />
-              </div>
+        <br />
 
-              <div className="col-md-2">
-                {!patient.id && (
-                  <Button
-                    outlined
-                    className="addButton"
-                    color="success"
-                    icon="add"
-                    iconLocation="left"
-                    onClick={() => {
-                      if (patient.email) {
-                        patient.email = patient.email.concat(emails)
-                      } else {
-                        patient.email = emails
-                      }
-                      setEmails([
-                        {
-                          id: generate(),
-                          email: '',
-                          type: '',
-                        },
-                      ])
-                    }}
-                  >
-                    Add
-                  </Button>
-                )}
-                {patient.id && (
-                  <Button
-                    outlined
-                    className="addButton"
-                    color="success"
-                    icon="add"
-                    iconLocation="left"
-                    onClick={() => {
-                      dispatch(addEmail(patient.id, p as Email))
-                    }}
-                  >
-                    Add
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))}
-          {patient.email && (
-            <table className="table table-hover">
-              <thead className="thead-light">
-                <tr>
-                  <th>Type</th>
-                  <th>Email</th>
-                </tr>
-              </thead>
-              <tbody>
-                {patient.email?.map((a: Email) => (
+        <Panel title={t('patient.email.panel')} color="primary" collapsible>
+          <table className="table table-hover">
+            <thead className="thead-light">
+              <tr>
+                <th>Type</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {patient.id &&
+                patient.email &&
+                patient.email.map((a: Email, index: number) => (
                   <tr key={a.id}>
-                    <td>{a.type}</td>
-                    <td>{a.email}</td>
+                    <td>
+                      <SelectWithLabelFormGroup
+                        name="emailType"
+                        label={t('patient.email.type')}
+                        value={a.type}
+                        isEditable={isEditable}
+                        options={[
+                          { label: 'Home', value: 'Home' },
+                          { label: 'Work', value: 'Work' },
+                          { label: 'Temp', value: 'Temp' },
+                          { label: 'Old', value: 'Old' },
+                          { label: 'Mobile', value: 'Mobile' },
+                        ]}
+                        onChange={(event) => {
+                          const type = event.target.value
+                          setEmails((currentEmail) =>
+                            produce(currentEmail, (v) => {
+                              v[index].type = type
+                            }),
+                          )
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <TextInputWithLabelFormGroup
+                        name="email"
+                        label={t('patient.email.email')}
+                        isEditable={isEditable}
+                        placeholder="Email"
+                        value={a.email}
+                        onChange={(event) => {
+                          const email = event.target.value
+                          setEmails((currentEmail) =>
+                            produce(currentEmail, (v) => {
+                              v[index].email = email
+                            }),
+                          )
+                        }}
+                        type="email"
+                        feedback={t(error?.email)}
+                        isInvalid={!!error?.email}
+                      />
+                    </td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-        <div>
-          <br />
+              {emails?.map(
+                (p: Email, index: number) =>
+                  isEditable && (
+                    <tr key={p.id}>
+                      <td>
+                        <SelectWithLabelFormGroup
+                          name="emailType"
+                          label={t('patient.email.type')}
+                          value={p.type}
+                          isEditable={isEditable}
+                          options={[
+                            { label: 'Home', value: 'Home' },
+                            { label: 'Work', value: 'Work' },
+                            { label: 'Temp', value: 'Temp' },
+                            { label: 'Old', value: 'Old' },
+                            { label: 'Mobile', value: 'Mobile' },
+                          ]}
+                          onChange={(event) => {
+                            const type = event.target.value
+                            setEmails((currentEmail) =>
+                              produce(currentEmail, (v) => {
+                                v[index].type = type
+                              }),
+                            )
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <TextInputWithLabelFormGroup
+                          name="email"
+                          label={t('patient.email.email')}
+                          isEditable={isEditable}
+                          placeholder="Email"
+                          value={p.email}
+                          onChange={(event) => {
+                            const email = event.target.value
+                            setEmails((currentEmail) =>
+                              produce(currentEmail, (v) => {
+                                v[index].email = email
+                              }),
+                            )
+                          }}
+                          type="email"
+                          feedback={t(error?.email)}
+                          isInvalid={!!error?.email}
+                        />
+                      </td>
+                      <td className="tableButton">
+                        {index === emails.length - 1 && (
+                          <Button
+                            outlined
+                            className="addButton"
+                            color="success"
+                            icon="add"
+                            iconLocation="left"
+                            onClick={() => {
+                              if (patient.email) {
+                                if (patient.id) {
+                                  dispatch(addEmail(patient.id, emails[emails.length - 1] as Email))
+                                } else {
+                                  patient.email = patient.email.concat(emails[emails.length - 1])
+                                }
+                              } else if (patient.id) {
+                                dispatch(addEmail(patient.id, emails[emails.length - 1] as Email))
+                              } else {
+                                patient.email = emails
+                              }
+                              setEmails([
+                                ...emails,
+                                {
+                                  id: generate(),
+                                  email: '',
+                                  type: '',
+                                },
+                              ])
+                            }}
+                          >
+                            Add Email
+                          </Button>
+                        )}
+                      </td>
+                    </tr>
+                  ),
+              )}
+            </tbody>
+          </table>
+        </Panel>
 
-          {addresses?.map((p: Address, index: number) => (
-            <div key={p.id} className="row">
-              <div className="col-md-4">
-                <SelectWithLabelFormGroup
-                  name="addressType"
-                  label={t('patient.address.type')}
-                  value={p.type}
-                  isEditable={isEditable}
-                  options={[
-                    { label: 'Home', value: 'Home' },
-                    { label: 'Work', value: 'Work' },
-                    { label: 'Temp', value: 'Temp' },
-                    { label: 'Old', value: 'Old' },
-                    { label: 'Billing', value: 'Billing' },
-                  ]}
-                  onChange={(event) => {
-                    const type = event.target.value
-                    setAddresses((currentAddress) =>
-                      produce(currentAddress, (v) => {
-                        v[index].type = type
-                      }),
-                    )
-                  }}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextFieldWithLabelFormGroup
-                  name="address"
-                  label={t('patient.address.address')}
-                  isEditable={isEditable}
-                  placeholder="Address"
-                  value={p.address}
-                  onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    const address = event.target.value
-                    setAddresses((currentAddress) =>
-                      produce(currentAddress, (v) => {
-                        v[index].address = address
-                      }),
-                    )
-                  }}
-                />
-              </div>
+        <br />
 
-              <div className="col-md-2">
-                {!patient.id && (
-                  <Button
-                    outlined
-                    className="addButton"
-                    color="success"
-                    icon="add"
-                    iconLocation="left"
-                    onClick={() => {
-                      if (patient.address) {
-                        patient.address = patient.address.concat(addresses)
-                      } else {
-                        patient.address = addresses
-                      }
-                      setAddresses([
-                        {
-                          id: generate(),
-                          address: '',
-                          type: '',
-                        },
-                      ])
-                    }}
-                  >
-                    Add
-                  </Button>
-                )}
-                {patient.id && (
-                  <Button
-                    outlined
-                    className="addButton"
-                    color="success"
-                    icon="add"
-                    iconLocation="left"
-                    onClick={() => {
-                      dispatch(addAddress(patient.id, p as Address))
-                    }}
-                  >
-                    Add
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))}
-          {patient.address && (
-            <table className="table table-hover">
-              <thead className="thead-light">
-                <tr>
-                  <th>Type</th>
-                  <th>Address</th>
-                </tr>
-              </thead>
-              <tbody>
-                {patient.address?.map((a: Address) => (
+        <Panel title={t('patient.address.panel')} color="primary" collapsible>
+          <table className="table table-hover">
+            <thead className="thead-light">
+              <tr>
+                <th>Type</th>
+                <th>Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {patient.id &&
+                patient.address &&
+                patient.address.map((a: Address, index: number) => (
                   <tr key={a.id}>
-                    <td>{a.type}</td>
-                    <td>{a.address}</td>
+                    <td>
+                      <SelectWithLabelFormGroup
+                        name="addressType"
+                        label={t('patient.address.type')}
+                        value={a.type}
+                        isEditable={isEditable}
+                        options={[
+                          { label: 'Home', value: 'Home' },
+                          { label: 'Work', value: 'Work' },
+                          { label: 'Temp', value: 'Temp' },
+                          { label: 'Old', value: 'Old' },
+                          { label: 'Billing', value: 'Billing' },
+                        ]}
+                        onChange={(event) => {
+                          const type = event.target.value
+                          setAddresses((currentAddress) =>
+                            produce(currentAddress, (v) => {
+                              v[index].type = type
+                            }),
+                          )
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <TextFieldWithLabelFormGroup
+                        name="address"
+                        label={t('patient.address.address')}
+                        isEditable={isEditable}
+                        placeholder="Address"
+                        value={a.address}
+                        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                          const address = event.target.value
+                          setAddresses((currentAddress) =>
+                            produce(currentAddress, (v) => {
+                              v[index].address = address
+                            }),
+                          )
+                        }}
+                      />
+                    </td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+              {addresses?.map(
+                (p: Address, index: number) =>
+                  isEditable && (
+                    <tr key={p.id}>
+                      <td>
+                        <SelectWithLabelFormGroup
+                          name="addressType"
+                          label={t('patient.address.type')}
+                          value={p.type}
+                          isEditable={isEditable}
+                          options={[
+                            { label: 'Home', value: 'Home' },
+                            { label: 'Work', value: 'Work' },
+                            { label: 'Temp', value: 'Temp' },
+                            { label: 'Old', value: 'Old' },
+                            { label: 'Billing', value: 'Billing' },
+                          ]}
+                          onChange={(event) => {
+                            const type = event.target.value
+                            setAddresses((currentAddress) =>
+                              produce(currentAddress, (v) => {
+                                v[index].type = type
+                              }),
+                            )
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <TextFieldWithLabelFormGroup
+                          name="address"
+                          label={t('patient.address.address')}
+                          isEditable={isEditable}
+                          placeholder="Address"
+                          value={p.address}
+                          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                            const address = event.target.value
+                            setAddresses((currentAddress) =>
+                              produce(currentAddress, (v) => {
+                                v[index].address = address
+                              }),
+                            )
+                          }}
+                        />
+                      </td>
+                      <td className="tableButton">
+                        {index === addresses.length - 1 && (
+                          <Button
+                            outlined
+                            className="addButton"
+                            color="success"
+                            icon="add"
+                            iconLocation="left"
+                            onClick={() => {
+                              if (patient.address) {
+                                if (patient.id) {
+                                  dispatch(
+                                    addAddress(
+                                      patient.id,
+                                      addresses[addresses.length - 1] as Address,
+                                    ),
+                                  )
+                                } else {
+                                  patient.address = patient.address.concat(
+                                    addresses[addresses.length - 1],
+                                  )
+                                }
+                              } else if (patient.id) {
+                                dispatch(
+                                  addAddress(
+                                    patient.id,
+                                    addresses[addresses.length - 1] as Address,
+                                  ),
+                                )
+                              } else {
+                                patient.address = addresses
+                              }
+                              setAddresses([
+                                ...addresses,
+                                {
+                                  id: generate(),
+                                  address: '',
+                                  type: '',
+                                },
+                              ])
+                            }}
+                          >
+                            Add Address
+                          </Button>
+                        )}
+                      </td>
+                    </tr>
+                  ),
+              )}
+            </tbody>
+          </table>
+        </Panel>
       </Panel>
     </div>
   )
