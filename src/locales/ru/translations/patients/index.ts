@@ -3,7 +3,7 @@ export default {
     label: 'Пациенты',
     viewPatients: 'Просмотр пациентов',
     viewPatient: 'Просмотр пациента',
-    editPatient: 'Сменить пациента',
+    editPatient: 'Редактировать пациента',
     newPatient: 'Новый пациент',
   },
 }

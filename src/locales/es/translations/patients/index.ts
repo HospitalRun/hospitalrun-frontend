@@ -3,7 +3,7 @@ export default {
     label: 'Pacientes',
     viewPatients: 'Ver pacientes',
     viewPatient: 'Ver pacientes',
-    editPatient: 'Cambiar paciente',
+    editPatient: 'Editar paciente',
     newPatient: 'Nuevo paciente',
   },
 }
