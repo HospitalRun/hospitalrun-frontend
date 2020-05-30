@@ -3,23 +3,59 @@ import '../../__mocks__/matchMediaMock'
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
+import _ from 'lodash'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import Navbar from '../../components/Navbar'
+import Permissions from '../../model/Permissions'
+import { RootState } from '../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Navbar', () => {
   const history = createMemoryHistory()
-  const setup = () =>
-    mount(
+
+  const setup = (permissions: Permissions[]) => {
+    const store = mockStore({
+      title: '',
+      user: { permissions },
+    } as any)
+
+    const wrapper = mount(
       <Router history={history}>
-        <Navbar />
+        <Provider store={store}>
+          <Navbar />
+        </Provider>
       </Router>,
     )
+    return wrapper
+  }
 
-  const wrapper = setup()
+  const allPermissions = [
+    Permissions.ReadPatients,
+    Permissions.WritePatients,
+    Permissions.ReadAppointments,
+    Permissions.WriteAppointments,
+    Permissions.DeleteAppointment,
+    Permissions.AddAllergy,
+    Permissions.AddDiagnosis,
+    Permissions.RequestLab,
+    Permissions.CancelLab,
+    Permissions.CompleteLab,
+    Permissions.ViewLab,
+    Permissions.ViewLabs,
+    Permissions.ViewIncidents,
+    Permissions.ViewIncident,
+    Permissions.ReportIncident,
+  ]
+  const wrapper = setup(allPermissions)
   const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+  const wrapperNoLabIncidentPermission = setup(_.cloneDeep(allPermissions).slice(0, 6))
 
   it('should render a HospitalRun Navbar', () => {
     expect(hospitalRunNavbar).toHaveLength(1)
@@ -140,6 +176,26 @@ describe('Navbar', () => {
 
     it('should render Search as the search button label', () => {
       expect(children.props.children[1].props.children).toEqual('actions.search')
+    })
+  })
+
+  describe('add new', () => {
+    let addNew = hospitalRunNavbar.find('.add-new')
+    let children = addNew.first().props().children as any
+
+    it('should show a shortcut if user has a permission', () => {
+      expect(children[0].props.children).toEqual('patients.newPatient')
+    })
+
+    // Without Lab or Incident permissions
+    addNew = wrapperNoLabIncidentPermission.find(HospitalRunNavbar).find('.add-new')
+    children = addNew.first().props().children as any
+
+    it('should not show a shortcut if user does not have a permission', () => {
+      children.forEach((option: any) => {
+        expect(option.props.children).not.toEqual('labs.requests.new')
+        expect(option.props.children).not.toEqual('incidents.requests.new')
+      })
     })
   })
 })

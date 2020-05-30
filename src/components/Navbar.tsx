@@ -146,7 +146,7 @@ const Navbar = () => {
           type: 'link-list-icon',
           alignRight: true,
           children: addDropdownList,
-          className: 'pl-4',
+          className: 'pl-4 add-new',
           iconClassName: 'align-bottom',
           label: 'Add',
           name: 'add',
