@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isAfter, parseISO } from 'date-fns'
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import validator from 'validator'
 
 import PatientRepository from '../clients/db/PatientRepository'
@@ -209,24 +209,20 @@ function validatePatient(patient: Patient) {
     }
   }
 
-  if (patient.phoneNumber) {
-    for (let i = 0; i < patient.phoneNumber.length; i += 1) {
-      if (patient.phoneNumber[i].phoneNumber) {
-        if (!validator.isMobilePhone(patient.phoneNumber[i].phoneNumber)) {
-          error.phoneNumber = 'patient.errors.invalidPhoneNumber'
-        }
+  if (patient.phoneNumbers) {
+    patient.phoneNumbers.forEach((phone: PhoneNumber) => {
+      if (!validator.isMobilePhone(phone.phoneNumber)) {
+        error.phoneNumber = 'patient.errors.invalidPhoneNumber'
       }
-    }
+    })
   }
 
-  if (patient.email) {
-    for (let i = 0; i < patient.email.length; i += 1) {
-      if (patient.email[i].email) {
-        if (!validator.isEmail(patient.email[i].email)) {
-          error.email = 'patient.errors.invalidEmail'
-        }
+  if (patient.emails) {
+    patient.emails.forEach((email: Email) => {
+      if (!validator.isEmail(email.email)) {
+        error.email = 'patient.errors.invalidEmail'
       }
-    }
+    })
   }
 
   return error
@@ -240,7 +236,7 @@ export const createPatient = (
 
   const newPatientError = validatePatient(patient)
 
-  if (_.isEmpty(newPatientError)) {
+  if (isEmpty(newPatientError)) {
     const newPatient = await PatientRepository.save(patient)
     dispatch(createPatientSuccess())
 
@@ -259,7 +255,7 @@ export const updatePatient = (
 ): AppThunk => async (dispatch) => {
   dispatch(updatePatientStart())
   const updateError = validatePatient(patient)
-  if (_.isEmpty(updateError)) {
+  if (isEmpty(updateError)) {
     const updatedPatient = await PatientRepository.saveOrUpdate(patient)
     dispatch(updatePatientSuccess(updatedPatient))
 
@@ -293,7 +289,7 @@ export const addRelatedPerson = (
 ): AppThunk => async (dispatch) => {
   const newRelatedPersonError = validateRelatedPerson(relatedPerson)
 
-  if (_.isEmpty(newRelatedPersonError)) {
+  if (isEmpty(newRelatedPersonError)) {
     const patient = await PatientRepository.find(patientId)
     const relatedPersons = patient.relatedPersons || []
     relatedPersons.push({ id: uuid(), ...relatedPerson })
@@ -338,7 +334,7 @@ export const addDiagnosis = (
 ): AppThunk => async (dispatch) => {
   const newDiagnosisError = validateDiagnosis(diagnosis)
 
-  if (_.isEmpty(newDiagnosisError)) {
+  if (isEmpty(newDiagnosisError)) {
     const patient = await PatientRepository.find(patientId)
     const diagnoses = patient.diagnoses || []
     diagnoses.push({ id: uuid(), ...diagnosis })
@@ -356,6 +352,8 @@ function validatePhoneNumber(phoneNumber: PhoneNumber) {
 
   if (!phoneNumber.phoneNumber) {
     error.name = 'patient.phoneNumber.error.phoneNumberRequired'
+  } else if (!validator.isMobilePhone(phoneNumber.phoneNumber)) {
+    error.name = 'patient.phoneNumber.error.invalidPhoneNumber'
   }
 
   return error
@@ -368,11 +366,11 @@ export const addPhoneNumber = (
   onSuccess?: (patient: Patient) => void,
 ): AppThunk => async (dispatch) => {
   const newPhoneNumberError = validatePhoneNumber(phoneNumber)
-  if (_.isEmpty(newPhoneNumberError)) {
+  if (isEmpty(newPhoneNumberError)) {
     const patient = await PatientRepository.find(patientId)
-    const phoneNumbers = patient.phoneNumber || []
+    const phoneNumbers = patient.phoneNumbers || []
     phoneNumbers.push({ id: uuid(), ...phoneNumber })
-    patient.phoneNumber = phoneNumbers
+    patient.phoneNumbers = phoneNumbers
 
     await dispatch(updatePatient(patient, onSuccess))
   } else {
@@ -386,6 +384,8 @@ function validateEmail(email: Email) {
 
   if (!email.email) {
     error.name = 'patient.email.error.emailRequired'
+  } else if (!validator.isEmail(email.email)) {
+    error.name = 'patient.phoneNumber.error.invalidEmail'
   }
 
   return error
@@ -398,11 +398,11 @@ export const addEmail = (
   onSuccess?: (patient: Patient) => void,
 ): AppThunk => async (dispatch) => {
   const newEmailError = validateEmail(email)
-  if (_.isEmpty(newEmailError)) {
+  if (isEmpty(newEmailError)) {
     const patient = await PatientRepository.find(patientId)
-    const emails = patient.email || []
+    const emails = patient.emails || []
     emails.push({ id: uuid(), ...email })
-    patient.email = emails
+    patient.emails = emails
 
     await dispatch(updatePatient(patient, onSuccess))
   } else {
@@ -418,9 +418,9 @@ export const addAddress = (
   onSuccess?: (patient: Patient) => void,
 ): AppThunk => async (dispatch) => {
   const patient = await PatientRepository.find(patientId)
-  const addresses = patient.address || []
+  const addresses = patient.addresses || []
   addresses.push({ id: uuid(), ...address })
-  patient.address = addresses
+  patient.addresses = addresses
 
   await dispatch(updatePatient(patient, onSuccess))
 }
@@ -442,7 +442,7 @@ export const addAllergy = (
 ): AppThunk => async (dispatch) => {
   const newAllergyError = validateAllergy(allergy)
 
-  if (_.isEmpty(newAllergyError)) {
+  if (isEmpty(newAllergyError)) {
     const patient = await PatientRepository.find(patientId)
     const allergies = patient.allergies || []
     allergies.push({ id: uuid(), ...allergy })
@@ -471,7 +471,7 @@ export const addNote = (
 ): AppThunk => async (dispatch) => {
   const newNoteError = validateNote(note)
 
-  if (_.isEmpty(newNoteError)) {
+  if (isEmpty(newNoteError)) {
     const patient = await PatientRepository.find(patientId)
     const notes = patient.notes || []
     notes.push({ id: uuid(), date: new Date().toISOString(), ...note })

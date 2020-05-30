@@ -100,9 +100,9 @@ describe('New Patient', () => {
     })
 
     wrapper.update()
-
     const saveButton = wrapper.find(components.Button).at(3)
     const onClick = saveButton.prop('onClick') as any
+
     expect(saveButton.text().trim()).toEqual('actions.save')
 
     await act(async () => {

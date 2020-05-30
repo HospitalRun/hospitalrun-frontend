@@ -110,6 +110,6 @@ code {
   right: 0px;
 }
 
-.tableButton{
-  float: right;
+.addButtonWrapper{
+  text-align: center;
 }

@@ -33,21 +33,21 @@ describe('Edit Patient', () => {
     type: 'charity',
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
-    phoneNumber: [
+    phoneNumbers: [
       {
         id: '1234',
         phoneNumber: 'phoneNumber',
         type: 'Home',
       },
     ],
-    email: [
+    emails: [
       {
         id: '1234',
         email: 'email@email.com',
         type: 'Home',
       },
     ],
-    address: [
+    addresses: [
       {
         id: '1234',
         address: 'address',
@@ -134,7 +134,7 @@ describe('Edit Patient', () => {
 
     // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
     expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
-    // expect(store.getActions()).toContainEqual(patientSlice.updatePatientSuccess(patient))
+    // expect(store.getActions()[4]).toContainEqual(patientSlice.updatePatientSuccess(patient))
   })
 
   it('should navigate to /patients/:id when cancel is clicked', async () => {

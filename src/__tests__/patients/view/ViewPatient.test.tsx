@@ -40,21 +40,21 @@ describe('ViewPatient', () => {
     type: 'charity',
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
-    phoneNumber: [
+    phoneNumbers: [
       {
         id: '1234',
         phoneNumber: 'phoneNumber',
         type: 'Home',
       },
     ],
-    email: [
+    emails: [
       {
         id: '1234',
         email: 'email@email.com',
         type: 'Home',
       },
     ],
-    address: [
+    addresses: [
       {
         id: '1234',
         address: 'address',

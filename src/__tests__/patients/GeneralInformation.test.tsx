@@ -11,11 +11,15 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import Address from '../../model/Address'
+import Email from '../../model/Email'
 import Patient from '../../model/Patient'
+import PhoneNumber from '../../model/PhoneNumber'
 import GeneralInformation from '../../patients/GeneralInformation'
 import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
+// import { Address } from 'cluster'
 
 describe('Error handling', () => {
   it('should display errors', () => {
@@ -38,8 +42,11 @@ describe('Error handling', () => {
     const errorMessage = wrapper.find(Alert)
     const givenNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
     const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
-    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'email')
-    const phoneNumberInput = wrapper.findWhere((w: any) => w.prop('name') === 'phoneNumber')
+    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'temporaryEmail')
+    const phoneNumberInput = wrapper.findWhere(
+      (w: any) => w.prop('name') === 'temporaryPhoneNumber',
+    )
+
     expect(errorMessage).toBeTruthy()
     expect(errorMessage.prop('message')).toMatch(error.message)
     expect(givenNameInput.prop('isInvalid')).toBeTruthy()
@@ -64,21 +71,21 @@ describe('General Information, without isEditable', () => {
     type: 'charity',
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
-    phoneNumber: [
+    phoneNumbers: [
       {
         id: '1234',
         phoneNumber: 'phoneNumber',
         type: 'Home',
       },
     ],
-    email: [
+    emails: [
       {
         id: '1234',
         email: 'email@email.com',
         type: 'Home',
       },
     ],
-    address: [
+    addresses: [
       {
         id: '1234',
         address: 'address',
@@ -196,26 +203,38 @@ describe('General Information, without isEditable', () => {
     expect(preferredLanguageInput.prop('isEditable')).toBeFalsy()
   })
 
-  /* it('should render the phone number of the patient', () => {
-    const phoneNumberInput = wrapper.findWhere((w: any) => w.prop('name') === 'phoneNumber')
-    expect(phoneNumberInput.prop('value')).toEqual(patient.phoneNumber)
-    expect(phoneNumberInput.prop('label')).toEqual('patient.phoneNumber')
+  it('should render the phone number of the patient', () => {
+    const phoneNumberInput = wrapper.findWhere(
+      (w: any) => w.prop('name') === 'permanentPhoneNumber',
+    )
+    patient.phoneNumbers.forEach((phone: PhoneNumber) => {
+      expect(phoneNumberInput.prop('value')).toEqual(phone.phoneNumber)
+    })
+    expect(phoneNumberInput.prop('label')).toEqual('patient.phoneNumber.phoneNumber')
     expect(phoneNumberInput.prop('isEditable')).toBeFalsy()
   })
 
   it('should render the email of the patient', () => {
-    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'email')
-    expect(emailInput.prop('value')).toEqual(patient.email)
-    expect(emailInput.prop('label')).toEqual('patient.email')
+    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'permanentEmail')
+    if (patient.emails) {
+      patient.emails.forEach((email: Email) => {
+        expect(emailInput.prop('value')).toEqual(email.email)
+      })
+    }
+    expect(emailInput.prop('label')).toEqual('patient.email.email')
     expect(emailInput.prop('isEditable')).toBeFalsy()
   })
 
   it('should render the address of the patient', () => {
-    const addressInput = wrapper.findWhere((w: any) => w.prop('name') === 'address')
-    expect(addressInput.prop('value')).toEqual(patient.address)
-    expect(addressInput.prop('label')).toEqual('patient.address')
+    const addressInput = wrapper.findWhere((w: any) => w.prop('name') === 'permanentAddress')
+    if (patient.addresses) {
+      patient.addresses.forEach((address: Address) => {
+        expect(addressInput.prop('value')).toEqual(address.address)
+      })
+    }
+    expect(addressInput.prop('label')).toEqual('patient.address.address')
     expect(addressInput.prop('isEditable')).toBeFalsy()
-  }) */
+  })
 
   it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
     patient.isApproximateDateOfBirth = true
@@ -250,21 +269,21 @@ describe('General Information, isEditable', () => {
     type: 'charity',
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
-    phoneNumber: [
+    phoneNumbers: [
       {
         id: '1234',
         phoneNumber: 'phoneNumber',
         type: 'Home',
       },
     ],
-    email: [
+    emails: [
       {
         id: '1234',
         email: 'email@email.com',
         type: 'Home',
       },
     ],
-    address: [
+    addresses: [
       {
         id: '1234',
         address: 'address',
@@ -312,9 +331,9 @@ describe('General Information, isEditable', () => {
   const expectedType = 'expectedType'
   const expectedOccupation = 'expectedOccupation'
   const expectedPreferredLanguage = 'expectedPreferredLanguage'
-  // const expectedPhoneNumber = 'expectedPhoneNumber'
-  // const expectedEmail = 'expectedEmail'
-  // const expectedAddress = 'expectedAddress'
+  const expectedPhoneNumber = 'expectedPhoneNumber'
+  const expectedEmail = 'expectedEmail'
+  const expectedAddress = 'expectedAddress'
   const expectedDateOfBirth = '1937-06-14T05:00:00.000Z'
 
   it('should render the prefix', () => {
@@ -482,56 +501,52 @@ describe('General Information, isEditable', () => {
     )
   })
 
-  /* it('should render the phone number of the patient', () => {
-    const phoneNumberInput = wrapper.findWhere((w: any) => w.prop('name') === 'phoneNumber')
-    const generalInformation = wrapper.find(GeneralInformation)
-
-    expect(phoneNumberInput.prop('value')).toEqual(patient.phoneNumber)
-    expect(phoneNumberInput.prop('label')).toEqual('patient.phoneNumber')
+  it('should render the phone number of the patient', () => {
+    const phoneNumberInput = wrapper.findWhere(
+      (w: any) => w.prop('name') === 'permanentPhoneNumber',
+    )
+    patient.phoneNumbers.forEach((phone: PhoneNumber) => {
+      expect(phoneNumberInput.prop('value')).toEqual(phone.phoneNumber)
+    })
+    expect(phoneNumberInput.prop('label')).toEqual('patient.phoneNumber.phoneNumber')
     expect(phoneNumberInput.prop('isEditable')).toBeTruthy()
 
     act(() => {
       phoneNumberInput.prop('onChange')({ target: { value: expectedPhoneNumber } })
     })
-
-    expect(generalInformation.prop('onFieldChange')).toHaveBeenCalledWith(
-      'phoneNumber',
-      expectedPhoneNumber,
-    )
   })
 
   it('should render the email of the patient', () => {
-    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'email')
-    const generalInformation = wrapper.find(GeneralInformation)
+    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'permanentEmail')
 
-    expect(emailInput.prop('value')).toEqual(patient.email)
-    expect(emailInput.prop('label')).toEqual('patient.email')
+    if (patient.emails) {
+      patient.emails.forEach((email: Email) => {
+        expect(emailInput.prop('value')).toEqual(email.email)
+      })
+    }
+    expect(emailInput.prop('label')).toEqual('patient.email.email')
     expect(emailInput.prop('isEditable')).toBeTruthy()
 
     act(() => {
       emailInput.prop('onChange')({ target: { value: expectedEmail } })
     })
-
-    expect(generalInformation.prop('onFieldChange')).toHaveBeenCalledWith('email', expectedEmail)
   })
 
   it('should render the address of the patient', () => {
-    const addressInput = wrapper.findWhere((w: any) => w.prop('name') === 'address')
-    const generalInformation = wrapper.find(GeneralInformation)
+    const addressInput = wrapper.findWhere((w: any) => w.prop('name') === 'permanentAddress')
 
-    expect(addressInput.prop('value')).toEqual(patient.address)
-    expect(addressInput.prop('label')).toEqual('patient.address')
+    if (patient.addresses) {
+      patient.addresses.forEach((address: Address) => {
+        expect(addressInput.prop('value')).toEqual(address.address)
+      })
+    }
+    expect(addressInput.prop('label')).toEqual('patient.address.address')
     expect(addressInput.prop('isEditable')).toBeTruthy()
 
     act(() => {
-      addressInput.prop('onChange')({ currentTarget: { value: expectedAddress } })
+      addressInput.prop('onChange')({ target: { value: expectedAddress } })
     })
-
-    expect(generalInformation.prop('onFieldChange')).toHaveBeenCalledWith(
-      'address',
-      expectedAddress,
-    )
-  }) */
+  })
 
   it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
     patient.isApproximateDateOfBirth = true

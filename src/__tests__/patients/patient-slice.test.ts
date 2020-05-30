@@ -254,7 +254,7 @@ describe('patients slice', () => {
       const expectedPatient = {
         id: expectedPatientId,
         givenName: 'some given name',
-        phoneNumber: [
+        phoneNumbers: [
           {
             id: '1234',
             phoneNumber: 'not a phone number',
@@ -285,7 +285,7 @@ describe('patients slice', () => {
       const expectedPatient = {
         id: expectedPatientId,
         givenName: 'some given name',
-        phoneNumber: [
+        phoneNumbers: [
           {
             id: '1234',
             phoneNumber: 'not a phone number',
