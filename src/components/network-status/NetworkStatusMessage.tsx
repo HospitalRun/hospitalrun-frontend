@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 
-import './styles.css'
+// import './styles.css'
 
 interface Props {
   online: boolean
   wasOffline: boolean
 }
 
-const OFFLINE_MESSAGE = 'you are working in offline mode'
-const ONLINE_MESSAGE = 'you are back online'
+export const OFFLINE_MESSAGE = 'you are working in offline mode'
+export const ONLINE_MESSAGE = 'you are back online'
 const OPACITY_TRANSITION_TIME = 4000
 
 export const NetworkStatusMessage = (props: Props) => {
