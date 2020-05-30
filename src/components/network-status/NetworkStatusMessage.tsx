@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-// import './styles.css'
+import './styles.css'
 
 interface Props {
   online: boolean
