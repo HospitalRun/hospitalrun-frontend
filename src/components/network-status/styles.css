@@ -1,18 +1,18 @@
-.offline-indicator {
+.network-status-message {
   align-items: center;
   bottom: 0;
-  display: flex;
   height: 50px;
   justify-content: center;
+  pointer-events: none;
   position: absolute;
   width: 100vw;
   z-index: 9999;
 }
 
-.offline {
+.network-status-message.offline {
   background-color: rgba(255, 0, 0, 0.65);
 }
 
-.online {
+.network-status-message.online {
   background-color: rgba(0, 255, 0, 0.55);
 }
