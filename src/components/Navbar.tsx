@@ -35,18 +35,15 @@ const Navbar = () => {
     },
   ]
 
-  const addDropdownList: { type: string; label: string; onClick: () => void }[] = []
-  addPages.forEach((page) => {
-    if (permissions.includes(page.permission)) {
-      addDropdownList.push({
-        type: 'link',
-        label: page.label,
-        onClick: () => {
-          history.push(page.path)
-        },
-      })
-    }
-  })
+  const addDropdownList: { type: string; label: string; onClick: () => void }[] = addPages
+    .filter((page) => permissions.includes(page.permission))
+    .map((page) => ({
+      type: 'link',
+      label: page.label,
+      onClick: () => {
+        history.push(page.path)
+      },
+    }))
 
   return (
     <HospitalRunNavbar
