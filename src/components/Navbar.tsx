@@ -1,11 +1,50 @@
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import Permissions from '../model/Permissions'
+import { RootState } from '../store'
+
 const Navbar = () => {
+  const { permissions } = useSelector((state: RootState) => state.user)
   const { t } = useTranslation()
   const history = useHistory()
+
+  const addPages = [
+    {
+      permission: Permissions.WritePatients,
+      label: t('patients.newPatient'),
+      path: '/patients/new',
+    },
+    {
+      permission: Permissions.WriteAppointments,
+      label: t('scheduling.appointments.new'),
+      path: '/appointments/new',
+    },
+    {
+      permission: Permissions.RequestLab,
+      label: t('labs.requests.new'),
+      path: '/labs/new',
+    },
+    {
+      permission: Permissions.ReportIncident,
+      label: t('incidents.reports.new'),
+      path: '/incidents/new',
+    },
+  ]
+
+  const addDropdownList: { type: string; label: string; onClick: () => void }[] = addPages
+    .filter((page) => permissions.includes(page.permission))
+    .map((page) => ({
+      type: 'link',
+      label: page.label,
+      onClick: () => {
+        history.push(page.path)
+      },
+    }))
+
   return (
     <HospitalRunNavbar
       bg="dark"
@@ -103,6 +142,16 @@ const Navbar = () => {
         {
           type: 'link-list-icon',
           alignRight: true,
+          children: addDropdownList,
+          className: 'pl-4 add-new',
+          iconClassName: 'align-bottom',
+          label: 'Add',
+          name: 'add',
+          size: 'lg',
+        },
+        {
+          type: 'link-list-icon',
+          alignRight: true,
           children: [
             {
               type: 'link',
@@ -112,7 +161,7 @@ const Navbar = () => {
               },
             },
           ],
-          className: 'pl-4',
+          className: 'pl-2',
           iconClassName: 'align-bottom',
           label: 'Patient',
           name: 'patient',
