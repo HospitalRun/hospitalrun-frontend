@@ -1,13 +1,13 @@
-import React from 'react'
 import { Panel, Checkbox, Alert } from '@hospitalrun/components'
-import { useTranslation } from 'react-i18next'
 import { startOfDay, subYears, differenceInYears } from 'date-fns'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
-import Patient from '../model/Patient'
+import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
+import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
-import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
-import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
+import Patient from '../model/Patient'
 
 interface Props {
   patient: Patient
@@ -60,6 +60,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'prefix')
               }}
+              isInvalid={error?.prefix}
+              feedback={t(error?.prefix)}
             />
           </div>
           <div className="col-md-4">
@@ -85,6 +87,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'familyName')
               }}
+              isInvalid={error?.familyName}
+              feedback={t(error?.familyName)}
             />
           </div>
           <div className="col-md-2">
@@ -96,6 +100,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'suffix')
               }}
+              isInvalid={error?.suffix}
+              feedback={t(error?.suffix)}
             />
           </div>
         </div>
@@ -134,7 +140,7 @@ const GeneralInformation = (props: Props) => {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4">
+          <div className="col">
             {patient.isApproximateDateOfBirth ? (
               <TextInputWithLabelFormGroup
                 label={t('patient.approximateAge')}
@@ -163,7 +169,7 @@ const GeneralInformation = (props: Props) => {
               />
             )}
           </div>
-          <div className="col-md-2">
+          <div className="col">
             <div className="form-group">
               <Checkbox
                 label={t('patient.unknownDateOfBirth')}
@@ -195,6 +201,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'preferredLanguage')
               }}
+              isInvalid={error?.preferredLanguage}
+              feedback={t(error?.preferredLanguage)}
             />
           </div>
         </div>
@@ -211,6 +219,8 @@ const GeneralInformation = (props: Props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onInputElementChange(event, 'phoneNumber')
               }}
+              feedback={t(error?.phoneNumber)}
+              isInvalid={!!error?.phoneNumber}
               type="tel"
             />
           </div>
@@ -225,6 +235,8 @@ const GeneralInformation = (props: Props) => {
                 onInputElementChange(event, 'email')
               }}
               type="email"
+              feedback={t(error?.email)}
+              isInvalid={!!error?.email}
             />
           </div>
         </div>

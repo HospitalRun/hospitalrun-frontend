@@ -1,13 +1,15 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
-import { Router } from 'react-router'
-import { mount, ReactWrapper } from 'enzyme'
-import GeneralInformation from 'patients/GeneralInformation'
-import { createMemoryHistory } from 'history'
-import { startOfDay, subYears } from 'date-fns'
+
 import { Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
+import { startOfDay, subYears } from 'date-fns'
+import { mount, ReactWrapper } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { Router } from 'react-router-dom'
+
 import Patient from '../../model/Patient'
+import GeneralInformation from '../../patients/GeneralInformation'
 
 describe('Error handling', () => {
   it('should display errors', () => {
@@ -15,24 +17,28 @@ describe('Error handling', () => {
       message: 'some message',
       givenName: 'given name message',
       dateOfBirth: 'date of birth message',
+      phoneNumber: 'phone number message',
+      email: 'email message',
     }
-    const history = createMemoryHistory()
-    const wrapper = mount(
-      <Router history={history}>
-        <GeneralInformation patient={{} as Patient} isEditable error={error} />
-      </Router>,
-    )
+
+    const wrapper = mount(<GeneralInformation patient={{} as Patient} isEditable error={error} />)
     wrapper.update()
 
     const errorMessage = wrapper.find(Alert)
     const givenNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
     const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
+    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'email')
+    const phoneNumberInput = wrapper.findWhere((w: any) => w.prop('name') === 'phoneNumber')
     expect(errorMessage).toBeTruthy()
     expect(errorMessage.prop('message')).toMatch(error.message)
     expect(givenNameInput.prop('isInvalid')).toBeTruthy()
     expect(givenNameInput.prop('feedback')).toEqual(error.givenName)
     expect(dateOfBirthInput.prop('isInvalid')).toBeTruthy()
     expect(dateOfBirthInput.prop('feedback')).toEqual(error.dateOfBirth)
+    expect(emailInput.prop('feedback')).toEqual(error.email)
+    expect(emailInput.prop('isInvalid')).toBeTruthy()
+    expect(phoneNumberInput.prop('feedback')).toEqual(error.phoneNumber)
+    expect(phoneNumberInput.prop('isInvalid')).toBeTruthy()
   })
 })
 

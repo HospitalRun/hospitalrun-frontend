@@ -1,14 +1,17 @@
-import Appointment from 'model/Appointment'
-import { appointments } from 'config/pouchdb'
+import escapeStringRegexp from 'escape-string-regexp'
+
+import { appointments } from '../../config/pouchdb'
+import Appointment from '../../model/Appointment'
 import Repository from './Repository'
 
-export class AppointmentRepository extends Repository<Appointment> {
+class AppointmentRepository extends Repository<Appointment> {
   constructor() {
     super(appointments)
   }
 
   // Fuzzy search for patient appointments. Used for patient appointment search bar
   async searchPatientAppointments(patientId: string, text: string): Promise<Appointment[]> {
+    const escapedString = escapeStringRegexp(text)
     return super.search({
       selector: {
         $and: [
@@ -19,17 +22,17 @@ export class AppointmentRepository extends Repository<Appointment> {
             $or: [
               {
                 location: {
-                  $regex: RegExp(text, 'i'),
+                  $regex: RegExp(escapedString, 'i'),
                 },
               },
               {
                 reason: {
-                  $regex: RegExp(text, 'i'),
+                  $regex: RegExp(escapedString, 'i'),
                 },
               },
               {
                 type: {
-                  $regex: RegExp(text, 'i'),
+                  $regex: RegExp(escapedString, 'i'),
                 },
               },
             ],

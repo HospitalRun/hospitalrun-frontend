@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router'
-import { useTranslation } from 'react-i18next'
 import { Spinner, Button, Container, Row, TextInput, Column } from '@hospitalrun/components'
-import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
 import format from 'date-fns/format'
-import { RootState } from '../../store'
-import { fetchPatients, searchPatients } from '../patients-slice'
-import useTitle from '../../page-header/useTitle'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import useDebounce from '../../hooks/debounce'
+import { useButtonToolbarSetter } from '../../page-header/ButtonBarProvider'
+import useTitle from '../../page-header/useTitle'
+import { RootState } from '../../store'
+import { searchPatients } from '../patients-slice'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
@@ -32,8 +33,6 @@ const ViewPatients = () => {
   }, [dispatch, debouncedSearchText])
 
   useEffect(() => {
-    dispatch(fetchPatients())
-
     setButtonToolBar([
       <Button
         key="newPatientButton"

@@ -1,23 +1,25 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { Router } from 'react-router'
-import { createMemoryHistory } from 'history'
-import { mount } from 'enzyme'
-import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
-import * as components from '@hospitalrun/components'
-import AddRelatedPersonModal from 'patients/related-persons/AddRelatedPersonModal'
-import { act } from '@testing-library/react'
-import PatientRepository from 'clients/db/PatientRepository'
-import Patient from 'model/Patient'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import { Provider } from 'react-redux'
-import Permissions from 'model/Permissions'
-import RelatedPerson from 'model/RelatedPerson'
-import { Button } from '@hospitalrun/components'
-import * as patientSlice from '../../../patients/patient-slice'
 
-const mockStore = configureMockStore([thunk])
+import * as components from '@hospitalrun/components'
+import { act } from '@testing-library/react'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Patient from '../../../model/Patient'
+import Permissions from '../../../model/Permissions'
+import RelatedPerson from '../../../model/RelatedPerson'
+import * as patientSlice from '../../../patients/patient-slice'
+import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
+import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
+import { RootState } from '../../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Related Persons Tab', () => {
   let wrapper: any
@@ -46,7 +48,7 @@ describe('Related Persons Tab', () => {
       act(() => {
         wrapper = mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={mockStore({ patient, user } as any)}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,
@@ -66,7 +68,7 @@ describe('Related Persons Tab', () => {
       act(() => {
         wrapper = mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={mockStore({ patient, user } as any)}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,
@@ -122,7 +124,7 @@ describe('Related Persons Tab', () => {
       await act(async () => {
         wrapper = await mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={mockStore({ patient, user } as any)}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,
@@ -137,7 +139,7 @@ describe('Related Persons Tab', () => {
       const tableHeaders = wrapper.find('th')
       const tableBody = wrapper.find('tbody')
       const tableData = wrapper.find('td')
-      const deleteButton = tableData.at(3).find(Button)
+      const deleteButton = tableData.at(3).find(components.Button)
       expect(table).toHaveLength(1)
       expect(tableHeader).toHaveLength(1)
       expect(tableBody).toHaveLength(1)
@@ -160,7 +162,7 @@ describe('Related Persons Tab', () => {
       const table = wrapper.find('table')
       const tableBody = table.find('tbody')
       const tableData = tableBody.find('td')
-      const deleteButton = tableData.at(3).find(Button)
+      const deleteButton = tableData.at(3).find(components.Button)
 
       await act(async () => {
         const onClick = deleteButton.prop('onClick')
@@ -202,7 +204,7 @@ describe('Related Persons Tab', () => {
       await act(async () => {
         wrapper = await mount(
           <Router history={history}>
-            <Provider store={mockStore({ patient, user })}>
+            <Provider store={mockStore({ patient, user } as any)}>
               <RelatedPersonTab patient={patient} />
             </Provider>
           </Router>,

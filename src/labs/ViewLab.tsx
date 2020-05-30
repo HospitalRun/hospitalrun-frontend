@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router'
-import format from 'date-fns/format'
-import Lab from 'model/Lab'
-import Patient from 'model/Patient'
-import useTitle from 'page-header/useTitle'
-import { useTranslation } from 'react-i18next'
 import { Row, Column, Badge, Button, Alert } from '@hospitalrun/components'
-import TextFieldWithLabelFormGroup from 'components/input/TextFieldWithLabelFormGroup'
-import useAddBreadcrumbs from 'breadcrumbs/useAddBreadcrumbs'
+import format from 'date-fns/format'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import Permissions from 'model/Permissions'
+import { useParams, useHistory } from 'react-router-dom'
+
+import useAddBreadcrumbs from '../breadcrumbs/useAddBreadcrumbs'
+import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
+import Lab from '../model/Lab'
+import Patient from '../model/Patient'
+import Permissions from '../model/Permissions'
+import useTitle from '../page-header/useTitle'
 import { RootState } from '../store'
 import { cancelLab, completeLab, updateLab, fetchLab } from './lab-slice'
 
 const getTitle = (patient: Patient | undefined, lab: Lab | undefined) =>
-  patient && lab ? `${lab.type} for ${patient.fullName}` : ''
+  patient && lab ? `${lab.type} for ${patient.fullName}(${lab.code})` : ''
 
 const ViewLab = () => {
   const { id } = useParams()

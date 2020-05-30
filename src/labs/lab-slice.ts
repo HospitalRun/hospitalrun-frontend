@@ -1,9 +1,10 @@
-import Lab from 'model/Lab'
-import Patient from 'model/Patient'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk } from 'store'
-import LabRepository from 'clients/db/LabRepository'
-import PatientRepository from 'clients/db/PatientRepository'
+
+import LabRepository from '../clients/db/LabRepository'
+import PatientRepository from '../clients/db/PatientRepository'
+import Lab from '../model/Lab'
+import Patient from '../model/Patient'
+import { AppThunk } from '../store'
 
 interface Error {
   result?: string
@@ -16,7 +17,7 @@ interface LabState {
   error: Error
   lab?: Lab
   patient?: Patient
-  status: 'loading' | 'error' | 'success'
+  status: 'loading' | 'error' | 'completed'
 }
 
 const initialState: LabState = {
@@ -31,7 +32,7 @@ function start(state: LabState) {
 }
 
 function finish(state: LabState, { payload }: PayloadAction<Lab>) {
-  state.status = 'success'
+  state.status = 'completed'
   state.lab = payload
   state.error = {}
 }
@@ -50,7 +51,7 @@ const labSlice = createSlice({
       state: LabState,
       { payload }: PayloadAction<{ lab: Lab; patient: Patient }>,
     ) => {
-      state.status = 'success'
+      state.status = 'completed'
       state.lab = payload.lab
       state.patient = payload.patient
     },
@@ -104,6 +105,7 @@ const validateLabRequest = (newLab: Lab): Error => {
 
 export const requestLab = (newLab: Lab, onSuccess?: (lab: Lab) => void): AppThunk => async (
   dispatch,
+  getState,
 ) => {
   dispatch(requestLabStart())
 
@@ -114,6 +116,7 @@ export const requestLab = (newLab: Lab, onSuccess?: (lab: Lab) => void): AppThun
   } else {
     newLab.status = 'requested'
     newLab.requestedOn = new Date(Date.now().valueOf()).toISOString()
+    newLab.requestedBy = getState().user.user.id
     const requestedLab = await LabRepository.save(newLab)
     dispatch(requestLabSuccess(requestedLab))
 

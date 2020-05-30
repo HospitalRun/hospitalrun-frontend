@@ -1,26 +1,28 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
-import { Provider } from 'react-redux'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
 import {
   Breadcrumb as HRBreadcrumb,
   BreadcrumbItem as HRBreadcrumbItem,
 } from '@hospitalrun/components'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import Breadcrumbs from 'breadcrumbs/Breadcrumbs'
-import Breadcrumb from 'model/Breadcrumb'
+import Breadcrumbs from '../../breadcrumbs/Breadcrumbs'
+import Breadcrumb from '../../model/Breadcrumb'
+import { RootState } from '../../store'
 
-const mockStore = configureMockStore()
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Breadcrumbs', () => {
   const setup = (breadcrumbs: Breadcrumb[]) => {
     const history = createMemoryHistory()
     const store = mockStore({
       breadcrumbs: { breadcrumbs },
-    })
+    } as any)
 
     const wrapper = mount(
       <Provider store={store}>

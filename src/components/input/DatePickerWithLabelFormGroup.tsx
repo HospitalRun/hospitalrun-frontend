@@ -1,5 +1,5 @@
-import React from 'react'
 import { Label, DateTimePicker } from '@hospitalrun/components'
+import React from 'react'
 
 interface Props {
   name: string
@@ -40,6 +40,7 @@ const DatePickerWithLabelFormGroup = (props: Props) => {
         disabled={!isEditable}
         feedback={feedback}
         isInvalid={isInvalid}
+        showYearDropdown
         onChange={(inputDate) => {
           if (onChange) {
             onChange(inputDate)

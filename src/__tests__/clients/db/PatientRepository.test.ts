@@ -1,8 +1,9 @@
-import { patients } from 'config/pouchdb'
-import PatientRepository from 'clients/db/PatientRepository'
-import Patient from 'model/Patient'
-import shortid from 'shortid'
 import { getTime, isAfter } from 'date-fns'
+import shortid from 'shortid'
+
+import PatientRepository from '../../../clients/db/PatientRepository'
+import { patients } from '../../../config/pouchdb'
+import Patient from '../../../model/Patient'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 

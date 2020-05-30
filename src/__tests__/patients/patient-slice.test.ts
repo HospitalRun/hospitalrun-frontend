@@ -1,9 +1,15 @@
 import '../../__mocks__/matchMediaMock'
+
+import { addDays } from 'date-fns'
 import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { addDays } from 'date-fns'
-import * as uuid from '../../util/uuid'
+
+import PatientRepository from '../../clients/db/PatientRepository'
+import Allergy from '../../model/Allergy'
+import Diagnosis from '../../model/Diagnosis'
+import Patient from '../../model/Patient'
+import RelatedPerson from '../../model/RelatedPerson'
 import patient, {
   fetchPatientStart,
   fetchPatientSuccess,
@@ -24,12 +30,8 @@ import patient, {
   addDiagnosisError,
   addRelatedPersonError,
 } from '../../patients/patient-slice'
-import Patient from '../../model/Patient'
-import PatientRepository from '../../clients/db/PatientRepository'
 import { RootState } from '../../store'
-import RelatedPerson from '../../model/RelatedPerson'
-import Diagnosis from '../../model/Diagnosis'
-import Allergy from '../../model/Allergy'
+import * as uuid from '../../util/uuid'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -197,13 +199,12 @@ describe('patients slice', () => {
       expect(onSuccessSpy).toHaveBeenCalledWith(expectedPatient)
     })
 
-    it('should validate the patient', async () => {
+    it('should validate the patient required fields', async () => {
       const store = mockStore()
       const expectedPatientId = 'sliceId10'
       const expectedPatient = {
         id: expectedPatientId,
         givenName: undefined,
-        dateOfBirth: addDays(new Date(), 4).toISOString(),
       } as Patient
       const saveOrUpdateSpy = jest
         .spyOn(PatientRepository, 'saveOrUpdate')
@@ -218,7 +219,112 @@ describe('patients slice', () => {
         createPatientError({
           message: 'patient.errors.createPatientError',
           givenName: 'patient.errors.patientGivenNameFeedback',
+        }),
+      )
+    })
+
+    it('should validate that the patient birthday is not a future date', async () => {
+      const store = mockStore()
+      const expectedPatientId = 'sliceId10'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some given name',
+        dateOfBirth: addDays(new Date(), 4).toISOString(),
+      } as Patient
+      const saveOrUpdateSpy = jest
+        .spyOn(PatientRepository, 'saveOrUpdate')
+        .mockResolvedValue(expectedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
+
+      expect(onSuccessSpy).not.toHaveBeenCalled()
+      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
+      expect(store.getActions()[1]).toEqual(
+        createPatientError({
+          message: 'patient.errors.createPatientError',
           dateOfBirth: 'patient.errors.patientDateOfBirthFeedback',
+        }),
+      )
+    })
+
+    it('should validate that the patient email is a valid email', async () => {
+      const store = mockStore()
+      const expectedPatientId = 'sliceId10'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some given name',
+        phoneNumber: 'not a phone number',
+      } as Patient
+      const saveOrUpdateSpy = jest
+        .spyOn(PatientRepository, 'saveOrUpdate')
+        .mockResolvedValue(expectedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
+
+      expect(onSuccessSpy).not.toHaveBeenCalled()
+      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
+      expect(store.getActions()[1]).toEqual(
+        createPatientError({
+          message: 'patient.errors.createPatientError',
+          phoneNumber: 'patient.errors.invalidPhoneNumber',
+        }),
+      )
+    })
+
+    it('should validate that the patient phone number is a valid phone number', async () => {
+      const store = mockStore()
+      const expectedPatientId = 'sliceId10'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some given name',
+        phoneNumber: 'not a phone number',
+      } as Patient
+      const saveOrUpdateSpy = jest
+        .spyOn(PatientRepository, 'saveOrUpdate')
+        .mockResolvedValue(expectedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
+
+      expect(onSuccessSpy).not.toHaveBeenCalled()
+      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
+      expect(store.getActions()[1]).toEqual(
+        createPatientError({
+          message: 'patient.errors.createPatientError',
+          phoneNumber: 'patient.errors.invalidPhoneNumber',
+        }),
+      )
+    })
+
+    it('should validate fields that should only contian alpha characters', async () => {
+      const store = mockStore()
+      const expectedPatientId = 'sliceId10'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some given name',
+        suffix: 'A123',
+        familyName: 'B456',
+        prefix: 'C987',
+        preferredLanguage: 'D321',
+      } as Patient
+      const saveOrUpdateSpy = jest
+        .spyOn(PatientRepository, 'saveOrUpdate')
+        .mockResolvedValue(expectedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
+
+      expect(onSuccessSpy).not.toHaveBeenCalled()
+      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
+      expect(store.getActions()[1]).toEqual(
+        createPatientError({
+          message: 'patient.errors.createPatientError',
+          suffix: 'patient.errors.patientNumInSuffixFeedback',
+          familyName: 'patient.errors.patientNumInFamilyNameFeedback',
+          prefix: 'patient.errors.patientNumInPrefixFeedback',
+          preferredLanguage: 'patient.errors.patientNumInPreferredLanguageFeedback',
         }),
       )
     })
@@ -313,6 +419,10 @@ describe('patients slice', () => {
         id: expectedPatientId,
         givenName: undefined,
         dateOfBirth: addDays(new Date(), 4).toISOString(),
+        suffix: '061002',
+        prefix: '061002',
+        familyName: '061002',
+        preferredLanguage: '061002',
       } as Patient
       const saveOrUpdateSpy = jest
         .spyOn(PatientRepository, 'saveOrUpdate')
@@ -328,6 +438,10 @@ describe('patients slice', () => {
           message: 'patient.errors.updatePatientError',
           givenName: 'patient.errors.patientGivenNameFeedback',
           dateOfBirth: 'patient.errors.patientDateOfBirthFeedback',
+          suffix: 'patient.errors.patientNumInSuffixFeedback',
+          familyName: 'patient.errors.patientNumInFamilyNameFeedback',
+          prefix: 'patient.errors.patientNumInPrefixFeedback',
+          preferredLanguage: 'patient.errors.patientNumInPreferredLanguageFeedback',
         }),
       )
     })

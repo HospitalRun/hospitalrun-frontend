@@ -1,28 +1,33 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { Provider } from 'react-redux'
-import { mount } from 'enzyme'
-import { mocked } from 'ts-jest/utils'
-import { act } from 'react-dom/test-utils'
-import { Route, Router } from 'react-router-dom'
-import { TabsHeader, Tab } from '@hospitalrun/components'
-import configureMockStore, { MockStore } from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import GeneralInformation from 'patients/GeneralInformation'
-import { createMemoryHistory } from 'history'
-import RelatedPersonTab from 'patients/related-persons/RelatedPersonTab'
-import * as ButtonBarProvider from 'page-header/ButtonBarProvider'
-import Allergies from 'patients/allergies/Allergies'
-import Diagnoses from 'patients/diagnoses/Diagnoses'
-import NotesTab from 'patients/notes/NoteTab'
-import Patient from '../../../model/Patient'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import * as titleUtil from '../../../page-header/useTitle'
-import ViewPatient from '../../../patients/view/ViewPatient'
-import * as patientSlice from '../../../patients/patient-slice'
-import Permissions from '../../../model/Permissions'
 
-const mockStore = configureMockStore([thunk])
+import { TabsHeader, Tab } from '@hospitalrun/components'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
+import { Route, Router } from 'react-router-dom'
+import createMockStore, { MockStore } from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import { mocked } from 'ts-jest/utils'
+
+import LabRepository from '../../../clients/db/LabRepository'
+import PatientRepository from '../../../clients/db/PatientRepository'
+import Patient from '../../../model/Patient'
+import Permissions from '../../../model/Permissions'
+import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/useTitle'
+import Allergies from '../../../patients/allergies/Allergies'
+import Diagnoses from '../../../patients/diagnoses/Diagnoses'
+import GeneralInformation from '../../../patients/GeneralInformation'
+import LabsTab from '../../../patients/labs/LabsTab'
+import NotesTab from '../../../patients/notes/NoteTab'
+import * as patientSlice from '../../../patients/patient-slice'
+import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
+import ViewPatient from '../../../patients/view/ViewPatient'
+import { RootState } from '../../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('ViewPatient', () => {
   const patient = {
@@ -47,14 +52,14 @@ describe('ViewPatient', () => {
 
   const setup = (permissions = [Permissions.ReadPatients]) => {
     jest.spyOn(PatientRepository, 'find')
+    jest.spyOn(LabRepository, 'findAllByPatientId').mockResolvedValue([])
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
-
     history = createMemoryHistory()
     store = mockStore({
       patient: { patient },
       user: { permissions },
-    })
+    } as any)
 
     history.push('/patients/123')
     const wrapper = mount(
@@ -127,13 +132,14 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(6)
+    expect(tabs).toHaveLength(7)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
     expect(tabs.at(3).prop('label')).toEqual('patient.allergies.label')
     expect(tabs.at(4).prop('label')).toEqual('patient.diagnoses.label')
     expect(tabs.at(5).prop('label')).toEqual('patient.notes.label')
+    expect(tabs.at(6).prop('label')).toEqual('patient.labs.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -261,5 +267,29 @@ describe('ViewPatient', () => {
     expect(tabs.at(5).prop('active')).toBeTruthy()
     expect(notesTab).toHaveLength(1)
     expect(notesTab.prop('patient')).toEqual(patient)
+  })
+
+  it('should mark the labs tab as active when it is clicked and render the lab component when route is /patients/:id/labs', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    await act(async () => {
+      const tabsHeader = wrapper.find(TabsHeader)
+      const tabs = tabsHeader.find(Tab)
+      tabs.at(6).prop('onClick')()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const labsTab = wrapper.find(LabsTab)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/labs`)
+    expect(tabs.at(6).prop('active')).toBeTruthy()
+    expect(labsTab).toHaveLength(1)
+    expect(labsTab.prop('patientId')).toEqual(patient.id)
   })
 })

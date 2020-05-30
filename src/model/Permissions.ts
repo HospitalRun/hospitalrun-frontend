@@ -11,6 +11,9 @@ enum Permissions {
   CompleteLab = 'complete:lab',
   ViewLab = 'read:lab',
   ViewLabs = 'read:labs',
+  ViewIncidents = 'read:incidents',
+  ViewIncident = 'read:incident',
+  ReportIncident = 'write:incident',
 }
 
 export default Permissions
