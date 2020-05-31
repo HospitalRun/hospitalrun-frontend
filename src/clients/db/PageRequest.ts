@@ -5,6 +5,7 @@ export default interface PageRequest {
   previousPageInfo: { [key: string]: string | null } | undefined
   direction?: 'previous' | 'next'
 }
+
 export const UnpagedRequest: PageRequest = {
   number: undefined,
   size: undefined,
