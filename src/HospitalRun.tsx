@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import Breadcrumbs from './breadcrumbs/Breadcrumbs'
 import Navbar from './components/Navbar'
-import { NetworkStatus } from './components/network-status/NetworkStatus'
+import { NetworkStatusMessage } from './components/network-status'
 import PrivateRoute from './components/PrivateRoute'
 import Sidebar from './components/Sidebar'
 import Dashboard from './dashboard/Dashboard'
@@ -24,7 +24,7 @@ const HospitalRun = () => {
 
   return (
     <div>
-      <NetworkStatus />
+      <NetworkStatusMessage />
       <Navbar />
       <div className="container-fluid">
         <Sidebar />

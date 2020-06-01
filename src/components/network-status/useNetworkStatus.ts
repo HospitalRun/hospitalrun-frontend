@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
-import { NetworkStatusMessage } from './NetworkStatusMessage'
+import { NetworkStatus } from './types'
 
-export const NetworkStatus = () => {
+export const useNetworkStatus = (): NetworkStatus => {
   const [networkStatus, setNetworkStatus] = useState({
     isOnline: true,
     wasOffline: false,
@@ -23,7 +23,5 @@ export const NetworkStatus = () => {
     }
   }, [])
 
-  return (
-    <NetworkStatusMessage online={networkStatus.isOnline} wasOffline={networkStatus.wasOffline} />
-  )
+  return networkStatus
 }
