@@ -87,6 +87,104 @@ const EditPatient = () => {
     })
   }
 
+  const onTempObjectArrayChange = (
+    key: number,
+    value: string,
+    arrayObject: string | boolean,
+    type: string | boolean,
+    objects: any[],
+  ) => {
+    if (arrayObject === 'phoneNumbers') {
+      let temporaryObject = { ...objects[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, phoneNumber: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...objects]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+    } else if (arrayObject === 'emails') {
+      let temporaryObject = { ...objects[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, email: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...objects]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+    } else if (arrayObject === 'addresses') {
+      let temporaryObject = { ...objects[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, address: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...objects]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+    }
+  }
+
+  const onObjectArrayChange = (
+    key: number,
+    value: string,
+    arrayObject: string | boolean,
+    type: string | boolean,
+  ) => {
+    if (arrayObject === 'phoneNumbers') {
+      let temporaryObject = { ...patient.phoneNumbers[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, phoneNumber: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...patient.phoneNumbers]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+    } else if (arrayObject === 'emails') {
+      let temporaryObject = { ...patient.emails[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, email: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...patient.emails]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+      console.log(JSON.stringify(patient.emails))
+    } else if (arrayObject === 'addresses') {
+      let temporaryObject = { ...patient.addresses[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, address: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...patient.addresses]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+    }
+  }
+
   if (status === 'loading') {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
@@ -97,6 +195,8 @@ const EditPatient = () => {
         isEditable
         patient={patient}
         onFieldChange={onFieldChange}
+        onObjectArrayChange={onObjectArrayChange}
+        onTempObjectArrayChange={onTempObjectArrayChange}
         error={updateError}
       />
       <div className="row float-right">

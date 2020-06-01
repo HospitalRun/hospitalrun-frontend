@@ -4,6 +4,6 @@ import PhoneNumber from './PhoneNumber'
 
 export default interface ContactInformation {
   phoneNumbers: PhoneNumber[]
-  emails?: Email[]
-  addresses?: Address[]
+  emails: Email[]
+  addresses: Address[]
 }

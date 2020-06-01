@@ -347,82 +347,61 @@ export const addDiagnosis = (
   }
 }
 
-function validatePhoneNumber(phoneNumber: PhoneNumber) {
-  const error: AddPhoneNumberError = {}
-
-  if (!phoneNumber.phoneNumber) {
-    error.name = 'patient.phoneNumber.error.phoneNumberRequired'
-  } else if (!validator.isMobilePhone(phoneNumber.phoneNumber)) {
-    error.name = 'patient.phoneNumber.error.invalidPhoneNumber'
-  }
-
-  return error
-}
-
-export const addPhoneNumber = (
+export const addEmptyPhoneNumber = (
   patientId: string,
   phoneNumber: PhoneNumber,
-
-  onSuccess?: (patient: Patient) => void,
-): AppThunk => async (dispatch) => {
-  const newPhoneNumberError = validatePhoneNumber(phoneNumber)
-  if (isEmpty(newPhoneNumberError)) {
-    const patient = await PatientRepository.find(patientId)
-    const phoneNumbers = patient.phoneNumbers || []
-    phoneNumbers.push({ id: uuid(), ...phoneNumber })
-    patient.phoneNumbers = phoneNumbers
-
-    await dispatch(updatePatient(patient, onSuccess))
-  } else {
-    newPhoneNumberError.message = 'patient.phoneNumbers.error.unableToAdd'
-    dispatch(addPhoneNumberError(newPhoneNumberError))
-  }
-}
-
-function validateEmail(email: Email) {
-  const error: AddEmailError = {}
-
-  if (!email.email) {
-    error.name = 'patient.email.error.emailRequired'
-  } else if (!validator.isEmail(email.email)) {
-    error.name = 'patient.phoneNumber.error.invalidEmail'
-  }
-
-  return error
-}
-
-export const addEmail = (
-  patientId: string,
-  email: Email,
-
-  onSuccess?: (patient: Patient) => void,
-): AppThunk => async (dispatch) => {
-  const newEmailError = validateEmail(email)
-  if (isEmpty(newEmailError)) {
-    const patient = await PatientRepository.find(patientId)
-    const emails = patient.emails || []
-    emails.push({ id: uuid(), ...email })
-    patient.emails = emails
-
-    await dispatch(updatePatient(patient, onSuccess))
-  } else {
-    newEmailError.message = 'patient.email.error.unableToAdd'
-    dispatch(addEmailError(newEmailError))
-  }
-}
-
-export const addAddress = (
-  patientId: string,
-  address: Address,
-
-  onSuccess?: (patient: Patient) => void,
+  emails: Email[],
+  addresses: Address[],
 ): AppThunk => async (dispatch) => {
   const patient = await PatientRepository.find(patientId)
+
+  patient.emails = emails
+  patient.addresses = addresses
+
+  const phoneNumbers = patient.phoneNumbers || []
+  phoneNumbers.push({ id: uuid(), ...phoneNumber })
+  patient.phoneNumbers = phoneNumbers
+
+  const updatedPatient = await PatientRepository.saveOrUpdate(patient)
+  dispatch(updatePatientSuccess(updatedPatient))
+}
+
+export const addEmptyEmail = (
+  patientId: string,
+  phoneNumbers: PhoneNumber[],
+  email: Email,
+  addresses: Address[],
+): AppThunk => async (dispatch) => {
+  const patient = await PatientRepository.find(patientId)
+
+  patient.phoneNumbers = phoneNumbers
+  patient.addresses = addresses
+
+  const emails = patient.emails || []
+  emails.push({ id: uuid(), ...email })
+  patient.emails = emails
+
+  const updatedPatient = await PatientRepository.saveOrUpdate(patient)
+  dispatch(updatePatientSuccess(updatedPatient))
+}
+
+export const addEmptyAddress = (
+  patientId: string,
+  phoneNumbers: PhoneNumber[],
+  emails: Email[],
+  address: Address,
+): AppThunk => async (dispatch) => {
+  const patient = await PatientRepository.find(patientId)
+
+  patient.phoneNumbers = phoneNumbers
+  patient.emails = emails
+
   const addresses = patient.addresses || []
   addresses.push({ id: uuid(), ...address })
   patient.addresses = addresses
 
-  await dispatch(updatePatient(patient, onSuccess))
+  const updatedPatient = await PatientRepository.saveOrUpdate(patient)
+  dispatch(updatePatientSuccess(updatedPatient))
 }
 
 function validateAllergy(allergy: Allergy) {

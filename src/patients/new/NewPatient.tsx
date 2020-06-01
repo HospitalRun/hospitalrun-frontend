@@ -53,11 +53,61 @@ const NewPatient = () => {
     )
   }
 
+  const onTempObjectArrayChange = (
+    key: number,
+    value: string,
+    arrayObject: string | boolean,
+    type: string | boolean,
+    objects: any[],
+  ) => {
+    if (arrayObject === 'phoneNumbers') {
+      let temporaryObject = { ...objects[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, phoneNumber: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...objects]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+    } else if (arrayObject === 'emails') {
+      let temporaryObject = { ...objects[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, email: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...objects]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+    } else if (arrayObject === 'addresses') {
+      let temporaryObject = { ...objects[key] }
+      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
+        temporaryObject = { ...temporaryObject, address: value }
+      } else {
+        temporaryObject = { ...temporaryObject, type: value }
+      }
+      const temporaryObjects = [...objects]
+      temporaryObjects[key] = temporaryObject
+      setPatient({
+        ...patient,
+        [arrayObject]: [...temporaryObjects],
+      })
+    }
+  }
+
   const onFieldChange = (key: string, value: string | boolean) => {
     setPatient({
       ...patient,
       [key]: value,
     })
+    // console.log(key)
   }
 
   return (
@@ -66,6 +116,7 @@ const NewPatient = () => {
         isEditable
         patient={patient}
         onFieldChange={onFieldChange}
+        onTempObjectArrayChange={onTempObjectArrayChange}
         error={createError}
       />
       <div className="row float-right">

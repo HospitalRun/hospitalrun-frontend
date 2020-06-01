@@ -14,18 +14,38 @@ import Address from '../model/Address'
 import Email from '../model/Email'
 import Patient from '../model/Patient'
 import PhoneNumber from '../model/PhoneNumber'
-import { addPhoneNumber, addEmail, addAddress } from './patient-slice'
+import { addEmptyPhoneNumber, addEmptyEmail, addEmptyAddress } from './patient-slice'
 
 interface Props {
   patient: Patient
   isEditable?: boolean
   onFieldChange?: (key: string, value: string | boolean) => void
+  onObjectArrayChange?: (
+    key: number,
+    value: string,
+    arrayObject: string | boolean,
+    type: string | boolean,
+  ) => void
+  onTempObjectArrayChange?: (
+    key: number,
+    value: string,
+    arrayObject: string | boolean,
+    type: string | boolean,
+    objects: any[],
+  ) => void
   error?: any
 }
 
 const GeneralInformation = (props: Props) => {
   const { t } = useTranslation()
-  const { patient, isEditable, onFieldChange, error } = props
+  const {
+    patient,
+    isEditable,
+    onFieldChange,
+    onObjectArrayChange,
+    onTempObjectArrayChange,
+    error,
+  } = props
   const dispatch = useDispatch()
 
   const [phoneNumbers, setPhoneNumbers] = useState<PhoneNumber[]>([
@@ -60,6 +80,21 @@ const GeneralInformation = (props: Props) => {
 
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
+
+  const onObjectElementChange = (
+    index: number,
+    event: string,
+    arrayObject: string | boolean,
+    type: string | boolean,
+  ) => onObjectArrayChange && onObjectArrayChange(index, event, arrayObject, type)
+
+  const onTempObjectElementChange = (
+    index: number,
+    event: string,
+    arrayObject: string | boolean,
+    type: string | boolean,
+    objects: any[],
+  ) => onTempObjectArrayChange && onTempObjectArrayChange(index, event, arrayObject, type, objects)
 
   const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.checked)
@@ -258,7 +293,7 @@ const GeneralInformation = (props: Props) => {
                       <SelectWithLabelFormGroup
                         name="permanentPhoneNumberType"
                         label={t('patient.phoneNumber.type')}
-                        value={a.type}
+                        value={patient.phoneNumbers[index].type}
                         isEditable={isEditable}
                         options={[
                           { label: t('patient.phoneNumber.types.home'), value: 'home' },
@@ -268,12 +303,7 @@ const GeneralInformation = (props: Props) => {
                           { label: t('patient.phoneNumber.types.mobile'), value: 'mobile' },
                         ]}
                         onChange={(event) => {
-                          const type = event.target.value
-                          setPhoneNumbers((currentPhoneNumber) =>
-                            produce(currentPhoneNumber, (v) => {
-                              v[index].type = type
-                            }),
-                          )
+                          onObjectElementChange(index, event.target.value, 'phoneNumbers', 'type')
                         }}
                       />
                     </td>
@@ -284,14 +314,9 @@ const GeneralInformation = (props: Props) => {
                         label={t('patient.phoneNumber.phoneNumber')}
                         isEditable={isEditable}
                         placeholder="PhoneNumber"
-                        value={a.phoneNumber}
+                        value={patient.phoneNumbers[index].phoneNumber}
                         onChange={(event) => {
-                          const phoneNumber = event.target.value
-                          setPhoneNumbers((currentPhoneNumber) =>
-                            produce(currentPhoneNumber, (v) => {
-                              v[index].phoneNumber = phoneNumber
-                            }),
-                          )
+                          onObjectElementChange(index, event.target.value, 'phoneNumbers', false)
                         }}
                         feedback={t(error?.phoneNumber)}
                         isInvalid={!!error?.phoneNumber}
@@ -300,57 +325,75 @@ const GeneralInformation = (props: Props) => {
                     </td>
                   </tr>
                 ))}
-              {phoneNumbers?.map(
-                (p: PhoneNumber, index: number) =>
-                  isEditable && (
-                    <tr key={p.id}>
-                      <td>
-                        <SelectWithLabelFormGroup
-                          name="temporaryPhoneNumberType"
-                          label={t('patient.phoneNumber.type')}
-                          value={p.type}
-                          isEditable={isEditable}
-                          options={[
-                            { label: t('patient.phoneNumber.types.home'), value: 'home' },
-                            { label: t('patient.phoneNumber.types.work'), value: 'work' },
-                            { label: t('patient.phoneNumber.types.temporary'), value: 'temporary' },
-                            { label: t('patient.phoneNumber.types.old'), value: 'old' },
-                            { label: t('patient.phoneNumber.types.mobile'), value: 'mobile' },
-                          ]}
-                          onChange={(event) => {
-                            const type = event.target.value
-                            setPhoneNumbers((currentPhoneNumber) =>
-                              produce(currentPhoneNumber, (v) => {
-                                v[index].type = type
-                              }),
-                            )
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <TextInputWithLabelFormGroup
-                          name="temporaryPhoneNumber"
-                          isRequired
-                          label={t('patient.phoneNumber.phoneNumber')}
-                          isEditable={isEditable}
-                          placeholder="PhoneNumber"
-                          value={p.phoneNumber}
-                          onChange={(event) => {
-                            const phoneNumber = event.target.value
-                            setPhoneNumbers((currentPhoneNumber) =>
-                              produce(currentPhoneNumber, (v) => {
-                                v[index].phoneNumber = phoneNumber
-                              }),
-                            )
-                          }}
-                          feedback={t(error?.phoneNumber)}
-                          isInvalid={!!error?.phoneNumber}
-                          type="tel"
-                        />
-                      </td>
-                    </tr>
-                  ),
-              )}
+              {!patient.id &&
+                phoneNumbers?.map(
+                  (p: PhoneNumber, index: number) =>
+                    isEditable && (
+                      <tr key={p.id}>
+                        <td>
+                          <SelectWithLabelFormGroup
+                            name="temporaryPhoneNumberType"
+                            label={t('patient.phoneNumber.type')}
+                            value={p.type}
+                            isEditable={isEditable}
+                            options={[
+                              { label: t('patient.phoneNumber.types.home'), value: 'home' },
+                              { label: t('patient.phoneNumber.types.work'), value: 'work' },
+                              {
+                                label: t('patient.phoneNumber.types.temporary'),
+                                value: 'temporary',
+                              },
+                              { label: t('patient.phoneNumber.types.old'), value: 'old' },
+                              { label: t('patient.phoneNumber.types.mobile'), value: 'mobile' },
+                            ]}
+                            onChange={(event) => {
+                              const type = event.target.value
+                              setPhoneNumbers((currentPhoneNumber) =>
+                                produce(currentPhoneNumber, (v) => {
+                                  v[index].type = type
+                                }),
+                              )
+                              onTempObjectElementChange(
+                                index,
+                                type,
+                                false,
+                                'phoneNumbers',
+                                phoneNumbers,
+                              )
+                            }}
+                          />
+                        </td>
+                        <td>
+                          <TextInputWithLabelFormGroup
+                            name="temporaryPhoneNumber"
+                            isRequired
+                            label={t('patient.phoneNumber.phoneNumber')}
+                            isEditable={isEditable}
+                            placeholder="PhoneNumber"
+                            value={p.phoneNumber}
+                            onChange={(event) => {
+                              const phoneNumber = event.target.value
+                              setPhoneNumbers((currentPhoneNumber) =>
+                                produce(currentPhoneNumber, (v) => {
+                                  v[index].phoneNumber = phoneNumber
+                                }),
+                              )
+                              onTempObjectElementChange(
+                                index,
+                                phoneNumber,
+                                'phoneNumbers',
+                                false,
+                                phoneNumbers,
+                              )
+                            }}
+                            feedback={t(error?.phoneNumber)}
+                            isInvalid={!!error?.phoneNumber}
+                            type="tel"
+                          />
+                        </td>
+                      </tr>
+                    ),
+                )}
             </tbody>
           </table>
           <div className="addButtonWrapper">
@@ -365,9 +408,15 @@ const GeneralInformation = (props: Props) => {
                   if (patient.phoneNumbers) {
                     if (patient.id) {
                       dispatch(
-                        addPhoneNumber(
+                        addEmptyPhoneNumber(
                           patient.id,
-                          phoneNumbers[phoneNumbers.length - 1] as PhoneNumber,
+                          {
+                            id: generate(),
+                            phoneNumber: '',
+                            type: '',
+                          } as PhoneNumber,
+                          patient.emails,
+                          patient.addresses,
                         ),
                       )
                     } else {
@@ -378,14 +427,16 @@ const GeneralInformation = (props: Props) => {
                   } else {
                     patient.phoneNumbers = phoneNumbers
                   }
-                  setPhoneNumbers([
-                    ...phoneNumbers,
-                    {
-                      id: generate(),
-                      phoneNumber: '',
-                      type: '',
-                    },
-                  ])
+                  if (!patient.id) {
+                    setPhoneNumbers([
+                      ...phoneNumbers,
+                      {
+                        id: generate(),
+                        phoneNumber: '',
+                        type: '',
+                      },
+                    ])
+                  }
                 }}
               >
                 {t('patient.phoneNumber.addPhoneNumber')}
@@ -423,12 +474,7 @@ const GeneralInformation = (props: Props) => {
                           { label: t('patient.email.types.mobile'), value: 'mobile' },
                         ]}
                         onChange={(event) => {
-                          const type = event.target.value
-                          setEmails((currentEmail) =>
-                            produce(currentEmail, (v) => {
-                              v[index].type = type
-                            }),
-                          )
+                          onObjectElementChange(index, event.target.value, 'emails', 'type')
                         }}
                       />
                     </td>
@@ -440,12 +486,7 @@ const GeneralInformation = (props: Props) => {
                         placeholder="Email"
                         value={a.email}
                         onChange={(event) => {
-                          const email = event.target.value
-                          setEmails((currentEmail) =>
-                            produce(currentEmail, (v) => {
-                              v[index].email = email
-                            }),
-                          )
+                          onObjectElementChange(index, event.target.value, 'emails', false)
                         }}
                         type="email"
                         feedback={t(error?.email)}
@@ -454,56 +495,59 @@ const GeneralInformation = (props: Props) => {
                     </td>
                   </tr>
                 ))}
-              {emails?.map(
-                (p: Email, index: number) =>
-                  isEditable && (
-                    <tr key={p.id}>
-                      <td>
-                        <SelectWithLabelFormGroup
-                          name="temporaryEmailType"
-                          label={t('patient.email.type')}
-                          value={p.type}
-                          isEditable={isEditable}
-                          options={[
-                            { label: t('patient.email.types.home'), value: 'home' },
-                            { label: t('patient.email.types.work'), value: 'work' },
-                            { label: t('patient.email.types.temporary'), value: 'temporary' },
-                            { label: t('patient.email.types.old'), value: 'old' },
-                            { label: t('patient.email.types.mobile'), value: 'mobile' },
-                          ]}
-                          onChange={(event) => {
-                            const type = event.target.value
-                            setEmails((currentEmail) =>
-                              produce(currentEmail, (v) => {
-                                v[index].type = type
-                              }),
-                            )
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <TextInputWithLabelFormGroup
-                          name="temporaryEmail"
-                          label={t('patient.email.email')}
-                          isEditable={isEditable}
-                          placeholder="Email"
-                          value={p.email}
-                          onChange={(event) => {
-                            const email = event.target.value
-                            setEmails((currentEmail) =>
-                              produce(currentEmail, (v) => {
-                                v[index].email = email
-                              }),
-                            )
-                          }}
-                          type="email"
-                          feedback={t(error?.email)}
-                          isInvalid={!!error?.email}
-                        />
-                      </td>
-                    </tr>
-                  ),
-              )}
+              {!patient.id &&
+                emails?.map(
+                  (p: Email, index: number) =>
+                    isEditable && (
+                      <tr key={p.id}>
+                        <td>
+                          <SelectWithLabelFormGroup
+                            name="temporaryEmailType"
+                            label={t('patient.email.type')}
+                            value={p.type}
+                            isEditable={isEditable}
+                            options={[
+                              { label: t('patient.email.types.home'), value: 'home' },
+                              { label: t('patient.email.types.work'), value: 'work' },
+                              { label: t('patient.email.types.temporary'), value: 'temporary' },
+                              { label: t('patient.email.types.old'), value: 'old' },
+                              { label: t('patient.email.types.mobile'), value: 'mobile' },
+                            ]}
+                            onChange={(event) => {
+                              const type = event.target.value
+                              setEmails((currentEmail) =>
+                                produce(currentEmail, (v) => {
+                                  v[index].type = type
+                                }),
+                              )
+                              onTempObjectElementChange(index, type, false, 'emails', emails)
+                            }}
+                          />
+                        </td>
+                        <td>
+                          <TextInputWithLabelFormGroup
+                            name="temporaryEmail"
+                            label={t('patient.email.email')}
+                            isEditable={isEditable}
+                            placeholder="Email"
+                            value={p.email}
+                            onChange={(event) => {
+                              const email = event.target.value
+                              setEmails((currentEmail) =>
+                                produce(currentEmail, (v) => {
+                                  v[index].email = email
+                                }),
+                              )
+                              onTempObjectElementChange(index, email, 'emails', false, emails)
+                            }}
+                            type="email"
+                            feedback={t(error?.email)}
+                            isInvalid={!!error?.email}
+                          />
+                        </td>
+                      </tr>
+                    ),
+                )}
             </tbody>
           </table>
           <div className="addButtonWrapper">
@@ -517,23 +561,47 @@ const GeneralInformation = (props: Props) => {
                 onClick={() => {
                   if (patient.emails) {
                     if (patient.id) {
-                      dispatch(addEmail(patient.id, emails[emails.length - 1] as Email))
+                      dispatch(
+                        addEmptyEmail(
+                          patient.id,
+                          patient.phoneNumbers,
+                          {
+                            id: generate(),
+                            email: '',
+                            type: '',
+                          } as Email,
+                          patient.addresses,
+                        ),
+                      )
                     } else {
                       patient.emails = patient.emails.concat(emails[emails.length - 1])
                     }
                   } else if (patient.id) {
-                    dispatch(addEmail(patient.id, emails[emails.length - 1] as Email))
+                    dispatch(
+                      addEmptyEmail(
+                        patient.id,
+                        patient.phoneNumbers,
+                        {
+                          id: generate(),
+                          email: '',
+                          type: '',
+                        } as Email,
+                        patient.addresses,
+                      ),
+                    )
                   } else {
                     patient.emails = emails
                   }
-                  setEmails([
-                    ...emails,
-                    {
-                      id: generate(),
-                      email: '',
-                      type: '',
-                    },
-                  ])
+                  if (!patient.id) {
+                    setEmails([
+                      ...emails,
+                      {
+                        id: generate(),
+                        email: '',
+                        type: '',
+                      },
+                    ])
+                  }
                 }}
               >
                 {t('patient.email.addEmail')}
@@ -571,12 +639,7 @@ const GeneralInformation = (props: Props) => {
                           { label: t('patient.address.types.billing'), value: 'billing' },
                         ]}
                         onChange={(event) => {
-                          const type = event.target.value
-                          setAddresses((currentAddress) =>
-                            produce(currentAddress, (v) => {
-                              v[index].type = type
-                            }),
-                          )
+                          onObjectElementChange(index, event.target.value, 'addresses', 'type')
                         }}
                       />
                     </td>
@@ -587,65 +650,69 @@ const GeneralInformation = (props: Props) => {
                         isEditable={isEditable}
                         placeholder="Address"
                         value={a.address}
-                        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                          const address = event.target.value
-                          setAddresses((currentAddress) =>
-                            produce(currentAddress, (v) => {
-                              v[index].address = address
-                            }),
-                          )
+                        onChange={(event) => {
+                          onObjectElementChange(index, event.target.value, 'addresses', false)
                         }}
                       />
                     </td>
                   </tr>
                 ))}
-              {addresses?.map(
-                (p: Address, index: number) =>
-                  isEditable && (
-                    <tr key={p.id}>
-                      <td>
-                        <SelectWithLabelFormGroup
-                          name="temporaryAddressType"
-                          label={t('patient.address.type')}
-                          value={p.type}
-                          isEditable={isEditable}
-                          options={[
-                            { label: t('patient.address.types.home'), value: 'home' },
-                            { label: t('patient.address.types.work'), value: 'work' },
-                            { label: t('patient.address.types.temporary'), value: 'temporary' },
-                            { label: t('patient.address.types.old'), value: 'old' },
-                            { label: t('patient.address.types.billing'), value: 'billing' },
-                          ]}
-                          onChange={(event) => {
-                            const type = event.target.value
-                            setAddresses((currentAddress) =>
-                              produce(currentAddress, (v) => {
-                                v[index].type = type
-                              }),
-                            )
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <TextFieldWithLabelFormGroup
-                          name="temporaryAddress"
-                          label={t('patient.address.address')}
-                          isEditable={isEditable}
-                          placeholder="Address"
-                          value={p.address}
-                          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            const address = event.target.value
-                            setAddresses((currentAddress) =>
-                              produce(currentAddress, (v) => {
-                                v[index].address = address
-                              }),
-                            )
-                          }}
-                        />
-                      </td>
-                    </tr>
-                  ),
-              )}
+              {!patient.id &&
+                addresses?.map(
+                  (p: Address, index: number) =>
+                    isEditable && (
+                      <tr key={p.id}>
+                        <td>
+                          <SelectWithLabelFormGroup
+                            name="temporaryAddressType"
+                            label={t('patient.address.type')}
+                            value={p.type}
+                            isEditable={isEditable}
+                            options={[
+                              { label: t('patient.address.types.home'), value: 'home' },
+                              { label: t('patient.address.types.work'), value: 'work' },
+                              { label: t('patient.address.types.temporary'), value: 'temporary' },
+                              { label: t('patient.address.types.old'), value: 'old' },
+                              { label: t('patient.address.types.billing'), value: 'billing' },
+                            ]}
+                            onChange={(event) => {
+                              const type = event.target.value
+                              setAddresses((currentAddress) =>
+                                produce(currentAddress, (v) => {
+                                  v[index].type = type
+                                }),
+                              )
+                              onTempObjectElementChange(index, type, false, 'addresses', addresses)
+                            }}
+                          />
+                        </td>
+                        <td>
+                          <TextFieldWithLabelFormGroup
+                            name="temporaryAddress"
+                            label={t('patient.address.address')}
+                            isEditable={isEditable}
+                            placeholder="Address"
+                            value={p.address}
+                            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                              const address = event.target.value
+                              setAddresses((currentAddress) =>
+                                produce(currentAddress, (v) => {
+                                  v[index].address = address
+                                }),
+                              )
+                              onTempObjectElementChange(
+                                index,
+                                address,
+                                'addresses',
+                                false,
+                                addresses,
+                              )
+                            }}
+                          />
+                        </td>
+                      </tr>
+                    ),
+                )}
             </tbody>
           </table>
           <div className="addButtonWrapper">
@@ -659,23 +726,37 @@ const GeneralInformation = (props: Props) => {
                 onClick={() => {
                   if (patient.addresses) {
                     if (patient.id) {
-                      dispatch(addAddress(patient.id, addresses[addresses.length - 1] as Address))
+                      dispatch(
+                        addEmptyAddress(patient.id, patient.phoneNumbers, patient.emails, {
+                          id: generate(),
+                          address: '',
+                          type: '',
+                        } as Address),
+                      )
                     } else {
                       patient.addresses = patient.addresses.concat(addresses[addresses.length - 1])
                     }
                   } else if (patient.id) {
-                    dispatch(addAddress(patient.id, addresses[addresses.length - 1] as Address))
+                    dispatch(
+                      addEmptyAddress(patient.id, patient.phoneNumbers, patient.emails, {
+                        id: generate(),
+                        address: '',
+                        type: '',
+                      } as Address),
+                    )
                   } else {
                     patient.addresses = addresses
                   }
-                  setAddresses([
-                    ...addresses,
-                    {
-                      id: generate(),
-                      address: '',
-                      type: '',
-                    },
-                  ])
+                  if (!patient.id) {
+                    setAddresses([
+                      ...addresses,
+                      {
+                        id: generate(),
+                        address: '',
+                        type: '',
+                      },
+                    ])
+                  }
                 }}
               >
                 {t('patient.address.addAddress')}
