@@ -11,14 +11,33 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Sidebar from '../../components/Sidebar'
+import Permissions from '../../model/Permissions'
 import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Sidebar', () => {
   let history = createMemoryHistory()
+  const allPermissions = [
+    Permissions.ReadPatients,
+    Permissions.WritePatients,
+    Permissions.ReadAppointments,
+    Permissions.WriteAppointments,
+    Permissions.DeleteAppointment,
+    Permissions.AddAllergy,
+    Permissions.AddDiagnosis,
+    Permissions.RequestLab,
+    Permissions.CancelLab,
+    Permissions.CompleteLab,
+    Permissions.ViewLab,
+    Permissions.ViewLabs,
+    Permissions.ViewIncidents,
+    Permissions.ViewIncident,
+    Permissions.ReportIncident,
+  ]
   const store = mockStore({
     components: { sidebarCollapsed: false },
+    user: { permissions: allPermissions },
   } as any)
   const setup = (location: string) => {
     history = createMemoryHistory()
