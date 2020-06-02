@@ -1,3 +1,4 @@
+import { Button } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -6,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 
 import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
 import Incident from '../../model/Incident'
+import { useButtonToolbarSetter } from '../../page-header/ButtonBarProvider'
 import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
 import IncidentFilter from '../IncidentFilter'
@@ -18,6 +20,25 @@ const ViewIncidents = () => {
   useTitle(t('incidents.reports.label'))
   const [searchFilter, setSearchFilter] = useState(IncidentFilter.reported)
   const { incidents } = useSelector((state: RootState) => state.incidents)
+
+  const setButtonToolBar = useButtonToolbarSetter()
+  useEffect(() => {
+    setButtonToolBar([
+      <Button
+        key="newIncidentButton"
+        outlined
+        color="success"
+        icon="add"
+        onClick={() => history.push('/incidents/new')}
+      >
+        {t('incidents.reports.new')}
+      </Button>,
+    ])
+
+    return () => {
+      setButtonToolBar([])
+    }
+  }, [dispatch, setButtonToolBar, t, history])
 
   useEffect(() => {
     dispatch(searchIncidents(searchFilter))
