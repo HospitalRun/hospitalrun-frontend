@@ -25,13 +25,13 @@ const ViewIncidents = () => {
   useEffect(() => {
     setButtonToolBar([
       <Button
-        key="newPIncidentButton"
+        key="newIncidentButton"
         outlined
         color="success"
         icon="add"
         onClick={() => history.push('/incidents/new')}
       >
-        {t('incidents.newIncident')}
+        {t('incidents.reports.new')}
       </Button>,
     ])
 
