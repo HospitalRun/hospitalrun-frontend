@@ -12,6 +12,7 @@ import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
 import Allergies from '../allergies/Allergies'
 import AppointmentsList from '../appointments/AppointmentsList'
+import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
 import Labs from '../labs/LabsTab'
@@ -19,7 +20,6 @@ import Note from '../notes/NoteTab'
 import { fetchPatient } from '../patient-slice'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
 import { getPatientFullName } from '../util/patient-name-util'
-import CarePlanTab from "../care-plans/CarePlanTab";
 
 const getPatientCode = (p: Patient): string => {
   if (p) {
@@ -148,8 +148,8 @@ const ViewPatient = () => {
         <Route exact path="/patients/:id/labs">
           <Labs patientId={patient.id} />
         </Route>
-        <Route exact path="/patients/:id/care-plans">
-          <CarePlanTab patientId={patient.id} />
+        <Route path="/patients/:id/care-plans">
+          <CarePlanTab />
         </Route>
       </Panel>
     </div>

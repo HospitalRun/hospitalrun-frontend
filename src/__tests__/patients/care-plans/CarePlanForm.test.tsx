@@ -1,4 +1,5 @@
 import '../../../__mocks__/matchMediaMock'
+import { Alert } from '@hospitalrun/components'
 import { addDays } from 'date-fns'
 import { mount } from 'enzyme'
 import React from 'react'
@@ -265,6 +266,7 @@ describe('Care Plan Form', () => {
 
   it('should render the form fields in an error state', () => {
     const expectedError = {
+      message: 'some error message',
       title: 'some title error',
       description: 'some description error',
       status: 'some status error',
@@ -277,6 +279,7 @@ describe('Care Plan Form', () => {
 
     const { wrapper } = setup(false, false, expectedError)
 
+    const alert = wrapper.find(Alert)
     const titleInput = wrapper.findWhere((w) => w.prop('name') === 'title')
     const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
     const conditionSelector = wrapper.findWhere((w) => w.prop('name') === 'condition')
@@ -285,6 +288,9 @@ describe('Care Plan Form', () => {
     const startDatePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
     const endDatePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
     const noteInput = wrapper.findWhere((w) => w.prop('name') === 'note')
+
+    expect(alert).toHaveLength(1)
+    expect(alert.prop('message')).toEqual(expectedError.message)
 
     expect(titleInput.prop('isInvalid')).toBeTruthy()
     expect(titleInput.prop('feedback')).toEqual(expectedError.title)

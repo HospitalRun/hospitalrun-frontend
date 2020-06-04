@@ -1,4 +1,4 @@
-import { Column, Row } from '@hospitalrun/components'
+import { Alert, Column, Row } from '@hospitalrun/components'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -10,6 +10,7 @@ import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../model/CarePlan'
 import Patient from '../../model/Patient'
 
 interface Error {
+  message?: string
   title?: string
   description?: string
   status?: string
@@ -23,7 +24,7 @@ interface Props {
   patient: Patient
   carePlan: Partial<CarePlan>
   carePlanError?: Error
-  onChange: (newCarePlan: Partial<CarePlan>) => void
+  onChange?: (newCarePlan: Partial<CarePlan>) => void
   disabled: boolean
 }
 
@@ -32,15 +33,18 @@ const CarePlanForm = (props: Props) => {
   const { patient, carePlan, carePlanError, disabled, onChange } = props
 
   const onFieldChange = (name: string, value: string | CarePlanStatus | CarePlanIntent) => {
-    const newCarePlan = {
-      ...carePlan,
-      [name]: value,
+    if (onChange) {
+      const newCarePlan = {
+        ...carePlan,
+        [name]: value,
+      }
+      onChange(newCarePlan)
     }
-    onChange(newCarePlan)
   }
 
   return (
     <form>
+      {carePlanError?.message && <Alert color="danger" message={carePlanError.message} />}
       <Row>
         <Column sm={12}>
           <TextInputWithLabelFormGroup

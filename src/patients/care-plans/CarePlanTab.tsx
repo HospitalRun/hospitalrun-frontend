@@ -1,26 +1,19 @@
 import { Button } from '@hospitalrun/components'
-import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { Route, Switch } from 'react-router-dom'
 
 import Permissions from '../../model/Permissions'
 import { RootState } from '../../store'
 import AddCarePlanModal from './AddCarePlanModal'
+import CarePlanTable from './CarePlanTable'
+import ViewCarePlan from './ViewCarePlan'
 
-interface Props {
-  patientId: string
-}
-
-export const CarePlanTab = (props: Props) => {
+const CarePlanTab = () => {
   const { t } = useTranslation()
-
   const { permissions } = useSelector((state: RootState) => state.user)
-  const { patient } = useSelector((state: RootState) => state.patient)
   const [showAddCarePlanModal, setShowAddCarePlanModal] = useState(false)
-  const { patientId } = props
-  console.log(patientId)
-  console.log(patient.carePlans)
   return (
     <>
       <div className="row">
@@ -39,26 +32,14 @@ export const CarePlanTab = (props: Props) => {
         </div>
       </div>
       <br />
-      <table className="table table-hover">
-        <thead className="thead-light ">
-          <tr>
-            <th>{t('patient.carePlan.title')}</th>
-            <th>{t('patient.carePlan.startDate')}</th>
-            <th>{t('patient.carePlan.endDate')}</th>
-            <th>{t('patient.carePlan.status')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {patient.carePlans?.map((carePlan) => (
-            <tr key={carePlan.id}>
-              <td>{carePlan.title}</td>
-              <td>{format(new Date(carePlan.startDate), 'yyyy-MM-dd')}</td>
-              <td>{format(new Date(carePlan.endDate), 'yyyy-MM-dd')}</td>
-              <td>{carePlan.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Switch>
+        <Route exact path="/patients/:id/care-plans">
+          <CarePlanTable />
+        </Route>
+        <Route exact path="/patients/:id/care-plans/:carePlanId">
+          <ViewCarePlan />
+        </Route>
+      </Switch>
       <AddCarePlanModal
         show={showAddCarePlanModal}
         onCloseButtonClick={() => setShowAddCarePlanModal(false)}
