@@ -19,7 +19,6 @@ import GeneralInformation from '../../patients/GeneralInformation'
 import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
-// import { Address } from 'cluster'
 
 describe('Error handling', () => {
   it('should display errors', () => {
@@ -42,10 +41,6 @@ describe('Error handling', () => {
     const errorMessage = wrapper.find(Alert)
     const givenNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
     const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
-    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'temporaryEmail')
-    const phoneNumberInput = wrapper.findWhere(
-      (w: any) => w.prop('name') === 'temporaryPhoneNumber',
-    )
 
     expect(errorMessage).toBeTruthy()
     expect(errorMessage.prop('message')).toMatch(error.message)
@@ -53,10 +48,6 @@ describe('Error handling', () => {
     expect(givenNameInput.prop('feedback')).toEqual(error.givenName)
     expect(dateOfBirthInput.prop('isInvalid')).toBeTruthy()
     expect(dateOfBirthInput.prop('feedback')).toEqual(error.dateOfBirth)
-    expect(emailInput.prop('feedback')).toEqual(error.email)
-    expect(emailInput.prop('isInvalid')).toBeTruthy()
-    expect(phoneNumberInput.prop('feedback')).toEqual(error.phoneNumber)
-    expect(phoneNumberInput.prop('isInvalid')).toBeTruthy()
   })
 })
 

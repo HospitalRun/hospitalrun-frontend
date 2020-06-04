@@ -274,7 +274,7 @@ describe('patients slice', () => {
       expect(store.getActions()[1]).toEqual(
         createPatientError({
           message: 'patient.errors.createPatientError',
-          phoneNumber: 'patient.errors.invalidPhoneNumber',
+          phoneNumbers: ['patient.errors.invalidPhoneNumber'],
         }),
       )
     })
@@ -305,7 +305,7 @@ describe('patients slice', () => {
       expect(store.getActions()[1]).toEqual(
         createPatientError({
           message: 'patient.errors.createPatientError',
-          phoneNumber: 'patient.errors.invalidPhoneNumber',
+          phoneNumbers: ['patient.errors.invalidPhoneNumber'],
         }),
       )
     })

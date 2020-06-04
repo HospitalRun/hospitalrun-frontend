@@ -41,11 +41,36 @@ const NewPatient = () => {
     )
   }
 
+  const cleanUpPatient = () => {
+    const patientCopy = { ...patient }
+
+    if ('phoneNumbers' in patientCopy) {
+      patientCopy.phoneNumbers = patientCopy.phoneNumbers.filter(
+        (phoneNumber) => phoneNumber.phoneNumber.trim() !== '',
+      )
+    }
+
+    if ('emails' in patientCopy) {
+      patientCopy.emails = patientCopy.emails.filter((email) => email.email.trim() !== '')
+    }
+
+    if ('addresses' in patientCopy) {
+      patientCopy.addresses = patientCopy.addresses.filter(
+        (address) => address.address.trim() !== '',
+      )
+    }
+
+    setPatient(patientCopy)
+    return patientCopy
+  }
+
   const onSave = () => {
+    const patientCopy = cleanUpPatient()
+
     dispatch(
       createPatient(
         {
-          ...patient,
+          ...patientCopy,
           fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
         },
         onSuccessfulSave,
@@ -60,41 +85,31 @@ const NewPatient = () => {
     type: string | boolean,
     objects: any[],
   ) => {
+    let temporaryObject = { ...objects[key] }
+
     if (arrayObject === 'phoneNumbers') {
-      let temporaryObject = { ...objects[key] }
       if (typeof arrayObject === 'string' && typeof type === 'boolean') {
         temporaryObject = { ...temporaryObject, phoneNumber: value }
       } else {
         temporaryObject = { ...temporaryObject, type: value }
       }
-      const temporaryObjects = [...objects]
-      temporaryObjects[key] = temporaryObject
-      setPatient({
-        ...patient,
-        [arrayObject]: [...temporaryObjects],
-      })
     } else if (arrayObject === 'emails') {
-      let temporaryObject = { ...objects[key] }
       if (typeof arrayObject === 'string' && typeof type === 'boolean') {
         temporaryObject = { ...temporaryObject, email: value }
       } else {
         temporaryObject = { ...temporaryObject, type: value }
       }
-      const temporaryObjects = [...objects]
-      temporaryObjects[key] = temporaryObject
-      setPatient({
-        ...patient,
-        [arrayObject]: [...temporaryObjects],
-      })
     } else if (arrayObject === 'addresses') {
-      let temporaryObject = { ...objects[key] }
       if (typeof arrayObject === 'string' && typeof type === 'boolean') {
         temporaryObject = { ...temporaryObject, address: value }
       } else {
         temporaryObject = { ...temporaryObject, type: value }
       }
-      const temporaryObjects = [...objects]
-      temporaryObjects[key] = temporaryObject
+    }
+
+    const temporaryObjects = [...objects]
+    temporaryObjects[key] = temporaryObject
+    if (typeof arrayObject === 'string') {
       setPatient({
         ...patient,
         [arrayObject]: [...temporaryObjects],
@@ -107,7 +122,6 @@ const NewPatient = () => {
       ...patient,
       [key]: value,
     })
-    // console.log(key)
   }
 
   return (

@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { generate } from 'shortid'
+import validator from 'validator'
 
 import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
@@ -46,6 +47,7 @@ const GeneralInformation = (props: Props) => {
     onTempObjectArrayChange,
     error,
   } = props
+
   const dispatch = useDispatch()
 
   const [phoneNumbers, setPhoneNumbers] = useState<PhoneNumber[]>([
@@ -98,6 +100,28 @@ const GeneralInformation = (props: Props) => {
 
   const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.checked)
+
+  const phoneNumbersLookGood = () => {
+    if (patient.phoneNumbers) {
+      for (let i = 0; i < patient.phoneNumbers.length; i += 1) {
+        if (!validator.isMobilePhone(patient.phoneNumbers[i].phoneNumber)) {
+          return false
+        }
+      }
+    }
+    return true
+  }
+
+  const emailsLookGood = () => {
+    if (patient.emails) {
+      for (let i = 0; i < patient.emails.length; i += 1) {
+        if (!validator.isEmail(patient.emails[i].email)) {
+          return false
+        }
+      }
+    }
+    return true
+  }
 
   const onApproximateAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let approximateAgeNumber
@@ -287,47 +311,51 @@ const GeneralInformation = (props: Props) => {
             <tbody>
               {patient.id &&
                 patient.phoneNumbers &&
-                patient.phoneNumbers.map((a: PhoneNumber, index: number) => (
-                  <tr key={a.id}>
-                    <td>
-                      <SelectWithLabelFormGroup
-                        name="permanentPhoneNumberType"
-                        label={t('patient.phoneNumber.type')}
-                        value={patient.phoneNumbers[index].type}
-                        isEditable={isEditable}
-                        options={[
-                          { label: t('patient.phoneNumber.types.home'), value: 'home' },
-                          { label: t('patient.phoneNumber.types.work'), value: 'work' },
-                          { label: t('patient.phoneNumber.types.temporary'), value: 'temporary' },
-                          { label: t('patient.phoneNumber.types.old'), value: 'old' },
-                          { label: t('patient.phoneNumber.types.mobile'), value: 'mobile' },
-                        ]}
-                        onChange={(event) => {
-                          onObjectElementChange(index, event.target.value, 'phoneNumbers', 'type')
-                        }}
-                      />
-                    </td>
-                    <td>
-                      <TextInputWithLabelFormGroup
-                        name="permanentPhoneNumber"
-                        isRequired
-                        label={t('patient.phoneNumber.phoneNumber')}
-                        isEditable={isEditable}
-                        placeholder="PhoneNumber"
-                        value={patient.phoneNumbers[index].phoneNumber}
-                        onChange={(event) => {
-                          onObjectElementChange(index, event.target.value, 'phoneNumbers', false)
-                        }}
-                        feedback={t(error?.phoneNumber)}
-                        isInvalid={!!error?.phoneNumber}
-                        type="tel"
-                      />
-                    </td>
-                  </tr>
-                ))}
+                patient.phoneNumbers.map((a: PhoneNumber, index: number) => {
+                  const errorBool = error && error.phoneNumbers && error.phoneNumbers[index]
+                  return (
+                    <tr key={a.id}>
+                      <td>
+                        <SelectWithLabelFormGroup
+                          name="permanentPhoneNumberType"
+                          label={t('patient.phoneNumber.type')}
+                          value={patient.phoneNumbers[index].type}
+                          isEditable={isEditable}
+                          options={[
+                            { label: t('patient.phoneNumber.types.home'), value: 'home' },
+                            { label: t('patient.phoneNumber.types.work'), value: 'work' },
+                            { label: t('patient.phoneNumber.types.temporary'), value: 'temporary' },
+                            { label: t('patient.phoneNumber.types.old'), value: 'old' },
+                            { label: t('patient.phoneNumber.types.mobile'), value: 'mobile' },
+                          ]}
+                          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                            onObjectElementChange(index, event.target.value, 'phoneNumbers', 'type')
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <TextInputWithLabelFormGroup
+                          name="permanentPhoneNumber"
+                          isRequired
+                          label={t('patient.phoneNumber.phoneNumber')}
+                          isEditable={isEditable}
+                          placeholder="PhoneNumber"
+                          value={patient.phoneNumbers[index].phoneNumber}
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            onObjectElementChange(index, event.target.value, 'phoneNumbers', false)
+                          }}
+                          feedback={t(errorBool)}
+                          isInvalid={!!errorBool}
+                          type="tel"
+                        />
+                      </td>
+                    </tr>
+                  )
+                })}
               {!patient.id &&
-                phoneNumbers?.map(
-                  (p: PhoneNumber, index: number) =>
+                phoneNumbers?.map((p: PhoneNumber, index: number) => {
+                  const errorBool = error && error.phoneNumbers && error.phoneNumbers[index]
+                  return (
                     isEditable && (
                       <tr key={p.id}>
                         <td>
@@ -346,7 +374,7 @@ const GeneralInformation = (props: Props) => {
                               { label: t('patient.phoneNumber.types.old'), value: 'old' },
                               { label: t('patient.phoneNumber.types.mobile'), value: 'mobile' },
                             ]}
-                            onChange={(event) => {
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                               const type = event.target.value
                               setPhoneNumbers((currentPhoneNumber) =>
                                 produce(currentPhoneNumber, (v) => {
@@ -371,7 +399,7 @@ const GeneralInformation = (props: Props) => {
                             isEditable={isEditable}
                             placeholder="PhoneNumber"
                             value={p.phoneNumber}
-                            onChange={(event) => {
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                               const phoneNumber = event.target.value
                               setPhoneNumbers((currentPhoneNumber) =>
                                 produce(currentPhoneNumber, (v) => {
@@ -386,62 +414,72 @@ const GeneralInformation = (props: Props) => {
                                 phoneNumbers,
                               )
                             }}
-                            feedback={t(error?.phoneNumber)}
-                            isInvalid={!!error?.phoneNumber}
+                            feedback={t(errorBool)}
+                            isInvalid={!!errorBool}
                             type="tel"
                           />
                         </td>
                       </tr>
-                    ),
-                )}
+                    )
+                  )
+                })}
             </tbody>
           </table>
           <div className="addButtonWrapper">
-            {isEditable && (
-              <Button
-                outlined
-                className="addButton"
-                color="success"
-                icon="add"
-                iconLocation="left"
-                onClick={() => {
-                  if (patient.phoneNumbers) {
-                    if (patient.id) {
-                      dispatch(
-                        addEmptyPhoneNumber(
-                          patient.id,
-                          {
-                            id: generate(),
-                            phoneNumber: '',
-                            type: '',
-                          } as PhoneNumber,
-                          patient.emails,
-                          patient.addresses,
-                        ),
-                      )
+            {isEditable &&
+              onTempObjectElementChange &&
+              (phoneNumbersLookGood() ? (
+                <Button
+                  outlined
+                  className="addButton"
+                  color="success"
+                  icon="add"
+                  iconLocation="left"
+                  onClick={() => {
+                    if (patient.phoneNumbers) {
+                      if (patient.id) {
+                        dispatch(
+                          addEmptyPhoneNumber(
+                            patient.id,
+                            {
+                              id: generate(),
+                              phoneNumber: '',
+                              type: '',
+                            } as PhoneNumber,
+                            patient.phoneNumbers,
+                            patient.emails,
+                            patient.addresses,
+                          ),
+                        )
+                      } else {
+                        patient.phoneNumbers = patient.phoneNumbers.concat({
+                          id: generate(),
+                          phoneNumber: '',
+                          type: '',
+                        })
+                      }
                     } else {
-                      patient.phoneNumbers = patient.phoneNumbers.concat(
-                        phoneNumbers[phoneNumbers.length - 1],
-                      )
+                      patient.phoneNumbers = phoneNumbers
                     }
-                  } else {
-                    patient.phoneNumbers = phoneNumbers
-                  }
-                  if (!patient.id) {
-                    setPhoneNumbers([
-                      ...phoneNumbers,
-                      {
-                        id: generate(),
-                        phoneNumber: '',
-                        type: '',
-                      },
-                    ])
-                  }
-                }}
-              >
-                {t('patient.phoneNumber.addPhoneNumber')}
-              </Button>
-            )}
+                    if (!patient.id) {
+                      setPhoneNumbers([
+                        ...phoneNumbers,
+                        {
+                          id: generate(),
+                          phoneNumber: '',
+                          type: '',
+                        },
+                      ])
+                    }
+                  }}
+                >
+                  {t('patient.phoneNumber.addPhoneNumber')}
+                </Button>
+              ) : (
+                <Button color="warning" disabled>
+                  {t('patient.phoneNumber.disabledPhoneNumber')}
+                </Button>
+              ))}
           </div>
         </Panel>
 
@@ -458,46 +496,50 @@ const GeneralInformation = (props: Props) => {
             <tbody>
               {patient.id &&
                 patient.emails &&
-                patient.emails.map((a: Email, index: number) => (
-                  <tr key={a.id}>
-                    <td>
-                      <SelectWithLabelFormGroup
-                        name="permanentEmailType"
-                        label={t('patient.email.type')}
-                        value={a.type}
-                        isEditable={isEditable}
-                        options={[
-                          { label: t('patient.email.types.home'), value: 'home' },
-                          { label: t('patient.email.types.work'), value: 'work' },
-                          { label: t('patient.email.types.temporary'), value: 'temporary' },
-                          { label: t('patient.email.types.old'), value: 'old' },
-                          { label: t('patient.email.types.mobile'), value: 'mobile' },
-                        ]}
-                        onChange={(event) => {
-                          onObjectElementChange(index, event.target.value, 'emails', 'type')
-                        }}
-                      />
-                    </td>
-                    <td>
-                      <TextInputWithLabelFormGroup
-                        name="permanentEmail"
-                        label={t('patient.email.email')}
-                        isEditable={isEditable}
-                        placeholder="Email"
-                        value={a.email}
-                        onChange={(event) => {
-                          onObjectElementChange(index, event.target.value, 'emails', false)
-                        }}
-                        type="email"
-                        feedback={t(error?.email)}
-                        isInvalid={!!error?.email}
-                      />
-                    </td>
-                  </tr>
-                ))}
+                patient.emails.map((a: Email, index: number) => {
+                  const errorBool = error && error.emails && error.emails[index]
+                  return (
+                    <tr key={a.id}>
+                      <td>
+                        <SelectWithLabelFormGroup
+                          name="permanentEmailType"
+                          label={t('patient.email.type')}
+                          value={a.type}
+                          isEditable={isEditable}
+                          options={[
+                            { label: t('patient.email.types.home'), value: 'home' },
+                            { label: t('patient.email.types.work'), value: 'work' },
+                            { label: t('patient.email.types.temporary'), value: 'temporary' },
+                            { label: t('patient.email.types.old'), value: 'old' },
+                            { label: t('patient.email.types.mobile'), value: 'mobile' },
+                          ]}
+                          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                            onObjectElementChange(index, event.target.value, 'emails', 'type')
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <TextInputWithLabelFormGroup
+                          name="permanentEmail"
+                          label={t('patient.email.email')}
+                          isEditable={isEditable}
+                          placeholder="Email"
+                          value={a.email}
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            onObjectElementChange(index, event.target.value, 'emails', false)
+                          }}
+                          type="email"
+                          feedback={t(errorBool)}
+                          isInvalid={!!errorBool}
+                        />
+                      </td>
+                    </tr>
+                  )
+                })}
               {!patient.id &&
-                emails?.map(
-                  (p: Email, index: number) =>
+                emails?.map((p: Email, index: number) => {
+                  const errorBool = error && error.emails && error.emails[index]
+                  return (
                     isEditable && (
                       <tr key={p.id}>
                         <td>
@@ -513,7 +555,7 @@ const GeneralInformation = (props: Props) => {
                               { label: t('patient.email.types.old'), value: 'old' },
                               { label: t('patient.email.types.mobile'), value: 'mobile' },
                             ]}
-                            onChange={(event) => {
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                               const type = event.target.value
                               setEmails((currentEmail) =>
                                 produce(currentEmail, (v) => {
@@ -531,7 +573,7 @@ const GeneralInformation = (props: Props) => {
                             isEditable={isEditable}
                             placeholder="Email"
                             value={p.email}
-                            onChange={(event) => {
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                               const email = event.target.value
                               setEmails((currentEmail) =>
                                 produce(currentEmail, (v) => {
@@ -541,72 +583,85 @@ const GeneralInformation = (props: Props) => {
                               onTempObjectElementChange(index, email, 'emails', false, emails)
                             }}
                             type="email"
-                            feedback={t(error?.email)}
-                            isInvalid={!!error?.email}
+                            feedback={t(errorBool)}
+                            isInvalid={!!errorBool}
                           />
                         </td>
                       </tr>
-                    ),
-                )}
+                    )
+                  )
+                })}
             </tbody>
           </table>
           <div className="addButtonWrapper">
-            {isEditable && (
-              <Button
-                outlined
-                className="addButton"
-                color="success"
-                icon="add"
-                iconLocation="left"
-                onClick={() => {
-                  if (patient.emails) {
-                    if (patient.id) {
+            {isEditable &&
+              onTempObjectElementChange &&
+              (emailsLookGood() ? (
+                <Button
+                  outlined
+                  className="addButton"
+                  color="success"
+                  icon="add"
+                  iconLocation="left"
+                  onClick={() => {
+                    if (patient.emails) {
+                      if (patient.id) {
+                        dispatch(
+                          addEmptyEmail(
+                            patient.id,
+                            {
+                              id: generate(),
+                              email: '',
+                              type: '',
+                            } as Email,
+                            patient.phoneNumbers,
+                            patient.emails,
+                            patient.addresses,
+                          ),
+                        )
+                      } else {
+                        patient.emails = patient.emails.concat({
+                          id: generate(),
+                          email: '',
+                          type: '',
+                        })
+                      }
+                    } else if (patient.id) {
                       dispatch(
                         addEmptyEmail(
                           patient.id,
-                          patient.phoneNumbers,
                           {
                             id: generate(),
                             email: '',
                             type: '',
                           } as Email,
+                          patient.phoneNumbers,
+                          patient.emails,
                           patient.addresses,
                         ),
                       )
                     } else {
-                      patient.emails = patient.emails.concat(emails[emails.length - 1])
+                      patient.emails = emails
                     }
-                  } else if (patient.id) {
-                    dispatch(
-                      addEmptyEmail(
-                        patient.id,
-                        patient.phoneNumbers,
+                    if (!patient.id) {
+                      setEmails([
+                        ...emails,
                         {
                           id: generate(),
                           email: '',
                           type: '',
-                        } as Email,
-                        patient.addresses,
-                      ),
-                    )
-                  } else {
-                    patient.emails = emails
-                  }
-                  if (!patient.id) {
-                    setEmails([
-                      ...emails,
-                      {
-                        id: generate(),
-                        email: '',
-                        type: '',
-                      },
-                    ])
-                  }
-                }}
-              >
-                {t('patient.email.addEmail')}
-              </Button>
-            )}
+                        },
+                      ])
+                    }
+                  }}
+                >
+                  {t('patient.email.addEmail')}
+                </Button>
+              ) : (
+                <Button color="warning" disabled>
+                  {t('patient.email.disabledEmail')}
+                </Button>
+              ))}
           </div>
         </Panel>
 
@@ -638,7 +693,7 @@ const GeneralInformation = (props: Props) => {
                           { label: t('patient.address.types.old'), value: 'old' },
                           { label: t('patient.address.types.billing'), value: 'billing' },
                         ]}
-                        onChange={(event) => {
+                        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                           onObjectElementChange(index, event.target.value, 'addresses', 'type')
                         }}
                       />
@@ -675,7 +730,7 @@ const GeneralInformation = (props: Props) => {
                               { label: t('patient.address.types.old'), value: 'old' },
                               { label: t('patient.address.types.billing'), value: 'billing' },
                             ]}
-                            onChange={(event) => {
+                            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                               const type = event.target.value
                               setAddresses((currentAddress) =>
                                 produce(currentAddress, (v) => {
@@ -716,7 +771,7 @@ const GeneralInformation = (props: Props) => {
             </tbody>
           </table>
           <div className="addButtonWrapper">
-            {isEditable && (
+            {isEditable && onTempObjectElementChange && (
               <Button
                 outlined
                 className="addButton"
@@ -727,22 +782,38 @@ const GeneralInformation = (props: Props) => {
                   if (patient.addresses) {
                     if (patient.id) {
                       dispatch(
-                        addEmptyAddress(patient.id, patient.phoneNumbers, patient.emails, {
-                          id: generate(),
-                          address: '',
-                          type: '',
-                        } as Address),
+                        addEmptyAddress(
+                          patient.id,
+                          {
+                            id: generate(),
+                            address: '',
+                            type: '',
+                          } as Address,
+                          patient.phoneNumbers,
+                          patient.emails,
+                          patient.addresses,
+                        ),
                       )
                     } else {
-                      patient.addresses = patient.addresses.concat(addresses[addresses.length - 1])
-                    }
-                  } else if (patient.id) {
-                    dispatch(
-                      addEmptyAddress(patient.id, patient.phoneNumbers, patient.emails, {
+                      patient.addresses = patient.addresses.concat({
                         id: generate(),
                         address: '',
                         type: '',
-                      } as Address),
+                      })
+                    }
+                  } else if (patient.id) {
+                    dispatch(
+                      addEmptyAddress(
+                        patient.id,
+                        {
+                          id: generate(),
+                          address: '',
+                          type: '',
+                        } as Address,
+                        patient.phoneNumbers,
+                        patient.emails,
+                        patient.addresses,
+                      ),
                     )
                   } else {
                     patient.addresses = addresses

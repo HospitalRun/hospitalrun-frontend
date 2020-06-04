@@ -25,6 +25,7 @@ export default {
       type: 'Phone Number Type',
       phoneNumber: 'Phone Number',
       addPhoneNumber: 'Add Phone Number',
+      disabledPhoneNumber: "Can't Add a Phone Number",
       error: {
         phoneNumberRequired: 'Phone Number is required.',
         invalidPhoneNumber: 'Phone Number is Invalid.',
@@ -42,6 +43,7 @@ export default {
       type: 'Email Type',
       email: 'Email',
       addEmail: 'Add Email',
+      disabledEmail: "Can't Add a Email",
       error: {
         emailRequired: 'Email is required.',
         invalidEmail: 'Email is Invalid.',
@@ -59,6 +61,7 @@ export default {
       type: 'Address Type',
       address: 'Address',
       addAddress: 'Add Address',
+      disabledAddress: "Can't Add a Address",
     },
     occupation: 'Occupation',
     type: 'Patient Type',
@@ -150,8 +153,8 @@ export default {
       patientNumInPrefixFeedback: 'Cannot contain numbers.',
       patientNumInFamilyNameFeedback: 'Cannot contain numbers.',
       patientNumInPreferredLanguageFeedback: 'Cannot contain numbers.',
-      invalidEmail: 'One or more Emails entered is invalid.',
-      invalidPhoneNumber: 'One or more Phone Numbers entered is invalid.',
+      invalidEmail: 'Must be a valid Email.',
+      invalidPhoneNumber: 'Must be a valid Phone Number.',
     },
   },
 }

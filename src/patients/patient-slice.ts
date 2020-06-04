@@ -38,8 +38,8 @@ interface Error {
   prefix?: string
   familyName?: string
   preferredLanguage?: string
-  email?: string
-  phoneNumber?: string
+  emails?: string[]
+  phoneNumbers?: string[]
 }
 
 interface AddRelatedPersonError {
@@ -118,14 +118,6 @@ const patientSlice = createSlice({
       state.status = 'error'
       state.updateError = payload
     },
-    addPhoneNumberError(state, { payload }: PayloadAction<AddPhoneNumberError>) {
-      state.status = 'error'
-      state.phoneNumberError = payload
-    },
-    addEmailError(state, { payload }: PayloadAction<AddEmailError>) {
-      state.status = 'error'
-      state.emailError = payload
-    },
     addAllergyError(state, { payload }: PayloadAction<AddAllergyError>) {
       state.status = 'error'
       state.allergyError = payload
@@ -154,8 +146,6 @@ export const {
   updatePatientStart,
   updatePatientSuccess,
   updatePatientError,
-  addPhoneNumberError,
-  addEmailError,
   addAllergyError,
   addDiagnosisError,
   addRelatedPersonError,
@@ -210,19 +200,33 @@ function validatePatient(patient: Patient) {
   }
 
   if (patient.phoneNumbers) {
-    patient.phoneNumbers.forEach((phone: PhoneNumber) => {
-      if (!validator.isMobilePhone(phone.phoneNumber)) {
-        error.phoneNumber = 'patient.errors.invalidPhoneNumber'
+    const errors: string[] = []
+    patient.phoneNumbers.forEach((phoneNumber) => {
+      if (!validator.isMobilePhone(phoneNumber.phoneNumber)) {
+        errors.push('patient.errors.invalidPhoneNumber')
+      } else {
+        errors.push('')
       }
     })
+
+    if (errors.filter((value) => value === '').length !== patient.phoneNumbers.length) {
+      error.phoneNumbers = errors
+    }
   }
 
   if (patient.emails) {
-    patient.emails.forEach((email: Email) => {
+    const errors: string[] = []
+    patient.emails.forEach((email) => {
       if (!validator.isEmail(email.email)) {
-        error.email = 'patient.errors.invalidEmail'
+        errors.push('patient.errors.invalidEmail')
+      } else {
+        errors.push('')
       }
     })
+
+    if (errors.filter((value) => value === '').length !== patient.emails.length) {
+      error.emails = errors
+    }
   }
 
   return error
@@ -349,18 +353,20 @@ export const addDiagnosis = (
 
 export const addEmptyPhoneNumber = (
   patientId: string,
-  phoneNumber: PhoneNumber,
+  newPhoneNumber: PhoneNumber,
+  phoneNumbers: PhoneNumber[],
   emails: Email[],
   addresses: Address[],
 ): AppThunk => async (dispatch) => {
   const patient = await PatientRepository.find(patientId)
 
+  patient.phoneNumbers = phoneNumbers
   patient.emails = emails
   patient.addresses = addresses
 
-  const phoneNumbers = patient.phoneNumbers || []
-  phoneNumbers.push({ id: uuid(), ...phoneNumber })
-  patient.phoneNumbers = phoneNumbers
+  const updatedPhoneNumbers = [...patient.phoneNumbers] || []
+  updatedPhoneNumbers.push({ id: uuid(), ...newPhoneNumber })
+  patient.phoneNumbers = updatedPhoneNumbers
 
   const updatedPatient = await PatientRepository.saveOrUpdate(patient)
   dispatch(updatePatientSuccess(updatedPatient))
@@ -368,18 +374,20 @@ export const addEmptyPhoneNumber = (
 
 export const addEmptyEmail = (
   patientId: string,
+  newEmail: Email,
   phoneNumbers: PhoneNumber[],
-  email: Email,
+  emails: Email[],
   addresses: Address[],
 ): AppThunk => async (dispatch) => {
   const patient = await PatientRepository.find(patientId)
 
   patient.phoneNumbers = phoneNumbers
+  patient.emails = emails
   patient.addresses = addresses
 
-  const emails = patient.emails || []
-  emails.push({ id: uuid(), ...email })
-  patient.emails = emails
+  const updatedEmails = [...patient.emails] || []
+  updatedEmails.push({ id: uuid(), ...newEmail })
+  patient.emails = updatedEmails
 
   const updatedPatient = await PatientRepository.saveOrUpdate(patient)
   dispatch(updatePatientSuccess(updatedPatient))
@@ -387,18 +395,20 @@ export const addEmptyEmail = (
 
 export const addEmptyAddress = (
   patientId: string,
+  newAddress: Address,
   phoneNumbers: PhoneNumber[],
   emails: Email[],
-  address: Address,
+  addresses: Address[],
 ): AppThunk => async (dispatch) => {
   const patient = await PatientRepository.find(patientId)
 
   patient.phoneNumbers = phoneNumbers
   patient.emails = emails
-
-  const addresses = patient.addresses || []
-  addresses.push({ id: uuid(), ...address })
   patient.addresses = addresses
+
+  const updatedAddresses = [...patient.addresses] || []
+  updatedAddresses.push({ id: uuid(), ...newAddress })
+  patient.addresses = updatedAddresses
 
   const updatedPatient = await PatientRepository.saveOrUpdate(patient)
   dispatch(updatePatientSuccess(updatedPatient))
