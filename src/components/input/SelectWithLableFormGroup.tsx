@@ -10,18 +10,37 @@ interface Props {
   value: string
   label: string
   name: string
+  isRequired?: boolean
   isEditable?: boolean
   options: Option[]
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void
+  feedback?: string
+  isInvalid?: boolean
 }
 
 const SelectWithLabelFormGroup = (props: Props) => {
-  const { value, label, name, isEditable, options, onChange } = props
+  const {
+    value,
+    label,
+    name,
+    isEditable,
+    options,
+    onChange,
+    isRequired,
+    feedback,
+    isInvalid,
+  } = props
   const id = `${name}Select`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} />
-      <Select disabled={!isEditable} onChange={onChange} value={value}>
+      <Label text={label} htmlFor={id} isRequired={isRequired} />
+      <Select
+        disabled={!isEditable}
+        onChange={onChange}
+        value={value}
+        feedback={feedback}
+        isInvalid={isInvalid}
+      >
         <option disabled value="">
           -- Choose --
         </option>
