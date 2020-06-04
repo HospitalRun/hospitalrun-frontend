@@ -210,12 +210,7 @@ describe('View Labs', () => {
 
         act(() => {
           const onChange = wrapper.find(Select).prop('onChange') as any
-          onChange({
-            target: {
-              value: 'requested',
-            },
-            preventDefault: jest.fn(),
-          })
+          onChange([{ label: 'requested', value: 'requested' }])
         })
 
         wrapper.update()

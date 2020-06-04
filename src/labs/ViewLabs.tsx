@@ -76,8 +76,8 @@ const ViewLabs = () => {
     history.push(`/labs/${lab.id}`)
   }
 
-  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchFilter(setFilter(event.target.value))
+  const onSelectChange = (value: string) => {
+    setSearchFilter(setFilter(value))
   }
 
   const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,9 +112,7 @@ const ViewLabs = () => {
               { label: t('labs.status.canceled'), value: 'canceled' },
               { label: t('labs.filter.all'), value: 'all' },
             ]}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-              onSelectChange(event)
-            }}
+            onChange={onSelectChange}
           />
         </div>
         <div className="col">

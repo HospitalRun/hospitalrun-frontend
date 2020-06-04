@@ -48,8 +48,8 @@ const ViewIncidents = () => {
     history.push(`incidents/${incident.id}`)
   }
 
-  const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchFilter(event.target.value as IncidentFilter)
+  const onFilterChange = (value: string) => {
+    setSearchFilter(value as IncidentFilter)
   }
 
   const filterOptions = Object.values(IncidentFilter).map((filter) => ({

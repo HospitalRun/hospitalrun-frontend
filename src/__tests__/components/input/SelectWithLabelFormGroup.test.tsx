@@ -3,6 +3,7 @@ import '../../../__mocks__/matchMediaMock'
 import { Label, Select } from '@hospitalrun/components'
 import { shallow } from 'enzyme'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 
 import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
 
@@ -43,12 +44,12 @@ describe('select with label form group', () => {
       const select = wrapper.find(Select)
       expect(select).toHaveLength(1)
 
-      const options = select.find('option')
+      const options = select.prop('options')
       expect(options).toHaveLength(2)
-      expect(options.at(0).prop('value')).toEqual('')
-      expect(options.at(0).text()).toEqual('-- Choose --')
-      expect(options.at(1).prop('value')).toEqual('value1')
-      expect(options.at(1).text()).toEqual('label1')
+      expect(options[0].value).toEqual('')
+      expect(options[0].label).toEqual('-- Choose --')
+      expect(options[1].value).toEqual('value1')
+      expect(options[1].label).toEqual('label1')
     })
 
     it('should render disabled is isDisable disabled is true', () => {
@@ -71,10 +72,13 @@ describe('select with label form group', () => {
 
     it('should render the proper value', () => {
       const expectedName = 'test'
-      const expectedValue = 'expected value'
+      const expectedValue = 'value1'
       const wrapper = shallow(
         <SelectWithLabelFormGroup
-          options={[{ value: 'value1', label: 'label1' }]}
+          options={[
+            { value: 'value1', label: 'label1' },
+            { value: 'value2', label: 'label2' },
+          ]}
           name={expectedName}
           label="test"
           value={expectedValue}
@@ -85,7 +89,7 @@ describe('select with label form group', () => {
 
       const select = wrapper.find(Select)
       expect(select).toHaveLength(1)
-      expect(select.prop('value')).toEqual(expectedValue)
+      expect(select.prop('defaultSelected')).toEqual([{ value: 'value1', label: 'label1' }])
     })
   })
 
@@ -105,9 +109,14 @@ describe('select with label form group', () => {
         />,
       )
 
-      const select = wrapper.find(Select)
-      select.simulate('change')
+      act(() => {
+        const select = wrapper.find(Select)
+        const onChange = select.prop('onChange') as any
+        onChange([{ value: 'value1', label: 'label1' }])
+      })
+
       expect(handler).toHaveBeenCalledTimes(1)
+      expect(handler).toHaveBeenCalledWith('value1')
     })
   })
 })

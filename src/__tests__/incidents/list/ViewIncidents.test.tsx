@@ -1,7 +1,7 @@
 import '../../../__mocks__/matchMediaMock'
 
 import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 
 import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
 import IncidentRepository from '../../../clients/db/IncidentRepository'
+import SelectWithLabelFormGroup from '../../../components/input/SelectWithLableFormGroup'
 import IncidentFilter from '../../../incidents/IncidentFilter'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
 import Incident from '../../../model/Incident'
@@ -72,26 +73,32 @@ describe('View Incidents', () => {
       )
     })
     wrapper.update()
-    return wrapper
+    return wrapper as ReactWrapper
   }
   it('should filter incidents by status=reported on first load ', async () => {
     const wrapper = await setup([Permissions.ViewIncidents])
-    const filterSelect = wrapper.find('select')
-    expect(filterSelect.props().value).toBe(IncidentFilter.reported)
+    const filterSelect = wrapper.find(SelectWithLabelFormGroup)
+    expect(filterSelect.prop('value')).toEqual(IncidentFilter.reported)
 
     expect(IncidentRepository.search).toHaveBeenCalled()
     expect(IncidentRepository.search).toHaveBeenCalledWith({ status: IncidentFilter.reported })
   })
   it('should call IncidentRepository after changing filter', async () => {
     const wrapper = await setup([Permissions.ViewIncidents])
-    const filterSelect = wrapper.find('select')
 
     expect(IncidentRepository.findAll).not.toHaveBeenCalled()
 
-    filterSelect.simulate('change', { target: { value: IncidentFilter.all } })
+    act(() => {
+      const filterSelect = wrapper.find(SelectWithLabelFormGroup)
+      const onChange = filterSelect.prop('onChange') as any
+      onChange(IncidentFilter.all)
+    })
     expect(IncidentRepository.findAll).toHaveBeenCalled()
-    filterSelect.simulate('change', { target: { value: IncidentFilter.reported } })
-
+    act(() => {
+      const filterSelect = wrapper.find(SelectWithLabelFormGroup)
+      const onChange = filterSelect.prop('onChange') as any
+      onChange(IncidentFilter.reported)
+    })
     expect(IncidentRepository.search).toHaveBeenCalledTimes(2)
     expect(IncidentRepository.search).toHaveBeenLastCalledWith({ status: IncidentFilter.reported })
   })
@@ -132,7 +139,7 @@ describe('View Incidents', () => {
       const tr = wrapper.find('tr').at(1)
 
       act(() => {
-        const onClick = tr.prop('onClick')
+        const onClick = tr.prop('onClick') as any
         onClick()
       })
 
