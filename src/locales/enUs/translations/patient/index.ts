@@ -113,7 +113,7 @@ export default {
         intentRequired: 'Intent is required.',
         startDate: 'Start date is required.',
         endDate: 'End date is required',
-      }
+      },
     },
     types: {
       charity: 'Charity',
