@@ -401,41 +401,41 @@ function validateCarePlan(carePlan: CarePlan): AddCarePlanError {
   const error: AddCarePlanError = {}
 
   if (!carePlan.title) {
-    error.title = 'patient.carePlans.error.titleRequired'
+    error.title = 'patient.carePlan.error.titleRequired'
   }
 
   if (!carePlan.description) {
-    error.description = 'patient.carePlans.error.descriptionRequired'
+    error.description = 'patient.carePlan.error.descriptionRequired'
   }
 
   if (!carePlan.status) {
-    error.status = 'patient.carePlans.error.statusRequired'
+    error.status = 'patient.carePlan.error.statusRequired'
   }
 
   if (!carePlan.intent) {
-    error.intent = 'patient.carePlans.error.intentRequired'
+    error.intent = 'patient.carePlan.error.intentRequired'
   }
 
   if (!carePlan.startDate) {
-    error.startDate = 'patient.carePlans.error.startDateRequired'
+    error.startDate = 'patient.carePlan.error.startDateRequired'
   }
 
   if (!carePlan.endDate) {
-    error.endDate = 'patient.carePlans.error.endDateRequired'
+    error.endDate = 'patient.carePlan.error.endDateRequired'
   }
 
   if (carePlan.startDate && carePlan.endDate) {
     if (isBefore(new Date(carePlan.endDate), new Date(carePlan.startDate))) {
-      error.endDate = 'patient.carePlans.error.endDateMustBeAfterStartDate'
+      error.endDate = 'patient.carePlan.error.endDateMustBeAfterStartDate'
     }
   }
 
   if (!carePlan.diagnosisId) {
-    error.condition = 'patient.carePlans.error.conditionRequired'
+    error.condition = 'patient.carePlan.error.conditionRequired'
   }
 
   if (!carePlan.note) {
-    error.note = 'patient.carePlans.error.noteRequired'
+    error.note = 'patient.carePlan.error.noteRequired'
   }
 
   return error
@@ -459,7 +459,7 @@ export const addCarePlan = (
 
     await dispatch(updatePatient(patient, onSuccess))
   } else {
-    carePlanError.message = 'patient.carePlans.error.unableToAdd'
+    carePlanError.message = 'patient.carePlan.error.unableToAdd'
     dispatch(addCarePlanError(carePlanError))
   }
 }

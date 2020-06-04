@@ -44,7 +44,7 @@ const CarePlanForm = (props: Props) => {
 
   return (
     <form>
-      {carePlanError?.message && <Alert color="danger" message={carePlanError.message} />}
+      {carePlanError?.message && <Alert color="danger" message={t(carePlanError.message)} />}
       <Row>
         <Column sm={12}>
           <TextInputWithLabelFormGroup
@@ -52,7 +52,7 @@ const CarePlanForm = (props: Props) => {
             value={carePlan.title}
             label={t('patient.carePlan.title')}
             name="title"
-            feedback={carePlanError?.title}
+            feedback={t(carePlanError?.title || '')}
             isInvalid={!!carePlanError?.title}
             isEditable={!disabled}
             onChange={(event) => onFieldChange('title', event.currentTarget.value)}
@@ -66,7 +66,7 @@ const CarePlanForm = (props: Props) => {
             value={carePlan.description}
             label={t('patient.carePlan.description')}
             name="description"
-            feedback={carePlanError?.description}
+            feedback={t(carePlanError?.description || '')}
             isInvalid={!!carePlanError?.description}
             isEditable={!disabled}
             onChange={(event) => onFieldChange('description', event.currentTarget.value)}
@@ -80,7 +80,7 @@ const CarePlanForm = (props: Props) => {
             value={carePlan.diagnosisId}
             label={t('patient.carePlan.condition')}
             name="condition"
-            feedback={carePlanError?.condition}
+            feedback={t(carePlanError?.condition || '')}
             isInvalid={!!carePlanError?.condition}
             isEditable={!disabled}
             onChange={(event) => onFieldChange('diagnosisId', event.currentTarget.value)}
@@ -95,7 +95,7 @@ const CarePlanForm = (props: Props) => {
             value={carePlan.status}
             label={t('patient.carePlan.status')}
             name="status"
-            feedback={carePlanError?.status}
+            feedback={t(carePlanError?.status || '')}
             isInvalid={!!carePlanError?.status}
             isEditable={!disabled}
             options={Object.values(CarePlanStatus).map((v) => ({ label: v, value: v }))}
@@ -108,7 +108,7 @@ const CarePlanForm = (props: Props) => {
             value={carePlan.intent}
             label={t('patient.carePlan.intent')}
             name="intent"
-            feedback={carePlanError?.intent}
+            feedback={t(carePlanError?.intent || '')}
             isInvalid={!!carePlanError?.intent}
             isEditable={!disabled}
             options={Object.values(CarePlanIntent).map((v) => ({ label: v, value: v }))}
@@ -123,7 +123,7 @@ const CarePlanForm = (props: Props) => {
             value={carePlan.startDate ? new Date(carePlan.startDate) : new Date()}
             label={t('patient.carePlan.startDate')}
             name="startDate"
-            feedback={carePlanError?.startDate}
+            feedback={t(carePlanError?.startDate || '')}
             isInvalid={!!carePlanError?.startDate}
             isEditable={!disabled}
             onChange={(date) => onFieldChange('startDate', date.toISOString())}
@@ -135,7 +135,7 @@ const CarePlanForm = (props: Props) => {
             value={carePlan.endDate ? new Date(carePlan.endDate) : new Date()}
             label={t('patient.carePlan.endDate')}
             name="endDate"
-            feedback={carePlanError?.endDate}
+            feedback={t(carePlanError?.endDate || '')}
             isInvalid={!!carePlanError?.endDate}
             isEditable={!disabled}
             onChange={(date) => onFieldChange('endDate', date.toISOString())}

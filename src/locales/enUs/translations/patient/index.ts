@@ -104,6 +104,16 @@ export default {
       startDate: 'Start Date',
       endDate: 'End Date',
       note: 'Note',
+      error: {
+        unableToAdd: 'Unable to add a new care plan.',
+        titleRequired: 'Title is required.',
+        descriptionRequired: 'Description is required.',
+        conditionRequired: 'Condition is required.',
+        statusRequired: 'Status is required.',
+        intentRequired: 'Intent is required.',
+        startDate: 'Start date is required.',
+        endDate: 'End date is required',
+      }
     },
     types: {
       charity: 'Charity',

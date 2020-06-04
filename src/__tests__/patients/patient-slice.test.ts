@@ -686,15 +686,15 @@ describe('patients slice', () => {
 
     it('should validate the required fields', async () => {
       const expectedError = {
-        message: 'patient.carePlans.error.unableToAdd',
-        title: 'patient.carePlans.error.titleRequired',
-        description: 'patient.carePlans.error.descriptionRequired',
-        status: 'patient.carePlans.error.statusRequired',
-        intent: 'patient.carePlans.error.intentRequired',
-        startDate: 'patient.carePlans.error.startDateRequired',
-        endDate: 'patient.carePlans.error.endDateRequired',
-        condition: 'patient.carePlans.error.conditionRequired',
-        note: 'patient.carePlans.error.noteRequired',
+        message: 'patient.carePlan.error.unableToAdd',
+        title: 'patient.carePlan.error.titleRequired',
+        description: 'patient.carePlan.error.descriptionRequired',
+        status: 'patient.carePlan.error.statusRequired',
+        intent: 'patient.carePlan.error.intentRequired',
+        startDate: 'patient.carePlan.error.startDateRequired',
+        endDate: 'patient.carePlan.error.endDateRequired',
+        condition: 'patient.carePlan.error.conditionRequired',
+        note: 'patient.carePlan.error.noteRequired',
       }
       const store = mockStore()
       const expectedCarePlan = {} as CarePlan
@@ -719,7 +719,7 @@ describe('patients slice', () => {
       expect(store.getActions()[0]).toEqual(
         addCarePlanError(
           expect.objectContaining({
-            endDate: 'patient.carePlans.error.endDateMustBeAfterStartDate',
+            endDate: 'patient.carePlan.error.endDateMustBeAfterStartDate',
           }),
         ),
       )
