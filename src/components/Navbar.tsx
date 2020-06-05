@@ -28,7 +28,7 @@ const Navbar = () => {
       }))
   }
 
-  // For Mobile, hamberger menu
+  // For Mobile, hamburger menu
   const hambergerPages = Object.keys(pageMap).map((key) => pageMap[key])
 
   // For Desktop, add shortcuts menu
@@ -43,7 +43,7 @@ const Navbar = () => {
           children: getDropdownListOfPages(hambergerPages),
           label: '',
           type: 'link-list',
-          className: 'pr-4 d-md-none',
+          className: 'nav-hamberger pr-4 d-md-none',
         },
         {
           type: 'image',
@@ -75,7 +75,7 @@ const Navbar = () => {
           type: 'link-list-icon',
           alignRight: true,
           children: getDropdownListOfPages(addPages),
-          className: 'pl-4 add-new d-none d-md-block',
+          className: 'pl-4 nav-add-new d-none d-md-block',
           iconClassName: 'align-bottom',
           label: 'Add',
           name: 'add',
@@ -93,7 +93,7 @@ const Navbar = () => {
               },
             },
           ],
-          className: 'pl-2 d-none d-md-block',
+          className: 'pl-2 d-none d-md-block nav-account',
           iconClassName: 'align-bottom',
           label: 'Patient',
           name: 'patient',
