@@ -1,5 +1,6 @@
 import AbstractDBModel from './AbstractDBModel'
 import Allergy from './Allergy'
+import CarePlan from './CarePlan'
 import ContactInformation from './ContactInformation'
 import Diagnosis from './Diagnosis'
 import Name from './Name'
@@ -18,4 +19,5 @@ export default interface Patient extends AbstractDBModel, Name, ContactInformati
   allergies?: Allergy[]
   diagnoses?: Diagnosis[]
   notes?: Note[]
+  carePlans: CarePlan[]
 }
