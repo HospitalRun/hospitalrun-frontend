@@ -47,7 +47,6 @@ const GeneralInformation = (props: Props) => {
     onTempObjectArrayChange,
     error,
   } = props
-
   const dispatch = useDispatch()
 
   const [phoneNumbers, setPhoneNumbers] = useState<PhoneNumber[]>([
@@ -458,8 +457,20 @@ const GeneralInformation = (props: Props) => {
                           type: '',
                         })
                       }
-                    } else {
-                      patient.phoneNumbers = phoneNumbers
+                    } else if (patient.id) {
+                      dispatch(
+                        addEmptyPhoneNumber(
+                          patient.id,
+                          {
+                            id: generate(),
+                            phoneNumber: '',
+                            type: '',
+                          } as PhoneNumber,
+                          patient.phoneNumbers,
+                          patient.emails,
+                          patient.addresses,
+                        ),
+                      )
                     }
                     if (!patient.id) {
                       setPhoneNumbers([
@@ -640,8 +651,6 @@ const GeneralInformation = (props: Props) => {
                           patient.addresses,
                         ),
                       )
-                    } else {
-                      patient.emails = emails
                     }
                     if (!patient.id) {
                       setEmails([
@@ -815,8 +824,6 @@ const GeneralInformation = (props: Props) => {
                         patient.addresses,
                       ),
                     )
-                  } else {
-                    patient.addresses = addresses
                   }
                   if (!patient.id) {
                     setAddresses([

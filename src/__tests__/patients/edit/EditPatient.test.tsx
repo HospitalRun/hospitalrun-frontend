@@ -87,6 +87,11 @@ describe('Edit Patient', () => {
     jest.restoreAllMocks()
   })
 
+  const arrayIndex = 0
+  const expectedPhoneNumber = 'expectedPhoneNumber'
+  const expectedEmail = 'expectedEmail'
+  const expectedAddress = 'expectedAddress'
+
   it('should render an edit patient form', async () => {
     let wrapper: any
     await act(async () => {
@@ -116,6 +121,125 @@ describe('Edit Patient', () => {
     )
   })
 
+  it('should update the phoneNumbers when the onChange Event is triggered for phoneNumber', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+    wrapper.update()
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onObjectArrayChange')(
+        arrayIndex,
+        expectedPhoneNumber,
+        'phoneNumbers',
+        false,
+      )
+      generalInformationForm.prop('onObjectArrayChange')(
+        arrayIndex,
+        expectedPhoneNumber,
+        'phoneNumbers',
+        'type',
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedPhoneNumber,
+        'phoneNumbers',
+        false,
+        patient.phoneNumbers,
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedPhoneNumber,
+        'phoneNumbers',
+        'type',
+        patient.phoneNumbers,
+      )
+    })
+  })
+
+  it('should update the emails when the onChange Event is triggered for email', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onObjectArrayChange')(
+        arrayIndex,
+        expectedEmail,
+        'addresses',
+        false,
+      )
+      generalInformationForm.prop('onObjectArrayChange')(
+        arrayIndex,
+        expectedEmail,
+        'addresses',
+        'type',
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedEmail,
+        'addresses',
+        false,
+        patient.emails,
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedEmail,
+        'addresses',
+        'type',
+        patient.emails,
+      )
+    })
+  })
+
+  it('should update the addresses when the onChange Event is triggered for Address', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onObjectArrayChange')(
+        arrayIndex,
+        expectedAddress,
+        'addresses',
+        false,
+      )
+      generalInformationForm.prop('onObjectArrayChange')(
+        arrayIndex,
+        expectedAddress,
+        'addresses',
+        'type',
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedAddress,
+        'addresses',
+        false,
+        patient.addresses,
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedAddress,
+        'addresses',
+        'type',
+        patient.addresses,
+      )
+    })
+  })
+
   it('should dispatch updatePatient when save button is clicked', async () => {
     let wrapper: any
     await act(async () => {
@@ -125,6 +249,7 @@ describe('Edit Patient', () => {
     wrapper.update()
 
     const saveButton = wrapper.find(Button).at(3)
+
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -132,9 +257,38 @@ describe('Edit Patient', () => {
       await onClick()
     })
 
-    // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
     expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
-    // expect(store.getActions()[4]).toContainEqual(patientSlice.updatePatientSuccess(patient))
+  })
+
+  it('Disabled Button for Phone Numbers', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+    const disabledPhoneNumberButton = wrapper.find(Button).at(0)
+    expect(disabledPhoneNumberButton.text().trim()).toEqual(
+      'patient.phoneNumber.disabledPhoneNumber',
+    )
+    expect(disabledPhoneNumberButton).toHaveLength(1)
+  })
+
+  it('Add Buttons for Emails and Adresses', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+
+    const addEmailButton = wrapper.find(Button).at(1)
+    expect(addEmailButton.text().trim()).toEqual('patient.email.addEmail')
+    expect(addEmailButton).toHaveLength(1)
+
+    const addAddressButton = wrapper.find(Button).at(2)
+    expect(addAddressButton.text().trim()).toEqual('patient.address.addAddress')
+    expect(addAddressButton).toHaveLength(1)
   })
 
   it('should navigate to /patients/:id when cancel is clicked', async () => {

@@ -384,7 +384,10 @@ export const addEmptyPhoneNumber = (
   patient.emails = emails
   patient.addresses = addresses
 
-  const updatedPhoneNumbers = [...patient.phoneNumbers] || []
+  let updatedPhoneNumbers: PhoneNumber[] = []
+  if (patient.phoneNumbers) {
+    updatedPhoneNumbers = [...patient.phoneNumbers]
+  }
   updatedPhoneNumbers.push({ id: uuid(), ...newPhoneNumber })
   patient.phoneNumbers = updatedPhoneNumbers
 
@@ -405,7 +408,10 @@ export const addEmptyEmail = (
   patient.emails = emails
   patient.addresses = addresses
 
-  const updatedEmails = [...patient.emails] || []
+  let updatedEmails: Email[] = []
+  if (patient.emails) {
+    updatedEmails = [...patient.emails]
+  }
   updatedEmails.push({ id: uuid(), ...newEmail })
   patient.emails = updatedEmails
 
@@ -426,7 +432,10 @@ export const addEmptyAddress = (
   patient.emails = emails
   patient.addresses = addresses
 
-  const updatedAddresses = [...patient.addresses] || []
+  let updatedAddresses: Address[] = []
+  if (patient.addresses) {
+    updatedAddresses = [...patient.addresses]
+  }
   updatedAddresses.push({ id: uuid(), ...newAddress })
   patient.addresses = updatedAddresses
 

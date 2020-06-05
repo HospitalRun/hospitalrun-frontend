@@ -57,6 +57,32 @@ describe('New Patient', () => {
     jest.resetAllMocks()
   })
 
+  const arrayIndex = 0
+  const expectedPhoneNumber = 'expectedPhoneNumber'
+  const expectedEmail = 'expectedEmail'
+  const expectedAddress = 'expectedAddress'
+  const phoneNumbers = [
+    {
+      id: '1234',
+      phoneNumber: 'phoneNumber',
+      type: 'Home',
+    },
+  ]
+  const emails = [
+    {
+      id: '1234',
+      email: 'email@email.com',
+      type: 'Home',
+    },
+  ]
+  const addresses = [
+    {
+      id: '1234',
+      address: 'address',
+      type: 'Home',
+    },
+  ]
+
   it('should render a general information form', async () => {
     let wrapper: any
     await act(async () => {
@@ -112,6 +138,109 @@ describe('New Patient', () => {
     expect(PatientRepository.save).toHaveBeenCalledWith(patient)
     expect(store.getActions()).toContainEqual(patientSlice.createPatientStart())
     expect(store.getActions()).toContainEqual(patientSlice.createPatientSuccess())
+  })
+
+  it('Add Buttons for Phone Numbers, Emails and Adresses', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+    const addPhoneNumberButton = wrapper.find(components.Button).at(0)
+    expect(addPhoneNumberButton.text().trim()).toEqual('patient.phoneNumber.addPhoneNumber')
+    expect(addPhoneNumberButton).toHaveLength(1)
+
+    const addEmailButton = wrapper.find(components.Button).at(1)
+    expect(addEmailButton.text().trim()).toEqual('patient.email.addEmail')
+    expect(addEmailButton).toHaveLength(1)
+
+    const addAddressButton = wrapper.find(components.Button).at(2)
+    expect(addAddressButton.text().trim()).toEqual('patient.address.addAddress')
+    expect(addAddressButton).toHaveLength(1)
+  })
+
+  it('should update the phoneNumbers when the onChange Event is triggered for phoneNumber', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+    wrapper.update()
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedPhoneNumber,
+        'phoneNumbers',
+        false,
+        phoneNumbers,
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedPhoneNumber,
+        'phoneNumbers',
+        'type',
+        phoneNumbers,
+      )
+    })
+  })
+
+  it('should update the emails when the onChange Event is triggered for email', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedEmail,
+        'addresses',
+        false,
+        emails,
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedEmail,
+        'addresses',
+        'type',
+        emails,
+      )
+    })
+  })
+
+  it('should update the addresses when the onChange Event is triggered for Address', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedAddress,
+        'addresses',
+        false,
+        addresses,
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedAddress,
+        'addresses',
+        'type',
+        addresses,
+      )
+    })
   })
 
   it('should navigate to /patients/:id and display a message after a new patient is successfully created', async () => {
