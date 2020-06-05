@@ -121,7 +121,9 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(3).text().trim()).not.toEqual('patients.newPatient')
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('patients.newPatient')
+      })
     })
 
     it('should render the patients_list link', () => {
@@ -137,7 +139,9 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(4).text().trim()).not.toEqual('patients.patientsList')
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('patients.patientsList')
+      })
     })
 
     it('main patients link should be active when the current path is /patients', () => {
@@ -226,7 +230,9 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(4).text().trim()).not.toEqual('scheduling.appointments.new')
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('scheduling.appointments.new')
+      })
     })
 
     it('should render the appointments schedule link', () => {
@@ -242,7 +248,9 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(4).text().trim()).not.toEqual('scheduling.appointments.schedule')
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('scheduling.appointments.schedule')
+      })
     })
 
     it('main scheduling link should be active when the current path is /appointments', () => {
@@ -331,7 +339,9 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(5).text().trim()).not.toEqual('labs.requests.new')
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('labs.requests.new')
+      })
     })
 
     it('should render the labs list link', () => {
@@ -347,7 +357,9 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(5).text().trim()).not.toEqual('labs.requests.label')
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('labs.requests.label')
+      })
     })
 
     it('main labs link should be active when the current path is /labs', () => {
@@ -436,7 +448,9 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(5).text().trim()).not.toEqual('incidents.reports.new')
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('incidents.reports.new')
+      })
     })
 
     it('should render the incidents list link', () => {
@@ -452,7 +466,9 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(5).text().trim()).not.toEqual('incidents.reports.label')
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('incidents.reports.label')
+      })
     })
 
     it('main incidents link should be active when the current path is /incidents', () => {
