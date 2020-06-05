@@ -12,6 +12,7 @@ import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
 import Allergies from '../allergies/Allergies'
 import AppointmentsList from '../appointments/AppointmentsList'
+import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
 import Labs from '../labs/LabsTab'
@@ -119,6 +120,11 @@ const ViewPatient = () => {
           label={t('patient.labs.label')}
           onClick={() => history.push(`/patients/${patient.id}/labs`)}
         />
+        <Tab
+          active={location.pathname === `/patients/${patient.id}/care-plans`}
+          label={t('patient.carePlan.label')}
+          onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
+        />
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
@@ -141,6 +147,9 @@ const ViewPatient = () => {
         </Route>
         <Route exact path="/patients/:id/labs">
           <Labs patientId={patient.id} />
+        </Route>
+        <Route path="/patients/:id/care-plans">
+          <CarePlanTab />
         </Route>
       </Panel>
     </div>
