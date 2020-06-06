@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react'
 import { NetworkStatus } from './types'
 
 export const useNetworkStatus = (): NetworkStatus => {
+  const isOnline = navigator.onLine
   const [networkStatus, setNetworkStatus] = useState({
-    isOnline: true,
-    wasOffline: false,
+    isOnline,
+    wasOffline: !isOnline,
   })
   const handleOnline = () => {
     setNetworkStatus((prevState) => ({ ...prevState, isOnline: true }))
