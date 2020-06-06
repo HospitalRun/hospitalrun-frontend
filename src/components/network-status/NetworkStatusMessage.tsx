@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useNetworkStatus } from './useNetworkStatus'
 import './styles.css'
 
-export const OFFLINE_MESSAGE = 'you are working in offline mode'
-export const ONLINE_MESSAGE = 'you are back online'
 const OPACITY_TRANSITION_TIME = 4000
 
 export const NetworkStatusMessage = () => {
+  const { t } = useTranslation()
   const { isOnline, wasOffline } = useNetworkStatus()
   const [display, setDisplay] = useState('flex')
   const [opacity, setOpacity] = useState(1)
@@ -33,7 +33,7 @@ export const NetworkStatusMessage = () => {
       className={`network-status-message ${isOnline ? 'online' : 'offline'}`}
       style={{ display, opacity, transition: `opacity ${OPACITY_TRANSITION_TIME}ms ease-in` }}
     >
-      {isOnline ? ONLINE_MESSAGE : OFFLINE_MESSAGE}
+      {isOnline ? t('networkStatus.online') : t('networkStatus.offline')}
     </div>
   )
 }
