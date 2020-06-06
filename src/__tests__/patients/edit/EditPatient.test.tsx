@@ -171,29 +171,24 @@ describe('Edit Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
 
     act(() => {
+      generalInformationForm.prop('onObjectArrayChange')(arrayIndex, expectedEmail, 'emails', false)
       generalInformationForm.prop('onObjectArrayChange')(
         arrayIndex,
         expectedEmail,
-        'addresses',
-        false,
-      )
-      generalInformationForm.prop('onObjectArrayChange')(
-        arrayIndex,
-        expectedEmail,
-        'addresses',
+        'emails',
         'type',
       )
       generalInformationForm.prop('onTempObjectArrayChange')(
         arrayIndex,
         expectedEmail,
-        'addresses',
+        'emails',
         false,
         patient.emails,
       )
       generalInformationForm.prop('onTempObjectArrayChange')(
         arrayIndex,
         expectedEmail,
-        'addresses',
+        'emails',
         'type',
         patient.emails,
       )

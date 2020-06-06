@@ -307,6 +307,161 @@ describe('General Information, without isEditable', () => {
   })
 })
 
+describe('General Information, with isEditable and without patient.id', () => {
+  const patient = {} as Patient
+
+  let wrapper: ReactWrapper
+  let history = createMemoryHistory()
+
+  const error = {
+    message: 'some message',
+    givenName: 'given name message',
+    dateOfBirth: 'date of birth message',
+    phoneNumbers: ['phone number message'],
+    emails: ['email message'],
+  }
+
+  const store = mockStore({ patient: { patient: {} as Patient, createError: error } } as any)
+
+  const onFieldChange = jest.fn()
+
+  beforeEach(() => {
+    jest.restoreAllMocks()
+    Date.now = jest.fn().mockReturnValue(new Date().valueOf())
+    history = createMemoryHistory()
+    wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <GeneralInformation
+            patient={patient}
+            onFieldChange={onFieldChange}
+            onObjectArrayChange={jest.fn()}
+            onTempObjectArrayChange={jest.fn()}
+            isEditable
+          />
+          )
+        </Router>
+      </Provider>,
+    )
+  })
+
+  const expectedPhoneNumberType = 'expectedPhoneNumberType'
+  const expectedPhoneNumber = 'expectedPhoneNumber'
+  const expectedEmailType = 'expectedEmailType'
+  const expectedEmail = 'expectedEmail'
+  const expectedAddressType = 'expectedAddressType'
+  const expectedAddress = 'expectedAddress'
+
+  it('should render the Phone Number Type of the Patient', () => {
+    const phoneNumberTypeSelect = wrapper.findWhere(
+      (w: any) => w.prop('name') === 'temporaryPhoneNumberType',
+    )
+
+    expect(phoneNumberTypeSelect.prop('label')).toEqual('patient.phoneNumber.type')
+    expect(phoneNumberTypeSelect.prop('isEditable')).toBeTruthy()
+    expect(phoneNumberTypeSelect.prop('options')).toHaveLength(5)
+    expect(phoneNumberTypeSelect.prop('options')[0].label).toEqual('patient.phoneNumber.types.home')
+    expect(phoneNumberTypeSelect.prop('options')[0].value).toEqual('home')
+    expect(phoneNumberTypeSelect.prop('options')[1].label).toEqual('patient.phoneNumber.types.work')
+    expect(phoneNumberTypeSelect.prop('options')[1].value).toEqual('work')
+    expect(phoneNumberTypeSelect.prop('options')[2].label).toEqual(
+      'patient.phoneNumber.types.temporary',
+    )
+    expect(phoneNumberTypeSelect.prop('options')[2].value).toEqual('temporary')
+    expect(phoneNumberTypeSelect.prop('options')[3].label).toEqual('patient.phoneNumber.types.old')
+    expect(phoneNumberTypeSelect.prop('options')[3].value).toEqual('old')
+    expect(phoneNumberTypeSelect.prop('options')[4].label).toEqual(
+      'patient.phoneNumber.types.mobile',
+    )
+    expect(phoneNumberTypeSelect.prop('options')[4].value).toEqual('mobile')
+
+    act(() => {
+      phoneNumberTypeSelect.prop('onChange')({ target: { value: expectedPhoneNumberType } })
+    })
+  })
+
+  it('should render the phone number of the patient', () => {
+    const phoneNumberInput = wrapper.findWhere(
+      (w: any) => w.prop('name') === 'temporaryPhoneNumber',
+    )
+
+    expect(phoneNumberInput.prop('label')).toEqual('patient.phoneNumber.phoneNumber')
+    expect(phoneNumberInput.prop('isEditable')).toBeTruthy()
+
+    act(() => {
+      phoneNumberInput.prop('onChange')({ target: { value: expectedPhoneNumber } })
+    })
+  })
+
+  it('should render the Email Type of the Patient', () => {
+    const emailTypeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'temporaryEmailType')
+
+    expect(emailTypeSelect.prop('label')).toEqual('patient.email.type')
+    expect(emailTypeSelect.prop('isEditable')).toBeTruthy()
+    expect(emailTypeSelect.prop('options')).toHaveLength(5)
+    expect(emailTypeSelect.prop('options')[0].label).toEqual('patient.email.types.home')
+    expect(emailTypeSelect.prop('options')[0].value).toEqual('home')
+    expect(emailTypeSelect.prop('options')[1].label).toEqual('patient.email.types.work')
+    expect(emailTypeSelect.prop('options')[1].value).toEqual('work')
+    expect(emailTypeSelect.prop('options')[2].label).toEqual('patient.email.types.temporary')
+    expect(emailTypeSelect.prop('options')[2].value).toEqual('temporary')
+    expect(emailTypeSelect.prop('options')[3].label).toEqual('patient.email.types.old')
+    expect(emailTypeSelect.prop('options')[3].value).toEqual('old')
+    expect(emailTypeSelect.prop('options')[4].label).toEqual('patient.email.types.mobile')
+    expect(emailTypeSelect.prop('options')[4].value).toEqual('mobile')
+
+    act(() => {
+      emailTypeSelect.prop('onChange')({ target: { value: expectedEmailType } })
+    })
+  })
+
+  it('should render the email of the patient', () => {
+    const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'temporaryEmail')
+
+    expect(emailInput.prop('label')).toEqual('patient.email.email')
+    expect(emailInput.prop('isEditable')).toBeTruthy()
+
+    act(() => {
+      emailInput.prop('onChange')({ target: { value: expectedEmail } })
+    })
+  })
+
+  it('should render the Address Type of the Patient', () => {
+    const addressTypeSelect = wrapper.findWhere(
+      (w: any) => w.prop('name') === 'temporaryAddressType',
+    )
+
+    expect(addressTypeSelect.prop('label')).toEqual('patient.address.type')
+    expect(addressTypeSelect.prop('isEditable')).toBeTruthy()
+    expect(addressTypeSelect.prop('options')).toHaveLength(5)
+    expect(addressTypeSelect.prop('options')[0].label).toEqual('patient.address.types.home')
+    expect(addressTypeSelect.prop('options')[0].value).toEqual('home')
+    expect(addressTypeSelect.prop('options')[1].label).toEqual('patient.address.types.work')
+    expect(addressTypeSelect.prop('options')[1].value).toEqual('work')
+    expect(addressTypeSelect.prop('options')[2].label).toEqual('patient.address.types.temporary')
+    expect(addressTypeSelect.prop('options')[2].value).toEqual('temporary')
+    expect(addressTypeSelect.prop('options')[3].label).toEqual('patient.address.types.old')
+    expect(addressTypeSelect.prop('options')[3].value).toEqual('old')
+    expect(addressTypeSelect.prop('options')[4].label).toEqual('patient.address.types.billing')
+    expect(addressTypeSelect.prop('options')[4].value).toEqual('billing')
+
+    act(() => {
+      addressTypeSelect.prop('onChange')({ target: { value: expectedAddressType } })
+    })
+  })
+
+  it('should render the address of the patient', () => {
+    const addressInput = wrapper.findWhere((w: any) => w.prop('name') === 'temporaryAddress')
+
+    expect(addressInput.prop('label')).toEqual('patient.address.address')
+    expect(addressInput.prop('isEditable')).toBeTruthy()
+
+    act(() => {
+      addressInput.prop('onChange')({ target: { value: expectedAddress } })
+    })
+  })
+})
+
 describe('General Information, isEditable', () => {
   const patient = {
     id: '123',

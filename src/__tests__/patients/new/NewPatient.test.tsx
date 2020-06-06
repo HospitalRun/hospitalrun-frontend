@@ -201,16 +201,44 @@ describe('New Patient', () => {
       generalInformationForm.prop('onTempObjectArrayChange')(
         arrayIndex,
         expectedEmail,
-        'addresses',
+        'emails',
         false,
         emails,
       )
       generalInformationForm.prop('onTempObjectArrayChange')(
         arrayIndex,
         expectedEmail,
-        'addresses',
+        'emails',
         'type',
         emails,
+      )
+    })
+  })
+
+  it('should update the addresses when the onChange Event is triggered for address', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    wrapper.update()
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedAddress,
+        'addresses',
+        false,
+        addresses,
+      )
+      generalInformationForm.prop('onTempObjectArrayChange')(
+        arrayIndex,
+        expectedAddress,
+        'addresses',
+        'type',
+        addresses,
       )
     })
   })
