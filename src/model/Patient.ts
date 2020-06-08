@@ -1,10 +1,11 @@
 import AbstractDBModel from './AbstractDBModel'
-import Name from './Name'
-import ContactInformation from './ContactInformation'
-import RelatedPerson from './RelatedPerson'
 import Allergy from './Allergy'
+import CarePlan from './CarePlan'
+import ContactInformation from './ContactInformation'
 import Diagnosis from './Diagnosis'
+import Name from './Name'
 import Note from './Note'
+import RelatedPerson from './RelatedPerson'
 
 export default interface Patient extends AbstractDBModel, Name, ContactInformation {
   sex: string
@@ -18,4 +19,6 @@ export default interface Patient extends AbstractDBModel, Name, ContactInformati
   allergies?: Allergy[]
   diagnoses?: Diagnosis[]
   notes?: Note[]
+  index: string
+  carePlans: CarePlan[]
 }

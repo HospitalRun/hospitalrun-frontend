@@ -1,7 +1,10 @@
 {
-  "extends": "../tsconfig.json",
   "include": ["./checkMissingTranslations.ts"],
   "compilerOptions": {
-    "module": "commonjs"
+    "declaration": true,
+    "declarationDir": "./dist",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "target": "es5"
   }
 }

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import Permissions from '../model/Permissions'
 import User from '../model/User'
 
@@ -24,6 +25,8 @@ const initialState: UserState = {
     Permissions.ViewIncident,
     Permissions.ViewIncidents,
     Permissions.ReportIncident,
+    Permissions.AddCarePlan,
+    Permissions.ReadCarePlan,
   ],
   user: {
     id: 'some-hardcoded-id',

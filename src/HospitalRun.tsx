@@ -1,19 +1,22 @@
-import React from 'react'
-import { Switch, Route } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { Toaster } from '@hospitalrun/components'
-import Breadcrumbs from 'breadcrumbs/Breadcrumbs'
-import { ButtonBarProvider } from 'page-header/ButtonBarProvider'
-import ButtonToolBar from 'page-header/ButtonToolBar'
-import Labs from 'labs/Labs'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { Switch, Route } from 'react-router-dom'
+
+import Breadcrumbs from './breadcrumbs/Breadcrumbs'
+import Navbar from './components/Navbar'
+import { NetworkStatusMessage } from './components/network-status'
+import PrivateRoute from './components/PrivateRoute'
 import Sidebar from './components/Sidebar'
 import Dashboard from './dashboard/Dashboard'
-import { RootState } from './store'
-import Navbar from './components/Navbar'
-import PrivateRoute from './components/PrivateRoute'
-import Patients from './patients/Patients'
 import Incidents from './incidents/Incidents'
+import Labs from './labs/Labs'
+import { ButtonBarProvider } from './page-header/ButtonBarProvider'
+import ButtonToolBar from './page-header/ButtonToolBar'
+import Patients from './patients/Patients'
 import Appointments from './scheduling/appointments/Appointments'
+import Settings from './settings/Settings'
+import { RootState } from './store'
 
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
@@ -21,6 +24,7 @@ const HospitalRun = () => {
 
   return (
     <div>
+      <NetworkStatusMessage />
       <Navbar />
       <div className="container-fluid">
         <Sidebar />
@@ -44,6 +48,7 @@ const HospitalRun = () => {
                   <PrivateRoute isAuthenticated path="/patients" component={Patients} />
                   <PrivateRoute isAuthenticated path="/labs" component={Labs} />
                   <PrivateRoute isAuthenticated path="/incidents" component={Incidents} />
+                  <PrivateRoute isAuthenticated path="/settings" component={Settings} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />

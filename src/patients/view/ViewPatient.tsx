@@ -1,24 +1,25 @@
+import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components'
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, withRouter, Route, useHistory, useLocation } from 'react-router-dom'
-import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components'
-import { useTranslation } from 'react-i18next'
 
-import { useButtonToolbarSetter } from 'page-header/ButtonBarProvider'
-import Allergies from 'patients/allergies/Allergies'
-import Diagnoses from 'patients/diagnoses/Diagnoses'
-import useTitle from '../../page-header/useTitle'
-import { fetchPatient } from '../patient-slice'
-import { RootState } from '../../store'
-import { getPatientFullName } from '../util/patient-name-util'
-import Permissions from '../../model/Permissions'
-import Patient from '../../model/Patient'
-import GeneralInformation from '../GeneralInformation'
-import RelatedPerson from '../related-persons/RelatedPersonTab'
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+import Patient from '../../model/Patient'
+import Permissions from '../../model/Permissions'
+import { useButtonToolbarSetter } from '../../page-header/ButtonBarProvider'
+import useTitle from '../../page-header/useTitle'
+import { RootState } from '../../store'
+import Allergies from '../allergies/Allergies'
 import AppointmentsList from '../appointments/AppointmentsList'
-import Note from '../notes/NoteTab'
+import CarePlanTab from '../care-plans/CarePlanTab'
+import Diagnoses from '../diagnoses/Diagnoses'
+import GeneralInformation from '../GeneralInformation'
 import Labs from '../labs/LabsTab'
+import Note from '../notes/NoteTab'
+import { fetchPatient } from '../patient-slice'
+import RelatedPerson from '../related-persons/RelatedPersonTab'
+import { getPatientFullName } from '../util/patient-name-util'
 
 const getPatientCode = (p: Patient): string => {
   if (p) {
@@ -119,6 +120,11 @@ const ViewPatient = () => {
           label={t('patient.labs.label')}
           onClick={() => history.push(`/patients/${patient.id}/labs`)}
         />
+        <Tab
+          active={location.pathname === `/patients/${patient.id}/care-plans`}
+          label={t('patient.carePlan.label')}
+          onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
+        />
       </TabsHeader>
       <Panel>
         <Route exact path="/patients/:id">
@@ -141,6 +147,9 @@ const ViewPatient = () => {
         </Route>
         <Route exact path="/patients/:id/labs">
           <Labs patientId={patient.id} />
+        </Route>
+        <Route path="/patients/:id/care-plans">
+          <CarePlanTab />
         </Route>
       </Panel>
     </div>

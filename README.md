@@ -31,8 +31,12 @@ Contributions are always welcome. Before contributing please read our [contribut
 
 1. Fork this repository to your own GitHub account and then clone it to your local device
 2. Navigate to the cloned folder: `cd hospitalrun-frontend`
-3. Install the dependencies: `yarn`
-4. Run `yarn run start` to build and watch for code changes
+3. Install the dependencies: `npm install`
+4. Run `npm run start` to build and watch for code changes
+
+## Translation
+
+Use the stadards in [this readme](https://github.com/HospitalRun/hospitalrun-frontend/tree/master/src/locales/README.md).
 
 ## Online one-click setup for contributing
 
@@ -77,13 +81,13 @@ To fix this issue, add `SKIP_PREFLIGHT_CHECK=true` to the `.env` file.
 
 ## Running Tests and Linter
 
-`yarn test:ci` will run the entire test suite
+`npm run test:ci` will run the entire test suite
 
-`yarn test` will run the test suite in watch mode
+`npm run test` will run the test suite in watch mode
 
-`yarn lint` will run the linter
+`npm run lint` will run the linter
 
-`yarn lint:fix` will run the linter and fix fixable errors
+`npm run lint:fix` will run the linter and fix fixable errors
 
 ## Useful Developer Tools
 
@@ -98,7 +102,7 @@ In order to optimize the workflow and to prevent multiple contributors working o
 
 ## How to commit
 
-This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run `npm run commit` or `yarn commit` from the root directory in order to commit following our standards.
+This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run `npm run commit` from the root directory in order to commit following our standards.
 
 <hr />
 
@@ -126,15 +130,25 @@ Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][homep
 
 [<img src="https://avatars2.githubusercontent.com/u/1620916?s=460&v=4" width="100px;"/><br /><sub><b>Maksim Sinik</b></sub>](https://github.com/fox1t)<br />
 
-## Core Team
+## [Core Maintainers](https://github.com/orgs/HospitalRun/teams/core-maintainers)
 
 <!-- prettier-ignore -->
-| [<img src="https://avatars3.githubusercontent.com/u/25089405?s=460&v=4" width="100px;"/><br /><sub><b>Stefano Casasola</b></sub>](https://github.com/irvelervel) |[<img src="https://avatars2.githubusercontent.com/u/8914893?s=460&v=4" width="100px;"/><br /><sub><b>Michael Daly</b></sub>](https://github.com/MichaelDalyDev)|[<img src="https://avatars1.githubusercontent.com/u/25009192?s=460&v=4" width="100px;"/><br /><sub><b>Riccardo Gulin</b></sub>](https://github.com/nclBaz) | [<img src="https://avatars3.githubusercontent.com/u/603924?s=460&v=4" width="100px;"/><br /><sub><b>Grace Lau</b></sub>](https://github.com/lauggh) | [<img src="https://avatars3.githubusercontent.com/u/18731800?s=460&v=4" width="100px;"/><br /><sub><b>Jack Meyer</b></sub>](https://github.com/jackcmeyer) | [<img src="https://avatars0.githubusercontent.com/u/6388707?s=460&v=4" width="100px;"/><br /><sub><b>Matteo Vivona</b></sub>](https://github.com/tehKapa) |
-|---|---|---|---|---|---|
+| [<img src="https://avatars3.githubusercontent.com/u/18731800?s=460&v=4" width="100px;"/><br /><sub><b>Jack Meyer</b></sub>](https://github.com/jackcmeyer) | [<img src="https://avatars0.githubusercontent.com/u/6388707?s=460&v=4" width="100px;"/><br /><sub><b>Matteo Vivona</b></sub>](https://github.com/tehKapa) |
+|---|---|
+
+## [Core Contributors](https://github.com/orgs/HospitalRun/teams/core-contributor)
+
+<!-- prettier-ignore -->
+| [<img src="https://avatars3.githubusercontent.com/u/25089405?s=460&v=4" width="100px;"/><br /><sub><b>Stefano Casasola</b></sub>](https://github.com/irvelervel) |  [<img src="https://avatars2.githubusercontent.com/u/8810755?s=460&u=495b69e528066f88944d8ce487ce39afe01b9ccb&v=4" width="100px;"/><br /><sub><b>Kumiko Kashii</b></sub>](https://github.com/kumikokashii) | [<img src="https://avatars3.githubusercontent.com/u/603924?s=460&v=4" width="100px;"/><br /><sub><b>Grace Lau</b></sub>](https://github.com/lauggh) | [<img src="https://avatars2.githubusercontent.com/u/26657904?s=460&u=d960bf3d95ae0c9bb858f1f069fff03e51254ddb&v=4" width="100px;"/><br /><sub><b>Stefano Miceli</b></sub>](https://github.com/StefanoMiC) |
+|---|---|---|---|
 
 ## Medical Supervisor
 
 [<img src="https://avatars2.githubusercontent.com/u/24660474?s=460&v=4" width="100px;"/><br /><sub><b>M.D. Daniele Piccolo</b></sub>](https://it.linkedin.com/in/danielepiccolo)<br />
+
+## Past Contributors
+
+[<img src="https://avatars2.githubusercontent.com/u/8914893?s=460&v=4" width="100px;"/><br /><sub><b>Michael Daly</b></sub>](https://github.com/MichaelDalyDev)<br />
 
 ## Contributors
 
