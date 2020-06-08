@@ -54,6 +54,40 @@ describe('Navbar', () => {
     Permissions.ReportIncident,
   ]
 
+  describe('hamberger', () => {
+    it('should render a hamberger link list', () => {
+      const wrapper = setup(allPermissions)
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+      const hamberger = hospitalRunNavbar.find('.nav-hamberger')
+      const { children } = hamberger.first().props() as any
+
+      expect(children[0].props.children).toEqual('dashboard.label')
+      expect(children[1].props.children).toEqual('patients.newPatient')
+      expect(children[children.length - 1].props.children).toEqual('settings.label')
+    })
+
+    it('should not show an item if user does not have a permission', () => {
+      // exclude labs and incidents permissions
+      const wrapper = setup(cloneDeep(allPermissions).slice(0, 6))
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+      const hamberger = hospitalRunNavbar.find('.nav-hamberger')
+      const { children } = hamberger.first().props() as any
+
+      const labels = [
+        'labs.requests.new',
+        'labs.requests.label',
+        'incidents.reports.new',
+        'incidents.reports.label',
+      ]
+
+      children.forEach((option: any) => {
+        labels.forEach((label) => {
+          expect(option.props.children).not.toEqual(label)
+        })
+      })
+    })
+  })
+
   it('should render a HospitalRun Navbar', () => {
     const wrapper = setup(allPermissions)
     const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
@@ -83,125 +117,6 @@ describe('Navbar', () => {
     })
   })
 
-  describe('patients', () => {
-    it('should render a patients link list', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const patientsLinkList = hospitalRunNavbar.find('.patients-link-list')
-      const { children } = patientsLinkList.first().props() as any
-
-      expect(patientsLinkList.first().props().title).toEqual('patients.label')
-      expect(children[0].props.children).toEqual('actions.list')
-      expect(children[1].props.children).toEqual('actions.new')
-    })
-
-    it('should navigate to /patients when the list option is selected', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const patientsLinkList = hospitalRunNavbar.find('.patients-link-list')
-      const { children } = patientsLinkList.first().props() as any
-
-      act(() => {
-        children[0].props.onClick()
-      })
-
-      expect(history.location.pathname).toEqual('/patients')
-    })
-
-    it('should navigate to /patients/new when the list option is selected', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const patientsLinkList = hospitalRunNavbar.find('.patients-link-list')
-      const { children } = patientsLinkList.first().props() as any
-
-      act(() => {
-        children[1].props.onClick()
-      })
-
-      expect(history.location.pathname).toEqual('/patients/new')
-    })
-  })
-
-  describe('scheduling', () => {
-    it('should render a scheduling dropdown', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const scheduleLinkList = hospitalRunNavbar.find('.scheduling-link-list')
-      const { children } = scheduleLinkList.first().props() as any
-
-      expect(scheduleLinkList.first().props().title).toEqual('scheduling.label')
-      if (scheduleLinkList.first().props().children) {
-        expect(children[0].props.children).toEqual('scheduling.appointments.label')
-        expect(children[1].props.children).toEqual('scheduling.appointments.new')
-      }
-    })
-
-    it('should navigate to to /appointments when the appointment list option is selected', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const scheduleLinkList = hospitalRunNavbar.find('.scheduling-link-list')
-      const { children } = scheduleLinkList.first().props() as any
-
-      act(() => {
-        children[0].props.onClick()
-      })
-
-      expect(history.location.pathname).toEqual('/appointments')
-    })
-
-    it('should navigate to /appointments/new when the new appointment list option is selected', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const scheduleLinkList = hospitalRunNavbar.find('.scheduling-link-list')
-      const { children } = scheduleLinkList.first().props() as any
-
-      act(() => {
-        children[1].props.onClick()
-      })
-
-      expect(history.location.pathname).toEqual('/appointments/new')
-    })
-  })
-
-  describe('labs', () => {
-    it('should render a labs dropdown', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const labsLinkList = hospitalRunNavbar.find('.labs-link-list')
-      const { children } = labsLinkList.first().props() as any
-
-      expect(labsLinkList.first().props().title).toEqual('labs.label')
-      expect(children[0].props.children).toEqual('labs.label')
-      expect(children[1].props.children).toEqual('labs.requests.new')
-    })
-
-    it('should navigate to to /labs when the labs list option is selected', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const labsLinkList = hospitalRunNavbar.find('.labs-link-list')
-      const { children } = labsLinkList.first().props() as any
-
-      act(() => {
-        children[0].props.onClick()
-      })
-
-      expect(history.location.pathname).toEqual('/labs')
-    })
-
-    it('should navigate to /labs/new when the new labs list option is selected', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const labsLinkList = hospitalRunNavbar.find('.labs-link-list')
-      const { children } = labsLinkList.first().props() as any
-
-      act(() => {
-        children[1].props.onClick()
-      })
-
-      expect(history.location.pathname).toEqual('/labs/new')
-    })
-  })
-
   describe('search', () => {
     it('should render Search as the search box placeholder', () => {
       const wrapper = setup(allPermissions)
@@ -226,7 +141,7 @@ describe('Navbar', () => {
     it('should show a shortcut if user has a permission', () => {
       const wrapper = setup(allPermissions)
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const addNew = hospitalRunNavbar.find('.add-new')
+      const addNew = hospitalRunNavbar.find('.nav-add-new')
       const { children } = addNew.first().props() as any
 
       expect(children[0].props.children).toEqual('patients.newPatient')
@@ -236,13 +151,37 @@ describe('Navbar', () => {
       // exclude labs and incidents permissions
       const wrapper = setup(cloneDeep(allPermissions).slice(0, 6))
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const addNew = hospitalRunNavbar.find('.add-new')
+      const addNew = hospitalRunNavbar.find('.nav-add-new')
       const { children } = addNew.first().props() as any
 
       children.forEach((option: any) => {
         expect(option.props.children).not.toEqual('labs.requests.new')
         expect(option.props.children).not.toEqual('incidents.requests.new')
       })
+    })
+  })
+
+  describe('account', () => {
+    it('should render an account link list', () => {
+      const wrapper = setup(allPermissions)
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+      const accountLinkList = hospitalRunNavbar.find('.nav-account')
+      const { children } = accountLinkList.first().props() as any
+
+      expect(children[0].props.children).toEqual('settings.label')
+    })
+
+    it('should navigate to /settings when the list option is selected', () => {
+      const wrapper = setup(allPermissions)
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+      const accountLinkList = hospitalRunNavbar.find('.nav-account')
+      const { children } = accountLinkList.first().props() as any
+
+      act(() => {
+        children[0].props.onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/settings')
     })
   })
 })
