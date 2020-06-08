@@ -61,27 +61,6 @@ describe('New Patient', () => {
   const expectedPhoneNumber = 'expectedPhoneNumber'
   const expectedEmail = 'expectedEmail'
   const expectedAddress = 'expectedAddress'
-  const phoneNumbers = [
-    {
-      id: '1234',
-      phoneNumber: 'phoneNumber',
-      type: 'Home',
-    },
-  ]
-  const emails = [
-    {
-      id: '1234',
-      email: 'email@email.com',
-      type: 'Home',
-    },
-  ]
-  const addresses = [
-    {
-      id: '1234',
-      address: 'address',
-      type: 'Home',
-    },
-  ]
 
   it('should render a general information form', async () => {
     let wrapper: any
@@ -160,7 +139,7 @@ describe('New Patient', () => {
     expect(addAddressButton).toHaveLength(1)
   })
 
-  it('should update the phoneNumbers when the onChange Event is triggered for phoneNumber', async () => {
+  it('should add an Empty Phone Number, Email and Address object when Add button is clicked', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = await setup()
@@ -170,19 +149,34 @@ describe('New Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
 
     act(() => {
-      generalInformationForm.prop('onTempObjectArrayChange')(
+      generalInformationForm.prop('addEmptyEntryToPatientArrayField')('phoneNumbers')
+      generalInformationForm.prop('addEmptyEntryToPatientArrayField')('emails')
+      generalInformationForm.prop('addEmptyEntryToPatientArrayField')('adresses')
+    })
+  })
+
+  it('should update the phoneNumbers when the onChange Event is triggered for phoneNumber', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+    wrapper.update()
+    wrapper.find(components.Button).at(0).simulate('click')
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('onObjectArrayChange')(
         arrayIndex,
         expectedPhoneNumber,
         'phoneNumbers',
         false,
-        phoneNumbers,
       )
-      generalInformationForm.prop('onTempObjectArrayChange')(
+      generalInformationForm.prop('onObjectArrayChange')(
         arrayIndex,
         expectedPhoneNumber,
         'phoneNumbers',
         'type',
-        phoneNumbers,
       )
     })
   })
@@ -194,23 +188,17 @@ describe('New Patient', () => {
     })
 
     wrapper.update()
+    wrapper.find(components.Button).at(1).simulate('click')
 
     const generalInformationForm = wrapper.find(GeneralInformation)
 
     act(() => {
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedEmail,
-        'emails',
-        false,
-        emails,
-      )
-      generalInformationForm.prop('onTempObjectArrayChange')(
+      generalInformationForm.prop('onObjectArrayChange')(arrayIndex, expectedEmail, 'emails', false)
+      generalInformationForm.prop('onObjectArrayChange')(
         arrayIndex,
         expectedEmail,
         'emails',
         'type',
-        emails,
       )
     })
   })
@@ -222,51 +210,22 @@ describe('New Patient', () => {
     })
 
     wrapper.update()
+    wrapper.find(components.Button).at(2).simulate('click')
 
     const generalInformationForm = wrapper.find(GeneralInformation)
 
     act(() => {
-      generalInformationForm.prop('onTempObjectArrayChange')(
+      generalInformationForm.prop('onObjectArrayChange')(
         arrayIndex,
         expectedAddress,
         'addresses',
         false,
-        addresses,
       )
-      generalInformationForm.prop('onTempObjectArrayChange')(
+      generalInformationForm.prop('onObjectArrayChange')(
         arrayIndex,
         expectedAddress,
         'addresses',
         'type',
-        addresses,
-      )
-    })
-  })
-
-  it('should update the addresses when the onChange Event is triggered for Address', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
-
-    wrapper.update()
-
-    const generalInformationForm = wrapper.find(GeneralInformation)
-
-    act(() => {
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedAddress,
-        'addresses',
-        false,
-        addresses,
-      )
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedAddress,
-        'addresses',
-        'type',
-        addresses,
       )
     })
   })

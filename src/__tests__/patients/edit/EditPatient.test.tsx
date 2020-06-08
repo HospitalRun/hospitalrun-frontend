@@ -56,7 +56,6 @@ describe('Edit Patient', () => {
     ],
     code: 'P00001',
     dateOfBirth: subDays(new Date(), 2).toISOString(),
-    index: 'givenName familyName suffixP00001',
   } as Patient
 
   let history: any
@@ -122,6 +121,22 @@ describe('Edit Patient', () => {
     )
   })
 
+  it('should add an Empty Phone Number, Email and Address object when Add button is clicked', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+    wrapper.update()
+
+    const generalInformationForm = wrapper.find(GeneralInformation)
+
+    act(() => {
+      generalInformationForm.prop('addEmptyEntryToPatientArrayField')('phoneNumbers')
+      generalInformationForm.prop('addEmptyEntryToPatientArrayField')('emails')
+      generalInformationForm.prop('addEmptyEntryToPatientArrayField')('adresses')
+    })
+  })
+
   it('should update the phoneNumbers when the onChange Event is triggered for phoneNumber', async () => {
     let wrapper: any
     await act(async () => {
@@ -144,20 +159,6 @@ describe('Edit Patient', () => {
         'phoneNumbers',
         'type',
       )
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedPhoneNumber,
-        'phoneNumbers',
-        false,
-        patient.phoneNumbers,
-      )
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedPhoneNumber,
-        'phoneNumbers',
-        'type',
-        patient.phoneNumbers,
-      )
     })
   })
 
@@ -178,20 +179,6 @@ describe('Edit Patient', () => {
         expectedEmail,
         'emails',
         'type',
-      )
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedEmail,
-        'emails',
-        false,
-        patient.emails,
-      )
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedEmail,
-        'emails',
-        'type',
-        patient.emails,
       )
     })
   })
@@ -218,20 +205,6 @@ describe('Edit Patient', () => {
         expectedAddress,
         'addresses',
         'type',
-      )
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedAddress,
-        'addresses',
-        false,
-        patient.addresses,
-      )
-      generalInformationForm.prop('onTempObjectArrayChange')(
-        arrayIndex,
-        expectedAddress,
-        'addresses',
-        'type',
-        patient.addresses,
       )
     })
   })
@@ -279,10 +252,12 @@ describe('Edit Patient', () => {
     wrapper.update()
 
     const addEmailButton = wrapper.find(Button).at(1)
+    wrapper.find(Button).at(1).simulate('click')
     expect(addEmailButton.text().trim()).toEqual('patient.email.addEmail')
     expect(addEmailButton).toHaveLength(1)
 
     const addAddressButton = wrapper.find(Button).at(2)
+    wrapper.find(Button).at(2).simulate('click')
     expect(addAddressButton.text().trim()).toEqual('patient.address.addAddress')
     expect(addAddressButton).toHaveLength(1)
   })

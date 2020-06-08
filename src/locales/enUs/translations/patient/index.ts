@@ -21,6 +21,10 @@ export default {
         old: 'Old',
         mobile: 'Mobile',
       },
+      alert: {
+        title: 'No Phone Number added yet',
+        message: 'Add a PhoneNumber Using the button below',
+      },
       panel: 'Phone Number',
       type: 'Phone Number Type',
       phoneNumber: 'Phone Number',
@@ -39,6 +43,10 @@ export default {
         old: 'Old',
         mobile: 'Mobile',
       },
+      alert: {
+        title: 'No Email added yet',
+        message: 'Add an Email Using the button below',
+      },
       panel: 'Email',
       type: 'Email Type',
       email: 'Email',
@@ -56,6 +64,10 @@ export default {
         temporary: 'Temporary',
         old: 'Old',
         billing: 'Billing',
+      },
+      alert: {
+        title: 'No Address added yet',
+        message: 'Add an Address Using the button below',
       },
       panel: 'Address',
       type: 'Address Type',

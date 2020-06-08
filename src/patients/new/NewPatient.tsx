@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { generate } from 'shortid'
 
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import Patient from '../../model/Patient'
@@ -78,37 +79,41 @@ const NewPatient = () => {
     )
   }
 
-  const onTempObjectArrayChange = (
+  const onObjectArrayChange = (
     key: number,
     value: string,
     arrayObject: string | boolean,
     type: string | boolean,
-    objects: any[],
   ) => {
-    let temporaryObject = { ...objects[key] }
-
+    let temporaryObjects = [{}]
     if (arrayObject === 'phoneNumbers') {
+      let temporaryObject = { ...patient.phoneNumbers[key] }
       if (typeof arrayObject === 'string' && typeof type === 'boolean') {
         temporaryObject = { ...temporaryObject, phoneNumber: value }
       } else {
         temporaryObject = { ...temporaryObject, type: value }
       }
+      temporaryObjects = [...patient.phoneNumbers]
+      temporaryObjects[key] = temporaryObject
     } else if (arrayObject === 'emails') {
+      let temporaryObject = { ...patient.emails[key] }
       if (typeof arrayObject === 'string' && typeof type === 'boolean') {
         temporaryObject = { ...temporaryObject, email: value }
       } else {
         temporaryObject = { ...temporaryObject, type: value }
       }
+      temporaryObjects = [...patient.emails]
+      temporaryObjects[key] = temporaryObject
     } else if (arrayObject === 'addresses') {
+      let temporaryObject = { ...patient.addresses[key] }
       if (typeof arrayObject === 'string' && typeof type === 'boolean') {
         temporaryObject = { ...temporaryObject, address: value }
       } else {
         temporaryObject = { ...temporaryObject, type: value }
       }
+      temporaryObjects = [...patient.addresses]
+      temporaryObjects[key] = temporaryObject
     }
-
-    const temporaryObjects = [...objects]
-    temporaryObjects[key] = temporaryObject
     if (typeof arrayObject === 'string') {
       setPatient({
         ...patient,
@@ -124,13 +129,45 @@ const NewPatient = () => {
     })
   }
 
+  const addEmptyEntryToPatientArrayField = (key: string) => {
+    let arrayOfObjects = []
+    if (key === 'phoneNumbers') {
+      const emptyPhoneNumber = {
+        id: generate(),
+        phoneNumber: '',
+        type: '',
+      }
+      arrayOfObjects =
+        key in patient ? [...patient.phoneNumbers, emptyPhoneNumber] : [emptyPhoneNumber]
+    } else if (key === 'emails') {
+      const emptyEmail = {
+        id: generate(),
+        email: '',
+        type: '',
+      }
+      arrayOfObjects = key in patient ? [...patient.emails, emptyEmail] : [emptyEmail]
+    } else {
+      const emptyAddress = {
+        id: generate(),
+        addresses: '',
+        type: '',
+      }
+      arrayOfObjects = key in patient ? [...patient.addresses, emptyAddress] : [emptyAddress]
+    }
+    setPatient({
+      ...patient,
+      [key]: arrayOfObjects,
+    })
+  }
+
   return (
     <div>
       <GeneralInformation
         isEditable
         patient={patient}
         onFieldChange={onFieldChange}
-        onTempObjectArrayChange={onTempObjectArrayChange}
+        onObjectArrayChange={onObjectArrayChange}
+        addEmptyEntryToPatientArrayField={addEmptyEntryToPatientArrayField}
         error={createError}
       />
       <div className="row float-right">

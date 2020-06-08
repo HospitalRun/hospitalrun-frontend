@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
+import { generate } from 'shortid'
 
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import Patient from '../../model/Patient'
@@ -99,8 +100,6 @@ const EditPatient = () => {
         {
           ...patientCopy,
           fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
-          index:
-            getPatientName(patient.givenName, patient.familyName, patient.suffix) + patient.code,
         },
         onSuccessfulSave,
       ),
@@ -114,43 +113,35 @@ const EditPatient = () => {
     })
   }
 
-  const onTempObjectArrayChange = (
-    key: number,
-    value: string,
-    arrayObject: string | boolean,
-    type: string | boolean,
-    objects: any[],
-  ) => {
-    let temporaryObject = { ...objects[key] }
-
-    if (arrayObject === 'phoneNumbers') {
-      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
-        temporaryObject = { ...temporaryObject, phoneNumber: value }
-      } else {
-        temporaryObject = { ...temporaryObject, type: value }
+  const addEmptyEntryToPatientArrayField = (key: string) => {
+    let arrayOfObjects = []
+    if (key === 'phoneNumbers') {
+      const emptyPhoneNumber = {
+        id: generate(),
+        phoneNumber: '',
+        type: '',
       }
-    } else if (arrayObject === 'emails') {
-      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
-        temporaryObject = { ...temporaryObject, email: value }
-      } else {
-        temporaryObject = { ...temporaryObject, type: value }
+      arrayOfObjects =
+        key in patient ? [...patient.phoneNumbers, emptyPhoneNumber] : [emptyPhoneNumber]
+    } else if (key === 'emails') {
+      const emptyEmail = {
+        id: generate(),
+        email: '',
+        type: '',
       }
-    } else if (arrayObject === 'addresses') {
-      if (typeof arrayObject === 'string' && typeof type === 'boolean') {
-        temporaryObject = { ...temporaryObject, address: value }
-      } else {
-        temporaryObject = { ...temporaryObject, type: value }
+      arrayOfObjects = key in patient ? [...patient.emails, emptyEmail] : [emptyEmail]
+    } else {
+      const emptyAddress = {
+        id: generate(),
+        addresses: '',
+        type: '',
       }
+      arrayOfObjects = key in patient ? [...patient.addresses, emptyAddress] : [emptyAddress]
     }
-
-    const temporaryObjects = [...objects]
-    temporaryObjects[key] = temporaryObject
-    if (typeof arrayObject === 'string') {
-      setPatient({
-        ...patient,
-        [arrayObject]: [...temporaryObjects],
-      })
-    }
+    setPatient({
+      ...patient,
+      [key]: arrayOfObjects,
+    })
   }
 
   const onObjectArrayChange = (
@@ -207,7 +198,7 @@ const EditPatient = () => {
         patient={patient}
         onFieldChange={onFieldChange}
         onObjectArrayChange={onObjectArrayChange}
-        onTempObjectArrayChange={onTempObjectArrayChange}
+        addEmptyEntryToPatientArrayField={addEmptyEntryToPatientArrayField}
         error={updateError}
       />
       <div className="row float-right">
