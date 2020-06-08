@@ -11,5 +11,8 @@ export default {
     list: 'List',
     search: 'Search',
     confirmDelete: 'Delete Confirmation',
+    next: 'Next',
+    previous: 'Previous',
+    page: 'Page',
   },
 }
