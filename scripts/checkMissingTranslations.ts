@@ -1,53 +1,7 @@
 import chalk from 'chalk'
-import { Resource, ResourceKey } from 'i18next'
+import { ResourceKey } from 'i18next'
 
-import translationAR from '../src/locales/ar/translations'
-import translationDE from '../src/locales/de/translations'
-import translationEnUs from '../src/locales/enUs/translations'
-import translationES from '../src/locales/es/translations'
-import translationFR from '../src/locales/fr/translations'
-import translationIN from '../src/locales/in/translations'
-import translationIT from '../src/locales/it/translations'
-import translationJA from '../src/locales/ja/translations'
-import translationPtBR from '../src/locales/ptBr/translations'
-import translationRU from '../src/locales/ru/translations'
-import translationZR from '../src/locales/zr/translations'
-
-const resources: Resource = {
-  it: {
-    translation: translationIT,
-  },
-  ar: {
-    translation: translationAR,
-  },
-  de: {
-    translation: translationDE,
-  },
-  en: {
-    translation: translationEnUs,
-  },
-  es: {
-    translation: translationES,
-  },
-  fr: {
-    translation: translationFR,
-  },
-  in: {
-    translation: translationIN,
-  },
-  ja: {
-    translation: translationJA,
-  },
-  pt: {
-    translation: translationPtBR,
-  },
-  ru: {
-    translation: translationRU,
-  },
-  zr: {
-    translation: translationZR,
-  },
-}
+import resources from '../src/locales'
 
 const error = chalk.bold.red
 const warning = chalk.keyword('orange')

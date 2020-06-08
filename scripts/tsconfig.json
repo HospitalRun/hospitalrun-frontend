@@ -1,10 +1,8 @@
 {
   "include": ["./checkMissingTranslations.ts"],
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./dist",
     "module": "commonjs",
-    "outDir": "./dist",
+    "outDir": "../bin",
     "target": "es5"
   }
 }

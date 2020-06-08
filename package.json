@@ -102,8 +102,7 @@
     "redux-mock-store": "~1.5.4",
     "source-map-explorer": "^2.2.2",
     "standard-version": "~8.0.0",
-    "ts-jest": "~24.3.0",
-    "ts-node": "^8.10.0"
+    "ts-jest": "~24.3.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -118,7 +117,7 @@
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
     "coveralls": "npm run test:ci -- --coverage --watchAll=false && cat ./coverage/lcov.info",
-    "translation:check": "ts-node-script scripts/checkMissingTranslations.ts"
+    "translation:check": "cd scripts && tsc && node ../bin/scripts/checkMissingTranslations.js"
   },
   "browserslist": {
     "production": [
