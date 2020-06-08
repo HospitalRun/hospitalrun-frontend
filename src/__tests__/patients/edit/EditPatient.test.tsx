@@ -38,6 +38,7 @@ describe('Edit Patient', () => {
     address: 'address',
     code: 'P00001',
     dateOfBirth: subDays(new Date(), 2).toISOString(),
+    index: 'givenName familyName suffixP00001',
   } as Patient
 
   let history: any
