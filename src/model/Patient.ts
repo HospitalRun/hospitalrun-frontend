@@ -19,5 +19,6 @@ export default interface Patient extends AbstractDBModel, Name, ContactInformati
   allergies?: Allergy[]
   diagnoses?: Diagnosis[]
   notes?: Note[]
+  index: string
   carePlans: CarePlan[]
 }

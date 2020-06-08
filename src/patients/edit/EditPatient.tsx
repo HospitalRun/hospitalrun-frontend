@@ -99,6 +99,8 @@ const EditPatient = () => {
         {
           ...patientCopy,
           fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
+          index:
+            getPatientName(patient.givenName, patient.familyName, patient.suffix) + patient.code,
         },
         onSuccessfulSave,
       ),
