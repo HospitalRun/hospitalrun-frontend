@@ -14,6 +14,8 @@ enum Permissions {
   ViewIncidents = 'read:incidents',
   ViewIncident = 'read:incident',
   ReportIncident = 'write:incident',
+  AddCarePlan = 'write:care_plan',
+  ReadCarePlan = 'read:care_plan',
 }
 
 export default Permissions
