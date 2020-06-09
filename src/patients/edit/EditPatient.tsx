@@ -1,15 +1,16 @@
+import { Spinner, Button, Toast } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Spinner, Button, Toast } from '@hospitalrun/components'
-import GeneralInformation from '../GeneralInformation'
-import useTitle from '../../page-header/useTitle'
-import Patient from '../../model/Patient'
-import { updatePatient, fetchPatient } from '../patient-slice'
-import { RootState } from '../../store'
-import { getPatientFullName, getPatientName } from '../util/patient-name-util'
+import { useHistory, useParams } from 'react-router-dom'
+
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+import Patient from '../../model/Patient'
+import useTitle from '../../page-header/useTitle'
+import { RootState } from '../../store'
+import GeneralInformation from '../GeneralInformation'
+import { updatePatient, fetchPatient } from '../patient-slice'
+import { getPatientFullName, getPatientName } from '../util/patient-name-util'
 
 const getPatientCode = (p: Patient): string => {
   if (p) {
@@ -73,6 +74,8 @@ const EditPatient = () => {
         {
           ...patient,
           fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
+          index:
+            getPatientName(patient.givenName, patient.familyName, patient.suffix) + patient.code,
         },
         onSuccessfulSave,
       ),

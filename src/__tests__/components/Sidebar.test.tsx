@@ -1,28 +1,67 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
-import Sidebar from 'components/Sidebar'
-import { Router } from 'react-router-dom'
+
 import { ListItem } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
 import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-const mockStore = configureMockStore([thunk])
+import Sidebar from '../../components/Sidebar'
+import Permissions from '../../model/Permissions'
+import { RootState } from '../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Sidebar', () => {
   let history = createMemoryHistory()
+  const allPermissions = [
+    Permissions.ReadPatients,
+    Permissions.WritePatients,
+    Permissions.ReadAppointments,
+    Permissions.WriteAppointments,
+    Permissions.DeleteAppointment,
+    Permissions.AddAllergy,
+    Permissions.AddDiagnosis,
+    Permissions.RequestLab,
+    Permissions.CancelLab,
+    Permissions.CompleteLab,
+    Permissions.ViewLab,
+    Permissions.ViewLabs,
+    Permissions.ViewIncidents,
+    Permissions.ViewIncident,
+    Permissions.ReportIncident,
+  ]
   const store = mockStore({
     components: { sidebarCollapsed: false },
-  })
+    user: { permissions: allPermissions },
+  } as any)
   const setup = (location: string) => {
     history = createMemoryHistory()
     history.push(location)
     return mount(
       <Router history={history}>
         <Provider store={store}>
+          <Sidebar />
+        </Provider>
+      </Router>,
+    )
+  }
+
+  const setupNoPermissions = (location: string) => {
+    history = createMemoryHistory()
+    history.push(location)
+    return mount(
+      <Router history={history}>
+        <Provider
+          store={mockStore({
+            components: { sidebarCollapsed: false },
+            user: { permissions: [] },
+          } as any)}
+        >
           <Sidebar />
         </Provider>
       </Router>,
@@ -77,12 +116,32 @@ describe('Sidebar', () => {
       expect(listItems.at(3).text().trim()).toEqual('patients.newPatient')
     })
 
+    it('should not render the new_patient link when the user does not have write patient privileges', () => {
+      const wrapper = setupNoPermissions('/patients')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('patients.newPatient')
+      })
+    })
+
     it('should render the patients_list link', () => {
       const wrapper = setup('/patients')
 
       const listItems = wrapper.find(ListItem)
 
       expect(listItems.at(4).text().trim()).toEqual('patients.patientsList')
+    })
+
+    it('should not render the patients_list link when the user does not have read patient privileges', () => {
+      const wrapper = setupNoPermissions('/patients')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('patients.patientsList')
+      })
     })
 
     it('main patients link should be active when the current path is /patients', () => {
@@ -166,12 +225,32 @@ describe('Sidebar', () => {
       expect(listItems.at(4).text().trim()).toEqual('scheduling.appointments.new')
     })
 
+    it('should not render the new appointment link when the user does not have write appointments privileges', () => {
+      const wrapper = setupNoPermissions('/appointments')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('scheduling.appointments.new')
+      })
+    })
+
     it('should render the appointments schedule link', () => {
       const wrapper = setup('/appointments')
 
       const listItems = wrapper.find(ListItem)
 
       expect(listItems.at(5).text().trim()).toEqual('scheduling.appointments.schedule')
+    })
+
+    it('should not render the appointments schedule link when the user does not have read appointments privileges', () => {
+      const wrapper = setupNoPermissions('/appointments')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('scheduling.appointments.schedule')
+      })
     })
 
     it('main scheduling link should be active when the current path is /appointments', () => {
@@ -255,12 +334,32 @@ describe('Sidebar', () => {
       expect(listItems.at(5).text().trim()).toEqual('labs.requests.new')
     })
 
+    it('should not render the new labs request link when user does not have request labs privileges', () => {
+      const wrapper = setupNoPermissions('/labs')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('labs.requests.new')
+      })
+    })
+
     it('should render the labs list link', () => {
       const wrapper = setup('/labs')
 
       const listItems = wrapper.find(ListItem)
 
       expect(listItems.at(6).text().trim()).toEqual('labs.requests.label')
+    })
+
+    it('should not render the labs list link when user does not have view labs privileges', () => {
+      const wrapper = setupNoPermissions('/labs')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('labs.requests.label')
+      })
     })
 
     it('main labs link should be active when the current path is /labs', () => {
@@ -344,12 +443,32 @@ describe('Sidebar', () => {
       expect(listItems.at(6).text().trim()).toEqual('incidents.reports.new')
     })
 
+    it('should not render the new incident report link when user does not have the report incidents privileges', () => {
+      const wrapper = setupNoPermissions('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('incidents.reports.new')
+      })
+    })
+
     it('should render the incidents list link', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
 
       expect(listItems.at(7).text().trim()).toEqual('incidents.reports.label')
+    })
+
+    it('should not render the incidents list link when user does not have the view incidents privileges', () => {
+      const wrapper = setupNoPermissions('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('incidents.reports.label')
+      })
     })
 
     it('main incidents link should be active when the current path is /incidents', () => {

@@ -1,21 +1,25 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
+
+import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
-import { act } from '@testing-library/react'
+import React from 'react'
 import { Provider } from 'react-redux'
-import { Route, Router } from 'react-router'
+import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import Permissions from '../../../model/Permissions'
-import * as titleUtil from '../../../page-header/useTitle'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
+
 import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
+import IncidentRepository from '../../../clients/db/IncidentRepository'
+import IncidentFilter from '../../../incidents/IncidentFilter'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
 import Incident from '../../../model/Incident'
-import IncidentRepository from '../../../clients/db/IncidentRepository'
+import Permissions from '../../../model/Permissions'
+import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/useTitle'
+import { RootState } from '../../../store'
 
-const mockStore = createMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Incidents', () => {
   let history: any
@@ -39,6 +43,7 @@ describe('View Incidents', () => {
     jest.spyOn(titleUtil, 'default')
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(IncidentRepository, 'findAll').mockResolvedValue(expectedIncidents)
+    jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
 
     history = createMemoryHistory()
     history.push(`/incidents`)
@@ -50,7 +55,7 @@ describe('View Incidents', () => {
       incidents: {
         incidents: expectedIncidents,
       },
-    })
+    } as any)
 
     let wrapper: any
     await act(async () => {
@@ -69,7 +74,27 @@ describe('View Incidents', () => {
     wrapper.update()
     return wrapper
   }
+  it('should filter incidents by status=reported on first load ', async () => {
+    const wrapper = await setup([Permissions.ViewIncidents])
+    const filterSelect = wrapper.find('select')
+    expect(filterSelect.props().value).toBe(IncidentFilter.reported)
 
+    expect(IncidentRepository.search).toHaveBeenCalled()
+    expect(IncidentRepository.search).toHaveBeenCalledWith({ status: IncidentFilter.reported })
+  })
+  it('should call IncidentRepository after changing filter', async () => {
+    const wrapper = await setup([Permissions.ViewIncidents])
+    const filterSelect = wrapper.find('select')
+
+    expect(IncidentRepository.findAll).not.toHaveBeenCalled()
+
+    filterSelect.simulate('change', { target: { value: IncidentFilter.all } })
+    expect(IncidentRepository.findAll).toHaveBeenCalled()
+    filterSelect.simulate('change', { target: { value: IncidentFilter.reported } })
+
+    expect(IncidentRepository.search).toHaveBeenCalledTimes(2)
+    expect(IncidentRepository.search).toHaveBeenLastCalledWith({ status: IncidentFilter.reported })
+  })
   describe('layout', () => {
     it('should set the title', async () => {
       await setup([Permissions.ViewIncidents])

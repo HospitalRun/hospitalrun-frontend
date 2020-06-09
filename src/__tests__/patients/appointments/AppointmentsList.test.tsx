@@ -1,16 +1,19 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
+
+import * as components from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import Patient from 'model/Patient'
-import { Router } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import AppointmentsList from 'patients/appointments/AppointmentsList'
-import * as components from '@hospitalrun/components'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import Patient from '../../../model/Patient'
+import AppointmentsList from '../../../patients/appointments/AppointmentsList'
 import * as appointmentsSlice from '../../../scheduling/appointments/appointments-slice'
+import { RootState } from '../../../store'
 
 const expectedPatient = {
   id: '123',
@@ -37,13 +40,13 @@ const expectedAppointments = [
   },
 ]
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 const history = createMemoryHistory()
 
 let store: any
 
 const setup = (patient = expectedPatient, appointments = expectedAppointments) => {
-  store = mockStore({ patient, appointments: { appointments } })
+  store = mockStore({ patient, appointments: { appointments } } as any)
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>

@@ -1,19 +1,22 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { MemoryRouter } from 'react-router'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+
 import { act } from '@testing-library/react'
-import Permissions from 'model/Permissions'
-import ViewIncident from '../../incidents/view/ViewIncident'
+import { mount } from 'enzyme'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import IncidentRepository from '../../clients/db/IncidentRepository'
 import Incidents from '../../incidents/Incidents'
 import ReportIncident from '../../incidents/report/ReportIncident'
+import ViewIncident from '../../incidents/view/ViewIncident'
 import Incident from '../../model/Incident'
-import IncidentRepository from '../../clients/db/IncidentRepository'
+import Permissions from '../../model/Permissions'
+import { RootState } from '../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Incidents', () => {
   describe('routing', () => {
@@ -32,7 +35,7 @@ describe('Incidents', () => {
           incident: {
             incident: expectedIncident,
           },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -51,7 +54,7 @@ describe('Incidents', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         const wrapper = mount(
           <Provider store={store}>
@@ -80,7 +83,7 @@ describe('Incidents', () => {
               reportedOn: new Date().toISOString(),
             },
           },
-        })
+        } as any)
 
         let wrapper: any
 
@@ -103,7 +106,7 @@ describe('Incidents', () => {
           user: { permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-        })
+        } as any)
 
         const wrapper = await mount(
           <Provider store={store}>

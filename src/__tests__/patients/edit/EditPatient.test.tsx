@@ -1,22 +1,25 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
-import { mount } from 'enzyme'
-import { Router, Route } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import { createMemoryHistory } from 'history'
-import { act } from 'react-dom/test-utils'
-import configureMockStore, { MockStore } from 'redux-mock-store'
-import thunk from 'redux-thunk'
+
 import { Button } from '@hospitalrun/components'
 import { subDays } from 'date-fns'
-import EditPatient from '../../../patients/edit/EditPatient'
-import GeneralInformation from '../../../patients/GeneralInformation'
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
+import { Router, Route } from 'react-router-dom'
+import createMockStore, { MockStore } from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import PatientRepository from '../../../clients/db/PatientRepository'
 import Patient from '../../../model/Patient'
 import * as titleUtil from '../../../page-header/useTitle'
+import EditPatient from '../../../patients/edit/EditPatient'
+import GeneralInformation from '../../../patients/GeneralInformation'
 import * as patientSlice from '../../../patients/patient-slice'
-import PatientRepository from '../../../clients/db/PatientRepository'
+import { RootState } from '../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Edit Patient', () => {
   const patient = {
@@ -35,6 +38,7 @@ describe('Edit Patient', () => {
     address: 'address',
     code: 'P00001',
     dateOfBirth: subDays(new Date(), 2).toISOString(),
+    index: 'givenName familyName suffixP00001',
   } as Patient
 
   let history: any
@@ -45,7 +49,7 @@ describe('Edit Patient', () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
 
     history = createMemoryHistory()
-    store = mockStore({ patient: { patient } })
+    store = mockStore({ patient: { patient } } as any)
 
     history.push('/patients/edit/123')
     const wrapper = mount(

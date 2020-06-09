@@ -1,21 +1,24 @@
 import '../../../__mocks__/matchMediaMock'
-import React from 'react'
+
+import { Button } from '@hospitalrun/components'
+import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
-import { act } from '@testing-library/react'
+import React from 'react'
 import { Provider } from 'react-redux'
-import { Route, Router } from 'react-router'
+import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { Button } from '@hospitalrun/components'
-import Permissions from '../../../model/Permissions'
-import * as titleUtil from '../../../page-header/useTitle'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
-import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
-import ReportIncident from '../../../incidents/report/ReportIncident'
-import IncidentRepository from '../../../clients/db/IncidentRepository'
 
-const mockStore = createMockStore([thunk])
+import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
+import IncidentRepository from '../../../clients/db/IncidentRepository'
+import ReportIncident from '../../../incidents/report/ReportIncident'
+import Permissions from '../../../model/Permissions'
+import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/useTitle'
+import { RootState } from '../../../store'
+
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Report Incident', () => {
   let history: any
@@ -41,7 +44,7 @@ describe('Report Incident', () => {
       incident: {
         error,
       },
-    })
+    } as any)
 
     let wrapper: any
     await act(async () => {

@@ -1,26 +1,29 @@
 import '../../../../__mocks__/matchMediaMock'
-import React from 'react'
-import NewAppointment from 'scheduling/appointments/new/NewAppointment'
-import { Router, Route } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import { mount } from 'enzyme'
-import { roundToNearestMinutes, addMinutes } from 'date-fns'
-import { createMemoryHistory, MemoryHistory } from 'history'
-import { act } from '@testing-library/react'
-import AppointmentRepository from 'clients/db/AppointmentRepository'
-import { mocked } from 'ts-jest/utils'
-import configureMockStore, { MockStore } from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import Appointment from 'model/Appointment'
-import Patient from 'model/Patient'
-import AppointmentDetailForm from 'scheduling/appointments/AppointmentDetailForm'
+
 import * as components from '@hospitalrun/components'
+import { act } from '@testing-library/react'
+import { roundToNearestMinutes, addMinutes } from 'date-fns'
+import { mount } from 'enzyme'
+import { createMemoryHistory, MemoryHistory } from 'history'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { Router, Route } from 'react-router-dom'
+import createMockStore, { MockStore } from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import { mocked } from 'ts-jest/utils'
+
+import AppointmentRepository from '../../../../clients/db/AppointmentRepository'
+import LabRepository from '../../../../clients/db/LabRepository'
+import Appointment from '../../../../model/Appointment'
+import Lab from '../../../../model/Lab'
+import Patient from '../../../../model/Patient'
 import * as titleUtil from '../../../../page-header/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
-import LabRepository from '../../../../clients/db/LabRepository'
-import Lab from '../../../../model/Lab'
+import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
+import NewAppointment from '../../../../scheduling/appointments/new/NewAppointment'
+import { RootState } from '../../../../store'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = createMockStore<RootState, any>([thunk])
 const mockedComponents = mocked(components, true)
 
 describe('New Appointment', () => {
@@ -41,7 +44,7 @@ describe('New Appointment', () => {
         appointment: {} as Appointment,
         patient: {} as Patient,
       },
-    })
+    } as any)
 
     history.push('/appointments/new')
     const wrapper = mount(

@@ -1,13 +1,15 @@
 import '../../__mocks__/matchMediaMock'
-import React from 'react'
-import { Router } from 'react-router'
-import { mount, ReactWrapper } from 'enzyme'
-import GeneralInformation from 'patients/GeneralInformation'
-import { createMemoryHistory } from 'history'
-import { startOfDay, subYears } from 'date-fns'
+
 import { Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
+import { startOfDay, subYears } from 'date-fns'
+import { mount, ReactWrapper } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import React from 'react'
+import { Router } from 'react-router-dom'
+
 import Patient from '../../model/Patient'
+import GeneralInformation from '../../patients/GeneralInformation'
 
 describe('Error handling', () => {
   it('should display errors', () => {

@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk } from 'store'
 import { isAfter } from 'date-fns'
 import { isEmpty } from 'lodash'
 import shortid from 'shortid'
-import Incident from '../model/Incident'
+
 import IncidentRepository from '../clients/db/IncidentRepository'
+import Incident from '../model/Incident'
+import { AppThunk } from '../store'
 
 interface Error {
   date?: string

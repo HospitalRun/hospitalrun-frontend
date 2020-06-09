@@ -7,46 +7,57 @@ import translationDE from './locales/de/translations'
 import translationEnUs from './locales/enUs/translations'
 import translationES from './locales/es/translations'
 import translationFR from './locales/fr/translations'
-import translationIN from './locales/in/translations'
+import translationID from './locales/id/translations'
+import translationIT from './locales/it/translations'
 import translationJA from './locales/ja/translations'
 import translationPtBR from './locales/ptBr/translations'
 import translationRU from './locales/ru/translations'
-import translationZR from './locales/zr/translations'
-import translationIT from './locales/it/translations'
+import translationZhCN from './locales/zhCN/translations'
 
-const resources = {
+const resources: { [language: string]: any } = {
   it: {
+    name: 'Italian',
     translation: translationIT,
   },
   ar: {
+    name: 'Arabic',
     translation: translationAR,
   },
   de: {
+    name: 'German',
     translation: translationDE,
   },
   en: {
+    name: 'English, American',
     translation: translationEnUs,
   },
   es: {
+    name: 'Spanish',
     translation: translationES,
   },
   fr: {
+    name: 'French',
     translation: translationFR,
   },
-  in: {
-    translation: translationIN,
+  id: {
+    name: 'Indonesian',
+    translation: translationID,
   },
   ja: {
+    name: 'Japanese',
     translation: translationJA,
   },
-  pt: {
+  ptBR: {
+    name: 'Portuguese',
     translation: translationPtBR,
   },
   ru: {
+    name: 'Russian',
     translation: translationRU,
   },
-  zr: {
-    translation: translationZR,
+  zhCN: {
+    name: 'Chinese',
+    translation: translationZhCN,
   },
 }
 
@@ -70,3 +81,4 @@ i18n
   })
 
 export default i18n
+export { resources }
