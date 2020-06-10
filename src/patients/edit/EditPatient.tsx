@@ -69,24 +69,26 @@ const EditPatient = () => {
   }
 
   const onSave = async () => {
-    await dispatch(
-      updatePatient(
-        {
-          ...patient,
-          fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
-          index:
-            getPatientName(patient.givenName, patient.familyName, patient.suffix) + patient.code,
-        },
-        onSuccessfulSave,
-      ),
-    )
+    const { givenName, familyName, suffix, code, phoneNumbers, emails, addresses } = patient
+
+    const newPatient = {
+      ...patient,
+      fullName: getPatientName(givenName, familyName, suffix),
+      index: getPatientName(givenName, familyName, suffix) + code,
+      phoneNumbers: phoneNumbers.filter((p) => p.value.trim() !== ''),
+    }
+    if (emails) {
+      newPatient.emails = emails.filter((e) => e.value.trim() !== '')
+    }
+    if (addresses) {
+      newPatient.addresses = addresses.filter((a) => a.value.trim() !== '')
+    }
+
+    await dispatch(updatePatient(newPatient, onSuccessfulSave))
   }
 
-  const onFieldChange = (key: string, value: string | boolean) => {
-    setPatient({
-      ...patient,
-      [key]: value,
-    })
+  const onPatientChange = (newPatient: Partial<Patient>) => {
+    setPatient(newPatient as Patient)
   }
 
   if (status === 'loading') {
@@ -96,9 +98,9 @@ const EditPatient = () => {
   return (
     <div>
       <GeneralInformation
-        isEditable
         patient={patient}
-        onFieldChange={onFieldChange}
+        isEditable
+        onChange={onPatientChange}
         error={updateError}
       />
       <div className="row float-right">

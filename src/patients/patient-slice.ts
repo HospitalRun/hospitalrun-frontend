@@ -35,8 +35,8 @@ interface Error {
   prefix?: string
   familyName?: string
   preferredLanguage?: string
-  email?: string
-  phoneNumber?: string
+  emails?: string[]
+  phoneNumbers?: string[]
 }
 
 interface AddRelatedPersonError {
@@ -204,15 +204,33 @@ function validatePatient(patient: Patient) {
     }
   }
 
-  if (patient.email) {
-    if (!validator.isEmail(patient.email)) {
-      error.email = 'patient.errors.invalidEmail'
+  if (patient.emails) {
+    const errors: string[] = []
+    patient.emails.forEach((email) => {
+      if (!validator.isEmail(email.value)) {
+        errors.push('patient.errors.invalidEmail')
+      } else {
+        errors.push('')
+      }
+    })
+    // Only add to error obj if there's an error
+    if (errors.filter((value) => value === '').length !== patient.emails.length) {
+      error.emails = errors
     }
   }
 
-  if (patient.phoneNumber) {
-    if (!validator.isMobilePhone(patient.phoneNumber)) {
-      error.phoneNumber = 'patient.errors.invalidPhoneNumber'
+  if (patient.phoneNumbers) {
+    const errors: string[] = []
+    patient.phoneNumbers.forEach((phoneNumber) => {
+      if (!validator.isMobilePhone(phoneNumber.value)) {
+        errors.push('patient.errors.invalidPhoneNumber')
+      } else {
+        errors.push('')
+      }
+    })
+    // Only add to error obj if there's an error
+    if (errors.filter((value) => value === '').length !== patient.phoneNumbers.length) {
+      error.phoneNumbers = errors
     }
   }
 

@@ -42,30 +42,33 @@ const NewPatient = () => {
   }
 
   const onSave = () => {
-    dispatch(
-      createPatient(
-        {
-          ...patient,
-          fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
-        },
-        onSuccessfulSave,
-      ),
-    )
+    const { givenName, familyName, suffix, phoneNumbers, emails, addresses } = patient
+
+    const newPatient = {
+      ...patient,
+      fullName: getPatientName(givenName, familyName, suffix),
+      phoneNumbers: phoneNumbers.filter((p) => p.value.trim() !== ''),
+    }
+    if (emails) {
+      newPatient.emails = emails.filter((e) => e.value.trim() !== '')
+    }
+    if (addresses) {
+      newPatient.addresses = addresses.filter((a) => a.value.trim() !== '')
+    }
+
+    dispatch(createPatient(newPatient, onSuccessfulSave))
   }
 
-  const onFieldChange = (key: string, value: string | boolean) => {
-    setPatient({
-      ...patient,
-      [key]: value,
-    })
+  const onPatientChange = (newPatient: Partial<Patient>) => {
+    setPatient(newPatient as Patient)
   }
 
   return (
     <div>
       <GeneralInformation
-        isEditable
         patient={patient}
-        onFieldChange={onFieldChange}
+        isEditable
+        onChange={onPatientChange}
         error={createError}
       />
       <div className="row float-right">

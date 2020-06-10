@@ -2,48 +2,52 @@ import { Panel, Checkbox, Alert } from '@hospitalrun/components'
 import { startOfDay, subYears, differenceInYears } from 'date-fns'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import validator from 'validator'
 
 import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
-import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
+import { ContactInfoPiece } from '../model/ContactInformation'
 import Patient from '../model/Patient'
+import ContactInfo from './ContactInfo'
+
+interface Error {
+  message?: string
+  prefix?: string
+  givenName?: string
+  familyName?: string
+  suffix?: string
+  dateOfBirth?: string
+  preferredLanguage?: string
+  phoneNumbers?: string[]
+  emails?: string[]
+}
 
 interface Props {
   patient: Patient
   isEditable?: boolean
-  onFieldChange?: (key: string, value: string | boolean) => void
-  error?: any
+  onChange?: (newPatient: Partial<Patient>) => void
+  error?: Error
 }
 
 const GeneralInformation = (props: Props) => {
   const { t } = useTranslation()
-  const { patient, isEditable, onFieldChange, error } = props
+  const { patient, isEditable, onChange, error } = props
 
-  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
-    onFieldChange && onFieldChange(fieldName, event.target.value)
-
-  const onDateOfBirthChange = (date: Date) =>
-    onFieldChange && onFieldChange('dateOfBirth', date.toISOString())
-
-  const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
-    onFieldChange && onFieldChange(fieldName, event.target.value)
-
-  const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
-    onFieldChange && onFieldChange(fieldName, event.target.checked)
-
-  const onApproximateAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let approximateAgeNumber
-    if (Number.isNaN(parseFloat(event.target.value))) {
-      approximateAgeNumber = 0
-    } else {
-      approximateAgeNumber = parseFloat(event.target.value)
+  const onFieldChange = (name: string, value: string | ContactInfoPiece[]) => {
+    if (onChange) {
+      const newPatient = {
+        ...patient,
+        [name]: value,
+      }
+      onChange(newPatient)
     }
+  }
 
-    const approximateDateOfBirth = subYears(new Date(Date.now()), approximateAgeNumber)
-    if (onFieldChange) {
-      onFieldChange('dateOfBirth', startOfDay(approximateDateOfBirth).toISOString())
-    }
+  const guessDOBfromApproximateAge = (value: string) => {
+    const age = Number.isNaN(parseFloat(value)) ? 0 : parseFloat(value)
+    const dob = subYears(new Date(Date.now()), age)
+    return startOfDay(dob).toISOString()
   }
 
   return (
@@ -57,11 +61,9 @@ const GeneralInformation = (props: Props) => {
               name="prefix"
               value={patient.prefix}
               isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'prefix')
-              }}
-              isInvalid={error?.prefix}
-              feedback={t(error?.prefix)}
+              onChange={(event) => onFieldChange('prefix', event.currentTarget.value)}
+              isInvalid={!!error?.prefix}
+              feedback={error ? (error.prefix ? t(error.prefix) : undefined) : undefined}
             />
           </div>
           <div className="col-md-4">
@@ -70,12 +72,10 @@ const GeneralInformation = (props: Props) => {
               name="givenName"
               value={patient.givenName}
               isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'givenName')
-              }}
+              onChange={(event) => onFieldChange('givenName', event.currentTarget.value)}
               isRequired
-              isInvalid={error?.givenName}
-              feedback={t(error?.givenName)}
+              isInvalid={!!error?.givenName}
+              feedback={error ? (error.givenName ? t(error.givenName) : undefined) : undefined}
             />
           </div>
           <div className="col-md-4">
@@ -84,11 +84,9 @@ const GeneralInformation = (props: Props) => {
               name="familyName"
               value={patient.familyName}
               isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'familyName')
-              }}
-              isInvalid={error?.familyName}
-              feedback={t(error?.familyName)}
+              onChange={(event) => onFieldChange('familyName', event.currentTarget.value)}
+              isInvalid={!!error?.familyName}
+              feedback={error ? (error.familyName ? t(error.familyName) : undefined) : undefined}
             />
           </div>
           <div className="col-md-2">
@@ -97,11 +95,9 @@ const GeneralInformation = (props: Props) => {
               name="suffix"
               value={patient.suffix}
               isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'suffix')
-              }}
-              isInvalid={error?.suffix}
-              feedback={t(error?.suffix)}
+              onChange={(event) => onFieldChange('suffix', event.currentTarget.value)}
+              isInvalid={!!error?.suffix}
+              feedback={error ? (error.suffix ? t(error.suffix) : undefined) : undefined}
             />
           </div>
         </div>
@@ -118,9 +114,7 @@ const GeneralInformation = (props: Props) => {
                 { label: t('sex.other'), value: 'other' },
                 { label: t('sex.unknown'), value: 'unknown' },
               ]}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                onSelectChange(event, 'sex')
-              }}
+              onChange={(event) => onFieldChange('sex', event.currentTarget.value)}
             />
           </div>
           <div className="col">
@@ -133,9 +127,7 @@ const GeneralInformation = (props: Props) => {
                 { label: t('patient.types.charity'), value: 'charity' },
                 { label: t('patient.types.private'), value: 'private' },
               ]}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                onSelectChange(event, 'type')
-              }}
+              onChange={(event) => onFieldChange('type', event.currentTarget.value)}
             />
           </div>
         </div>
@@ -148,7 +140,14 @@ const GeneralInformation = (props: Props) => {
                 type="number"
                 value={`${differenceInYears(new Date(Date.now()), new Date(patient.dateOfBirth))}`}
                 isEditable={isEditable}
-                onChange={onApproximateAgeChange}
+                onChange={
+                  (event) =>
+                    onFieldChange(
+                      'dateOfBirth',
+                      guessDOBfromApproximateAge(event.currentTarget.value),
+                    )
+                  // eslint-disable-next-line react/jsx-curly-newline
+                }
               />
             ) : (
               <DatePickerWithLabelFormGroup
@@ -160,12 +159,12 @@ const GeneralInformation = (props: Props) => {
                     ? new Date(patient.dateOfBirth)
                     : undefined
                 }
-                isInvalid={error?.dateOfBirth}
                 maxDate={new Date(Date.now().valueOf())}
-                feedback={t(error?.dateOfBirth)}
-                onChange={(date: Date) => {
-                  onDateOfBirthChange(date)
-                }}
+                onChange={(date: Date) => onFieldChange('dateOfBirth', date.toISOString())}
+                isInvalid={!!error?.dateOfBirth}
+                feedback={
+                  error ? (error.dateOfBirth ? t(error.dateOfBirth) : undefined) : undefined
+                }
               />
             )}
           </div>
@@ -175,7 +174,10 @@ const GeneralInformation = (props: Props) => {
                 label={t('patient.unknownDateOfBirth')}
                 name="unknown"
                 disabled={!isEditable}
-                onChange={(event) => onCheckboxChange(event, 'isApproximateDateOfBirth')}
+                onChange={
+                  (event) => onFieldChange('isApproximateDateOfBirth', event.currentTarget.value)
+                  // eslint-disable-next-line react/jsx-curly-newline
+                }
               />
             </div>
           </div>
@@ -187,9 +189,7 @@ const GeneralInformation = (props: Props) => {
               name="occupation"
               value={patient.occupation}
               isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'occupation')
-              }}
+              onChange={(event) => onFieldChange('occupation', event.currentTarget.value)}
             />
           </div>
           <div className="col-md-6">
@@ -198,62 +198,62 @@ const GeneralInformation = (props: Props) => {
               name="preferredLanguage"
               value={patient.preferredLanguage}
               isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'preferredLanguage')
-              }}
-              isInvalid={error?.preferredLanguage}
-              feedback={t(error?.preferredLanguage)}
+              onChange={(event) => onFieldChange('preferredLanguage', event.currentTarget.value)}
+              isInvalid={!!error?.preferredLanguage}
+              feedback={
+                error
+                  ? error.preferredLanguage
+                    ? t(error.preferredLanguage)
+                    : undefined
+                  : undefined
+              }
             />
           </div>
         </div>
       </Panel>
       <br />
       <Panel title={t('patient.contactInformation')} color="primary" collapsible>
-        <div className="row">
-          <div className="col">
-            <TextInputWithLabelFormGroup
-              label={t('patient.phoneNumber')}
+        <div className="mb-4">
+          <Panel title={t('patient.phoneNumber')} color="primary" collapsible>
+            <ContactInfo
+              data={patient.phoneNumbers || []}
+              errors={error?.phoneNumbers}
+              label="patient.phoneNumber"
               name="phoneNumber"
-              value={patient.phoneNumber}
               isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'phoneNumber')
-              }}
-              feedback={t(error?.phoneNumber)}
-              isInvalid={!!error?.phoneNumber}
+              onChange={(newPhoneNumbers) => onFieldChange('phoneNumbers', newPhoneNumbers)}
               type="tel"
+              isValid={validator.isMobilePhone}
+              errorLabel="patient.errors.invalidPhoneNumber"
             />
-          </div>
-          <div className="col">
-            <TextInputWithLabelFormGroup
-              label={t('patient.email')}
-              placeholder="email@email.com"
-              name="email"
-              value={patient.email}
-              isEditable={isEditable}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onInputElementChange(event, 'email')
-              }}
-              type="email"
-              feedback={t(error?.email)}
-              isInvalid={!!error?.email}
-            />
-          </div>
+          </Panel>
         </div>
-        <div className="row">
-          <div className="col">
-            <TextFieldWithLabelFormGroup
-              label={t('patient.address')}
-              name="address"
-              value={patient.address}
+        <div className="mb-4">
+          <Panel title={t('patient.email')} color="primary" collapsible>
+            <ContactInfo
+              data={patient.emails || []}
+              errors={error?.emails}
+              label="patient.email"
+              name="email"
               isEditable={isEditable}
-              onChange={
-                (event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  onFieldChange && onFieldChange('address', event.currentTarget.value)
-                // eslint-disable-next-line react/jsx-curly-newline
-              }
+              onChange={(newEmails) => onFieldChange('emails', newEmails)}
+              type="email"
+              isValid={validator.isEmail}
+              errorLabel="patient.errors.invalidEmail"
             />
-          </div>
+          </Panel>
+        </div>
+        <div>
+          <Panel title={t('patient.address')} color="primary" collapsible>
+            <ContactInfo
+              data={patient.addresses || []}
+              label="patient.address"
+              name="address"
+              isEditable={isEditable}
+              onChange={(newAddresses) => onFieldChange('addresses', newAddresses)}
+              type="text"
+            />
+          </Panel>
         </div>
       </Panel>
     </div>
