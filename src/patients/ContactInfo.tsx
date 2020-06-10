@@ -26,17 +26,13 @@ const ContactInfo = (props: Props) => {
 
   const { t } = useTranslation()
 
-  const addEmpty = () => {
-    if (onChange) {
-      onChange([...data, { value: '' }])
-    }
-  }
-
   useEffect(() => {
     if (data.length === 0) {
-      addEmpty()
+      if (onChange) {
+        onChange([...data, { value: '' }])
+      }
     }
-  }, [data])
+  }, [data, onChange])
 
   const getError = (i: number) => {
     const tempError = tempErrors ? tempErrors[i] : null
