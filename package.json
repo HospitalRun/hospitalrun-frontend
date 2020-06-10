@@ -75,6 +75,7 @@
     "@types/validator": "~13.0.0",
     "@typescript-eslint/eslint-plugin": "~2.34.0",
     "@typescript-eslint/parser": "~2.34.0",
+    "chalk": "^4.0.0",
     "commitizen": "~4.1.2",
     "commitlint-config-cz": "~0.13.0",
     "cross-env": "~7.0.0",
@@ -106,16 +107,17 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "commit": "npx git-cz",
-    "start": "react-scripts start",
+    "start": "yarn translation:check && react-scripts start",
     "build": "react-scripts build",
     "prepublishOnly": "npm run build",
-    "test": "react-scripts test --detectOpenHandles",
+    "test": "yarn translation:check && react-scripts test --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test --passWithNoTests",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/**/*.{js,ts}\"",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/**/*.{js,ts}\" --fix",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
-    "coveralls": "npm run test:ci -- --coverage --watchAll=false && cat ./coverage/lcov.info"
+    "coveralls": "npm run test:ci -- --coverage --watchAll=false && cat ./coverage/lcov.info",
+    "translation:check": "cd scripts && tsc && node ../bin/scripts/checkMissingTranslations.js"
   },
   "browserslist": {
     "production": [
