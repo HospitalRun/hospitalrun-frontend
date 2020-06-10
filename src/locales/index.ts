@@ -1,5 +1,3 @@
-import { Resource } from 'i18next'
-
 import translationAR from './ar/translations'
 import translationDE from './de/translations'
 import translationEnUs from './enUs/translations'
@@ -12,7 +10,7 @@ import translationPtBR from './ptBr/translations'
 import translationRU from './ru/translations'
 import translationZhCN from './zhCN/translations'
 
-const resources: Resource = {
+const resources: { [language: string]: any } = {
   it: {
     name: 'Italian',
     translation: translationIT,
