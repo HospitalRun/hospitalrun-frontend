@@ -48,12 +48,8 @@ const NewPatient = () => {
       ...patient,
       fullName: getPatientName(givenName, familyName, suffix),
       phoneNumbers: phoneNumbers.filter((p) => p.value.trim() !== ''),
-    }
-    if (emails) {
-      newPatient.emails = emails.filter((e) => e.value.trim() !== '')
-    }
-    if (addresses) {
-      newPatient.addresses = addresses.filter((a) => a.value.trim() !== '')
+      emails: emails.filter((e) => e.value.trim() !== ''),
+      addresses: addresses.filter((a) => a.value.trim() !== ''),
     }
 
     dispatch(createPatient(newPatient, onSuccessfulSave))

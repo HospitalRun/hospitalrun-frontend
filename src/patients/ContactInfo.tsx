@@ -66,16 +66,27 @@ const ContactInfo = (props: Props) => {
     }
   }
 
+  const header = (
+    <Row className="mb-2">
+      <Column xs={12} sm={4}>
+        <span className="">{typeLabel}</span>
+        <span className="d-sm-none"> &amp; {t(label)}</span>
+      </Column>
+      <Column className="d-none d-sm-block" sm={8}>
+        {t(label)}
+      </Column>
+    </Row>
+  )
+
   // todo: acts strange when deleting empty rows above non-empty rows.
   const getEntries = () =>
     data.map((entry, i) => {
       const error = getError(i)
       return (
         <Row>
-          <Column md={4}>
+          <Column sm={4}>
             <SelectWithLabelFormGroup
-              name={`${name}Type${i}`}
-              label={typeLabel}
+              name={`${name}Type${i}`} // problem
               value={entry.type}
               isEditable={isEditable}
               options={typeOptions}
@@ -92,11 +103,10 @@ const ContactInfo = (props: Props) => {
               }}
             />
           </Column>
-          <Column md={8}>
+          <Column sm={8}>
             {['tel', 'email'].indexOf(type) > -1 ? (
               <TextInputWithLabelFormGroup
-                label={t(label)}
-                name={name + i}
+                name={name + i} // problem
                 value={entry.value}
                 isEditable={isEditable}
                 onChange={(event) => {
@@ -108,8 +118,7 @@ const ContactInfo = (props: Props) => {
               />
             ) : (
               <TextFieldWithLabelFormGroup
-                label={t(label)}
-                name={name + i}
+                name={name + i} // problem
                 value={entry.value}
                 isEditable={isEditable}
                 onChange={(event) => {
@@ -177,10 +186,15 @@ const ContactInfo = (props: Props) => {
     <Spinner color="blue" loading size={20} type="SyncLoader" />
   ) : (
     <div>
+      {header}
       {getEntries()}
       {isEditable ? addButton : null}
     </div>
   )
+}
+
+ContactInfo.defaultProps = {
+  data: [],
 }
 
 export default ContactInfo

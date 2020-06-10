@@ -216,7 +216,7 @@ const GeneralInformation = (props: Props) => {
         <div className="mb-4">
           <Panel title={t('patient.phoneNumber')} color="primary" collapsible>
             <ContactInfo
-              data={patient.phoneNumbers || []}
+              data={patient.phoneNumbers}
               errors={error?.phoneNumbers}
               label="patient.phoneNumber"
               name="phoneNumber"
@@ -231,7 +231,7 @@ const GeneralInformation = (props: Props) => {
         <div className="mb-4">
           <Panel title={t('patient.email')} color="primary" collapsible>
             <ContactInfo
-              data={patient.emails || []}
+              data={patient.emails}
               errors={error?.emails}
               label="patient.email"
               name="email"
@@ -246,7 +246,7 @@ const GeneralInformation = (props: Props) => {
         <div>
           <Panel title={t('patient.address')} color="primary" collapsible>
             <ContactInfo
-              data={patient.addresses || []}
+              data={patient.addresses}
               label="patient.address"
               name="address"
               isEditable={isEditable}

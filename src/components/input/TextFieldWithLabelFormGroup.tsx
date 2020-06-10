@@ -3,7 +3,7 @@ import React from 'react'
 
 interface Props {
   value: string
-  label: string
+  label?: string
   name: string
   isEditable?: boolean
   placeholder?: string
@@ -18,7 +18,7 @@ const TextFieldWithLabelFormGroup = (props: Props) => {
   const id = `${name}TextField`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} isRequired={isRequired} />
+      {label && <Label text={label} htmlFor={id} isRequired={isRequired} />}
       <TextField
         rows={4}
         value={value}
