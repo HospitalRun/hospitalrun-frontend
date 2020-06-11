@@ -66,17 +66,18 @@ const ContactInfo = (props: Props) => {
     }
   }
 
-  const header = (
-    <Row className="mb-2">
-      <Column xs={12} sm={4}>
-        <span className="">{typeLabel}</span>
-        <span className="d-sm-none"> &amp; {t(label)}</span>
-      </Column>
-      <Column className="d-none d-sm-block" sm={8}>
-        {t(label)}
-      </Column>
-    </Row>
-  )
+  const header =
+    data?.length === 0 ? null : (
+      <Row className="mb-2">
+        <Column xs={12} sm={4}>
+          <span className="">{typeLabel}</span>
+          <span className="d-sm-none"> &amp; {t(label)}</span>
+        </Column>
+        <Column className="d-none d-sm-block" sm={8}>
+          {t(label)}
+        </Column>
+      </Row>
+    )
 
   // todo: acts strange when deleting empty rows above non-empty rows.
   const getEntries = () =>
