@@ -101,10 +101,10 @@ const EditPatient = () => {
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">
-          <Button className="mr-2" color="success" onClick={onSave}>
+          <Button className="btn-save mr-2" color="success" onClick={onSave}>
             {t('actions.save')}
           </Button>
-          <Button color="danger" onClick={onCancel}>
+          <Button className="btn-cancel" color="danger" onClick={onCancel}>
             {t('actions.cancel')}
           </Button>
         </div>

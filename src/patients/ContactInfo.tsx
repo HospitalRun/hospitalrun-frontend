@@ -84,10 +84,11 @@ const ContactInfo = (props: Props) => {
     data.map((entry, i) => {
       const error = getError(i)
       return (
-        <Row>
+        // todo: want a better key
+        <Row key={entry.value}>
           <Column sm={4}>
             <SelectWithLabelFormGroup
-              name={`${name}Type${i}`} // problem
+              name={`${name}Type${i}`} // todo: problem?
               value={entry.type}
               isEditable={isEditable}
               options={typeOptions}
@@ -107,7 +108,7 @@ const ContactInfo = (props: Props) => {
           <Column sm={8}>
             {['tel', 'email'].indexOf(type) > -1 ? (
               <TextInputWithLabelFormGroup
-                name={name + i} // problem
+                name={`${name}${i}`} // todo: problem?
                 value={entry.value}
                 isEditable={isEditable}
                 onChange={(event) => {
@@ -119,7 +120,7 @@ const ContactInfo = (props: Props) => {
               />
             ) : (
               <TextFieldWithLabelFormGroup
-                name={name + i} // problem
+                name={`${name}${i}`} // todo: problem?
                 value={entry.value}
                 isEditable={isEditable}
                 onChange={(event) => {

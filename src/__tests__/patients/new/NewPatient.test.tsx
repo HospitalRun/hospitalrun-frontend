@@ -25,6 +25,9 @@ describe('New Patient', () => {
   const patient = {
     givenName: 'first',
     fullName: 'first',
+    phoneNumbers: [] as any,
+    emails: [] as any,
+    addresses: [] as any,
   } as Patient
 
   let history: any
@@ -96,12 +99,12 @@ describe('New Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
 
     act(() => {
-      generalInformationForm.prop('onFieldChange')('givenName', 'first')
+      generalInformationForm.prop('onChange')(patient)
     })
 
     wrapper.update()
 
-    const saveButton = wrapper.find(components.Button).at(0)
+    const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -125,12 +128,12 @@ describe('New Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
 
     act(() => {
-      generalInformationForm.prop('onFieldChange')('givenName', 'first')
+      generalInformationForm.prop('onChange')(patient)
     })
 
     wrapper.update()
 
-    const saveButton = wrapper.find(components.Button).at(0)
+    const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -152,7 +155,7 @@ describe('New Patient', () => {
       wrapper = await setup()
     })
 
-    const cancelButton = wrapper.find(components.Button).at(1)
+    const cancelButton = wrapper.find('.btn-cancel').at(0)
     const onClick = cancelButton.prop('onClick') as any
     expect(cancelButton.text().trim()).toEqual('actions.cancel')
 

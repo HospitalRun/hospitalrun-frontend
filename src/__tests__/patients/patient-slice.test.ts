@@ -251,38 +251,13 @@ describe('patients slice', () => {
       )
     })
 
-    it('should validate that the patient email is a valid email', async () => {
-      const store = mockStore()
-      const expectedPatientId = 'sliceId10'
-      const expectedPatient = {
-        id: expectedPatientId,
-        givenName: 'some given name',
-        phoneNumber: 'not a phone number',
-      } as Patient
-      const saveOrUpdateSpy = jest
-        .spyOn(PatientRepository, 'saveOrUpdate')
-        .mockResolvedValue(expectedPatient)
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
-
-      expect(onSuccessSpy).not.toHaveBeenCalled()
-      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
-      expect(store.getActions()[1]).toEqual(
-        createPatientError({
-          message: 'patient.errors.createPatientError',
-          phoneNumber: 'patient.errors.invalidPhoneNumber',
-        }),
-      )
-    })
-
     it('should validate that the patient phone number is a valid phone number', async () => {
       const store = mockStore()
       const expectedPatientId = 'sliceId10'
       const expectedPatient = {
         id: expectedPatientId,
         givenName: 'some given name',
-        phoneNumber: 'not a phone number',
+        phoneNumbers: [{ value: 'not a phone number' }],
       } as Patient
       const saveOrUpdateSpy = jest
         .spyOn(PatientRepository, 'saveOrUpdate')
@@ -296,7 +271,32 @@ describe('patients slice', () => {
       expect(store.getActions()[1]).toEqual(
         createPatientError({
           message: 'patient.errors.createPatientError',
-          phoneNumber: 'patient.errors.invalidPhoneNumber',
+          phoneNumbers: ['patient.errors.invalidPhoneNumber'],
+        }),
+      )
+    })
+
+    it('should validate that the patient email is a valid email', async () => {
+      const store = mockStore()
+      const expectedPatientId = 'sliceId10'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some given name',
+        emails: [{ value: 'not an email' }],
+      } as Patient
+      const saveOrUpdateSpy = jest
+        .spyOn(PatientRepository, 'saveOrUpdate')
+        .mockResolvedValue(expectedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
+
+      expect(onSuccessSpy).not.toHaveBeenCalled()
+      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
+      expect(store.getActions()[1]).toEqual(
+        createPatientError({
+          message: 'patient.errors.createPatientError',
+          emails: ['patient.errors.invalidEmail'],
         }),
       )
     })
