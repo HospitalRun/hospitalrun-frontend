@@ -80,60 +80,60 @@ const ContactInfo = (props: Props) => {
     )
 
   // todo: acts strange when deleting empty rows above non-empty rows.
-  const getEntries = () =>
-    data.map((entry, i) => {
-      const error = getError(i)
-      return (
-        // todo: want a better key
-        <Row key={entry.value}>
-          <Column sm={4}>
-            <SelectWithLabelFormGroup
-              name={`${name}Type${i}`} // todo: problem?
-              value={entry.type}
+  const entries = data.map((entry, i) => {
+    const error = getError(i)
+    return (
+      // todo: want a better key
+      // eslint-disable-next-line react/no-array-index-key
+      <Row key={i}>
+        <Column sm={4}>
+          <SelectWithLabelFormGroup
+            name={`${name}Type${i}`} // todo: problem?
+            value={entry.type}
+            isEditable={isEditable}
+            options={typeOptions}
+            onChange={(event) => {
+              if (onChange) {
+                // eslint-disable-next-line no-shadow
+                const newData = data.map(({ value, type }) =>
+                  value === entry.value
+                    ? { value, type: event.currentTarget.value }
+                    : { value, type },
+                )
+                onChange(newData)
+              }
+            }}
+          />
+        </Column>
+        <Column sm={8}>
+          {['tel', 'email'].indexOf(type) > -1 ? (
+            <TextInputWithLabelFormGroup
+              name={`${name}${i}`} // todo: problem?
+              value={entry.value}
               isEditable={isEditable}
-              options={typeOptions}
               onChange={(event) => {
-                if (onChange) {
-                  // eslint-disable-next-line no-shadow
-                  const newData = data.map(({ value, type }) =>
-                    value === entry.value
-                      ? { value, type: event.currentTarget.value }
-                      : { value, type },
-                  )
-                  onChange(newData)
-                }
+                onChangeValue(event, entry.value)
               }}
+              feedback={error}
+              isInvalid={!!error}
+              type={type}
             />
-          </Column>
-          <Column sm={8}>
-            {['tel', 'email'].indexOf(type) > -1 ? (
-              <TextInputWithLabelFormGroup
-                name={`${name}${i}`} // todo: problem?
-                value={entry.value}
-                isEditable={isEditable}
-                onChange={(event) => {
-                  onChangeValue(event, entry.value)
-                }}
-                feedback={error}
-                isInvalid={!!error}
-                type={type}
-              />
-            ) : (
-              <TextFieldWithLabelFormGroup
-                name={`${name}${i}`} // todo: problem?
-                value={entry.value}
-                isEditable={isEditable}
-                onChange={(event) => {
-                  onChangeValue(event, entry.value)
-                }}
-                feedback={error}
-                isInvalid={!!error}
-              />
-            )}
-          </Column>
-        </Row>
-      )
-    })
+          ) : (
+            <TextFieldWithLabelFormGroup
+              name={`${name}${i}`} // todo: problem?
+              value={entry.value}
+              isEditable={isEditable}
+              onChange={(event) => {
+                onChangeValue(event, entry.value)
+              }}
+              feedback={error}
+              isInvalid={!!error}
+            />
+          )}
+        </Column>
+      </Row>
+    )
+  })
 
   const onClickAdd = () => {
     const newData: ContactInfoPiece[] = []
@@ -189,7 +189,7 @@ const ContactInfo = (props: Props) => {
   ) : (
     <div>
       {header}
-      {getEntries()}
+      {entries}
       {isEditable ? addButton : null}
     </div>
   )
