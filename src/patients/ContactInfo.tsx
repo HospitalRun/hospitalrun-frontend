@@ -37,10 +37,11 @@ const ContactInfo = (props: Props) => {
   const { t } = useTranslation()
 
   useEffect(() => {
+    if (!onChange) {
+      return
+    }
     if (data.length === 0) {
-      if (onChange) {
-        onChange([...data, { value: '' }])
-      }
+      onChange([...data, { value: '' }])
     }
   }, [data, onChange])
 
@@ -67,13 +68,15 @@ const ContactInfo = (props: Props) => {
   const addLabel = t('actions.add')
 
   const onChangeValue = (event: any, prevValue: string) => {
-    if (onChange) {
-      // eslint-disable-next-line no-shadow
-      const newData = data.map(({ value, type }) =>
-        value === prevValue ? { value: event.currentTarget.value, type } : { value, type },
-      )
-      onChange(newData)
+    if (!onChange) {
+      return
     }
+
+    // eslint-disable-next-line no-shadow
+    const newData = data.map(({ value, type }) =>
+      value === prevValue ? { value: event.currentTarget.value, type } : { value, type },
+    )
+    onChange(newData)
   }
 
   const header =
@@ -102,17 +105,19 @@ const ContactInfo = (props: Props) => {
             value={entry.type}
             isEditable={isEditable}
             options={typeOptions}
-            onChange={(event) => {
-              if (onChange) {
-                // eslint-disable-next-line no-shadow
-                const newData = data.map(({ value, type }) =>
-                  value === entry.value
-                    ? { value, type: event.currentTarget.value }
-                    : { value, type },
-                )
-                onChange(newData)
-              }
-            }}
+            onChange={
+              onChange
+                ? (event) => {
+                    // eslint-disable-next-line no-shadow
+                    const newData = data.map(({ value, type }) =>
+                      value === entry.value
+                        ? { value, type: event.currentTarget.value }
+                        : { value, type },
+                    )
+                    onChange(newData)
+                  }
+                : undefined
+            }
           />
         </Column>
         <Column sm={8}>
@@ -121,9 +126,13 @@ const ContactInfo = (props: Props) => {
               name={`${name}${i}`} // todo: problem?
               value={entry.value}
               isEditable={isEditable}
-              onChange={(event) => {
-                onChangeValue(event, entry.value)
-              }}
+              onChange={
+                onChange
+                  ? (event) => {
+                      onChangeValue(event, entry.value)
+                    }
+                  : undefined
+              }
               feedback={error}
               isInvalid={!!error}
               type={type}
@@ -133,9 +142,13 @@ const ContactInfo = (props: Props) => {
               name={`${name}${i}`} // todo: problem?
               value={entry.value}
               isEditable={isEditable}
-              onChange={(event) => {
-                onChangeValue(event, entry.value)
-              }}
+              onChange={
+                onChange
+                  ? (event) => {
+                      onChangeValue(event, entry.value)
+                    }
+                  : undefined
+              }
               feedback={error}
               isInvalid={!!error}
             />
@@ -146,6 +159,10 @@ const ContactInfo = (props: Props) => {
   })
 
   const onClickAdd = () => {
+    if (!onChange) {
+      return
+    }
+
     const newData: ContactInfoPiece[] = []
     // eslint-disable-next-line no-underscore-dangle
     const _tempErrors: string[] = []
@@ -181,14 +198,12 @@ const ContactInfo = (props: Props) => {
     }
 
     // send data upward
-    if (onChange) {
-      onChange(newData)
-    }
+    onChange(newData)
   }
 
   const addButton = (
     <div className="text-right">
-      <button type="button" className="btn btn-link" onClick={onClickAdd}>
+      <button type="button" className="btn btn-link" onClick={onChange ? onClickAdd : undefined}>
         <Icon icon="add" /> {addLabel}
       </button>
     </div>

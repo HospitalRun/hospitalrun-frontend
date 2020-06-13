@@ -9,6 +9,7 @@ import { Router } from 'react-router-dom'
 // import thunk from 'redux-thunk'
 
 // import Patient from '../../model/Patient'
+import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import { ContactInfoPiece } from '../../model/ContactInformation'
 import ContactInfo from '../../patients/ContactInfo'
 // import { RootState } from '../../store'
@@ -125,6 +126,14 @@ describe('Contact Info in its non-Editable mode', () => {
     return wrapper
   }
 
+  it('should render an empty element if no data is present', () => {
+    const wrapper = setup()
+    const contactInfoWrapper = wrapper.find(ContactInfo)
+
+    expect(contactInfoWrapper.find('div')).toHaveLength(1)
+    expect(contactInfoWrapper.containsMatchingElement(<div />)).toEqual(true)
+  })
+
   it('should render the labels if data is provided', () => {
     const wrapper = setup(data)
     const headerWrapper = wrapper.find('.header')
@@ -141,6 +150,15 @@ describe('Contact Info in its non-Editable mode', () => {
       const inputWrapper = wrapper.findWhere((w: any) => w.prop('name') === `${name}${i}`)
 
       expect(inputWrapper.prop('value')).toEqual(data[i].value)
+    }
+  })
+
+  it('should show inputs that are not editable', () => {
+    const wrapper = setup(data)
+    const inputWrappers = wrapper.find(TextInputWithLabelFormGroup)
+    for (let i = 0; i < inputWrappers.length; i += 1) {
+      expect(inputWrappers.at(i).prop('isEditable')).toBeFalsy()
+      expect(inputWrappers.at(i).prop('onChange')).toBeUndefined()
     }
   })
 })
