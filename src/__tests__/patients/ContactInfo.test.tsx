@@ -99,4 +99,48 @@ describe('Contact Info in its Editable mode', () => {
 
     expect(buttonWrapper.text().trim()).toEqual('actions.add')
   })
+
+  // todo
+  // it('should add a row if an add button is clicked with valid entries', () => {
+  // })
+})
+
+describe('Contact Info in its non-Editable mode', () => {
+  const data = [
+    { value: '123456', type: undefined },
+    { value: '789012', type: undefined },
+  ]
+  const label = 'this is a label'
+  const name = 'this is a name'
+
+  const setup = (_data?: ContactInfoPiece[]) => {
+    const history = createMemoryHistory()
+    history.push('/patients/new')
+
+    const wrapper = mount(
+      <Router history={history}>
+        <ContactInfo data={_data} label={label} name={name} type="tel" />
+      </Router>,
+    )
+    return wrapper
+  }
+
+  it('should render the labels if data is provided', () => {
+    const wrapper = setup(data)
+    const headerWrapper = wrapper.find('.header')
+    const columnWrappers = headerWrapper.find(Column)
+    const expectedTypeLabel = 'patient.contactInfoType.label'
+
+    expect(columnWrappers.at(0).text()).toEqual(`${expectedTypeLabel} & ${label}`)
+    expect(columnWrappers.at(1).text()).toEqual(label)
+  })
+
+  it('should display the entries if data is provided', () => {
+    const wrapper = setup(data)
+    for (let i = 0; i < wrapper.length; i += 1) {
+      const inputWrapper = wrapper.findWhere((w: any) => w.prop('name') === `${name}${i}`)
+
+      expect(inputWrapper.prop('value')).toEqual(data[i].value)
+    }
+  })
 })
