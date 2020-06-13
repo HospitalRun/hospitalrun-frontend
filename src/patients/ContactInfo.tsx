@@ -17,11 +17,21 @@ interface Props {
   onChange?: (newData: ContactInfoPiece[]) => void
   type: 'text' | 'email' | 'tel'
   isValid?: (entry: string) => boolean
-  errorLabel?: string
+  errorMessageLabel?: string
 }
 
 const ContactInfo = (props: Props) => {
-  const { data, errors, label, name, isEditable, onChange, type, isValid, errorLabel } = props
+  const {
+    data,
+    errors,
+    label,
+    name,
+    isEditable,
+    onChange,
+    type,
+    isValid,
+    errorMessageLabel,
+  } = props
   const [tempErrors, setTempErrors] = useState<string[]>()
 
   const { t } = useTranslation()
@@ -68,7 +78,7 @@ const ContactInfo = (props: Props) => {
 
   const header =
     data?.length === 0 ? null : (
-      <Row className="mb-2">
+      <Row className="header mb-2">
         <Column xs={12} sm={4}>
           <span className="">{typeLabel}</span>
           <span className="d-sm-none"> &amp; {t(label)}</span>
@@ -149,7 +159,7 @@ const ContactInfo = (props: Props) => {
           if (value === '') {
             _tempErrors.push('')
           } else if (!isValid(value)) {
-            _tempErrors.push(errorLabel || 'x')
+            _tempErrors.push(errorMessageLabel || 'x')
             hasError = true
           } else {
             _tempErrors.push('')
@@ -184,7 +194,7 @@ const ContactInfo = (props: Props) => {
     </div>
   )
 
-  return !data ? (
+  return isEditable && data.length === 0 ? (
     <Spinner color="blue" loading size={20} type="SyncLoader" />
   ) : (
     <div>
@@ -197,6 +207,7 @@ const ContactInfo = (props: Props) => {
 
 ContactInfo.defaultProps = {
   data: [],
+  type: 'text',
 }
 
 export default ContactInfo

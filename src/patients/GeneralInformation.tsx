@@ -224,7 +224,7 @@ const GeneralInformation = (props: Props) => {
               onChange={(newPhoneNumbers) => onFieldChange('phoneNumbers', newPhoneNumbers)}
               type="tel"
               isValid={validator.isMobilePhone}
-              errorLabel="patient.errors.invalidPhoneNumber"
+              errorMessageLabel="patient.errors.invalidPhoneNumber"
             />
           </Panel>
         </div>
@@ -239,7 +239,7 @@ const GeneralInformation = (props: Props) => {
               onChange={(newEmails) => onFieldChange('emails', newEmails)}
               type="email"
               isValid={validator.isEmail}
-              errorLabel="patient.errors.invalidEmail"
+              errorMessageLabel="patient.errors.invalidEmail"
             />
           </Panel>
         </div>
