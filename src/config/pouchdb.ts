@@ -14,19 +14,27 @@ PouchDB.plugin(RelationalPouch)
 PouchDB.plugin(PouchdbFind)
 PouchDB.plugin(PouchAuth)
 
-export const remoteDb = new PouchDB(`${process.env.REACT_APP_HOSPITALRUN_API}/hospitalrun`, {
-  skip_setup: true,
-})
+let serverDb
+let localDb
 
-const localDb = new PouchDB('local_hospitalrun')
-localDb
-  .sync(remoteDb, { live: true, retry: true })
-  .on('change', (info) => {
-    console.log(info)
+if (process.env.NODE_ENV === 'test') {
+  serverDb = new PouchDB('hospitalrun', { adapter: 'memory' })
+  localDb = new PouchDB('local_hospitalrun', { adapter: 'memory' })
+} else {
+  serverDb = new PouchDB(`${process.env.REACT_APP_HOSPITALRUN_API}/hospitalrun`, {
+    skip_setup: true,
   })
-  .on('error', (info) => {
-    console.error(info)
-  })
+
+  localDb = new PouchDB('local_hospitalrun')
+  localDb
+    .sync(serverDb, { live: true, retry: true })
+    .on('change', (info) => {
+      console.log(info)
+    })
+    .on('error', (info) => {
+      console.error(info)
+    })
+}
 
 export const schema = [
   {
@@ -54,5 +62,5 @@ export const schema = [
     relations: { patient: { belongsTo: 'patient' } },
   },
 ]
-
 export const relationalDb = localDb.setSchema(schema)
+export const remoteDb = serverDb as PouchDB.Database

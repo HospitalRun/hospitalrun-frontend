@@ -20,7 +20,6 @@ const Login = () => {
   useEffect(() => {
     const init = async () => {
       const session = await remoteDb.getSession()
-      console.log(session)
       if (session.userCtx.name) {
         await dispatch(getCurrentSession(session.userCtx.name))
       }

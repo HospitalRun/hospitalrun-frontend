@@ -1,7 +1,7 @@
 import findLast from 'lodash/findLast'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 
 import CarePlan from '../../model/CarePlan'
 import { RootState } from '../../store'
