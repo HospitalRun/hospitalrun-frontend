@@ -48,11 +48,11 @@ const HospitalRun = () => {
               <div>
                 <Switch>
                   <Route exact path="/" component={Dashboard} />
-                  <Route exact path="/appointments" component={Appointments} />
-                  <Route exact path="/patients" component={Patients} />
-                  <Route exact path="/labs" component={Labs} />
-                  <Route exact path="/incidents" component={Incidents} />
-                  <Route exact path="/settings" component={Settings} />
+                  <Route path="/appointments" component={Appointments} />
+                  <Route path="/patients" component={Patients} />
+                  <Route path="/labs" component={Labs} />
+                  <Route path="/incidents" component={Incidents} />
+                  <Route path="/settings" component={Settings} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />
