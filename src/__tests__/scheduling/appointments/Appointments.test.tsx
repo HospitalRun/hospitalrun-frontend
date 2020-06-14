@@ -129,7 +129,7 @@ describe('/appointments/edit/:id', () => {
   it('should render the edit appointment screen when /appointments/edit/:id is accessed', () => {
     const appointment = {
       id: '123',
-      patientId: '456',
+      patient: '456',
     } as Appointment
 
     const patient = {

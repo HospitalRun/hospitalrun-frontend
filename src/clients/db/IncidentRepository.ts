@@ -1,4 +1,4 @@
-import { localDb } from '../../config/pouchdb'
+import { relationalDb } from '../../config/pouchdb'
 import IncidentFilter from '../../incidents/IncidentFilter'
 import Incident from '../../model/Incident'
 import Repository from './Repository'
@@ -8,7 +8,7 @@ interface SearchOptions {
 }
 class IncidentRepository extends Repository<Incident> {
   constructor() {
-    super(localDb)
+    super('incident', relationalDb)
   }
 
   async search(options: SearchOptions): Promise<Incident[]> {

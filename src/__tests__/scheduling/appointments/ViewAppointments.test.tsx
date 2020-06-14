@@ -24,7 +24,7 @@ describe('ViewAppointments', () => {
     {
       id: '123',
       rev: '1',
-      patientId: '1234',
+      patient: '1234',
       startDateTime: new Date().toISOString(),
       endDateTime: new Date().toISOString(),
       location: 'location',

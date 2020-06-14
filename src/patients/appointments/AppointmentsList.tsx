@@ -50,7 +50,7 @@ const AppointmentsList = (props: Props) => {
 
   const onSearchFormSubmit = (event: React.FormEvent | React.MouseEvent) => {
     event.preventDefault()
-    dispatch(fetchPatientAppointments(patientId, searchText))
+    dispatch(fetchPatientAppointments(patientId))
   }
 
   return (

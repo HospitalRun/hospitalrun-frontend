@@ -86,13 +86,13 @@ export const {
 export const fetchLab = (labId: string): AppThunk => async (dispatch) => {
   dispatch(fetchLabStart())
   const fetchedLab = await LabRepository.find(labId)
-  const fetchedPatient = await PatientRepository.find(fetchedLab.patientId)
+  const fetchedPatient = await PatientRepository.find(fetchedLab.patient)
   dispatch(fetchLabSuccess({ lab: fetchedLab, patient: fetchedPatient }))
 }
 
 const validateLabRequest = (newLab: Lab): Error => {
   const labRequestError: Error = {}
-  if (!newLab.patientId) {
+  if (!newLab.patient) {
     labRequestError.patient = 'labs.requests.error.patientRequired'
   }
 

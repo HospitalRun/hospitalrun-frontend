@@ -1,12 +1,17 @@
 import escapeStringRegexp from 'escape-string-regexp'
 
-import { localDb } from '../../config/pouchdb'
+import { relationalDb } from '../../config/pouchdb'
 import Appointment from '../../model/Appointment'
 import Repository from './Repository'
 
 class AppointmentRepository extends Repository<Appointment> {
   constructor() {
-    super(localDb)
+    super('appointment', relationalDb)
+    this.db.createIndex({
+      index: {
+        fields: ['data.patient', '_id'],
+      },
+    })
   }
 
   // Fuzzy search for patient appointments. Used for patient appointment search bar
@@ -16,7 +21,7 @@ class AppointmentRepository extends Repository<Appointment> {
       selector: {
         $and: [
           {
-            patientId,
+            patient: patientId,
           },
           {
             $or: [

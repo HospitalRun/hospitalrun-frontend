@@ -91,7 +91,7 @@ describe('New Appointment', () => {
       })
 
       const expectedAppointment = {
-        patientId: '123',
+        patient: '123',
         startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
         endDateTime: addMinutes(
           roundToNearestMinutes(new Date(), { nearestTo: 15 }),
@@ -105,7 +105,7 @@ describe('New Appointment', () => {
       act(() => {
         const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
         const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patientId', expectedAppointment.patientId)
+        onFieldChange('patientId', expectedAppointment.patient)
       })
 
       wrapper.update()
@@ -171,7 +171,7 @@ describe('New Appointment', () => {
       })
 
       const expectedAppointment = {
-        patientId: '123',
+        patient: '123',
         startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
         endDateTime: addMinutes(
           roundToNearestMinutes(new Date(), { nearestTo: 15 }),
@@ -185,7 +185,7 @@ describe('New Appointment', () => {
       act(() => {
         const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
         const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patientId', expectedAppointment.patientId)
+        onFieldChange('patientId', expectedAppointment.patient)
       })
       wrapper.update()
       const saveButton = wrapper.find(mockedComponents.Button).at(0)

@@ -49,7 +49,7 @@ describe('appointments slice', () => {
       {
         id: '1',
         rev: '1',
-        patientId: '123',
+        patient: '123',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',

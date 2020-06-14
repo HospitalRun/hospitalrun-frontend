@@ -48,7 +48,7 @@ const AppointmentDetailForm = (props: Props) => {
               value={patient?.fullName}
               placeholder={t('scheduling.appointment.patient')}
               onChange={
-                (p: Patient[]) => onFieldChange && p[0] && onFieldChange('patientId', p[0].id)
+                (p: Patient[]) => onFieldChange && p[0] && onFieldChange('patient', p[0].id)
                 // eslint-disable-next-line react/jsx-curly-newline
               }
               onSearch={async (query: string) => PatientRepository.search(query)}

@@ -66,7 +66,7 @@ describe('AppointmentDetailForm', () => {
 
       expect(patientTypeahead).toHaveLength(1)
       expect(patientTypeahead.prop('placeholder')).toEqual('scheduling.appointment.patient')
-      expect(patientTypeahead.prop('value')).toEqual(expectedAppointment.patientId)
+      expect(patientTypeahead.prop('value')).toEqual(expectedAppointment.patient)
     })
 
     it('should render as start date date time picker', () => {
@@ -149,7 +149,7 @@ describe('AppointmentDetailForm', () => {
   describe('layout - not editable', () => {
     let wrapper: ReactWrapper
     const expectedAppointment = {
-      patientId: 'patientId',
+      patient: 'patientId',
       startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
       endDateTime: addMinutes(
         roundToNearestMinutes(new Date(), { nearestTo: 15 }),

@@ -42,7 +42,7 @@ describe('Appointment Repository', () => {
   describe('save', () => {
     it('should create an id that is a uuid', async () => {
       const newAppointment = await AppointmentRepository.save({
-        patientId: 'id',
+        patient: 'id',
       } as Appointment)
 
       expect(uuidV4Regex.test(newAppointment.id)).toBeTruthy()
@@ -52,7 +52,7 @@ describe('Appointment Repository', () => {
 
     it('should generate a timestamp for created date and last updated date', async () => {
       const newAppointment = await AppointmentRepository.save({
-        patientId: 'id',
+        patient: 'id',
       } as Appointment)
 
       expect(newAppointment.createdAt).toBeDefined()
