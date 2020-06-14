@@ -3,35 +3,33 @@ import { Column, Spinner } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-// import { Provider } from 'react-redux'
 import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router-dom'
-// import createMockStore from 'redux-mock-store'
-// import thunk from 'redux-thunk'
 
-// import Patient from '../../model/Patient'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import { ContactInfoPiece } from '../../model/ContactInformation'
 import ContactInfo from '../../patients/ContactInfo'
-// import { RootState } from '../../store'
-
-// const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Contact Info in its Editable mode', () => {
   const data = [
-    { value: '123456', type: undefined },
+    { value: '123456', type: 'home' },
     { value: '789012', type: undefined },
+  ]
+  const dataForNoAdd = [
+    { value: '123456', type: 'home' },
+    { value: ' ', type: undefined },
   ]
   const errors = ['this is an error', '']
   const label = 'this is a label'
   const name = 'this is a name'
   let onChange: jest.Mock
-  // const isValid = jest.fn()
+  let isValid: jest.Mock
 
   const setup = (_data?: ContactInfoPiece[], _errors?: string[]) => {
     const history = createMemoryHistory()
     history.push('/patients/new')
     onChange = jest.fn()
+    isValid = jest.fn()
 
     const wrapper = mount(
       <Router history={history}>
@@ -43,6 +41,7 @@ describe('Contact Info in its Editable mode', () => {
           isEditable
           onChange={onChange}
           type="tel"
+          isValid={isValid}
         />
       </Router>,
     )
@@ -59,7 +58,9 @@ describe('Contact Info in its Editable mode', () => {
   it('should call onChange if no data is provided', () => {
     setup()
 
+    const expectedNewData = [{ value: '' }]
     expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledWith(expectedNewData)
   })
 
   it('should render the labels if data is provided', () => {
@@ -102,13 +103,32 @@ describe('Contact Info in its Editable mode', () => {
     expect(buttonWrapper.text().trim()).toEqual('actions.add')
   })
 
+  it('should call the onChange callback if select is changed', () => {
+    const wrapper = setup(data)
+    const select = wrapper.findWhere((w: any) => w.prop('name') === `${name}Type0`).find('select')
+    select.getDOMNode<HTMLSelectElement>().value = 'mobile'
+    select.simulate('change')
+
+    const expectedNewData = [
+      { value: '123456', type: 'mobile' },
+      { value: '789012', type: undefined },
+    ]
+    expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledWith(expectedNewData)
+  })
+
   it('should call the onChange callback if input is changed', () => {
     const wrapper = setup(data)
     const input = wrapper.findWhere((w: any) => w.prop('name') === `${name}0`).find('input')
     input.getDOMNode<HTMLInputElement>().value = '777777'
     input.simulate('change')
 
+    const expectedNewData = [
+      { value: '777777', type: 'home' },
+      { value: '789012', type: undefined },
+    ]
     expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledWith(expectedNewData)
   })
 
   it('should call the onChange callback if an add button is clicked with valid entries', () => {
@@ -121,12 +141,27 @@ describe('Contact Info in its Editable mode', () => {
     })
 
     expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledWith(data)
+  })
+
+  it('should call the onChange callback if an add button is clicked with an empty entry', () => {
+    const wrapper = setup(dataForNoAdd)
+    const buttonWrapper = wrapper.find('button')
+    const onClick = buttonWrapper.prop('onClick') as any
+
+    act(() => {
+      onClick()
+    })
+
+    const expectedNewData = [{ value: '123456', type: 'home' }]
+    expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledWith(expectedNewData)
   })
 })
 
 describe('Contact Info in its non-Editable mode', () => {
   const data = [
-    { value: '123456', type: undefined },
+    { value: '123456', type: 'home' },
     { value: '789012', type: undefined },
   ]
   const label = 'this is a label'

@@ -159,7 +159,7 @@ const ContactInfo = (props: Props) => {
   })
 
   const onClickAdd = () => {
-    if (!onChange) {
+    if (!isValid || !onChange) {
       return
     }
 
@@ -172,15 +172,13 @@ const ContactInfo = (props: Props) => {
       const value = entry.value.trim()
       if (value !== '') {
         newData.push(entry)
-        if (isValid) {
-          if (value === '') {
-            _tempErrors.push('')
-          } else if (!isValid(value)) {
-            _tempErrors.push(errorMessageLabel || 'x')
-            hasError = true
-          } else {
-            _tempErrors.push('')
-          }
+        if (value === '') {
+          _tempErrors.push('')
+        } else if (!isValid(value)) {
+          _tempErrors.push(errorMessageLabel || 'x')
+          hasError = true
+        } else {
+          _tempErrors.push('')
         }
       }
     })
@@ -203,7 +201,11 @@ const ContactInfo = (props: Props) => {
 
   const addButton = (
     <div className="text-right">
-      <button type="button" className="btn btn-link" onClick={onChange ? onClickAdd : undefined}>
+      <button
+        type="button"
+        className="btn btn-link"
+        onClick={isValid && onChange ? onClickAdd : undefined}
+      >
         <Icon icon="add" /> {addLabel}
       </button>
     </div>
