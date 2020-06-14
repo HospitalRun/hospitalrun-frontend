@@ -217,7 +217,7 @@ describe('AppointmentDetailForm', () => {
       })
       wrapper.update()
 
-      expect(onFieldChange).toHaveBeenLastCalledWith('patientId', expectedPatientId)
+      expect(onFieldChange).toHaveBeenLastCalledWith('patient', expectedPatientId)
     })
 
     it('should call onFieldChange when start date time changes', () => {

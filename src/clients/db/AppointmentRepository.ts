@@ -21,22 +21,22 @@ class AppointmentRepository extends Repository<Appointment> {
       selector: {
         $and: [
           {
-            patient: patientId,
+            'data.patient': patientId,
           },
           {
             $or: [
               {
-                location: {
+                'data.location': {
                   $regex: RegExp(escapedString, 'i'),
                 },
               },
               {
-                reason: {
+                'data.reason': {
                   $regex: RegExp(escapedString, 'i'),
                 },
               },
               {
-                type: {
+                'data.type': {
                   $regex: RegExp(escapedString, 'i'),
                 },
               },

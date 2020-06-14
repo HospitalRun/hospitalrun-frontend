@@ -41,6 +41,7 @@ describe('Related Persons Tab', () => {
 
       jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
       jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
+      jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
 
       user = {
         permissions: [Permissions.WritePatients, Permissions.ReadPatients],

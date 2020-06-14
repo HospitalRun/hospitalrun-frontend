@@ -28,7 +28,7 @@ describe('HospitalRun', () => {
       it('should render the appointments screen when /appointments is accessed', async () => {
         const store = mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ReadAppointments] },
+          user: { user: { id: '123' }, permissions: [Permissions.ReadAppointments] },
           appointments: { appointments: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
@@ -62,7 +62,7 @@ describe('HospitalRun', () => {
           <Provider
             store={mockStore({
               title: 'test',
-              user: { permissions: [] },
+              user: { user: { id: '123' }, permissions: [] },
               breadcrumbs: { breadcrumbs: [] },
               components: { sidebarCollapsed: false },
             } as any)}
@@ -82,7 +82,7 @@ describe('HospitalRun', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ViewLabs] },
+          user: { user: { id: '123' }, permissions: [Permissions.ViewLabs] },
           labs: { labs: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
@@ -107,7 +107,7 @@ describe('HospitalRun', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
@@ -129,7 +129,7 @@ describe('HospitalRun', () => {
       it('should render the Incidents component when /incidents is accessed', async () => {
         const store = mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ViewIncidents] },
+          user: { user: { id: '123' }, permissions: [Permissions.ViewIncidents] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
           incidents: { incidents: [] },
@@ -154,7 +154,7 @@ describe('HospitalRun', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
@@ -176,7 +176,7 @@ describe('HospitalRun', () => {
       it('should render the Settings component when /settings is accessed', async () => {
         const store = mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
@@ -200,7 +200,7 @@ describe('HospitalRun', () => {
         <Provider
           store={mockStore({
             title: 'test',
-            user: { permissions: [Permissions.WritePatients] },
+            user: { user: { id: '123' }, permissions: [Permissions.WritePatients] },
             breadcrumbs: { breadcrumbs: [] },
             components: { sidebarCollapsed: false },
           } as any)}

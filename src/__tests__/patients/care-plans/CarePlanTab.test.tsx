@@ -1,11 +1,11 @@
 import '../../../__mocks__/matchMediaMock'
-import { Button } from '@hospitalrun/components'
-import { mount } from 'enzyme'
-import { createMemoryHistory } from 'history'
+import {Button} from '@hospitalrun/components'
+import {mount} from 'enzyme'
+import {createMemoryHistory} from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
+import {act} from 'react-dom/test-utils'
+import {Provider} from 'react-redux'
+import {Router} from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -14,7 +14,7 @@ import AddCarePlanModal from '../../../patients/care-plans/AddCarePlanModal'
 import CarePlanTab from '../../../patients/care-plans/CarePlanTab'
 import CarePlanTable from '../../../patients/care-plans/CarePlanTable'
 import ViewCarePlan from '../../../patients/care-plans/ViewCarePlan'
-import { RootState } from '../../../store'
+import {RootState} from '../../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -88,13 +88,13 @@ describe('Care Plan Tab', () => {
   })
 
   it('should render the care plans table when on /patient/:id/care-plans', () => {
-    const { wrapper } = setup('/patients/123/care-plans', [])
+    const { wrapper } = setup('/patients/123/care-plans', [Permissions.ReadCarePlan])
 
     expect(wrapper.find(CarePlanTable)).toHaveLength(1)
   })
 
   it('should render the care plan view when on /patient/:id/care-plans/:carePlanId', () => {
-    const { wrapper } = setup('/patients/123/care-plans/456', [])
+    const { wrapper } = setup('/patients/123/care-plans/456', [Permissions.ReadCarePlan])
 
     expect(wrapper.find(ViewCarePlan)).toHaveLength(1)
   })

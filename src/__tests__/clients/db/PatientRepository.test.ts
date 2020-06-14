@@ -1,24 +1,17 @@
 import { getTime, isAfter } from 'date-fns'
 import shortid from 'shortid'
 
-import PageRequest, { UnpagedRequest } from '../../../clients/db/PageRequest'
 import PatientRepository from '../../../clients/db/PatientRepository'
-import SortRequest from '../../../clients/db/SortRequest'
-import { patients } from '../../../config/pouchdb'
+import { relationalDb } from '../../../config/pouchdb'
 import Patient from '../../../model/Patient'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 
 async function removeAllDocs() {
-  // eslint-disable-next-line
-  const allDocs = await patients.allDocs({ include_docs: true })
-  await Promise.all(
-    allDocs.rows.map(async (row) => {
-      if (row.doc) {
-        await patients.remove(row.doc)
-      }
-    }),
-  )
+  const docs = await relationalDb.rel.find('patient')
+  docs.patients.forEach(async (d: any) => {
+    await relationalDb.rel.del('patient', d)
+  })
 }
 
 describe('patient repository', () => {
@@ -27,8 +20,8 @@ describe('patient repository', () => {
       await removeAllDocs()
     })
     it('should return a patient with the correct data', async () => {
-      await patients.put({ _id: 'id1111' }) // store another patient just to make sure we pull back the right one
-      const expectedPatient = await patients.put({ _id: 'id2222' })
+      await relationalDb.rel.save('patient', { id: 'id1111' }) // store another patient just to make sure we pull back the right one
+      const expectedPatient = await relationalDb.rel.save('patient', { id: 'id2222' })
 
       const actualPatient = await PatientRepository.find('id2222')
 
@@ -43,7 +36,11 @@ describe('patient repository', () => {
     })
 
     it('should escape all special chars from search text', async () => {
-      await patients.put({ _id: 'id9999', code: 'P00001', fullName: 'test -]?}(){*[\\$+.^test' })
+      await relationalDb.rel.save('patient', {
+        id: 'id9999',
+        code: 'P00001',
+        fullName: 'test -]?}(){*[\\$+.^test',
+      })
 
       const result = await PatientRepository.search('test -]?}(){*[\\$+.^test')
 
@@ -54,8 +51,16 @@ describe('patient repository', () => {
     it('should return all records that patient code matches search text', async () => {
       // same full name to prove that it is finding by patient code
       const expectedPatientCode = 'P00001'
-      await patients.put({ _id: 'someId1', code: expectedPatientCode, fullName: 'test test' })
-      await patients.put({ _id: 'someId2', code: 'P00002', fullName: 'test test' })
+      await relationalDb.rel.save('patient', {
+        id: 'someId1',
+        code: expectedPatientCode,
+        fullName: 'test test',
+      })
+      await relationalDb.rel.save('patient', {
+        id: 'someId2',
+        code: 'P00002',
+        fullName: 'test test',
+      })
 
       const result = await PatientRepository.search(expectedPatientCode)
 
@@ -64,9 +69,21 @@ describe('patient repository', () => {
     })
 
     it('should return all records that fullName contains search text', async () => {
-      await patients.put({ _id: 'id3333', code: 'P00002', fullName: 'blh test test blah' })
-      await patients.put({ _id: 'id4444', code: 'P00001', fullName: 'test test' })
-      await patients.put({ _id: 'id5555', code: 'P00003', fullName: 'not found' })
+      await relationalDb.rel.save('patient', {
+        id: 'id3333',
+        code: 'P00002',
+        fullName: 'blh test test blah',
+      })
+      await relationalDb.rel.save('patient', {
+        id: 'id4444',
+        code: 'P00001',
+        fullName: 'test test',
+      })
+      await relationalDb.rel.save('patient', {
+        id: 'id5555',
+        code: 'P00003',
+        fullName: 'not found',
+      })
 
       const result = await PatientRepository.search('test test')
 
@@ -76,8 +93,16 @@ describe('patient repository', () => {
     })
 
     it('should match search criteria with case insensitive match', async () => {
-      await patients.put({ _id: 'id6666', code: 'P00001', fullName: 'test test' })
-      await patients.put({ _id: 'id7777', code: 'P00002', fullName: 'not found' })
+      await relationalDb.rel.save('patient', {
+        id: 'id6666',
+        code: 'P00001',
+        fullName: 'test test',
+      })
+      await relationalDb.rel.save('patient', {
+        id: 'id7777',
+        code: 'P00002',
+        fullName: 'not found',
+      })
 
       const result = await PatientRepository.search('TEST TEST')
 
@@ -91,8 +116,8 @@ describe('patient repository', () => {
       await removeAllDocs()
     })
     it('should find all patients in the database sorted by their ids', async () => {
-      const expectedPatient1 = await patients.put({ _id: 'id9999' })
-      const expectedPatient2 = await patients.put({ _id: 'id8888' })
+      const expectedPatient1 = await relationalDb.rel.save('patient', { id: 'id9999' })
+      const expectedPatient2 = await relationalDb.rel.save('patient', { id: 'id8888' })
 
       const result = await PatientRepository.findAll()
 
@@ -193,7 +218,7 @@ describe('patient repository', () => {
 
     it('should update the last updated date', async () => {
       const time = new Date(2020, 1, 1).toISOString()
-      await patients.put({ _id: 'id2222222', createdAt: time, updatedAt: time })
+      await relationalDb.rel.save('patient', { id: 'id2222222', createdAt: time, updatedAt: time })
       const existingPatient = await PatientRepository.find('id2222222')
 
       const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
@@ -206,7 +231,7 @@ describe('patient repository', () => {
 
     it('should not update the created date', async () => {
       const time = getTime(new Date(2020, 1, 1))
-      await patients.put({ _id: 'id111111', createdAt: time, updatedAt: time })
+      await relationalDb.rel.save('patient', { id: 'id111111', createdAt: time, updatedAt: time })
       const existingPatient = await PatientRepository.find('id111111')
       const updatedPatient = await PatientRepository.saveOrUpdate(existingPatient)
 
@@ -215,6 +240,10 @@ describe('patient repository', () => {
   })
 
   describe('delete', () => {
+    afterEach(async () => {
+      await removeAllDocs()
+    })
+
     it('should delete the patient', async () => {
       const patientToDelete = await PatientRepository.save({
         fullName: 'test8 test8',
@@ -222,201 +251,8 @@ describe('patient repository', () => {
 
       await PatientRepository.delete(patientToDelete)
 
-      const allDocs = await patients.allDocs()
-      expect(allDocs.total_rows).toEqual(0)
-    })
-  })
-
-  describe('findAllPaged', () => {
-    const patientsData = [
-      { _id: 'a', fullName: 'a', code: 'P-a', index: 'aP-a' },
-      { _id: 'b', fullName: 'b', code: 'P-b', index: 'bP-b' },
-      { _id: 'c', fullName: 'c', code: 'P-c', index: 'cP-c' },
-    ]
-
-    afterEach(async () => {
-      await removeAllDocs()
-    })
-
-    beforeEach(async () => {
-      await PatientRepository.createIndex()
-      patientsData.forEach((patientData) => patients.put(patientData))
-    })
-
-    it('should find all patients in the database', async () => {
-      const result = await PatientRepository.findAllPaged()
-
-      expect(result.hasNext).toEqual(false)
-      expect(result.hasPrevious).toEqual(false)
-      expect(result.content).toHaveLength(patientsData.length)
-    })
-
-    it('should find all patients in the database with sort request and page request', async () => {
-      const sortRequest: SortRequest = {
-        sorts: [{ field: 'index', direction: 'asc' }],
-      }
-      const pageRequest: PageRequest = {
-        number: 1,
-        size: 1,
-        direction: 'next',
-        nextPageInfo: undefined,
-        previousPageInfo: undefined,
-      }
-
-      const result = await PatientRepository.findAllPaged(sortRequest, pageRequest)
-
-      expect(result.content).toHaveLength(1)
-      expect(result.hasNext).toEqual(true)
-      expect(result.hasPrevious).toEqual(false)
-      expect(result.pageRequest?.nextPageInfo).toEqual({ index: 'bP-b' })
-    })
-
-    it('page request less than number of records', async () => {
-      const sortRequest: SortRequest = {
-        sorts: [{ field: 'index', direction: 'asc' }],
-      }
-
-      const pageRequest: PageRequest = {
-        number: 1,
-        size: 4,
-        direction: 'next',
-        nextPageInfo: undefined,
-        previousPageInfo: undefined,
-      }
-
-      const result = await PatientRepository.findAllPaged(sortRequest, pageRequest)
-
-      expect(result.content).toHaveLength(patientsData.length)
-      expect(result.hasNext).toEqual(false)
-      expect(result.hasPrevious).toEqual(false)
-      expect(result.pageRequest?.nextPageInfo).toBe(undefined)
-      expect(result.pageRequest?.previousPageInfo).toBe(undefined)
-    })
-
-    it('go till last page', async () => {
-      const sortRequest: SortRequest = {
-        sorts: [{ field: 'index', direction: 'asc' }],
-      }
-      const pageRequest1: PageRequest = {
-        number: 1,
-        size: 1,
-        direction: 'next',
-        nextPageInfo: undefined,
-        previousPageInfo: undefined,
-      }
-
-      const result1 = await PatientRepository.findAllPaged(sortRequest, pageRequest1)
-
-      const pageRequest2: PageRequest = {
-        number: 2,
-        size: 1,
-        direction: 'next',
-        nextPageInfo: result1.pageRequest?.nextPageInfo,
-        previousPageInfo: undefined,
-      }
-      const result2 = await PatientRepository.findAllPaged(sortRequest, pageRequest2)
-
-      expect(result2.hasPrevious).toBe(true)
-      expect(result2.hasNext).toBe(true)
-
-      const pageRequest3: PageRequest = {
-        number: 2,
-        size: 1,
-        direction: 'next',
-        nextPageInfo: result2.pageRequest?.nextPageInfo,
-        previousPageInfo: undefined,
-      }
-      const result3 = await PatientRepository.findAllPaged(sortRequest, pageRequest3)
-
-      expect(result3.content).toHaveLength(1)
-      expect(result3.hasNext).toEqual(false)
-      expect(result3.hasPrevious).toEqual(true)
-      expect(result3.content.length).toEqual(1)
-      expect(result3.pageRequest?.previousPageInfo).toEqual({ index: 'cP-c' })
-    })
-
-    it('go to previous page', async () => {
-      const sortRequest: SortRequest = {
-        sorts: [{ field: 'index', direction: 'asc' }],
-      }
-      const pageRequest1: PageRequest = {
-        number: 1,
-        size: 1,
-        direction: 'next',
-        nextPageInfo: undefined,
-        previousPageInfo: undefined,
-      }
-
-      const result1 = await PatientRepository.findAllPaged(sortRequest, pageRequest1)
-
-      const pageRequest2: PageRequest = {
-        number: 2,
-        size: 1,
-        direction: 'next',
-        nextPageInfo: result1.pageRequest?.nextPageInfo,
-        previousPageInfo: undefined,
-      }
-      const result2 = await PatientRepository.findAllPaged(sortRequest, pageRequest2)
-
-      expect(result2.hasPrevious).toBe(true)
-      expect(result2.hasNext).toBe(true)
-
-      const pageRequest3: PageRequest = {
-        number: 1,
-        size: 1,
-        direction: 'previous',
-        nextPageInfo: undefined,
-        previousPageInfo: result2.pageRequest?.previousPageInfo,
-      }
-      const result3 = await PatientRepository.findAllPaged(sortRequest, pageRequest3)
-
-      expect(result3.content).toHaveLength(1)
-      expect(result3.hasNext).toEqual(true)
-      expect(result3.hasPrevious).toEqual(false)
-      expect(result3.content.length).toEqual(1)
-      expect(result3.content[0].index).toEqual('aP-a')
-      expect(result3.pageRequest?.nextPageInfo).toEqual({ index: 'bP-b' })
-    })
-  })
-
-  describe('searchPaged', () => {
-    const patientsData = [
-      { _id: 'a', fullName: 'a', code: 'P-a', index: 'aP-a' },
-      { _id: 'b', fullName: 'b', code: 'P-b', index: 'bP-b' },
-      { _id: 'c', fullName: 'c', code: 'P-c', index: 'cP-c' },
-    ]
-
-    afterEach(async () => {
-      await removeAllDocs()
-    })
-
-    beforeEach(async () => {
-      await PatientRepository.createIndex()
-      patientsData.forEach((patientData) => patients.put(patientData))
-    })
-
-    it('should search patient in the database', async () => {
-      const result = await PatientRepository.searchPaged('a')
-
-      expect(result.content).toHaveLength(1)
-      expect(result.hasNext).toEqual(false)
-      expect(result.hasPrevious).toEqual(false)
-
-      expect(result.content.length).toEqual(1)
-    })
-
-    it('should search patient in the database with sort request', async () => {
-      const sortRequest: SortRequest = {
-        sorts: [{ field: 'index', direction: 'asc' }],
-      }
-
-      const result = await PatientRepository.searchPaged('a', UnpagedRequest, sortRequest)
-
-      expect(result.content).toHaveLength(1)
-      expect(result.hasNext).toEqual(false)
-      expect(result.hasPrevious).toEqual(false)
-
-      expect(result.content.length).toEqual(1)
+      const patients = await PatientRepository.findAll()
+      expect(patients).toHaveLength(0)
     })
   })
 })

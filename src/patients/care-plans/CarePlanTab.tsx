@@ -2,7 +2,7 @@ import { Button } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import Permissions from '../../model/Permissions'
 import { RootState } from '../../store'
@@ -12,7 +12,6 @@ import ViewCarePlan from './ViewCarePlan'
 
 const CarePlanTab = () => {
   const { t } = useTranslation()
-  const { path } = useRouteMatch()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showAddCarePlanModal, setShowAddCarePlanModal] = useState(false)
   return (
@@ -34,10 +33,10 @@ const CarePlanTab = () => {
       </div>
       <br />
       <Switch>
-        <Route exact path={path}>
+        <Route exact path="/patients/:id/care-plans">
           <CarePlanTable />
         </Route>
-        <Route exact path={`${path}/:carePlanId`}>
+        <Route exact path="/patients/:id/care-plans/:carePlanId">
           <ViewCarePlan />
         </Route>
       </Switch>

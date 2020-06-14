@@ -105,7 +105,7 @@ describe('New Appointment', () => {
       act(() => {
         const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
         const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patientId', expectedAppointment.patient)
+        onFieldChange('patient', expectedAppointment.patient)
       })
 
       wrapper.update()
@@ -185,7 +185,7 @@ describe('New Appointment', () => {
       act(() => {
         const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
         const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patientId', expectedAppointment.patient)
+        onFieldChange('patient', expectedAppointment.patient)
       })
       wrapper.update()
       const saveButton = wrapper.find(mockedComponents.Button).at(0)

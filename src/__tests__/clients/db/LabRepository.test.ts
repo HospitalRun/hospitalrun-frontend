@@ -2,24 +2,13 @@ import shortid from 'shortid'
 
 import LabRepository from '../../../clients/db/LabRepository'
 import SortRequest from '../../../clients/db/SortRequest'
-import { labs } from '../../../config/pouchdb'
+import { relationalDb } from '../../../config/pouchdb'
 import Lab from '../../../model/Lab'
 
 interface SearchContainer {
   text: string
   status: 'requested' | 'completed' | 'canceled' | 'all'
   defaultSortRequest: SortRequest
-}
-
-const removeAllDocs = async () => {
-  const allDocs = await labs.allDocs({ include_docs: true })
-  await Promise.all(
-    allDocs.rows.map(async (row) => {
-      if (row.doc) {
-        await labs.remove(row.doc)
-      }
-    }),
-  )
 }
 
 const defaultSortRequest: SortRequest = {
@@ -37,16 +26,26 @@ const searchObject: SearchContainer = {
   defaultSortRequest,
 }
 
+async function removeAllDocs() {
+  const docs = await relationalDb.rel.find('lab')
+  docs.labs.forEach(async (d: any) => {
+    await relationalDb.rel.del('lab', d)
+  })
+}
+
 describe('lab repository', () => {
   describe('find', () => {
     afterEach(async () => {
-      await removeAllDocs()
+      const docs = await relationalDb.rel.find('lab')
+      docs.labs.forEach(async (d: any) => {
+        await relationalDb.rel.del('lab', d)
+      })
     })
 
     it('should return a lab with the correct data', async () => {
       // first lab to store is to have mock data to make sure we are getting the expected
-      await labs.put({ _id: 'id1111' })
-      const expectedLab = await labs.put({ _id: 'id2222' })
+      await relationalDb.rel.save('lab', { _id: 'id1111' })
+      const expectedLab = await relationalDb.rel.save('lab', { id: 'id2222' })
 
       const actualLab = await LabRepository.find('id2222')
 
@@ -56,7 +55,7 @@ describe('lab repository', () => {
 
     it('should generate a lab code', async () => {
       const newLab = await LabRepository.save({
-        patientId: '123',
+        patient: '123',
         type: 'test',
       } as Lab)
 
@@ -65,10 +64,22 @@ describe('lab repository', () => {
   })
 
   describe('search', () => {
+    afterEach(async () => {
+      await removeAllDocs()
+    })
+
     it('should return all records that lab type matches search text', async () => {
       const expectedLabType = 'more tests'
-      await labs.put({ _id: 'someId1', type: expectedLabType, status: 'requested' })
-      await labs.put({ _id: 'someId2', type: 'P00002', status: 'requested' })
+      await relationalDb.rel.save('lab', {
+        id: 'someId1',
+        type: expectedLabType,
+        status: 'requested',
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'someId2',
+        type: 'P00002',
+        status: 'requested',
+      })
 
       searchObject.text = expectedLabType
 
@@ -80,9 +91,18 @@ describe('lab repository', () => {
 
     it('should return all records that contains search text in the type', async () => {
       const expectedLabType = 'Labs Tests'
-      await labs.put({ _id: 'someId3', type: expectedLabType })
-      await labs.put({ _id: 'someId4', type: 'Sencond Lab labs tests' })
-      await labs.put({ _id: 'someId5', type: 'not found' })
+      await relationalDb.rel.save('lab', {
+        id: 'someId3',
+        type: expectedLabType,
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'someId4',
+        type: 'Sencond Lab labs tests',
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'someId5',
+        type: 'not found',
+      })
 
       searchObject.text = expectedLabType
 
@@ -95,9 +115,21 @@ describe('lab repository', () => {
 
     it('should return all records that contains search text in code', async () => {
       const expectedLabCode = 'L-CODE-sam445Pl'
-      await labs.put({ _id: 'theID13', type: 'Expected', code: 'L-CODE-sam445Pl' })
-      await labs.put({ _id: 'theID14', type: 'Sencond Lab labs tests', code: 'L-4XXX' })
-      await labs.put({ _id: 'theID15', type: 'not found', code: 'L-775YYxc' })
+      await relationalDb.rel.save('lab', {
+        id: 'theID13',
+        type: 'Expected',
+        code: 'L-CODE-sam445Pl',
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'theID14',
+        type: 'Second Lab labs tests',
+        code: 'L-4XXX',
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'theID15',
+        type: 'not found',
+        code: 'L-775YYxc',
+      })
 
       searchObject.text = expectedLabCode
 
@@ -108,8 +140,14 @@ describe('lab repository', () => {
     })
 
     it('should match search criteria with case insesitive match', async () => {
-      await labs.put({ _id: 'id3333', type: 'lab tests' })
-      await labs.put({ _id: 'id4444', type: 'not found' })
+      await relationalDb.rel.save('lab', {
+        id: 'id3333',
+        type: 'lab tests',
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'id4444',
+        type: 'not found',
+      })
 
       searchObject.text = 'LAB TESTS'
 
@@ -120,10 +158,26 @@ describe('lab repository', () => {
     })
 
     it('should return all records that matches an specific status', async () => {
-      await labs.put({ _id: 'id5555', type: 'lab tests', status: 'requested' })
-      await labs.put({ _id: 'id6666', type: 'lab tests', status: 'requested' })
-      await labs.put({ _id: 'id7777', type: 'lab tests', status: 'completed' })
-      await labs.put({ _id: 'id8888', type: 'not found', status: 'completed' })
+      await relationalDb.rel.save('lab', {
+        id: 'id5555',
+        type: 'lab tests',
+        status: 'requested',
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'id6666',
+        type: 'lab tests',
+        status: 'requested',
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'id7777',
+        type: 'lab tests',
+        status: 'completed',
+      })
+      await relationalDb.rel.save('lab', {
+        id: 'id8888',
+        type: 'not found',
+        status: 'completed',
+      })
 
       searchObject.text = ''
       searchObject.status = 'completed'
@@ -136,8 +190,12 @@ describe('lab repository', () => {
     })
 
     it('should return records with search text and specific status', async () => {
-      await labs.put({ _id: 'theID09', type: 'the specific lab', status: 'requested' })
-      await labs.put({ _id: 'theID10', type: 'not found', status: 'cancelled' })
+      await relationalDb.rel.save('lab', {
+        id: 'theID09',
+        type: 'the specific lab',
+        status: 'requested',
+      })
+      await relationalDb.rel.save('lab', { id: 'theID10', type: 'not found', status: 'cancelled' })
 
       searchObject.text = 'the specific lab'
       searchObject.status = 'requested'
@@ -153,18 +211,16 @@ describe('lab repository', () => {
     afterEach(async () => {
       await removeAllDocs()
     })
+
     it('should find all labs in the database sorted by their requestedOn', async () => {
-      const expectedLab1 = await labs.put({ _id: 'theID11' })
+      const expectedLab1 = await relationalDb.rel.save('lab', { id: 'theID11' })
+      const expectedLab2 = await relationalDb.rel.save('lab', { id: 'theID12' })
 
-      setTimeout(async () => {
-        const expectedLab2 = await labs.put({ _id: 'theID12' })
+      const result = await LabRepository.findAll()
 
-        const result = await LabRepository.findAll()
-
-        expect(result).toHaveLength(2)
-        expect(result[0].id).toEqual(expectedLab1.id)
-        expect(result[1].id).toEqual(expectedLab2.id)
-      }, 1000)
+      expect(result).toHaveLength(2)
+      expect(result[0].id).toEqual(expectedLab1.id)
+      expect(result[1].id).toEqual(expectedLab2.id)
     })
   })
 })

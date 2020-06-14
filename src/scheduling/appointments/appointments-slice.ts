@@ -43,7 +43,6 @@ export const fetchPatientAppointments = (patientId: string): AppThunk => async (
   dispatch(fetchAppointmentsStart())
 
   const appointments = await PatientRepository.getAppointments(patientId)
-  console.log(appointments)
 
   dispatch(fetchAppointmentsSuccess(appointments))
 }

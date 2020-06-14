@@ -45,8 +45,8 @@ export const searchPatients = (
   sortRequest: SortRequest = Unsorted,
 ): AppThunk => async (dispatch) => {
   dispatch(fetchPatientsStart())
-  console.log(sortRequest)
 
+  console.log(sortRequest)
   let patients
   if (searchString.trim() === '') {
     patients = await PatientRepository.findAll()

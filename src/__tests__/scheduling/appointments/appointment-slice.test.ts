@@ -224,6 +224,8 @@ describe('appointment slice', () => {
       location: 'location',
       type: 'type',
       reason: 'reason',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     }
 
     const expectedPatient: Patient = {

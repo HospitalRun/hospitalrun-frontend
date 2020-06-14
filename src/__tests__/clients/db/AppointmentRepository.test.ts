@@ -1,33 +1,51 @@
 import AppointmentRepository from '../../../clients/db/AppointmentRepository'
-import { appointments, patients } from '../../../config/pouchdb'
+import { relationalDb } from '../../../config/pouchdb'
 import Appointment from '../../../model/Appointment'
 
 const uuidV4Regex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i
 
 describe('Appointment Repository', () => {
   it('should create a repository with the database set to the appointments database', () => {
-    expect(AppointmentRepository.db).toEqual(appointments)
+    expect(AppointmentRepository.db).toEqual(relationalDb)
   })
 
   describe('find', () => {
+    it('should create an id that is a uuid', async () => {
+      const newAppointment = await AppointmentRepository.save({
+        patient: 'id',
+      } as Appointment)
+
+      expect(uuidV4Regex.test(newAppointment.id)).toBeTruthy()
+    })
+
     it('should find an appointment by id', async () => {
-      await appointments.put({ _id: 'id5678' })
-      const expectedAppointment = await appointments.put({ _id: 'id1234' })
+      await relationalDb.rel.save('appointment', { id: 'id5678' })
+      const expectedAppointment = await relationalDb.rel.save('appointment', { id: 'id1234' })
 
       const actualAppointment = await AppointmentRepository.find('id1234')
 
       expect(actualAppointment).toBeDefined()
       expect(actualAppointment.id).toEqual(expectedAppointment.id)
 
-      await appointments.remove(await appointments.get('id1234'))
-      await appointments.remove(await appointments.get('id5678'))
+      await relationalDb.rel.del(
+        'appointment',
+        await relationalDb.rel.find('appointment', 'id1234'),
+      )
+      await relationalDb.rel.del(
+        'appointment',
+        await relationalDb.rel.find('appointment', 'id5678'),
+      )
     })
   })
 
   describe('searchPatientAppointments', () => {
     it('should escape all special chars from search text', async () => {
-      await patients.put({ _id: 'id2222' })
-      await appointments.put({ _id: 'id3333', patientId: 'id2222', location: 'id-]?}(){*[$+.^\\' })
+      await relationalDb.rel.save('patient', { id: 'id2222' })
+      await relationalDb.rel.save('appointment', {
+        id: 'id3333',
+        patient: 'id2222',
+        location: 'id-]?}(){*[$+.^\\',
+      })
 
       const result = await AppointmentRepository.searchPatientAppointments(
         'id2222',
@@ -40,16 +58,6 @@ describe('Appointment Repository', () => {
   })
 
   describe('save', () => {
-    it('should create an id that is a uuid', async () => {
-      const newAppointment = await AppointmentRepository.save({
-        patient: 'id',
-      } as Appointment)
-
-      expect(uuidV4Regex.test(newAppointment.id)).toBeTruthy()
-
-      await appointments.remove(await appointments.get(newAppointment.id))
-    })
-
     it('should generate a timestamp for created date and last updated date', async () => {
       const newAppointment = await AppointmentRepository.save({
         patient: 'id',

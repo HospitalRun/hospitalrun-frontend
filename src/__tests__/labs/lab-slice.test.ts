@@ -41,7 +41,7 @@ describe('lab slice', () => {
     describe('fetchLabSuccess', () => {
       it('should set the lab, patient, and status to success', () => {
         const expectedLab = { id: 'labId' } as Lab
-        const expectedPatient = { id: 'patientId' } as Patient
+        const expectedPatient = { id: 'patient' } as Patient
 
         const labStore = labSlice(
           undefined,
@@ -155,11 +155,11 @@ describe('lab slice', () => {
 
     const mockLab = {
       id: 'labId',
-      patientId: 'patientId',
+      patient: 'patient',
     } as Lab
 
     const mockPatient = {
-      id: 'patientId',
+      id: 'patient',
     } as Patient
 
     beforeEach(() => {
@@ -175,7 +175,7 @@ describe('lab slice', () => {
 
       expect(actions[0]).toEqual(fetchLabStart())
       expect(labRepositoryFindSpy).toHaveBeenCalledWith(mockLab.id)
-      expect(patientRepositorySpy).toHaveBeenCalledWith(mockLab.patientId)
+      expect(patientRepositorySpy).toHaveBeenCalledWith(mockLab.patient)
       expect(actions[1]).toEqual(fetchLabSuccess({ lab: mockLab, patient: mockPatient }))
     })
   })
@@ -183,7 +183,7 @@ describe('lab slice', () => {
   describe('cancel lab', () => {
     const mockLab = {
       id: 'labId',
-      patientId: 'patientId',
+      patient: 'patient',
     } as Lab
     let labRepositorySaveOrUpdateSpy: any
 
@@ -229,7 +229,7 @@ describe('lab slice', () => {
   describe('complete lab', () => {
     const mockLab = {
       id: 'labId',
-      patientId: 'patientId',
+      patient: 'patient',
       result: 'lab result',
     } as Lab
     let labRepositorySaveOrUpdateSpy: any
@@ -293,7 +293,7 @@ describe('lab slice', () => {
     const mockLab = {
       id: 'labId',
       type: 'labType',
-      patientId: 'patientId',
+      patient: 'patient',
     } as Lab
     let labRepositorySaveSpy: any
 
@@ -366,7 +366,7 @@ describe('lab slice', () => {
   describe('update lab', () => {
     const mockLab = {
       id: 'labId',
-      patientId: 'patientId',
+      patient: 'patient',
       result: 'lab result',
     } as Lab
     let labRepositorySaveOrUpdateSpy: any
