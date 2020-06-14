@@ -47,7 +47,7 @@ const HospitalRun = () => {
               <Breadcrumbs />
               <div>
                 <Switch>
-                  <Route path="/" component={Dashboard} />
+                  <Route exact path="/" component={Dashboard} />
                   <Route exact path="/appointments" component={Appointments} />
                   <Route exact path="/patients" component={Patients} />
                   <Route exact path="/labs" component={Labs} />
