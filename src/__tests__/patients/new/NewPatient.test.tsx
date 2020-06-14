@@ -25,9 +25,6 @@ describe('New Patient', () => {
   const patient = {
     givenName: 'first',
     fullName: 'first',
-    phoneNumbers: [] as any,
-    emails: [] as any,
-    addresses: [] as any,
   } as Patient
 
   let history: any

@@ -252,6 +252,7 @@ const GeneralInformation = (props: Props) => {
               isEditable={isEditable}
               onChange={(newAddresses) => onFieldChange('addresses', newAddresses)}
               type="text"
+              isValid={() => true}
             />
           </Panel>
         </div>

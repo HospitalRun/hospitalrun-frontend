@@ -140,6 +140,7 @@ export default {
       patientNumInPreferredLanguageFeedback: 'Cannot contain numbers.',
       invalidEmail: 'Must be a valid email.',
       invalidPhoneNumber: 'Must be a valid phone number.',
+      invalidInputPlaceholder: 'x',
     },
   },
 }

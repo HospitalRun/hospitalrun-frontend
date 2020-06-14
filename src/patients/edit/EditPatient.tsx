@@ -10,7 +10,8 @@ import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
 import GeneralInformation from '../GeneralInformation'
 import { updatePatient, fetchPatient } from '../patient-slice'
-import { getPatientFullName, getPatientName } from '../util/patient-name-util'
+import { getPatientFullName } from '../util/patient-name-util'
+import { cleanupPatient } from '../util/set-patient-helper'
 
 const getPatientCode = (p: Patient): string => {
   if (p) {
@@ -69,17 +70,7 @@ const EditPatient = () => {
   }
 
   const onSave = async () => {
-    const { givenName, familyName, suffix, code, phoneNumbers, emails, addresses } = patient
-
-    const newPatient = {
-      ...patient,
-      fullName: getPatientName(givenName, familyName, suffix),
-      index: getPatientName(givenName, familyName, suffix) + code,
-      phoneNumbers: phoneNumbers.filter((p) => p.value.trim() !== ''),
-      emails: emails.filter((e) => e.value.trim() !== ''),
-      addresses: addresses.filter((a) => a.value.trim() !== ''),
-    }
-
+    const newPatient = cleanupPatient(patient)
     await dispatch(updatePatient(newPatient, onSuccessfulSave))
   }
 

@@ -17,7 +17,7 @@ interface Props {
   onChange?: (newData: ContactInfoPiece[]) => void
   type: 'text' | 'email' | 'tel'
   isValid?: (entry: string) => boolean
-  errorMessageLabel?: string
+  errorMessageLabel: string
 }
 
 const ContactInfo = (props: Props) => {
@@ -79,29 +79,29 @@ const ContactInfo = (props: Props) => {
     onChange(newData)
   }
 
-  const header =
-    data?.length === 0 ? null : (
-      <Row className="header mb-2">
-        <Column xs={12} sm={4}>
-          <span className="">{typeLabel}</span>
-          <span className="d-sm-none"> &amp; {t(label)}</span>
-        </Column>
-        <Column className="d-none d-sm-block" sm={8}>
-          {t(label)}
-        </Column>
-      </Row>
-    )
+  const header = (
+    <Row className="header mb-2">
+      <Column xs={12} sm={4}>
+        <span className="">{typeLabel}</span>
+        <span className="d-sm-none"> &amp; {t(label)}</span>
+      </Column>
+      <Column className="d-none d-sm-block" sm={8}>
+        {t(label)}
+      </Column>
+    </Row>
+  )
 
   // todo: acts strange when deleting empty rows above non-empty rows.
+  // suspect TextInputWithLabelFormGroup missing value
   const entries = data.map((entry, i) => {
     const error = getError(i)
     return (
-      // todo: want a better key
+      // todo: want a better key, and possibly name
       // eslint-disable-next-line react/no-array-index-key
       <Row key={i}>
         <Column sm={4}>
           <SelectWithLabelFormGroup
-            name={`${name}Type${i}`} // todo: problem?
+            name={`${name}Type${i}`}
             value={entry.type}
             isEditable={isEditable}
             options={typeOptions}
@@ -123,7 +123,7 @@ const ContactInfo = (props: Props) => {
         <Column sm={8}>
           {['tel', 'email'].indexOf(type) > -1 ? (
             <TextInputWithLabelFormGroup
-              name={`${name}${i}`} // todo: problem?
+              name={`${name}${i}`}
               value={entry.value}
               isEditable={isEditable}
               onChange={
@@ -139,7 +139,7 @@ const ContactInfo = (props: Props) => {
             />
           ) : (
             <TextFieldWithLabelFormGroup
-              name={`${name}${i}`} // todo: problem?
+              name={`${name}${i}`}
               value={entry.value}
               isEditable={isEditable}
               onChange={
@@ -163,40 +163,20 @@ const ContactInfo = (props: Props) => {
       return
     }
 
-    const newData: ContactInfoPiece[] = []
-    // eslint-disable-next-line no-underscore-dangle
-    const _tempErrors: string[] = []
-    let hasError = false
+    // 1. pick up only non-empty string
+    const newData = data.filter(({ value }) => value.trim() !== '')
 
-    data.forEach((entry) => {
-      const value = entry.value.trim()
-      if (value !== '') {
-        newData.push(entry)
-        if (value === '') {
-          _tempErrors.push('')
-        } else if (!isValid(value)) {
-          _tempErrors.push(errorMessageLabel || 'x')
-          hasError = true
-        } else {
-          _tempErrors.push('')
-        }
-      }
-    })
+    // 2. gather errors
+    const newTempErrors = newData.map(({ value }) => (isValid(value) ? '' : errorMessageLabel))
 
-    // update temp errors
-    setTempErrors(_tempErrors)
-
-    // add new one if all good
-    if (!hasError) {
-      if (newData.length !== 0) {
-        if (newData[newData.length - 1].value !== '') {
-          newData.push({ value: '' })
-        }
-      }
+    // 3. if no error, add a new entry
+    if (newTempErrors.filter((error) => error !== '').length === 0) {
+      newData.push({ value: '' })
     }
 
-    // send data upward
+    // 4. send updates
     onChange(newData)
+    setTempErrors(newTempErrors)
   }
 
   const addButton = (
@@ -215,7 +195,7 @@ const ContactInfo = (props: Props) => {
     <Spinner color="blue" loading size={20} type="SyncLoader" />
   ) : (
     <div>
-      {header}
+      {data.length > 0 ? header : null}
       {entries}
       {isEditable ? addButton : null}
     </div>
@@ -225,6 +205,7 @@ const ContactInfo = (props: Props) => {
 ContactInfo.defaultProps = {
   data: [],
   type: 'text',
+  errorMessageLabel: 'patient.errors.invalidInputPlaceholder',
 }
 
 export default ContactInfo
