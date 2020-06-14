@@ -4,6 +4,7 @@ import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 // import { Provider } from 'react-redux'
+import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router-dom'
 // import createMockStore from 'redux-mock-store'
 // import thunk from 'redux-thunk'
@@ -101,9 +102,26 @@ describe('Contact Info in its Editable mode', () => {
     expect(buttonWrapper.text().trim()).toEqual('actions.add')
   })
 
-  // todo
-  // it('should add a row if an add button is clicked with valid entries', () => {
-  // })
+  it('should call the onChange callback if input is changed', () => {
+    const wrapper = setup(data)
+    const input = wrapper.findWhere((w: any) => w.prop('name') === `${name}0`).find('input')
+    input.getDOMNode<HTMLInputElement>().value = '777777'
+    input.simulate('change')
+
+    expect(onChange).toHaveBeenCalledTimes(1)
+  })
+
+  it('should call the onChange callback if an add button is clicked with valid entries', () => {
+    const wrapper = setup(data)
+    const buttonWrapper = wrapper.find('button')
+    const onClick = buttonWrapper.prop('onClick') as any
+
+    act(() => {
+      onClick()
+    })
+
+    expect(onChange).toHaveBeenCalledTimes(1)
+  })
 })
 
 describe('Contact Info in its non-Editable mode', () => {
