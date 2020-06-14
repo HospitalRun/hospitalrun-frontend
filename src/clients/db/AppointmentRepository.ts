@@ -1,12 +1,12 @@
 import escapeStringRegexp from 'escape-string-regexp'
 
-import { appointments } from '../../config/pouchdb'
+import { localDb } from '../../config/pouchdb'
 import Appointment from '../../model/Appointment'
 import Repository from './Repository'
 
 class AppointmentRepository extends Repository<Appointment> {
   constructor() {
-    super(appointments)
+    super(localDb)
   }
 
   // Fuzzy search for patient appointments. Used for patient appointment search bar

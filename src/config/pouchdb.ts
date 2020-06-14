@@ -3,30 +3,27 @@ import PouchDB from 'pouchdb'
 /* eslint-disable */
 const memoryAdapter = require('pouchdb-adapter-memory')
 const search = require('pouchdb-quick-search')
+const relationalPouch = require('relational-pouch')
 import PouchdbFind from 'pouchdb-find'
+import PouchAuth from 'pouchdb-authentication'
 /* eslint-enable */
 
 PouchDB.plugin(search)
 PouchDB.plugin(memoryAdapter)
+PouchDB.plugin(relationalPouch)
 PouchDB.plugin(PouchdbFind)
+PouchDB.plugin(PouchAuth)
 
-function createDb(name: string) {
-  if (process.env.NODE_ENV === 'test') {
-    return new PouchDB(name, { adapter: 'memory' })
-  }
+export const remoteDb = new PouchDB(`${process.env.REACT_APP_HOSPITALRUN_API}/hospitalrun`, {
+  skip_setup: true,
+})
 
-  const db = new PouchDB(name)
-  db.sync(`${process.env.REACT_APP_HOSPITALRUN_API}/_db/${name}`, {
-    live: true,
-    retry: true,
-  }).on('change', (info) => {
+export const localDb = new PouchDB('local_hospitalrun')
+localDb
+  .sync(remoteDb, { live: true, retry: true })
+  .on('change', (info) => {
     console.log(info)
   })
-
-  return db
-}
-
-export const patients = createDb('patients')
-export const appointments = createDb('appointments')
-export const labs = createDb('labs')
-export const incidents = createDb('incidents')
+  .on('error', (info) => {
+    console.error(info)
+  })

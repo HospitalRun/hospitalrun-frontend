@@ -1,6 +1,6 @@
 import escapeStringRegexp from 'escape-string-regexp'
 
-import { patients } from '../../config/pouchdb'
+import { localDb } from '../../config/pouchdb'
 import Patient from '../../model/Patient'
 import generateCode from '../../util/generateCode'
 import Page from '../Page'
@@ -10,8 +10,8 @@ import SortRequest, { Unsorted } from './SortRequest'
 
 class PatientRepository extends Repository<Patient> {
   constructor() {
-    super(patients)
-    patients.createIndex({
+    super(localDb)
+    localDb.createIndex({
       index: { fields: ['index'] },
     })
   }

@@ -1,4 +1,4 @@
-import { labs } from '../../config/pouchdb'
+import { localDb } from '../../config/pouchdb'
 import Lab from '../../model/Lab'
 import generateCode from '../../util/generateCode'
 import Repository from './Repository'
@@ -11,7 +11,7 @@ interface SearchContainer {
 }
 class LabRepository extends Repository<Lab> {
   constructor() {
-    super(labs)
+    super(localDb)
   }
 
   async search(container: SearchContainer): Promise<Lab[]> {

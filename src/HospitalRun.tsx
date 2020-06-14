@@ -1,12 +1,11 @@
 import { Toaster } from '@hospitalrun/components'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Switch, Route } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
 import Breadcrumbs from './breadcrumbs/Breadcrumbs'
 import Navbar from './components/Navbar'
 import { NetworkStatusMessage } from './components/network-status'
-import PrivateRoute from './components/PrivateRoute'
 import Sidebar from './components/Sidebar'
 import Dashboard from './dashboard/Dashboard'
 import Incidents from './incidents/Incidents'
@@ -21,6 +20,11 @@ import { RootState } from './store'
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
   const { sidebarCollapsed } = useSelector((state: RootState) => state.components)
+  const { user } = useSelector((root: RootState) => root.user)
+
+  if (user === undefined) {
+    return <Redirect to="/login" />
+  }
 
   return (
     <div>
@@ -43,12 +47,12 @@ const HospitalRun = () => {
               <Breadcrumbs />
               <div>
                 <Switch>
-                  <Route exact path="/" component={Dashboard} />
-                  <PrivateRoute isAuthenticated path="/appointments" component={Appointments} />
-                  <PrivateRoute isAuthenticated path="/patients" component={Patients} />
-                  <PrivateRoute isAuthenticated path="/labs" component={Labs} />
-                  <PrivateRoute isAuthenticated path="/incidents" component={Incidents} />
-                  <PrivateRoute isAuthenticated path="/settings" component={Settings} />
+                  <Route path="/" component={Dashboard} />
+                  <Route exact path="/appointments" component={Appointments} />
+                  <Route exact path="/patients" component={Patients} />
+                  <Route exact path="/labs" component={Labs} />
+                  <Route exact path="/incidents" component={Incidents} />
+                  <Route exact path="/settings" component={Settings} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />
