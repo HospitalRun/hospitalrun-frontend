@@ -28,8 +28,8 @@ const Navbar = () => {
       }))
   }
 
-  // For Mobile, hamburger menu
-  const hambergerPages = Object.keys(pageMap).map((key) => pageMap[key])
+  // List of all available pages
+  const pages = Object.keys(pageMap).map((key) => pageMap[key])
 
   // For Desktop, add shortcuts menu
   const addPages = [pageMap.newPatient, pageMap.newAppointment, pageMap.newLab, pageMap.newIncident]
@@ -40,10 +40,10 @@ const Navbar = () => {
       variant="dark"
       navItems={[
         {
-          children: getDropdownListOfPages(hambergerPages),
+          children: getDropdownListOfPages(pages),
           label: '',
           type: 'link-list',
-          className: 'nav-hamberger pr-4 d-md-none',
+          className: 'pr-4 d-md-none',
         },
         {
           type: 'image',
