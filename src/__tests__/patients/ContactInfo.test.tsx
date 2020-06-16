@@ -23,25 +23,22 @@ describe('Contact Info in its Editable mode', () => {
   const label = 'this is a label'
   const name = 'this is a name'
   let onChange: jest.Mock
-  let isValid: jest.Mock
 
   const setup = (_data?: ContactInfoPiece[], _errors?: string[]) => {
     const history = createMemoryHistory()
     history.push('/patients/new')
     onChange = jest.fn()
-    isValid = jest.fn()
 
     const wrapper = mount(
       <Router history={history}>
         <ContactInfo
+          component="TextInputWithLabelFormGroup"
           data={_data}
           errors={_errors}
           label={label}
           name={name}
           isEditable
           onChange={onChange}
-          type="tel"
-          isValid={isValid}
         />
       </Router>,
     )
@@ -140,8 +137,10 @@ describe('Contact Info in its Editable mode', () => {
       onClick()
     })
 
+    const expectedNewData = [...data, { value: '' }]
+
     expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith(data)
+    expect(onChange).toHaveBeenCalledWith(expectedNewData)
   })
 
   it('should call the onChange callback if an add button is clicked with an empty entry', () => {
@@ -153,7 +152,8 @@ describe('Contact Info in its Editable mode', () => {
       onClick()
     })
 
-    const expectedNewData = [{ value: '123456', type: 'home' }]
+    const expectedNewData = [{ value: '123456', type: 'home' }, { value: '' }]
+
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
   })
@@ -173,7 +173,12 @@ describe('Contact Info in its non-Editable mode', () => {
 
     const wrapper = mount(
       <Router history={history}>
-        <ContactInfo data={_data} label={label} name={name} type="tel" />
+        <ContactInfo
+          component="TextInputWithLabelFormGroup"
+          data={_data}
+          label={label}
+          name={name}
+        />
       </Router>,
     )
     return wrapper

@@ -70,10 +70,10 @@ const ContactInfo = (props: Props) => {
             onChange={
               onChange
                 ? (event) => {
-                    const newData = data.map((refData) =>
-                      refData.value === entry.value
+                    const newData = data.map((ref) =>
+                      ref.value === entry.value
                         ? { value: entry.value, type: event.currentTarget.value }
-                        : { value: entry.value, type: entry.type },
+                        : { value: ref.value, type: ref.type },
                     )
                     onChange(newData)
                   }
@@ -89,10 +89,10 @@ const ContactInfo = (props: Props) => {
             onChange={
               onChange
                 ? (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                    const newData = data.map((refData) =>
-                      refData.value === entry.value
+                    const newData = data.map((ref) =>
+                      ref.value === entry.value
                         ? { value: event.currentTarget.value, type: entry.type }
-                        : { value: entry.value, type: entry.type },
+                        : { value: ref.value, type: ref.type },
                     )
                     onChange(newData)
                   }
@@ -144,7 +144,6 @@ const ContactInfo = (props: Props) => {
 
 ContactInfo.defaultProps = {
   data: [],
-  type: 'text',
 }
 
 export default ContactInfo
