@@ -143,7 +143,7 @@ const GeneralInformation = (props: Props) => {
                   onFieldChange(
                     'dateOfBirth',
                     guessDateOfBirthFromApproximateAge(event.currentTarget.value),
-                    // eslint-disable-next-line prettier/prettier
+                    // eslint-disable-next-line
                   )}
               />
             ) : (
@@ -171,9 +171,10 @@ const GeneralInformation = (props: Props) => {
                 label={t('patient.unknownDateOfBirth')}
                 name="unknown"
                 disabled={!isEditable}
-                onChange={(event) =>
-                  // eslint-disable-next-line prettier/prettier
-                  onFieldChange('isApproximateDateOfBirth', event.currentTarget.value)}
+                onChange={
+                  (event) => onFieldChange('isApproximateDateOfBirth', event.currentTarget.value)
+                  // eslint-disable-next-line react/jsx-curly-newline
+                }
               />
             </div>
           </div>
