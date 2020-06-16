@@ -21,18 +21,18 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./tsconfig.json', './scripts/tsconfig.json'],
+    project: ['./tsconfig.json', './check-translations/tsconfig.json'],
     tsconfigRootDir: './',
   },
   settings: {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        moduleDirectory: ["node_modules"],
+        moduleDirectory: ['node_modules'],
       },
-      "typescript": {
+      typescript: {
         alwaysTryTypes: true,
-      }
+      },
     },
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
@@ -61,19 +61,17 @@ module.exports = {
     'no-nested-ternary': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': ['error', 'never'],
-    'import/order': ["error", {
-      "groups": [
-        "external",
-        ["sibling","parent","internal"],
-        "builtin",
-        "unknown",
-      ],
-      "newlines-between": "always",
-      "alphabetize": {
-        "order": 'asc',
-        "caseInsensitive": true,
+    'import/order': [
+      'error',
+      {
+        groups: ['external', ['sibling', 'parent', 'internal'], 'builtin', 'unknown'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
       },
-    }],
+    ],
     curly: ['error', 'all'],
   },
 }
