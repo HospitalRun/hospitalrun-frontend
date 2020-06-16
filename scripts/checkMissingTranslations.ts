@@ -1,4 +1,4 @@
-import * as chalk from 'chalk'
+import chalk from 'chalk'
 import { ResourceKey } from 'i18next'
 
 import resources from '../src/locales'

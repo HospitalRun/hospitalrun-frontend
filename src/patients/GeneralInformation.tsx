@@ -2,7 +2,6 @@ import { Panel, Checkbox, Alert } from '@hospitalrun/components'
 import { startOfDay, subYears, differenceInYears } from 'date-fns'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import validator from 'validator'
 
 import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
@@ -19,8 +18,8 @@ interface Error {
   suffix?: string
   dateOfBirth?: string
   preferredLanguage?: string
-  phoneNumbers?: string[]
-  emails?: string[]
+  phoneNumbers?: (string | undefined)[]
+  emails?: (string | undefined)[]
 }
 
 interface Props {
@@ -44,10 +43,10 @@ const GeneralInformation = (props: Props) => {
     }
   }
 
-  const guessDOBfromApproximateAge = (value: string) => {
+  const guessDateOfBirthFromApproximateAge = (value: string) => {
     const age = Number.isNaN(parseFloat(value)) ? 0 : parseFloat(value)
-    const dob = subYears(new Date(Date.now()), age)
-    return startOfDay(dob).toISOString()
+    const dateOfBirth = subYears(new Date(Date.now()), age)
+    return startOfDay(dateOfBirth).toISOString()
   }
 
   return (
@@ -140,14 +139,12 @@ const GeneralInformation = (props: Props) => {
                 type="number"
                 value={`${differenceInYears(new Date(Date.now()), new Date(patient.dateOfBirth))}`}
                 isEditable={isEditable}
-                onChange={
-                  (event) =>
-                    onFieldChange(
-                      'dateOfBirth',
-                      guessDOBfromApproximateAge(event.currentTarget.value),
-                    )
-                  // eslint-disable-next-line react/jsx-curly-newline
-                }
+                onChange={(event) =>
+                  onFieldChange(
+                    'dateOfBirth',
+                    guessDateOfBirthFromApproximateAge(event.currentTarget.value),
+                    // eslint-disable-next-line prettier/prettier
+                  )}
               />
             ) : (
               <DatePickerWithLabelFormGroup
@@ -174,10 +171,9 @@ const GeneralInformation = (props: Props) => {
                 label={t('patient.unknownDateOfBirth')}
                 name="unknown"
                 disabled={!isEditable}
-                onChange={
-                  (event) => onFieldChange('isApproximateDateOfBirth', event.currentTarget.value)
-                  // eslint-disable-next-line react/jsx-curly-newline
-                }
+                onChange={(event) =>
+                  // eslint-disable-next-line prettier/prettier
+                  onFieldChange('isApproximateDateOfBirth', event.currentTarget.value)}
               />
             </div>
           </div>
@@ -216,43 +212,38 @@ const GeneralInformation = (props: Props) => {
         <div className="mb-4">
           <Panel title={t('patient.phoneNumber')} color="primary" collapsible>
             <ContactInfo
+              component="TextInputWithLabelFormGroup"
               data={patient.phoneNumbers}
               errors={error?.phoneNumbers}
               label="patient.phoneNumber"
               name="phoneNumber"
               isEditable={isEditable}
               onChange={(newPhoneNumbers) => onFieldChange('phoneNumbers', newPhoneNumbers)}
-              type="tel"
-              isValid={validator.isMobilePhone}
-              errorMessageLabel="patient.errors.invalidPhoneNumber"
             />
           </Panel>
         </div>
         <div className="mb-4">
           <Panel title={t('patient.email')} color="primary" collapsible>
             <ContactInfo
+              component="TextInputWithLabelFormGroup"
               data={patient.emails}
               errors={error?.emails}
               label="patient.email"
               name="email"
               isEditable={isEditable}
               onChange={(newEmails) => onFieldChange('emails', newEmails)}
-              type="email"
-              isValid={validator.isEmail}
-              errorMessageLabel="patient.errors.invalidEmail"
             />
           </Panel>
         </div>
         <div>
           <Panel title={t('patient.address')} color="primary" collapsible>
             <ContactInfo
+              component="TextFieldWithLabelFormGroup"
               data={patient.addresses}
               label="patient.address"
               name="address"
               isEditable={isEditable}
               onChange={(newAddresses) => onFieldChange('addresses', newAddresses)}
-              type="text"
-              isValid={() => true}
             />
           </Panel>
         </div>

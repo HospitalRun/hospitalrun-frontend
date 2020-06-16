@@ -1,5 +1,5 @@
 import { Spinner, Row, Column, Icon } from '@hospitalrun/components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
@@ -9,75 +9,31 @@ import { ContactInfoPiece } from '../model/ContactInformation'
 import ContactInfoTypes from './ContactInfoTypes'
 
 interface Props {
+  component: 'TextInputWithLabelFormGroup' | 'TextFieldWithLabelFormGroup'
   data: ContactInfoPiece[]
-  errors?: string[]
+  errors?: (string | undefined)[]
   label: string
   name: string
   isEditable?: boolean
   onChange?: (newData: ContactInfoPiece[]) => void
-  type: 'text' | 'email' | 'tel'
-  isValid?: (entry: string) => boolean
-  errorMessageLabel: string
 }
 
 const ContactInfo = (props: Props) => {
-  const {
-    data,
-    errors,
-    label,
-    name,
-    isEditable,
-    onChange,
-    type,
-    isValid,
-    errorMessageLabel,
-  } = props
-  const [tempErrors, setTempErrors] = useState<string[]>()
+  const { component, data, errors, label, name, isEditable, onChange } = props
 
   const { t } = useTranslation()
 
   useEffect(() => {
-    if (!onChange) {
-      return
-    }
-    if (data.length === 0) {
+    if (onChange && data.length === 0) {
       onChange([...data, { value: '' }])
     }
   }, [data, onChange])
-
-  const getError = (i: number) => {
-    const tempError = tempErrors ? tempErrors[i] : null
-    if (tempError) {
-      return t(tempError)
-    }
-
-    const error = errors ? errors[i] : null
-    if (error) {
-      return t(error)
-    }
-
-    return ''
-  }
 
   const typeLabel = t('patient.contactInfoType.label')
   const typeOptions = Object.values(ContactInfoTypes).map((value) => ({
     label: t(`patient.contactInfoType.options.${value}`),
     value: `${value}`,
   }))
-
-  const addLabel = t('actions.add')
-
-  const onChangeValue = (event: any, prevValue: string) => {
-    if (!onChange) {
-      return
-    }
-
-    // eslint-disable-next-line no-shadow
-    const newData = data.map(({ value, type }) =>
-      value === prevValue ? { value: event.currentTarget.value, type } : { value, type },
-    )
-    onChange(newData)
-  }
 
   const header = (
     <Row className="header mb-2">
@@ -91,10 +47,16 @@ const ContactInfo = (props: Props) => {
     </Row>
   )
 
+  const componentList = {
+    TextInputWithLabelFormGroup,
+    TextFieldWithLabelFormGroup,
+  }
+  const Component = componentList[component]
+
   // todo: acts strange when deleting empty rows above non-empty rows.
   // suspect TextInputWithLabelFormGroup missing value
   const entries = data.map((entry, i) => {
-    const error = getError(i)
+    const error = errors ? errors[i] : undefined
     return (
       // todo: want a better key, and possibly name
       // eslint-disable-next-line react/no-array-index-key
@@ -108,11 +70,10 @@ const ContactInfo = (props: Props) => {
             onChange={
               onChange
                 ? (event) => {
-                    // eslint-disable-next-line no-shadow
-                    const newData = data.map(({ value, type }) =>
-                      value === entry.value
-                        ? { value, type: event.currentTarget.value }
-                        : { value, type },
+                    const newData = data.map((refData) =>
+                      refData.value === entry.value
+                        ? { value: entry.value, type: event.currentTarget.value }
+                        : { value: entry.value, type: entry.type },
                     )
                     onChange(newData)
                   }
@@ -121,79 +82,58 @@ const ContactInfo = (props: Props) => {
           />
         </Column>
         <Column sm={8}>
-          {['tel', 'email'].indexOf(type) > -1 ? (
-            <TextInputWithLabelFormGroup
-              name={`${name}${i}`}
-              value={entry.value}
-              isEditable={isEditable}
-              onChange={
-                onChange
-                  ? (event) => {
-                      onChangeValue(event, entry.value)
-                    }
-                  : undefined
-              }
-              feedback={error}
-              isInvalid={!!error}
-              type={type}
-            />
-          ) : (
-            <TextFieldWithLabelFormGroup
-              name={`${name}${i}`}
-              value={entry.value}
-              isEditable={isEditable}
-              onChange={
-                onChange
-                  ? (event) => {
-                      onChangeValue(event, entry.value)
-                    }
-                  : undefined
-              }
-              feedback={error}
-              isInvalid={!!error}
-            />
-          )}
+          <Component
+            name={`${name}${i}`}
+            value={entry.value}
+            isEditable={isEditable}
+            onChange={
+              onChange
+                ? (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                    const newData = data.map((refData) =>
+                      refData.value === entry.value
+                        ? { value: event.currentTarget.value, type: entry.type }
+                        : { value: entry.value, type: entry.type },
+                    )
+                    onChange(newData)
+                  }
+                : undefined
+            }
+            feedback={error}
+            isInvalid={!!error}
+          />
         </Column>
       </Row>
     )
   })
 
-  const onClickAdd = () => {
-    if (!isValid || !onChange) {
+  const onAddClick = () => {
+    if (!onChange) {
       return
     }
 
     // 1. pick up only non-empty string
     const newData = data.filter(({ value }) => value.trim() !== '')
 
-    // 2. gather errors
-    const newTempErrors = newData.map(({ value }) => (isValid(value) ? '' : errorMessageLabel))
+    // 2. add a new entry
+    newData.push({ value: '' })
 
-    // 3. if no error, add a new entry
-    if (newTempErrors.filter((error) => error !== '').length === 0) {
-      newData.push({ value: '' })
-    }
-
-    // 4. send updates
+    // 3. send updates
     onChange(newData)
-    setTempErrors(newTempErrors)
   }
 
   const addButton = (
     <div className="text-right">
-      <button
-        type="button"
-        className="btn btn-link"
-        onClick={isValid && onChange ? onClickAdd : undefined}
-      >
-        <Icon icon="add" /> {addLabel}
+      <button type="button" className="btn btn-link" onClick={onAddClick}>
+        <Icon icon="add" /> {t('actions.add')}
       </button>
     </div>
   )
 
-  return isEditable && data.length === 0 ? (
-    <Spinner color="blue" loading size={20} type="SyncLoader" />
-  ) : (
+  if (isEditable && data.length === 0) {
+    return <Spinner color="blue" loading size={20} type="SyncLoader" />
+  }
+
+  return (
     <div>
       {data.length > 0 ? header : null}
       {entries}
@@ -205,7 +145,6 @@ const ContactInfo = (props: Props) => {
 ContactInfo.defaultProps = {
   data: [],
   type: 'text',
-  errorMessageLabel: 'patient.errors.invalidInputPlaceholder',
 }
 
 export default ContactInfo
