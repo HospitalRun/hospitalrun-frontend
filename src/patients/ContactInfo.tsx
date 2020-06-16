@@ -1,5 +1,5 @@
 import { Spinner, Row, Column, Icon } from '@hospitalrun/components'
-import React, { useEffect } from 'react'
+import React, { useEffect, ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
@@ -18,7 +18,7 @@ interface Props {
   onChange?: (newData: ContactInfoPiece[]) => void
 }
 
-const ContactInfo = (props: Props) => {
+const ContactInfo = (props: Props): ReactElement => {
   const { component, data, errors, label, name, isEditable, onChange } = props
 
   const { t } = useTranslation()
@@ -98,7 +98,7 @@ const ContactInfo = (props: Props) => {
                   }
                 : undefined
             }
-            feedback={error}
+            feedback={error && t(error)}
             isInvalid={!!error}
           />
         </Column>
