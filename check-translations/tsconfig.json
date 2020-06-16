@@ -1,12 +1,13 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "./checkMissingTranslations.ts"
+    "./index.ts"
   ],
   "compilerOptions": {
     "module": "commonjs",
-    "outDir": "../bin",
+    "outDir": "compiled",
     "target": "es5",
-    "sourceMap": false
+    "sourceMap": false,
+    "noEmit": false
   }
 }
