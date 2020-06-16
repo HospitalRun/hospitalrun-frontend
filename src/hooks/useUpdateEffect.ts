@@ -1,6 +1,6 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, EffectCallback } from 'react'
 
-export default function (effect: Function, dependencies: any[]) {
+export default function (effect: EffectCallback, dependencies: any[]): void {
   const isInitialMount = useRef(true)
 
   useEffect(() => {
