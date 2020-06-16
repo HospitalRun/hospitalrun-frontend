@@ -7,8 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # node-version: [12.x, 14.x]
-        node-version: [12.x]
+        node-version: [12.x, 14.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
       - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
@@ -36,29 +35,3 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: ./coverage/lcov.info
-          
-  npm-node14:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node-version: [14.x]
-        os: [ubuntu-latest]
-    steps:
-      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install with npm
-        run: |
-          npm install
-      - name: Lint code
-        run: |
-          npm run lint
-      - name: Build
-        run: |
-          npm run build
-      - name: Run tests
-        run: |
-          npm run test:ci
