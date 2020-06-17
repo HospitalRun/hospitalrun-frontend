@@ -1,6 +1,6 @@
 import { Panel, Checkbox, Alert } from '@hospitalrun/components'
 import { startOfDay, subYears, differenceInYears } from 'date-fns'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
@@ -29,11 +29,11 @@ interface Props {
   error?: Error
 }
 
-const GeneralInformation = (props: Props) => {
+const GeneralInformation = (props: Props): ReactElement => {
   const { t } = useTranslation()
   const { patient, isEditable, onChange, error } = props
 
-  const onFieldChange = (name: string, value: string | ContactInfoPiece[]) => {
+  const onFieldChange = (name: string, value: string | boolean | ContactInfoPiece[]) => {
     if (onChange) {
       const newPatient = {
         ...patient,
@@ -47,6 +47,16 @@ const GeneralInformation = (props: Props) => {
     const age = Number.isNaN(parseFloat(value)) ? 0 : parseFloat(value)
     const dateOfBirth = subYears(new Date(Date.now()), age)
     return startOfDay(dateOfBirth).toISOString()
+  }
+
+  const onApproximateAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.currentTarget
+    onFieldChange('dateOfBirth', guessDateOfBirthFromApproximateAge(value))
+  }
+
+  const onUnknownDateOfBirthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.currentTarget
+    onFieldChange('isApproximateDateOfBirth', checked)
   }
 
   return (
@@ -139,12 +149,7 @@ const GeneralInformation = (props: Props) => {
                 type="number"
                 value={`${differenceInYears(new Date(Date.now()), new Date(patient.dateOfBirth))}`}
                 isEditable={isEditable}
-                onChange={(event) =>
-                  onFieldChange(
-                    'dateOfBirth',
-                    guessDateOfBirthFromApproximateAge(event.currentTarget.value),
-                    // eslint-disable-next-line
-                  )}
+                onChange={onApproximateAgeChange}
               />
             ) : (
               <DatePickerWithLabelFormGroup
@@ -171,10 +176,7 @@ const GeneralInformation = (props: Props) => {
                 label={t('patient.unknownDateOfBirth')}
                 name="unknown"
                 disabled={!isEditable}
-                onChange={
-                  (event) => onFieldChange('isApproximateDateOfBirth', event.currentTarget.value)
-                  // eslint-disable-next-line react/jsx-curly-newline
-                }
+                onChange={onUnknownDateOfBirthChange}
               />
             </div>
           </div>
