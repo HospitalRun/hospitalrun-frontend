@@ -11,7 +11,6 @@ import { RootState } from '../../store'
 import GeneralInformation from '../GeneralInformation'
 import { updatePatient, fetchPatient } from '../patient-slice'
 import { getPatientFullName } from '../util/patient-name-util'
-import { cleanupPatient } from '../util/set-patient-helper'
 
 const getPatientCode = (p: Patient): string => {
   if (p) {
@@ -70,8 +69,7 @@ const EditPatient = () => {
   }
 
   const onSave = async () => {
-    const newPatient = cleanupPatient(patient)
-    await dispatch(updatePatient(newPatient, onSuccessfulSave))
+    await dispatch(updatePatient(patient, onSuccessfulSave))
   }
 
   const onPatientChange = (newPatient: Partial<Patient>) => {

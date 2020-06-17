@@ -12,6 +12,7 @@ import Patient from '../model/Patient'
 import RelatedPerson from '../model/RelatedPerson'
 import { AppThunk } from '../store'
 import { uuid } from '../util/uuid'
+import { cleanupPatient } from './util/set-patient-helper'
 
 interface PatientState {
   status: 'loading' | 'error' | 'completed'
@@ -243,10 +244,11 @@ export const createPatient = (
 ): AppThunk => async (dispatch) => {
   dispatch(createPatientStart())
 
-  const newPatientError = validatePatient(patient)
+  const cleanPatient = cleanupPatient(patient)
+  const newPatientError = validatePatient(cleanPatient)
 
   if (isEmpty(newPatientError)) {
-    const newPatient = await PatientRepository.save(patient)
+    const newPatient = await PatientRepository.save(cleanPatient)
     dispatch(createPatientSuccess())
 
     if (onSuccess) {
@@ -263,9 +265,12 @@ export const updatePatient = (
   onSuccess?: (patient: Patient) => void,
 ): AppThunk => async (dispatch) => {
   dispatch(updatePatientStart())
-  const updateError = validatePatient(patient)
+
+  const cleanPatient = cleanupPatient(patient)
+  const updateError = validatePatient(cleanPatient)
+
   if (isEmpty(updateError)) {
-    const updatedPatient = await PatientRepository.saveOrUpdate(patient)
+    const updatedPatient = await PatientRepository.saveOrUpdate(cleanPatient)
     dispatch(updatePatientSuccess(updatedPatient))
 
     if (onSuccess) {

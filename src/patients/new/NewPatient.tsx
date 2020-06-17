@@ -10,7 +10,6 @@ import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
 import GeneralInformation from '../GeneralInformation'
 import { createPatient } from '../patient-slice'
-import { cleanupPatient } from '../util/set-patient-helper'
 
 const breadcrumbs = [
   { i18nKey: 'patients.label', location: '/patients' },
@@ -42,8 +41,7 @@ const NewPatient = () => {
   }
 
   const onSave = () => {
-    const newPatient = cleanupPatient(patient)
-    dispatch(createPatient(newPatient, onSuccessfulSave))
+    dispatch(createPatient(patient, onSuccessfulSave))
   }
 
   const onPatientChange = (newPatient: Partial<Patient>) => {

@@ -167,6 +167,7 @@ describe('patients slice', () => {
       const expectedPatient = {
         id: 'sliceId1',
         givenName: 'some name',
+        fullName: 'some name',
       } as Patient
 
       await store.dispatch(createPatient(expectedPatient))
@@ -383,7 +384,11 @@ describe('patients slice', () => {
     it('should call the PatientRepository saveOrUpdate function with the correct data', async () => {
       const store = mockStore()
       const expectedPatientId = 'sliceId9'
-      const expectedPatient = { id: expectedPatientId, givenName: 'some name' } as Patient
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some name',
+        fullName: 'some name',
+      } as Patient
       jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedPatient)
 
       await store.dispatch(updatePatient(expectedPatient))
