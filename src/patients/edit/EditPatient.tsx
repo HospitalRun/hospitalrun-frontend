@@ -10,7 +10,7 @@ import useTitle from '../../page-header/useTitle'
 import { RootState } from '../../store'
 import GeneralInformation from '../GeneralInformation'
 import { updatePatient, fetchPatient } from '../patient-slice'
-import { getPatientFullName, getPatientName } from '../util/patient-name-util'
+import { getPatientFullName } from '../util/patient-name-util'
 
 const getPatientCode = (p: Patient): string => {
   if (p) {
@@ -69,24 +69,11 @@ const EditPatient = () => {
   }
 
   const onSave = async () => {
-    await dispatch(
-      updatePatient(
-        {
-          ...patient,
-          fullName: getPatientName(patient.givenName, patient.familyName, patient.suffix),
-          index:
-            getPatientName(patient.givenName, patient.familyName, patient.suffix) + patient.code,
-        },
-        onSuccessfulSave,
-      ),
-    )
+    await dispatch(updatePatient(patient, onSuccessfulSave))
   }
 
-  const onFieldChange = (key: string, value: string | boolean) => {
-    setPatient({
-      ...patient,
-      [key]: value,
-    })
+  const onPatientChange = (newPatient: Partial<Patient>) => {
+    setPatient(newPatient as Patient)
   }
 
   if (status === 'loading') {
@@ -96,17 +83,17 @@ const EditPatient = () => {
   return (
     <div>
       <GeneralInformation
-        isEditable
         patient={patient}
-        onFieldChange={onFieldChange}
+        isEditable
+        onChange={onPatientChange}
         error={updateError}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">
-          <Button className="mr-2" color="success" onClick={onSave}>
+          <Button className="btn-save mr-2" color="success" onClick={onSave}>
             {t('actions.save')}
           </Button>
-          <Button color="danger" onClick={onCancel}>
+          <Button className="btn-cancel" color="danger" onClick={onCancel}>
             {t('actions.cancel')}
           </Button>
         </div>
