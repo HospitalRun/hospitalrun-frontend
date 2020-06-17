@@ -1,5 +1,5 @@
 import '../../__mocks__/matchMediaMock'
-import { Column } from '@hospitalrun/components'
+import { Column, Spinner } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
