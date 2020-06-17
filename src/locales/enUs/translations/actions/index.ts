@@ -14,5 +14,6 @@ export default {
     next: 'Next',
     previous: 'Previous',
     page: 'Page',
+    add: 'Add',
   },
 }
