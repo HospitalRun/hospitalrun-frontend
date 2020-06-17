@@ -6,6 +6,7 @@ import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGro
 import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
 import { ContactInfoPiece } from '../model/ContactInformation'
+import { uuid } from '../util/uuid'
 import ContactInfoTypes from './ContactInfoTypes'
 
 interface Props {
@@ -25,11 +26,10 @@ const ContactInfo = (props: Props): ReactElement => {
 
   useEffect(() => {
     if (onChange && data.length === 0) {
-      onChange([...data, { value: '' }])
+      onChange([...data, { id: uuid(), value: '' }])
     }
   }, [data, onChange])
 
-  const typeLabel = t('patient.contactInfoType.label')
   const typeOptions = Object.values(ContactInfoTypes).map((value) => ({
     label: t(`patient.contactInfoType.options.${value}`),
     value: `${value}`,
@@ -38,7 +38,7 @@ const ContactInfo = (props: Props): ReactElement => {
   const header = (
     <Row className="header mb-2">
       <Column xs={12} sm={4}>
-        <span className="">{typeLabel}</span>
+        <span className="">{t('patient.contactInfoType.label')}</span>
         <span className="d-sm-none"> &amp; {t(label)}</span>
       </Column>
       <Column className="d-none d-sm-block" sm={8}>
@@ -53,32 +53,40 @@ const ContactInfo = (props: Props): ReactElement => {
   }
   const Component = componentList[component]
 
-  // todo: acts strange when deleting empty rows above non-empty rows.
-  // suspect TextInputWithLabelFormGroup missing value
+  const onTypeChange = (event: React.ChangeEvent<HTMLSelectElement>, index: number) => {
+    if (onChange) {
+      const newType = event.currentTarget.value
+      const currentContact = { ...data[index], type: newType }
+      const newContacts = [...data]
+      newContacts.splice(index, 1, currentContact)
+      onChange(newContacts)
+    }
+  }
+
+  const onValueChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number,
+  ) => {
+    if (onChange) {
+      const newValue = event.currentTarget.value
+      const currentContact = { ...data[index], value: newValue }
+      const newContacts = [...data]
+      newContacts.splice(index, 1, currentContact)
+      onChange(newContacts)
+    }
+  }
+
   const entries = data.map((entry, i) => {
     const error = errors ? errors[i] : undefined
     return (
-      // todo: want a better key, and possibly name
-      // eslint-disable-next-line react/no-array-index-key
-      <Row key={i}>
+      <Row key={entry.id}>
         <Column sm={4}>
           <SelectWithLabelFormGroup
             name={`${name}Type${i}`}
             value={entry.type}
             isEditable={isEditable}
             options={typeOptions}
-            onChange={
-              onChange
-                ? (event) => {
-                    const newData = data.map((ref) =>
-                      ref.value === entry.value
-                        ? { value: entry.value, type: event.currentTarget.value }
-                        : { value: ref.value, type: ref.type },
-                    )
-                    onChange(newData)
-                  }
-                : undefined
-            }
+            onChange={(event) => onTypeChange(event, i)}
           />
         </Column>
         <Column sm={8}>
@@ -86,18 +94,7 @@ const ContactInfo = (props: Props): ReactElement => {
             name={`${name}${i}`}
             value={entry.value}
             isEditable={isEditable}
-            onChange={
-              onChange
-                ? (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                    const newData = data.map((ref) =>
-                      ref.value === entry.value
-                        ? { value: event.currentTarget.value, type: entry.type }
-                        : { value: ref.value, type: ref.type },
-                    )
-                    onChange(newData)
-                  }
-                : undefined
-            }
+            onChange={(event: any) => onValueChange(event, i)}
             feedback={error && t(error)}
             isInvalid={!!error}
           />
@@ -115,7 +112,7 @@ const ContactInfo = (props: Props): ReactElement => {
     const newData = data.filter(({ value }) => value.trim() !== '')
 
     // 2. add a new entry
-    newData.push({ value: '' })
+    newData.push({ id: uuid(), value: '' })
 
     // 3. send updates
     onChange(newData)

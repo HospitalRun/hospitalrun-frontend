@@ -1,4 +1,4 @@
-type ContactInfoPiece = { value: string; type?: string }
+type ContactInfoPiece = { id: string; value: string; type?: string }
 
 interface ContactInformation {
   phoneNumbers: ContactInfoPiece[]

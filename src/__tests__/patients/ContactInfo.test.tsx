@@ -9,15 +9,16 @@ import { Router } from 'react-router-dom'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import { ContactInfoPiece } from '../../model/ContactInformation'
 import ContactInfo from '../../patients/ContactInfo'
+import * as uuid from '../../util/uuid'
 
 describe('Contact Info in its Editable mode', () => {
   const data = [
-    { value: '123456', type: 'home' },
-    { value: '789012', type: undefined },
+    { id: '123', value: '123456', type: 'home' },
+    { id: '456', value: '789012', type: undefined },
   ]
   const dataForNoAdd = [
-    { value: '123456', type: 'home' },
-    { value: ' ', type: undefined },
+    { id: '123', value: '123456', type: 'home' },
+    { id: '456', value: ' ', type: undefined },
   ]
   const errors = ['this is an error', '']
   const label = 'this is a label'
@@ -53,9 +54,11 @@ describe('Contact Info in its Editable mode', () => {
   })
 
   it('should call onChange if no data is provided', () => {
+    const newId = 'newId'
+    jest.spyOn(uuid, 'uuid').mockReturnValue(newId)
     setup()
 
-    const expectedNewData = [{ value: '' }]
+    const expectedNewData = [{ id: newId, value: '' }]
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
   })
@@ -107,8 +110,8 @@ describe('Contact Info in its Editable mode', () => {
     select.simulate('change')
 
     const expectedNewData = [
-      { value: '123456', type: 'mobile' },
-      { value: '789012', type: undefined },
+      { id: '123', value: '123456', type: 'mobile' },
+      { id: '456', value: '789012', type: undefined },
     ]
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
@@ -121,8 +124,8 @@ describe('Contact Info in its Editable mode', () => {
     input.simulate('change')
 
     const expectedNewData = [
-      { value: '777777', type: 'home' },
-      { value: '789012', type: undefined },
+      { id: '123', value: '777777', type: 'home' },
+      { id: '456', value: '789012', type: undefined },
     ]
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
@@ -132,12 +135,14 @@ describe('Contact Info in its Editable mode', () => {
     const wrapper = setup(data)
     const buttonWrapper = wrapper.find('button')
     const onClick = buttonWrapper.prop('onClick') as any
+    const newId = 'newId'
+    jest.spyOn(uuid, 'uuid').mockReturnValue(newId)
 
     act(() => {
       onClick()
     })
 
-    const expectedNewData = [...data, { value: '' }]
+    const expectedNewData = [...data, { id: newId, value: '' }]
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
@@ -147,12 +152,17 @@ describe('Contact Info in its Editable mode', () => {
     const wrapper = setup(dataForNoAdd)
     const buttonWrapper = wrapper.find('button')
     const onClick = buttonWrapper.prop('onClick') as any
+    const newId = 'newId'
+    jest.spyOn(uuid, 'uuid').mockReturnValue(newId)
 
     act(() => {
       onClick()
     })
 
-    const expectedNewData = [{ value: '123456', type: 'home' }, { value: '' }]
+    const expectedNewData = [
+      { id: '123', value: '123456', type: 'home' },
+      { id: newId, value: '' },
+    ]
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
@@ -161,8 +171,8 @@ describe('Contact Info in its Editable mode', () => {
 
 describe('Contact Info in its non-Editable mode', () => {
   const data = [
-    { value: '123456', type: 'home' },
-    { value: '789012', type: undefined },
+    { id: '123', value: '123456', type: 'home' },
+    { id: '456', value: '789012', type: undefined },
   ]
   const label = 'this is a label'
   const name = 'this is a name'
@@ -216,7 +226,6 @@ describe('Contact Info in its non-Editable mode', () => {
     const inputWrappers = wrapper.find(TextInputWithLabelFormGroup)
     for (let i = 0; i < inputWrappers.length; i += 1) {
       expect(inputWrappers.at(i).prop('isEditable')).toBeFalsy()
-      expect(inputWrappers.at(i).prop('onChange')).toBeUndefined()
     }
   })
 })
