@@ -3,7 +3,7 @@ import React from 'react'
 
 interface Props {
   value: string
-  label: string
+  label?: string
   name: string
   isEditable?: boolean
   type: 'text' | 'email' | 'number' | 'tel'
@@ -30,7 +30,7 @@ const TextInputWithLabelFormGroup = (props: Props) => {
   const id = `${name}TextInput`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} isRequired={isRequired} />
+      {label && <Label text={label} htmlFor={id} isRequired={isRequired} />}
       <TextInput
         feedback={feedback}
         id={id}
