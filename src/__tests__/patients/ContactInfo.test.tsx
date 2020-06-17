@@ -9,15 +9,16 @@ import { Router } from 'react-router-dom'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import { ContactInfoPiece } from '../../model/ContactInformation'
 import ContactInfo from '../../patients/ContactInfo'
+import * as uuid from '../../util/uuid'
 
 describe('Contact Info in its Editable mode', () => {
   const data = [
-    { value: '123456', type: 'home' },
-    { value: '789012', type: undefined },
+    { id: '123', value: '123456', type: 'home' },
+    { id: '456', value: '789012', type: undefined },
   ]
   const dataForNoAdd = [
-    { value: '123456', type: 'home' },
-    { value: ' ', type: undefined },
+    { id: '987', value: '123456', type: 'home' },
+    { id: '654', value: ' ', type: undefined },
   ]
   const errors = ['this is an error', '']
   const label = 'this is a label'
@@ -44,21 +45,6 @@ describe('Contact Info in its Editable mode', () => {
     )
     return wrapper
   }
-
-  it('should show a spinner if no data is present', () => {
-    const wrapper = setup()
-    const spinnerWrapper = wrapper.find(Spinner)
-
-    expect(spinnerWrapper).toHaveLength(1)
-  })
-
-  it('should call onChange if no data is provided', () => {
-    setup()
-
-    const expectedNewData = [{ value: '' }]
-    expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith(expectedNewData)
-  })
 
   it('should render the labels if data is provided', () => {
     const wrapper = setup(data)
@@ -107,8 +93,8 @@ describe('Contact Info in its Editable mode', () => {
     select.simulate('change')
 
     const expectedNewData = [
-      { value: '123456', type: 'mobile' },
-      { value: '789012', type: undefined },
+      { id: '123', value: '123456', type: 'mobile' },
+      { id: '456', value: '789012', type: undefined },
     ]
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
@@ -121,8 +107,8 @@ describe('Contact Info in its Editable mode', () => {
     input.simulate('change')
 
     const expectedNewData = [
-      { value: '777777', type: 'home' },
-      { value: '789012', type: undefined },
+      { id: '123', value: '777777', type: 'home' },
+      { id: '456', value: '789012', type: undefined },
     ]
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
@@ -132,37 +118,38 @@ describe('Contact Info in its Editable mode', () => {
     const wrapper = setup(data)
     const buttonWrapper = wrapper.find('button')
     const onClick = buttonWrapper.prop('onClick') as any
+    const newId = 'newId'
+    jest.spyOn(uuid, 'uuid').mockReturnValue(newId)
 
     act(() => {
       onClick()
     })
 
-    const expectedNewData = [...data, { value: '' }]
+    const expectedNewData = [...data, { id: newId, value: '', type: '' }]
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(expectedNewData)
   })
 
-  it('should call the onChange callback if an add button is clicked with an empty entry', () => {
+  it('should not call the onChange callback if an add button is clicked with an empty entry', () => {
     const wrapper = setup(dataForNoAdd)
     const buttonWrapper = wrapper.find('button')
     const onClick = buttonWrapper.prop('onClick') as any
+    const newId = 'newId'
+    jest.spyOn(uuid, 'uuid').mockReturnValue(newId)
 
     act(() => {
       onClick()
     })
 
-    const expectedNewData = [{ value: '123456', type: 'home' }, { value: '' }]
-
-    expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith(expectedNewData)
+    expect(onChange).toHaveBeenCalledTimes(0)
   })
 })
 
 describe('Contact Info in its non-Editable mode', () => {
   const data = [
-    { value: '123456', type: 'home' },
-    { value: '789012', type: undefined },
+    { id: '123', value: '123456', type: 'home' },
+    { id: '456', value: '789012', type: undefined },
   ]
   const label = 'this is a label'
   const name = 'this is a name'
@@ -181,16 +168,10 @@ describe('Contact Info in its non-Editable mode', () => {
         />
       </Router>,
     )
+    wrapper.update()
+
     return wrapper
   }
-
-  it('should render an empty element if no data is present', () => {
-    const wrapper = setup()
-    const contactInfoWrapper = wrapper.find(ContactInfo)
-
-    expect(contactInfoWrapper.find('div')).toHaveLength(1)
-    expect(contactInfoWrapper.containsMatchingElement(<div />)).toEqual(true)
-  })
 
   it('should render the labels if data is provided', () => {
     const wrapper = setup(data)
@@ -216,7 +197,6 @@ describe('Contact Info in its non-Editable mode', () => {
     const inputWrappers = wrapper.find(TextInputWithLabelFormGroup)
     for (let i = 0; i < inputWrappers.length; i += 1) {
       expect(inputWrappers.at(i).prop('isEditable')).toBeFalsy()
-      expect(inputWrappers.at(i).prop('onChange')).toBeUndefined()
     }
   })
 })

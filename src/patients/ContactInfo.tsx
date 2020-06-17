@@ -1,11 +1,13 @@
-import { Spinner, Row, Column, Icon } from '@hospitalrun/components'
-import React, { useEffect, ReactElement } from 'react'
+import { Column, Icon, Row } from '@hospitalrun/components'
+import { isEmpty } from 'lodash'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
 import { ContactInfoPiece } from '../model/ContactInformation'
+import { uuid } from '../util/uuid'
 import ContactInfoTypes from './ContactInfoTypes'
 
 interface Props {
@@ -17,35 +19,25 @@ interface Props {
   isEditable?: boolean
   onChange?: (newData: ContactInfoPiece[]) => void
 }
+const initialContacts = { id: uuid(), type: '', value: '' }
 
 const ContactInfo = (props: Props): ReactElement => {
   const { component, data, errors, label, name, isEditable, onChange } = props
-
+  const [contacts, setContacts] = useState<ContactInfoPiece[]>([])
   const { t } = useTranslation()
 
   useEffect(() => {
-    if (onChange && data.length === 0) {
-      onChange([...data, { value: '' }])
+    if (data.length === 0) {
+      setContacts([initialContacts])
+    } else {
+      setContacts([...data])
     }
-  }, [data, onChange])
+  }, [setContacts, data])
 
-  const typeLabel = t('patient.contactInfoType.label')
   const typeOptions = Object.values(ContactInfoTypes).map((value) => ({
     label: t(`patient.contactInfoType.options.${value}`),
     value: `${value}`,
   }))
-
-  const header = (
-    <Row className="header mb-2">
-      <Column xs={12} sm={4}>
-        <span className="">{typeLabel}</span>
-        <span className="d-sm-none"> &amp; {t(label)}</span>
-      </Column>
-      <Column className="d-none d-sm-block" sm={8}>
-        {t(label)}
-      </Column>
-    </Row>
-  )
 
   const componentList = {
     TextInputWithLabelFormGroup,
@@ -53,32 +45,40 @@ const ContactInfo = (props: Props): ReactElement => {
   }
   const Component = componentList[component]
 
-  // todo: acts strange when deleting empty rows above non-empty rows.
-  // suspect TextInputWithLabelFormGroup missing value
-  const entries = data.map((entry, i) => {
+  const onTypeChange = (event: React.ChangeEvent<HTMLSelectElement>, index: number) => {
+    if (onChange) {
+      const newType = event.currentTarget.value
+      const currentContact = { ...contacts[index], type: newType }
+      const newContacts = [...contacts]
+      newContacts.splice(index, 1, currentContact)
+      onChange(newContacts)
+    }
+  }
+
+  const onValueChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    index: number,
+  ) => {
+    if (onChange) {
+      const newValue = event.currentTarget.value
+      const currentContact = { ...contacts[index], value: newValue }
+      const newContacts = [...contacts]
+      newContacts.splice(index, 1, currentContact)
+      onChange(newContacts)
+    }
+  }
+
+  const entries = contacts.map((entry, i) => {
     const error = errors ? errors[i] : undefined
     return (
-      // todo: want a better key, and possibly name
-      // eslint-disable-next-line react/no-array-index-key
-      <Row key={i}>
+      <Row key={entry.id}>
         <Column sm={4}>
           <SelectWithLabelFormGroup
             name={`${name}Type${i}`}
             value={entry.type}
             isEditable={isEditable}
             options={typeOptions}
-            onChange={
-              onChange
-                ? (event) => {
-                    const newData = data.map((ref) =>
-                      ref.value === entry.value
-                        ? { value: entry.value, type: event.currentTarget.value }
-                        : { value: ref.value, type: ref.type },
-                    )
-                    onChange(newData)
-                  }
-                : undefined
-            }
+            onChange={(event) => onTypeChange(event, i)}
           />
         </Column>
         <Column sm={8}>
@@ -86,18 +86,7 @@ const ContactInfo = (props: Props): ReactElement => {
             name={`${name}${i}`}
             value={entry.value}
             isEditable={isEditable}
-            onChange={
-              onChange
-                ? (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                    const newData = data.map((ref) =>
-                      ref.value === entry.value
-                        ? { value: event.currentTarget.value, type: entry.type }
-                        : { value: ref.value, type: ref.type },
-                    )
-                    onChange(newData)
-                  }
-                : undefined
-            }
+            onChange={(event: any) => onValueChange(event, i)}
             feedback={error && t(error)}
             isInvalid={!!error}
           />
@@ -107,37 +96,30 @@ const ContactInfo = (props: Props): ReactElement => {
   })
 
   const onAddClick = () => {
-    if (!onChange) {
-      return
+    if (onChange && !contacts.some((c) => isEmpty(c.value.trim()))) {
+      onChange([...contacts, { id: uuid(), type: '', value: '' }])
     }
-
-    // 1. pick up only non-empty string
-    const newData = data.filter(({ value }) => value.trim() !== '')
-
-    // 2. add a new entry
-    newData.push({ value: '' })
-
-    // 3. send updates
-    onChange(newData)
-  }
-
-  const addButton = (
-    <div className="text-right">
-      <button type="button" className="btn btn-link" onClick={onAddClick}>
-        <Icon icon="add" /> {t('actions.add')}
-      </button>
-    </div>
-  )
-
-  if (isEditable && data.length === 0) {
-    return <Spinner color="blue" loading size={20} type="SyncLoader" />
   }
 
   return (
     <div>
-      {data.length > 0 ? header : null}
+      <Row className="header mb-2">
+        <Column xs={12} sm={4}>
+          <span className="">{t('patient.contactInfoType.label')}</span>
+          <span className="d-sm-none"> &amp; {t(label)}</span>
+        </Column>
+        <Column className="d-none d-sm-block" sm={8}>
+          {t(label)}
+        </Column>
+      </Row>
       {entries}
-      {isEditable ? addButton : null}
+      {isEditable && (
+        <div className="text-right">
+          <button type="button" className="btn btn-link" onClick={onAddClick}>
+            <Icon icon="add" /> {t('actions.add')}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

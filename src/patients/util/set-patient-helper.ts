@@ -20,9 +20,9 @@ const cleanupPatient = (patient: Patient) => {
         .map((entry) => {
           const newValue = entry.value.trim()
           if ('type' in entry) {
-            return { value: newValue, type: entry.type }
+            return { id: entry.id, value: newValue, type: entry.type }
           }
-          return { value: newValue }
+          return { id: entry.id, value: newValue }
         })
 
       if (nonEmpty.length > 0) {
