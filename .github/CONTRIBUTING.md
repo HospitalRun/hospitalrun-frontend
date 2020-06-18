@@ -38,8 +38,9 @@ The following directions will be for running CouchDB via Docker Compose.
 6. Navigate to the configuraiton page in Fauxton.
 7. In the CORS tab, enable CORS and allow requests from All domains (*)
 8. In the Main config tab, set `couchdb -> users_db_security_editable` to true
-9. Disable default `_users` security: `curl admin:password@localhost:5984/_users/_security -XPUT -d '{}'`
-9. Create a new user with:
+9. In the Setup Apache CouchDB tab, configure a single node. Enter your username and password and leave the rest of the defaults.
+10. Disable default `_users` security: `curl admin:password@localhost:5984/_users/_security -XPUT -d '{}'`
+11. Create a new user with:
 ```
 curl -X PUT http://hradmin:password@localhost:5984/_users/org.couchdb.user:${username} \
      -H "Accept: application/json" \
