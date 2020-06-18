@@ -40,14 +40,19 @@ const userSlice = createSlice({
     fetchPermissions(state, { payload }: PayloadAction<Permissions[]>) {
       state.permissions = payload
     },
-    loginSuccess(state, { payload }: PayloadAction<User>) {
-      state.user = payload
+    loginSuccess(
+      state,
+      { payload }: PayloadAction<{ user: User; permissions: (Permissions | null)[] }>,
+    ) {
+      state.user = payload.user
+      state.permissions = initialState.permissions
     },
     loginError(state, { payload }: PayloadAction<string>) {
       state.loginError = payload
     },
     logoutSuccess(state) {
       state.user = undefined
+      state.permissions = []
     },
   },
 })
@@ -58,9 +63,12 @@ export const getCurrentSession = (username: string): AppThunk => async (dispatch
   const user = await remoteDb.getUser(username)
   dispatch(
     loginSuccess({
-      id: user._id,
-      givenName: (user as any).metadata.givenName,
-      familyName: (user as any).metadata.familyName,
+      user: {
+        id: user._id,
+        givenName: (user as any).metadata.givenName,
+        familyName: (user as any).metadata.familyName,
+      },
+      permissions: initialState.permissions,
     }),
   )
 }
@@ -68,10 +76,20 @@ export const getCurrentSession = (username: string): AppThunk => async (dispatch
 export const login = (username: string, password: string): AppThunk => async (dispatch) => {
   try {
     const response = await remoteDb.logIn(username, password)
-    dispatch(getCurrentSession(response.name))
+    const user = await remoteDb.getUser(response.name)
+    dispatch(
+      loginSuccess({
+        user: {
+          id: user._id,
+          givenName: (user as any).metadata.givenName,
+          familyName: (user as any).metadata.familyName,
+        },
+        permissions: initialState.permissions,
+      }),
+    )
   } catch (error) {
     if (error.status === '401') {
-      dispatch(loginError('Username or password is incorrect.'))
+      dispatch(loginError('user.login.error'))
     }
   }
 }
