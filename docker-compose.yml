@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  couchdb:
+    image: couchdb:3.1.0
+    container_name: hospitalrun
+    ports:
+      - "5984:5984"
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=password
+
