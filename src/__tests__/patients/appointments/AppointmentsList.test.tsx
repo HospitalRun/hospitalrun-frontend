@@ -11,10 +11,10 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import PatientRepository from '../../../clients/db/PatientRepository'
+import Appointment from '../../../model/Appointment'
 import Patient from '../../../model/Patient'
 import AppointmentsList from '../../../patients/appointments/AppointmentsList'
 import { RootState } from '../../../store'
-import Appointment from "../../../model/Appointment";
 
 const expectedPatient = {
   id: '123',

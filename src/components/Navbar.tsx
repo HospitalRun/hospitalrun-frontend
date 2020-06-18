@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import pageMap, { Page } from '../pageMap'
 import { RootState } from '../store'
-import {logout} from "../user/user-slice";
+import { logout } from '../user/user-slice'
 
 const Navbar = () => {
   const dispatch = useDispatch()

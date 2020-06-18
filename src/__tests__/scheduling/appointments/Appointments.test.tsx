@@ -111,7 +111,7 @@ describe('/appointments/new', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { user: {id: '123'}, permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}

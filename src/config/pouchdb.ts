@@ -1,12 +1,11 @@
+/* eslint-disable @typescript-eslint/camelcase, @typescript-eslint/no-var-requires */
 import PouchDB from 'pouchdb'
+import PouchAuth from 'pouchdb-authentication'
+import PouchdbFind from 'pouchdb-find'
+import RelationalPouch from 'relational-pouch'
 
-/* eslint-disable */
 const memoryAdapter = require('pouchdb-adapter-memory')
 const search = require('pouchdb-quick-search')
-import RelationalPouch from 'relational-pouch'
-import PouchdbFind from 'pouchdb-find'
-import PouchAuth from 'pouchdb-authentication'
-/* eslint-enable */
 
 PouchDB.plugin(search)
 PouchDB.plugin(memoryAdapter)

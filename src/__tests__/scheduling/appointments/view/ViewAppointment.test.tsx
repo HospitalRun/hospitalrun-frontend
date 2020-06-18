@@ -172,10 +172,7 @@ describe('View Appointment', () => {
     })
 
     it('should render a delete appointment button in the button toolbar', async () => {
-      await setup('completed', [
-        Permissions.ReadAppointments,
-        Permissions.DeleteAppointment,
-      ])
+      await setup('completed', [Permissions.ReadAppointments, Permissions.DeleteAppointment])
 
       expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]

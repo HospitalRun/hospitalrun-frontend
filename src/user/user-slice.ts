@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { remoteDb } from '../config/pouchdb'

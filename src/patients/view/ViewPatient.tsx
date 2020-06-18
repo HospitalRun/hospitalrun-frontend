@@ -8,7 +8,7 @@ import {
   Route,
   useHistory,
   useLocation,
-  useRouteMatch
+  useRouteMatch,
 } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
