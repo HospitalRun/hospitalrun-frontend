@@ -42,7 +42,7 @@ The following directions will be for running CouchDB via Docker Compose.
 10. Disable default `_users` security: `curl admin:password@localhost:5984/_users/_security -XPUT -d '{}'`
 11. Create a new user with:
 ```
-curl -X PUT http://hradmin:password@localhost:5984/_users/org.couchdb.user:${username} \
+curl -X PUT http://admin:password@localhost:5984/_users/org.couchdb.user:${username} \
      -H "Accept: application/json" \
      -H "Content-Type: application/json" \
      -d '{"name": "${username}", "password": "password", "roles": [], "type": "user"}'
