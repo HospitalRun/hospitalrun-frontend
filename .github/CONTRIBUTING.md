@@ -47,6 +47,7 @@ curl -X PUT http://admin:password@localhost:5984/_users/org.couchdb.user:${usern
      -H "Content-Type: application/json" \
      -d '{"name": "${username}", "password": "password", "roles": [], "type": "user"}'
 ```
+12. Create a new database called `hospitalrun` in Fauxton (choose non-partitioned)
 
 ### Install dependencies & start the application
 1. Install dependencies: `npm install`
