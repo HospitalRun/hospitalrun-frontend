@@ -50,7 +50,8 @@ curl -X PUT http://admin:password@localhost:5984/_users/org.couchdb.user:${usern
 
 ### Install dependencies & start the application
 1. Install dependencies: `npm install`
-2. Run the application `npm start`
+2. Configure `REACT_APP_HOSPITALRUN_API=http://localhost:5984` environment variable in `.env`
+3. Run the application `npm start`
 
 ## Online one-click setup for contributing
 
