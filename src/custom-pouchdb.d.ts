@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 declare namespace PouchDB {
   interface SearchQuery<Content> {
     // Search string
@@ -16,8 +17,8 @@ declare namespace PouchDB {
 
     filter?: (content: Content) => boolean
 
-    include_docs?: boolean
     highlighting?: boolean
+    include_docs?: boolean
     highlighting_pre?: string
     highlighting_post?: string
 
@@ -36,10 +37,11 @@ declare namespace PouchDB {
 
   interface SearchResponse<T> {
     rows: Array<SearchRow<T>>
+
     total_rows: number
   }
 
-  interface Database<Content extends {} = {}> {
+  interface Database<Content extends Record<string, unknown> = Record<string, unknown>> {
     search(query: SearchQuery<Content>): SearchResponse<Content>
   }
 }

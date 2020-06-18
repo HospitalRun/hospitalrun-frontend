@@ -1,6 +1,5 @@
 import '../../../__mocks__/matchMediaMock'
 
-import { Button } from '@hospitalrun/components'
 import { subDays } from 'date-fns'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -33,9 +32,9 @@ describe('Edit Patient', () => {
     type: 'charity',
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
-    phoneNumber: '123456789',
-    email: 'email@email.com',
-    address: 'address',
+    phoneNumbers: [{ value: '123456789' }],
+    emails: [{ value: 'email@email.com' }],
+    addresses: [{ value: 'address' }],
     code: 'P00001',
     dateOfBirth: subDays(new Date(), 2).toISOString(),
     index: 'givenName familyName suffixP00001',
@@ -107,7 +106,7 @@ describe('Edit Patient', () => {
 
     wrapper.update()
 
-    const saveButton = wrapper.find(Button).at(0)
+    const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -128,7 +127,7 @@ describe('Edit Patient', () => {
 
     wrapper.update()
 
-    const cancelButton = wrapper.find(Button).at(1)
+    const cancelButton = wrapper.find('.btn-cancel').at(1)
     const onClick = cancelButton.prop('onClick') as any
     expect(cancelButton.text().trim()).toEqual('actions.cancel')
 
