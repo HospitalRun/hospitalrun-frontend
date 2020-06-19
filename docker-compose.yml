@@ -1,12 +1,28 @@
-version: '3.8'
+# Dockerc compose only for developing purpose
+
+version: "3.8"
 
 services:
   couchdb:
-    image: couchdb:3.1.0
-    container_name: hospitalrun
+    build:
+      context: ./couchdb
+      dockerfile: Dockerfile
+    container_name: hr_couchdb
     ports:
       - "5984:5984"
     environment:
       - COUCHDB_USER=admin
       - COUCHDB_PASSWORD=password
 
+  dbinit:
+    image: alpine
+    command: >
+      sh -c "apk add curl &&
+      curl -X PUT http://admin:password@couchdb:5984/_global_changes
+      && curl -X PUT http://admin:password@hr_couchdb:5984/hospitalrun?partitioned=false
+      && curl -X PUT http://admin:password@hr_couchdb:5984/_users/_security -d '{}'
+      && curl -X PUT http://admin:password@hr_couchdb:5984/_users/org.couchdb.user:username \
+          -H "Accept: application/json" \
+          -H "Content-Type: application/json" \
+          -d '{"name": "username", "password": "password", "metadata": { "givenName": "John", "familyName": "Doe"}, "roles": [], "type": "user"}'
+      && exit"
