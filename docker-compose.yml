@@ -15,14 +15,16 @@ services:
       - COUCHDB_PASSWORD=password
 
   dbinit:
-    image: alpine
+    image: curlimages/curl
     command: >
-      sh -c "apk add curl &&
-      curl -X PUT http://admin:password@couchdb:5984/_global_changes
-      && curl -X PUT http://admin:password@hr_couchdb:5984/hospitalrun?partitioned=false
-      && curl -X PUT http://admin:password@hr_couchdb:5984/_users/_security -d '{}'
-      && curl -X PUT http://admin:password@hr_couchdb:5984/_users/org.couchdb.user:username \
-          -H "Accept: application/json" \
-          -H "Content-Type: application/json" \
-          -d '{"name": "username", "password": "password", "metadata": { "givenName": "John", "familyName": "Doe"}, "roles": [], "type": "user"}'
-      && exit"
+      sh -c
+      "sleep 5s &&
+      curl -X PUT http://admin:password@couchdb:5984/_global_changes &&
+      sleep 1s &&
+      curl -X PUT http://admin:password@couchdb:5984/_users/_security -d '{}' &&
+      sleep 1s &&
+      curl -X PUT http://admin:password@couchdb:5984/hospitalrun?partitioned=false &&
+      sleep 1s &&
+      curl -X PUT http://admin:password@couchdb:5984/_users/org.couchdb.user:username -H "Accept: application/json" -H "Content-Type: application/json" -d '{"name": "username", "password": "password", "metadata": { "givenName": "John", "familyName": "Doe"}, "roles": [], "type": "user"}'
+      && sleep 1s
+      "
