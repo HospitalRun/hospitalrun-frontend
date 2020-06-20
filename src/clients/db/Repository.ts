@@ -86,6 +86,20 @@ export default class Repository<T extends AbstractDBModel> {
       })
     }
 
+    await Promise.all(
+      sort.sorts.map(
+        async (s): Promise<SortRequest> => {
+          await this.db.createIndex({
+            index: {
+              fields: [s.field],
+            },
+          })
+
+          return sort
+        },
+      ),
+    )
+
     const result = await this.db.find({
       selector,
       sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,

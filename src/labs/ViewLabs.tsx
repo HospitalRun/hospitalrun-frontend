@@ -1,13 +1,16 @@
 import { Spinner, Button } from '@hospitalrun/components'
 import format from 'date-fns/format'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import PageRequest from '../clients/db/PageRequest'
 import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
 import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
+import PageComponent, { defaultPageSize } from '../components/PageComponent'
 import useDebounce from '../hooks/debounce'
+import useUpdateEffect from '../hooks/useUpdateEffect'
 import Lab from '../model/Lab'
 import Permissions from '../model/Permissions'
 import { useButtonToolbarSetter } from '../page-header/ButtonBarProvider'
@@ -29,6 +32,16 @@ const ViewLabs = () => {
   const [searchFilter, setSearchFilter] = useState<filter>('all')
   const [searchText, setSearchText] = useState<string>('')
   const debouncedSearchText = useDebounce(searchText, 500)
+  const debouncedSearchTextRef = useRef<string>('')
+
+  const defaultPageRequest = useRef<PageRequest>({
+    size: defaultPageSize.value,
+    number: 1,
+    nextPageInfo: { index: null },
+    previousPageInfo: { index: null },
+    direction: 'next',
+  })
+  const [userPageRequest, setUserPageRequest] = useState<PageRequest>(defaultPageRequest.current)
 
   const getButtons = useCallback(() => {
     const buttons: React.ReactNode[] = []
@@ -60,8 +73,13 @@ const ViewLabs = () => {
       : 'all'
 
   useEffect(() => {
-    dispatch(searchLabs(debouncedSearchText, searchFilter))
+    debouncedSearchTextRef.current = debouncedSearchText
+    dispatch(searchLabs(debouncedSearchText, searchFilter, defaultPageRequest.current))
   }, [dispatch, debouncedSearchText, searchFilter])
+
+  useUpdateEffect(() => {
+    dispatch(searchLabs(debouncedSearchTextRef.current, searchFilter, userPageRequest))
+  }, [dispatch, userPageRequest])
 
   useEffect(() => {
     setButtons(getButtons())
@@ -84,9 +102,43 @@ const ViewLabs = () => {
     setSearchText(event.target.value)
   }
 
+  const setNextPageRequest = () => {
+    setUserPageRequest(() => {
+      const newPageRequest: PageRequest = {
+        number: labs.pageRequest && labs.pageRequest.number ? labs.pageRequest.number + 1 : 1,
+        size: labs.pageRequest ? labs.pageRequest.size : undefined,
+        nextPageInfo: labs.pageRequest?.nextPageInfo,
+        previousPageInfo: undefined,
+        direction: 'next',
+      }
+      return newPageRequest
+    })
+  }
+
+  const setPreviousPageRequest = () => {
+    setUserPageRequest(() => ({
+      number: labs.pageRequest && labs.pageRequest.number ? labs.pageRequest.number - 1 : 1,
+      size: labs.pageRequest ? labs.pageRequest.size : undefined,
+      nextPageInfo: undefined,
+      previousPageInfo: labs.pageRequest?.previousPageInfo,
+      direction: 'previous',
+    }))
+  }
+
+  const onPageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newPageSize = parseInt(event.target.value, 10)
+    setUserPageRequest(() => ({
+      size: newPageSize,
+      number: 1,
+      nextPageInfo: { index: null },
+      previousPageInfo: { index: null },
+      direction: 'next',
+    }))
+  }
+
   const listBody = (
     <tbody>
-      {labs.map((lab) => (
+      {labs.content.map((lab) => (
         <tr onClick={() => onTableRowClick(lab)} key={lab.id}>
           <td>{lab.code}</td>
           <td>{lab.type}</td>
@@ -141,6 +193,14 @@ const ViewLabs = () => {
           {isLoading ? loadingIndicator : listBody}
         </table>
       </div>
+      <PageComponent
+        hasNext={labs.hasNext}
+        hasPrevious={labs.hasPrevious}
+        pageNumber={labs.pageRequest ? labs.pageRequest.number : 1}
+        setPreviousPageRequest={setPreviousPageRequest}
+        setNextPageRequest={setNextPageRequest}
+        onPageSizeChange={onPageSizeChange}
+      />
     </>
   )
 }

@@ -2,7 +2,9 @@ import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
 
 import LabRepository from '../../clients/db/LabRepository'
+import { UnpagedRequest } from '../../clients/db/PageRequest'
 import SortRequest from '../../clients/db/SortRequest'
+import Page from '../../clients/Page'
 import labs, { fetchLabsStart, fetchLabsSuccess, searchLabs } from '../../labs/labs-slice'
 import Lab from '../../model/Lab'
 
@@ -36,7 +38,10 @@ describe('labs slice', () => {
     it('should create the proper intial state with empty labs array', () => {
       const labsStore = labs(undefined, {} as AnyAction)
       expect(labsStore.isLoading).toBeFalsy()
-      expect(labsStore.labs).toHaveLength(0)
+      expect(labsStore.labs.content).toHaveLength(0)
+      expect(labsStore.labs.hasPrevious).toBeFalsy()
+      expect(labsStore.labs.hasNext).toBeFalsy()
+      expect(labsStore.labs.pageRequest).toBeUndefined()
       expect(labsStore.statusFilter).toEqual('all')
     })
 
@@ -44,15 +49,43 @@ describe('labs slice', () => {
       const expectedLabs = [{ id: '1234' }]
       const labsStore = labs(undefined, {
         type: fetchLabsSuccess.type,
-        payload: expectedLabs,
+        payload: { content: expectedLabs, hasPrevious: false, hasNext: false } as Page<Lab>,
       })
 
       expect(labsStore.isLoading).toBeFalsy()
-      expect(labsStore.labs).toEqual(expectedLabs)
+      expect(labsStore.labs.content).toEqual(expectedLabs)
     })
   })
 
   describe('searchLabs', () => {
+    beforeEach(() => {
+      const mockedLabRepository = mocked(LabRepository, true)
+      jest.spyOn(LabRepository, 'findAllPaged')
+      jest.spyOn(LabRepository, 'searchPaged')
+
+      mockedLabRepository.findAllPaged.mockResolvedValue(
+        new Promise<Page<Lab>>((resolve) => {
+          const pagedResult: Page<Lab> = {
+            content: [],
+            hasPrevious: false,
+            hasNext: false,
+          }
+          resolve(pagedResult)
+        }),
+      )
+
+      mockedLabRepository.searchPaged.mockResolvedValue(
+        new Promise<Page<Lab>>((resolve) => {
+          const pagedResult: Page<Lab> = {
+            content: [],
+            hasPrevious: false,
+            hasNext: false,
+          }
+          resolve(pagedResult)
+        }),
+      )
+    })
+
     it('should dispatch the FETCH_LABS_START action', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
@@ -65,25 +98,23 @@ describe('labs slice', () => {
     it('should call the LabRepository search method with the correct search criteria', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(LabRepository, 'search')
 
-      await searchLabs(expectedSearchObject.text, expectedSearchObject.status)(
+      await searchLabs(expectedSearchObject.text, expectedSearchObject.status, UnpagedRequest)(
         dispatch,
         getState,
         null,
       )
 
-      expect(LabRepository.search).toHaveBeenCalledWith(expectedSearchObject)
+      expect(LabRepository.searchPaged).toHaveBeenCalledWith(expectedSearchObject, UnpagedRequest)
     })
 
     it('should call the LabRepository findAll method if there is no string text and status is set to all', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(LabRepository, 'findAll')
 
       await searchLabs('', expectedSearchObject.status)(dispatch, getState, null)
 
-      expect(LabRepository.findAll).toHaveBeenCalledTimes(1)
+      expect(LabRepository.findAllPaged).toHaveBeenCalledTimes(1)
     })
 
     it('should dispatch the FETCH_LABS_SUCCESS action', async () => {
@@ -97,7 +128,11 @@ describe('labs slice', () => {
       ] as Lab[]
 
       const mockedLabRepository = mocked(LabRepository, true)
-      mockedLabRepository.search.mockResolvedValue(expectedLabs)
+      mockedLabRepository.searchPaged.mockResolvedValue(
+        new Promise<Page<Lab>>((resolve) => {
+          resolve({ content: expectedLabs, hasNext: false, hasPrevious: false })
+        }),
+      )
 
       await searchLabs(expectedSearchObject.text, expectedSearchObject.status)(
         dispatch,
@@ -107,26 +142,29 @@ describe('labs slice', () => {
 
       expect(dispatch).toHaveBeenLastCalledWith({
         type: fetchLabsSuccess.type,
-        payload: expectedLabs,
+        payload: { content: expectedLabs, hasNext: false, hasPrevious: false } as Page<Lab>,
       })
     })
   })
 
   describe('sort Request', () => {
-    it('should have called findAll with sort request in searchLabs method', async () => {
+    it('should have called findAllPaged with sort request in searchLabs method', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(LabRepository, 'findAll')
+      jest.spyOn(LabRepository, 'findAllPaged')
 
       await searchLabs('', expectedSearchObject.status)(dispatch, getState, null)
 
-      expect(LabRepository.findAll).toHaveBeenCalledWith(expectedSearchObject.defaultSortRequest)
+      expect(LabRepository.findAllPaged).toHaveBeenCalledWith(
+        expectedSearchObject.defaultSortRequest,
+        UnpagedRequest,
+      )
     })
 
     it('should include sorts in the search criteria', async () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
-      jest.spyOn(LabRepository, 'search')
+      jest.spyOn(LabRepository, 'searchPaged')
 
       await searchLabs(expectedSearchObject.text, expectedSearchObject.status)(
         dispatch,
@@ -134,7 +172,7 @@ describe('labs slice', () => {
         null,
       )
 
-      expect(LabRepository.search).toHaveBeenCalledWith(expectedSearchObject)
+      expect(LabRepository.searchPaged).toHaveBeenCalledWith(expectedSearchObject, UnpagedRequest)
     })
   })
 })

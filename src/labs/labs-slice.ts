@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import LabRepository from '../clients/db/LabRepository'
+import PageRequest, { UnpagedRequest } from '../clients/db/PageRequest'
 import SortRequest from '../clients/db/SortRequest'
+import Page from '../clients/Page'
 import Lab from '../model/Lab'
 import { AppThunk } from '../store'
 
 interface LabsState {
   isLoading: boolean
-  labs: Lab[]
+  labs: Page<Lab>
   statusFilter: status
 }
 
@@ -24,7 +26,11 @@ const defaultSortRequest: SortRequest = {
 
 const initialState: LabsState = {
   isLoading: false,
-  labs: [],
+  labs: {
+    content: [],
+    hasNext: false,
+    hasPrevious: false,
+  } as Page<Lab>,
   statusFilter: 'all',
 }
 
@@ -37,7 +43,7 @@ const labsSlice = createSlice({
   initialState,
   reducers: {
     fetchLabsStart: startLoading,
-    fetchLabsSuccess(state, { payload }: PayloadAction<Lab[]>) {
+    fetchLabsSuccess(state, { payload }: PayloadAction<Page<Lab>>) {
       state.isLoading = false
       state.labs = payload
     },
@@ -45,21 +51,27 @@ const labsSlice = createSlice({
 })
 export const { fetchLabsStart, fetchLabsSuccess } = labsSlice.actions
 
-export const searchLabs = (text: string, status: status): AppThunk => async (dispatch) => {
+export const searchLabs = (
+  text: string,
+  status: status,
+  userPageRequest: PageRequest = UnpagedRequest,
+): AppThunk => async (dispatch) => {
   dispatch(fetchLabsStart())
 
-  let labs
+  let labs: Page<Lab>
 
   if (text.trim() === '' && status === initialState.statusFilter) {
-    labs = await LabRepository.findAll(defaultSortRequest)
+    labs = await LabRepository.findAllPaged(defaultSortRequest, userPageRequest)
   } else {
-    labs = await LabRepository.search({
-      text,
-      status,
-      defaultSortRequest,
-    })
+    labs = await LabRepository.searchPaged(
+      {
+        text,
+        status,
+        defaultSortRequest,
+      },
+      userPageRequest,
+    )
   }
-
   dispatch(fetchLabsSuccess(labs))
 }
 

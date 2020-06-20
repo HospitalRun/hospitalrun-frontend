@@ -11,10 +11,12 @@ import thunk from 'redux-thunk'
 
 import { addBreadcrumbs } from '../breadcrumbs/breadcrumbs-slice'
 import LabRepository from '../clients/db/LabRepository'
+import Page from '../clients/Page'
 import Dashboard from '../dashboard/Dashboard'
 import HospitalRun from '../HospitalRun'
 import Incidents from '../incidents/Incidents'
 import ViewLabs from '../labs/ViewLabs'
+import Lab from '../model/Lab'
 import Permissions from '../model/Permissions'
 import Appointments from '../scheduling/appointments/Appointments'
 import Settings from '../settings/Settings'
@@ -83,7 +85,13 @@ describe('HospitalRun', () => {
         const store = mockStore({
           title: 'test',
           user: { permissions: [Permissions.ViewLabs] },
-          labs: { labs: [] },
+          labs: {
+            labs: {
+              content: [],
+              hasPrevious: false,
+              hasNext: false,
+            } as Page<Lab>,
+          },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
