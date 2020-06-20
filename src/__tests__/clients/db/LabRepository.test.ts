@@ -1,5 +1,3 @@
-/* eslint "@typescript-eslint/camelcase": "off" */
-
 import shortid from 'shortid'
 
 import LabRepository from '../../../clients/db/LabRepository'

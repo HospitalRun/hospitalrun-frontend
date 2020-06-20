@@ -13,6 +13,16 @@ export default {
     approximateAge: 'Approximate Age',
     placeOfBirth: 'Place of Birth',
     sex: 'Sex',
+    contactInfoType: {
+      label: 'Type',
+      options: {
+        home: 'Home',
+        mobile: 'Mobile',
+        work: 'Work',
+        temporary: 'Temporary',
+        old: 'Old',
+      },
+    },
     phoneNumber: 'Phone Number',
     email: 'Email',
     address: 'Address',

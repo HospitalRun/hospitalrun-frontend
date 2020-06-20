@@ -8,7 +8,7 @@ interface Option {
 
 interface Props {
   value: string
-  label: string
+  label?: string
   name: string
   isRequired?: boolean
   isEditable?: boolean
@@ -33,7 +33,7 @@ const SelectWithLabelFormGroup = (props: Props) => {
   const id = `${name}Select`
   return (
     <div className="form-group">
-      <Label text={label} htmlFor={id} isRequired={isRequired} />
+      {label && <Label text={label} htmlFor={id} isRequired={isRequired} />}
       <Select
         disabled={!isEditable}
         onChange={onChange}

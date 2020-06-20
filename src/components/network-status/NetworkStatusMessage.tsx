@@ -8,7 +8,7 @@ const OFFLINE_COLOR = 'rgba(255, 0, 0, 0.65)'
 const OPACITY_TRANSITION_TIME = 4000
 const BASE_STYLE = {
   height: '50px',
-  pointerEvents: 'none' as 'none',
+  pointerEvents: 'none' as const,
   transition: `opacity ${OPACITY_TRANSITION_TIME}ms ease-in`,
 }
 
