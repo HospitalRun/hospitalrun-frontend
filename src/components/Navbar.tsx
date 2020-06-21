@@ -43,7 +43,7 @@ const Navbar = () => {
           children: getDropdownListOfPages(pages),
           label: '',
           type: 'link-list',
-          className: 'pr-4 d-md-none',
+          className: 'nav-dropdown pr-4 d-md-none',
         },
         {
           type: 'image',

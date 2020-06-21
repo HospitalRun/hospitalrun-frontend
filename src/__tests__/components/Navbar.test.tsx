@@ -54,11 +54,11 @@ describe('Navbar', () => {
     Permissions.ReportIncident,
   ]
 
-  describe('hamberger', () => {
-    it('should render a hamberger link list', () => {
+  describe('nav-dropdown', () => {
+    it('should render a dropdown link list', () => {
       const wrapper = setup(allPermissions)
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const hamberger = hospitalRunNavbar.find('.nav-hamberger')
+      const hamberger = hospitalRunNavbar.find('.nav-dropdown')
       const { children } = hamberger.first().props() as any
 
       expect(children[0].props.children).toEqual('dashboard.label')
@@ -70,7 +70,7 @@ describe('Navbar', () => {
       // exclude labs and incidents permissions
       const wrapper = setup(cloneDeep(allPermissions).slice(0, 6))
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const hamberger = hospitalRunNavbar.find('.nav-hamberger')
+      const hamberger = hospitalRunNavbar.find('.nav-dropdown')
       const { children } = hamberger.first().props() as any
 
       const labels = [
