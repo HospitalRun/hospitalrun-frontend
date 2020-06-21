@@ -34,9 +34,15 @@ The following directions will be for running CouchDB via Docker Compose.
 2. Install [Docker Compose](https://docs.docker.com/compose/install/)
 3. Run `docker-compose up --build -d` in the root directory.
 
-This should launch a new CouchDB instance on `http://localhost:5984`, create system database, configure CouchDB as Single Node, enable CORS, create `hospitalrun` database, create a default admin with a username of `admin` and password of 'password', create a sample user with a username of `username` and password of 'password' to use to test the login.
+This should launch a new CouchDB instance on `http://localhost:5984`, create system database, configure CouchDB as Single Node, enable CORS, create `hospitalrun` database, create a default admin with a username of `admin` and password of 'password'
 
-4. Launch `http://localhost:5984/_utils` to view Fauxton and perform administrative tasks.
+4. Create a sample user with a username of `username` and password of 'password' to use new login page [#2137](https://github.com/HospitalRun/hospitalrun-frontend/pull/2137)
+
+   ```
+   curl -X PUT http://admin:password@localhost:5984/_users/org.couchdb.user:username -H "Accept: application/json" -H "Content-Type: application/json" -d '{"name": "username", "password": "password", "metadata": { "givenName": "John", "familyName": "Doe"}, "roles": [], "type": "user"}'
+   ```
+
+5. Launch `http://localhost:5984/_utils` to view Fauxton and perform administrative tasks.
 
 **_Cleanup_**
 To delete the development database, go to the root of the project and run `docker-compose down -v --rmi all --remove-orphans`
