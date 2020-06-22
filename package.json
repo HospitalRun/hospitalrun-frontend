@@ -13,7 +13,7 @@
     "date-fns": "~2.14.0",
     "escape-string-regexp": "~4.0.0",
     "i18next": "~19.5.0",
-    "i18next-browser-languagedetector": "~4.3.0",
+    "i18next-browser-languagedetector": "~5.0.0",
     "i18next-xhr-backend": "~3.2.2",
     "lodash": "^4.17.15",
     "node-sass": "~4.14.0",
@@ -54,7 +54,7 @@
   ],
   "devDependencies": {
     "@commitlint/cli": "~8.3.5",
-    "@commitlint/config-conventional": "~8.3.4",
+    "@commitlint/config-conventional": "~9.0.1",
     "@commitlint/core": "~8.3.5",
     "@commitlint/prompt": "~8.3.5",
     "@testing-library/react": "~10.3.0",
