@@ -1,5 +1,6 @@
 import '../../__mocks__/matchMediaMock'
 
+import { TextInput, Select } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import format from 'date-fns/format'
 import { mount, ReactWrapper } from 'enzyme'
@@ -12,7 +13,10 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import LabRepository from '../../clients/db/LabRepository'
+import PageRequest from '../../clients/db/PageRequest'
 import Page from '../../clients/Page'
+import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
+import * as labsSlice from '../../labs/labs-slice'
 import ViewLabs from '../../labs/ViewLabs'
 import Lab from '../../model/Lab'
 import Permissions from '../../model/Permissions'
@@ -220,145 +224,132 @@ describe('View Labs', () => {
     })
   })
 
-  // describe('dropdown', () => {
-  //   // afterEach(async () => {
-  //   //   jest.restoreAllMocks()
-  //   // })
+  describe('dropdown', () => {
+    let wrapper: ReactWrapper
+    let history: any
 
-  //   // beforeEach(async () => {
-  //   //   jest.resetAllMocks()
-  //   // })
-  //   it('should search for labs when dropdown changes', () => {
-  //     const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
-  //     let wrapper: ReactWrapper
-  //     let history: any
-  //     const expectedLab = {
-  //       id: '1234',
-  //       type: 'lab type',
-  //       patientId: 'patientId',
-  //       status: 'requested',
-  //       requestedOn: '2020-03-30T04:43:20.102Z',
-  //     } as Lab
+    it('should search for labs when dropdown changes', async () => {
+      const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
+      const expectedLab = {
+        id: '1234',
+        type: 'lab type',
+        patientId: 'patientId',
+        status: 'requested',
+        requestedOn: '2020-03-30T04:43:20.102Z',
+      } as Lab
 
-  //     beforeEach(async () => {
-  //       // jest.resetAllMocks()
+      const store = mockStore({
+        title: '',
+        user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
+        labs: {
+          labs: {
+            content: [expectedLab],
+            hasNext: false,
+            hasPrevious: false,
+          } as Page<Lab>,
+        },
+      } as any)
+      history = createMemoryHistory()
 
-  //       const store = mockStore({
-  //         title: '',
-  //         user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
-  //         labs: {
-  //           labs: {
-  //             content: [expectedLab],
-  //             hasNext: false,
-  //             hasPrevious: false,
-  //           } as Page<Lab>,
-  //         },
-  //       } as any)
-  //       history = createMemoryHistory()
+      await act(async () => {
+        wrapper = await mount(
+          <Provider store={store}>
+            <Router history={history}>
+              <ViewLabs />
+            </Router>
+          </Provider>,
+        )
+      })
 
-  //       await act(async () => {
-  //         wrapper = await mount(
-  //           <Provider store={store}>
-  //             <Router history={history}>
-  //               <ViewLabs />
-  //             </Router>
-  //           </Provider>,
-  //         )
-  //       })
+      searchLabsSpy.mockClear()
 
-  //       searchLabsSpy.mockClear()
+      act(() => {
+        const onChange = wrapper.find(SelectWithLabelFormGroup).find(Select).prop('onChange') as any
+        onChange({
+          target: {
+            value: 'requested',
+          },
+          preventDefault: jest.fn(),
+        })
+      })
 
-  //       act(() => {
-  //         const onChange = wrapper
-  //           .find(SelectWithLabelFormGroup)
-  //           .find(Select)
-  //           .prop('onChange') as any
-  //         onChange({
-  //           target: {
-  //             value: 'requested',
-  //           },
-  //           preventDefault: jest.fn(),
-  //         })
-  //       })
+      wrapper.update()
+      expect(searchLabsSpy).toHaveBeenCalledTimes(1)
+    })
+  })
 
-  //       wrapper.update()
-  //       expect(searchLabsSpy).toHaveBeenCalledTimes(1)
-  //     })
-  //   })
-  // })
+  describe('search functionality', () => {
+    let history: any
+    let wrapper: ReactWrapper
 
-  // describe('search functionality', () => {
-  //   beforeEach(() => {
-  //     jest.useFakeTimers()
+    beforeEach(() => {
+      jest.useFakeTimers()
+    })
 
-  //     // jest.resetAllMocks()
-  //   })
+    afterEach(() => {
+      jest.useRealTimers()
+    })
 
-  //   afterEach(() => {
-  //     jest.useRealTimers()
-  //     // jest.restoreAllMocks()
-  //   })
+    it('should search for labs after the search text has not changed for 500 milliseconds', async () => {
+      const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
+      const expectedLab = {
+        id: '1234',
+        type: 'lab type',
+        patientId: 'patientId',
+        status: 'requested',
+        requestedOn: '2020-03-30T04:43:20.102Z',
+      } as Lab
 
-  //   it('should search for labs after the search text has not changed for 500 milliseconds', async () => {
-  //     const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
-  //     let wrapper: ReactWrapper
-  //     let history: any
-  //     const expectedLab = {
-  //       id: '1234',
-  //       type: 'lab type',
-  //       patientId: 'patientId',
-  //       status: 'requested',
-  //       requestedOn: '2020-03-30T04:43:20.102Z',
-  //     } as Lab
+      const store = mockStore({
+        title: '',
+        user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
+        labs: {
+          labs: {
+            content: [expectedLab],
+            hasNext: false,
+            hasPrevious: false,
+          } as Page<Lab>,
+        },
+      } as any)
+      history = createMemoryHistory()
 
-  //     //  beforeEach(async () => {
-  //     const store = mockStore({
-  //       title: '',
-  //       user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
-  //       labs: {
-  //         labs: {
-  //           content: [expectedLab],
-  //           hasNext: false,
-  //           hasPrevious: false,
-  //         } as Page<Lab>,
-  //       },
-  //     } as any)
-  //     history = createMemoryHistory()
+      await act(async () => {
+        wrapper = await mount(
+          <Provider store={store}>
+            <Router history={history}>
+              <ViewLabs />
+            </Router>
+          </Provider>,
+        )
+      })
 
-  //     // jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
-  //     await act(async () => {
-  //       wrapper = await mount(
-  //         <Provider store={store}>
-  //           <Router history={history}>
-  //             <ViewLabs />
-  //           </Router>
-  //         </Provider>,
-  //       )
-  //     })
+      searchLabsSpy.mockClear()
+      const expectedSearchText = 'search text'
 
-  //     searchLabsSpy.mockClear()
-  //     // jest.resetAllMocks()
-  //     const expectedSearchText = 'search text'
+      await act(async () => {
+        const onClick = wrapper.find(TextInput).prop('onChange') as any
+        onClick({
+          target: {
+            value: expectedSearchText,
+          },
+          preventDefault: jest.fn(),
+        })
+      })
 
-  //     act(() => {
-  //       const onClick = wrapper.find(TextInput).prop('onChange') as any
-  //       onClick({
-  //         target: {
-  //           value: expectedSearchText,
-  //         },
-  //         preventDefault: jest.fn(),
-  //       })
-  //     })
+      act(() => {
+        jest.advanceTimersByTime(500)
+      })
 
-  //     act(() => {
-  //       jest.advanceTimersByTime(500)
-  //     })
+      wrapper.update()
 
-  //     // wrapper.update()
-
-  //     // expect(searchLabsSpy).toHaveBeenCalledTimes(1)
-  //     // expect(searchLabsSpy).toHaveBeenLastCalledWith(expectedSearchText)
-  //     // })
-  //   })
-  // })
+      expect(searchLabsSpy).toHaveBeenCalledTimes(1)
+      expect(searchLabsSpy).toHaveBeenLastCalledWith(expectedSearchText, 'all', {
+        direction: 'next',
+        nextPageInfo: { index: null },
+        number: 1,
+        previousPageInfo: { index: null },
+        size: 25,
+      } as PageRequest)
+    })
+  })
 })
