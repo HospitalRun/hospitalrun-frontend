@@ -9,6 +9,7 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import PatientRepository from '../../../clients/db/PatientRepository'
 import { CarePlanIntent, CarePlanStatus } from '../../../model/CarePlan'
 import Patient from '../../../model/Patient'
 import AddCarePlanModal from '../../../patients/care-plans/AddCarePlanModal'
@@ -42,6 +43,8 @@ describe('Add Care Plan Modal', () => {
 
   const onCloseSpy = jest.fn()
   const setup = () => {
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+    jest.spyOn(PatientRepository, 'saveOrUpdate')
     const store = mockStore({ patient: { patient, carePlanError } } as any)
     const history = createMemoryHistory()
     const wrapper = mount(
