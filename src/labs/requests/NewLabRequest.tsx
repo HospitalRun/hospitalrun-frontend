@@ -22,7 +22,7 @@ const NewLabRequest = () => {
   const { status, error } = useSelector((state: RootState) => state.lab)
 
   const [newLabRequest, setNewLabRequest] = useState({
-    patientId: '',
+    patient: '',
     type: '',
     notes: '',
     status: 'requested',
@@ -39,7 +39,7 @@ const NewLabRequest = () => {
   const onPatientChange = (patient: Patient) => {
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
-      patientId: patient.id,
+      patient: patient.id,
     }))
   }
 

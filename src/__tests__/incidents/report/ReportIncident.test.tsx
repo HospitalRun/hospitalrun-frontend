@@ -2,7 +2,7 @@ import '../../../__mocks__/matchMediaMock'
 
 import { Button } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -13,6 +13,7 @@ import thunk from 'redux-thunk'
 import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
 import IncidentRepository from '../../../clients/db/IncidentRepository'
 import ReportIncident from '../../../incidents/report/ReportIncident'
+import Incident from '../../../model/Incident'
 import Permissions from '../../../model/Permissions'
 import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/useTitle'
@@ -61,7 +62,7 @@ describe('Report Incident', () => {
       )
     })
     wrapper.update()
-    return wrapper
+    return wrapper as ReactWrapper
   }
 
   describe('layout', () => {
@@ -179,7 +180,7 @@ describe('Report Incident', () => {
         category: 'some category',
         categoryItem: 'some category item',
         description: 'some description',
-      }
+      } as Incident
       jest
         .spyOn(IncidentRepository, 'save')
         .mockResolvedValue({ id: 'someId', ...expectedIncident })
@@ -217,7 +218,7 @@ describe('Report Incident', () => {
 
       const saveButton = wrapper.find(Button).at(0)
       await act(async () => {
-        const onClick = saveButton.prop('onClick')
+        const onClick = saveButton.prop('onClick') as any
         onClick()
       })
 

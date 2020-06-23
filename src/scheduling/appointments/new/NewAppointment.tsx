@@ -29,7 +29,7 @@ const NewAppointment = () => {
   const { error } = useSelector((state: RootState) => state.appointment)
 
   const [appointment, setAppointment] = useState({
-    patientId: '',
+    patient: '',
     startDateTime: startDateTime.toISOString(),
     endDateTime: endDateTime.toISOString(),
     location: '',

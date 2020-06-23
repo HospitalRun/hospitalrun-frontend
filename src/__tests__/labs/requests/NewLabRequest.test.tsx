@@ -180,7 +180,7 @@ describe('New Lab Request', () => {
     let labRepositorySaveSpy: any
     const expectedDate = new Date()
     const expectedLab = {
-      patientId: '12345',
+      patient: '12345',
       type: 'expected type',
       status: 'requested',
       notes: 'expected notes',
@@ -195,7 +195,7 @@ describe('New Lab Request', () => {
 
       jest
         .spyOn(PatientRepository, 'search')
-        .mockResolvedValue([{ id: expectedLab.patientId, fullName: 'some full name' }] as Patient[])
+        .mockResolvedValue([{ id: expectedLab.patient, fullName: 'some full name' }] as Patient[])
 
       history.push('/labs/new')
       const store = mockStore({
@@ -216,7 +216,7 @@ describe('New Lab Request', () => {
       const patientTypeahead = wrapper.find(Typeahead)
       await act(async () => {
         const onChange = patientTypeahead.prop('onChange')
-        await onChange([{ id: expectedLab.patientId }] as Patient[])
+        await onChange([{ id: expectedLab.patient }] as Patient[])
       })
 
       const typeInput = wrapper.find(TextInputWithLabelFormGroup)
@@ -241,7 +241,7 @@ describe('New Lab Request', () => {
       expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
       expect(labRepositorySaveSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          patientId: expectedLab.patientId,
+          patient: expectedLab.patient,
           type: expectedLab.type,
           notes: expectedLab.notes,
           status: 'requested',

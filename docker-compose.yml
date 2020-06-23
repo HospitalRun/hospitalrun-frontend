@@ -1,0 +1,24 @@
+# Dockerc compose only for developing purpose
+
+version: "3.8"
+
+services:
+  couchdb:
+    build:
+      context: ./couchdb
+      dockerfile: Dockerfile
+    container_name: hr_couchdb
+    ports:
+      - "5984:5984"
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=password
+
+  dbinit:
+    image: curlimages/curl
+    command: >
+      sh -c
+      "sleep 5s &&
+      curl -X PUT http://admin:password@couchdb:5984/_global_changes &&
+      curl -X PUT http://admin:password@couchdb:5984/_users/_security -d '{}' &&
+      curl -X PUT http://admin:password@couchdb:5984/hospitalrun?partitioned=false"

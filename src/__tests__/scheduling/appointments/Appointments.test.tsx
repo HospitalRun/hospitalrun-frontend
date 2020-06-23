@@ -16,6 +16,7 @@ import HospitalRun from '../../../HospitalRun'
 import Appointment from '../../../model/Appointment'
 import Patient from '../../../model/Patient'
 import Permissions from '../../../model/Permissions'
+import Appointments from '../../../scheduling/appointments/Appointments'
 import EditAppointment from '../../../scheduling/appointments/edit/EditAppointment'
 import NewAppointment from '../../../scheduling/appointments/new/NewAppointment'
 import ViewAppointments from '../../../scheduling/appointments/ViewAppointments'
@@ -36,7 +37,7 @@ describe('/appointments', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments']}>
-          <HospitalRun />
+          <Appointments />
         </MemoryRouter>
       </Provider>,
     )
@@ -60,7 +61,7 @@ describe('/appointments', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -88,7 +89,7 @@ describe('/appointments/new', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments/new']}>
-          <HospitalRun />
+          <Appointments />
         </MemoryRouter>
       </Provider>,
     )
@@ -110,7 +111,7 @@ describe('/appointments/new', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -129,7 +130,7 @@ describe('/appointments/edit/:id', () => {
   it('should render the edit appointment screen when /appointments/edit/:id is accessed', () => {
     const appointment = {
       id: '123',
-      patientId: '456',
+      patient: '456',
     } as Appointment
 
     const patient = {
@@ -150,7 +151,7 @@ describe('/appointments/edit/:id', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments/edit/123']}>
-          <HospitalRun />
+          <Appointments />
         </MemoryRouter>
       </Provider>,
     )
@@ -175,7 +176,7 @@ describe('/appointments/edit/:id', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [Permissions.WriteAppointments] },
+          user: { user: { id: '123' }, permissions: [Permissions.WriteAppointments] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -194,7 +195,7 @@ describe('/appointments/edit/:id', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ReadAppointments] },
+          user: { user: { id: '123' }, permissions: [Permissions.ReadAppointments] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}

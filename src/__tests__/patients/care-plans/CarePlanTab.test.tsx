@@ -88,13 +88,13 @@ describe('Care Plan Tab', () => {
   })
 
   it('should render the care plans table when on /patient/:id/care-plans', () => {
-    const { wrapper } = setup('/patients/123/care-plans', [])
+    const { wrapper } = setup('/patients/123/care-plans', [Permissions.ReadCarePlan])
 
     expect(wrapper.find(CarePlanTable)).toHaveLength(1)
   })
 
   it('should render the care plan view when on /patient/:id/care-plans/:carePlanId', () => {
-    const { wrapper } = setup('/patients/123/care-plans/456', [])
+    const { wrapper } = setup('/patients/123/care-plans/456', [Permissions.ReadCarePlan])
 
     expect(wrapper.find(ViewCarePlan)).toHaveLength(1)
   })

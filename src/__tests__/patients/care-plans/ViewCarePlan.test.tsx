@@ -22,7 +22,7 @@ describe('View Care Plan', () => {
   } as Patient
 
   const setup = () => {
-    const store = mockStore({ patient: { patient } } as any)
+    const store = mockStore({ patient: { patient }, user: { user: { id: '123' } } } as any)
     const history = createMemoryHistory()
     history.push(`/patients/${patient.id}/care-plans/${patient.carePlans[0].id}`)
     const wrapper = mount(

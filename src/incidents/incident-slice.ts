@@ -108,7 +108,7 @@ export const reportIncident = (
   if (isEmpty(incidentError)) {
     incident.reportedOn = new Date(Date.now()).toISOString()
     incident.code = getIncidentCode()
-    incident.reportedBy = getState().user.user.id
+    incident.reportedBy = getState().user.user?.id || ''
     incident.status = 'reported'
     const newIncident = await IncidentRepository.save(incident)
     await dispatch(reportIncidentSuccess(newIncident))

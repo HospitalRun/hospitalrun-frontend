@@ -25,7 +25,7 @@ describe('/patients/new', () => {
   it('should render the new patient screen when /patients/new is accessed', async () => {
     const store = mockStore({
       title: 'test',
-      user: { permissions: [Permissions.WritePatients] },
+      user: { user: { id: '123' }, permissions: [Permissions.WritePatients] },
       patient: {},
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
@@ -59,7 +59,7 @@ describe('/patients/new', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -89,7 +89,10 @@ describe('/patients/edit/:id', () => {
 
     const store = mockStore({
       title: 'test',
-      user: { permissions: [Permissions.WritePatients, Permissions.ReadPatients] },
+      user: {
+        user: { id: '123' },
+        permissions: [Permissions.WritePatients, Permissions.ReadPatients],
+      },
       patient: { patient },
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
@@ -120,7 +123,7 @@ describe('/patients/edit/:id', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [Permissions.WritePatients] },
+          user: { user: { id: '123' }, permissions: [Permissions.WritePatients] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -139,7 +142,7 @@ describe('/patients/edit/:id', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ReadPatients] },
+          user: { user: { id: '123' }, permissions: [Permissions.ReadPatients] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -169,7 +172,7 @@ describe('/patients/:id', () => {
 
     const store = mockStore({
       title: 'test',
-      user: { permissions: [Permissions.ReadPatients] },
+      user: { user: { id: '123' }, permissions: [Permissions.ReadPatients] },
       patient: { patient },
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
@@ -199,7 +202,7 @@ describe('/patients/:id', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}

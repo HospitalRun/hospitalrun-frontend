@@ -1,12 +1,17 @@
 import escapeStringRegexp from 'escape-string-regexp'
 
-import { appointments } from '../../config/pouchdb'
+import { relationalDb } from '../../config/pouchdb'
 import Appointment from '../../model/Appointment'
 import Repository from './Repository'
 
 class AppointmentRepository extends Repository<Appointment> {
   constructor() {
-    super(appointments)
+    super('appointment', relationalDb)
+    this.db.createIndex({
+      index: {
+        fields: ['data.patient', '_id'],
+      },
+    })
   }
 
   // Fuzzy search for patient appointments. Used for patient appointment search bar
@@ -16,22 +21,22 @@ class AppointmentRepository extends Repository<Appointment> {
       selector: {
         $and: [
           {
-            patientId,
+            'data.patient': patientId,
           },
           {
             $or: [
               {
-                location: {
+                'data.location': {
                   $regex: RegExp(escapedString, 'i'),
                 },
               },
               {
-                reason: {
+                'data.reason': {
                   $regex: RegExp(escapedString, 'i'),
                 },
               },
               {
-                type: {
+                'data.type': {
                   $regex: RegExp(escapedString, 'i'),
                 },
               },
