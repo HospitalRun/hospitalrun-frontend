@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
+import SelectWithLabelFormGroup, { Option } from '../../components/input/SelectWithLableFormGroup'
 import Incident from '../../model/Incident'
 import { useButtonToolbarSetter } from '../../page-header/ButtonBarProvider'
 import useTitle from '../../page-header/useTitle'
@@ -48,11 +48,7 @@ const ViewIncidents = () => {
     history.push(`incidents/${incident.id}`)
   }
 
-  const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchFilter(event.target.value as IncidentFilter)
-  }
-
-  const filterOptions = Object.values(IncidentFilter).map((filter) => ({
+  const filterOptions: Option[] = Object.values(IncidentFilter).map((filter) => ({
     label: t(`incidents.status.${filter}`),
     value: `${filter}`,
   }))
@@ -63,11 +59,11 @@ const ViewIncidents = () => {
         <div className="col-md-3 col-lg-2">
           <SelectWithLabelFormGroup
             name="type"
-            value={searchFilter}
             label={t('incidents.filterTitle')}
-            isEditable
             options={filterOptions}
-            onChange={onFilterChange}
+            defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
+            onChange={(values) => setSearchFilter(values[0] as IncidentFilter)}
+            isEditable
           />
         </div>
       </div>
@@ -86,9 +82,15 @@ const ViewIncidents = () => {
             {incidents.map((incident: Incident) => (
               <tr onClick={() => onTableRowClick(incident)} key={incident.id}>
                 <td>{incident.code}</td>
-                <td>{format(new Date(incident.date), 'yyyy-MM-dd hh:mm a')}</td>
+                <td>
+                  {incident.date ? format(new Date(incident.date), 'yyyy-MM-dd hh:mm a') : ''}
+                </td>
                 <td>{incident.reportedBy}</td>
-                <td>{format(new Date(incident.reportedOn), 'yyyy-MM-dd hh:mm a')}</td>
+                <td>
+                  {incident.reportedOn
+                    ? format(new Date(incident.reportedOn), 'yyyy-MM-dd hh:mm a')
+                    : ''}
+                </td>
                 <td>{incident.status}</td>
               </tr>
             ))}

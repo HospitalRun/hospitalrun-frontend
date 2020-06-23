@@ -18,7 +18,6 @@ const PageComponent = ({
   pageNumber,
   setPreviousPageRequest,
   setNextPageRequest,
-  onPageSizeChange,
 }: any) => {
   const { t } = useTranslation()
 
@@ -48,13 +47,7 @@ const PageComponent = ({
         {t('actions.page')} {pageNumber}
       </div>
       <div className="row float-right">
-        <Select onChange={onPageSizeChange} defaultValue={defaultPageSize.label}>
-          {pageSizes.map((pageSize) => (
-            <option key={pageSize.label} value={pageSize.value}>
-              {pageSize.label}
-            </option>
-          ))}
-        </Select>
+        <Select id="page" options={pageSizes} />
       </div>
     </div>
   )
