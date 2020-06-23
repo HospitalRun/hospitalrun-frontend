@@ -24,14 +24,14 @@ import { RootState } from '../../store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
-describe('View Labs', () => {
+describe('View Lab', () => {
   let history: any
   const mockPatient = { fullName: 'test' }
   const mockLab = {
     code: 'L-1234',
     id: '12456',
     status: 'requested',
-    patientId: '1234',
+    patient: '1234',
     type: 'lab type',
     notes: 'lab notes',
     requestedOn: '2020-03-30T04:43:20.102Z',

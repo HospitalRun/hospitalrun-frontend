@@ -1,24 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import PageRequest, { UnpagedRequest } from '../clients/db/PageRequest'
 import PatientRepository from '../clients/db/PatientRepository'
 import SortRequest, { Unsorted } from '../clients/db/SortRequest'
-import Page from '../clients/Page'
 import Patient from '../model/Patient'
 import { AppThunk } from '../store'
 
 interface PatientsState {
   isLoading: boolean
-  patients: Page<Patient>
+  patients: Patient[]
 }
 
 const initialState: PatientsState = {
   isLoading: false,
-  patients: {
-    content: [],
-    hasNext: false,
-    hasPrevious: false,
-  },
+  patients: [],
 }
 
 function startLoading(state: PatientsState) {
@@ -30,7 +24,7 @@ const patientsSlice = createSlice({
   initialState,
   reducers: {
     fetchPatientsStart: startLoading,
-    fetchPatientsSuccess(state, { payload }: PayloadAction<Page<Patient>>) {
+    fetchPatientsSuccess(state, { payload }: PayloadAction<Patient[]>) {
       state.isLoading = false
       state.patients = payload
     },
@@ -38,27 +32,26 @@ const patientsSlice = createSlice({
 })
 export const { fetchPatientsStart, fetchPatientsSuccess } = patientsSlice.actions
 
-export const fetchPatients = (
-  sortRequest: SortRequest = Unsorted,
-  pageRequest: PageRequest = UnpagedRequest,
-): AppThunk => async (dispatch) => {
+export const fetchPatients = (sortRequest: SortRequest = Unsorted): AppThunk => async (
+  dispatch,
+) => {
   dispatch(fetchPatientsStart())
-  const patients = await PatientRepository.findAllPaged(sortRequest, pageRequest)
+  const patients = await PatientRepository.findAll(sortRequest)
   dispatch(fetchPatientsSuccess(patients))
 }
 
 export const searchPatients = (
   searchString: string,
   sortRequest: SortRequest = Unsorted,
-  pageRequest: PageRequest = UnpagedRequest,
 ): AppThunk => async (dispatch) => {
   dispatch(fetchPatientsStart())
 
+  console.log(sortRequest)
   let patients
   if (searchString.trim() === '') {
-    patients = await PatientRepository.findAllPaged(sortRequest, pageRequest)
+    patients = await PatientRepository.findAll()
   } else {
-    patients = await PatientRepository.searchPaged(searchString, pageRequest)
+    patients = await PatientRepository.search(searchString)
   }
 
   dispatch(fetchPatientsSuccess(patients))

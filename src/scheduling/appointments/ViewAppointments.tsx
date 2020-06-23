@@ -54,7 +54,7 @@ const ViewAppointments = () => {
     const getAppointments = async () => {
       const newEvents = await Promise.all(
         appointments.map(async (a) => {
-          const patient = await PatientRepository.find(a.patientId)
+          const patient = await PatientRepository.find(a.patient)
           return {
             id: a.id,
             start: new Date(a.startDateTime),

@@ -1,5 +1,5 @@
-import { TextInput, Button, List, ListItem, Container, Row, Column } from '@hospitalrun/components'
-import React, { useEffect, useState } from 'react'
+import { Button, List, ListItem, Container, Row } from '@hospitalrun/components'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -19,7 +19,6 @@ const AppointmentsList = (props: Props) => {
 
   const { patientId } = props
   const { appointments } = useSelector((state: RootState) => state.appointments)
-  const [searchText, setSearchText] = useState<string>('')
 
   const breadcrumbs = [
     {
@@ -44,15 +43,6 @@ const AppointmentsList = (props: Props) => {
     </ul>
   )
 
-  const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value)
-  }
-
-  const onSearchFormSubmit = (event: React.FormEvent | React.MouseEvent) => {
-    event.preventDefault()
-    dispatch(fetchPatientAppointments(patientId, searchText))
-  }
-
   return (
     <>
       <div className="row">
@@ -70,25 +60,6 @@ const AppointmentsList = (props: Props) => {
       </div>
       <br />
       <Container>
-        <form className="form" onSubmit={onSearchFormSubmit}>
-          <Row>
-            <Column md={10}>
-              <TextInput
-                size="lg"
-                type="text"
-                onChange={onSearchBoxChange}
-                value={searchText}
-                placeholder={t('actions.search')}
-              />
-            </Column>
-            <Column md={2}>
-              <Button size="large" onClick={onSearchFormSubmit}>
-                {t('actions.search')}
-              </Button>
-            </Column>
-          </Row>
-        </form>
-
         <Row>
           <List layout="flush" style={{ width: '100%', marginTop: '10px', marginLeft: '-25px' }}>
             {list}

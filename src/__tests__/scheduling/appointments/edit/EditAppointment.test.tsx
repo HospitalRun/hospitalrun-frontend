@@ -27,7 +27,7 @@ const mockStore = createMockStore<RootState, any>([thunk])
 describe('Edit Appointment', () => {
   const appointment = {
     id: '123',
-    patientId: '456',
+    patient: '456',
     startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
     endDateTime: addMinutes(roundToNearestMinutes(new Date(), { nearestTo: 15 }), 60).toISOString(),
     location: 'location',
@@ -107,7 +107,7 @@ describe('Edit Appointment', () => {
     })
 
     expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
-    expect(PatientRepository.find).toHaveBeenCalledWith(appointment.patientId)
+    expect(PatientRepository.find).toHaveBeenCalledWith(appointment.patient)
     expect(store.getActions()).toContainEqual(appointmentSlice.fetchAppointmentStart())
     expect(store.getActions()).toContainEqual(
       appointmentSlice.fetchAppointmentSuccess({ appointment, patient }),

@@ -11,7 +11,7 @@ import { AppThunk } from '../../store'
 function validateAppointment(appointment: Appointment) {
   const err: Error = {}
 
-  if (!appointment.patientId) {
+  if (!appointment.patient) {
     err.patient = 'scheduling.appointment.errors.patientRequired'
   }
 
@@ -101,7 +101,7 @@ export const {
 export const fetchAppointment = (id: string): AppThunk => async (dispatch) => {
   dispatch(fetchAppointmentStart())
   const appointment = await AppointmentRepository.find(id)
-  const patient = await PatientRepository.find(appointment.patientId)
+  const patient = await PatientRepository.find(appointment.patient)
 
   dispatch(fetchAppointmentSuccess({ appointment, patient }))
 }

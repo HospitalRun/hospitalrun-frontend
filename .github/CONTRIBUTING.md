@@ -15,12 +15,43 @@ To contribute,
 
 ## Setting up the Local Development Environment
 
+### Get the source code
+
 1. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) this repository
 2. Open your favorite command line tool and navigate to the directory you wish to clone this repository to: `cd /path/to/clone`
 3. [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) your fork: `git clone git@github.com:{your username}/hospitalrun-frontend.git`
 4. Navigate to the hosptialrun-frontend directory: `cd hospitalrun-frontend`
-5. Install dependencies: `yarn`
-6. Run the application `yarn start`
+
+### Configure CouchDB
+
+CouchDB is the server side database which data from the frontend will sync to. In order to login
+to HospitalRun, CouchDB is required. For convienence, we have added a docker compose file in the
+root of this project to help launch CouchDB. However, you could install and run CouchDB in any way you wish.
+
+The following directions will be for running CouchDB via Docker Compose.
+
+1. Install [Docker](https://docs.docker.com/get-docker/)
+2. Install [Docker Compose](https://docs.docker.com/compose/install/)
+3. Run `docker-compose up --build -d` in the root directory.
+
+This should launch a new CouchDB instance on `http://localhost:5984`, create system database, configure CouchDB as Single Node, enable CORS, create `hospitalrun` database, create a default admin with a username of `admin` and password of 'password'
+
+4. Create a sample user with a username of `username` and password of 'password' to use new login page [#2137](https://github.com/HospitalRun/hospitalrun-frontend/pull/2137)
+
+   ```
+   curl -X PUT http://admin:password@localhost:5984/_users/org.couchdb.user:username -H "Accept: application/json" -H "Content-Type: application/json" -d '{"name": "username", "password": "password", "metadata": { "givenName": "John", "familyName": "Doe"}, "roles": [], "type": "user"}'
+   ```
+
+5. Launch `http://localhost:5984/_utils` to view Fauxton and perform administrative tasks.
+
+**_Cleanup_**
+To delete the development database, go to the root of the project and run `docker-compose down -v --rmi all --remove-orphans`
+
+### Install dependencies & start the application
+
+1. Install dependencies: `npm install`
+2. Configure `REACT_APP_HOSPITALRUN_API=http://localhost:5984` environment variable in `.env`
+3. Run the application `npm start`
 
 ## Online one-click setup for contributing
 

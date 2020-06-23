@@ -2,7 +2,7 @@ import AbstractDBModel from './AbstractDBModel'
 
 export default interface Lab extends AbstractDBModel {
   code: string
-  patientId: string
+  patient: string
   type: string
   requestedBy: string
   notes?: string
