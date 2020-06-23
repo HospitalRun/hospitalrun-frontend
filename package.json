@@ -107,7 +107,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "commit": "npx git-cz --disable-emoji",
+    "commit": "npx git-cz",
     "start": "npm run translation:check && react-scripts start",
     "build": "react-scripts build",
     "update": "npx npm-check -u",
