@@ -2,7 +2,14 @@ import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, withRouter, Route, useHistory, useLocation } from 'react-router-dom'
+import {
+  useParams,
+  withRouter,
+  Route,
+  useHistory,
+  useLocation,
+  useRouteMatch,
+} from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
 import Patient from '../../model/Patient'
@@ -34,6 +41,7 @@ const ViewPatient = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const location = useLocation()
+  const { path } = useRouteMatch()
 
   const { patient, status } = useSelector((state: RootState) => state.patient)
   const { permissions } = useSelector((state: RootState) => state.user)
@@ -127,28 +135,28 @@ const ViewPatient = () => {
         />
       </TabsHeader>
       <Panel>
-        <Route exact path="/patients/:id">
+        <Route exact path={path}>
           <GeneralInformation patient={patient} />
         </Route>
-        <Route exact path="/patients/:id/relatedpersons">
+        <Route exact path={`${path}/relatedpersons`}>
           <RelatedPerson patient={patient} />
         </Route>
-        <Route exact path="/patients/:id/appointments">
+        <Route exact path={`${path}/appointments`}>
           <AppointmentsList patientId={patient.id} />
         </Route>
-        <Route exact path="/patients/:id/allergies">
+        <Route exact path={`${path}/allergies`}>
           <Allergies patient={patient} />
         </Route>
-        <Route exact path="/patients/:id/diagnoses">
+        <Route exact path={`${path}/diagnoses`}>
           <Diagnoses patient={patient} />
         </Route>
-        <Route exact path="/patients/:id/notes">
+        <Route exact path={`${path}/notes`}>
           <Note patient={patient} />
         </Route>
-        <Route exact path="/patients/:id/labs">
+        <Route exact path={`${path}/labs`}>
           <Labs patientId={patient.id} />
         </Route>
-        <Route path="/patients/:id/care-plans">
+        <Route path={`${path}/care-plans`}>
           <CarePlanTab />
         </Route>
       </Panel>

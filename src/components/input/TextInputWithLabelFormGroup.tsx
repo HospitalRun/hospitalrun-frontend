@@ -6,7 +6,7 @@ interface Props {
   label?: string
   name: string
   isEditable?: boolean
-  type: 'text' | 'email' | 'number' | 'tel'
+  type: 'text' | 'email' | 'number' | 'tel' | 'password'
   placeholder?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   isRequired?: boolean

@@ -1,16 +1,18 @@
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import pageMap, { Page } from '../pageMap'
 import { RootState } from '../store'
+import { logout } from '../user/user-slice'
 
 const Navbar = () => {
-  const { permissions } = useSelector((state: RootState) => state.user)
-  const { t } = useTranslation()
+  const dispatch = useDispatch()
   const history = useHistory()
+  const { t } = useTranslation()
+  const { permissions } = useSelector((state: RootState) => state.user)
 
   const navigateTo = (location: string) => {
     history.push(location)
@@ -90,6 +92,14 @@ const Navbar = () => {
               label: t('settings.label'),
               onClick: () => {
                 navigateTo('/settings')
+              },
+            },
+            {
+              type: 'link',
+              label: t('logout'),
+              onClick: () => {
+                dispatch(logout())
+                navigateTo('/login')
               },
             },
           ],

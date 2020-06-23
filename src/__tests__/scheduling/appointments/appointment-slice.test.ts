@@ -59,7 +59,7 @@ describe('appointment slice', () => {
 
     it('should handle the UPDATE_APPOINTMENT_SUCCESS action', () => {
       const expectedAppointment = {
-        patientId: '123',
+        patient: '123',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',
@@ -130,7 +130,7 @@ describe('appointment slice', () => {
       const dispatch = jest.fn()
       const getState = jest.fn()
       const expectedAppointment = {
-        patientId: '123',
+        patient: '123',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',
@@ -150,7 +150,7 @@ describe('appointment slice', () => {
       mocked(AppointmentRepository, true).save.mockResolvedValue({ id: '123' } as Appointment)
 
       const expectedAppointment = {
-        patientId: '123',
+        patient: '123',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',
@@ -175,7 +175,7 @@ describe('appointment slice', () => {
       const getState = jest.fn()
 
       const expectedAppointment = {
-        patientId: '123',
+        patient: '123',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',
@@ -218,12 +218,14 @@ describe('appointment slice', () => {
     const expectedAppointment: Appointment = {
       id: '1',
       rev: '1',
-      patientId: '123',
+      patient: '123',
       startDateTime: new Date().toISOString(),
       endDateTime: new Date().toISOString(),
       location: 'location',
       type: 'type',
       reason: 'reason',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     }
 
     const expectedPatient: Patient = {
@@ -333,7 +335,7 @@ describe('appointment slice', () => {
       jest.spyOn(AppointmentRepository, 'saveOrUpdate')
 
       const expectedAppointment = {
-        patientId: 'sliceId9',
+        patient: 'sliceId9',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',
@@ -355,7 +357,7 @@ describe('appointment slice', () => {
       jest.spyOn(AppointmentRepository, 'saveOrUpdate')
 
       const expectedAppointment = {
-        patientId: 'sliceId10',
+        patient: 'sliceId10',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',
@@ -377,7 +379,7 @@ describe('appointment slice', () => {
       jest.spyOn(AppointmentRepository, 'saveOrUpdate')
 
       const expectedAppointment = {
-        patientId: 'sliceId11',
+        patient: 'sliceId11',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',
@@ -403,7 +405,7 @@ describe('appointment slice', () => {
       jest.spyOn(AppointmentRepository, 'saveOrUpdate')
 
       const expectedAppointment = {
-        patientId: 'sliceId12',
+        patient: 'sliceId12',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',
