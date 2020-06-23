@@ -226,7 +226,6 @@ describe('Care Plan Form', () => {
     const noteInput = wrapper.findWhere((w) => w.prop('name') === 'note')
     expect(noteInput).toHaveLength(1)
     expect(noteInput.prop('patient.carePlan.note'))
-    expect(noteInput.prop('isRequired')).toBeTruthy()
     expect(noteInput.prop('value')).toEqual(carePlan.note)
   })
 

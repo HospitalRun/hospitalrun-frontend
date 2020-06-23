@@ -699,7 +699,6 @@ describe('patients slice', () => {
         startDate: 'patient.carePlan.error.startDateRequired',
         endDate: 'patient.carePlan.error.endDateRequired',
         condition: 'patient.carePlan.error.conditionRequired',
-        note: 'patient.carePlan.error.noteRequired',
       }
       const store = mockStore()
       const expectedCarePlan = {} as CarePlan
