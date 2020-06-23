@@ -145,7 +145,6 @@ const CarePlanForm = (props: Props) => {
       <Row>
         <Column sm={12}>
           <TextFieldWithLabelFormGroup
-            isRequired
             value={carePlan.note}
             label={t('patient.carePlan.note')}
             name="note"
