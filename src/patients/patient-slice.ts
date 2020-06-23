@@ -457,10 +457,6 @@ function validateCarePlan(carePlan: CarePlan): AddCarePlanError {
     error.condition = 'patient.carePlan.error.conditionRequired'
   }
 
-  if (!carePlan.note) {
-    error.note = 'patient.carePlan.error.noteRequired'
-  }
-
   return error
 }
 
