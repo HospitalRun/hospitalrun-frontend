@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/camelcase, @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable camelcase */
 import PouchDB from 'pouchdb'
 import PouchAuth from 'pouchdb-authentication'
 import PouchdbFind from 'pouchdb-find'
