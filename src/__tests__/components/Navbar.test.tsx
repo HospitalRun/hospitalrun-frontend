@@ -61,9 +61,9 @@ describe('Navbar', () => {
       const hamberger = hospitalRunNavbar.find('.nav-hamberger')
       const { children } = hamberger.first().props() as any
 
-      expect(children[0].props.children).toEqual('dashboard.label')
-      expect(children[1].props.children).toEqual('patients.newPatient')
-      expect(children[children.length - 1].props.children).toEqual('settings.label')
+      expect(children[0].props.children).toEqual([undefined, 'dashboard.label'])
+      expect(children[1].props.children).toEqual([undefined, 'patients.newPatient'])
+      expect(children[children.length - 1].props.children).toEqual([undefined, 'settings.label'])
     })
 
     it('should not show an item if user does not have a permission', () => {
@@ -144,7 +144,7 @@ describe('Navbar', () => {
       const addNew = hospitalRunNavbar.find('.nav-add-new')
       const { children } = addNew.first().props() as any
 
-      expect(children[0].props.children).toEqual('patients.newPatient')
+      expect(children[0].props.children).toEqual([undefined, 'patients.newPatient'])
     })
 
     it('should not show a shortcut if user does not have a permission', () => {
@@ -168,7 +168,7 @@ describe('Navbar', () => {
       const accountLinkList = hospitalRunNavbar.find('.nav-account')
       const { children } = accountLinkList.first().props() as any
 
-      expect(children[0].props.children).toEqual('settings.label')
+      expect(children[0].props.children).toEqual([undefined, 'settings.label'])
     })
 
     it('should navigate to /settings when the list option is selected', () => {

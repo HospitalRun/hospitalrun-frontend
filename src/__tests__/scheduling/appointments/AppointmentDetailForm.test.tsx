@@ -112,7 +112,7 @@ describe('AppointmentDetailForm', () => {
       expect(typeSelect.prop('options')[3].value).toEqual('routine')
       expect(typeSelect.prop('options')[4].label).toEqual('scheduling.appointment.types.walkIn')
       expect(typeSelect.prop('options')[4].value).toEqual('walk in')
-      expect(typeSelect.prop('value')).toEqual(expectedAppointment.type)
+      expect(typeSelect.prop('defaultSelected')[0].value).toEqual(expectedAppointment.type)
     })
 
     it('should render a reason text field input', () => {
@@ -261,18 +261,6 @@ describe('AppointmentDetailForm', () => {
       wrapper.update()
 
       expect(onFieldChange).toHaveBeenLastCalledWith('location', expectedLocation)
-    })
-
-    it('should call onFieldChange when type changes', () => {
-      const expectedType = 'follow up'
-
-      act(() => {
-        const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
-        typeSelect.prop('onChange')({ target: { value: expectedType } })
-      })
-      wrapper.update()
-
-      expect(onFieldChange).toHaveBeenLastCalledWith('type', expectedType)
     })
 
     it('should call onFieldChange when reason changes', () => {
