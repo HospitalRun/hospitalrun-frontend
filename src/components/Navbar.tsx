@@ -18,6 +18,14 @@ const Navbar = () => {
     history.push(location)
   }
 
+  const dividerAboveLabels = [
+    'patients.newPatient',
+    'scheduling.appointments.new',
+    'labs.requests.new',
+    'incidents.reports.new',
+    'settings.label',
+  ]
+
   function getDropdownListOfPages(pages: Page[]) {
     return pages
       .filter((page) => !page.permission || permissions.includes(page.permission))
@@ -27,6 +35,7 @@ const Navbar = () => {
         onClick: () => {
           navigateTo(page.path)
         },
+        dividerAbove: dividerAboveLabels.indexOf(page.label) > -1,
       }))
   }
 
@@ -42,9 +51,11 @@ const Navbar = () => {
       variant="dark"
       navItems={[
         {
+          name: 'menu',
+          size: 'lg',
+          type: 'link-list-icon',
           children: getDropdownListOfPages(hambergerPages),
           label: '',
-          type: 'link-list',
           className: 'nav-hamberger pr-4 d-md-none',
         },
         {
