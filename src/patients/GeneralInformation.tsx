@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
+import SelectWithLabelFormGroup, { Option } from '../components/input/SelectWithLableFormGroup'
 import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
 import { ContactInfoPiece } from '../model/ContactInformation'
 import Patient from '../model/Patient'
@@ -58,6 +58,18 @@ const GeneralInformation = (props: Props): ReactElement => {
     const { checked } = event.currentTarget
     onFieldChange('isApproximateDateOfBirth', checked)
   }
+
+  const sexOptions: Option[] = [
+    { label: t('sex.male'), value: 'male' },
+    { label: t('sex.female'), value: 'female' },
+    { label: t('sex.other'), value: 'other' },
+    { label: t('sex.unknown'), value: 'unknown' },
+  ]
+
+  const typeOptions: Option[] = [
+    { label: t('patient.types.charity'), value: 'charity' },
+    { label: t('patient.types.private'), value: 'private' },
+  ]
 
   return (
     <div>
@@ -115,28 +127,20 @@ const GeneralInformation = (props: Props): ReactElement => {
             <SelectWithLabelFormGroup
               name="sex"
               label={t('patient.sex')}
-              value={patient.sex}
+              options={sexOptions}
+              defaultSelected={sexOptions.filter(({ value }) => value === patient.sex)}
+              onChange={(values) => onFieldChange('sex', values[0])}
               isEditable={isEditable}
-              options={[
-                { label: t('sex.male'), value: 'male' },
-                { label: t('sex.female'), value: 'female' },
-                { label: t('sex.other'), value: 'other' },
-                { label: t('sex.unknown'), value: 'unknown' },
-              ]}
-              onChange={(event) => onFieldChange('sex', event.currentTarget.value)}
             />
           </div>
           <div className="col">
             <SelectWithLabelFormGroup
               name="type"
               label={t('patient.type')}
-              value={patient.type}
+              options={typeOptions}
+              defaultSelected={typeOptions.filter(({ value }) => value === patient.type)}
+              onChange={(values) => onFieldChange('type', values[0])}
               isEditable={isEditable}
-              options={[
-                { label: t('patient.types.charity'), value: 'charity' },
-                { label: t('patient.types.private'), value: 'private' },
-              ]}
-              onChange={(event) => onFieldChange('type', event.currentTarget.value)}
             />
           </div>
         </div>

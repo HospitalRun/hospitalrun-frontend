@@ -75,26 +75,12 @@ describe('View Incidents', () => {
     return wrapper
   }
   it('should filter incidents by status=reported on first load ', async () => {
-    const wrapper = await setup([Permissions.ViewIncidents])
-    const filterSelect = wrapper.find('select')
-    expect(filterSelect.props().value).toBe(IncidentFilter.reported)
+    await setup([Permissions.ViewIncidents])
 
     expect(IncidentRepository.search).toHaveBeenCalled()
     expect(IncidentRepository.search).toHaveBeenCalledWith({ status: IncidentFilter.reported })
   })
-  it('should call IncidentRepository after changing filter', async () => {
-    const wrapper = await setup([Permissions.ViewIncidents])
-    const filterSelect = wrapper.find('select')
 
-    expect(IncidentRepository.findAll).not.toHaveBeenCalled()
-
-    filterSelect.simulate('change', { target: { value: IncidentFilter.all } })
-    expect(IncidentRepository.findAll).toHaveBeenCalled()
-    filterSelect.simulate('change', { target: { value: IncidentFilter.reported } })
-
-    expect(IncidentRepository.search).toHaveBeenCalledTimes(2)
-    expect(IncidentRepository.search).toHaveBeenLastCalledWith({ status: IncidentFilter.reported })
-  })
   describe('layout', () => {
     it('should set the title', async () => {
       await setup([Permissions.ViewIncidents])

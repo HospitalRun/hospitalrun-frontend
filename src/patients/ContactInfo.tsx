@@ -2,7 +2,7 @@ import { Spinner, Row, Column, Icon } from '@hospitalrun/components'
 import React, { useEffect, ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
+import SelectWithLabelFormGroup, { Option } from '../components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
 import { ContactInfoPiece } from '../model/ContactInformation'
@@ -30,7 +30,7 @@ const ContactInfo = (props: Props): ReactElement => {
     }
   }, [data, onChange])
 
-  const typeOptions = Object.values(ContactInfoTypes).map((value) => ({
+  const typeOptions: Option[] = Object.values(ContactInfoTypes).map((value) => ({
     label: t(`patient.contactInfoType.options.${value}`),
     value: `${value}`,
   }))
@@ -53,9 +53,8 @@ const ContactInfo = (props: Props): ReactElement => {
   }
   const Component = componentList[component]
 
-  const onTypeChange = (event: React.ChangeEvent<HTMLSelectElement>, index: number) => {
+  const onTypeChange = (newType: string, index: number) => {
     if (onChange) {
-      const newType = event.currentTarget.value
       const currentContact = { ...data[index], type: newType }
       const newContacts = [...data]
       newContacts.splice(index, 1, currentContact)
@@ -83,10 +82,10 @@ const ContactInfo = (props: Props): ReactElement => {
         <Column sm={4}>
           <SelectWithLabelFormGroup
             name={`${name}Type${i}`}
-            value={entry.type}
-            isEditable={isEditable}
             options={typeOptions}
-            onChange={(event) => onTypeChange(event, i)}
+            defaultSelected={typeOptions.filter(({ value }) => value === entry.type)}
+            onChange={(values) => onTypeChange(values[0], i)}
+            isEditable={isEditable}
           />
         </Column>
         <Column sm={8}>

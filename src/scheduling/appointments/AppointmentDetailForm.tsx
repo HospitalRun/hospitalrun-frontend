@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import PatientRepository from '../../clients/db/PatientRepository'
 import DateTimePickerWithLabelFormGroup from '../../components/input/DateTimePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
+import SelectWithLabelFormGroup, { Option } from '../../components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
 import Appointment from '../../model/Appointment'
@@ -22,14 +22,19 @@ const AppointmentDetailForm = (props: Props) => {
   const { onFieldChange, appointment, patient, isEditable, error } = props
   const { t } = useTranslation()
 
-  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, fieldName: string) =>
-    onFieldChange && onFieldChange(fieldName, event.target.value)
-
   const onDateChange = (date: Date, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, date.toISOString())
 
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
+
+  const typeOptions: Option[] = [
+    { label: t('scheduling.appointment.types.checkup'), value: 'checkup' },
+    { label: t('scheduling.appointment.types.emergency'), value: 'emergency' },
+    { label: t('scheduling.appointment.types.followUp'), value: 'follow up' },
+    { label: t('scheduling.appointment.types.routine'), value: 'routine' },
+    { label: t('scheduling.appointment.types.walkIn'), value: 'walk in' },
+  ]
 
   return (
     <>
@@ -112,18 +117,10 @@ const AppointmentDetailForm = (props: Props) => {
           <SelectWithLabelFormGroup
             name="type"
             label={t('scheduling.appointment.type')}
-            value={appointment.type}
+            options={typeOptions}
+            defaultSelected={typeOptions.filter(({ value }) => value === appointment.type)}
+            onChange={(values) => onFieldChange && onFieldChange('type', values[0])}
             isEditable={isEditable}
-            options={[
-              { label: t('scheduling.appointment.types.checkup'), value: 'checkup' },
-              { label: t('scheduling.appointment.types.emergency'), value: 'emergency' },
-              { label: t('scheduling.appointment.types.followUp'), value: 'follow up' },
-              { label: t('scheduling.appointment.types.routine'), value: 'routine' },
-              { label: t('scheduling.appointment.types.walkIn'), value: 'walk in' },
-            ]}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-              onSelectChange(event, 'type')
-            }}
           />
         </div>
       </div>
