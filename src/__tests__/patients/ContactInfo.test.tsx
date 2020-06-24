@@ -86,14 +86,11 @@ describe('Contact Info in its Editable mode', () => {
     const wrapper = setup(data, errors)
     const feedbackWrappers = wrapper.find('.invalid-feedback')
 
-    expect(feedbackWrappers).toHaveLength(errors.length * 2)
+    expect(feedbackWrappers).toHaveLength(errors.length)
 
-    for (let i = 0; i < feedbackWrappers.length; i += 1) {
-      if (i % 2 === 1) {
-        const j = (i - 1) / 2
-        expect(feedbackWrappers.at(i).text()).toEqual(errors[j])
-      }
-    }
+    feedbackWrappers.forEach((_, i) => {
+      expect(feedbackWrappers.at(i).text()).toEqual(errors[i])
+    })
   })
 
   it('should display the add button', () => {
@@ -101,20 +98,6 @@ describe('Contact Info in its Editable mode', () => {
     const buttonWrapper = wrapper.find('button')
 
     expect(buttonWrapper.text().trim()).toEqual('actions.add')
-  })
-
-  it('should call the onChange callback if select is changed', () => {
-    const wrapper = setup(data)
-    const select = wrapper.findWhere((w: any) => w.prop('name') === `${name}Type0`).find('select')
-    select.getDOMNode<HTMLSelectElement>().value = 'mobile'
-    select.simulate('change')
-
-    const expectedNewData = [
-      { id: '123', value: '123456', type: 'mobile' },
-      { id: '456', value: '789012', type: undefined },
-    ]
-    expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith(expectedNewData)
   })
 
   it('should call the onChange callback if input is changed', () => {

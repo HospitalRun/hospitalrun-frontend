@@ -129,7 +129,7 @@ describe('General Information, without isEditable', () => {
 
   it('should render the sex select', () => {
     const sexSelect = wrapper.findWhere((w: any) => w.prop('name') === 'sex')
-    expect(sexSelect.prop('value')).toEqual(patient.sex)
+    expect(sexSelect.prop('defaultSelected')[0].value).toEqual(patient.sex)
     expect(sexSelect.prop('label')).toEqual('patient.sex')
     expect(sexSelect.prop('isEditable')).toBeFalsy()
     expect(sexSelect.prop('options')).toHaveLength(4)
@@ -145,7 +145,7 @@ describe('General Information, without isEditable', () => {
 
   it('should render the patient type select', () => {
     const typeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'type')
-    expect(typeSelect.prop('value')).toEqual(patient.type)
+    expect(typeSelect.prop('defaultSelected')[0].value).toEqual(patient.type)
     expect(typeSelect.prop('label')).toEqual('patient.type')
     expect(typeSelect.prop('isEditable')).toBeFalsy()
     expect(typeSelect.prop('options')).toHaveLength(2)
@@ -268,8 +268,6 @@ describe('General Information, isEditable', () => {
   const expectedGivenName = 'expectedGivenName'
   const expectedFamilyName = 'expectedFamilyName'
   const expectedSuffix = 'expectedSuffix'
-  const expectedSex = 'unknown'
-  const expectedType = 'private'
   const expectedDateOfBirth = '1937-06-14T05:00:00.000Z'
   const expectedOccupation = 'expectedOccupation'
   const expectedPreferredLanguage = 'expectedPreferredLanguage'
@@ -349,7 +347,7 @@ describe('General Information, isEditable', () => {
   it('should render the sex select', () => {
     const sexSelect = wrapper.findWhere((w: any) => w.prop('name') === 'sex')
 
-    expect(sexSelect.prop('value')).toEqual(patient.sex)
+    expect(sexSelect.prop('defaultSelected')[0].value).toEqual(patient.sex)
     expect(sexSelect.prop('label')).toEqual('patient.sex')
     expect(sexSelect.prop('isEditable')).toBeTruthy()
     expect(sexSelect.prop('options')).toHaveLength(4)
@@ -362,19 +360,12 @@ describe('General Information, isEditable', () => {
     expect(sexSelect.prop('options')[2].value).toEqual('other')
     expect(sexSelect.prop('options')[3].label).toEqual('sex.unknown')
     expect(sexSelect.prop('options')[3].value).toEqual('unknown')
-
-    const select = sexSelect.find('select')
-    select.getDOMNode<HTMLSelectElement>().value = expectedSex
-    select.simulate('change')
-
-    expect(onFieldChange).toHaveBeenCalledTimes(1)
-    expect(onFieldChange).toHaveBeenCalledWith({ ...patient, sex: expectedSex })
   })
 
   it('should render the patient type select', () => {
     const typeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'type')
 
-    expect(typeSelect.prop('value')).toEqual(patient.type)
+    expect(typeSelect.prop('defaultSelected')[0].value).toEqual(patient.type)
     expect(typeSelect.prop('label')).toEqual('patient.type')
     expect(typeSelect.prop('isEditable')).toBeTruthy()
 
@@ -383,13 +374,6 @@ describe('General Information, isEditable', () => {
     expect(typeSelect.prop('options')[0].value).toEqual('charity')
     expect(typeSelect.prop('options')[1].label).toEqual('patient.types.private')
     expect(typeSelect.prop('options')[1].value).toEqual('private')
-
-    const select = typeSelect.find('select')
-    select.getDOMNode<HTMLSelectElement>().value = expectedType
-    select.simulate('change')
-
-    expect(onFieldChange).toHaveBeenCalledTimes(1)
-    expect(onFieldChange).toHaveBeenCalledWith({ ...patient, type: expectedType })
   })
 
   it('should render the date of the birth of the patient', () => {

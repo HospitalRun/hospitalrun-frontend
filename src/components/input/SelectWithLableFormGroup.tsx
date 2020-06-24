@@ -6,28 +6,31 @@ interface Option {
   value: string
 }
 
+// todo: add feedback in next round
 interface Props {
-  value: string
-  label?: string
   name: string
+  label?: string
   isRequired?: boolean
-  isEditable?: boolean
   options: Option[]
-  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void
-  feedback?: string
+  defaultSelected?: Option[]
+  onChange?: (values: string[]) => void
+  placeholder: string
+  multiple?: boolean
+  isEditable?: boolean
   isInvalid?: boolean
 }
 
 const SelectWithLabelFormGroup = (props: Props) => {
   const {
-    value,
-    label,
     name,
-    isEditable,
-    options,
-    onChange,
+    label,
     isRequired,
-    feedback,
+    options,
+    defaultSelected,
+    onChange,
+    placeholder,
+    multiple,
+    isEditable,
     isInvalid,
   } = props
   const id = `${name}Select`
@@ -35,27 +38,22 @@ const SelectWithLabelFormGroup = (props: Props) => {
     <div className="form-group">
       {label && <Label text={label} htmlFor={id} isRequired={isRequired} />}
       <Select
-        disabled={!isEditable}
+        id={id}
+        options={options}
+        defaultSelected={defaultSelected}
         onChange={onChange}
-        value={value}
-        feedback={feedback}
+        placeholder={placeholder}
+        multiple={multiple}
+        disabled={!isEditable}
         isInvalid={isInvalid}
-      >
-        <option disabled value="">
-          -- Choose --
-        </option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </Select>
+      />
     </div>
   )
 }
 
 SelectWithLabelFormGroup.defaultProps = {
-  value: '',
+  placeholder: '-- Choose --',
 }
 
 export default SelectWithLabelFormGroup
+export type { Option }
