@@ -6,12 +6,13 @@ import { useLocation, useHistory } from 'react-router-dom'
 
 import Permissions from '../model/Permissions'
 import { RootState } from '../store'
-import { updateSidebar } from './component-slice'
+import { fetchSidebar, toggleSidebar } from '../user/user-slice'
 
 const Sidebar = () => {
   const dispatch = useDispatch()
-  const { sidebarCollapsed } = useSelector((state: RootState) => state.components)
+  const { sidebarCollapsed } = useSelector((state: RootState) => state.user)
   const permissions = useSelector((state: RootState) => state.user.permissions)
+  dispatch(fetchSidebar())
 
   const { t } = useTranslation()
   const path = useLocation()
@@ -305,7 +306,7 @@ const Sidebar = () => {
       <div className="sidebar-sticky">
         <List layout="flush" className="nav flex-column">
           <ListItem
-            onClick={() => dispatch(updateSidebar())}
+            onClick={() => dispatch(toggleSidebar())}
             className="nav-item"
             style={listItemStyle}
           >

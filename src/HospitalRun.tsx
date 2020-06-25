@@ -19,7 +19,7 @@ import { RootState } from './store'
 
 const HospitalRun = () => {
   const { title } = useSelector((state: RootState) => state.title)
-  const { sidebarCollapsed } = useSelector((state: RootState) => state.components)
+  const { sidebarCollapsed } = useSelector((state: RootState) => state.user)
   const { user } = useSelector((root: RootState) => root.user)
 
   if (user === undefined) {
