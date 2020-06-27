@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { Button, Typeahead, Label, Alert } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -10,15 +8,15 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import LabRepository from '../../../clients/db/LabRepository'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import TextFieldWithLabelFormGroup from '../../../components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
 import NewLabRequest from '../../../labs/requests/NewLabRequest'
-import Lab from '../../../model/Lab'
-import Patient from '../../../model/Patient'
-import * as titleUtil from '../../../page-header/useTitle'
-import { RootState } from '../../../store'
+import * as titleUtil from '../../../page-header/title/useTitle'
+import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
+import LabRepository from '../../../shared/db/LabRepository'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Lab from '../../../shared/model/Lab'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

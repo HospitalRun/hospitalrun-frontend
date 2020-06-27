@@ -2,13 +2,15 @@ import { Typeahead, Label, Alert } from '@hospitalrun/components'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import PatientRepository from '../../clients/db/PatientRepository'
-import DateTimePickerWithLabelFormGroup from '../../components/input/DateTimePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, { Option } from '../../components/input/SelectWithLableFormGroup'
-import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import Appointment from '../../model/Appointment'
-import Patient from '../../model/Patient'
+import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../../shared/components/input/SelectWithLableFormGroup'
+import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Appointment from '../../shared/model/Appointment'
+import Patient from '../../shared/model/Patient'
 
 interface Props {
   appointment: Appointment

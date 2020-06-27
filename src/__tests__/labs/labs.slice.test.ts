@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
 
-import LabRepository from '../../clients/db/LabRepository'
-import SortRequest from '../../clients/db/SortRequest'
 import labs, { fetchLabsStart, fetchLabsSuccess, searchLabs } from '../../labs/labs-slice'
-import Lab from '../../model/Lab'
+import LabRepository from '../../shared/db/LabRepository'
+import SortRequest from '../../shared/db/SortRequest'
+import Lab from '../../shared/model/Lab'
 
 interface SearchContainer {
   text: string

@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { Button } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount, ReactWrapper } from 'enzyme'
@@ -10,14 +8,14 @@ import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
-import IncidentRepository from '../../../clients/db/IncidentRepository'
 import ReportIncident from '../../../incidents/report/ReportIncident'
-import Incident from '../../../model/Incident'
-import Permissions from '../../../model/Permissions'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/useTitle'
-import { RootState } from '../../../store'
+import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
+import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/title/useTitle'
+import IncidentRepository from '../../../shared/db/IncidentRepository'
+import Incident from '../../../shared/model/Incident'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { Modal, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
@@ -8,14 +6,14 @@ import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PatientRepository from '../../../clients/db/PatientRepository'
-import DatePickerWithLabelFormGroup from '../../../components/input/DatePickerWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../../components/input/TextInputWithLabelFormGroup'
-import Diagnosis from '../../../model/Diagnosis'
-import Patient from '../../../model/Patient'
 import AddDiagnosisModal from '../../../patients/diagnoses/AddDiagnosisModal'
 import * as patientSlice from '../../../patients/patient-slice'
-import { RootState } from '../../../store'
+import DatePickerWithLabelFormGroup from '../../../shared/components/input/DatePickerWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Diagnosis from '../../../shared/model/Diagnosis'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

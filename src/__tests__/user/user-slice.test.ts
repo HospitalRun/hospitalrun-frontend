@@ -1,9 +1,9 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { remoteDb } from '../../config/pouchdb'
-import Permissions from '../../model/Permissions'
-import { RootState } from '../../store'
+import { remoteDb } from '../../shared/config/pouchdb'
+import Permissions from '../../shared/model/Permissions'
+import { RootState } from '../../shared/store'
 import user, {
   fetchPermissions,
   getCurrentSession,

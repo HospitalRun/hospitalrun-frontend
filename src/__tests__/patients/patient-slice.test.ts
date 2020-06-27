@@ -1,16 +1,8 @@
-import '../../__mocks__/matchMediaMock'
-
 import { addDays, subDays } from 'date-fns'
 import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PatientRepository from '../../clients/db/PatientRepository'
-import Allergy from '../../model/Allergy'
-import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../model/CarePlan'
-import Diagnosis from '../../model/Diagnosis'
-import Patient from '../../model/Patient'
-import RelatedPerson from '../../model/RelatedPerson'
 import patient, {
   addAllergy,
   addAllergyError,
@@ -33,8 +25,14 @@ import patient, {
   updatePatientSuccess,
   addCarePlanError,
 } from '../../patients/patient-slice'
-import { RootState } from '../../store'
-import * as uuid from '../../util/uuid'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Allergy from '../../shared/model/Allergy'
+import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../shared/model/CarePlan'
+import Diagnosis from '../../shared/model/Diagnosis'
+import Patient from '../../shared/model/Patient'
+import RelatedPerson from '../../shared/model/RelatedPerson'
+import { RootState } from '../../shared/store'
+import * as uuid from '../../shared/util/uuid'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

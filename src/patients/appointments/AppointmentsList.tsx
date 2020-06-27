@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
+import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { fetchPatientAppointments } from '../../scheduling/appointments/appointments-slice'
-import { RootState } from '../../store'
+import { RootState } from '../../shared/store'
 
 interface Props {
   patientId: string

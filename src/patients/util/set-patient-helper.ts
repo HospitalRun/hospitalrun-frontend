@@ -1,4 +1,4 @@
-import Patient from '../../model/Patient'
+import Patient from '../../shared/model/Patient'
 import { getPatientName } from './patient-name-util'
 
 /**

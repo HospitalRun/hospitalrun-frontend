@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
-import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import useTitle from '../../page-header/useTitle'
-import { RootState } from '../../store'
+import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
+import useTitle from '../../page-header/title/useTitle'
+import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import { RootState } from '../../shared/store'
 import { fetchIncident } from '../incident-slice'
 
 const ViewIncident = () => {

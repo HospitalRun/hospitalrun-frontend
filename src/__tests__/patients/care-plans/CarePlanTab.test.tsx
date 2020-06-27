@@ -1,4 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
 import { Button } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -9,12 +8,12 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Permissions from '../../../model/Permissions'
 import AddCarePlanModal from '../../../patients/care-plans/AddCarePlanModal'
 import CarePlanTab from '../../../patients/care-plans/CarePlanTab'
 import CarePlanTable from '../../../patients/care-plans/CarePlanTable'
 import ViewCarePlan from '../../../patients/care-plans/ViewCarePlan'
-import { RootState } from '../../../store'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

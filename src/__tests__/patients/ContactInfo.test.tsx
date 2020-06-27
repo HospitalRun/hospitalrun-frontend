@@ -1,4 +1,3 @@
-import '../../__mocks__/matchMediaMock'
 import { Column, Spinner } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -6,10 +5,10 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router-dom'
 
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import { ContactInfoPiece } from '../../model/ContactInformation'
 import ContactInfo from '../../patients/ContactInfo'
-import * as uuid from '../../util/uuid'
+import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import { ContactInfoPiece } from '../../shared/model/ContactInformation'
+import * as uuid from '../../shared/util/uuid'
 
 describe('Contact Info in its Editable mode', () => {
   const data = [

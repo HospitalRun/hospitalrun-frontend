@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import HospitalRun from './HospitalRun'
 import Login from './login/Login'
-import store from './store'
+import store from './shared/store'
 
 const App: React.FC = () => (
   <div>

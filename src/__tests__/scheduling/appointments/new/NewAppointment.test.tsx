@@ -1,5 +1,3 @@
-import '../../../../__mocks__/matchMediaMock'
-
 import * as components from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
@@ -12,16 +10,16 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import AppointmentRepository from '../../../../clients/db/AppointmentRepository'
-import LabRepository from '../../../../clients/db/LabRepository'
-import Appointment from '../../../../model/Appointment'
-import Lab from '../../../../model/Lab'
-import Patient from '../../../../model/Patient'
-import * as titleUtil from '../../../../page-header/useTitle'
+import * as titleUtil from '../../../../page-header/title/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import NewAppointment from '../../../../scheduling/appointments/new/NewAppointment'
-import { RootState } from '../../../../store'
+import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
+import LabRepository from '../../../../shared/db/LabRepository'
+import Appointment from '../../../../shared/model/Appointment'
+import Lab from '../../../../shared/model/Lab'
+import Patient from '../../../../shared/model/Patient'
+import { RootState } from '../../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 const mockedComponents = mocked(components, true)

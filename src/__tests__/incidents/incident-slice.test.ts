@@ -4,7 +4,6 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import shortid from 'shortid'
 
-import IncidentRepository from '../../clients/db/IncidentRepository'
 import incident, {
   reportIncidentStart,
   reportIncidentSuccess,
@@ -14,10 +13,11 @@ import incident, {
   fetchIncidentSuccess,
   fetchIncident,
 } from '../../incidents/incident-slice'
-import Incident from '../../model/Incident'
-import Permissions from '../../model/Permissions'
-import User from '../../model/User'
-import { RootState } from '../../store'
+import IncidentRepository from '../../shared/db/IncidentRepository'
+import Incident from '../../shared/model/Incident'
+import Permissions from '../../shared/model/Permissions'
+import User from '../../shared/model/User'
+import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
