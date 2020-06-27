@@ -43,6 +43,11 @@ const AddRelatedPersonModal = (props: Props) => {
     setRelatedPerson({ ...relatedPerson, patientId: p[0].id })
   }
 
+  const onSearch = async (query: string) => {
+    const patients: Patient[] = await PatientRepository.search(query)
+    return patients.filter((p: Patient) => p.id !== patient.id)
+  }
+
   const body = (
     <form>
       {relatedPersonError?.message && (
@@ -58,18 +63,12 @@ const AddRelatedPersonModal = (props: Props) => {
               placeholder={t('patient.relatedPerson')}
               onChange={onPatientSelect}
               isInvalid={!!relatedPersonError?.relatedPerson}
-              onSearch={async (query: string) => PatientRepository.search(query)}
-              renderMenuItemChildren={(p: Patient) => {
-                if (patient.id === p.id) {
-                  return <div />
-                }
-
-                return (
-                  <div>
-                    {`${p.fullName} - ${format(new Date(p.dateOfBirth), 'yyyy-MM-dd')} (${p.code})`}
-                  </div>
-                )
-              }}
+              onSearch={onSearch}
+              renderMenuItemChildren={(p: Patient) => (
+                <div>
+                  {`${p.fullName} - ${format(new Date(p.dateOfBirth), 'yyyy-MM-dd')} (${p.code})`}
+                </div>
+              )}
             />
             {relatedPersonError?.relatedPerson && (
               <div className="text-left ml-3 mt-1 text-small text-danger invalid-feedback d-block related-person-feedback">
