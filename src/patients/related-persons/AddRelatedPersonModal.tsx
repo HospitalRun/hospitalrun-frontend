@@ -1,4 +1,5 @@
 import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -63,7 +64,11 @@ const AddRelatedPersonModal = (props: Props) => {
                   return <div />
                 }
 
-                return <div>{`${p.fullName} (${p.code})`}</div>
+                return (
+                  <div>
+                    {`${p.fullName} - ${format(new Date(p.dateOfBirth), 'yyyy-MM-dd')} (${p.code})`}
+                  </div>
+                )
               }}
             />
             {relatedPersonError?.relatedPerson && (
