@@ -1,5 +1,3 @@
-import '../../__mocks__/matchMediaMock'
-
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -8,9 +6,9 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as titleUtil from '../../page-header/useTitle'
+import * as titleUtil from '../../page-header/title/useTitle'
 import Settings from '../../settings/Settings'
-import { RootState } from '../../store'
+import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { remoteDb } from '../config/pouchdb'
-import Permissions from '../model/Permissions'
-import User from '../model/User'
-import { AppThunk } from '../store'
+import { remoteDb } from '../shared/config/pouchdb'
+import Permissions from '../shared/model/Permissions'
+import User from '../shared/model/User'
+import { AppThunk } from '../shared/store'
 
 interface UserState {
   permissions: (Permissions | null)[]

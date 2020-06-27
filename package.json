@@ -116,14 +116,14 @@
     "prepublishOnly": "npm run build",
     "test": "npm run translation:check && react-scripts test --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test --passWithNoTests",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"check-translations/**/*.{js,ts}\"",
-    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"check-translations/**/*.{js,ts}\" --fix",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/check-translations/**/*.{js,ts}\"",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/check-translations/**/*.{js,ts}\" --fix",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
     "coveralls": "npm run test:ci -- --coverage --watchAll=false && cat ./coverage/lcov.info",
-    "remove-compiled-translations": "rimraf ./check-translations/compiled",
+    "remove-compiled-translations": "rimraf ./bin/scripts/check-translations",
     "pretranslation:check": "npm run remove-compiled-translations",
-    "translation:check": "tsc -p ./check-translations/tsconfig.json && node ./check-translations/compiled/check-translations/index.js",
+    "translation:check": "tsc -p scripts/tsconfig.json && node ./bin/scripts/check-translations/index.js",
     "posttranslation:check": "npm run remove-compiled-translations"
   },
   "browserslist": {

@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import * as components from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -10,11 +8,11 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Appointment from '../../../model/Appointment'
-import Patient from '../../../model/Patient'
 import AppointmentsList from '../../../patients/appointments/AppointmentsList'
-import { RootState } from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Appointment from '../../../shared/model/Appointment'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 const expectedPatient = {
   id: '123',

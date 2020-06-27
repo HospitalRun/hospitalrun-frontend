@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { subDays } from 'date-fns'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -10,13 +8,13 @@ import { Router, Route } from 'react-router-dom'
 import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Patient from '../../../model/Patient'
-import * as titleUtil from '../../../page-header/useTitle'
+import * as titleUtil from '../../../page-header/title/useTitle'
 import EditPatient from '../../../patients/edit/EditPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import * as patientSlice from '../../../patients/patient-slice'
-import { RootState } from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -32,9 +30,9 @@ describe('Edit Patient', () => {
     type: 'charity',
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
-    phoneNumbers: [{ value: '123456789' }],
-    emails: [{ value: 'email@email.com' }],
-    addresses: [{ value: 'address' }],
+    phoneNumbers: [{ value: '123456789', id: '789' }],
+    emails: [{ value: 'email@email.com', id: '456' }],
+    addresses: [{ value: 'address', id: '123' }],
     code: 'P00001',
     dateOfBirth: subDays(new Date(), 2).toISOString(),
     index: 'givenName familyName suffixP00001',

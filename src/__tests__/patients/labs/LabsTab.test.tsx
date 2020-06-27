@@ -1,4 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
 import * as components from '@hospitalrun/components'
 import format from 'date-fns/format'
 import { mount, ReactWrapper } from 'enzyme'
@@ -10,12 +9,12 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Lab from '../../../model/Lab'
-import Patient from '../../../model/Patient'
-import Permissions from '../../../model/Permissions'
 import LabsTab from '../../../patients/labs/LabsTab'
-import { RootState } from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Lab from '../../../shared/model/Lab'
+import Patient from '../../../shared/model/Patient'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
 
 const expectedPatient = {
   id: '123',

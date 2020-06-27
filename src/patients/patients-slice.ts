@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import PatientRepository from '../clients/db/PatientRepository'
-import SortRequest, { Unsorted } from '../clients/db/SortRequest'
-import Patient from '../model/Patient'
-import { AppThunk } from '../store'
+import PatientRepository from '../shared/db/PatientRepository'
+import SortRequest, { Unsorted } from '../shared/db/SortRequest'
+import Patient from '../shared/model/Patient'
+import { AppThunk } from '../shared/store'
 
 interface PatientsState {
   isLoading: boolean

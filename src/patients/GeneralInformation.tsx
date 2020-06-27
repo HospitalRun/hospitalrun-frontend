@@ -3,11 +3,13 @@ import { startOfDay, subYears, differenceInYears } from 'date-fns'
 import React, { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import DatePickerWithLabelFormGroup from '../components/input/DatePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, { Option } from '../components/input/SelectWithLableFormGroup'
-import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
-import { ContactInfoPiece } from '../model/ContactInformation'
-import Patient from '../model/Patient'
+import DatePickerWithLabelFormGroup from '../shared/components/input/DatePickerWithLabelFormGroup'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../shared/components/input/SelectWithLableFormGroup'
+import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
+import { ContactInfoPiece } from '../shared/model/ContactInformation'
+import Patient from '../shared/model/Patient'
 import ContactInfo from './ContactInfo'
 
 interface Error {

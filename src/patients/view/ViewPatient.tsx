@@ -11,12 +11,12 @@ import {
   useRouteMatch,
 } from 'react-router-dom'
 
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
-import Patient from '../../model/Patient'
-import Permissions from '../../model/Permissions'
-import { useButtonToolbarSetter } from '../../page-header/ButtonBarProvider'
-import useTitle from '../../page-header/useTitle'
-import { RootState } from '../../store'
+import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
+import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
+import useTitle from '../../page-header/title/useTitle'
+import Patient from '../../shared/model/Patient'
+import Permissions from '../../shared/model/Permissions'
+import { RootState } from '../../shared/store'
 import Allergies from '../allergies/Allergies'
 import AppointmentsList from '../appointments/AppointmentsList'
 import CarePlanTab from '../care-plans/CarePlanTab'

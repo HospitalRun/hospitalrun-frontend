@@ -1,5 +1,3 @@
-import '../../../../__mocks__/matchMediaMock'
-
 import * as components from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -11,17 +9,17 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import AppointmentRepository from '../../../../clients/db/AppointmentRepository'
-import PatientRepository from '../../../../clients/db/PatientRepository'
-import Appointment from '../../../../model/Appointment'
-import Patient from '../../../../model/Patient'
-import Permissions from '../../../../model/Permissions'
-import * as ButtonBarProvider from '../../../../page-header/ButtonBarProvider'
-import * as titleUtil from '../../../../page-header/useTitle'
+import * as ButtonBarProvider from '../../../../page-header/button-toolbar/ButtonBarProvider'
+import * as titleUtil from '../../../../page-header/title/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import ViewAppointment from '../../../../scheduling/appointments/view/ViewAppointment'
-import { RootState } from '../../../../store'
+import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
+import PatientRepository from '../../../../shared/db/PatientRepository'
+import Appointment from '../../../../shared/model/Appointment'
+import Patient from '../../../../shared/model/Patient'
+import Permissions from '../../../../shared/model/Permissions'
+import { RootState } from '../../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

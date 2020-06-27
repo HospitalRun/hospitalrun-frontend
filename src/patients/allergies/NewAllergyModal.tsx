@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import Allergy from '../../model/Allergy'
-import { RootState } from '../../store'
+import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import Allergy from '../../shared/model/Allergy'
+import { RootState } from '../../shared/store'
 import { addAllergy } from '../patient-slice'
 
 interface NewAllergyModalProps {

@@ -4,11 +4,11 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-import PatientRepository from '../../clients/db/PatientRepository'
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import Patient from '../../model/Patient'
-import RelatedPerson from '../../model/RelatedPerson'
-import { RootState } from '../../store'
+import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Patient from '../../shared/model/Patient'
+import RelatedPerson from '../../shared/model/RelatedPerson'
+import { RootState } from '../../shared/store'
 import { addRelatedPerson } from '../patient-slice'
 
 interface Props {

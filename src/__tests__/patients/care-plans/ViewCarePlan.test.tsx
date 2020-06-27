@@ -1,4 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -7,10 +6,10 @@ import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Patient from '../../../model/Patient'
 import CarePlanForm from '../../../patients/care-plans/CarePlanForm'
 import ViewCarePlan from '../../../patients/care-plans/ViewCarePlan'
-import { RootState } from '../../../store'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

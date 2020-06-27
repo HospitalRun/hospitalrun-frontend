@@ -1,13 +1,7 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { subDays } from 'date-fns'
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
 
-import AppointmentRepository from '../../../clients/db/AppointmentRepository'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Appointment from '../../../model/Appointment'
-import Patient from '../../../model/Patient'
 import appointment, {
   fetchAppointmentStart,
   fetchAppointmentSuccess,
@@ -24,6 +18,10 @@ import appointment, {
   deleteAppointmentStart,
   deleteAppointmentSuccess,
 } from '../../../scheduling/appointments/appointment-slice'
+import AppointmentRepository from '../../../shared/db/AppointmentRepository'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Appointment from '../../../shared/model/Appointment'
+import Patient from '../../../shared/model/Patient'
 
 describe('appointment slice', () => {
   describe('appointment reducer', () => {

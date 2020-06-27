@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { TextInput, Spinner } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import { mount } from 'enzyme'
@@ -11,11 +9,11 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import { UnpagedRequest } from '../../../clients/db/PageRequest'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
+import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import ViewPatients from '../../../patients/list/ViewPatients'
 import * as patientSlice from '../../../patients/patients-slice'
+import { UnpagedRequest } from '../../../shared/db/PageRequest'
+import PatientRepository from '../../../shared/db/PatientRepository'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)

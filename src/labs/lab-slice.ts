@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import LabRepository from '../clients/db/LabRepository'
-import PatientRepository from '../clients/db/PatientRepository'
-import Lab from '../model/Lab'
-import Patient from '../model/Patient'
-import { AppThunk } from '../store'
+import LabRepository from '../shared/db/LabRepository'
+import PatientRepository from '../shared/db/PatientRepository'
+import Lab from '../shared/model/Lab'
+import Patient from '../shared/model/Patient'
+import { AppThunk } from '../shared/store'
 
 interface Error {
   result?: string
