@@ -6,7 +6,6 @@ interface Props {
   label?: string
   name: string
   isEditable?: boolean
-  placeholder?: string
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
   isRequired?: boolean
   feedback?: string
