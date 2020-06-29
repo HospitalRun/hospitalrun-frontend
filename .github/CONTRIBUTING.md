@@ -9,11 +9,11 @@ Before contributing, please read the [code of conduct](https://github.com/Hospit
    4. Commit Changes
    5. Submit a Pull Request
 
-## 2. After creating a local branch (step 3 above), follow these steps to configure CouchDB
+## 2. After creating a local fork (step 3 above), follow these steps to configure CouchDB
 
-CouchDB is the server side database which data from the frontend will sync to. CouchDB is required to login
+CouchDB is the server side database which data from the frontend will sync from and to. CouchDB is required to login
 to HospitalRun. You could install and run CouchDB in any way you wish. For convienence, we have added a docker compose file in the
-root of this project to launch CouchDB. Below is the steps:
+root of this project to launch CouchDB. Below are the steps:
 
 1. Start [Docker](https://docs.docker.com/get-docker/). Install it if you don't have it yet.
 2. Install [Docker Compose](https://docs.docker.com/compose/install/) if you don't have it yet.
