@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
-import Allergy from '../../model/Allergy'
-import Patient from '../../model/Patient'
-import Permissions from '../../model/Permissions'
-import { RootState } from '../../store'
+import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
+import Allergy from '../../shared/model/Allergy'
+import Patient from '../../shared/model/Patient'
+import Permissions from '../../shared/model/Permissions'
+import { RootState } from '../../shared/store'
 import NewAllergyModal from './NewAllergyModal'
 
 interface AllergiesProps {

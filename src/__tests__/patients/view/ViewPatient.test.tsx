@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { TabsHeader, Tab } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -11,11 +9,8 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Patient from '../../../model/Patient'
-import Permissions from '../../../model/Permissions'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/useTitle'
+import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/title/useTitle'
 import Allergies from '../../../patients/allergies/Allergies'
 import AppointmentsList from '../../../patients/appointments/AppointmentsList'
 import CarePlanTab from '../../../patients/care-plans/CarePlanTab'
@@ -26,7 +21,10 @@ import NotesTab from '../../../patients/notes/NoteTab'
 import * as patientSlice from '../../../patients/patient-slice'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
 import ViewPatient from '../../../patients/view/ViewPatient'
-import { RootState } from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

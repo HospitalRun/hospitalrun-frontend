@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { Calendar } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
@@ -10,14 +8,14 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import AppointmentRepository from '../../../clients/db/AppointmentRepository'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Appointment from '../../../model/Appointment'
-import Patient from '../../../model/Patient'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/useTitle'
+import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/title/useTitle'
 import ViewAppointments from '../../../scheduling/appointments/ViewAppointments'
-import { RootState } from '../../../store'
+import AppointmentRepository from '../../../shared/db/AppointmentRepository'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Appointment from '../../../shared/model/Appointment'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 describe('ViewAppointments', () => {
   const expectedAppointments = [

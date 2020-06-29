@@ -4,10 +4,10 @@ import Button from 'react-bootstrap/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
-import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
-import { remoteDb } from '../config/pouchdb'
-import logo from '../images/logo-on-transparent.png'
-import { RootState } from '../store'
+import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
+import { remoteDb } from '../shared/config/pouchdb'
+import logo from '../shared/static/images/logo-on-transparent.png'
+import { RootState } from '../shared/store'
 import { getCurrentSession, login } from '../user/user-slice'
 
 const Login = () => {

@@ -1,13 +1,14 @@
 import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-import PatientRepository from '../../clients/db/PatientRepository'
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import Patient from '../../model/Patient'
-import RelatedPerson from '../../model/RelatedPerson'
-import { RootState } from '../../store'
+import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Patient from '../../shared/model/Patient'
+import RelatedPerson from '../../shared/model/RelatedPerson'
+import { RootState } from '../../shared/store'
 import { addRelatedPerson } from '../patient-slice'
 
 interface Props {
@@ -42,6 +43,11 @@ const AddRelatedPersonModal = (props: Props) => {
     setRelatedPerson({ ...relatedPerson, patientId: p[0].id })
   }
 
+  const onSearch = async (query: string) => {
+    const patients: Patient[] = await PatientRepository.search(query)
+    return patients.filter((p: Patient) => p.id !== patient.id)
+  }
+
   const body = (
     <form>
       {relatedPersonError?.message && (
@@ -57,14 +63,12 @@ const AddRelatedPersonModal = (props: Props) => {
               placeholder={t('patient.relatedPerson')}
               onChange={onPatientSelect}
               isInvalid={!!relatedPersonError?.relatedPerson}
-              onSearch={async (query: string) => PatientRepository.search(query)}
-              renderMenuItemChildren={(p: Patient) => {
-                if (patient.id === p.id) {
-                  return <div />
-                }
-
-                return <div>{`${p.fullName} (${p.code})`}</div>
-              }}
+              onSearch={onSearch}
+              renderMenuItemChildren={(p: Patient) => (
+                <div>
+                  {`${p.fullName} - ${format(new Date(p.dateOfBirth), 'yyyy-MM-dd')} (${p.code})`}
+                </div>
+              )}
             />
             {relatedPersonError?.relatedPerson && (
               <div className="text-left ml-3 mt-1 text-small text-danger invalid-feedback d-block related-person-feedback">

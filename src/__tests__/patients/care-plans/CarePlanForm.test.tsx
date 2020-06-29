@@ -1,14 +1,13 @@
-import '../../../__mocks__/matchMediaMock'
 import { Alert } from '@hospitalrun/components'
 import { addDays } from 'date-fns'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 
-import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../../model/CarePlan'
-import Diagnosis from '../../../model/Diagnosis'
-import Patient from '../../../model/Patient'
 import CarePlanForm from '../../../patients/care-plans/CarePlanForm'
+import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../../shared/model/CarePlan'
+import Diagnosis from '../../../shared/model/Diagnosis'
+import Patient from '../../../shared/model/Patient'
 
 describe('Care Plan Form', () => {
   let onCarePlanChangeSpy: any

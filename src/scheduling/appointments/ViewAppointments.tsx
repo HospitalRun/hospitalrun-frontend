@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
-import PatientRepository from '../../clients/db/PatientRepository'
-import { useButtonToolbarSetter } from '../../page-header/ButtonBarProvider'
-import useTitle from '../../page-header/useTitle'
-import { RootState } from '../../store'
+import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
+import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
+import useTitle from '../../page-header/title/useTitle'
+import PatientRepository from '../../shared/db/PatientRepository'
+import { RootState } from '../../shared/store'
 import { fetchAppointments } from './appointments-slice'
 
 interface Event {

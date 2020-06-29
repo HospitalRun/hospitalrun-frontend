@@ -1,4 +1,4 @@
-import Appointment from '../../../model/Appointment'
+import Appointment from '../../../shared/model/Appointment'
 
 const options = {
   year: 'numeric',

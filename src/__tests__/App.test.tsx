@@ -1,5 +1,3 @@
-import '../__mocks__/matchMediaMock'
-
 import { shallow } from 'enzyme'
 import React from 'react'
 

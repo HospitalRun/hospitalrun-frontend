@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import CarePlan from '../../model/CarePlan'
-import { RootState } from '../../store'
+import CarePlan from '../../shared/model/CarePlan'
+import { RootState } from '../../shared/store'
 
 const CarePlanTable = () => {
   const history = useHistory()

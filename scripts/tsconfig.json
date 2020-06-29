@@ -1,5 +1,5 @@
 {
-  "include": ["./checkMissingTranslations.ts"],
+  "include": ["./**/*.ts"],
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "../bin",

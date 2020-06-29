@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
-import PatientRepository from '../../clients/db/PatientRepository'
-import Lab from '../../model/Lab'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Lab from '../../shared/model/Lab'
 
 interface Props {
   patientId: string

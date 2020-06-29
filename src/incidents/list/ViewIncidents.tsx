@@ -5,11 +5,13 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import SelectWithLabelFormGroup, { Option } from '../../components/input/SelectWithLableFormGroup'
-import Incident from '../../model/Incident'
-import { useButtonToolbarSetter } from '../../page-header/ButtonBarProvider'
-import useTitle from '../../page-header/useTitle'
-import { RootState } from '../../store'
+import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
+import useTitle from '../../page-header/title/useTitle'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../../shared/components/input/SelectWithLableFormGroup'
+import Incident from '../../shared/model/Incident'
+import { RootState } from '../../shared/store'
 import IncidentFilter from '../IncidentFilter'
 import { searchIncidents } from '../incidents-slice'
 

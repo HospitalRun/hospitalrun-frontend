@@ -2,11 +2,13 @@ import { Spinner, Row, Column, Icon } from '@hospitalrun/components'
 import React, { useEffect, ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import SelectWithLabelFormGroup, { Option } from '../components/input/SelectWithLableFormGroup'
-import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
-import { ContactInfoPiece } from '../model/ContactInformation'
-import { uuid } from '../util/uuid'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../shared/components/input/SelectWithLableFormGroup'
+import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
+import { ContactInfoPiece } from '../shared/model/ContactInformation'
+import { uuid } from '../shared/util/uuid'
 import ContactInfoTypes from './ContactInfoTypes'
 
 interface Props {
