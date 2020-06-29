@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import useTitle from '../page-header/useTitle'
+import useTitle from '../page-header/title/useTitle'
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation()

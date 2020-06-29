@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
-import LabRepository from '../../clients/db/LabRepository'
-import Lab from '../../model/Lab'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Lab from '../../shared/model/Lab'
 
 interface Props {
   patientId: string
@@ -20,7 +20,7 @@ const LabsTab = (props: Props) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const fetchedLabs = await LabRepository.findAllByPatientId(patientId)
+      const fetchedLabs = await PatientRepository.getLabs(patientId)
       setLabs(fetchedLabs)
     }
 

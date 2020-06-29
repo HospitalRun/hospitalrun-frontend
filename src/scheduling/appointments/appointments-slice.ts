@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import AppointmentRepository from '../../clients/db/AppointmentRepository'
-import Appointment from '../../model/Appointment'
-import { AppThunk } from '../../store'
+import AppointmentRepository from '../../shared/db/AppointmentRepository'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Appointment from '../../shared/model/Appointment'
+import { AppThunk } from '../../shared/store'
 
 interface AppointmentsState {
   isLoading: boolean
@@ -38,19 +39,10 @@ export const fetchAppointments = (): AppThunk => async (dispatch) => {
   dispatch(fetchAppointmentsSuccess(appointments))
 }
 
-export const fetchPatientAppointments = (
-  patientId: string,
-  searchString?: string,
-): AppThunk => async (dispatch) => {
+export const fetchPatientAppointments = (patientId: string): AppThunk => async (dispatch) => {
   dispatch(fetchAppointmentsStart())
 
-  let appointments
-  if (searchString === undefined || searchString.trim() === '') {
-    const query = { selector: { patientId } }
-    appointments = await AppointmentRepository.search(query)
-  } else {
-    appointments = await AppointmentRepository.searchPatientAppointments(patientId, searchString)
-  }
+  const appointments = await PatientRepository.getAppointments(patientId)
 
   dispatch(fetchAppointmentsSuccess(appointments))
 }

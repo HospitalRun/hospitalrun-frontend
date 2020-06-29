@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -9,15 +7,15 @@ import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as breadcrumbUtil from '../../../breadcrumbs/useAddBreadcrumbs'
-import IncidentRepository from '../../../clients/db/IncidentRepository'
 import IncidentFilter from '../../../incidents/IncidentFilter'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
-import Incident from '../../../model/Incident'
-import Permissions from '../../../model/Permissions'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/useTitle'
-import { RootState } from '../../../store'
+import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
+import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/title/useTitle'
+import IncidentRepository from '../../../shared/db/IncidentRepository'
+import Incident from '../../../shared/model/Incident'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -75,26 +73,12 @@ describe('View Incidents', () => {
     return wrapper
   }
   it('should filter incidents by status=reported on first load ', async () => {
-    const wrapper = await setup([Permissions.ViewIncidents])
-    const filterSelect = wrapper.find('select')
-    expect(filterSelect.props().value).toBe(IncidentFilter.reported)
+    await setup([Permissions.ViewIncidents])
 
     expect(IncidentRepository.search).toHaveBeenCalled()
     expect(IncidentRepository.search).toHaveBeenCalledWith({ status: IncidentFilter.reported })
   })
-  it('should call IncidentRepository after changing filter', async () => {
-    const wrapper = await setup([Permissions.ViewIncidents])
-    const filterSelect = wrapper.find('select')
 
-    expect(IncidentRepository.findAll).not.toHaveBeenCalled()
-
-    filterSelect.simulate('change', { target: { value: IncidentFilter.all } })
-    expect(IncidentRepository.findAll).toHaveBeenCalled()
-    filterSelect.simulate('change', { target: { value: IncidentFilter.reported } })
-
-    expect(IncidentRepository.search).toHaveBeenCalledTimes(2)
-    expect(IncidentRepository.search).toHaveBeenLastCalledWith({ status: IncidentFilter.reported })
-  })
   describe('layout', () => {
     it('should set the title', async () => {
       await setup([Permissions.ViewIncidents])

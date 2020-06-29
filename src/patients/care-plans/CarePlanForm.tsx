@@ -1,13 +1,15 @@
 import { Alert, Column, Row } from '@hospitalrun/components'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import DatePickerWithLabelFormGroup from '../../components/input/DatePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
-import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../model/CarePlan'
-import Patient from '../../model/Patient'
+import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../../shared/components/input/SelectWithLableFormGroup'
+import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../shared/model/CarePlan'
+import Patient from '../../shared/model/Patient'
 
 interface Error {
   message?: string
@@ -32,6 +34,10 @@ const CarePlanForm = (props: Props) => {
   const { t } = useTranslation()
   const { patient, carePlan, carePlanError, disabled, onChange } = props
 
+  const [condition, setCondition] = useState(carePlan.diagnosisId)
+  const [status, setStatus] = useState(carePlan.status)
+  const [intent, setIntent] = useState(carePlan.intent)
+
   const onFieldChange = (name: string, value: string | CarePlanStatus | CarePlanIntent) => {
     if (onChange) {
       const newCarePlan = {
@@ -41,6 +47,13 @@ const CarePlanForm = (props: Props) => {
       onChange(newCarePlan)
     }
   }
+
+  const conditionOptions: Option[] =
+    patient.diagnoses?.map((d) => ({ label: d.name, value: d.id })) || []
+
+  const statusOptions: Option[] = Object.values(CarePlanStatus).map((v) => ({ label: v, value: v }))
+
+  const intentOptions: Option[] = Object.values(CarePlanIntent).map((v) => ({ label: v, value: v }))
 
   return (
     <form>
@@ -75,44 +88,51 @@ const CarePlanForm = (props: Props) => {
       </Row>
       <Row>
         <Column sm={12}>
+          {/* add feedback in next round */}
           <SelectWithLabelFormGroup
-            isRequired
-            value={carePlan.diagnosisId}
-            label={t('patient.carePlan.condition')}
             name="condition"
-            feedback={t(carePlanError?.condition || '')}
-            isInvalid={!!carePlanError?.condition}
+            label={t('patient.carePlan.condition')}
+            isRequired
+            options={conditionOptions}
+            defaultSelected={conditionOptions.filter(({ value }) => value === condition)}
+            onChange={(values) => {
+              onFieldChange('diagnosisId', values[0])
+              setCondition(values[0])
+            }}
             isEditable={!disabled}
-            onChange={(event) => onFieldChange('diagnosisId', event.currentTarget.value)}
-            options={patient.diagnoses?.map((d) => ({ label: d.name, value: d.id })) || []}
+            isInvalid={!!carePlanError?.condition}
           />
         </Column>
       </Row>
       <Row>
         <Column sm={6}>
           <SelectWithLabelFormGroup
-            isRequired
-            value={carePlan.status}
-            label={t('patient.carePlan.status')}
             name="status"
-            feedback={t(carePlanError?.status || '')}
-            isInvalid={!!carePlanError?.status}
+            label={t('patient.carePlan.status')}
+            isRequired
+            options={statusOptions}
+            defaultSelected={statusOptions.filter(({ value }) => value === status)}
+            onChange={(values) => {
+              onFieldChange('status', values[0])
+              setStatus(values[0] as CarePlanStatus)
+            }}
             isEditable={!disabled}
-            options={Object.values(CarePlanStatus).map((v) => ({ label: v, value: v }))}
-            onChange={(event) => onFieldChange('status', event.currentTarget.value)}
+            isInvalid={!!carePlanError?.status}
           />
         </Column>
         <Column sm={6}>
           <SelectWithLabelFormGroup
-            isRequired
-            value={carePlan.intent}
-            label={t('patient.carePlan.intent')}
             name="intent"
-            feedback={t(carePlanError?.intent || '')}
-            isInvalid={!!carePlanError?.intent}
+            label={t('patient.carePlan.intent')}
+            isRequired
+            options={intentOptions}
+            defaultSelected={intentOptions.filter(({ value }) => value === intent)}
+            onChange={(values) => {
+              onFieldChange('intent', values[0])
+              setIntent(values[0] as CarePlanIntent)
+            }}
             isEditable={!disabled}
-            options={Object.values(CarePlanIntent).map((v) => ({ label: v, value: v }))}
-            onChange={(event) => onFieldChange('intent', event.currentTarget.value)}
+            isInvalid={!!carePlanError?.intent}
           />
         </Column>
       </Row>
@@ -145,7 +165,6 @@ const CarePlanForm = (props: Props) => {
       <Row>
         <Column sm={12}>
           <TextFieldWithLabelFormGroup
-            isRequired
             value={carePlan.note}
             label={t('patient.carePlan.note')}
             name="note"

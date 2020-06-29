@@ -2,16 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isBefore } from 'date-fns'
 import _ from 'lodash'
 
-import AppointmentRepository from '../../clients/db/AppointmentRepository'
-import PatientRepository from '../../clients/db/PatientRepository'
-import Appointment from '../../model/Appointment'
-import Patient from '../../model/Patient'
-import { AppThunk } from '../../store'
+import AppointmentRepository from '../../shared/db/AppointmentRepository'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Appointment from '../../shared/model/Appointment'
+import Patient from '../../shared/model/Patient'
+import { AppThunk } from '../../shared/store'
 
 function validateAppointment(appointment: Appointment) {
   const err: Error = {}
 
-  if (!appointment.patientId) {
+  if (!appointment.patient) {
     err.patient = 'scheduling.appointment.errors.patientRequired'
   }
 
@@ -101,7 +101,7 @@ export const {
 export const fetchAppointment = (id: string): AppThunk => async (dispatch) => {
   dispatch(fetchAppointmentStart())
   const appointment = await AppointmentRepository.find(id)
-  const patient = await PatientRepository.find(appointment.patientId)
+  const patient = await PatientRepository.find(appointment.patient)
 
   dispatch(fetchAppointmentSuccess({ appointment, patient }))
 }

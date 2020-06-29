@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import useAddBreadcrumbs from '../../../breadcrumbs/useAddBreadcrumbs'
-import Appointment from '../../../model/Appointment'
-import useTitle from '../../../page-header/useTitle'
-import { RootState } from '../../../store'
+import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
+import useTitle from '../../../page-header/title/useTitle'
+import Appointment from '../../../shared/model/Appointment'
+import { RootState } from '../../../shared/store'
 import { createAppointment } from '../appointment-slice'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 
@@ -29,7 +29,7 @@ const NewAppointment = () => {
   const { error } = useSelector((state: RootState) => state.appointment)
 
   const [appointment, setAppointment] = useState({
-    patientId: '',
+    patient: '',
     startDateTime: startDateTime.toISOString(),
     endDateTime: endDateTime.toISOString(),
     location: '',

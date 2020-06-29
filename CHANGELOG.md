@@ -2,6 +2,67 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0-alpha.4](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2020-06-26)
+
+
+### Features
+
+* **navbar:** add hamberger icon for mobile, and dividers ([1cf6575](https://github.com/HospitalRun/hospitalrun-frontend/commit/1cf657516e1249373c3e44247700d435473c7d59))
+* apply select component changes ([c38004b](https://github.com/HospitalRun/hospitalrun-frontend/commit/c38004bf9285a6cc53c36150754bd659130e5998))
+* **add new script for checking missing translations:** translations ([9ca5232](https://github.com/HospitalRun/hospitalrun-frontend/commit/9ca5232632503fbefb5ffae4e4d23a10d44fc62c)), closes [#1919](https://github.com/HospitalRun/hospitalrun-frontend/issues/1919)
+* **care plan:** fix internationalization ([72a5bed](https://github.com/HospitalRun/hospitalrun-frontend/commit/72a5bede7862c72eecb068c0c20141ef619a8f27))
+* **care-plan:** add care plan form and tests ([e96eb83](https://github.com/HospitalRun/hospitalrun-frontend/commit/e96eb835c37c0d4174ee8a8878286fbabda309c8))
+* **careplan:** adds ability to add a new care plan ([0aa0cf9](https://github.com/HospitalRun/hospitalrun-frontend/commit/0aa0cf93b3f9e3153592684ce05babee2e0c5379))
+* **checkmissingtranslations.ts:** add language in logs ([d20b9c7](https://github.com/HospitalRun/hospitalrun-frontend/commit/d20b9c718dcb3f72142cb3280d779d7ef74f973e))
+* **checkmissingtranslations.ts:** change type of searchingPath ([7ab8195](https://github.com/HospitalRun/hospitalrun-frontend/commit/7ab81957277eec5368d6daea5e38f003a7f03255))
+* **checkmissingtranslations.ts:** refactor ([75f9981](https://github.com/HospitalRun/hospitalrun-frontend/commit/75f998103cde809054d01b5d999dba557952bb09))
+* **checkmissintranlations.ts:** add colors to log ([ede7b2e](https://github.com/HospitalRun/hospitalrun-frontend/commit/ede7b2eca4046bc93dc47c43a73ef9007f2f1594))
+* **checkmissintranslations.ts:** run script before default ones ([5ef3f7e](https://github.com/HospitalRun/hospitalrun-frontend/commit/5ef3f7ec702331bb1bea14cd51a46e48a2a31ca2))
+* **datepicker:** add year selector dropdown ([#2060](https://github.com/HospitalRun/hospitalrun-frontend/issues/2060)) ([b159d7a](https://github.com/HospitalRun/hospitalrun-frontend/commit/b159d7ada730976583d416b0f44d38a186abe4cd))
+* **i18n:** add italian translation ([#2035](https://github.com/HospitalRun/hospitalrun-frontend/issues/2035)) ([44f15f3](https://github.com/HospitalRun/hospitalrun-frontend/commit/44f15f3a12b3a4252f70c745b37a1140c732d976))
+* **incident:** Added Report Incident button ([43cafa6](https://github.com/HospitalRun/hospitalrun-frontend/commit/43cafa6da8334bf41440588ce71a27b42b73ef9d))
+* **incidents:** add ability to view an incident ([5887859](https://github.com/HospitalRun/hospitalrun-frontend/commit/5887859542247573843fc5af980cd081f6cc6f25))
+* **incidents:** add incident related routing ([2e9e985](https://github.com/HospitalRun/hospitalrun-frontend/commit/2e9e985c877db2f095ba11fb6900fc177283d5cc))
+* **incidents:** adds ability to report incident ([4a4a682](https://github.com/HospitalRun/hospitalrun-frontend/commit/4a4a6821838982f51b94ff050ff5e614a95d8839))
+* **incidents:** adds ability to view all incidents ([f11d8e9](https://github.com/HospitalRun/hospitalrun-frontend/commit/f11d8e90fe2752eba35fa2108e188053b89e6e8f))
+* **incidents:** filter incidents ([#2087](https://github.com/HospitalRun/hospitalrun-frontend/issues/2087)) ([5309a85](https://github.com/HospitalRun/hospitalrun-frontend/commit/5309a859a4b19617f44183b1d70d0f36af6206d8))
+* **labs:** ability to filter by status on labs screen ([#2033](https://github.com/HospitalRun/hospitalrun-frontend/issues/2033)) ([2b5c789](https://github.com/HospitalRun/hospitalrun-frontend/commit/2b5c789bb6247c3fe62fad8818d7fa1a16034a5b))
+* **labs:** add lab code ([#2040](https://github.com/HospitalRun/hospitalrun-frontend/issues/2040)) ([b695ac8](https://github.com/HospitalRun/hospitalrun-frontend/commit/b695ac899ea73e7059a50ad633bea90932431ff8))
+* **navbar:** add shortcut icon to the create pages ([b1a8cdf](https://github.com/HospitalRun/hospitalrun-frontend/commit/b1a8cdf3e3288f6084592f583407ea89cebd5134))
+* **network-status:** Notify users when they're working offline ([#2109](https://github.com/HospitalRun/hospitalrun-frontend/issues/2109)) ([fa5bcb6](https://github.com/HospitalRun/hospitalrun-frontend/commit/fa5bcb6a86ae082de789aca84a938bc7f99a8ca7))
+* **newlabrequest:** add requestBy to model ([c791de3](https://github.com/HospitalRun/hospitalrun-frontend/commit/c791de39fa8c67d875f8fb1aa99baf164691b5eb)), closes [#2082](https://github.com/HospitalRun/hospitalrun-frontend/issues/2082)
+* **pagecomponent:** user can change page size ([7411ad0](https://github.com/HospitalRun/hospitalrun-frontend/commit/7411ad09ee680e5a691fdd34f1ca33c452398f1b)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969)
+* **patient:** add input validation ([#2032](https://github.com/HospitalRun/hospitalrun-frontend/issues/2032)) ([bb02fa2](https://github.com/HospitalRun/hospitalrun-frontend/commit/bb02fa20a23eab285c88cfe6ef16d28783d24ec6))
+* **patient:** multiple contact info ([#2113](https://github.com/HospitalRun/hospitalrun-frontend/issues/2113)) ([ceb96a4](https://github.com/HospitalRun/hospitalrun-frontend/commit/ceb96a4af48d4108babb7ff4f5d3e75bf74ec1fb))
+* **settings:** add navbar dropdown and settings page ([#2096](https://github.com/HospitalRun/hospitalrun-frontend/issues/2096)) ([e5677fe](https://github.com/HospitalRun/hospitalrun-frontend/commit/e5677fe459fe07637b0c9b3a2445296a89d16ee1))
+* **viewpatient:** added labs tab to ViewPatient ([#1987](https://github.com/HospitalRun/hospitalrun-frontend/issues/1987)) ([4a1c7ed](https://github.com/HospitalRun/hospitalrun-frontend/commit/4a1c7ed4a80265e55020f8b86fbec1aedf366330))
+* **viewpatients:** add a new field 'index', paging in next direction ([d1c55e7](https://github.com/HospitalRun/hospitalrun-frontend/commit/d1c55e7ab0bdcbe9a851751a747a6fe71714dc6a)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969) [#1967](https://github.com/HospitalRun/hospitalrun-frontend/issues/1967)
+* **viewpatients:** add paging feature in ViewPatients component ([dff2b3e](https://github.com/HospitalRun/hospitalrun-frontend/commit/dff2b3e44ee076f8154290fe9183106d6fe3f231)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969)
+* **viewpatients:** add paging for search patients ([b96680f](https://github.com/HospitalRun/hospitalrun-frontend/commit/b96680fbe1329384ed6eefa9e414803c781897dd)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969)
+* **viewpatients:** add Tests, Fix bug ([671ad02](https://github.com/HospitalRun/hospitalrun-frontend/commit/671ad02d6992727f73c777f673a6c305fd57b1b2)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969)
+* **viewpatients:** enables to navigation to previous page ([52a59d3](https://github.com/HospitalRun/hospitalrun-frontend/commit/52a59d3865444d37a2c605d2799346172fec2904)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969)
+* **viewpatients:** refactor code as recommended ([5308f5f](https://github.com/HospitalRun/hospitalrun-frontend/commit/5308f5fc7fa358d13797dee5e6a78b724795f31b)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969)
+* add Sort request in ViewPatients ([c4109a4](https://github.com/HospitalRun/hospitalrun-frontend/commit/c4109a470290843b39023e656db68845930174d0)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969)
+
+
+### Bug Fixes
+
+* **datetime:** datetime pickers are bigger now ([#2056](https://github.com/HospitalRun/hospitalrun-frontend/issues/2056)) ([52d30a3](https://github.com/HospitalRun/hospitalrun-frontend/commit/52d30a3ec1cc27c2ee2ec8827dce331180203461))
+* **eslint:** fix pouchdb test error ([f19d276](https://github.com/HospitalRun/hospitalrun-frontend/commit/f19d276bff9fa8aaf906cf0b8f1f97dcfa362e4a))
+* **i18n:** fix build ([30bb158](https://github.com/HospitalRun/hospitalrun-frontend/commit/30bb1587125e1d208ffb68e6f8ec9d4aab09a291))
+* **incidents:** add loading during fetch phase ([#2085](https://github.com/HospitalRun/hospitalrun-frontend/issues/2085)) ([d1fb940](https://github.com/HospitalRun/hospitalrun-frontend/commit/d1fb94078494a048f9d8aae5ac1b803f429dc07e))
+* **navbar:** Make Navbar mobile-friendly ([#2118](https://github.com/HospitalRun/hospitalrun-frontend/issues/2118)) ([391271a](https://github.com/HospitalRun/hospitalrun-frontend/commit/391271a23a3cdd66f27911aafb729c4add10c171))
+* **patient:** make note not required in care plan ([#2158](https://github.com/HospitalRun/hospitalrun-frontend/issues/2158)) ([34e6041](https://github.com/HospitalRun/hospitalrun-frontend/commit/34e6041cd051aa8ce98bdf359cc6874da1244096))
+* **sidebar:** sidebar should only show links user has access to see ([66feda1](https://github.com/HospitalRun/hospitalrun-frontend/commit/66feda1eefba9f663598f4f1d8f3f0484dfe38eb)), closes [#2110](https://github.com/HospitalRun/hospitalrun-frontend/issues/2110)
+* **sidebar:** sidebar should only show links user has access to see ([2f22ebd](https://github.com/HospitalRun/hospitalrun-frontend/commit/2f22ebdab707028d17a1417a995aa57b40422ad3)), closes [#2110](https://github.com/HospitalRun/hospitalrun-frontend/issues/2110)
+* **toolchain:** extends scripts tsconfig.json from base one ([6532028](https://github.com/HospitalRun/hospitalrun-frontend/commit/653202870b4eafad6f960136b63ef76639ca005c)), closes [#2113](https://github.com/HospitalRun/hospitalrun-frontend/issues/2113)
+* **toolchain:** fix broken deps and updates translate-check script ([d0c35db](https://github.com/HospitalRun/hospitalrun-frontend/commit/d0c35db60aef95d0892fe7650960635eeda25df8))
+* standardize mock store setup in tests ([#2075](https://github.com/HospitalRun/hospitalrun-frontend/issues/2075)) ([50f9e49](https://github.com/HospitalRun/hospitalrun-frontend/commit/50f9e49ec1edc3bfdb8c2bbaed98bb8ceeb27f92))
+* standardized react router imports in tests and source code ([#2067](https://github.com/HospitalRun/hospitalrun-frontend/issues/2067)) ([cb3cea5](https://github.com/HospitalRun/hospitalrun-frontend/commit/cb3cea5d6e1c3c568ecd6536c55d8aa5e6d6e62d))
+* styling the Navbar to make it Sticky ([#2057](https://github.com/HospitalRun/hospitalrun-frontend/issues/2057)) ([11e4de8](https://github.com/HospitalRun/hospitalrun-frontend/commit/11e4de80fc2d36d5fdeacdf24466db14de10eb30))
+* **viewpatients:** call PatientRepository.findAll() only once ([#2044](https://github.com/HospitalRun/hospitalrun-frontend/issues/2044)) ([9084411](https://github.com/HospitalRun/hospitalrun-frontend/commit/9084411bc459abfd5e7003460ff2f1574cbbc243))
+* **viewpatients.tsx:** add userPageRequest in dependency array ([11b6c8b](https://github.com/HospitalRun/hospitalrun-frontend/commit/11b6c8be0ee643bea6c33250c8adb36b8dafbf8f)), closes [#1969](https://github.com/HospitalRun/hospitalrun-frontend/issues/1969)
+
 ## [2.0.0-alpha.3](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2020-05-02)
 
 

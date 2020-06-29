@@ -2,8 +2,8 @@ import { Row, Column } from '@hospitalrun/components'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import LanguageSelector from '../components/input/LanguageSelector'
-import useTitle from '../page-header/useTitle'
+import useTitle from '../page-header/title/useTitle'
+import LanguageSelector from '../shared/components/input/LanguageSelector'
 
 const Settings = () => {
   const { t } = useTranslation()

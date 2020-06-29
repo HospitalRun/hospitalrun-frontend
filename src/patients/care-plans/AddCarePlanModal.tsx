@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-import CarePlan from '../../model/CarePlan'
-import { RootState } from '../../store'
+import CarePlan from '../../shared/model/CarePlan'
+import { RootState } from '../../shared/store'
 import { addCarePlan } from '../patient-slice'
 import CarePlanForm from './CarePlanForm'
 

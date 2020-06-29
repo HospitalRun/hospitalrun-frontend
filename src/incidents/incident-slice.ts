@@ -3,9 +3,9 @@ import { isAfter } from 'date-fns'
 import { isEmpty } from 'lodash'
 import shortid from 'shortid'
 
-import IncidentRepository from '../clients/db/IncidentRepository'
-import Incident from '../model/Incident'
-import { AppThunk } from '../store'
+import IncidentRepository from '../shared/db/IncidentRepository'
+import Incident from '../shared/model/Incident'
+import { AppThunk } from '../shared/store'
 
 interface Error {
   date?: string
@@ -108,7 +108,7 @@ export const reportIncident = (
   if (isEmpty(incidentError)) {
     incident.reportedOn = new Date(Date.now()).toISOString()
     incident.code = getIncidentCode()
-    incident.reportedBy = getState().user.user.id
+    incident.reportedBy = getState().user.user?.id || ''
     incident.status = 'reported'
     const newIncident = await IncidentRepository.save(incident)
     await dispatch(reportIncidentSuccess(newIncident))

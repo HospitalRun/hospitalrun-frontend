@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import * as components from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -11,13 +9,13 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Patient from '../../../model/Patient'
-import * as titleUtil from '../../../page-header/useTitle'
+import * as titleUtil from '../../../page-header/title/useTitle'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import NewPatient from '../../../patients/new/NewPatient'
 import * as patientSlice from '../../../patients/patient-slice'
-import { RootState } from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

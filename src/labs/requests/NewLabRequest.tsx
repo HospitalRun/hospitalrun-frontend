@@ -4,14 +4,14 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
-import PatientRepository from '../../clients/db/PatientRepository'
-import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../components/input/TextInputWithLabelFormGroup'
-import Lab from '../../model/Lab'
-import Patient from '../../model/Patient'
-import useTitle from '../../page-header/useTitle'
-import { RootState } from '../../store'
+import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
+import useTitle from '../../page-header/title/useTitle'
+import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
+import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Lab from '../../shared/model/Lab'
+import Patient from '../../shared/model/Patient'
+import { RootState } from '../../shared/store'
 import { requestLab } from '../lab-slice'
 
 const NewLabRequest = () => {
@@ -22,7 +22,7 @@ const NewLabRequest = () => {
   const { status, error } = useSelector((state: RootState) => state.lab)
 
   const [newLabRequest, setNewLabRequest] = useState({
-    patientId: '',
+    patient: '',
     type: '',
     notes: '',
     status: 'requested',
@@ -39,7 +39,7 @@ const NewLabRequest = () => {
   const onPatientChange = (patient: Patient) => {
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
-      patientId: patient.id,
+      patient: patient.id,
     }))
   }
 

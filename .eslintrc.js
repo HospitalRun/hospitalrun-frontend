@@ -21,7 +21,7 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./tsconfig.json', './check-translations/tsconfig.json'],
+    project: ['./tsconfig.json', './scripts/tsconfig.json'],
     tsconfigRootDir: './',
   },
   settings: {
@@ -43,6 +43,7 @@ module.exports = {
     'prettier/prettier': 'error',
     '@typescript-eslint/member-delimiter-style': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    "@typescript-eslint/explicit-module-boundary-types": 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     '@typescript-eslint/unified-signatures': 'error',

@@ -1,5 +1,3 @@
-import '../../__mocks__/matchMediaMock'
-
 import { Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { startOfDay, subYears } from 'date-fns'
@@ -8,8 +6,8 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
 
-import Patient from '../../model/Patient'
 import GeneralInformation from '../../patients/GeneralInformation'
+import Patient from '../../shared/model/Patient'
 
 describe('Error handling', () => {
   it('should display errors', () => {
@@ -25,8 +23,8 @@ describe('Error handling', () => {
       <GeneralInformation
         patient={
           {
-            phoneNumbers: [{ value: 'not a phone number' }],
-            emails: [{ value: 'not an email' }],
+            phoneNumbers: [{ value: 'not a phone number', id: '123' }],
+            emails: [{ value: 'not an email', id: '456' }],
           } as Patient
         }
         isEditable
@@ -74,16 +72,16 @@ describe('General Information, without isEditable', () => {
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
     phoneNumbers: [
-      { value: '123456', type: undefined },
-      { value: '789012', type: undefined },
+      { value: '123456', type: undefined, id: '123' },
+      { value: '789012', type: undefined, id: '456' },
     ],
     emails: [
-      { value: 'abc@email.com', type: undefined },
-      { value: 'xyz@email.com', type: undefined },
+      { value: 'abc@email.com', type: undefined, id: '789' },
+      { value: 'xyz@email.com', type: undefined, id: '987' },
     ],
     addresses: [
-      { value: 'address A', type: undefined },
-      { value: 'address B', type: undefined },
+      { value: 'address A', type: undefined, id: '654' },
+      { value: 'address B', type: undefined, id: '321' },
     ],
     code: 'P00001',
   } as Patient
@@ -129,7 +127,7 @@ describe('General Information, without isEditable', () => {
 
   it('should render the sex select', () => {
     const sexSelect = wrapper.findWhere((w: any) => w.prop('name') === 'sex')
-    expect(sexSelect.prop('value')).toEqual(patient.sex)
+    expect(sexSelect.prop('defaultSelected')[0].value).toEqual(patient.sex)
     expect(sexSelect.prop('label')).toEqual('patient.sex')
     expect(sexSelect.prop('isEditable')).toBeFalsy()
     expect(sexSelect.prop('options')).toHaveLength(4)
@@ -145,7 +143,7 @@ describe('General Information, without isEditable', () => {
 
   it('should render the patient type select', () => {
     const typeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'type')
-    expect(typeSelect.prop('value')).toEqual(patient.type)
+    expect(typeSelect.prop('defaultSelected')[0].value).toEqual(patient.type)
     expect(typeSelect.prop('label')).toEqual('patient.type')
     expect(typeSelect.prop('isEditable')).toBeFalsy()
     expect(typeSelect.prop('options')).toHaveLength(2)
@@ -238,16 +236,16 @@ describe('General Information, isEditable', () => {
     occupation: 'occupation',
     preferredLanguage: 'preferredLanguage',
     phoneNumbers: [
-      { value: '123456', type: undefined },
-      { value: '789012', type: undefined },
+      { value: '123456', type: undefined, id: '123' },
+      { value: '789012', type: undefined, id: '456' },
     ],
     emails: [
-      { value: 'abc@email.com', type: undefined },
-      { value: 'xyz@email.com', type: undefined },
+      { value: 'abc@email.com', type: undefined, id: '789' },
+      { value: 'xyz@email.com', type: undefined, id: '987' },
     ],
     addresses: [
-      { value: 'address A', type: undefined },
-      { value: 'address B', type: undefined },
+      { value: 'address A', type: undefined, id: '654' },
+      { value: 'address B', type: undefined, id: '321' },
     ],
     code: 'P00001',
   } as Patient
@@ -268,22 +266,20 @@ describe('General Information, isEditable', () => {
   const expectedGivenName = 'expectedGivenName'
   const expectedFamilyName = 'expectedFamilyName'
   const expectedSuffix = 'expectedSuffix'
-  const expectedSex = 'unknown'
-  const expectedType = 'private'
   const expectedDateOfBirth = '1937-06-14T05:00:00.000Z'
   const expectedOccupation = 'expectedOccupation'
   const expectedPreferredLanguage = 'expectedPreferredLanguage'
   const expectedPhoneNumbers = [
-    { value: '111111', type: undefined },
-    { value: '222222', type: undefined },
+    { value: '111111', type: undefined, id: '123' },
+    { value: '222222', type: undefined, id: '456' },
   ]
   const expectedEmails = [
-    { value: 'def@email.com', type: undefined },
-    { value: 'uvw@email.com', type: undefined },
+    { value: 'def@email.com', type: undefined, id: '789' },
+    { value: 'uvw@email.com', type: undefined, id: '987' },
   ]
   const expectedAddresses = [
-    { value: 'address C', type: undefined },
-    { value: 'address D', type: undefined },
+    { value: 'address C', type: undefined, id: '654' },
+    { value: 'address D', type: undefined, id: '321' },
   ]
 
   it('should render the prefix', () => {
@@ -349,7 +345,7 @@ describe('General Information, isEditable', () => {
   it('should render the sex select', () => {
     const sexSelect = wrapper.findWhere((w: any) => w.prop('name') === 'sex')
 
-    expect(sexSelect.prop('value')).toEqual(patient.sex)
+    expect(sexSelect.prop('defaultSelected')[0].value).toEqual(patient.sex)
     expect(sexSelect.prop('label')).toEqual('patient.sex')
     expect(sexSelect.prop('isEditable')).toBeTruthy()
     expect(sexSelect.prop('options')).toHaveLength(4)
@@ -362,19 +358,12 @@ describe('General Information, isEditable', () => {
     expect(sexSelect.prop('options')[2].value).toEqual('other')
     expect(sexSelect.prop('options')[3].label).toEqual('sex.unknown')
     expect(sexSelect.prop('options')[3].value).toEqual('unknown')
-
-    const select = sexSelect.find('select')
-    select.getDOMNode<HTMLSelectElement>().value = expectedSex
-    select.simulate('change')
-
-    expect(onFieldChange).toHaveBeenCalledTimes(1)
-    expect(onFieldChange).toHaveBeenCalledWith({ ...patient, sex: expectedSex })
   })
 
   it('should render the patient type select', () => {
     const typeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'type')
 
-    expect(typeSelect.prop('value')).toEqual(patient.type)
+    expect(typeSelect.prop('defaultSelected')[0].value).toEqual(patient.type)
     expect(typeSelect.prop('label')).toEqual('patient.type')
     expect(typeSelect.prop('isEditable')).toBeTruthy()
 
@@ -383,13 +372,6 @@ describe('General Information, isEditable', () => {
     expect(typeSelect.prop('options')[0].value).toEqual('charity')
     expect(typeSelect.prop('options')[1].label).toEqual('patient.types.private')
     expect(typeSelect.prop('options')[1].value).toEqual('private')
-
-    const select = typeSelect.find('select')
-    select.getDOMNode<HTMLSelectElement>().value = expectedType
-    select.simulate('change')
-
-    expect(onFieldChange).toHaveBeenCalledTimes(1)
-    expect(onFieldChange).toHaveBeenCalledWith({ ...patient, type: expectedType })
   })
 
   it('should render the date of the birth of the patient', () => {

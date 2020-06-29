@@ -1,15 +1,13 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { Typeahead, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Appointment from '../../../model/Appointment'
-import Patient from '../../../model/Patient'
 import AppointmentDetailForm from '../../../scheduling/appointments/AppointmentDetailForm'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Appointment from '../../../shared/model/Appointment'
+import Patient from '../../../shared/model/Patient'
 
 describe('AppointmentDetailForm', () => {
   describe('Error handling', () => {
@@ -66,7 +64,7 @@ describe('AppointmentDetailForm', () => {
 
       expect(patientTypeahead).toHaveLength(1)
       expect(patientTypeahead.prop('placeholder')).toEqual('scheduling.appointment.patient')
-      expect(patientTypeahead.prop('value')).toEqual(expectedAppointment.patientId)
+      expect(patientTypeahead.prop('value')).toEqual(expectedAppointment.patient)
     })
 
     it('should render as start date date time picker', () => {
@@ -112,7 +110,7 @@ describe('AppointmentDetailForm', () => {
       expect(typeSelect.prop('options')[3].value).toEqual('routine')
       expect(typeSelect.prop('options')[4].label).toEqual('scheduling.appointment.types.walkIn')
       expect(typeSelect.prop('options')[4].value).toEqual('walk in')
-      expect(typeSelect.prop('value')).toEqual(expectedAppointment.type)
+      expect(typeSelect.prop('defaultSelected')[0].value).toEqual(expectedAppointment.type)
     })
 
     it('should render a reason text field input', () => {
@@ -149,7 +147,7 @@ describe('AppointmentDetailForm', () => {
   describe('layout - not editable', () => {
     let wrapper: ReactWrapper
     const expectedAppointment = {
-      patientId: 'patientId',
+      patient: 'patientId',
       startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
       endDateTime: addMinutes(
         roundToNearestMinutes(new Date(), { nearestTo: 15 }),
@@ -217,7 +215,7 @@ describe('AppointmentDetailForm', () => {
       })
       wrapper.update()
 
-      expect(onFieldChange).toHaveBeenLastCalledWith('patientId', expectedPatientId)
+      expect(onFieldChange).toHaveBeenLastCalledWith('patient', expectedPatientId)
     })
 
     it('should call onFieldChange when start date time changes', () => {
@@ -261,18 +259,6 @@ describe('AppointmentDetailForm', () => {
       wrapper.update()
 
       expect(onFieldChange).toHaveBeenLastCalledWith('location', expectedLocation)
-    })
-
-    it('should call onFieldChange when type changes', () => {
-      const expectedType = 'follow up'
-
-      act(() => {
-        const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
-        typeSelect.prop('onChange')({ target: { value: expectedType } })
-      })
-      wrapper.update()
-
-      expect(onFieldChange).toHaveBeenLastCalledWith('type', expectedType)
     })
 
     it('should call onFieldChange when reason changes', () => {

@@ -3,15 +3,15 @@ import { isAfter, isBefore, parseISO } from 'date-fns'
 import { isEmpty } from 'lodash'
 import validator from 'validator'
 
-import PatientRepository from '../clients/db/PatientRepository'
-import Allergy from '../model/Allergy'
-import CarePlan from '../model/CarePlan'
-import Diagnosis from '../model/Diagnosis'
-import Note from '../model/Note'
-import Patient from '../model/Patient'
-import RelatedPerson from '../model/RelatedPerson'
-import { AppThunk } from '../store'
-import { uuid } from '../util/uuid'
+import PatientRepository from '../shared/db/PatientRepository'
+import Allergy from '../shared/model/Allergy'
+import CarePlan from '../shared/model/CarePlan'
+import Diagnosis from '../shared/model/Diagnosis'
+import Note from '../shared/model/Note'
+import Patient from '../shared/model/Patient'
+import RelatedPerson from '../shared/model/RelatedPerson'
+import { AppThunk } from '../shared/store'
+import { uuid } from '../shared/util/uuid'
 import { cleanupPatient } from './util/set-patient-helper'
 
 interface PatientState {
@@ -455,10 +455,6 @@ function validateCarePlan(carePlan: CarePlan): AddCarePlanError {
 
   if (!carePlan.diagnosisId) {
     error.condition = 'patient.carePlan.error.conditionRequired'
-  }
-
-  if (!carePlan.note) {
-    error.note = 'patient.carePlan.error.noteRequired'
   }
 
   return error

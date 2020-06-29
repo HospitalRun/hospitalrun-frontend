@@ -1,5 +1,3 @@
-import '../../__mocks__/matchMediaMock'
-
 import { TextInput, Select } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import format from 'date-fns/format'
@@ -11,14 +9,14 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import LabRepository from '../../clients/db/LabRepository'
 import * as labsSlice from '../../labs/labs-slice'
 import ViewLabs from '../../labs/ViewLabs'
-import Lab from '../../model/Lab'
-import Permissions from '../../model/Permissions'
-import * as ButtonBarProvider from '../../page-header/ButtonBarProvider'
-import * as titleUtil from '../../page-header/useTitle'
-import { RootState } from '../../store'
+import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
+import * as titleUtil from '../../page-header/title/useTitle'
+import LabRepository from '../../shared/db/LabRepository'
+import Lab from '../../shared/model/Lab'
+import Permissions from '../../shared/model/Permissions'
+import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

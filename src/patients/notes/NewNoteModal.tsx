@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-import TextFieldWithLabelFormGroup from '../../components/input/TextFieldWithLabelFormGroup'
-import Note from '../../model/Note'
-import { RootState } from '../../store'
+import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
+import Note from '../../shared/model/Note'
+import { RootState } from '../../shared/store'
 import { addNote } from '../patient-slice'
 
 interface Props {
