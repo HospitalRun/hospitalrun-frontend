@@ -1,4 +1,4 @@
-import { Spinner, Button } from '@hospitalrun/components'
+import { Button, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -27,7 +27,7 @@ const ViewLabs = () => {
 
   const { permissions } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
-  const { labs, isLoading } = useSelector((state: RootState) => state.labs)
+  const { labs } = useSelector((state: RootState) => state.labs)
   const [searchFilter, setSearchFilter] = useState<LabFilter>('all')
   const [searchText, setSearchText] = useState<string>('')
   const debouncedSearchText = useDebounce(searchText, 500)
@@ -63,9 +63,7 @@ const ViewLabs = () => {
     }
   }, [dispatch, getButtons, setButtons])
 
-  const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
-
-  const onTableRowClick = (lab: Lab) => {
+  const onViewClick = (lab: Lab) => {
     history.push(`/labs/${lab.id}`)
   }
 
@@ -79,19 +77,6 @@ const ViewLabs = () => {
     { label: t('labs.status.canceled'), value: 'canceled' },
     { label: t('labs.filter.all'), value: 'all' },
   ]
-
-  const listBody = (
-    <tbody>
-      {labs.map((lab) => (
-        <tr onClick={() => onTableRowClick(lab)} key={lab.id}>
-          <td>{lab.code}</td>
-          <td>{lab.type}</td>
-          <td>{lab.requestedOn ? format(new Date(lab.requestedOn), 'yyyy-MM-dd hh:mm a') : ''}</td>
-          <td>{lab.status}</td>
-        </tr>
-      ))}
-    </tbody>
-  )
 
   return (
     <>
@@ -118,17 +103,24 @@ const ViewLabs = () => {
         </div>
       </div>
       <div className="row">
-        <table className="table table-hover">
-          <thead className="thead-light">
-            <tr>
-              <th>{t('labs.lab.code')}</th>
-              <th>{t('labs.lab.type')}</th>
-              <th>{t('labs.lab.requestedOn')}</th>
-              <th>{t('labs.lab.status')}</th>
-            </tr>
-          </thead>
-          {isLoading ? loadingIndicator : listBody}
-        </table>
+        <Table
+          tableClassName="table table-hover"
+          getID={(row) => row.id}
+          columns={[
+            { label: t('labs.lab.code'), key: 'code' },
+            { label: t('labs.lab.type'), key: 'type' },
+            {
+              label: t('labs.lab.requestedOn'),
+              key: 'requestedOn',
+              formatter: (row) =>
+                row.requestedOn ? format(new Date(row.requestedOn), 'yyyy-MM-dd hh:mm a') : '',
+            },
+            { label: t('labs.lab.status'), key: 'status' },
+          ]}
+          data={labs}
+          actionsHeaderText={t('actions.label')}
+          actions={[{ label: t('actions.view'), action: (row) => onViewClick(row as Lab) }]}
+        />
       </div>
     </>
   )
