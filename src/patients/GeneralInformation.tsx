@@ -74,15 +74,15 @@ const GeneralInformation = (props: Props): ReactElement => {
   ]
 
   const bloodTypeOptions: Option[] = [
-    { label: t('bloodType.apositive'), value: 'A+'},
-    { label: t('bloodType.anegative'), value: 'A-'},
-    { label: t('bloodType.abpositive'), value: 'AB+'},
-    { label: t('bloodType.abnegative'), value: 'AB-'},
-    { label: t('bloodType.bpositive'), value: 'B+'},
-    { label: t('bloodType.bnegative'), value: 'B-'},
-    { label: t('bloodType.opositive'), value: 'O+'},
-    { label: t('bloodType.onegative'), value: 'O-'},
-    { label: t('bloodType.unknown'), value: 'unknown'},
+    { label: t('bloodType.apositive'), value: 'A+' },
+    { label: t('bloodType.anegative'), value: 'A-' },
+    { label: t('bloodType.abpositive'), value: 'AB+' },
+    { label: t('bloodType.abnegative'), value: 'AB-' },
+    { label: t('bloodType.bpositive'), value: 'B+' },
+    { label: t('bloodType.bnegative'), value: 'B-' },
+    { label: t('bloodType.opositive'), value: 'O+' },
+    { label: t('bloodType.onegative'), value: 'O-' },
+    { label: t('bloodType.unknown'), value: 'unknown' },
   ]
 
   return (
