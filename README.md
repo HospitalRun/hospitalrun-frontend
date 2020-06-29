@@ -25,6 +25,10 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 
 </div>
 
+# Staging area 
+
+You can follow developments by visiting the dedicated [staging environment](https://staging.hospitalrun.io). Use `username` / `password` as credentials to access.
+
 # Contributing
 
 Contributions are always welcome. Before contributing please read our [contributor guide](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).
