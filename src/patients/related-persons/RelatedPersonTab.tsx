@@ -90,7 +90,6 @@ const RelatedPersonTab = (props: Props) => {
           {relatedPersons ? (
             relatedPersons.length > 0 ? (
               <Table
-                tableClassName="table table-hover"
                 getID={(row) => row.id}
                 data={relatedPersons}
                 columns={[

@@ -38,7 +38,6 @@ const LabsTab = (props: Props) => {
       )}
       {labs && labs.length > 0 && (
         <Table
-          tableClassName="table table-hover"
           actionsHeaderText={t('actions.label')}
           getID={(row) => row.id}
           data={labs}

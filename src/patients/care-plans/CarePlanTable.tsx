@@ -14,7 +14,6 @@ const CarePlanTable = () => {
 
   return (
     <Table
-      tableClassName="table table-hover"
       getID={(row) => row.id}
       data={patient.carePlans || []}
       columns={[

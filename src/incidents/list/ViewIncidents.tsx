@@ -66,7 +66,6 @@ const ViewIncidents = () => {
       </div>
       <div className="row">
         <Table
-          tableClassName="table table-hover"
           getID={(row) => row.id}
           data={incidents}
           columns={[

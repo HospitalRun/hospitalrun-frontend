@@ -68,7 +68,6 @@ const ViewPatients = () => {
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   const table = (
     <Table
-      tableClassName="table table-hover"
       data={patients}
       getID={(row) => row.id}
       columns={[

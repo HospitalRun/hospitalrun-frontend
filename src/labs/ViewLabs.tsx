@@ -104,7 +104,6 @@ const ViewLabs = () => {
       </div>
       <div className="row">
         <Table
-          tableClassName="table table-hover"
           getID={(row) => row.id}
           columns={[
             { label: t('labs.lab.code'), key: 'code' },
