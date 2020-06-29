@@ -12,34 +12,37 @@ const CarePlanTable = () => {
   const { t } = useTranslation()
   const { patient } = useSelector((state: RootState) => state.patient)
 
-  return (
-    <Table
-      tableClassName="table table-hover"
-      getID={(row) => row.id}
-      data={patient.carePlans}
-      columns={[
-        { label: t('patient.carePlan.title'), key: 'title' },
-        {
-          label: t('patient.carePlan.startDate'),
-          key: 'startDate',
-          formatter: (row) => format(new Date(row.startDate), 'yyyy-MM-dd'),
-        },
-        {
-          label: t('patient.carePlan.endDate'),
-          key: 'endDate',
-          formatter: (row) => format(new Date(row.endDate), 'yyyy-MM-dd'),
-        },
-        { label: t('patient.carePlan.status'), key: 'status' },
-      ]}
-      actionsHeaderText={t('actions.label')}
-      actions={[
-        {
-          label: 'actions.view',
-          action: (row) => history.push(`/patients/${patient.id}/care-plans/${row.id}`),
-        },
-      ]}
-    />
-  )
+  if (patient.carePlans !== undefined) {
+    return (
+      <Table
+        tableClassName="table table-hover"
+        getID={(row) => row.id}
+        data={patient.carePlans}
+        columns={[
+          { label: t('patient.carePlan.title'), key: 'title' },
+          {
+            label: t('patient.carePlan.startDate'),
+            key: 'startDate',
+            formatter: (row) => format(new Date(row.startDate), 'yyyy-MM-dd'),
+          },
+          {
+            label: t('patient.carePlan.endDate'),
+            key: 'endDate',
+            formatter: (row) => format(new Date(row.endDate), 'yyyy-MM-dd'),
+          },
+          { label: t('patient.carePlan.status'), key: 'status' },
+        ]}
+        actionsHeaderText={t('actions.label')}
+        actions={[
+          {
+            label: 'actions.view',
+            action: (row) => history.push(`/patients/${patient.id}/care-plans/${row.id}`),
+          },
+        ]}
+      />
+    )
+  }
+  return <></>
 }
 
 export default CarePlanTable
