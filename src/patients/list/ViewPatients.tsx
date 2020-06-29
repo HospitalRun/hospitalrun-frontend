@@ -1,4 +1,4 @@
-import { Spinner, Button, Container, Row, TextInput, Column } from '@hospitalrun/components'
+import { Spinner, Button, Container, Row, TextInput, Column, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -67,28 +67,25 @@ const ViewPatients = () => {
 
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   const table = (
-    <table className="table table-hover">
-      <thead className="thead-light ">
-        <tr>
-          <th>{t('patient.code')}</th>
-          <th>{t('patient.givenName')}</th>
-          <th>{t('patient.familyName')}</th>
-          <th>{t('patient.sex')}</th>
-          <th>{t('patient.dateOfBirth')}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {patients.map((p) => (
-          <tr key={p.id} onClick={() => history.push(`/patients/${p.id}`)}>
-            <td>{p.code}</td>
-            <td>{p.givenName}</td>
-            <td>{p.familyName}</td>
-            <td>{p.sex}</td>
-            <td>{p.dateOfBirth ? format(new Date(p.dateOfBirth), 'yyyy-MM-dd') : ''}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table
+      tableClassName="table table-hover"
+      data={patients}
+      getID={(row) => row.id}
+      columns={[
+        { label: t('patient.code'), key: 'code' },
+        { label: t('patient.givenName'), key: 'givenName' },
+        { label: t('patient.familyName'), key: 'familyName' },
+        { label: t('patient.sex'), key: 'sex' },
+        {
+          label: t('patient.dateOfBirth'),
+          key: 'dateOfBirth',
+          formatter: (row) =>
+            row.dateOfBirth ? format(new Date(row.dateOfBirth), 'yyyy-MM-dd') : '',
+        },
+      ]}
+      actionsHeaderText={t('actions.label')}
+      actions={[{ label: t('actions.view'), action: (row) => history.push(`/patients/${row.id}`) }]}
+    />
   )
 
   const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
