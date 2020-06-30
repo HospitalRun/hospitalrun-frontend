@@ -19,17 +19,32 @@ root of this project to launch CouchDB. Below are the steps:
 2. Install [Docker Compose](https://docs.docker.com/compose/install/) if you don't have it yet.
 3. Run `docker-compose up --build -d` in the root directory.
 
-Note: This should launch a new CouchDB instance on `http://localhost:5984`, create system database, configure CouchDB as Single Node, enable CORS, create `hospitalrun` database, create a default admin with a username of `admin` and password of `password`
+This should launch a new CouchDB instance on `http://localhost:5984`, create system database, configure CouchDB as Single Node, enable CORS, create `hospitalrun` database, create a default admin with a username of `admin` and password of 'password'
 
-4. Run this command if you have not created a user yet:
+4. Make the `hospitalrun` database a public database by removing its member permissions:
+
+    ```
+    curl -X PUT http://admin:password@localhost:5984/hospitalrun/_security -d '{"members": {}, "admins": {"roles": ["_admin"] }}'
+    ```
+
+5. Create a sample user with a username of `username` and password of 'password' to use new login page [#2137](https://github.com/HospitalRun/hospitalrun-frontend/pull/2137). 
    ```
    curl -X PUT http://admin:password@localhost:5984/_users/org.couchdb.user:username -H "Accept: application/json" -H "Content-Type: application/json" -d '{"name": "username", "password": "password", "metadata": { "givenName": "John", "familyName": "Doe"}, "roles": [], "type": "user"}'
    ```
-Note: This should create a user with username/password of `username`/`password`.
-
 Note: Go to `http://localhost:5984/_utils` in your browser to view Fauxton and perform administrative tasks.
 
-5. Open a file named `.env` and add a line `REACT_APP_HOSPITALRUN_API=http://localhost:5984` if you don't have it yet.
+**_Cleanup_**
+To delete the development database, go to the root of the project and run `docker-compose down -v --rmi all --remove-orphans`
+
+### Install dependencies & start the application
+
+1. Install dependencies: `npm install`
+2. Configure `REACT_APP_HOSPITALRUN_API=http://localhost:5984` environment variable in `.env`
+3. Run the application `npm start`
+
+## Online one-click setup for contributing
+
+Open a file named `.env` and add a line `REACT_APP_HOSPITALRUN_API=http://localhost:5984` if you don't have it yet.
 
 _Note: To delete the development database, go to the root of the project and run `docker-compose down -v --rmi all --remove-orphans`_
 
