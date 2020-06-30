@@ -15,5 +15,6 @@ export default {
     previous: 'Previous',
     page: 'Page',
     add: 'Add',
+    view: 'View',
   },
 }

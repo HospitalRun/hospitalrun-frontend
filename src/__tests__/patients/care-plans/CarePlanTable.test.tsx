@@ -1,5 +1,5 @@
-import { Button } from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { Table } from '@hospitalrun/components'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -46,41 +46,41 @@ describe('Care Plan Table', () => {
       </Provider>,
     )
 
-    return { wrapper, history }
+    return { wrapper: wrapper as ReactWrapper, history }
   }
 
   it('should render a table', () => {
     const { wrapper } = setup()
 
-    const table = wrapper.find('table')
-    const tableHeader = table.find('thead')
-    const headers = tableHeader.find('th')
-    const body = table.find('tbody')
-    const columns = body.find('tr').find('td')
+    const table = wrapper.find(Table)
+    const columns = table.prop('columns')
+    const actions = table.prop('actions') as any
+    expect(columns[0]).toEqual(
+      expect.objectContaining({ label: 'patient.carePlan.title', key: 'title' }),
+    )
+    expect(columns[1]).toEqual(
+      expect.objectContaining({ label: 'patient.carePlan.startDate', key: 'startDate' }),
+    )
+    expect(columns[2]).toEqual(
+      expect.objectContaining({ label: 'patient.carePlan.endDate', key: 'endDate' }),
+    )
+    expect(columns[3]).toEqual(
+      expect.objectContaining({ label: 'patient.carePlan.status', key: 'status' }),
+    )
 
-    expect(headers.at(0).text()).toEqual('patient.carePlan.title')
-    expect(headers.at(1).text()).toEqual('patient.carePlan.startDate')
-    expect(headers.at(2).text()).toEqual('patient.carePlan.endDate')
-    expect(headers.at(3).text()).toEqual('patient.carePlan.status')
-    expect(headers.at(4).text()).toEqual('actions.label')
-
-    expect(columns.at(0).text()).toEqual(carePlan.title)
-    expect(columns.at(1).text()).toEqual('2020-07-03')
-    expect(columns.at(2).text()).toEqual('2020-07-05')
-    expect(columns.at(3).text()).toEqual(carePlan.status)
-    expect(columns.at(4).find('button')).toHaveLength(1)
+    expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
+    expect(table.prop('actionsHeaderText')).toEqual('actions.label')
+    expect(table.prop('data')).toEqual(patient.carePlans)
   })
 
   it('should navigate to the care plan view when the view details button is clicked', () => {
     const { wrapper, history } = setup()
 
-    const table = wrapper.find('table')
-    const body = table.find('tbody')
-    const columns = body.find('tr').find('td')
+    const tr = wrapper.find('tr').at(1)
 
     act(() => {
-      const onClick = columns.at(4).find(Button).prop('onClick') as any
-      onClick()
+      const onClick = tr.find('button').prop('onClick') as any
+      onClick({ stopPropagation: jest.fn() })
     })
 
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-plans/${carePlan.id}`)

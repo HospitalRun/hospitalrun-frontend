@@ -1,4 +1,4 @@
-import { Alert } from '@hospitalrun/components'
+import { Alert, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -27,10 +27,6 @@ const LabsTab = (props: Props) => {
     fetch()
   }, [patientId])
 
-  const onTableRowClick = (lab: Lab) => {
-    history.push(`/labs/${lab.id}`)
-  }
-
   return (
     <div>
       {(!labs || labs.length === 0) && (
@@ -41,24 +37,21 @@ const LabsTab = (props: Props) => {
         />
       )}
       {labs && labs.length > 0 && (
-        <table className="table table-hover">
-          <thead className="thead-light">
-            <tr>
-              <th>{t('labs.lab.type')}</th>
-              <th>{t('labs.lab.requestedOn')}</th>
-              <th>{t('labs.lab.status')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {labs.map((lab) => (
-              <tr onClick={() => onTableRowClick(lab)} key={lab.id}>
-                <td>{lab.type}</td>
-                <td>{format(new Date(lab.requestedOn), 'yyyy-MM-dd hh:mm a')}</td>
-                <td>{lab.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table
+          actionsHeaderText={t('actions.label')}
+          getID={(row) => row.id}
+          data={labs}
+          columns={[
+            { label: t('labs.lab.type'), key: 'type' },
+            {
+              label: t('labs.lab.requestedOn'),
+              key: 'requestedOn',
+              formatter: (row) => format(new Date(row.requestedOn), 'yyyy-MM-dd hh:mm a'),
+            },
+            { label: t('labs.lab.status'), key: 'status' },
+          ]}
+          actions={[{ label: t('actions.view'), action: (row) => history.push(`/labs/${row.id}`) }]}
+        />
       )}
     </div>
   )
