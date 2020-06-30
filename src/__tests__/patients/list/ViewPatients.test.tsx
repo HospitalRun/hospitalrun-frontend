@@ -1,5 +1,4 @@
-import { TextInput, Spinner } from '@hospitalrun/components'
-import format from 'date-fns/format'
+import { TextInput, Spinner, Table } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -84,26 +83,27 @@ describe('Patients', () => {
     it('should render a table of patients', () => {
       const wrapper = setup()
 
-      const table = wrapper.find('table')
-      const tableHeaders = table.find('th')
-      const tableColumns = table.find('td')
+      const table = wrapper.find(Table)
+      const columns = table.prop('columns')
+      const actions = table.prop('actions') as any
 
       expect(table).toHaveLength(1)
-      expect(tableHeaders).toHaveLength(5)
-      expect(tableColumns).toHaveLength(5)
-      expect(tableHeaders.at(0).text()).toEqual('patient.code')
-      expect(tableHeaders.at(1).text()).toEqual('patient.givenName')
-      expect(tableHeaders.at(2).text()).toEqual('patient.familyName')
-      expect(tableHeaders.at(3).text()).toEqual('patient.sex')
-      expect(tableHeaders.at(4).text()).toEqual('patient.dateOfBirth')
 
-      expect(tableColumns.at(0).text()).toEqual(patients[0].code)
-      expect(tableColumns.at(1).text()).toEqual(patients[0].givenName)
-      expect(tableColumns.at(2).text()).toEqual(patients[0].familyName)
-      expect(tableColumns.at(3).text()).toEqual(patients[0].sex)
-      expect(tableColumns.at(4).text()).toEqual(
-        format(new Date(patients[0].dateOfBirth), 'yyyy-MM-dd'),
+      expect(columns[0]).toEqual(expect.objectContaining({ label: 'patient.code', key: 'code' }))
+      expect(columns[1]).toEqual(
+        expect.objectContaining({ label: 'patient.givenName', key: 'givenName' }),
       )
+      expect(columns[2]).toEqual(
+        expect.objectContaining({ label: 'patient.familyName', key: 'familyName' }),
+      )
+      expect(columns[3]).toEqual(expect.objectContaining({ label: 'patient.sex', key: 'sex' }))
+      expect(columns[4]).toEqual(
+        expect.objectContaining({ label: 'patient.dateOfBirth', key: 'dateOfBirth' }),
+      )
+
+      expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
+      expect(table.prop('data')).toEqual(patients)
+      expect(table.prop('actionsHeaderText')).toEqual('actions.label')
     })
 
     it('should add a "New Patient" button to the button tool bar', () => {
