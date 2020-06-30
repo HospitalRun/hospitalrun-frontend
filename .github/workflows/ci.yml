@@ -21,7 +21,7 @@ jobs:
           npm install
       - name: Lint code
         run: |
-          npm run lint
+          npm run lint:fix
       - name: Build
         if: always()
         run: |

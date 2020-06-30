@@ -74,5 +74,7 @@ module.exports = {
       },
     ],
     curly: ['error', 'all'],
+    'react/require-default-props': ['warn'],
+    'react/default-props-match-prop-types': ['warn']
   },
 }
