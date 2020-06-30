@@ -31,7 +31,7 @@ export default class Repository<T extends AbstractDBModel> {
     }
 
     sort.sorts.forEach((s) => {
-      selector[s.field] = { $gt: null }
+      selector[`data.${s.field}`] = { $gt: null }
     })
 
     // Adds an index to each of the fields coming from the sorting object
@@ -42,7 +42,7 @@ export default class Repository<T extends AbstractDBModel> {
         async (s): Promise<SortRequest> => {
           await this.db.createIndex({
             index: {
-              fields: [s.field],
+              fields: [`data.${s.field}`],
             },
           })
 
@@ -53,7 +53,10 @@ export default class Repository<T extends AbstractDBModel> {
 
     const result = await this.db.find({
       selector,
-      sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
+      sort:
+        sort.sorts.length > 0
+          ? sort.sorts.map((s) => ({ [`data.${s.field}`]: s.direction }))
+          : undefined,
     })
     const relDocs = await this.db.rel.parseRelDocs(this.type, result.docs)
     return relDocs[this.pluralType]

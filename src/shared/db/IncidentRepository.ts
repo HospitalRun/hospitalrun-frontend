@@ -16,7 +16,8 @@ class IncidentRepository extends Repository<Incident> {
   }
 
   private static getSearchCriteria(options: SearchOptions): any {
-    const statusFilter = options.status !== IncidentFilter.all ? [{ status: options.status }] : []
+    const statusFilter =
+      options.status !== IncidentFilter.all ? [{ 'data.status': options.status }] : []
     const selector = {
       $and: statusFilter,
     }
