@@ -1,5 +1,5 @@
 import * as components from '@hospitalrun/components'
-import format from 'date-fns/format'
+import { Table } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -61,23 +61,23 @@ describe('Labs Tab', () => {
   it('should list the patients labs', async () => {
     const { wrapper } = await setup()
 
-    const table = wrapper.find('table')
-    const tableHeader = wrapper.find('thead')
-    const tableHeaders = wrapper.find('th')
-    const tableBody = wrapper.find('tbody')
-    const tableData = wrapper.find('td')
-
-    expect(table).toHaveLength(1)
-    expect(tableHeader).toHaveLength(1)
-    expect(tableBody).toHaveLength(1)
-    expect(tableHeaders.at(0).text()).toEqual('labs.lab.type')
-    expect(tableHeaders.at(1).text()).toEqual('labs.lab.requestedOn')
-    expect(tableHeaders.at(2).text()).toEqual('labs.lab.status')
-    expect(tableData.at(0).text()).toEqual(expectedLabs[0].type)
-    expect(tableData.at(1).text()).toEqual(
-      format(new Date(expectedLabs[0].requestedOn), 'yyyy-MM-dd hh:mm a'),
+    const table = wrapper.find(Table)
+    const columns = table.prop('columns')
+    const actions = table.prop('actions') as any
+    expect(columns[0]).toEqual(expect.objectContaining({ label: 'labs.lab.type', key: 'type' }))
+    expect(columns[1]).toEqual(
+      expect.objectContaining({ label: 'labs.lab.requestedOn', key: 'requestedOn' }),
     )
-    expect(tableData.at(2).text()).toEqual(expectedLabs[0].status)
+    expect(columns[2]).toEqual(
+      expect.objectContaining({
+        label: 'labs.lab.status',
+        key: 'status',
+      }),
+    )
+
+    expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
+    expect(table.prop('actionsHeaderText')).toEqual('actions.label')
+    expect(table.prop('data')).toEqual(expectedLabs)
   })
 
   it('should render a warning message if the patient does not have any labs', async () => {
