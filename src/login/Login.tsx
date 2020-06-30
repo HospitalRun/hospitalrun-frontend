@@ -77,7 +77,7 @@ const Login = () => {
               value={password}
               onChange={onPasswordChange}
             />
-            <Button block onClick={onSignInClick}>
+            <Button type="submit" block onClick={onSignInClick}>
               Sign In
             </Button>
           </Panel>
