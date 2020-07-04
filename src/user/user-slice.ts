@@ -89,8 +89,10 @@ export const login = (username: string, password: string): AppThunk => async (di
       }),
     )
   } catch (error) {
-    if (error.status === '401') {
-      dispatch(loginError('user.login.error'))
+    if (!username || !password) {
+      dispatch(loginError('Missing required fields.'))
+    } else if (error.status === 401) {
+      dispatch(loginError('Incorrect username or password.'))
     }
   }
 }

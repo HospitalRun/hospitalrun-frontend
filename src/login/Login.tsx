@@ -68,6 +68,9 @@ const Login = () => {
               name="username"
               value={username}
               onChange={onUsernameChange}
+              isRequired
+              isInvalid={!!loginError && !username}
+              feedback={!!loginError && !username ? 'Username is required.' : undefined}
             />
             <TextInputWithLabelFormGroup
               isEditable
@@ -76,6 +79,9 @@ const Login = () => {
               name="password"
               value={password}
               onChange={onPasswordChange}
+              isRequired
+              isInvalid={!!loginError && !password}
+              feedback={!!loginError && !password ? 'Password is required.' : undefined}
             />
             <Button block onClick={onSignInClick}>
               Sign In
