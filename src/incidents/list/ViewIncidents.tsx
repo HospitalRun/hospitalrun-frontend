@@ -1,7 +1,6 @@
 import { Button, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -10,12 +9,13 @@ import useTitle from '../../page-header/title/useTitle'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../../shared/components/input/SelectWithLableFormGroup'
+import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
 import IncidentFilter from '../IncidentFilter'
 import { searchIncidents } from '../incidents-slice'
 
 const ViewIncidents = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const history = useHistory()
   const dispatch = useDispatch()
   useTitle(t('incidents.reports.label'))
