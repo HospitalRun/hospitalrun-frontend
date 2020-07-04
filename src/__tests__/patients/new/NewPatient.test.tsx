@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import * as components from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -11,13 +9,13 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Patient from '../../../model/Patient'
-import * as titleUtil from '../../../page-header/useTitle'
+import * as titleUtil from '../../../page-header/title/useTitle'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import NewPatient from '../../../patients/new/NewPatient'
 import * as patientSlice from '../../../patients/patient-slice'
-import { RootState } from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -96,12 +94,12 @@ describe('New Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
 
     act(() => {
-      generalInformationForm.prop('onFieldChange')('givenName', 'first')
+      generalInformationForm.prop('onChange')(patient)
     })
 
     wrapper.update()
 
-    const saveButton = wrapper.find(components.Button).at(0)
+    const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -125,12 +123,12 @@ describe('New Patient', () => {
     const generalInformationForm = wrapper.find(GeneralInformation)
 
     act(() => {
-      generalInformationForm.prop('onFieldChange')('givenName', 'first')
+      generalInformationForm.prop('onChange')(patient)
     })
 
     wrapper.update()
 
-    const saveButton = wrapper.find(components.Button).at(0)
+    const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
     expect(saveButton.text().trim()).toEqual('actions.save')
 
@@ -152,7 +150,7 @@ describe('New Patient', () => {
       wrapper = await setup()
     })
 
-    const cancelButton = wrapper.find(components.Button).at(1)
+    const cancelButton = wrapper.find('.btn-cancel').at(0)
     const onClick = cancelButton.prop('onClick') as any
     expect(cancelButton.text().trim()).toEqual('actions.cancel')
 

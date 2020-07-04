@@ -1,5 +1,3 @@
-import '../__mocks__/matchMediaMock'
-
 import { Toaster } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import React from 'react'
@@ -9,16 +7,16 @@ import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { addBreadcrumbs } from '../breadcrumbs/breadcrumbs-slice'
-import LabRepository from '../clients/db/LabRepository'
 import Dashboard from '../dashboard/Dashboard'
 import HospitalRun from '../HospitalRun'
 import Incidents from '../incidents/Incidents'
 import ViewLabs from '../labs/ViewLabs'
-import Permissions from '../model/Permissions'
+import { addBreadcrumbs } from '../page-header/breadcrumbs/breadcrumbs-slice'
 import Appointments from '../scheduling/appointments/Appointments'
 import Settings from '../settings/Settings'
-import { RootState } from '../store'
+import LabRepository from '../shared/db/LabRepository'
+import Permissions from '../shared/model/Permissions'
+import { RootState } from '../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -28,7 +26,7 @@ describe('HospitalRun', () => {
       it('should render the appointments screen when /appointments is accessed', async () => {
         const store = mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ReadAppointments] },
+          user: { user: { id: '123' }, permissions: [Permissions.ReadAppointments] },
           appointments: { appointments: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
@@ -62,7 +60,7 @@ describe('HospitalRun', () => {
           <Provider
             store={mockStore({
               title: 'test',
-              user: { permissions: [] },
+              user: { user: { id: '123' }, permissions: [] },
               breadcrumbs: { breadcrumbs: [] },
               components: { sidebarCollapsed: false },
             } as any)}
@@ -82,7 +80,7 @@ describe('HospitalRun', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ViewLabs] },
+          user: { user: { id: '123' }, permissions: [Permissions.ViewLabs] },
           labs: { labs: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
@@ -107,7 +105,7 @@ describe('HospitalRun', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
@@ -129,7 +127,7 @@ describe('HospitalRun', () => {
       it('should render the Incidents component when /incidents is accessed', async () => {
         const store = mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ViewIncidents] },
+          user: { user: { id: '123' }, permissions: [Permissions.ViewIncidents] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
           incidents: { incidents: [] },
@@ -154,7 +152,7 @@ describe('HospitalRun', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
@@ -176,7 +174,7 @@ describe('HospitalRun', () => {
       it('should render the Settings component when /settings is accessed', async () => {
         const store = mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
@@ -200,7 +198,7 @@ describe('HospitalRun', () => {
         <Provider
           store={mockStore({
             title: 'test',
-            user: { permissions: [Permissions.WritePatients] },
+            user: { user: { id: '123' }, permissions: [Permissions.WritePatients] },
             breadcrumbs: { breadcrumbs: [] },
             components: { sidebarCollapsed: false },
           } as any)}

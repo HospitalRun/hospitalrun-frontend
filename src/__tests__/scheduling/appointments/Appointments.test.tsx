@@ -1,5 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -8,18 +6,19 @@ import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { addBreadcrumbs } from '../../../breadcrumbs/breadcrumbs-slice'
-import AppointmentRepository from '../../../clients/db/AppointmentRepository'
-import PatientRepository from '../../../clients/db/PatientRepository'
 import Dashboard from '../../../dashboard/Dashboard'
 import HospitalRun from '../../../HospitalRun'
-import Appointment from '../../../model/Appointment'
-import Patient from '../../../model/Patient'
-import Permissions from '../../../model/Permissions'
+import { addBreadcrumbs } from '../../../page-header/breadcrumbs/breadcrumbs-slice'
+import Appointments from '../../../scheduling/appointments/Appointments'
 import EditAppointment from '../../../scheduling/appointments/edit/EditAppointment'
 import NewAppointment from '../../../scheduling/appointments/new/NewAppointment'
 import ViewAppointments from '../../../scheduling/appointments/ViewAppointments'
-import { RootState } from '../../../store'
+import AppointmentRepository from '../../../shared/db/AppointmentRepository'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Appointment from '../../../shared/model/Appointment'
+import Patient from '../../../shared/model/Patient'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -36,7 +35,7 @@ describe('/appointments', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments']}>
-          <HospitalRun />
+          <Appointments />
         </MemoryRouter>
       </Provider>,
     )
@@ -60,7 +59,7 @@ describe('/appointments', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -88,7 +87,7 @@ describe('/appointments/new', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments/new']}>
-          <HospitalRun />
+          <Appointments />
         </MemoryRouter>
       </Provider>,
     )
@@ -110,7 +109,7 @@ describe('/appointments/new', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [] },
+          user: { user: { id: '123' }, permissions: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -129,7 +128,7 @@ describe('/appointments/edit/:id', () => {
   it('should render the edit appointment screen when /appointments/edit/:id is accessed', () => {
     const appointment = {
       id: '123',
-      patientId: '456',
+      patient: '456',
     } as Appointment
 
     const patient = {
@@ -150,7 +149,7 @@ describe('/appointments/edit/:id', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments/edit/123']}>
-          <HospitalRun />
+          <Appointments />
         </MemoryRouter>
       </Provider>,
     )
@@ -175,7 +174,7 @@ describe('/appointments/edit/:id', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [Permissions.WriteAppointments] },
+          user: { user: { id: '123' }, permissions: [Permissions.WriteAppointments] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}
@@ -194,7 +193,7 @@ describe('/appointments/edit/:id', () => {
       <Provider
         store={mockStore({
           title: 'test',
-          user: { permissions: [Permissions.ReadAppointments] },
+          user: { user: { id: '123' }, permissions: [Permissions.ReadAppointments] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)}

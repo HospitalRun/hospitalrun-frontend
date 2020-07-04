@@ -1,16 +1,8 @@
-import '../../__mocks__/matchMediaMock'
-
 import { addDays, subDays } from 'date-fns'
 import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PatientRepository from '../../clients/db/PatientRepository'
-import Allergy from '../../model/Allergy'
-import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../model/CarePlan'
-import Diagnosis from '../../model/Diagnosis'
-import Patient from '../../model/Patient'
-import RelatedPerson from '../../model/RelatedPerson'
 import patient, {
   addAllergy,
   addAllergyError,
@@ -33,8 +25,14 @@ import patient, {
   updatePatientSuccess,
   addCarePlanError,
 } from '../../patients/patient-slice'
-import { RootState } from '../../store'
-import * as uuid from '../../util/uuid'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Allergy from '../../shared/model/Allergy'
+import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../shared/model/CarePlan'
+import Diagnosis from '../../shared/model/Diagnosis'
+import Patient from '../../shared/model/Patient'
+import RelatedPerson from '../../shared/model/RelatedPerson'
+import { RootState } from '../../shared/store'
+import * as uuid from '../../shared/util/uuid'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -167,6 +165,7 @@ describe('patients slice', () => {
       const expectedPatient = {
         id: 'sliceId1',
         givenName: 'some name',
+        fullName: 'some name',
       } as Patient
 
       await store.dispatch(createPatient(expectedPatient))
@@ -251,38 +250,13 @@ describe('patients slice', () => {
       )
     })
 
-    it('should validate that the patient email is a valid email', async () => {
-      const store = mockStore()
-      const expectedPatientId = 'sliceId10'
-      const expectedPatient = {
-        id: expectedPatientId,
-        givenName: 'some given name',
-        phoneNumber: 'not a phone number',
-      } as Patient
-      const saveOrUpdateSpy = jest
-        .spyOn(PatientRepository, 'saveOrUpdate')
-        .mockResolvedValue(expectedPatient)
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
-
-      expect(onSuccessSpy).not.toHaveBeenCalled()
-      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
-      expect(store.getActions()[1]).toEqual(
-        createPatientError({
-          message: 'patient.errors.createPatientError',
-          phoneNumber: 'patient.errors.invalidPhoneNumber',
-        }),
-      )
-    })
-
     it('should validate that the patient phone number is a valid phone number', async () => {
       const store = mockStore()
       const expectedPatientId = 'sliceId10'
       const expectedPatient = {
         id: expectedPatientId,
         givenName: 'some given name',
-        phoneNumber: 'not a phone number',
+        phoneNumbers: [{ value: 'not a phone number' }],
       } as Patient
       const saveOrUpdateSpy = jest
         .spyOn(PatientRepository, 'saveOrUpdate')
@@ -296,7 +270,32 @@ describe('patients slice', () => {
       expect(store.getActions()[1]).toEqual(
         createPatientError({
           message: 'patient.errors.createPatientError',
-          phoneNumber: 'patient.errors.invalidPhoneNumber',
+          phoneNumbers: ['patient.errors.invalidPhoneNumber'],
+        }),
+      )
+    })
+
+    it('should validate that the patient email is a valid email', async () => {
+      const store = mockStore()
+      const expectedPatientId = 'sliceId10'
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some given name',
+        emails: [{ value: 'not an email' }],
+      } as Patient
+      const saveOrUpdateSpy = jest
+        .spyOn(PatientRepository, 'saveOrUpdate')
+        .mockResolvedValue(expectedPatient)
+      const onSuccessSpy = jest.fn()
+
+      await store.dispatch(createPatient(expectedPatient, onSuccessSpy))
+
+      expect(onSuccessSpy).not.toHaveBeenCalled()
+      expect(saveOrUpdateSpy).not.toHaveBeenCalled()
+      expect(store.getActions()[1]).toEqual(
+        createPatientError({
+          message: 'patient.errors.createPatientError',
+          emails: ['patient.errors.invalidEmail'],
         }),
       )
     })
@@ -383,7 +382,11 @@ describe('patients slice', () => {
     it('should call the PatientRepository saveOrUpdate function with the correct data', async () => {
       const store = mockStore()
       const expectedPatientId = 'sliceId9'
-      const expectedPatient = { id: expectedPatientId, givenName: 'some name' } as Patient
+      const expectedPatient = {
+        id: expectedPatientId,
+        givenName: 'some name',
+        fullName: 'some name',
+      } as Patient
       jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedPatient)
 
       await store.dispatch(updatePatient(expectedPatient))
@@ -694,7 +697,6 @@ describe('patients slice', () => {
         startDate: 'patient.carePlan.error.startDateRequired',
         endDate: 'patient.carePlan.error.endDateRequired',
         condition: 'patient.carePlan.error.conditionRequired',
-        note: 'patient.carePlan.error.noteRequired',
       }
       const store = mockStore()
       const expectedCarePlan = {} as CarePlan

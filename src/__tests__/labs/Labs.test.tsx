@@ -1,5 +1,3 @@
-import '../../__mocks__/matchMediaMock'
-
 import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import React from 'react'
@@ -8,15 +6,15 @@ import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import LabRepository from '../../clients/db/LabRepository'
-import PatientRepository from '../../clients/db/PatientRepository'
 import Labs from '../../labs/Labs'
 import NewLabRequest from '../../labs/requests/NewLabRequest'
 import ViewLab from '../../labs/ViewLab'
-import Lab from '../../model/Lab'
-import Patient from '../../model/Patient'
-import Permissions from '../../model/Permissions'
-import { RootState } from '../../store'
+import LabRepository from '../../shared/db/LabRepository'
+import PatientRepository from '../../shared/db/PatientRepository'
+import Lab from '../../shared/model/Lab'
+import Patient from '../../shared/model/Patient'
+import Permissions from '../../shared/model/Permissions'
+import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 

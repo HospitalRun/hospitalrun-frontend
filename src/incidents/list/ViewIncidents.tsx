@@ -1,15 +1,16 @@
-import { Button } from '@hospitalrun/components'
+import { Button, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import SelectWithLabelFormGroup from '../../components/input/SelectWithLableFormGroup'
-import Incident from '../../model/Incident'
-import { useButtonToolbarSetter } from '../../page-header/ButtonBarProvider'
-import useTitle from '../../page-header/useTitle'
-import { RootState } from '../../store'
+import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
+import useTitle from '../../page-header/title/useTitle'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../../shared/components/input/SelectWithLableFormGroup'
+import { RootState } from '../../shared/store'
 import IncidentFilter from '../IncidentFilter'
 import { searchIncidents } from '../incidents-slice'
 
@@ -44,15 +45,7 @@ const ViewIncidents = () => {
     dispatch(searchIncidents(searchFilter))
   }, [dispatch, searchFilter])
 
-  const onTableRowClick = (incident: Incident) => {
-    history.push(`incidents/${incident.id}`)
-  }
-
-  const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchFilter(event.target.value as IncidentFilter)
-  }
-
-  const filterOptions = Object.values(IncidentFilter).map((filter) => ({
+  const filterOptions: Option[] = Object.values(IncidentFilter).map((filter) => ({
     label: t(`incidents.status.${filter}`),
     value: `${filter}`,
   }))
@@ -63,37 +56,35 @@ const ViewIncidents = () => {
         <div className="col-md-3 col-lg-2">
           <SelectWithLabelFormGroup
             name="type"
-            value={searchFilter}
             label={t('incidents.filterTitle')}
-            isEditable
             options={filterOptions}
-            onChange={onFilterChange}
+            defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
+            onChange={(values) => setSearchFilter(values[0] as IncidentFilter)}
+            isEditable
           />
         </div>
       </div>
       <div className="row">
-        <table className="table table-hover">
-          <thead className="thead-light">
-            <tr>
-              <th>{t('incidents.reports.code')}</th>
-              <th>{t('incidents.reports.dateOfIncident')}</th>
-              <th>{t('incidents.reports.reportedBy')}</th>
-              <th>{t('incidents.reports.reportedOn')}</th>
-              <th>{t('incidents.reports.status')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {incidents.map((incident: Incident) => (
-              <tr onClick={() => onTableRowClick(incident)} key={incident.id}>
-                <td>{incident.code}</td>
-                <td>{format(new Date(incident.date), 'yyyy-MM-dd hh:mm a')}</td>
-                <td>{incident.reportedBy}</td>
-                <td>{format(new Date(incident.reportedOn), 'yyyy-MM-dd hh:mm a')}</td>
-                <td>{incident.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table
+          getID={(row) => row.id}
+          data={incidents}
+          columns={[
+            { label: t('incidents.reports.code'), key: 'code' },
+            {
+              label: t('incidents.reports.dateOfIncident'),
+              key: 'date',
+              formatter: (row) =>
+                row.date ? format(new Date(row.date), 'yyyy-MM-dd hh:mm a') : '',
+            },
+            { label: t('incidents.reports.reportedBy'), key: 'reportedBy' },
+            { label: t('incidents.reports.reportedOn'), key: 'reportedOn' },
+            { label: t('incidents.reports.status'), key: 'status' },
+          ]}
+          actionsHeaderText={t('actions.label')}
+          actions={[
+            { label: t('actions.view'), action: (row) => history.push(`incidents/${row.id}`) },
+          ]}
+        />
       </div>
     </>
   )

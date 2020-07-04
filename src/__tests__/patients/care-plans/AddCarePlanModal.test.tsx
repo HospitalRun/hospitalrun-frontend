@@ -1,4 +1,3 @@
-import '../../../__mocks__/matchMediaMock'
 import { Modal } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -9,12 +8,13 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { CarePlanIntent, CarePlanStatus } from '../../../model/CarePlan'
-import Patient from '../../../model/Patient'
 import AddCarePlanModal from '../../../patients/care-plans/AddCarePlanModal'
 import CarePlanForm from '../../../patients/care-plans/CarePlanForm'
 import * as patientSlice from '../../../patients/patient-slice'
-import { RootState } from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import { CarePlanIntent, CarePlanStatus } from '../../../shared/model/CarePlan'
+import Patient from '../../../shared/model/Patient'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -42,6 +42,8 @@ describe('Add Care Plan Modal', () => {
 
   const onCloseSpy = jest.fn()
   const setup = () => {
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+    jest.spyOn(PatientRepository, 'saveOrUpdate')
     const store = mockStore({ patient: { patient, carePlanError } } as any)
     const history = createMemoryHistory()
     const wrapper = mount(

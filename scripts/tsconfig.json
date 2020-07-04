@@ -1,8 +1,9 @@
 {
-  "include": ["./checkMissingTranslations.ts"],
+  "include": ["./**/*.ts"],
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "../bin",
-    "target": "es5"
+    "target": "es5",
+    "esModuleInterop": true
   }
 }

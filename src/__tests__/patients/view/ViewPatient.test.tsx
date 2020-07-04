@@ -1,7 +1,5 @@
-import '../../../__mocks__/matchMediaMock'
-
 import { TabsHeader, Tab } from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -11,12 +9,8 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import LabRepository from '../../../clients/db/LabRepository'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import Patient from '../../../model/Patient'
-import Permissions from '../../../model/Permissions'
-import * as ButtonBarProvider from '../../../page-header/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/useTitle'
+import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/title/useTitle'
 import Allergies from '../../../patients/allergies/Allergies'
 import AppointmentsList from '../../../patients/appointments/AppointmentsList'
 import CarePlanTab from '../../../patients/care-plans/CarePlanTab'
@@ -27,7 +21,10 @@ import NotesTab from '../../../patients/notes/NoteTab'
 import * as patientSlice from '../../../patients/patient-slice'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
 import ViewPatient from '../../../patients/view/ViewPatient'
-import { RootState } from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -52,9 +49,9 @@ describe('ViewPatient', () => {
   let history: any
   let store: MockStore
 
-  const setup = (permissions = [Permissions.ReadPatients]) => {
+  const setup = async (permissions = [Permissions.ReadPatients]) => {
     jest.spyOn(PatientRepository, 'find')
-    jest.spyOn(LabRepository, 'findAllByPatientId').mockResolvedValue([])
+    jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.find.mockResolvedValue(patient)
     history = createMemoryHistory()
@@ -65,18 +62,21 @@ describe('ViewPatient', () => {
     } as any)
 
     history.push('/patients/123')
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Route path="/patients/:id">
-            <ViewPatient />
-          </Route>
-        </Router>
-      </Provider>,
-    )
-
+    let wrapper: any
+    await act(async () => {
+      wrapper = await mount(
+        <Provider store={store}>
+          <Router history={history}>
+            <Route path="/patients/:id">
+              <ViewPatient />
+            </Route>
+          </Router>
+        </Provider>,
+      )
+    })
     wrapper.update()
-    return wrapper
+
+    return { wrapper: wrapper as ReactWrapper }
   }
 
   beforeEach(() => {
@@ -84,9 +84,7 @@ describe('ViewPatient', () => {
   })
 
   it('should dispatch fetchPatient when component loads', async () => {
-    await act(async () => {
-      await setup()
-    })
+    await setup()
 
     expect(PatientRepository.find).toHaveBeenCalledWith(patient.id)
     expect(store.getActions()).toContainEqual(patientSlice.fetchPatientStart())
@@ -95,41 +93,38 @@ describe('ViewPatient', () => {
 
   it('should render a header with the patients given, family, and suffix', async () => {
     jest.spyOn(titleUtil, 'default')
-    await act(async () => {
-      await setup()
-    })
+
+    await setup()
+
     expect(titleUtil.default).toHaveBeenCalledWith(
       `${patient.givenName} ${patient.familyName} ${patient.suffix} (${patient.code})`,
     )
   })
 
-  it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', () => {
+  it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', async () => {
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
     const setButtonToolBarSpy = jest.fn()
     mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
 
-    setup([Permissions.WritePatients])
+    await setup([Permissions.WritePatients])
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
     expect((actualButtons[0] as any).props.children).toEqual('actions.edit')
   })
 
-  it('button toolbar empty if only has ReadPatients permission', () => {
+  it('button toolbar empty if only has ReadPatients permission', async () => {
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
     const setButtonToolBarSpy = jest.fn()
     mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
 
-    setup()
+    await setup()
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
     expect(actualButtons.length).toEqual(0)
   })
 
   it('should render a tabs header with the correct tabs', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     const tabsHeader = wrapper.find(TabsHeader)
     const tabs = tabsHeader.find(Tab)
@@ -147,10 +142,7 @@ describe('ViewPatient', () => {
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     const tabsHeader = wrapper.find(TabsHeader)
     const tabs = tabsHeader.find(Tab)
@@ -161,10 +153,7 @@ describe('ViewPatient', () => {
   })
 
   it('should navigate /patients/:id when the general information tab is clicked', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     const tabsHeader = wrapper.find(TabsHeader)
     const tabs = tabsHeader.find(Tab)
@@ -178,15 +167,13 @@ describe('ViewPatient', () => {
   })
 
   it('should mark the related persons tab as active when it is clicked and render the Related Person Tab component when route is /patients/:id/relatedpersons', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     await act(async () => {
       const tabsHeader = wrapper.find(TabsHeader)
       const tabs = tabsHeader.find(Tab)
-      tabs.at(1).prop('onClick')()
+      const onClick = tabs.at(1).prop('onClick') as any
+      onClick()
     })
 
     wrapper.update()
@@ -202,15 +189,13 @@ describe('ViewPatient', () => {
   })
 
   it('should mark the appointments tab as active when it is clicked and render the appointments tab component when route is /patients/:id/appointments', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     await act(async () => {
       const tabsHeader = wrapper.find(TabsHeader)
       const tabs = tabsHeader.find(Tab)
-      tabs.at(2).prop('onClick')()
+      const onClick = tabs.at(2).prop('onClick') as any
+      onClick()
     })
 
     wrapper.update()
@@ -226,15 +211,13 @@ describe('ViewPatient', () => {
   })
 
   it('should mark the allergies tab as active when it is clicked and render the allergies component when route is /patients/:id/allergies', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     await act(async () => {
       const tabsHeader = wrapper.find(TabsHeader)
       const tabs = tabsHeader.find(Tab)
-      tabs.at(3).prop('onClick')()
+      const onClick = tabs.at(3).prop('onClick') as any
+      onClick()
     })
 
     wrapper.update()
@@ -250,15 +233,13 @@ describe('ViewPatient', () => {
   })
 
   it('should mark the diagnoses tab as active when it is clicked and render the diagnoses component when route is /patients/:id/diagnoses', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     await act(async () => {
       const tabsHeader = wrapper.find(TabsHeader)
       const tabs = tabsHeader.find(Tab)
-      tabs.at(4).prop('onClick')()
+      const onClick = tabs.at(4).prop('onClick') as any
+      onClick()
     })
 
     wrapper.update()
@@ -274,15 +255,13 @@ describe('ViewPatient', () => {
   })
 
   it('should mark the notes tab as active when it is clicked and render the note component when route is /patients/:id/notes', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     await act(async () => {
       const tabsHeader = wrapper.find(TabsHeader)
       const tabs = tabsHeader.find(Tab)
-      tabs.at(5).prop('onClick')()
+      const onClick = tabs.at(5).prop('onClick') as any
+      onClick()
     })
 
     wrapper.update()
@@ -298,15 +277,13 @@ describe('ViewPatient', () => {
   })
 
   it('should mark the labs tab as active when it is clicked and render the lab component when route is /patients/:id/labs', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     await act(async () => {
       const tabsHeader = wrapper.find(TabsHeader)
       const tabs = tabsHeader.find(Tab)
-      tabs.at(6).prop('onClick')()
+      const onClick = tabs.at(6).prop('onClick') as any
+      onClick()
     })
 
     wrapper.update()
@@ -322,15 +299,13 @@ describe('ViewPatient', () => {
   })
 
   it('should mark the care plans tab as active when it is clicked and render the care plan tab component when route is /patients/:id/care-plans', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
+    const { wrapper } = await setup()
 
     await act(async () => {
       const tabsHeader = wrapper.find(TabsHeader)
       const tabs = tabsHeader.find(Tab)
-      tabs.at(7).prop('onClick')()
+      const onClick = tabs.at(7).prop('onClick') as any
+      onClick()
     })
 
     wrapper.update()

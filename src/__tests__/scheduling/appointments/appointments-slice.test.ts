@@ -1,13 +1,13 @@
 import { AnyAction } from 'redux'
 import { mocked } from 'ts-jest/utils'
 
-import AppointmentRepository from '../../../clients/db/AppointmentRepository'
-import Appointment from '../../../model/Appointment'
 import appointments, {
   fetchAppointmentsStart,
   fetchAppointmentsSuccess,
   fetchAppointments,
 } from '../../../scheduling/appointments/appointments-slice'
+import AppointmentRepository from '../../../shared/db/AppointmentRepository'
+import Appointment from '../../../shared/model/Appointment'
 
 describe('appointments slice', () => {
   describe('appointments reducer', () => {
@@ -49,7 +49,7 @@ describe('appointments slice', () => {
       {
         id: '1',
         rev: '1',
-        patientId: '123',
+        patient: '123',
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         location: 'location',

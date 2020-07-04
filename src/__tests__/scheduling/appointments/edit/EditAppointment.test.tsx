@@ -1,5 +1,3 @@
-import '../../../../__mocks__/matchMediaMock'
-
 import { Button } from '@hospitalrun/components'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
 import { mount } from 'enzyme'
@@ -12,22 +10,22 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import AppointmentRepository from '../../../../clients/db/AppointmentRepository'
-import PatientRepository from '../../../../clients/db/PatientRepository'
-import Appointment from '../../../../model/Appointment'
-import Patient from '../../../../model/Patient'
-import * as titleUtil from '../../../../page-header/useTitle'
+import * as titleUtil from '../../../../page-header/title/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import EditAppointment from '../../../../scheduling/appointments/edit/EditAppointment'
-import { RootState } from '../../../../store'
+import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
+import PatientRepository from '../../../../shared/db/PatientRepository'
+import Appointment from '../../../../shared/model/Appointment'
+import Patient from '../../../../shared/model/Patient'
+import { RootState } from '../../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Edit Appointment', () => {
   const appointment = {
     id: '123',
-    patientId: '456',
+    patient: '456',
     startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
     endDateTime: addMinutes(roundToNearestMinutes(new Date(), { nearestTo: 15 }), 60).toISOString(),
     location: 'location',
@@ -107,7 +105,7 @@ describe('Edit Appointment', () => {
     })
 
     expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
-    expect(PatientRepository.find).toHaveBeenCalledWith(appointment.patientId)
+    expect(PatientRepository.find).toHaveBeenCalledWith(appointment.patient)
     expect(store.getActions()).toContainEqual(appointmentSlice.fetchAppointmentStart())
     expect(store.getActions()).toContainEqual(
       appointmentSlice.fetchAppointmentSuccess({ appointment, patient }),

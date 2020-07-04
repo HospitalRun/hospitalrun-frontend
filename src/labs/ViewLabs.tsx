@@ -1,21 +1,23 @@
-import { Spinner, Button } from '@hospitalrun/components'
+import { Button, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import SelectWithLabelFormGroup from '../components/input/SelectWithLableFormGroup'
-import TextInputWithLabelFormGroup from '../components/input/TextInputWithLabelFormGroup'
-import useDebounce from '../hooks/debounce'
-import Lab from '../model/Lab'
-import Permissions from '../model/Permissions'
-import { useButtonToolbarSetter } from '../page-header/ButtonBarProvider'
-import useTitle from '../page-header/useTitle'
-import { RootState } from '../store'
+import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarProvider'
+import useTitle from '../page-header/title/useTitle'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../shared/components/input/SelectWithLableFormGroup'
+import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
+import useDebounce from '../shared/hooks/useDebounce'
+import Lab from '../shared/model/Lab'
+import Permissions from '../shared/model/Permissions'
+import { RootState } from '../shared/store'
 import { searchLabs } from './labs-slice'
 
-type filter = 'requested' | 'completed' | 'canceled' | 'all'
+type LabFilter = 'requested' | 'completed' | 'canceled' | 'all'
 
 const ViewLabs = () => {
   const { t } = useTranslation()
@@ -25,8 +27,8 @@ const ViewLabs = () => {
 
   const { permissions } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
-  const { labs, isLoading } = useSelector((state: RootState) => state.labs)
-  const [searchFilter, setSearchFilter] = useState<filter>('all')
+  const { labs } = useSelector((state: RootState) => state.labs)
+  const [searchFilter, setSearchFilter] = useState<LabFilter>('all')
   const [searchText, setSearchText] = useState<string>('')
   const debouncedSearchText = useDebounce(searchText, 500)
 
@@ -50,15 +52,6 @@ const ViewLabs = () => {
     return buttons
   }, [permissions, history, t])
 
-  const setFilter = (filter: string) =>
-    filter === 'requested'
-      ? 'requested'
-      : filter === 'completed'
-      ? 'completed'
-      : filter === 'canceled'
-      ? 'canceled'
-      : 'all'
-
   useEffect(() => {
     dispatch(searchLabs(debouncedSearchText, searchFilter))
   }, [dispatch, debouncedSearchText, searchFilter])
@@ -70,32 +63,20 @@ const ViewLabs = () => {
     }
   }, [dispatch, getButtons, setButtons])
 
-  const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
-
-  const onTableRowClick = (lab: Lab) => {
+  const onViewClick = (lab: Lab) => {
     history.push(`/labs/${lab.id}`)
-  }
-
-  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchFilter(setFilter(event.target.value))
   }
 
   const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value)
   }
 
-  const listBody = (
-    <tbody>
-      {labs.map((lab) => (
-        <tr onClick={() => onTableRowClick(lab)} key={lab.id}>
-          <td>{lab.code}</td>
-          <td>{lab.type}</td>
-          <td>{format(new Date(lab.requestedOn), 'yyyy-MM-dd hh:mm a')}</td>
-          <td>{lab.status}</td>
-        </tr>
-      ))}
-    </tbody>
-  )
+  const filterOptions: Option[] = [
+    { label: t('labs.status.requested'), value: 'requested' },
+    { label: t('labs.status.completed'), value: 'completed' },
+    { label: t('labs.status.canceled'), value: 'canceled' },
+    { label: t('labs.filter.all'), value: 'all' },
+  ]
 
   return (
     <>
@@ -103,18 +84,11 @@ const ViewLabs = () => {
         <div className="col-md-3 col-lg-2">
           <SelectWithLabelFormGroup
             name="type"
-            value={searchFilter}
             label={t('labs.filterTitle')}
+            options={filterOptions}
+            defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
+            onChange={(values) => setSearchFilter(values[0] as LabFilter)}
             isEditable
-            options={[
-              { label: t('labs.status.requested'), value: 'requested' },
-              { label: t('labs.status.completed'), value: 'completed' },
-              { label: t('labs.status.canceled'), value: 'canceled' },
-              { label: t('labs.filter.all'), value: 'all' },
-            ]}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-              onSelectChange(event)
-            }}
           />
         </div>
         <div className="col">
@@ -129,17 +103,23 @@ const ViewLabs = () => {
         </div>
       </div>
       <div className="row">
-        <table className="table table-hover">
-          <thead className="thead-light">
-            <tr>
-              <th>{t('labs.lab.code')}</th>
-              <th>{t('labs.lab.type')}</th>
-              <th>{t('labs.lab.requestedOn')}</th>
-              <th>{t('labs.lab.status')}</th>
-            </tr>
-          </thead>
-          {isLoading ? loadingIndicator : listBody}
-        </table>
+        <Table
+          getID={(row) => row.id}
+          columns={[
+            { label: t('labs.lab.code'), key: 'code' },
+            { label: t('labs.lab.type'), key: 'type' },
+            {
+              label: t('labs.lab.requestedOn'),
+              key: 'requestedOn',
+              formatter: (row) =>
+                row.requestedOn ? format(new Date(row.requestedOn), 'yyyy-MM-dd hh:mm a') : '',
+            },
+            { label: t('labs.lab.status'), key: 'status' },
+          ]}
+          data={labs}
+          actionsHeaderText={t('actions.label')}
+          actions={[{ label: t('actions.view'), action: (row) => onViewClick(row as Lab) }]}
+        />
       </div>
     </>
   )

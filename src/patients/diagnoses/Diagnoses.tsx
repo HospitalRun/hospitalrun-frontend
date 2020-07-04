@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import useAddBreadcrumbs from '../../breadcrumbs/useAddBreadcrumbs'
-import Diagnosis from '../../model/Diagnosis'
-import Patient from '../../model/Patient'
-import Permissions from '../../model/Permissions'
-import { RootState } from '../../store'
+import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
+import Diagnosis from '../../shared/model/Diagnosis'
+import Patient from '../../shared/model/Patient'
+import Permissions from '../../shared/model/Permissions'
+import { RootState } from '../../shared/store'
 import AddDiagnosisModal from './AddDiagnosisModal'
 
 interface Props {
