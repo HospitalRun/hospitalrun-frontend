@@ -6,10 +6,16 @@ import Permissions from '../shared/model/Permissions'
 import User from '../shared/model/User'
 import { AppThunk } from '../shared/store'
 
+interface LoginError {
+  message?: string
+  username?: string
+  password?: string
+}
+
 interface UserState {
   permissions: (Permissions | null)[]
   user?: User
-  loginError?: string
+  loginError?: LoginError
 }
 
 const initialState: UserState = {
@@ -48,7 +54,7 @@ const userSlice = createSlice({
       state.user = payload.user
       state.permissions = initialState.permissions
     },
-    loginError(state, { payload }: PayloadAction<string>) {
+    loginError(state, { payload }: PayloadAction<LoginError>) {
       state.loginError = payload
     },
     logoutSuccess(state) {
@@ -90,9 +96,19 @@ export const login = (username: string, password: string): AppThunk => async (di
     )
   } catch (error) {
     if (!username || !password) {
-      dispatch(loginError('Missing required fields.'))
+      dispatch(
+        loginError({
+          message: 'user.login.error.message.required',
+          username: 'user.login.error.username.required',
+          password: 'user.login.error.password.required',
+        }),
+      )
     } else if (error.status === 401) {
-      dispatch(loginError('Incorrect username or password.'))
+      dispatch(
+        loginError({
+          message: 'user.login.error.message.incorrect',
+        }),
+      )
     }
   }
 }

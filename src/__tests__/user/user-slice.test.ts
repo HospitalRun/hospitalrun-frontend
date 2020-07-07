@@ -113,7 +113,7 @@ describe('user slice', () => {
       expect(remoteDb.getUser).not.toHaveBeenCalled()
       expect(store.getActions()[0]).toEqual({
         type: loginError.type,
-        payload: 'Incorrect username or password.',
+        payload: { message: 'user.login.error.message.incorrect' },
       })
     })
   })

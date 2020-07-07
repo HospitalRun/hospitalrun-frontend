@@ -1,6 +1,7 @@
 import { Alert, Container, Panel } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
@@ -16,6 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const { loginError, user } = useSelector((root: RootState) => root.user)
   const [loading, setLoading] = useState(true)
+  const { t } = useTranslation()
 
   useEffect(() => {
     const init = async () => {
@@ -61,7 +63,9 @@ const Login = () => {
         <img src={logo} alt="HospitalRun" style={{ width: '100%', textAlign: 'center' }} />
         <form>
           <Panel title="Please Sign In" color="primary">
-            {loginError && <Alert color="danger" message={loginError} title="Unable to login" />}
+            {loginError?.message && (
+              <Alert color="danger" message={t(loginError?.message)} title="Unable to login" />
+            )}
             <TextInputWithLabelFormGroup
               isEditable
               label="username"
@@ -69,8 +73,8 @@ const Login = () => {
               value={username}
               onChange={onUsernameChange}
               isRequired
-              isInvalid={!!loginError && !username}
-              feedback={!!loginError && !username ? 'Username is required.' : undefined}
+              isInvalid={!!loginError?.username && !username}
+              feedback={loginError?.username && !username ? t(loginError?.username) : undefined}
             />
             <TextInputWithLabelFormGroup
               isEditable
@@ -80,8 +84,8 @@ const Login = () => {
               value={password}
               onChange={onPasswordChange}
               isRequired
-              isInvalid={!!loginError && !password}
-              feedback={!!loginError && !password ? 'Password is required.' : undefined}
+              isInvalid={!!loginError?.password && !password}
+              feedback={loginError?.password && !password ? t(loginError?.password) : undefined}
             />
             <Button block onClick={onSignInClick}>
               Sign In
