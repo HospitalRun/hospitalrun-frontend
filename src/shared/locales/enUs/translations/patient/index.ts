@@ -36,8 +36,10 @@ export default {
     relatedPerson: 'Related Person',
     relatedPersons: {
       error: {
-        unableToAddRelatedPerson: 'Unable to add new related person.',
+        unableToAddRelatedPerson:
+          'Unable to add new related person.  Please enter an existing Patient name, or create a new related Patient record below',
         relatedPersonRequired: 'Related Person is required.',
+        relatedPersonNotFound: 'Related Person not found.',
         relationshipTypeRequired: 'Relationship Type is required.',
       },
       label: 'Related Persons',
@@ -48,6 +50,7 @@ export default {
         noRelatedPersons: 'No related persons',
       },
       addRelatedPersonAbove: 'Add a related person using the button above.',
+      newRelatedPersonInformation: 'Create New Patient as Related Person',
     },
     appointments: {
       new: 'Add Appointment',

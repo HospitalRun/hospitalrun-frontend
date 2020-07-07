@@ -308,7 +308,7 @@ export const addRelatedPerson = (
     const relatedPersons = patient.relatedPersons || []
     relatedPersons.push({ id: uuid(), ...relatedPerson })
     patient.relatedPersons = relatedPersons
-
+    dispatch(addRelatedPersonError({}))
     await dispatch(updatePatient(patient, onSuccess))
   } else {
     newRelatedPersonError.message = 'patient.relatedPersons.error.unableToAddRelatedPerson'

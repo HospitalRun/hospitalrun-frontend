@@ -1,4 +1,4 @@
-import { Button, Alert, Spinner, Table } from '@hospitalrun/components'
+import { Button, Alert, Spinner, Table, Toast } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,8 +9,9 @@ import PatientRepository from '../../shared/db/PatientRepository'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
-import { removeRelatedPerson } from '../patient-slice'
-import AddRelatedPersonModal from './AddRelatedPersonModal'
+import { removeRelatedPerson, createPatient, addRelatedPersonError } from '../patient-slice'
+import AddRelatedPersonPanel from './AddRelatedPersonPanel'
+import CreateRelatedPersonPanel from './CreateRelatedPersonPanel'
 
 interface Props {
   patient: Patient
@@ -26,8 +27,13 @@ const RelatedPersonTab = (props: Props) => {
   const { patient } = props
   const { t } = useTranslation()
   const { permissions } = useSelector((state: RootState) => state.user)
-  const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
+  const [showNewRelatedPersonPanel, setShowRelatedPersonPanel] = useState<boolean>(false)
+  const [showCreateRelatedPersonPanel, setShowCreateRelatedPersonPanel] = useState<boolean>(false)
   const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
+  const [relatedPerson, setRelatedPerson] = useState({
+    patientId: '',
+    type: '',
+  })
 
   const breadcrumbs = [
     {
@@ -56,16 +62,64 @@ const RelatedPersonTab = (props: Props) => {
   }, [patient.relatedPersons])
 
   const onNewRelatedPersonClick = () => {
-    setShowRelatedPersonModal(true)
+    setShowRelatedPersonPanel(true)
   }
 
-  const closeNewRelatedPersonModal = () => {
-    setShowRelatedPersonModal(false)
+  const closeNewRelatedPersonPanel = () => {
+    setShowRelatedPersonPanel(false)
+    setShowCreateRelatedPersonPanel(false)
+    setRelatedPerson({
+      patientId: '',
+      type: '',
+    })
   }
 
-  const onRelatedPersonDelete = (relatedPerson: Patient) => {
-    dispatch(removeRelatedPerson(patient.id, relatedPerson.id))
+  const showCreateRelatedPerson = () => {
+    setShowCreateRelatedPersonPanel(true)
   }
+
+  const closeCreateRelatedPerson = () => {
+    setShowCreateRelatedPersonPanel(false)
+    dispatch(addRelatedPersonError({}))
+  }
+
+  const onRelatedPersonDelete = (relatedPatient: Patient) => {
+    dispatch(removeRelatedPerson(patient.id, relatedPatient.id))
+  }
+
+  const onTypeChange = (val: string) => {
+    setRelatedPerson({
+      ...relatedPerson,
+      type: val,
+    })
+  }
+
+  /*   --------------------- New Patient creation --------------------------- */
+
+  const { createError } = useSelector((state: RootState) => state.patient)
+  const [newRelatedPatient, setNewRelatedPatient] = useState({} as Patient)
+  const onSuccessfulSave = (newPatient: Patient) => {
+    Toast(
+      'success',
+      t('states.success'),
+      `${t('patients.successfullyCreated')} ${newPatient.fullName}`,
+    )
+  }
+  const onSave = () => {
+    dispatch(createPatient(newRelatedPatient, onSuccessfulSave))
+    // dispatch(addRelatedPerson(patient.id, relatedPerson as RelatedPerson))
+    dispatch(addRelatedPersonError({})) /* maybe remove in cleanup if not needed */
+    closeCreateRelatedPerson()
+    setRelatedPerson({
+      patientId: '',
+      type: '',
+    })
+  }
+  const onPatientChange = (newPatient: Partial<Patient>) => {
+    setNewRelatedPatient(newPatient as Patient)
+  }
+
+  /*   ------------------------------------------------ */
 
   return (
     <div>
@@ -119,12 +173,25 @@ const RelatedPersonTab = (props: Props) => {
           )}
         </div>
       </div>
-
-      <AddRelatedPersonModal
-        show={showNewRelatedPersonModal}
-        toggle={closeNewRelatedPersonModal}
-        onCloseButtonClick={closeNewRelatedPersonModal}
-      />
+      {showNewRelatedPersonPanel && (
+        <AddRelatedPersonPanel
+          showCreateRelatedPerson={showCreateRelatedPerson}
+          closeNewRelatedPersonPanel={closeNewRelatedPersonPanel}
+          relationshipType={relatedPerson.type}
+        />
+      )}
+      <br />
+      {showCreateRelatedPersonPanel && (
+        <CreateRelatedPersonPanel
+          patient={newRelatedPatient}
+          onChange={onPatientChange}
+          onSave={onSave}
+          onCancel={closeCreateRelatedPerson}
+          onTypeChange={onTypeChange}
+          error={createError}
+          isEditable
+        />
+      )}
     </div>
   )
 }

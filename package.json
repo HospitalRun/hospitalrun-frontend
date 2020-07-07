@@ -110,7 +110,7 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "commit": "npx git-cz",
-    "start": "npm run translation:check && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "update": "npx npm-check -u",
     "prepublishOnly": "npm run build",
