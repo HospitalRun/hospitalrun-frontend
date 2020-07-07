@@ -21,4 +21,5 @@ export default interface Patient extends AbstractDBModel, Name, ContactInformati
   notes?: Note[]
   index: string
   carePlans: CarePlan[]
+  bloodType: string
 }

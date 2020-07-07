@@ -73,6 +73,18 @@ const GeneralInformation = (props: Props): ReactElement => {
     { label: t('patient.types.private'), value: 'private' },
   ]
 
+  const bloodTypeOptions: Option[] = [
+    { label: t('bloodType.apositive'), value: 'A+' },
+    { label: t('bloodType.anegative'), value: 'A-' },
+    { label: t('bloodType.abpositive'), value: 'AB+' },
+    { label: t('bloodType.abnegative'), value: 'AB-' },
+    { label: t('bloodType.bpositive'), value: 'B+' },
+    { label: t('bloodType.bnegative'), value: 'B-' },
+    { label: t('bloodType.opositive'), value: 'O+' },
+    { label: t('bloodType.onegative'), value: 'O-' },
+    { label: t('bloodType.unknown'), value: 'unknown' },
+  ]
+
   return (
     <div>
       <Panel title={t('patient.basicInformation')} color="primary" collapsible>
@@ -142,6 +154,16 @@ const GeneralInformation = (props: Props): ReactElement => {
               options={typeOptions}
               defaultSelected={typeOptions.filter(({ value }) => value === patient.type)}
               onChange={(values) => onFieldChange('type', values[0])}
+              isEditable={isEditable}
+            />
+          </div>
+          <div className="col">
+            <SelectWithLabelFormGroup
+              name="bloodType"
+              label={t('patient.bloodType')}
+              options={bloodTypeOptions}
+              defaultSelected={bloodTypeOptions.filter(({ value }) => value === patient.bloodType)}
+              onChange={(values) => onFieldChange('bloodType', values[0])}
               isEditable={isEditable}
             />
           </div>
