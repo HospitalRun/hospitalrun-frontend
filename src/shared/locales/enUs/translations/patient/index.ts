@@ -13,6 +13,7 @@ export default {
     approximateAge: 'Approximate Age',
     placeOfBirth: 'Place of Birth',
     sex: 'Sex',
+    bloodType: 'Blood Type',
     contactInfoType: {
       label: 'Type',
       options: {
