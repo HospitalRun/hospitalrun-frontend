@@ -1,4 +1,5 @@
 import actions from './actions'
+import bloodType from './blood-type'
 import dashboard from './dashboard'
 import incidents from './incidents'
 import labs from './labs'
@@ -22,4 +23,5 @@ export default {
   ...labs,
   ...incidents,
   ...settings,
+  ...bloodType,
 }
