@@ -67,6 +67,7 @@ describe('General Information, without isEditable', () => {
     suffix: 'suffix',
     sex: 'male',
     type: 'charity',
+    bloodType: 'A-',
     dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
     isApproximateDateOfBirth: false,
     occupation: 'occupation',
@@ -139,6 +140,32 @@ describe('General Information, without isEditable', () => {
     expect(sexSelect.prop('options')[2].value).toEqual('other')
     expect(sexSelect.prop('options')[3].label).toEqual('sex.unknown')
     expect(sexSelect.prop('options')[3].value).toEqual('unknown')
+  })
+
+  it('should render the blood type', () => {
+    const bloodTypeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'bloodType')
+    expect(bloodTypeSelect.prop('defaultSelected')[0].value).toEqual(patient.bloodType)
+    expect(bloodTypeSelect.prop('label')).toEqual('patient.bloodType')
+    expect(bloodTypeSelect.prop('isEditable')).toBeFalsy()
+    expect(bloodTypeSelect.prop('options')).toHaveLength(9)
+    expect(bloodTypeSelect.prop('options')[0].label).toEqual('bloodType.apositive')
+    expect(bloodTypeSelect.prop('options')[0].value).toEqual('A+')
+    expect(bloodTypeSelect.prop('options')[1].label).toEqual('bloodType.anegative')
+    expect(bloodTypeSelect.prop('options')[1].value).toEqual('A-')
+    expect(bloodTypeSelect.prop('options')[2].label).toEqual('bloodType.abpositive')
+    expect(bloodTypeSelect.prop('options')[2].value).toEqual('AB+')
+    expect(bloodTypeSelect.prop('options')[3].label).toEqual('bloodType.abnegative')
+    expect(bloodTypeSelect.prop('options')[3].value).toEqual('AB-')
+    expect(bloodTypeSelect.prop('options')[4].label).toEqual('bloodType.bpositive')
+    expect(bloodTypeSelect.prop('options')[4].value).toEqual('B+')
+    expect(bloodTypeSelect.prop('options')[5].label).toEqual('bloodType.bnegative')
+    expect(bloodTypeSelect.prop('options')[5].value).toEqual('B-')
+    expect(bloodTypeSelect.prop('options')[6].label).toEqual('bloodType.opositive')
+    expect(bloodTypeSelect.prop('options')[6].value).toEqual('O+')
+    expect(bloodTypeSelect.prop('options')[7].label).toEqual('bloodType.onegative')
+    expect(bloodTypeSelect.prop('options')[7].value).toEqual('O-')
+    expect(bloodTypeSelect.prop('options')[8].label).toEqual('bloodType.unknown')
+    expect(bloodTypeSelect.prop('options')[8].value).toEqual('unknown')
   })
 
   it('should render the patient type select', () => {
@@ -230,6 +257,7 @@ describe('General Information, isEditable', () => {
     familyName: 'familyName',
     suffix: 'suffix',
     sex: 'male',
+    bloodType: 'A-',
     type: 'charity',
     dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
     isApproximateDateOfBirth: false,
@@ -281,6 +309,7 @@ describe('General Information, isEditable', () => {
     { value: 'address C', type: undefined, id: '654' },
     { value: 'address D', type: undefined, id: '321' },
   ]
+  const expectedBloodType = 'unknown'
 
   it('should render the prefix', () => {
     const prefixInput = wrapper.findWhere((w: any) => w.prop('name') === 'prefix')
@@ -358,6 +387,40 @@ describe('General Information, isEditable', () => {
     expect(sexSelect.prop('options')[2].value).toEqual('other')
     expect(sexSelect.prop('options')[3].label).toEqual('sex.unknown')
     expect(sexSelect.prop('options')[3].value).toEqual('unknown')
+  })
+
+  it('should render the blood type select', () => {
+    const bloodTypeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'bloodType')
+    expect(bloodTypeSelect.prop('defaultSelected')[0].value).toEqual(patient.bloodType)
+    expect(bloodTypeSelect.prop('label')).toEqual('patient.bloodType')
+    expect(bloodTypeSelect.prop('isEditable')).toBeTruthy()
+    expect(bloodTypeSelect.prop('options')).toHaveLength(9)
+    expect(bloodTypeSelect.prop('options')[0].label).toEqual('bloodType.apositive')
+    expect(bloodTypeSelect.prop('options')[0].value).toEqual('A+')
+    expect(bloodTypeSelect.prop('options')[1].label).toEqual('bloodType.anegative')
+    expect(bloodTypeSelect.prop('options')[1].value).toEqual('A-')
+    expect(bloodTypeSelect.prop('options')[2].label).toEqual('bloodType.abpositive')
+    expect(bloodTypeSelect.prop('options')[2].value).toEqual('AB+')
+    expect(bloodTypeSelect.prop('options')[3].label).toEqual('bloodType.abnegative')
+    expect(bloodTypeSelect.prop('options')[3].value).toEqual('AB-')
+    expect(bloodTypeSelect.prop('options')[4].label).toEqual('bloodType.bpositive')
+    expect(bloodTypeSelect.prop('options')[4].value).toEqual('B+')
+    expect(bloodTypeSelect.prop('options')[5].label).toEqual('bloodType.bnegative')
+    expect(bloodTypeSelect.prop('options')[5].value).toEqual('B-')
+    expect(bloodTypeSelect.prop('options')[6].label).toEqual('bloodType.opositive')
+    expect(bloodTypeSelect.prop('options')[6].value).toEqual('O+')
+    expect(bloodTypeSelect.prop('options')[7].label).toEqual('bloodType.onegative')
+    expect(bloodTypeSelect.prop('options')[7].value).toEqual('O-')
+    expect(bloodTypeSelect.prop('options')[8].label).toEqual('bloodType.unknown')
+    expect(bloodTypeSelect.prop('options')[8].value).toEqual('unknown')
+    act(() => {
+      bloodTypeSelect.prop('onChange')([expectedBloodType])
+    })
+    expect(onFieldChange).toHaveBeenCalledTimes(1)
+    expect(onFieldChange).toHaveBeenCalledWith({
+      ...patient,
+      bloodType: expectedBloodType,
+    })
   })
 
   it('should render the patient type select', () => {
