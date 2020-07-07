@@ -94,8 +94,8 @@ const ViewLabs = () => {
         <div className="col">
           <TextInputWithLabelFormGroup
             name="searchbox"
-            label="Search Labs"
-            placeholder="Search labs by type"
+            label={t('labs.search')}
+            placeholder={t('labs.search')}
             value={searchText}
             isEditable
             onChange={onSearchBoxChange}
