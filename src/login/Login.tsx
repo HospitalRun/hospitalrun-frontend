@@ -1,23 +1,23 @@
 import { Alert, Container, Panel } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import { remoteDb } from '../shared/config/pouchdb'
+import useTranslator from '../shared/hooks/useTranslator'
 import logo from '../shared/static/images/logo-on-transparent.png'
 import { RootState } from '../shared/store'
 import { getCurrentSession, login } from '../user/user-slice'
 
 const Login = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslator()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const { loginError, user } = useSelector((root: RootState) => root.user)
   const [loading, setLoading] = useState(true)
-  const { t } = useTranslation()
 
   useEffect(() => {
     const init = async () => {
@@ -74,7 +74,7 @@ const Login = () => {
               onChange={onUsernameChange}
               isRequired
               isInvalid={!!loginError?.username && !username}
-              feedback={loginError?.username && !username ? t(loginError?.username) : undefined}
+              feedback={t(loginError?.username)}
             />
             <TextInputWithLabelFormGroup
               isEditable
@@ -85,7 +85,7 @@ const Login = () => {
               onChange={onPasswordChange}
               isRequired
               isInvalid={!!loginError?.password && !password}
-              feedback={loginError?.password && !password ? t(loginError?.password) : undefined}
+              feedback={t(loginError?.password)}
             />
             <Button block onClick={onSignInClick}>
               Sign In
