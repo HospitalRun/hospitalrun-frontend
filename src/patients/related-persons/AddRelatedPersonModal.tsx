@@ -1,11 +1,11 @@
 import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import RelatedPerson from '../../shared/model/RelatedPerson'
 import { RootState } from '../../shared/store'
@@ -19,7 +19,7 @@ interface Props {
 
 const AddRelatedPersonModal = (props: Props) => {
   const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { patient, relatedPersonError } = useSelector((state: RootState) => state.patient)
 
   const { show, toggle, onCloseButtonClick } = props
