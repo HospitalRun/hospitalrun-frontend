@@ -107,7 +107,7 @@ const Navbar = () => {
             },
             {
               type: 'link',
-              label: t('logout'),
+              label: t('actions.logout'),
               onClick: () => {
                 dispatch(logout())
                 navigateTo('/login')
