@@ -1,6 +1,5 @@
 import { Button, Row, Column } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -9,6 +8,7 @@ import useTitle from '../../page-header/title/useTitle'
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Incident from '../../shared/model/Incident'
 import { RootState } from '../../shared/store'
 import { reportIncident } from '../incident-slice'
@@ -16,7 +16,7 @@ import { reportIncident } from '../incident-slice'
 const ReportIncident = () => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   useTitle(t('incidents.reports.new'))
   const breadcrumbs = [
     {

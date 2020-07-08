@@ -1,9 +1,9 @@
 import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Allergy from '../../shared/model/Allergy'
 import { RootState } from '../../shared/store'
 import { addAllergy } from '../patient-slice'
@@ -16,7 +16,7 @@ interface NewAllergyModalProps {
 const NewAllergyModal = (props: NewAllergyModalProps) => {
   const { show, onCloseButtonClick } = props
   const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { allergyError, patient } = useSelector((state: RootState) => state.patient)
 
   const [allergy, setAllergy] = useState({ name: '' })
