@@ -58,9 +58,14 @@ describe('Navbar', () => {
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
       const hamberger = hospitalRunNavbar.find('.nav-hamberger')
       const { children } = hamberger.first().props() as any
+      const [dashboardIcon, dashboardLabel] = children[0].props.children
+      const [newPatientIcon, newPatientLabel] = children[1].props.children
 
-      expect(children[0].props.children).toEqual([undefined, 'dashboard.label'])
-      expect(children[1].props.children).toEqual([undefined, 'patients.newPatient'])
+      expect(dashboardIcon.props.icon).toEqual('dashboard')
+      expect(dashboardLabel).toEqual('dashboard.label')
+      expect(newPatientIcon.props.icon).toEqual('patient-add')
+      expect(newPatientLabel).toEqual('patients.newPatient')
+      // settings doesn't have an icon which is why index 0 should be undefined
       expect(children[children.length - 1].props.children).toEqual([undefined, 'settings.label'])
     })
 
@@ -141,8 +146,10 @@ describe('Navbar', () => {
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
       const addNew = hospitalRunNavbar.find('.nav-add-new')
       const { children } = addNew.first().props() as any
+      const [icon, label] = children[0].props.children
 
-      expect(children[0].props.children).toEqual([undefined, 'patients.newPatient'])
+      expect(label).toEqual('patients.newPatient')
+      expect(icon.props.icon).toEqual('patient-add')
     })
 
     it('should not show a shortcut if user does not have a permission', () => {
