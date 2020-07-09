@@ -63,6 +63,7 @@ const pageMap: {
     permission: null,
     label: 'settings.label',
     path: '/settings',
+    icon: 'setting',
   },
 }
 

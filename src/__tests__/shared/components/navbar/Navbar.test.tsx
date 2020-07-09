@@ -60,13 +60,14 @@ describe('Navbar', () => {
       const { children } = hamberger.first().props() as any
       const [dashboardIcon, dashboardLabel] = children[0].props.children
       const [newPatientIcon, newPatientLabel] = children[1].props.children
+      const [settingsIcon, settingsLabel] = children[children.length - 1].props.children
 
       expect(dashboardIcon.props.icon).toEqual('dashboard')
       expect(dashboardLabel).toEqual('dashboard.label')
       expect(newPatientIcon.props.icon).toEqual('patient-add')
       expect(newPatientLabel).toEqual('patients.newPatient')
-      // settings doesn't have an icon which is why index 0 should be undefined
-      expect(children[children.length - 1].props.children).toEqual([undefined, 'settings.label'])
+      expect(settingsIcon.props.icon).toEqual('setting')
+      expect(settingsLabel).toEqual('settings.label')
     })
 
     it('should not show an item if user does not have a permission', () => {
