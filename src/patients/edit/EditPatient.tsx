@@ -1,11 +1,11 @@
 import { Spinner, Button, Toast } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../../page-header/title/useTitle'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
@@ -21,7 +21,7 @@ const getPatientCode = (p: Patient): string => {
 }
 
 const EditPatient = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const history = useHistory()
   const dispatch = useDispatch()
 

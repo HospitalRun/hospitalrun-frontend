@@ -1,9 +1,9 @@
 import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Note from '../../shared/model/Note'
 import { RootState } from '../../shared/store'
 import { addNote } from '../patient-slice'
@@ -18,7 +18,7 @@ const NewNoteModal = (props: Props) => {
   const { show, toggle, onCloseButtonClick } = props
   const dispatch = useDispatch()
   const { patient, noteError } = useSelector((state: RootState) => state.patient)
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const [note, setNote] = useState({
     text: '',
   })

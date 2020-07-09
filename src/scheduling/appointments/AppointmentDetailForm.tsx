@@ -1,6 +1,5 @@
 import { Typeahead, Label, Alert } from '@hospitalrun/components'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
 import SelectWithLabelFormGroup, {
@@ -9,6 +8,7 @@ import SelectWithLabelFormGroup, {
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Appointment from '../../shared/model/Appointment'
 import Patient from '../../shared/model/Patient'
 
@@ -22,7 +22,7 @@ interface Props {
 
 const AppointmentDetailForm = (props: Props) => {
   const { onFieldChange, appointment, patient, isEditable, error } = props
-  const { t } = useTranslation()
+  const { t } = useTranslator()
 
   const onDateChange = (date: Date, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, date.toISOString())
