@@ -16,5 +16,6 @@ export default {
     page: 'Page',
     add: 'Add',
     view: 'View',
+    logout: 'logout',
   },
 }
