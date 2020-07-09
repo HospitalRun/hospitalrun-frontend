@@ -169,7 +169,7 @@ const GeneralInformation = (props: Props): ReactElement => {
           </div>
         </div>
         <div className="row">
-          <div className="col">
+          <div className="col-md-4">
             {patient.isApproximateDateOfBirth ? (
               <TextInputWithLabelFormGroup
                 label={t('patient.approximateAge')}
@@ -195,8 +195,6 @@ const GeneralInformation = (props: Props): ReactElement => {
                 feedback={t(error?.dateOfBirth)}
               />
             )}
-          </div>
-          <div className="col">
             <div className="form-group">
               <Checkbox
                 label={t('patient.unknownDateOfBirth')}
