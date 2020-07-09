@@ -1,12 +1,12 @@
 import { Spinner, Row, Column, Icon } from '@hospitalrun/components'
 import React, { useEffect, ReactElement } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import SelectWithLabelFormGroup, {
   Option,
 } from '../shared/components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
+import useTranslator from '../shared/hooks/useTranslator'
 import { ContactInfoPiece } from '../shared/model/ContactInformation'
 import { uuid } from '../shared/util/uuid'
 import ContactInfoTypes from './ContactInfoTypes'
@@ -24,7 +24,7 @@ interface Props {
 const ContactInfo = (props: Props): ReactElement => {
   const { component, data, errors, label, name, isEditable, onChange } = props
 
-  const { t } = useTranslation()
+  const { t } = useTranslator()
 
   useEffect(() => {
     if (onChange && data.length === 0) {

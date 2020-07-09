@@ -1,17 +1,17 @@
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { logout } from '../../../user/user-slice'
+import useTranslator from '../../hooks/useTranslator'
 import { RootState } from '../../store'
 import pageMap, { Page } from './pageMap'
 
 const Navbar = () => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
 
   const navigateTo = (location: string) => {
@@ -107,7 +107,7 @@ const Navbar = () => {
             },
             {
               type: 'link',
-              label: t('logout'),
+              label: t('actions.logout'),
               onClick: () => {
                 dispatch(logout())
                 navigateTo('/login')

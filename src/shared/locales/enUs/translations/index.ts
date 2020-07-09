@@ -10,6 +10,7 @@ import scheduling from './scheduling'
 import settings from './settings'
 import sex from './sex'
 import states from './states'
+import user from './user'
 
 export default {
   ...actions,
@@ -23,5 +24,6 @@ export default {
   ...labs,
   ...incidents,
   ...settings,
+  ...user,
   ...bloodType,
 }

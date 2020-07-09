@@ -1,10 +1,10 @@
 import { Alert, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
 import PatientRepository from '../../shared/db/PatientRepository'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Lab from '../../shared/model/Lab'
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 const LabsTab = (props: Props) => {
   const history = useHistory()
   const { patientId } = props
-  const { t } = useTranslation()
+  const { t } = useTranslator()
 
   const [labs, setLabs] = useState<Lab[]>([])
 
