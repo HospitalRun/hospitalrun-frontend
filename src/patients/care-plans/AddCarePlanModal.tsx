@@ -1,9 +1,9 @@
 import { Modal } from '@hospitalrun/components'
 import { addMonths } from 'date-fns'
 import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
+import useTranslator from '../../shared/hooks/useTranslator'
 import CarePlan from '../../shared/model/CarePlan'
 import { RootState } from '../../shared/store'
 import { addCarePlan } from '../patient-slice'
@@ -26,7 +26,7 @@ const initialCarePlanState = {
 const AddCarePlanModal = (props: Props) => {
   const { show, onCloseButtonClick } = props
   const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { carePlanError, patient } = useSelector((state: RootState) => state.patient)
   const [carePlan, setCarePlan] = useState(initialCarePlanState)
 

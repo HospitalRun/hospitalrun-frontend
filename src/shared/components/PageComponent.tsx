@@ -1,6 +1,7 @@
 import { Button, Select } from '@hospitalrun/components'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+
+import useTranslator from '../hooks/useTranslator'
 
 const pageSizes = [
   { label: '25', value: 25 },
@@ -19,7 +20,7 @@ const PageComponent = ({
   setPreviousPageRequest,
   setNextPageRequest,
 }: any) => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
 
   return (
     <div style={{ textAlign: 'center' }}>

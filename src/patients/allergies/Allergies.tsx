@@ -1,9 +1,9 @@
 import { Button, List, ListItem, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Allergy from '../../shared/model/Allergy'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
@@ -15,7 +15,7 @@ interface AllergiesProps {
 }
 
 const Allergies = (props: AllergiesProps) => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { patient } = props
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewAllergyModal, setShowNewAllergyModal] = useState(false)

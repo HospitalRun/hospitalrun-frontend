@@ -1,8 +1,8 @@
 import { Button, List, ListItem, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
+import useTranslator from '../../shared/hooks/useTranslator'
 import Note from '../../shared/model/Note'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
@@ -15,7 +15,7 @@ interface Props {
 
 const NoteTab = (props: Props) => {
   const { patient } = props
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
 
