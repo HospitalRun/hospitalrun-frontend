@@ -59,9 +59,16 @@ describe('Navbar', () => {
       const hamberger = hospitalRunNavbar.find('.nav-hamberger')
       const { children } = hamberger.first().props() as any
 
-      expect(children[0].props.children).toEqual([undefined, 'dashboard.label'])
-      expect(children[1].props.children).toEqual([undefined, 'patients.newPatient'])
-      expect(children[children.length - 1].props.children).toEqual([undefined, 'settings.label'])
+      const [dashboardIcon, dashboardLabel] = children[0].props.children
+      const [newPatientIcon, newPatientLabel] = children[1].props.children
+      const [settingsIcon, settingsLabel] = children[children.length - 1].props.children
+
+      expect(dashboardIcon.props.icon).toEqual('dashboard')
+      expect(dashboardLabel).toEqual('dashboard.label')
+      expect(newPatientIcon.props.icon).toEqual('patient-add')
+      expect(newPatientLabel).toEqual('patients.newPatient')
+      expect(settingsIcon.props.icon).toEqual('setting')
+      expect(settingsLabel).toEqual('settings.label')
     })
 
     it('should not show an item if user does not have a permission', () => {
@@ -142,7 +149,10 @@ describe('Navbar', () => {
       const addNew = hospitalRunNavbar.find('.nav-add-new')
       const { children } = addNew.first().props() as any
 
-      expect(children[0].props.children).toEqual([undefined, 'patients.newPatient'])
+      const [icon, label] = children[0].props.children
+
+      expect(icon.props.icon).toEqual('patient-add')
+      expect(label).toEqual('patients.newPatient')
     })
 
     it('should not show a shortcut if user does not have a permission', () => {

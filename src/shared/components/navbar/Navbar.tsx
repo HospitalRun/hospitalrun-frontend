@@ -31,6 +31,7 @@ const Navbar = () => {
       .map((page) => ({
         type: 'link',
         label: t(page.label),
+        icon: `${page.icon}`,
         onClick: () => {
           navigateTo(page.path)
         },
