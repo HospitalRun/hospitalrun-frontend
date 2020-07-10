@@ -130,11 +130,12 @@ export const completeIncident = (
 ): AppThunk => async (dispatch) => {
   dispatch(completeIncidentStart())
 
-  incidentToComplete.completedOn = new Date(Date.now().valueOf()).toISOString()
   const completedIncident = await IncidentRepository.saveOrUpdate({
     ...incidentToComplete,
+    completedOn: new Date(Date.now().valueOf()).toISOString(),
     status: 'completed',
   })
+
   dispatch(completeIncidentSuccess(completedIncident))
 
   if (onSuccess) {

@@ -12,6 +12,7 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 import { fetchIncident, completeIncident } from '../incident-slice'
+import { extractUsername } from '../util/extractUsername'
 
 const ViewIncident = () => {
   const dispatch = useDispatch()
@@ -101,7 +102,7 @@ const ViewIncident = () => {
           <Column>
             <div className="form-group incident-reported-by">
               <h4>{t('incidents.reports.reportedBy')}</h4>
-              <h5>{incident.reportedBy}</h5>
+              <h5>{extractUsername(incident.reportedBy)}</h5>
             </div>
           </Column>
           <Column>
