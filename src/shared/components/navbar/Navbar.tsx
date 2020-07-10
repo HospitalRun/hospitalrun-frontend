@@ -19,7 +19,6 @@ const Navbar = () => {
   }
 
   const dividerAboveLabels = [
-    'patients.newPatient',
     'scheduling.appointments.new',
     'labs.requests.new',
     'incidents.reports.new',
@@ -32,10 +31,11 @@ const Navbar = () => {
       .map((page) => ({
         type: 'link',
         label: t(page.label),
+        icon: `${page.icon}`,
         onClick: () => {
           navigateTo(page.path)
         },
-        dividerAbove: dividerAboveLabels.indexOf(page.label) > -1,
+        dividerAbove: dividerAboveLabels.includes(page.label),
       }))
   }
 
