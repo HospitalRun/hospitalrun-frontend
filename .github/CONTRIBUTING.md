@@ -42,17 +42,15 @@ To delete the development database, go to the root of the project and run `docke
 2. Configure `REACT_APP_HOSPITALRUN_API=http://localhost:5984` environment variable in `.env`
 3. Run the application `npm start`
 
-## Online one-click setup for contributing
-
-Open a file named `.env` and add a line `REACT_APP_HOSPITALRUN_API=http://localhost:5984` if you don't have it yet.
-
-_Note: To delete the development database, go to the root of the project and run `docker-compose down -v --rmi all --remove-orphans`_
-
 ## 3. Start the application
 ```
 npm install
 npm run start
 ```
+
+Open a file named `.env` and add a line `REACT_APP_HOSPITALRUN_API=http://localhost:5984` if you don't have it yet.
+
+_Note: To delete the development database, go to the root of the project and run `docker-compose down -v --rmi all --remove-orphans`_
 
 If your branch's packages changed, reinstall the packages before starting the application:
 ```
@@ -63,7 +61,7 @@ npm install
 npm run start
 ```
 
-Note: We no longer support the use of yarn.
+_Note: We no longer support the use of yarn._
 
 ## 4. Before pushing your changes, check locally that your branch passes CI checks
 
