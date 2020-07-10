@@ -14,6 +14,7 @@ enum Permissions {
   ViewIncidents = 'read:incidents',
   ViewIncident = 'read:incident',
   ReportIncident = 'write:incident',
+  CompleteIncident = 'complete:incident',
   AddCarePlan = 'write:care_plan',
   ReadCarePlan = 'read:care_plan',
 }
