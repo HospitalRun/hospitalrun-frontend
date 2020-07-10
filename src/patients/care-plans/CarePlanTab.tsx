@@ -1,9 +1,9 @@
 import { Button } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 
+import useTranslator from '../../shared/hooks/useTranslator'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 import AddCarePlanModal from './AddCarePlanModal'
@@ -11,7 +11,7 @@ import CarePlanTable from './CarePlanTable'
 import ViewCarePlan from './ViewCarePlan'
 
 const CarePlanTab = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showAddCarePlanModal, setShowAddCarePlanModal] = useState(false)
   return (

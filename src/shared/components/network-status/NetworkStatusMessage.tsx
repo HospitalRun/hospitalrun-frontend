@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import useTranslator from '../../hooks/useTranslator'
 import { useNetworkStatus } from './useNetworkStatus'
 
 const ONLINE_COLOR = 'rgba(0, 255, 0, 0.55)'
@@ -13,7 +13,7 @@ const BASE_STYLE = {
 }
 
 export const NetworkStatusMessage = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { isOnline, wasOffline } = useNetworkStatus()
   const [shouldRender, setShouldRender] = useState(true)
   const [opacity, setOpacity] = useState(1)

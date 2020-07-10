@@ -2,12 +2,12 @@ import { Button, Toast } from '@hospitalrun/components'
 import addMinutes from 'date-fns/addMinutes'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../../../page-header/title/useTitle'
+import useTranslator from '../../../shared/hooks/useTranslator'
 import Appointment from '../../../shared/model/Appointment'
 import { RootState } from '../../../shared/store'
 import { createAppointment } from '../appointment-slice'
@@ -19,7 +19,7 @@ const breadcrumbs = [
 ]
 
 const NewAppointment = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const history = useHistory()
   const dispatch = useDispatch()
   useTitle(t('scheduling.appointments.new'))

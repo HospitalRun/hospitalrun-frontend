@@ -1,11 +1,11 @@
 import { Button, List, ListItem, Container, Row } from '@hospitalrun/components'
 import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { fetchPatientAppointments } from '../../scheduling/appointments/appointments-slice'
+import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 const AppointmentsList = (props: Props) => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
 
   const { patientId } = props
   const { appointments } = useSelector((state: RootState) => state.appointments)

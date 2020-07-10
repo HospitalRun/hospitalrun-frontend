@@ -1,14 +1,14 @@
 import { Breadcrumb, BreadcrumbItem } from '@hospitalrun/components'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
 
 const Breadcrumbs = () => {
   const history = useHistory()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { breadcrumbs } = useSelector((state: RootState) => state.breadcrumbs)
 
   if (breadcrumbs.length === 0) {

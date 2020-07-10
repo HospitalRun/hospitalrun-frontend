@@ -1,7 +1,6 @@
 import { Column, Row, Spinner } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -9,12 +8,13 @@ import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
 import { fetchIncident } from '../incident-slice'
 
 const ViewIncident = () => {
   const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { id } = useParams()
   const { incident } = useSelector((state: RootState) => state.incident)
   useTitle(incident ? incident.code : '')
