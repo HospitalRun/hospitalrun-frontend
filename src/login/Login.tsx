@@ -36,40 +36,42 @@ const Login = () => {
   }
 
   return (
-    <Container className="container align-items-center" style={{ width: '50%' }}>
-      <img src={logo} alt="HospitalRun" style={{ width: '100%', textAlign: 'center' }} />
-      <form>
-        <Panel title="Please Sign In" color="primary">
-          {loginError?.message && (
-            <Alert color="danger" message={t(loginError?.message)} title="Unable to login" />
-          )}
-          <TextInputWithLabelFormGroup
-            isEditable
-            label="username"
-            name="username"
-            value={username}
-            onChange={onUsernameChange}
-            isRequired
-            isInvalid={!!loginError?.username && !username}
-            feedback={t(loginError?.username)}
-          />
-          <TextInputWithLabelFormGroup
-            isEditable
-            type="password"
-            label="password"
-            name="password"
-            value={password}
-            onChange={onPasswordChange}
-            isRequired
-            isInvalid={!!loginError?.password && !password}
-            feedback={t(loginError?.password)}
-          />
-          <Button block onClick={onSignInClick}>
-            Sign In
-          </Button>
-        </Panel>
-      </form>
-    </Container>
+    <>
+      <Container className="container align-items-center" style={{ width: '50%' }}>
+        <img src={logo} alt="HospitalRun" style={{ width: '100%', textAlign: 'center' }} />
+        <form>
+          <Panel title="Please Sign In" color="primary">
+            {loginError?.message && (
+              <Alert color="danger" message={t(loginError?.message)} title="Unable to login" />
+            )}
+            <TextInputWithLabelFormGroup
+              isEditable
+              label="username"
+              name="username"
+              value={username}
+              onChange={onUsernameChange}
+              isRequired
+              isInvalid={!!loginError?.username && !username}
+              feedback={t(loginError?.username)}
+            />
+            <TextInputWithLabelFormGroup
+              isEditable
+              type="password"
+              label="password"
+              name="password"
+              value={password}
+              onChange={onPasswordChange}
+              isRequired
+              isInvalid={!!loginError?.password && !password}
+              feedback={t(loginError?.password)}
+            />
+            <Button type="submit" block onClick={onSignInClick}>
+              Sign In
+            </Button>
+          </Panel>
+        </form>
+      </Container>
+    </>
   )
 }
 
