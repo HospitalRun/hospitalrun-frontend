@@ -29,9 +29,14 @@ const expectedPatient = {
 let user: any
 let store: any
 
-const setup = (patient = expectedPatient, permissions = [Permissions.AddAllergy]) => {
+const setup = (
+  patient = expectedPatient,
+  permissions = [Permissions.AddAllergy],
+  route = '/patients/123/allergies',
+) => {
   user = { permissions }
   store = mockStore({ patient, user } as any)
+  history.push(route)
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>
