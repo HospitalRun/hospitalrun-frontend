@@ -48,6 +48,8 @@ const AddRelatedPersonModal = (props: Props) => {
     return patients.filter((p: Patient) => p.id !== patient.id)
   }
 
+  const formattedDate = (date: string) => (date ? format(new Date(date), 'yyyy-MM-dd') : '')
+
   const body = (
     <form>
       {relatedPersonError?.message && (
@@ -65,9 +67,7 @@ const AddRelatedPersonModal = (props: Props) => {
               isInvalid={!!relatedPersonError?.relatedPerson}
               onSearch={onSearch}
               renderMenuItemChildren={(p: Patient) => (
-                <div>
-                  {`${p.fullName} - ${format(new Date(p.dateOfBirth), 'yyyy-MM-dd')} (${p.code})`}
-                </div>
+                <div>{`${p.fullName} - ${formattedDate(p.dateOfBirth)} (${p.code})`}</div>
               )}
             />
             {relatedPersonError?.relatedPerson && (
