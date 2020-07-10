@@ -87,7 +87,7 @@ const Login = () => {
               isInvalid={!!loginError?.password && !password}
               feedback={t(loginError?.password)}
             />
-            <Button block onClick={onSignInClick}>
+            <Button type="submit" block onClick={onSignInClick}>
               Sign In
             </Button>
           </Panel>
