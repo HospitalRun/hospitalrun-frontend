@@ -1,4 +1,3 @@
-import findLast from 'lodash/findLast'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -17,7 +16,7 @@ const ViewAllergy = () => {
 
   useEffect(() => {
     if (patient && allergyId) {
-      const currentAllergy = findLast(patient.allergies, (a: Allergy) => a.id === allergyId)
+      const currentAllergy = patient.allergies?.find((a: Allergy) => a.id === allergyId)
       setAllergy(currentAllergy)
     }
   }, [setAllergy, allergyId, patient])

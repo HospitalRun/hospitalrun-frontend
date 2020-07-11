@@ -6,7 +6,7 @@ import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import ViewAllergy from '../../../patients/allergies/viewAllergy'
+import ViewAllergy from '../../../patients/allergies/ViewAllergy'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'

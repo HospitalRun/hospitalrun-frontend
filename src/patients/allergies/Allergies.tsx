@@ -1,16 +1,16 @@
-import { Button, List, ListItem, Alert } from '@hospitalrun/components'
+import { Button, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Route, Switch, useHistory } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Allergy from '../../shared/model/Allergy'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
+import AllergiesList from './AllergiesList'
 import NewAllergyModal from './NewAllergyModal'
-import ViewAllergy from './viewAllergy'
+import ViewAllergy from './ViewAllergy'
 
 interface AllergiesProps {
   patient: Patient
@@ -21,7 +21,6 @@ const Allergies = (props: AllergiesProps) => {
   const { patient } = props
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewAllergyModal, setShowNewAllergyModal] = useState(false)
-  const history = useHistory()
 
   const breadcrumbs = [
     {
@@ -51,16 +50,7 @@ const Allergies = (props: AllergiesProps) => {
       <br />
       <Switch>
         <Route exact path="/patients/:id/allergies">
-          <List>
-            {patient.allergies?.map((a: Allergy) => (
-              <ListItem
-                key={a.id}
-                onClick={() => history.push(`/patients/${patient.id}/allergies/${a.id}`)}
-              >
-                {a.name}
-              </ListItem>
-            ))}
-          </List>
+          <AllergiesList />
         </Route>
         <Route exact path="/patients/:id/allergies/:allergyId">
           <ViewAllergy />
