@@ -11,9 +11,9 @@ import SelectWithLabelFormGroup, {
 } from '../../shared/components/input/SelectWithLableFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
+import { extractUsername } from '../../shared/util/extractUsername'
 import IncidentFilter from '../IncidentFilter'
 import { searchIncidents } from '../incidents-slice'
-import { extractUsername } from '../util/extractUsername'
 
 const ViewIncidents = () => {
   const { t } = useTranslator()

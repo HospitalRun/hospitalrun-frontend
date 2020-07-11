@@ -51,8 +51,8 @@ const incidentSlice = createSlice({
     reportIncidentStart: start,
     reportIncidentSuccess: finish,
     reportIncidentError: error,
-    completeIncidentStart: start,
-    completeIncidentSuccess: finish,
+    resolveIncidentStart: start,
+    resolveIncidentSuccess: finish,
   },
 })
 
@@ -62,8 +62,8 @@ export const {
   reportIncidentStart,
   reportIncidentSuccess,
   reportIncidentError,
-  completeIncidentStart,
-  completeIncidentSuccess,
+  resolveIncidentStart,
+  resolveIncidentSuccess,
 } = incidentSlice.actions
 
 export const fetchIncident = (id: string): AppThunk => async (dispatch) => {
@@ -124,22 +124,22 @@ export const reportIncident = (
   }
 }
 
-export const completeIncident = (
+export const resolveIncident = (
   incidentToComplete: Incident,
   onSuccess?: (incidentToComplete: Incident) => void,
 ): AppThunk => async (dispatch) => {
-  dispatch(completeIncidentStart())
+  dispatch(resolveIncidentStart())
 
-  const completedIncident = await IncidentRepository.saveOrUpdate({
+  const resolvedIncident = await IncidentRepository.saveOrUpdate({
     ...incidentToComplete,
-    completedOn: new Date(Date.now().valueOf()).toISOString(),
-    status: 'completed',
+    resolvedOn: new Date(Date.now().valueOf()).toISOString(),
+    status: 'resolved',
   })
 
-  dispatch(completeIncidentSuccess(completedIncident))
+  dispatch(resolveIncidentSuccess(resolvedIncident))
 
   if (onSuccess) {
-    onSuccess(completedIncident)
+    onSuccess(resolvedIncident)
   }
 }
 

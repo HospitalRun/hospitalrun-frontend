@@ -11,8 +11,8 @@ import TextInputWithLabelFormGroup from '../../shared/components/input/TextInput
 import useTranslator from '../../shared/hooks/useTranslator'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
-import { fetchIncident, completeIncident } from '../incident-slice'
-import { extractUsername } from '../util/extractUsername'
+import { extractUsername } from '../../shared/util/extractUsername'
+import { fetchIncident, resolveIncident } from '../incident-slice'
 
 const ViewIncident = () => {
   const dispatch = useDispatch()
@@ -21,7 +21,7 @@ const ViewIncident = () => {
   const { id } = useParams()
   const { incident } = useSelector((state: RootState) => state.incident)
   const { permissions } = useSelector((state: RootState) => state.user)
-  const isIncomplete = incident?.status !== 'completed'
+  const isUnresolved = incident?.status !== 'resolved'
   useTitle(incident ? incident.code : '')
   const breadcrumbs = [
     {
@@ -43,25 +43,25 @@ const ViewIncident = () => {
     }
 
     if (incident) {
-      dispatch(completeIncident(incident, onSuccess))
+      dispatch(resolveIncident(incident, onSuccess))
     }
   }
 
   const getButtons = () => {
     const buttons: React.ReactNode[] = []
-    if (incident?.status === 'completed') {
+    if (incident?.status === 'resolved') {
       return buttons
     }
 
-    if (permissions.includes(Permissions.CompleteIncident)) {
+    if (permissions.includes(Permissions.ResolveIncident)) {
       buttons.push(
         <Button
           className="mr-2"
           onClick={onComplete}
           color="primary"
-          key="incidents.reports.complete"
+          key="incidents.reports.resolve"
         >
-          {t('incidents.reports.complete')}
+          {t('incidents.reports.resolve')}
         </Button>,
       )
     }
@@ -70,13 +70,13 @@ const ViewIncident = () => {
   }
 
   if (incident) {
-    const getCompletedOnDate = () => {
-      if (incident.status === 'completed' && incident.completedOn) {
+    const getResolvedOnDate = () => {
+      if (incident.status === 'resolved' && incident.resolvedOn) {
         return (
           <Column>
-            <div className="form-group completed-on">
-              <h4>{t('incidents.reports.completedOn')}</h4>
-              <h5>{format(new Date(incident.completedOn), 'yyyy-MM-dd hh:mm a')}</h5>
+            <div className="form-group incident-resolved-on">
+              <h4>{t('incidents.reports.resolvedOn')}</h4>
+              <h5>{format(new Date(incident.resolvedOn), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
         )
@@ -111,7 +111,7 @@ const ViewIncident = () => {
               <h5>{format(new Date(incident.reportedOn || ''), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
-          {getCompletedOnDate()}
+          {getResolvedOnDate()}
         </Row>
         <div className="border-bottom mb-2" />
         <Row>
@@ -148,7 +148,7 @@ const ViewIncident = () => {
             />
           </Column>
         </Row>
-        {isIncomplete && (
+        {isUnresolved && (
           <div className="row float-right">
             <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>
           </div>

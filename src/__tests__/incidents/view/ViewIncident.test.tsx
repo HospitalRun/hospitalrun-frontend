@@ -21,6 +21,8 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Incident', () => {
   const expectedDate = new Date(2020, 5, 1, 19, 48)
+  const expectedResolveDate = new Date()
+  let incidentRepositorySaveSpy: any
   let history: any
   const expectedIncident = {
     id: '1234',
@@ -37,9 +39,13 @@ describe('View Incident', () => {
 
   const setup = async (mockIncident: Incident, permissions: Permissions[]) => {
     jest.resetAllMocks()
+    Date.now = jest.fn(() => expectedResolveDate.valueOf())
     jest.spyOn(breadcrumbUtil, 'default')
     jest.spyOn(titleUtil, 'default')
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(expectedIncident)
+    incidentRepositorySaveSpy = jest
+      .spyOn(IncidentRepository, 'saveOrUpdate')
+      .mockResolvedValue(expectedIncident)
 
     history = createMemoryHistory()
     history.push(`/incidents/1234`)
@@ -119,23 +125,23 @@ describe('View Incident', () => {
       expect(dateOfIncidentFormGroup.find('h5').text()).toEqual('2020-06-01 07:48 PM')
     })
 
-    it('should render the completed on if incident status is completed', async () => {
+    it('should render the resolved on if incident status is resolved', async () => {
       const mockIncident = {
         ...expectedIncident,
-        status: 'completed',
-        completedOn: '2020-07-10 06:33 PM',
+        status: 'resolved',
+        resolvedOn: '2020-07-10 06:33 PM',
       } as Incident
       const wrapper = await setup(mockIncident, [Permissions.ViewIncident])
 
-      const dateOfCompletionFormGroup = wrapper.find('.completed-on')
-      expect(dateOfCompletionFormGroup.find('h4').text()).toEqual('incidents.reports.completedOn')
-      expect(dateOfCompletionFormGroup.find('h5').text()).toEqual('2020-07-10 06:33 PM')
+      const dateOfResolutionFormGroup = wrapper.find('.incident-resolved-on')
+      expect(dateOfResolutionFormGroup.find('h4').text()).toEqual('incidents.reports.resolvedOn')
+      expect(dateOfResolutionFormGroup.find('h5').text()).toEqual('2020-07-10 06:33 PM')
     })
 
-    it('should not render the completed on if incident status is not completed', async () => {
+    it('should not render the resolved on if incident status is not resolved', async () => {
       const wrapper = await setup(expectedIncident, [Permissions.ViewIncident])
 
-      const completedOn = wrapper.find('.completed-on')
+      const completedOn = wrapper.find('.incident-resolved-on')
       expect(completedOn).toHaveLength(0)
     })
 
@@ -171,29 +177,55 @@ describe('View Incident', () => {
       expect(descriptionTextInput.prop('value')).toEqual(expectedIncident.description)
     })
 
-    it('should display a complete incident button if the incident is in a reported state', async () => {
+    it('should display a resolve incident button if the incident is in a reported state', async () => {
       const wrapper = await setup(expectedIncident, [
         Permissions.ViewIncident,
-        Permissions.CompleteIncident,
+        Permissions.ResolveIncident,
       ])
 
       const buttons = wrapper.find(Button)
-      expect(buttons.at(0).text().trim()).toEqual('incidents.reports.complete')
+      expect(buttons.at(0).text().trim()).toEqual('incidents.reports.resolve')
     })
 
-    it('should not display a complete incident button if the user has no access CompleteIncident access', async () => {
+    it('should not display a resolve incident button if the user has no access ResolveIncident access', async () => {
       const wrapper = await setup(expectedIncident, [Permissions.ViewIncident])
 
-      const completeButton = wrapper.find(Button)
-      expect(completeButton).toHaveLength(0)
+      const resolveButton = wrapper.find(Button)
+      expect(resolveButton).toHaveLength(0)
     })
 
-    it('should not display a complete incident button if the incident is completed', async () => {
-      const mockIncident = { ...expectedIncident, status: 'completed' } as Incident
+    it('should not display a resolve incident button if the incident is resolved', async () => {
+      const mockIncident = { ...expectedIncident, status: 'resolved' } as Incident
       const wrapper = await setup(mockIncident, [Permissions.ViewIncident])
 
-      const completeButton = wrapper.find(Button)
-      expect(completeButton).toHaveLength(0)
+      const resolveButton = wrapper.find(Button)
+      expect(resolveButton).toHaveLength(0)
+    })
+  })
+
+  describe('on resolve', () => {
+    it('should mark the status as resolved and fill in the resolved date with the current time', async () => {
+      const wrapper = await setup(expectedIncident, [
+        Permissions.ViewIncident,
+        Permissions.ResolveIncident,
+      ])
+
+      const resolveButton = wrapper.find(Button).at(0)
+      await act(async () => {
+        const onClick = resolveButton.prop('onClick')
+        await onClick()
+      })
+      wrapper.update()
+
+      expect(incidentRepositorySaveSpy).toHaveBeenCalledTimes(1)
+      expect(incidentRepositorySaveSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...expectedIncident,
+          status: 'resolved',
+          resolvedOn: expectedResolveDate.toISOString(),
+        }),
+      )
+      expect(history.location.pathname).toEqual('/incidents')
     })
   })
 })
