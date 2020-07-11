@@ -70,3 +70,5 @@ package-lock.json
 yarn.lock
 .vscode/launch.json
 .vscode/tasks.json
+
+.vercel
