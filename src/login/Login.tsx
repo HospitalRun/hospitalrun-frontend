@@ -45,7 +45,8 @@ const Login = () => {
     setPassword(value)
   }
 
-  const onSignInClick = async () => {
+  const onSignInClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
     await dispatch(login(username, password))
   }
 
@@ -87,7 +88,7 @@ const Login = () => {
               isInvalid={!!loginError?.password && !password}
               feedback={t(loginError?.password)}
             />
-            <Button block onClick={onSignInClick}>
+            <Button type="submit" block onClick={onSignInClick}>
               Sign In
             </Button>
           </Panel>
