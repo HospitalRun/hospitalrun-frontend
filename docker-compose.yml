@@ -21,4 +21,6 @@ services:
       "sleep 5s &&
       curl -X PUT http://admin:password@couchdb:5984/_global_changes &&
       curl -X PUT http://admin:password@couchdb:5984/_users/_security -d '{}' &&
-      curl -X PUT http://admin:password@couchdb:5984/hospitalrun?partitioned=false"
+      curl -X PUT http://admin:password@couchdb:5984/hospitalrun?partitioned=false &&
+      curl -X PUT http://admin:password@couchdb:5984/_users/org.couchdb.user:username -H \"Accept: application/json\" -H \"Content-Type: application/json\" -d '{\"name\": \"username\", \"password\": \"password\", \"metadata\": { \"givenName\": \"John\", \"familyName\": \"Doe\"}, \"roles\": [], \"type\": \"user\"}'"
+
