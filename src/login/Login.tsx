@@ -45,7 +45,8 @@ const Login = () => {
     setPassword(value)
   }
 
-  const onSignInClick = async () => {
+  const onSignInClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
     await dispatch(login(username, password))
   }
 
