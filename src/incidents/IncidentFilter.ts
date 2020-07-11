@@ -1,6 +1,6 @@
 enum IncidentFilter {
   reported = 'reported',
-  completed = 'completed',
+  resolved = 'resolved',
   all = 'all',
 }
 
