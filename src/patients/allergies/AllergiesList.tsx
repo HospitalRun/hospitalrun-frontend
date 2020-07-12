@@ -9,8 +9,7 @@ import { RootState } from '../../shared/store'
 const AllergiesList = () => {
   const history = useHistory()
   const { patient } = useSelector((state: RootState) => state.patient)
-  //   console.log('===========================>')
-  //   console.log(patient)
+
   return (
     <List>
       {patient.allergies?.map((a: Allergy) => (
