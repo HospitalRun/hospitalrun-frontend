@@ -11,6 +11,7 @@ import SelectWithLabelFormGroup, {
 } from '../../shared/components/input/SelectWithLableFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
+import { extractUsername } from '../../shared/util/extractUsername'
 import IncidentFilter from '../IncidentFilter'
 import { searchIncidents } from '../incidents-slice'
 
@@ -21,7 +22,10 @@ const ViewIncidents = () => {
   useTitle(t('incidents.reports.label'))
   const [searchFilter, setSearchFilter] = useState(IncidentFilter.reported)
   const { incidents } = useSelector((state: RootState) => state.incidents)
-
+  const viewIncidents = incidents.map((row) => ({
+    ...row,
+    reportedBy: extractUsername(row.reportedBy),
+  }))
   const setButtonToolBar = useButtonToolbarSetter()
   useEffect(() => {
     setButtonToolBar([
@@ -67,7 +71,7 @@ const ViewIncidents = () => {
       <div className="row">
         <Table
           getID={(row) => row.id}
-          data={incidents}
+          data={viewIncidents}
           columns={[
             { label: t('incidents.reports.code'), key: 'code' },
             {
