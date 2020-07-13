@@ -11,7 +11,6 @@ import TextFieldWithLabelFormGroup from '../../shared/components/input/TextField
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Lab from '../../shared/model/Lab'
-// import Appointment from '../../shared/model/Appointment'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import { requestLab } from '../lab-slice'
@@ -29,7 +28,6 @@ const NewLabRequest = () => {
     type: '',
     notes: '',
     appointment: '',
-    // appointments: [],
     status: 'requested',
   })
 
@@ -46,18 +44,7 @@ const NewLabRequest = () => {
       ...previousNewLabRequest,
       patient: patient.id,
     }))
-    console.log('patient id: ', patient.id)
     dispatch(fetchPatientAppointments(patient.id))
-    console.log('appointments retrieved: ', appointments)
-
-    // const fetch = async () => {
-    //   const fetchedAppointments = await PatientRepository.getAppointments(newLabRequest.patient)
-    //   setNewLabRequest((previousNewLabRequest) => ({
-    //     ...previousNewLabRequest,
-    //     appointments: fetchedAppointments,
-    //   }))
-    // }
-    // fetch()
   }
 
   const onLabTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,12 +76,7 @@ const NewLabRequest = () => {
     history.push('/labs')
   }
 
-  const list = (
-    // display the appointments we retrieved from dispatch
-    <ul style={{ whiteSpace: 'pre-line' }}>
-      {appointments.map((a) => a.startDateTime.toLocaleString())}
-    </ul>
-  )
+  const list = <ul>{appointments.map((a) => new Date(a.startDateTime).toLocaleString())}</ul>
 
   return (
     <>
