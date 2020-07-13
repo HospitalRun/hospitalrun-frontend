@@ -6,10 +6,12 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../../page-header/title/useTitle'
+import { fetchPatientAppointments } from '../../scheduling/appointments/appointments-slice'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Lab from '../../shared/model/Lab'
+// import Appointment from '../../shared/model/Appointment'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import { requestLab } from '../lab-slice'
@@ -20,11 +22,14 @@ const NewLabRequest = () => {
   const history = useHistory()
   useTitle(t('labs.requests.new'))
   const { status, error } = useSelector((state: RootState) => state.lab)
+  const { appointments } = useSelector((state: RootState) => state.appointments)
 
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
     type: '',
     notes: '',
+    appointment: '',
+    // appointments: [],
     status: 'requested',
   })
 
@@ -41,6 +46,18 @@ const NewLabRequest = () => {
       ...previousNewLabRequest,
       patient: patient.id,
     }))
+    console.log('patient id: ', patient.id)
+    dispatch(fetchPatientAppointments(patient.id))
+    console.log('appointments retrieved: ', appointments)
+
+    // const fetch = async () => {
+    //   const fetchedAppointments = await PatientRepository.getAppointments(newLabRequest.patient)
+    //   setNewLabRequest((previousNewLabRequest) => ({
+    //     ...previousNewLabRequest,
+    //     appointments: fetchedAppointments,
+    //   }))
+    // }
+    // fetch()
   }
 
   const onLabTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +77,7 @@ const NewLabRequest = () => {
   }
 
   const onSave = async () => {
-    const newLab = newLabRequest as Lab
+    const newLab = (newLabRequest as unknown) as Lab
     const onSuccess = (createdLab: Lab) => {
       history.push(`/labs/${createdLab.id}`)
     }
@@ -71,6 +88,13 @@ const NewLabRequest = () => {
   const onCancel = () => {
     history.push('/labs')
   }
+
+  const list = (
+    // display the appointments we retrieved from dispatch
+    <ul style={{ whiteSpace: 'pre-line' }}>
+      {appointments.map((a) => a.startDateTime.toLocaleString())}
+    </ul>
+  )
 
   return (
     <>
@@ -89,6 +113,7 @@ const NewLabRequest = () => {
             renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
             isInvalid={!!error.patient}
           />
+          {list}
         </div>
         <TextInputWithLabelFormGroup
           name="labType"
