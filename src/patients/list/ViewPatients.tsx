@@ -1,4 +1,14 @@
-import { Spinner, Button, Container, Row, TextInput, Column, Table } from '@hospitalrun/components'
+import {
+  Spinner,
+  Button,
+  Container,
+  Row,
+  TextInput,
+  Column,
+  Table,
+  Icon,
+  Typography,
+} from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -48,18 +58,19 @@ const ViewPatients = () => {
   }, [dispatch, debouncedSearchText])
 
   useEffect(() => {
-    setButtonToolBar([
-      <Button
-        key="newPatientButton"
-        outlined
-        color="success"
-        icon="patient-add"
-        onClick={() => history.push('/patients/new')}
-      >
-        {t('patients.newPatient')}
-      </Button>,
-    ])
-
+    if (patients && patients.length > 0) {
+      setButtonToolBar([
+        <Button
+          key="newPatientButton"
+          outlined
+          color="success"
+          icon="patient-add"
+          onClick={() => history.push('/patients/new')}
+        >
+          {t('patients.newPatient')}
+        </Button>,
+      ])
+    }
     return () => {
       setButtonToolBar([])
     }
@@ -89,6 +100,34 @@ const ViewPatients = () => {
 
   const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value)
+  }
+
+  if (patients && patients.length === 0) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Icon icon="patient" outline={false} size="6x" />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ textAlign: 'center', width: '60%', margin: 16 }}>
+              <Typography variant="h5">{t('patients.noPatients')}</Typography>
+            </div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              key="newPatientButton"
+              outlined
+              color="success"
+              icon="patient-add"
+              onClick={() => history.push('/patients/new')}
+            >
+              {t('patients.newPatient')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

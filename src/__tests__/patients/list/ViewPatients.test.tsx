@@ -1,4 +1,4 @@
-import { TextInput, Spinner, Table } from '@hospitalrun/components'
+import { TextInput, Spinner, Table, Icon, Typography, Button } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -35,10 +35,10 @@ describe('Patients', () => {
     },
   ]
 
-  const setup = (isLoading?: boolean) => {
+  const setup = (isLoading?: boolean, currentPatients = patients) => {
     const store = mockStore({
       patients: {
-        patients,
+        patients: currentPatients,
         isLoading,
         pageRequest: UnpagedRequest,
       },
@@ -78,6 +78,27 @@ describe('Patients', () => {
       const wrapper = setup(true)
 
       expect(wrapper.find(Spinner)).toHaveLength(1)
+    })
+
+    it('should render no patients exists when no patients exist', () => {
+      const wrapper = setup(false, [])
+
+      const icon = wrapper.find(Icon).first()
+      const typography = wrapper.find(Typography)
+      const button = wrapper.find(Button)
+      const iconType = icon.prop('icon')
+      const iconSize = icon.prop('size')
+      const typographyText = typography.prop('children')
+      const typographyVariant = typography.prop('variant')
+      const buttonIcon = button.prop('icon')
+      const buttonText = button.prop('children')
+
+      expect(iconType).toEqual('patient')
+      expect(iconSize).toEqual('6x')
+      expect(typographyText).toEqual('patients.noPatients')
+      expect(typographyVariant).toEqual('h5')
+      expect(buttonIcon).toEqual('patient-add')
+      expect(buttonText).toEqual('patients.newPatient')
     })
 
     it('should render a table of patients', () => {
