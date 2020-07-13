@@ -5,6 +5,7 @@ export default interface Lab extends AbstractDBModel {
   patient: string
   type: string
   requestedBy: string
+  appointment: string
   notes?: string
   result?: string
   status: 'requested' | 'completed' | 'canceled'
