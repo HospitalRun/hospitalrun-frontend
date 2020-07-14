@@ -12,7 +12,7 @@ const Navbar = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { t } = useTranslator()
-  const { permissions } = useSelector((state: RootState) => state.user)
+  const { permissions, user } = useSelector((state: RootState) => state.user)
 
   const navigateTo = (location: string) => {
     history.push(location)
@@ -98,6 +98,13 @@ const Navbar = () => {
           type: 'link-list-icon',
           alignRight: true,
           children: [
+            {
+              type: 'link',
+              label: `${t('user.login.success')}${user?.givenName} ${user?.familyName}`,
+              onClick: () => {
+                navigateTo('/settings')
+              },
+            },
             {
               type: 'link',
               label: t('settings.label'),

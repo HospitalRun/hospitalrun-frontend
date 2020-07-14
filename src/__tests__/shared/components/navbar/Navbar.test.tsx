@@ -170,13 +170,22 @@ describe('Navbar', () => {
   })
 
   describe('account', () => {
-    it('should render an account link list', () => {
+    it("should render a link with the user's identification", () => {
       const wrapper = setup(allPermissions)
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
       const accountLinkList = hospitalRunNavbar.find('.nav-account')
       const { children } = accountLinkList.first().props() as any
 
-      expect(children[0].props.children).toEqual([undefined, 'settings.label'])
+      expect(children[0].props.children).not.toBeUndefined()
+    })
+
+    it('should render a setting link list', () => {
+      const wrapper = setup(allPermissions)
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+      const accountLinkList = hospitalRunNavbar.find('.nav-account')
+      const { children } = accountLinkList.first().props() as any
+
+      expect(children[1].props.children).toEqual([undefined, 'settings.label'])
     })
 
     it('should navigate to /settings when the list option is selected', () => {
@@ -187,6 +196,7 @@ describe('Navbar', () => {
 
       act(() => {
         children[0].props.onClick()
+        children[1].props.onClick()
       })
 
       expect(history.location.pathname).toEqual('/settings')
