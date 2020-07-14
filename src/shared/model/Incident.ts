@@ -9,5 +9,6 @@ export default interface Incident extends AbstractDBModel {
   category: string
   categoryItem: string
   description: string
-  status: 'reported'
+  status: 'reported' | 'resolved'
+  resolvedOn: string
 }

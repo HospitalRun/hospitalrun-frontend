@@ -1,11 +1,11 @@
 import { Button, Alert, Spinner, Table } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import PatientRepository from '../../shared/db/PatientRepository'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
@@ -24,7 +24,7 @@ const RelatedPersonTab = (props: Props) => {
     history.push(location)
   }
   const { patient } = props
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
   const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
