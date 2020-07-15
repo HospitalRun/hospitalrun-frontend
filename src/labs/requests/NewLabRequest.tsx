@@ -10,6 +10,7 @@ import { fetchPatientAppointments } from '../../scheduling/appointments/appointm
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
+import Appointment from '../../shared/model/Appointment'
 import Lab from '../../shared/model/Lab'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
@@ -47,8 +48,10 @@ const NewLabRequest = () => {
     dispatch(fetchPatientAppointments(patient.id))
   }
 
-  const onAppointmentChange = () => {
+  const onAppointmentChange = (arr: Appointment) => {
     // const appointment = event.currentTarget.value
+    // console.log("onAppointmentChange called");
+    console.log('onAppointmentChange arr: ', arr)
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
     }))
@@ -83,9 +86,12 @@ const NewLabRequest = () => {
     history.push('/labs')
   }
 
-  function formatAppointment(arr: { startDateTime: string | number | Date }) {
+  function formatAppointment(arr: Appointment) {
+    // console.log("formatAppointment called");
+    // console.log("formatAppointment arr: ", arr);
     return {
-      onClick: onAppointmentChange,
+      // onClick: onAppointmentChange,
+      onClick: () => onAppointmentChange(arr),
       text: new Date(arr.startDateTime).toLocaleString(),
     }
   }
@@ -101,7 +107,7 @@ const NewLabRequest = () => {
       id="dropdown8273"
       items={formattedAppointmentList}
       size="sm"
-      text="Default Dropdown"
+      text="Appointments"
       variant="light"
     />
   )
@@ -123,8 +129,8 @@ const NewLabRequest = () => {
             renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
             isInvalid={!!error.patient}
           />
-          {dropdown}
         </div>
+        {dropdown}
         <TextInputWithLabelFormGroup
           name="labType"
           label={t('labs.lab.type')}
