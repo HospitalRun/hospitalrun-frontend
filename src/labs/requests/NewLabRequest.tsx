@@ -83,8 +83,6 @@ const NewLabRequest = () => {
     history.push('/labs')
   }
 
-  const list = <ul>{appointments.map((a) => new Date(a.startDateTime).toLocaleString())}</ul>
-
   function formatAppointment(arr: { startDateTime: string | number | Date }) {
     return {
       onClick: onAppointmentChange,
@@ -94,7 +92,7 @@ const NewLabRequest = () => {
 
   const formattedAppointmentList: { onClick: () => void; text: string }[] = []
   appointments.map((a) => formattedAppointmentList.push(formatAppointment(a)))
-  console.log('appointments: ', appointments)
+
   console.log('formattedAppointmentList: ', formattedAppointmentList)
 
   const dropdown = (
@@ -102,21 +100,6 @@ const NewLabRequest = () => {
       direction="down"
       id="dropdown8273"
       items={formattedAppointmentList}
-      // items={[
-
-      //   // {
-      //   //   onClick: function noRefCheck(){},
-      //   //   text: 'Link'
-      //   // },
-
-      //   // appointments.map((a) => {
-      //   //   {
-      //   //     //onClick: function noRefCheck(){},
-      //   //     text: a.startDateTime
-      //   //   }
-      //   // })
-
-      // ]}
       size="sm"
       text="Default Dropdown"
       variant="light"
@@ -141,7 +124,6 @@ const NewLabRequest = () => {
             isInvalid={!!error.patient}
           />
           {dropdown}
-          {list}
         </div>
         <TextInputWithLabelFormGroup
           name="labType"
