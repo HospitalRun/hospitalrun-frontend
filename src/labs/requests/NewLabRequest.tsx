@@ -1,4 +1,4 @@
-import { Typeahead, Label, Button, Alert } from '@hospitalrun/components'
+import { Typeahead, Label, Button, Alert, Dropdown } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -47,6 +47,13 @@ const NewLabRequest = () => {
     dispatch(fetchPatientAppointments(patient.id))
   }
 
+  const onAppointmentChange = () => {
+    // const appointment = event.currentTarget.value
+    setNewLabRequest((previousNewLabRequest) => ({
+      ...previousNewLabRequest,
+    }))
+  }
+
   const onLabTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const type = event.currentTarget.value
     setNewLabRequest((previousNewLabRequest) => ({
@@ -78,6 +85,44 @@ const NewLabRequest = () => {
 
   const list = <ul>{appointments.map((a) => new Date(a.startDateTime).toLocaleString())}</ul>
 
+  function formatAppointment(arr: { startDateTime: string | number | Date }) {
+    return {
+      onClick: onAppointmentChange,
+      text: new Date(arr.startDateTime).toLocaleString(),
+    }
+  }
+
+  const formattedAppointmentList: { onClick: () => void; text: string }[] = []
+  appointments.map((a) => formattedAppointmentList.push(formatAppointment(a)))
+  console.log('appointments: ', appointments)
+  console.log('formattedAppointmentList: ', formattedAppointmentList)
+
+  const dropdown = (
+    <Dropdown
+      direction="down"
+      id="dropdown8273"
+      items={formattedAppointmentList}
+      // items={[
+
+      //   // {
+      //   //   onClick: function noRefCheck(){},
+      //   //   text: 'Link'
+      //   // },
+
+      //   // appointments.map((a) => {
+      //   //   {
+      //   //     //onClick: function noRefCheck(){},
+      //   //     text: a.startDateTime
+      //   //   }
+      //   // })
+
+      // ]}
+      size="sm"
+      text="Default Dropdown"
+      variant="light"
+    />
+  )
+
   return (
     <>
       {status === 'error' && (
@@ -95,6 +140,7 @@ const NewLabRequest = () => {
             renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
             isInvalid={!!error.patient}
           />
+          {dropdown}
           {list}
         </div>
         <TextInputWithLabelFormGroup
