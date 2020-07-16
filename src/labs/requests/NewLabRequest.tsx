@@ -28,9 +28,9 @@ const NewLabRequest = () => {
     patient: '',
     type: '',
     notes: '',
-    appointment: '',
     status: 'requested',
   })
+  const [appointmentToSave, setAppointment] = useState<Appointment>()
 
   const breadcrumbs = [
     {
@@ -48,13 +48,8 @@ const NewLabRequest = () => {
     dispatch(fetchPatientAppointments(patient.id))
   }
 
-  const onAppointmentChange = (arr: Appointment) => {
-    // const appointment = event.currentTarget.value
-    // console.log("onAppointmentChange called");
-    console.log('onAppointmentChange arr: ', arr)
-    setNewLabRequest((previousNewLabRequest) => ({
-      ...previousNewLabRequest,
-    }))
+  const onAppointmentChange = (appointment: Appointment) => {
+    setAppointment(appointment)
   }
 
   const onLabTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,10 +82,7 @@ const NewLabRequest = () => {
   }
 
   function formatAppointment(arr: Appointment) {
-    // console.log("formatAppointment called");
-    // console.log("formatAppointment arr: ", arr);
     return {
-      // onClick: onAppointmentChange,
       onClick: () => onAppointmentChange(arr),
       text: new Date(arr.startDateTime).toLocaleString(),
     }
@@ -99,7 +91,7 @@ const NewLabRequest = () => {
   const formattedAppointmentList: { onClick: () => void; text: string }[] = []
   appointments.map((a) => formattedAppointmentList.push(formatAppointment(a)))
 
-  console.log('formattedAppointmentList: ', formattedAppointmentList)
+  console.log('appointment state: ', appointmentToSave)
 
   const dropdown = (
     <Dropdown
