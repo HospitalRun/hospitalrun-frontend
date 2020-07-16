@@ -13,7 +13,7 @@ export default {
           required: 'Password is required.',
         },
       },
-      success: 'Currently signed in as ',
+      currentlySignedInAs: 'Currently signed in as',
     },
   },
 }

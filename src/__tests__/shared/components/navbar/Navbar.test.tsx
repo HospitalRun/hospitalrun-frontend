@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 
 import Navbar from '../../../../shared/components/navbar/Navbar'
 import Permissions from '../../../../shared/model/Permissions'
+import User from '../../../../shared/model/User'
 import { RootState } from '../../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -18,10 +19,10 @@ const mockStore = createMockStore<RootState, any>([thunk])
 describe('Navbar', () => {
   const history = createMemoryHistory()
 
-  const setup = (permissions: Permissions[]) => {
+  const setup = (permissions: Permissions[], user?: User) => {
     const store = mockStore({
       title: '',
-      user: { permissions },
+      user: { permissions, user },
     } as any)
 
     const wrapper = mount(
@@ -33,6 +34,11 @@ describe('Navbar', () => {
     )
     return wrapper
   }
+
+  const userName = {
+    givenName: 'givenName',
+    familyName: 'familyName',
+  } as User
 
   const allPermissions = [
     Permissions.ReadPatients,
@@ -171,12 +177,14 @@ describe('Navbar', () => {
 
   describe('account', () => {
     it("should render a link with the user's identification", () => {
-      const wrapper = setup(allPermissions)
+      const expectedUserName = `user.login.currentlySignedInAs ${userName.givenName} ${userName.familyName}`
+
+      const wrapper = setup(allPermissions, userName)
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
       const accountLinkList = hospitalRunNavbar.find('.nav-account')
       const { children } = accountLinkList.first().props() as any
 
-      expect(children[0].props.children).not.toBeUndefined()
+      expect(children[0].props.children).toEqual([undefined, expectedUserName])
     })
 
     it('should render a setting link list', () => {

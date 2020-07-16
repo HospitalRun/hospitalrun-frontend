@@ -100,7 +100,9 @@ const Navbar = () => {
           children: [
             {
               type: 'link',
-              label: `${t('user.login.success')}${user?.givenName} ${user?.familyName}`,
+              label: `${t('user.login.currentlySignedInAs')} ${user?.givenName} ${
+                user?.familyName
+              }`,
               onClick: () => {
                 navigateTo('/settings')
               },
