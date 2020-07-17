@@ -32,6 +32,8 @@ const NewLabRequest = () => {
     status: 'requested',
   })
 
+  const [showAppointments, setShowAppointments] = useState<boolean>(false)
+
   const breadcrumbs = [
     {
       i18nKey: 'labs.requests.new',
@@ -41,11 +43,20 @@ const NewLabRequest = () => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onPatientChange = (patient: Patient) => {
-    setNewLabRequest((previousNewLabRequest) => ({
-      ...previousNewLabRequest,
-      patient: patient.id,
-    }))
-    dispatch(fetchPatientAppointments(patient.id))
+    if (!showAppointments) {
+      setNewLabRequest((previousNewLabRequest) => ({
+        ...previousNewLabRequest,
+        patient: patient.id,
+      }))
+      dispatch(fetchPatientAppointments(patient.id))
+      setShowAppointments(true)
+    } else {
+      setNewLabRequest((previousNewLabRequest) => ({
+        ...previousNewLabRequest,
+        patient: '',
+      }))
+      setShowAppointments(false)
+    }
   }
 
   const onAppointmentChange = (appointment: Appointment) => {
@@ -94,8 +105,6 @@ const NewLabRequest = () => {
   const formattedAppointmentList: { onClick: () => void; text: string }[] = []
   appointments.map((a) => formattedAppointmentList.push(formatAppointment(a)))
 
-  console.log('appointment state: ', newLabRequest.appointment)
-
   const dropdown = (
     <Dropdown
       direction="down"
@@ -113,19 +122,21 @@ const NewLabRequest = () => {
         <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
       )}
       <form>
-        <div className="form-group patient-typeahead">
-          <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
-          <Typeahead
-            id="patientTypeahead"
-            placeholder={t('labs.lab.patient')}
-            onChange={(p: Patient[]) => onPatientChange(p[0])}
-            onSearch={async (query: string) => PatientRepository.search(query)}
-            searchAccessor="fullName"
-            renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
-            isInvalid={!!error.patient}
-          />
+        <div>
+          <div className="form-group patient-typeahead">
+            <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
+            <Typeahead
+              id="patientTypeahead"
+              placeholder={t('labs.lab.patient')}
+              onChange={(p: Patient[]) => onPatientChange(p[0])}
+              onSearch={async (query: string) => PatientRepository.search(query)}
+              searchAccessor="fullName"
+              renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+              isInvalid={!!error.patient}
+            />
+          </div>
+          {showAppointments ? dropdown : ''}
         </div>
-        {dropdown}
         <TextInputWithLabelFormGroup
           name="labType"
           label={t('labs.lab.type')}
