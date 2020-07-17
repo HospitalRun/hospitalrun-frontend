@@ -122,26 +122,6 @@ describe('Navbar', () => {
     })
   })
 
-  describe('search', () => {
-    it('should render Search as the search box placeholder', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const navSearch = hospitalRunNavbar.find('.nav-search')
-      const { children } = navSearch.first().props() as any
-
-      expect(children.props.children[0].props.placeholder).toEqual('actions.search')
-    })
-
-    it('should render Search as the search button label', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const navSearch = hospitalRunNavbar.find('.nav-search')
-      const { children } = navSearch.first().props() as any
-
-      expect(children.props.children[1].props.children).toEqual('actions.search')
-    })
-  })
-
   describe('add new', () => {
     it('should show a shortcut if user has a permission', () => {
       const wrapper = setup(allPermissions)

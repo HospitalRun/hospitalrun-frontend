@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "@hospitalrun/components": "~1.15.0",
+    "@hospitalrun/components": "~1.16.0",
     "@reduxjs/toolkit": "~1.4.0",
     "@types/escape-string-regexp": "~2.0.1",
     "@types/pouchdb-find": "~6.3.4",
@@ -57,8 +57,8 @@
   "devDependencies": {
     "@commitlint/cli": "~8.3.5",
     "@commitlint/config-conventional": "~9.1.1",
-    "@commitlint/core": "~9.0.1",
-    "@commitlint/prompt": "~9.0.1",
+    "@commitlint/core": "~9.1.1",
+    "@commitlint/prompt": "~9.1.1",
     "@testing-library/react": "~10.4.0",
     "@testing-library/react-hooks": "~3.3.0",
     "@types/enzyme": "^3.10.5",
