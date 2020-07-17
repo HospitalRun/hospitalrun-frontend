@@ -111,7 +111,7 @@ const NewLabRequest = () => {
       id="dropdown8273"
       items={formattedAppointmentList}
       size="sm"
-      text="Appointments"
+      text={newLabRequest.appointment === '' ? 'Appointments' : newLabRequest.appointment}
       variant="light"
     />
   )
@@ -122,20 +122,24 @@ const NewLabRequest = () => {
         <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
       )}
       <form>
-        <div>
-          <div className="form-group patient-typeahead">
-            <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
-            <Typeahead
-              id="patientTypeahead"
-              placeholder={t('labs.lab.patient')}
-              onChange={(p: Patient[]) => onPatientChange(p[0])}
-              onSearch={async (query: string) => PatientRepository.search(query)}
-              searchAccessor="fullName"
-              renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
-              isInvalid={!!error.patient}
-            />
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <div className="form-group patient-typeahead">
+                <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
+                <Typeahead
+                  id="patientTypeahead"
+                  placeholder={t('labs.lab.patient')}
+                  onChange={(p: Patient[]) => onPatientChange(p[0])}
+                  onSearch={async (query: string) => PatientRepository.search(query)}
+                  searchAccessor="fullName"
+                  renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+                  isInvalid={!!error.patient}
+                />
+              </div>
+            </div>
+            <div className="col">{showAppointments ? dropdown : ''}</div>
           </div>
-          {showAppointments ? dropdown : ''}
         </div>
         <TextInputWithLabelFormGroup
           name="labType"
