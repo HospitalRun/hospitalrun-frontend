@@ -54,6 +54,7 @@ const NewLabRequest = () => {
       setNewLabRequest((previousNewLabRequest) => ({
         ...previousNewLabRequest,
         patient: '',
+        appointment: '',
       }))
       setShowAppointments(false)
     }
