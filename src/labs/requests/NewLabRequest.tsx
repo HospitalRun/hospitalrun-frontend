@@ -122,7 +122,7 @@ const NewLabRequest = () => {
         <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
       )}
       <form>
-        <div className="container">
+        <div className="container" style={{ paddingLeft: 0 }}>
           <div className="row">
             <div className="col">
               <div className="form-group patient-typeahead">
