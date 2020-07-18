@@ -129,7 +129,7 @@ const NewLabRequest = () => {
               </div>
             </div>
             <div className="col">
-              <div className="form-group patient-typeahead">
+              <div className="form-group appointment-typeahead">
                 {showAppointments ? (
                   <>
                     <Label htmlFor="appointmentTypeahead" isRequired text={t('Appointment')} />
