@@ -105,17 +105,6 @@ const NewLabRequest = () => {
   const formattedAppointmentList: { onClick: () => void; text: string }[] = []
   appointments.map((a) => formattedAppointmentList.push(formatAppointment(a)))
 
-  const dropdown = (
-    <Dropdown
-      direction="down"
-      id="dropdown8273"
-      items={formattedAppointmentList}
-      size="sm"
-      text={newLabRequest.appointment === '' ? 'Appointments' : newLabRequest.appointment}
-      variant="light"
-    />
-  )
-
   return (
     <>
       {status === 'error' && (
@@ -138,7 +127,29 @@ const NewLabRequest = () => {
                 />
               </div>
             </div>
-            <div className="col">{showAppointments ? dropdown : ''}</div>
+            <div className="col">
+              <div className="form-group patient-typeahead">
+                {showAppointments ? (
+                  <>
+                    <Label htmlFor="appointmentTypeahead" isRequired text={t('Appointment')} />
+                    <Dropdown
+                      direction="down"
+                      id="dropdown8273"
+                      items={formattedAppointmentList}
+                      size="sm"
+                      text={
+                        newLabRequest.appointment === ''
+                          ? 'Appointments'
+                          : newLabRequest.appointment
+                      }
+                      variant="light"
+                    />{' '}
+                  </>
+                ) : (
+                  ''
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <TextInputWithLabelFormGroup
