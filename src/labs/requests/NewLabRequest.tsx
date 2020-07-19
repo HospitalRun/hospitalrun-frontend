@@ -1,6 +1,5 @@
 import { Typeahead, Label, Button, Alert, Dropdown } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -11,13 +10,14 @@ import TextFieldWithLabelFormGroup from '../../shared/components/input/TextField
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Appointment from '../../shared/model/Appointment'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Lab from '../../shared/model/Lab'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import { requestLab } from '../lab-slice'
 
 const NewLabRequest = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const dispatch = useDispatch()
   const history = useHistory()
   useTitle(t('labs.requests.new'))

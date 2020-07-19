@@ -1,15 +1,15 @@
 import { Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
 
 const CarePlanTable = () => {
   const history = useHistory()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { patient } = useSelector((state: RootState) => state.patient)
 
   return (
