@@ -184,14 +184,12 @@ const ViewLab = () => {
               <h5>{labToView.type}</h5>
             </div>
           </Column>
-
           <Column>
-            <div className="form-group lab-type">
+            <div>
               <h4>Appointment</h4>
               <h5>{labToView.appointment}</h5>
             </div>
           </Column>
-
           <Column>
             <div className="form-group requested-on">
               <h4>{t('labs.lab.requestedOn')}</h4>
