@@ -21,12 +21,12 @@ const DuplicateNewPatientModal = (props: Props) => {
     <div className="row">
       <div className="col-md-12">
         <p>
-          Possible duplicate of:{' '}
+          Possible duplicate of:
           {duplicatePatient !== undefined &&
             Object.entries(duplicatePatient).map(([index, patient]) => (
-              <Link key={index} to={`/patients/${patient.id}`}>
-                {patient.fullName}{' '}
-              </Link>
+              <li key={index}>
+                <Link to={`/patients/${patient.id}`}>{patient.fullName}</Link>
+              </li>
             ))}
         </p>
         <p>Are you sure you want to create this patient?</p>
