@@ -46,38 +46,18 @@ const NewPatient = () => {
   }
 
   const onSave = () => {
+    let duplicatePatients = []
     if (patients !== undefined) {
-      const duplicatePatients = patients.filter((existingPatient: any) =>
+      duplicatePatients = patients.filter((existingPatient: any) =>
         isPossibleDuplicatePatient(patient, existingPatient),
       )
-      if (duplicatePatients.length > 0) {
-        setShowDuplicateNewPatientModal(true)
-        setDuplicatePatient(duplicatePatients as Patient)
-      } else {
-        dispatch(createPatient(patient, onSuccessfulSave))
-      }
     }
-    /*
-    let isDuplicatePatient = false
-    const patientsObj = {}
-    Object.assign(patientsObj, patients)
-    Object.keys(patientsObj).forEach((patientInfo: any) => {
-      const loggedPatient = patients[patientInfo]
-      if (
-        loggedPatient.givenName === patient.givenName &&
-        loggedPatient.familyName === patient.familyName &&
-        loggedPatient.sex === patient.sex &&
-        loggedPatient.dateOfBirth === patient.dateOfBirth
-      ) {
-        setShowDuplicateNewPatientModal(true)
-        setDuplicatePatient(loggedPatient as Patient)
-        isDuplicatePatient = true
-      }
-    })
-    if (!isDuplicatePatient) {
+    if (duplicatePatients.length > 0) {
+      setShowDuplicateNewPatientModal(true)
+      setDuplicatePatient(duplicatePatients as Patient)
+    } else {
       dispatch(createPatient(patient, onSuccessfulSave))
     }
-*/
   }
 
   const onPatientChange = (newPatient: Partial<Patient>) => {
