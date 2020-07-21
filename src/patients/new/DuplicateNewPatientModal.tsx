@@ -22,9 +22,12 @@ const DuplicateNewPatientModal = (props: Props) => {
       <div className="col-md-12">
         <p>
           Possible duplicate of:{' '}
-          {duplicatePatient !== undefined && (
-            <Link to={`/patients/${duplicatePatient.id}`}>{duplicatePatient.fullName}</Link>
-          )}
+          {duplicatePatient !== undefined &&
+            Object.entries(duplicatePatient).map(([index, patient]) => (
+              <Link key={index} to={`/patients/${patient.id}`}>
+                {patient.fullName}{' '}
+              </Link>
+            ))}
         </p>
         <p>Are you sure you want to create this patient?</p>
       </div>
@@ -35,7 +38,7 @@ const DuplicateNewPatientModal = (props: Props) => {
     <Modal
       show={show}
       toggle={toggle}
-      title={t('Warning')}
+      title={t('patients.newPatient')}
       body={body}
       closeButton={{
         children: t('actions.cancel'),
@@ -43,7 +46,7 @@ const DuplicateNewPatientModal = (props: Props) => {
         onClick: onCloseButtonClick,
       }}
       successButton={{
-        children: t('Continue'),
+        children: t('actions.save'),
         color: 'success',
         onClick: onContinueButtonClick,
       }}

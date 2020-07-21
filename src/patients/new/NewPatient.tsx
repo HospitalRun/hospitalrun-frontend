@@ -10,6 +10,7 @@ import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
 import { createPatient } from '../patient-slice'
+import { isPossibleDuplicatePatient } from '../util/is-possible-duplicate-patient'
 import DuplicateNewPatientModal from './DuplicateNewPatientModal'
 
 const breadcrumbs = [
@@ -25,7 +26,7 @@ const NewPatient = () => {
   const { patients } = Object(useSelector((state: RootState) => state.patients))
 
   const [patient, setPatient] = useState({} as Patient)
-  const [duplicatePatient, setDuplicatePatient] = useState({} as Patient)
+  const [duplicatePatient, setDuplicatePatient] = useState<Patient | undefined>(undefined)
   const [showDuplicateNewPatientModal, setShowDuplicateNewPatientModal] = useState<boolean>(false)
 
   useTitle(t('patients.newPatient'))
@@ -45,6 +46,18 @@ const NewPatient = () => {
   }
 
   const onSave = () => {
+    if (patients !== undefined) {
+      const duplicatePatients = patients.filter((existingPatient: any) =>
+        isPossibleDuplicatePatient(patient, existingPatient),
+      )
+      if (duplicatePatients.length > 0) {
+        setShowDuplicateNewPatientModal(true)
+        setDuplicatePatient(duplicatePatients as Patient)
+      } else {
+        dispatch(createPatient(patient, onSuccessfulSave))
+      }
+    }
+    /*
     let isDuplicatePatient = false
     const patientsObj = {}
     Object.assign(patientsObj, patients)
@@ -64,6 +77,7 @@ const NewPatient = () => {
     if (!isDuplicatePatient) {
       dispatch(createPatient(patient, onSuccessfulSave))
     }
+*/
   }
 
   const onPatientChange = (newPatient: Partial<Patient>) => {
