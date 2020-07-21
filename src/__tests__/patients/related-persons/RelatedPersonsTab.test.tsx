@@ -1,4 +1,5 @@
 import * as components from '@hospitalrun/components'
+import { Table } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -14,7 +15,6 @@ import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
-import RelatedPerson from '../../../shared/model/RelatedPerson'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -110,6 +110,7 @@ describe('Related Persons Tab', () => {
       familyName: 'test',
       fullName: 'test test',
       id: '123001',
+      type: 'type',
     } as Patient
 
     const user = {
@@ -133,51 +134,45 @@ describe('Related Persons Tab', () => {
     })
 
     it('should render a list of related persons with their full name being displayed', () => {
-      const table = wrapper.find('table')
-      const tableHeader = wrapper.find('thead')
-      const tableHeaders = wrapper.find('th')
-      const tableBody = wrapper.find('tbody')
-      const tableData = wrapper.find('td')
-      const deleteButton = tableData.at(3).find(components.Button)
-      expect(table).toHaveLength(1)
-      expect(tableHeader).toHaveLength(1)
-      expect(tableBody).toHaveLength(1)
-      expect(tableHeaders.at(0).text()).toEqual('patient.givenName')
-      expect(tableHeaders.at(1).text()).toEqual('patient.familyName')
-      expect(tableHeaders.at(2).text()).toEqual('patient.relatedPersons.relationshipType')
-      expect(tableHeaders.at(3).text()).toEqual('actions.label')
-      expect(tableData.at(0).text()).toEqual(expectedRelatedPerson.givenName)
-      expect(tableData.at(1).text()).toEqual(expectedRelatedPerson.familyName)
-      expect(tableData.at(2).text()).toEqual((patient.relatedPersons as RelatedPerson[])[0].type)
-      expect(deleteButton).toHaveLength(1)
-      expect(deleteButton.text().trim()).toEqual('actions.delete')
-      expect(deleteButton.prop('color')).toEqual('danger')
+      const table = wrapper.find(Table)
+      const columns = table.prop('columns')
+      const actions = table.prop('actions') as any
+      expect(columns[0]).toEqual(
+        expect.objectContaining({ label: 'patient.givenName', key: 'givenName' }),
+      )
+      expect(columns[1]).toEqual(
+        expect.objectContaining({ label: 'patient.familyName', key: 'familyName' }),
+      )
+      expect(columns[2]).toEqual(
+        expect.objectContaining({
+          label: 'patient.relatedPersons.relationshipType',
+          key: 'type',
+        }),
+      )
+
+      expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
+      expect(actions[1]).toEqual(expect.objectContaining({ label: 'actions.delete' }))
+      expect(table.prop('actionsHeaderText')).toEqual('actions.label')
+      expect(table.prop('data')).toEqual([expectedRelatedPerson])
     })
 
     it('should remove the related person when the delete button is clicked', async () => {
       const removeRelatedPersonSpy = jest.spyOn(patientSlice, 'removeRelatedPerson')
-      const eventPropagationSpy = jest.fn()
+      const tr = wrapper.find('tr').at(1)
 
-      const table = wrapper.find('table')
-      const tableBody = table.find('tbody')
-      const tableData = tableBody.find('td')
-      const deleteButton = tableData.at(3).find(components.Button)
-
-      await act(async () => {
-        const onClick = deleteButton.prop('onClick')
-        await onClick({ stopPropagation: eventPropagationSpy })
+      act(() => {
+        const onClick = tr.find('button').at(1).prop('onClick') as any
+        onClick({ stopPropagation: jest.fn() })
       })
-
       expect(removeRelatedPersonSpy).toHaveBeenCalledWith(patient.id, expectedRelatedPerson.id)
     })
 
     it('should navigate to related person patient profile on related person click', async () => {
-      const table = wrapper.find('table')
-      const tableBody = table.find('tbody')
-      const row = tableBody.find('tr')
-      await act(async () => {
-        const onClick = row.prop('onClick')
-        await onClick()
+      const tr = wrapper.find('tr').at(1)
+
+      act(() => {
+        const onClick = tr.find('button').at(0).prop('onClick') as any
+        onClick({ stopPropagation: jest.fn() })
       })
 
       expect(history.location.pathname).toEqual('/patients/123001')

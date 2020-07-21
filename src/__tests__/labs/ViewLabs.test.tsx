@@ -1,6 +1,5 @@
-import { TextInput, Select } from '@hospitalrun/components'
+import { TextInput, Select, Table } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import format from 'date-fns/format'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -102,7 +101,7 @@ describe('View Labs', () => {
       code: 'L-1234',
       id: '1234',
       type: 'lab type',
-      patientId: 'patientId',
+      patient: 'patientId',
       status: 'requested',
       requestedOn: '2020-03-30T04:43:20.102Z',
     } as Lab
@@ -130,45 +129,30 @@ describe('View Labs', () => {
     })
 
     it('should render a table with data', () => {
-      const table = wrapper.find('table')
-      const tableHeader = table.find('thead')
-      const tableBody = table.find('tbody')
-
-      const tableColumnHeaders = tableHeader.find('th')
-      const tableDataColumns = tableBody.find('td')
-
-      expect(table).toBeDefined()
-      expect(tableHeader).toBeDefined()
-      expect(tableBody).toBeDefined()
-      expect(tableColumnHeaders.at(0).text().trim()).toEqual('labs.lab.code')
-
-      expect(tableColumnHeaders.at(1).text().trim()).toEqual('labs.lab.type')
-
-      expect(tableColumnHeaders.at(2).text().trim()).toEqual('labs.lab.requestedOn')
-
-      expect(tableColumnHeaders.at(3).text().trim()).toEqual('labs.lab.status')
-
-      expect(tableDataColumns.at(0).text().trim()).toEqual(expectedLab.code)
-
-      expect(tableDataColumns.at(1).text().trim()).toEqual(expectedLab.type)
-
-      expect(tableDataColumns.at(2).text().trim()).toEqual(
-        format(new Date(expectedLab.requestedOn), 'yyyy-MM-dd hh:mm a'),
+      const table = wrapper.find(Table)
+      const columns = table.prop('columns')
+      const actions = table.prop('actions') as any
+      expect(columns[0]).toEqual(expect.objectContaining({ label: 'labs.lab.code', key: 'code' }))
+      expect(columns[1]).toEqual(expect.objectContaining({ label: 'labs.lab.type', key: 'type' }))
+      expect(columns[2]).toEqual(
+        expect.objectContaining({ label: 'labs.lab.requestedOn', key: 'requestedOn' }),
+      )
+      expect(columns[3]).toEqual(
+        expect.objectContaining({ label: 'labs.lab.status', key: 'status' }),
       )
 
-      expect(tableDataColumns.at(3).text().trim()).toEqual(expectedLab.status)
+      expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
+      expect(table.prop('actionsHeaderText')).toEqual('actions.label')
+      expect(table.prop('data')).toEqual([expectedLab])
     })
 
-    it('should navigate to the lab when the row is clicked', () => {
-      const table = wrapper.find('table')
-      const tableBody = table.find('tbody')
-      const tableRow = tableBody.find('tr').at(0)
+    it('should navigate to the lab when the view button is clicked', () => {
+      const tr = wrapper.find('tr').at(1)
 
       act(() => {
-        const onClick = tableRow.prop('onClick') as any
-        onClick()
+        const onClick = tr.find('button').prop('onClick') as any
+        onClick({ stopPropagation: jest.fn() })
       })
-
       expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
     })
   })
@@ -181,7 +165,7 @@ describe('View Labs', () => {
       const expectedLab = {
         id: '1234',
         type: 'lab type',
-        patientId: 'patientId',
+        patient: 'patientId',
         status: 'requested',
         requestedOn: '2020-03-30T04:43:20.102Z',
       } as Lab
@@ -234,7 +218,7 @@ describe('View Labs', () => {
       const expectedLab = {
         id: '1234',
         type: 'lab type',
-        patientId: 'patientId',
+        patient: 'patientId',
         status: 'requested',
         requestedOn: '2020-03-30T04:43:20.102Z',
       } as Lab

@@ -1,13 +1,13 @@
 import { Panel, Checkbox, Alert } from '@hospitalrun/components'
 import { startOfDay, subYears, differenceInYears } from 'date-fns'
 import React, { ReactElement } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import DatePickerWithLabelFormGroup from '../shared/components/input/DatePickerWithLabelFormGroup'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../shared/components/input/SelectWithLableFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
+import useTranslator from '../shared/hooks/useTranslator'
 import { ContactInfoPiece } from '../shared/model/ContactInformation'
 import Patient from '../shared/model/Patient'
 import ContactInfo from './ContactInfo'
@@ -32,7 +32,7 @@ interface Props {
 }
 
 const GeneralInformation = (props: Props): ReactElement => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { patient, isEditable, onChange, error } = props
 
   const onFieldChange = (name: string, value: string | boolean | ContactInfoPiece[]) => {
@@ -73,6 +73,18 @@ const GeneralInformation = (props: Props): ReactElement => {
     { label: t('patient.types.private'), value: 'private' },
   ]
 
+  const bloodTypeOptions: Option[] = [
+    { label: t('bloodType.apositive'), value: 'A+' },
+    { label: t('bloodType.anegative'), value: 'A-' },
+    { label: t('bloodType.abpositive'), value: 'AB+' },
+    { label: t('bloodType.abnegative'), value: 'AB-' },
+    { label: t('bloodType.bpositive'), value: 'B+' },
+    { label: t('bloodType.bnegative'), value: 'B-' },
+    { label: t('bloodType.opositive'), value: 'O+' },
+    { label: t('bloodType.onegative'), value: 'O-' },
+    { label: t('bloodType.unknown'), value: 'unknown' },
+  ]
+
   return (
     <div>
       <Panel title={t('patient.basicInformation')} color="primary" collapsible>
@@ -86,7 +98,7 @@ const GeneralInformation = (props: Props): ReactElement => {
               isEditable={isEditable}
               onChange={(event) => onFieldChange('prefix', event.currentTarget.value)}
               isInvalid={!!error?.prefix}
-              feedback={error ? (error.prefix ? t(error.prefix) : undefined) : undefined}
+              feedback={t(error?.prefix)}
             />
           </div>
           <div className="col-md-4">
@@ -98,7 +110,7 @@ const GeneralInformation = (props: Props): ReactElement => {
               onChange={(event) => onFieldChange('givenName', event.currentTarget.value)}
               isRequired
               isInvalid={!!error?.givenName}
-              feedback={error ? (error.givenName ? t(error.givenName) : undefined) : undefined}
+              feedback={t(error?.givenName)}
             />
           </div>
           <div className="col-md-4">
@@ -109,7 +121,7 @@ const GeneralInformation = (props: Props): ReactElement => {
               isEditable={isEditable}
               onChange={(event) => onFieldChange('familyName', event.currentTarget.value)}
               isInvalid={!!error?.familyName}
-              feedback={error ? (error.familyName ? t(error.familyName) : undefined) : undefined}
+              feedback={t(error?.familyName)}
             />
           </div>
           <div className="col-md-2">
@@ -120,7 +132,7 @@ const GeneralInformation = (props: Props): ReactElement => {
               isEditable={isEditable}
               onChange={(event) => onFieldChange('suffix', event.currentTarget.value)}
               isInvalid={!!error?.suffix}
-              feedback={error ? (error.suffix ? t(error.suffix) : undefined) : undefined}
+              feedback={t(error?.suffix)}
             />
           </div>
         </div>
@@ -145,9 +157,19 @@ const GeneralInformation = (props: Props): ReactElement => {
               isEditable={isEditable}
             />
           </div>
+          <div className="col">
+            <SelectWithLabelFormGroup
+              name="bloodType"
+              label={t('patient.bloodType')}
+              options={bloodTypeOptions}
+              defaultSelected={bloodTypeOptions.filter(({ value }) => value === patient.bloodType)}
+              onChange={(values) => onFieldChange('bloodType', values[0])}
+              isEditable={isEditable}
+            />
+          </div>
         </div>
         <div className="row">
-          <div className="col">
+          <div className="col-md-3">
             {patient.isApproximateDateOfBirth ? (
               <TextInputWithLabelFormGroup
                 label={t('patient.approximateAge')}
@@ -170,13 +192,9 @@ const GeneralInformation = (props: Props): ReactElement => {
                 maxDate={new Date(Date.now().valueOf())}
                 onChange={(date: Date) => onFieldChange('dateOfBirth', date.toISOString())}
                 isInvalid={!!error?.dateOfBirth}
-                feedback={
-                  error ? (error.dateOfBirth ? t(error.dateOfBirth) : undefined) : undefined
-                }
+                feedback={t(error?.dateOfBirth)}
               />
             )}
-          </div>
-          <div className="col">
             <div className="form-group">
               <Checkbox
                 label={t('patient.unknownDateOfBirth')}
@@ -186,9 +204,7 @@ const GeneralInformation = (props: Props): ReactElement => {
               />
             </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
+          <div className="col">
             <TextInputWithLabelFormGroup
               label={t('patient.occupation')}
               name="occupation"
@@ -197,7 +213,7 @@ const GeneralInformation = (props: Props): ReactElement => {
               onChange={(event) => onFieldChange('occupation', event.currentTarget.value)}
             />
           </div>
-          <div className="col-md-6">
+          <div className="col">
             <TextInputWithLabelFormGroup
               label={t('patient.preferredLanguage')}
               name="preferredLanguage"
@@ -205,13 +221,7 @@ const GeneralInformation = (props: Props): ReactElement => {
               isEditable={isEditable}
               onChange={(event) => onFieldChange('preferredLanguage', event.currentTarget.value)}
               isInvalid={!!error?.preferredLanguage}
-              feedback={
-                error
-                  ? error.preferredLanguage
-                    ? t(error.preferredLanguage)
-                    : undefined
-                  : undefined
-              }
+              feedback={t(error?.preferredLanguage)}
             />
           </div>
         </div>

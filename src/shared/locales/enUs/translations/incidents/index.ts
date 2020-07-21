@@ -7,12 +7,14 @@ export default {
     },
     status: {
       reported: 'reported',
+      resolved: 'resolved',
       all: 'all',
     },
     reports: {
       label: 'Reported Incidents',
       new: 'Report Incident',
       view: 'View Incident',
+      resolve: 'Resolve Incident',
       dateOfIncident: 'Date of Incident',
       department: 'Department',
       category: 'Category',
@@ -21,6 +23,7 @@ export default {
       code: 'Code',
       reportedBy: 'Reported By',
       reportedOn: 'Reported On',
+      resolvedOn: 'Resolved On',
       status: 'Status',
       error: {
         dateRequired: 'Date is required.',

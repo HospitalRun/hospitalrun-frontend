@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Status](https://img.shields.io/badge/Status-developing-brightgree) [![Release](https://img.shields.io/github/release/HospitalRun/hospitalrun-frontend.svg)](https://github.com/HospitalRun/hospitalrun-frontend/releases) [![Version](https://img.shields.io/github/package-json/v/hospitalrun/hospitalrun-frontend)](https://github.com/HospitalRun/hospitalrun-frontend/releases)
-[![GitHub CI](https://github.com/HospitalRun/frontend/workflows/GitHub%20CI/badge.svg)](https://github.com/HospitalRun/frontend/actions) [![Coverage Status](https://coveralls.io/repos/github/HospitalRun/hospitalrun-frontend/badge.svg?branch=master)](https://coveralls.io/github/HospitalRun/hospitalrun-frontend?branch=master) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/HospitalRun/hospitalrun-frontend.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/HospitalRun/hospitalrun-frontend/context:javascript) [![Documentation Status](https://readthedocs.org/projects/hospitalrun-frontend/badge/?version=latest)](https://hospitalrun-frontend.readthedocs.io)
+[![GitHub CI](https://github.com/HospitalRun/frontend/workflows/GitHub%20CI/badge.svg)](https://github.com/HospitalRun/frontend/actions) [![Coverage Status](https://coveralls.io/repos/github/HospitalRun/hospitalrun-frontend/badge.svg?branch=master)](https://coveralls.io/github/HospitalRun/hospitalrun-frontend?branch=master) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/HospitalRun/hospitalrun-frontend.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/HospitalRun/hospitalrun-frontend/context:javascript) ![Code scanning](https://github.com/HospitalRun/hospitalrun-frontend/workflows/Code%20scanning/badge.svg?branch=master) [![Documentation Status](https://readthedocs.org/projects/hospitalrun-frontend/badge/?version=latest)](https://hospitalrun-frontend.readthedocs.io)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHospitalRun%2Fhospitalrun-frontend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHospitalRun%2Fhospitalrun-frontend?ref=badge_large) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 ![dependabot](https://api.dependabot.com/badges/status?host=github&repo=HospitalRun/hospitalrun-frontend) [![Slack](https://hospitalrun-slack.herokuapp.com/badge.svg)](https://hospitalrun-slack.herokuapp.com) [![Run on Repl.it](https://repl.it/badge/github/HospitalRun/hospitalrun-frontend)](https://repl.it/github/HospitalRun/hospitalrun-frontend)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/HospitalRun/hospitalrun-frontend)
@@ -14,61 +14,27 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 
 ---
 
-**Version 1.0.0-beta is no longer supported. Version 2 is currently under development.**
+# Are you a user? If yes...
 
-- To contribute, follow the guidelines in the readme or alternatively ask for details on Slack channel [#contributors](https://hospitalrun-slack.herokuapp.com).
-- To use version 1.0.0-beta (not production ready) in a hospital facility, ask for support on Slack channel [#troubleshooting](https://hospitalrun-slack.herokuapp.com).
+[Visit this page for general information on the HospitalRun application](https://github.com/HospitalRun/hospitalrun/blob/master/README.md) including:
 
-<div align="center">
+- How can I deploy 1.0.0-beta?
+- Where do I report a bug or request a feature?
+- How can I contribute? (There are several other ways besides coding) 
+- What is the project structure? 
+- What is the application infrastructure? 
+- Who is behind HospitalRun? etc.
 
-[![Slack](https://img.shields.io/badge/Slack-Join%20our%20devs%20group-blueviolet?style=for-the-badge&logo=slack)](https://hospitalrun-slack.herokuapp.com)
+# Would you like to contribute? If yes...
 
-</div>
-
-# Staging area 
-
-You can follow developments by visiting the dedicated [staging environment](https://staging.hospitalrun.io). Use `username` / `password` as credentials to access.
-
-# Contributing
-
-Contributions are always welcome. Before contributing please read our [contributor guide](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).
-
-## Translation
-
-Use the standards in [this readme](https://github.com/HospitalRun/hospitalrun-frontend/tree/master/src/locales/README.md).
-
-## Online one-click setup for contributing
-
-Contribute to HospitalRun using a fully featured online development environment that will automatically: clone the repo, install the dependencies and start the webserver.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/HospitalRun/hospitalrun-frontend)
-
-## Running Tests and Linter
-
-`npm run test:ci` will run the entire test suite
-
-`npm run test` will run the test suite in watch mode
-
-`npm run lint` will run the linter
-
-`npm run lint:fix` will run the linter and fix fixable errors
-
-## Useful Developer Tools
-
-- [VSCode](https://code.visualstudio.com/)
-- [VSCode React Extension Pack](https://marketplace.visualstudio.com/items?itemName=jawandarajbir.react-vscode-extension-pack)
-- [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
-- [Redux Developer Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
-
-## Working on an Issue
-
-In order to optimize the workflow and to prevent multiple contributors working on the same issue without interactions, a contributor must ask to be assigned to an issue by one of the core team members: it's enough to ask it inside the specific issue.
-
-## How to commit
-
-This repo uses Conventional Commits. Commitizen is mandatory for making proper commits. Once you have staged your changes, can run `npm run commit` from the root directory in order to commit following our standards.
-
-<hr />
+[Get started by checking out the Frontend Contributing Guide](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for:
+- What's the tech stack?
+- Where can I become familiar with the technologies?
+- Where do I browse issues?
+- How do I set up my local environment?
+- How do I run tests locally?
+- How do I submit my changes?
+- etc.
 
 # Behind HospitalRun
 
@@ -80,15 +46,13 @@ This repo uses Conventional Commits. Commitizen is mandatory for making proper c
 
 [![Sponsors](https://opencollective.com/hospitalrun/sponsors.svg?width=890)](https://opencollective.com/hospitalrun/contribute/sponsors-336/checkout)
 
-### Big Thanks
-
-Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][homepage]
-
-[homepage]: https://saucelabs.com
-
 ## Backers
 
 [![Backers](https://opencollective.com/hospitalrun/backers.svg?width=890)](https://opencollective.com/hospitalrun/contribute/backers-335/checkout)
+
+## Big Thanks
+
+Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs](https://saucelabs.com)
 
 ## Lead Maintainer
 

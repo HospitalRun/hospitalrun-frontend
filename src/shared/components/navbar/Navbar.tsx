@@ -1,25 +1,24 @@
 import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { logout } from '../../../user/user-slice'
+import useTranslator from '../../hooks/useTranslator'
 import { RootState } from '../../store'
 import pageMap, { Page } from './pageMap'
 
 const Navbar = () => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const { t } = useTranslation()
-  const { permissions } = useSelector((state: RootState) => state.user)
+  const { t } = useTranslator()
+  const { permissions, user } = useSelector((state: RootState) => state.user)
 
   const navigateTo = (location: string) => {
     history.push(location)
   }
 
   const dividerAboveLabels = [
-    'patients.newPatient',
     'scheduling.appointments.new',
     'labs.requests.new',
     'incidents.reports.new',
@@ -32,10 +31,11 @@ const Navbar = () => {
       .map((page) => ({
         type: 'link',
         label: t(page.label),
+        icon: `${page.icon}`,
         onClick: () => {
           navigateTo(page.path)
         },
-        dividerAbove: dividerAboveLabels.indexOf(page.label) > -1,
+        dividerAbove: dividerAboveLabels.includes(page.label),
       }))
   }
 
@@ -76,19 +76,10 @@ const Navbar = () => {
           className: 'nav-header',
         },
         {
-          type: 'search',
-          placeholderText: t('actions.search'),
-          className: 'ml-auto d-none d-md-block nav-search',
-          buttonText: t('actions.search'),
-          buttonColor: 'secondary',
-          onClickButton: () => undefined,
-          onChangeInput: () => undefined,
-        },
-        {
           type: 'link-list-icon',
           alignRight: true,
           children: getDropdownListOfPages(addPages),
-          className: 'pl-4 nav-add-new d-none d-md-block',
+          className: 'ml-auto nav-add-new d-none d-md-block',
           iconClassName: 'align-bottom',
           label: 'Add',
           name: 'add',
@@ -100,6 +91,15 @@ const Navbar = () => {
           children: [
             {
               type: 'link',
+              label: `${t('user.login.currentlySignedInAs')} ${user?.givenName} ${
+                user?.familyName
+              }`,
+              onClick: () => {
+                navigateTo('/settings')
+              },
+            },
+            {
+              type: 'link',
               label: t('settings.label'),
               onClick: () => {
                 navigateTo('/settings')
@@ -107,7 +107,7 @@ const Navbar = () => {
             },
             {
               type: 'link',
-              label: t('logout'),
+              label: t('actions.logout'),
               onClick: () => {
                 dispatch(logout())
                 navigateTo('/login')

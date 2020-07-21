@@ -1,11 +1,11 @@
-import { Button, Alert, Spinner } from '@hospitalrun/components'
+import { Button, Alert, Spinner, Table } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import PatientRepository from '../../shared/db/PatientRepository'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
@@ -24,7 +24,7 @@ const RelatedPersonTab = (props: Props) => {
     history.push(location)
   }
   const { patient } = props
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
   const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
@@ -59,18 +59,11 @@ const RelatedPersonTab = (props: Props) => {
     setShowRelatedPersonModal(true)
   }
 
-  const onRelatedPersonClick = (id: string) => {
-    navigateTo(`/patients/${id}`)
-  }
   const closeNewRelatedPersonModal = () => {
     setShowRelatedPersonModal(false)
   }
 
-  const onRelatedPersonDelete = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    relatedPerson: Patient,
-  ) => {
-    event.stopPropagation()
+  const onRelatedPersonDelete = (relatedPerson: Patient) => {
     dispatch(removeRelatedPerson(patient.id, relatedPerson.id))
   }
 
@@ -96,34 +89,24 @@ const RelatedPersonTab = (props: Props) => {
         <div className="col-md-12">
           {relatedPersons ? (
             relatedPersons.length > 0 ? (
-              <table className="table table-hover">
-                <thead className="thead-light">
-                  <tr>
-                    <th>{t('patient.givenName')}</th>
-                    <th>{t('patient.familyName')}</th>
-                    <th>{t('patient.relatedPersons.relationshipType')}</th>
-                    <th>{t('actions.label')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {relatedPersons.map((r) => (
-                    <tr key={r.id} onClick={() => onRelatedPersonClick(r.id)}>
-                      <td>{r.givenName}</td>
-                      <td>{r.familyName}</td>
-                      <td>{r.type}</td>
-                      <td>
-                        <Button
-                          icon="remove"
-                          color="danger"
-                          onClick={(e) => onRelatedPersonDelete(e, r)}
-                        >
-                          {t('actions.delete')}
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <Table
+                getID={(row) => row.id}
+                data={relatedPersons}
+                columns={[
+                  { label: t('patient.givenName'), key: 'givenName' },
+                  { label: t('patient.familyName'), key: 'familyName' },
+                  { label: t('patient.relatedPersons.relationshipType'), key: 'type' },
+                ]}
+                actionsHeaderText={t('actions.label')}
+                actions={[
+                  { label: t('actions.view'), action: (row) => navigateTo(`/patients/${row.id}`) },
+                  {
+                    label: t('actions.delete'),
+                    action: (row) => onRelatedPersonDelete(row as Patient),
+                    buttonColor: 'danger',
+                  },
+                ]}
+              />
             ) : (
               <Alert
                 color="warning"
