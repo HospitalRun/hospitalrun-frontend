@@ -129,10 +129,10 @@ const NewLabRequest = () => {
               </div>
             </div>
             <div className="col">
-              <div className="form-group appointment-typeahead">
+              <div>
                 {showAppointments ? (
                   <>
-                    <Label htmlFor="appointmentTypeahead" isRequired text={t('Appointment')} />
+                    <Label isRequired text={t('Appointment')} />
                     <Dropdown
                       direction="down"
                       id="dropdown8273"
