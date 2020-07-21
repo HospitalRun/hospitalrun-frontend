@@ -9,5 +9,6 @@ export default {
     successfullyCreated: 'Successfully created patient',
     successfullyAddedNote: 'Successfully added the new note',
     successfullyAddedRelatedPerson: 'Successfully added a new related person',
+    successfullyUpdated: 'Successfully updated information for',
   },
 }
