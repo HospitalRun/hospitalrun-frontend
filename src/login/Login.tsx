@@ -6,12 +6,14 @@ import { Redirect } from 'react-router-dom'
 
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import { remoteDb } from '../shared/config/pouchdb'
+import useTranslator from '../shared/hooks/useTranslator'
 import logo from '../shared/static/images/logo-on-transparent.png'
 import { RootState } from '../shared/store'
 import { getCurrentSession, login } from '../user/user-slice'
 
 const Login = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslator()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const { loginError, user } = useSelector((root: RootState) => root.user)
@@ -43,7 +45,8 @@ const Login = () => {
     setPassword(value)
   }
 
-  const onSignInClick = async () => {
+  const onSignInClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
     await dispatch(login(username, password))
   }
 
@@ -61,13 +64,18 @@ const Login = () => {
         <img src={logo} alt="HospitalRun" style={{ width: '100%', textAlign: 'center' }} />
         <form>
           <Panel title="Please Sign In" color="primary">
-            {loginError && <Alert color="danger" message={loginError} title="Unable to login" />}
+            {loginError?.message && (
+              <Alert color="danger" message={t(loginError?.message)} title="Unable to login" />
+            )}
             <TextInputWithLabelFormGroup
               isEditable
               label="username"
               name="username"
               value={username}
               onChange={onUsernameChange}
+              isRequired
+              isInvalid={!!loginError?.username && !username}
+              feedback={t(loginError?.username)}
             />
             <TextInputWithLabelFormGroup
               isEditable
@@ -76,8 +84,11 @@ const Login = () => {
               name="password"
               value={password}
               onChange={onPasswordChange}
+              isRequired
+              isInvalid={!!loginError?.password && !password}
+              feedback={t(loginError?.password)}
             />
-            <Button block onClick={onSignInClick}>
+            <Button type="submit" block onClick={onSignInClick}>
               Sign In
             </Button>
           </Panel>

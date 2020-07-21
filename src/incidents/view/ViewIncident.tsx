@@ -1,22 +1,27 @@
-import { Column, Row, Spinner } from '@hospitalrun/components'
+import { Button, Column, Row, Spinner } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import useTranslator from '../../shared/hooks/useTranslator'
+import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
-import { fetchIncident } from '../incident-slice'
+import { extractUsername } from '../../shared/util/extractUsername'
+import { fetchIncident, resolveIncident } from '../incident-slice'
 
 const ViewIncident = () => {
   const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
+  const history = useHistory()
   const { id } = useParams()
   const { incident } = useSelector((state: RootState) => state.incident)
+  const { permissions } = useSelector((state: RootState) => state.user)
+  const isUnresolved = incident?.status !== 'resolved'
   useTitle(incident ? incident.code : '')
   const breadcrumbs = [
     {
@@ -31,7 +36,54 @@ const ViewIncident = () => {
       dispatch(fetchIncident(id))
     }
   }, [dispatch, id])
+
+  const onComplete = async () => {
+    const onSuccess = () => {
+      history.push('/incidents')
+    }
+
+    if (incident) {
+      dispatch(resolveIncident(incident, onSuccess))
+    }
+  }
+
+  const getButtons = () => {
+    const buttons: React.ReactNode[] = []
+    if (incident?.status === 'resolved') {
+      return buttons
+    }
+
+    if (permissions.includes(Permissions.ResolveIncident)) {
+      buttons.push(
+        <Button
+          className="mr-2"
+          onClick={onComplete}
+          color="primary"
+          key="incidents.reports.resolve"
+        >
+          {t('incidents.reports.resolve')}
+        </Button>,
+      )
+    }
+
+    return buttons
+  }
+
   if (incident) {
+    const getResolvedOnDate = () => {
+      if (incident.status === 'resolved' && incident.resolvedOn) {
+        return (
+          <Column>
+            <div className="form-group incident-resolved-on">
+              <h4>{t('incidents.reports.resolvedOn')}</h4>
+              <h5>{format(new Date(incident.resolvedOn), 'yyyy-MM-dd hh:mm a')}</h5>
+            </div>
+          </Column>
+        )
+      }
+      return <></>
+    }
+
     return (
       <>
         <Row>
@@ -50,7 +102,7 @@ const ViewIncident = () => {
           <Column>
             <div className="form-group incident-reported-by">
               <h4>{t('incidents.reports.reportedBy')}</h4>
-              <h5>{incident.reportedBy}</h5>
+              <h5>{extractUsername(incident.reportedBy)}</h5>
             </div>
           </Column>
           <Column>
@@ -59,6 +111,7 @@ const ViewIncident = () => {
               <h5>{format(new Date(incident.reportedOn || ''), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
+          {getResolvedOnDate()}
         </Row>
         <div className="border-bottom mb-2" />
         <Row>
@@ -95,6 +148,11 @@ const ViewIncident = () => {
             />
           </Column>
         </Row>
+        {isUnresolved && (
+          <div className="row float-right">
+            <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>
+          </div>
+        )}
       </>
     )
   }
