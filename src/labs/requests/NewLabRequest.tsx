@@ -58,7 +58,7 @@ const NewLabRequest = () => {
   const onAppointmentChange = (appointment: string) => {
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
-      // appointment: new Date(appointment.startDateTime).toLocaleString(),
+      appointment,
     }))
     console.log('appointment: ', appointment)
   }
@@ -92,12 +92,12 @@ const NewLabRequest = () => {
     history.push('/labs')
   }
 
-  console.log('appointments: ', appointments)
-
-  const appointmentOptions: Option[] = Object.values(appointments).map((value) => ({
-    label: t({ value }),
-    value: `${value}`,
+  const appointmentOptions: Option[] = appointments.map((appointment) => ({
+    label: `${new Date(appointment.startDateTime).toLocaleString()}`,
+    value: `${new Date(appointment.startDateTime).toLocaleString()}`,
   }))
+
+  console.log('appointmentOptions: ', appointmentOptions)
 
   return (
     <>
