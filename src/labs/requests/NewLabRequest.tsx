@@ -1,4 +1,4 @@
-import { Typeahead, Label, Button, Alert, Dropdown } from '@hospitalrun/components'
+import { Typeahead, Label, Button, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -6,15 +6,19 @@ import { useHistory } from 'react-router-dom'
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../../page-header/title/useTitle'
 import { fetchPatientAppointments } from '../../scheduling/appointments/appointments-slice'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../../shared/components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Appointment from '../../shared/model/Appointment'
+// import Appointment from '../../shared/model/Appointment'
 import Lab from '../../shared/model/Lab'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import { requestLab } from '../lab-slice'
+// import Appointments from '../../scheduling/appointments/Appointments'
 
 const NewLabRequest = () => {
   const { t } = useTranslator()
@@ -32,8 +36,6 @@ const NewLabRequest = () => {
     status: 'requested',
   })
 
-  const [showAppointments, setShowAppointments] = useState<boolean>(false)
-
   const breadcrumbs = [
     {
       i18nKey: 'labs.requests.new',
@@ -43,28 +45,22 @@ const NewLabRequest = () => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onPatientChange = (patient: Patient) => {
-    if (!showAppointments) {
-      setNewLabRequest((previousNewLabRequest) => ({
-        ...previousNewLabRequest,
-        patient: patient.id,
-      }))
-      dispatch(fetchPatientAppointments(patient.id))
-      setShowAppointments(true)
-    } else {
-      setNewLabRequest((previousNewLabRequest) => ({
-        ...previousNewLabRequest,
-        patient: '',
-        appointment: '',
-      }))
-      setShowAppointments(false)
+    setNewLabRequest((previousNewLabRequest) => ({
+      ...previousNewLabRequest,
+      patient: patient.id,
+    }))
+    if (newLabRequest.patient) {
+      console.log('inside if statement')
+      dispatch(fetchPatientAppointments(newLabRequest.patient))
     }
   }
 
-  const onAppointmentChange = (appointment: Appointment) => {
+  const onAppointmentChange = (appointment: string) => {
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
-      appointment: new Date(appointment.startDateTime).toLocaleString(),
+      // appointment: new Date(appointment.startDateTime).toLocaleString(),
     }))
+    console.log('appointment: ', appointment)
   }
 
   const onLabTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,15 +92,12 @@ const NewLabRequest = () => {
     history.push('/labs')
   }
 
-  function formatAppointment(arr: Appointment) {
-    return {
-      onClick: () => onAppointmentChange(arr),
-      text: new Date(arr.startDateTime).toLocaleString(),
-    }
-  }
+  console.log('appointments: ', appointments)
 
-  const formattedAppointmentList: { onClick: () => void; text: string }[] = []
-  appointments.map((a) => formattedAppointmentList.push(formatAppointment(a)))
+  const appointmentOptions: Option[] = Object.values(appointments).map((value) => ({
+    label: t({ value }),
+    value: `${value}`,
+  }))
 
   return (
     <>
@@ -129,27 +122,16 @@ const NewLabRequest = () => {
               </div>
             </div>
             <div className="col">
-              <div>
-                {showAppointments ? (
-                  <>
-                    <Label isRequired text={t('Appointment')} />
-                    <Dropdown
-                      direction="down"
-                      id="dropdown8273"
-                      items={formattedAppointmentList}
-                      size="sm"
-                      text={
-                        newLabRequest.appointment === ''
-                          ? 'Appointments'
-                          : newLabRequest.appointment
-                      }
-                      variant="light"
-                    />{' '}
-                  </>
-                ) : (
-                  ''
+              <SelectWithLabelFormGroup
+                name="appointments"
+                label={t('appointments')}
+                options={appointmentOptions}
+                defaultSelected={appointmentOptions.filter(
+                  ({ value }) => value === newLabRequest.appointment,
                 )}
-              </div>
+                onChange={(values) => onAppointmentChange(values[0])}
+                isEditable
+              />
             </div>
           </div>
         </div>
