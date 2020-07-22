@@ -13,12 +13,10 @@ import TextFieldWithLabelFormGroup from '../../shared/components/input/TextField
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
-// import Appointment from '../../shared/model/Appointment'
 import Lab from '../../shared/model/Lab'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import { requestLab } from '../lab-slice'
-// import Appointments from '../../scheduling/appointments/Appointments'
 
 const NewLabRequest = () => {
   const { t } = useTranslator()
@@ -51,7 +49,6 @@ const NewLabRequest = () => {
     }))
     if (patient.id) {
       dispatch(fetchPatientAppointments(patient.id))
-      console.log('dispatched')
     }
   }
 
@@ -60,7 +57,6 @@ const NewLabRequest = () => {
       ...previousNewLabRequest,
       appointment,
     }))
-    console.log('appointment: ', appointment)
   }
 
   const onLabTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,8 +93,6 @@ const NewLabRequest = () => {
     value: `${new Date(appointment.startDateTime).toLocaleString()}`,
   }))
 
-  console.log('appointmentOptions: ', appointmentOptions)
-
   return (
     <>
       {status === 'error' && (
@@ -124,12 +118,13 @@ const NewLabRequest = () => {
             <div className="col">
               <SelectWithLabelFormGroup
                 name="appointments"
-                label={t('appointments')}
+                label={t('Appointments')}
                 options={appointmentOptions}
                 defaultSelected={appointmentOptions.filter(
                   ({ value }) => value === newLabRequest.appointment,
                 )}
                 onChange={(values) => onAppointmentChange(values[0])}
+                isRequired
                 isEditable
               />
             </div>
