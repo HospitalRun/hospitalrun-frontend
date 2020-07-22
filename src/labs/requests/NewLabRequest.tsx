@@ -49,9 +49,9 @@ const NewLabRequest = () => {
       ...previousNewLabRequest,
       patient: patient.id,
     }))
-    if (newLabRequest.patient) {
-      console.log('inside if statement')
-      dispatch(fetchPatientAppointments(newLabRequest.patient))
+    if (patient.id) {
+      dispatch(fetchPatientAppointments(patient.id))
+      console.log('dispatched')
     }
   }
 
