@@ -121,21 +121,23 @@ const NewLabRequest = () => {
               </div>
             </div>
             <div className="col">
-              {newLabRequest.patient ? (
-                <SelectWithLabelFormGroup
-                  name="appointments"
-                  label={t('Appointments')}
-                  options={appointmentOptions}
-                  defaultSelected={appointmentOptions.filter(
-                    ({ value }) => value === newLabRequest.appointment,
-                  )}
-                  onChange={(values) => onAppointmentChange(values[0])}
-                  isRequired
-                  isEditable
-                />
-              ) : (
-                ''
-              )}
+              <div className="appointments">
+                {newLabRequest.patient ? (
+                  <SelectWithLabelFormGroup
+                    name="appointments"
+                    label={t('Appointments')}
+                    options={appointmentOptions}
+                    defaultSelected={appointmentOptions.filter(
+                      ({ value }) => value === newLabRequest.appointment,
+                    )}
+                    onChange={(values) => onAppointmentChange(values[0])}
+                    isRequired
+                    isEditable
+                  />
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
           </div>
         </div>
