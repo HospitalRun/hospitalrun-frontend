@@ -59,6 +59,18 @@ const pageMap: {
     path: '/incidents',
     icon: 'incident',
   },
+  newVisit: {
+    permission: Permissions.AddVisit,
+    label: 'visits.visit.new',
+    path: '/visits',
+    icon: 'add',
+  },
+  viewVisits: {
+    permission: Permissions.ReadVisits,
+    label: 'visits.visit.label',
+    path: '/visits',
+    icon: 'visit',
+  },
   settings: {
     permission: null,
     label: 'settings.label',

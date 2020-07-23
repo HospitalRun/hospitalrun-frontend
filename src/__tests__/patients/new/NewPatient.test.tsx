@@ -112,6 +112,24 @@ describe('New Patient', () => {
     expect(store.getActions()).toContainEqual(patientSlice.createPatientSuccess())
   })
 
+  it('should reveal modal (return true) when save button is clicked if an existing patient has the same information', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = await setup()
+    })
+
+    const saveButton = wrapper.find('.btn-save').at(0)
+    const onClick = saveButton.prop('onClick') as any
+    expect(saveButton.text().trim()).toEqual('actions.save')
+
+    act(() => {
+      onClick()
+    })
+    wrapper.update()
+
+    expect(onClick()).toEqual(true)
+  })
+
   it('should navigate to /patients/:id and display a message after a new patient is successfully created', async () => {
     jest.spyOn(components, 'Toast')
     const mockedComponents = mocked(components, true)
