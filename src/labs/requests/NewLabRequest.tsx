@@ -43,11 +43,11 @@ const NewLabRequest = () => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onPatientChange = (patient: Patient) => {
-    setNewLabRequest((previousNewLabRequest) => ({
-      ...previousNewLabRequest,
-      patient: patient.id,
-    }))
-    if (patient.id) {
+    if (patient) {
+      setNewLabRequest((previousNewLabRequest) => ({
+        ...previousNewLabRequest,
+        patient: patient.id,
+      }))
       dispatch(fetchPatientAppointments(patient.id))
     }
   }
