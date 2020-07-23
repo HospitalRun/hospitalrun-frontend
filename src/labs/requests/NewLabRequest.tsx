@@ -49,6 +49,12 @@ const NewLabRequest = () => {
         patient: patient.id,
       }))
       dispatch(fetchPatientAppointments(patient.id))
+    } else {
+      setNewLabRequest((previousNewLabRequest) => ({
+        ...previousNewLabRequest,
+        patient: '',
+        appointment: '',
+      }))
     }
   }
 
