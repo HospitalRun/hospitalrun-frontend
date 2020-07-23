@@ -5,6 +5,8 @@ import incident from '../../incidents/incident-slice'
 import incidents from '../../incidents/incidents-slice'
 import lab from '../../labs/lab-slice'
 import labs from '../../labs/labs-slice'
+import medication from '../../medications/medication-slice'
+import medications from '../../medications/medications-slice'
 import breadcrumbs from '../../page-header/breadcrumbs/breadcrumbs-slice'
 import title from '../../page-header/title/title-slice'
 import patient from '../../patients/patient-slice'
@@ -27,6 +29,8 @@ const reducer = combineReducers({
   incident,
   incidents,
   labs,
+  medication,
+  medications,
 })
 
 const store = configureStore({

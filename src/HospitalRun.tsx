@@ -6,6 +6,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import Dashboard from './dashboard/Dashboard'
 import Incidents from './incidents/Incidents'
 import Labs from './labs/Labs'
+import Medications from './medications/Medications'
 import Breadcrumbs from './page-header/breadcrumbs/Breadcrumbs'
 import { ButtonBarProvider } from './page-header/button-toolbar/ButtonBarProvider'
 import ButtonToolBar from './page-header/button-toolbar/ButtonToolBar'
@@ -51,6 +52,7 @@ const HospitalRun = () => {
                   <Route path="/appointments" component={Appointments} />
                   <Route path="/patients" component={Patients} />
                   <Route path="/labs" component={Labs} />
+                  <Route path="/medications" component={Medications} />
                   <Route path="/incidents" component={Incidents} />
                   <Route path="/settings" component={Settings} />
                 </Switch>
