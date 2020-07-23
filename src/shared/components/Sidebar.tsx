@@ -44,6 +44,8 @@ const Sidebar = () => {
       ? 'labs'
       : splittedPath[1].includes('incidents')
       ? 'incidents'
+      : splittedPath[1].includes('imagings')
+      ? 'imagings'
       : 'none',
   )
 
@@ -297,6 +299,56 @@ const Sidebar = () => {
     </>
   )
 
+  const getImagingLinks = () => (
+    <>
+      <ListItem
+        active={splittedPath[1].includes('imagings')}
+        onClick={() => {
+          navigateTo('/imagings')
+          setExpansion('imagings')
+        }}
+        className="nav-item"
+        style={listItemStyle}
+      >
+        <Icon
+          icon={
+            splittedPath[1].includes('imagings') && expandedItem === 'imagings'
+              ? 'down-arrow'
+              : 'right-arrow'
+          }
+          style={expandibleArrow}
+        />
+        <Icon icon="image" /> {!sidebarCollapsed && t('imagings.label')}
+      </ListItem>
+      {splittedPath[1].includes('imagings') && expandedItem === 'imagings' && (
+        <List layout="flush" className="nav flex-column">
+          {permissions.includes(Permissions.RequestImaging) && (
+            <ListItem
+              className="nav-item"
+              style={listSubItemStyleNew}
+              onClick={() => navigateTo('/imagings/new')}
+              active={splittedPath[1].includes('imagings') && splittedPath.length > 2}
+            >
+              <Icon icon="add" style={iconMargin} />
+              {!sidebarCollapsed && t('imagings.requests.new')}
+            </ListItem>
+          )}
+          {permissions.includes(Permissions.ViewImagings) && (
+            <ListItem
+              className="nav-item"
+              style={listSubItemStyle}
+              onClick={() => navigateTo('/imagings')}
+              active={splittedPath[1].includes('imagings') && splittedPath.length < 3}
+            >
+              <Icon icon="image" style={iconMargin} />
+              {!sidebarCollapsed && t('imagings.requests.label')}
+            </ListItem>
+          )}
+        </List>
+      )}
+    </>
+  )
+
   return (
     <nav
       className="col-md-2 d-none d-md-block bg-light sidebar"
@@ -319,6 +371,7 @@ const Sidebar = () => {
           {getAppointmentLinks()}
           {getLabLinks()}
           {getIncidentLinks()}
+          {getImagingLinks()}
         </List>
       </div>
     </nav>
