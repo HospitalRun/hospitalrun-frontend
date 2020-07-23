@@ -5,5 +5,9 @@ export default {
     viewPatient: 'Просмотр пациента',
     editPatient: 'Редактировать пациента',
     newPatient: 'Новый пациент',
+    patientsList: 'Список пациентов',
+    successfullyCreated: 'Пациент успешно добавлен',
+    successfullyAddedNote: 'Новая заметка успешно добавлена',
+    successfullyAddedRelatedPerson: 'Успешно добавлен новый родственник',
   },
 }

@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 
 import Navbar from '../../../../shared/components/navbar/Navbar'
 import Permissions from '../../../../shared/model/Permissions'
+import User from '../../../../shared/model/User'
 import { RootState } from '../../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -18,10 +19,10 @@ const mockStore = createMockStore<RootState, any>([thunk])
 describe('Navbar', () => {
   const history = createMemoryHistory()
 
-  const setup = (permissions: Permissions[]) => {
+  const setup = (permissions: Permissions[], user?: User) => {
     const store = mockStore({
       title: '',
-      user: { permissions },
+      user: { permissions, user },
     } as any)
 
     const wrapper = mount(
@@ -33,6 +34,11 @@ describe('Navbar', () => {
     )
     return wrapper
   }
+
+  const userName = {
+    givenName: 'givenName',
+    familyName: 'familyName',
+  } as User
 
   const allPermissions = [
     Permissions.ReadPatients,
@@ -59,9 +65,16 @@ describe('Navbar', () => {
       const hamberger = hospitalRunNavbar.find('.nav-hamberger')
       const { children } = hamberger.first().props() as any
 
-      expect(children[0].props.children).toEqual([undefined, 'dashboard.label'])
-      expect(children[1].props.children).toEqual([undefined, 'patients.newPatient'])
-      expect(children[children.length - 1].props.children).toEqual([undefined, 'settings.label'])
+      const [dashboardIcon, dashboardLabel] = children[0].props.children
+      const [newPatientIcon, newPatientLabel] = children[1].props.children
+      const [settingsIcon, settingsLabel] = children[children.length - 1].props.children
+
+      expect(dashboardIcon.props.icon).toEqual('dashboard')
+      expect(dashboardLabel).toEqual('dashboard.label')
+      expect(newPatientIcon.props.icon).toEqual('patient-add')
+      expect(newPatientLabel).toEqual('patients.newPatient')
+      expect(settingsIcon.props.icon).toEqual('setting')
+      expect(settingsLabel).toEqual('settings.label')
     })
 
     it('should not show an item if user does not have a permission', () => {
@@ -115,26 +128,6 @@ describe('Navbar', () => {
     })
   })
 
-  describe('search', () => {
-    it('should render Search as the search box placeholder', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const navSearch = hospitalRunNavbar.find('.nav-search')
-      const { children } = navSearch.first().props() as any
-
-      expect(children.props.children[0].props.placeholder).toEqual('actions.search')
-    })
-
-    it('should render Search as the search button label', () => {
-      const wrapper = setup(allPermissions)
-      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      const navSearch = hospitalRunNavbar.find('.nav-search')
-      const { children } = navSearch.first().props() as any
-
-      expect(children.props.children[1].props.children).toEqual('actions.search')
-    })
-  })
-
   describe('add new', () => {
     it('should show a shortcut if user has a permission', () => {
       const wrapper = setup(allPermissions)
@@ -142,7 +135,10 @@ describe('Navbar', () => {
       const addNew = hospitalRunNavbar.find('.nav-add-new')
       const { children } = addNew.first().props() as any
 
-      expect(children[0].props.children).toEqual([undefined, 'patients.newPatient'])
+      const [icon, label] = children[0].props.children
+
+      expect(icon.props.icon).toEqual('patient-add')
+      expect(label).toEqual('patients.newPatient')
     })
 
     it('should not show a shortcut if user does not have a permission', () => {
@@ -160,13 +156,24 @@ describe('Navbar', () => {
   })
 
   describe('account', () => {
-    it('should render an account link list', () => {
+    it("should render a link with the user's identification", () => {
+      const expectedUserName = `user.login.currentlySignedInAs ${userName.givenName} ${userName.familyName}`
+
+      const wrapper = setup(allPermissions, userName)
+      const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
+      const accountLinkList = hospitalRunNavbar.find('.nav-account')
+      const { children } = accountLinkList.first().props() as any
+
+      expect(children[0].props.children).toEqual([undefined, expectedUserName])
+    })
+
+    it('should render a setting link list', () => {
       const wrapper = setup(allPermissions)
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
       const accountLinkList = hospitalRunNavbar.find('.nav-account')
       const { children } = accountLinkList.first().props() as any
 
-      expect(children[0].props.children).toEqual([undefined, 'settings.label'])
+      expect(children[1].props.children).toEqual([undefined, 'settings.label'])
     })
 
     it('should navigate to /settings when the list option is selected', () => {
@@ -177,6 +184,7 @@ describe('Navbar', () => {
 
       act(() => {
         children[0].props.onClick()
+        children[1].props.onClick()
       })
 
       expect(history.location.pathname).toEqual('/settings')

@@ -98,7 +98,7 @@ describe('user slice', () => {
     })
 
     it('should dispatch login error if login was not successful', async () => {
-      jest.spyOn(remoteDb, 'logIn').mockRejectedValue({ status: '401' })
+      jest.spyOn(remoteDb, 'logIn').mockRejectedValue({ status: 401 })
       jest.spyOn(remoteDb, 'getUser').mockResolvedValue({
         _id: 'userId',
         metadata: {
@@ -113,7 +113,7 @@ describe('user slice', () => {
       expect(remoteDb.getUser).not.toHaveBeenCalled()
       expect(store.getActions()[0]).toEqual({
         type: loginError.type,
-        payload: 'user.login.error',
+        payload: { message: 'user.login.error.message.incorrect' },
       })
     })
   })
