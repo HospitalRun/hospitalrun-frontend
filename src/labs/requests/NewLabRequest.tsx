@@ -1,4 +1,4 @@
-import { Typeahead, Label, Button, Alert } from '@hospitalrun/components'
+import { Row, Column, Typeahead, Label, Button, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -104,43 +104,41 @@ const NewLabRequest = () => {
         <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
       )}
       <form>
-        <div className="container" style={{ paddingLeft: 0 }}>
-          <div className="row">
-            <div className="col">
-              <div className="form-group patient-typeahead">
-                <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
-                <Typeahead
-                  id="patientTypeahead"
-                  placeholder={t('labs.lab.patient')}
-                  onChange={(p: Patient[]) => onPatientChange(p[0])}
-                  onSearch={async (query: string) => PatientRepository.search(query)}
-                  searchAccessor="fullName"
-                  renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
-                  isInvalid={!!error.patient}
+        <Row>
+          <Column>
+            <div className="form-group patient-typeahead">
+              <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
+              <Typeahead
+                id="patientTypeahead"
+                placeholder={t('labs.lab.patient')}
+                onChange={(p: Patient[]) => onPatientChange(p[0])}
+                onSearch={async (query: string) => PatientRepository.search(query)}
+                searchAccessor="fullName"
+                renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+                isInvalid={!!error.patient}
+              />
+            </div>
+          </Column>
+          <Column>
+            <div className="appointments">
+              {newLabRequest.patient ? (
+                <SelectWithLabelFormGroup
+                  name="appointments"
+                  label={t('Appointments')}
+                  options={appointmentOptions}
+                  defaultSelected={appointmentOptions.filter(
+                    ({ value }) => value === newLabRequest.appointment,
+                  )}
+                  onChange={(values) => onAppointmentChange(values[0])}
+                  isRequired
+                  isEditable
                 />
-              </div>
+              ) : (
+                ''
+              )}
             </div>
-            <div className="col">
-              <div className="appointments">
-                {newLabRequest.patient ? (
-                  <SelectWithLabelFormGroup
-                    name="appointments"
-                    label={t('Appointments')}
-                    options={appointmentOptions}
-                    defaultSelected={appointmentOptions.filter(
-                      ({ value }) => value === newLabRequest.appointment,
-                    )}
-                    onChange={(values) => onAppointmentChange(values[0])}
-                    isRequired
-                    isEditable
-                  />
-                ) : (
-                  ''
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+          </Column>
+        </Row>
         <TextInputWithLabelFormGroup
           name="labType"
           label={t('labs.lab.type')}
