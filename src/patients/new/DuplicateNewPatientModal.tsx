@@ -1,4 +1,4 @@
-import { Modal } from '@hospitalrun/components'
+import { Modal, Alert } from '@hospitalrun/components'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -17,19 +17,29 @@ const DuplicateNewPatientModal = (props: Props) => {
   const { t } = useTranslator()
   const { duplicatePatient, show, toggle, onCloseButtonClick, onContinueButtonClick } = props
 
+  const possibleDuplicateText = 'Possible duplicate of'
+  const renderPatients = (
+    <div>
+      <p>
+        {duplicatePatient !== undefined &&
+          Object.entries(duplicatePatient).map(([index, patient]) => (
+            <li key={index}>
+              <Link to={`/patients/${patient.id}`}>{patient.fullName}</Link>
+            </li>
+          ))}
+      </p>
+    </div>
+  )
+  const confirmCreatePatientText = 'Are you sure you want to create this patient?'
+
   const body = (
     <div className="row">
       <div className="col-md-12">
-        <p>
-          Possible duplicate of:
-          {duplicatePatient !== undefined &&
-            Object.entries(duplicatePatient).map(([index, patient]) => (
-              <li key={index}>
-                <Link to={`/patients/${patient.id}`}>{patient.fullName}</Link>
-              </li>
-            ))}
-        </p>
-        <p>Are you sure you want to create this patient?</p>
+        <Alert
+          color="danger"
+          title={t('Warning!')}
+          message={[t(possibleDuplicateText), ':', renderPatients, t(confirmCreatePatientText)]}
+        />
       </div>
     </div>
   )
