@@ -29,6 +29,13 @@ const NewPatient = () => {
   const [duplicatePatient, setDuplicatePatient] = useState<Patient | undefined>(undefined)
   const [showDuplicateNewPatientModal, setShowDuplicateNewPatientModal] = useState<boolean>(false)
 
+  const testPatient = {
+    givenName: 'Kelly',
+    familyName: 'Clark',
+    sex: 'female',
+    dateOfBirth: '1963-01-09T05:00:00.000Z',
+  } as Patient
+
   useTitle(t('patients.newPatient'))
   useAddBreadcrumbs(breadcrumbs, true)
 
@@ -52,12 +59,19 @@ const NewPatient = () => {
         isPossibleDuplicatePatient(patient, existingPatient),
       )
     }
+
     if (duplicatePatients.length > 0) {
       setShowDuplicateNewPatientModal(true)
       setDuplicatePatient(duplicatePatients as Patient)
     } else {
       dispatch(createPatient(patient, onSuccessfulSave))
     }
+
+    const testCase = [isPossibleDuplicatePatient(patient, testPatient)]
+    if (testCase.length > 0) {
+      return true
+    }
+    return false
   }
 
   const onPatientChange = (newPatient: Partial<Patient>) => {
