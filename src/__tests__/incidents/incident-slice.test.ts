@@ -12,6 +12,9 @@ import incident, {
   fetchIncidentStart,
   fetchIncidentSuccess,
   fetchIncident,
+  resolveIncident,
+  resolveIncidentStart,
+  resolveIncidentSuccess,
 } from '../../incidents/incident-slice'
 import IncidentRepository from '../../shared/db/IncidentRepository'
 import Incident from '../../shared/model/Incident'
@@ -70,6 +73,11 @@ describe('incident slice', () => {
       expect(incidentStore.status).toEqual('loading')
     })
 
+    it('should handle resolve incident start', () => {
+      const incidentStore = incident(undefined, resolveIncidentStart())
+      expect(incidentStore.status).toEqual('loading')
+    })
+
     it('should handle fetch incident success', () => {
       const expectedIncident = {
         id: '1234',
@@ -77,6 +85,18 @@ describe('incident slice', () => {
       } as Incident
 
       const incidentStore = incident(undefined, fetchIncidentSuccess(expectedIncident))
+      expect(incidentStore.status).toEqual('completed')
+      expect(incidentStore.incident).toEqual(expectedIncident)
+    })
+
+    it('should handle resolve incident success', () => {
+      const expectedIncident = {
+        id: '1234',
+        resolvedOn: new Date(Date.now()).toISOString(),
+        status: 'resolved',
+      } as Incident
+
+      const incidentStore = incident(undefined, resolveIncidentSuccess(expectedIncident))
       expect(incidentStore.status).toEqual('completed')
       expect(incidentStore.incident).toEqual(expectedIncident)
     })
@@ -200,6 +220,50 @@ describe('incident slice', () => {
       expect(store.getActions()[0]).toEqual(fetchIncidentStart())
       expect(IncidentRepository.find).toHaveBeenCalledWith(expectedIncident.id)
       expect(store.getActions()[1]).toEqual(fetchIncidentSuccess(expectedIncident))
+    })
+  })
+
+  describe('resolve incident', () => {
+    const expectedDate = new Date()
+    const mockIncident = {
+      id: '123',
+      description: 'description',
+      date: expectedDate.toISOString(),
+      department: 'some department',
+      category: 'category',
+      categoryItem: 'categoryItem',
+      status: 'reported',
+    } as Incident
+    const expectedResolvedIncident = {
+      ...mockIncident,
+      resolvedOn: expectedDate.toISOString(),
+      status: 'resolved',
+    } as Incident
+    let incidentRepositorySaveOrUpdateSpy: any
+
+    beforeEach(() => {
+      Date.now = jest.fn().mockReturnValue(expectedDate.valueOf())
+      incidentRepositorySaveOrUpdateSpy = jest
+        .spyOn(IncidentRepository, 'saveOrUpdate')
+        .mockResolvedValue(expectedResolvedIncident)
+    })
+
+    it('should resolve an incident', async () => {
+      const store = mockStore()
+
+      await store.dispatch(resolveIncident(mockIncident))
+
+      expect(store.getActions()[0]).toEqual(resolveIncidentStart())
+      expect(incidentRepositorySaveOrUpdateSpy).toHaveBeenCalledWith(expectedResolvedIncident)
+      expect(store.getActions()[1]).toEqual(resolveIncidentSuccess(expectedResolvedIncident))
+    })
+
+    it('should call on success callback if provided', async () => {
+      const store = mockStore()
+      const onSuccessSpy = jest.fn()
+      await store.dispatch(resolveIncident(mockIncident, onSuccessSpy))
+
+      expect(onSuccessSpy).toHaveBeenCalledWith(expectedResolvedIncident)
     })
   })
 })
