@@ -12,7 +12,7 @@ const Navbar = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { t } = useTranslator()
-  const { permissions } = useSelector((state: RootState) => state.user)
+  const { permissions, user } = useSelector((state: RootState) => state.user)
 
   const navigateTo = (location: string) => {
     history.push(location)
@@ -76,19 +76,10 @@ const Navbar = () => {
           className: 'nav-header',
         },
         {
-          type: 'search',
-          placeholderText: t('actions.search'),
-          className: 'ml-auto d-none d-md-block nav-search',
-          buttonText: t('actions.search'),
-          buttonColor: 'secondary',
-          onClickButton: () => undefined,
-          onChangeInput: () => undefined,
-        },
-        {
           type: 'link-list-icon',
           alignRight: true,
           children: getDropdownListOfPages(addPages),
-          className: 'pl-4 nav-add-new d-none d-md-block',
+          className: 'ml-auto nav-add-new d-none d-md-block',
           iconClassName: 'align-bottom',
           label: 'Add',
           name: 'add',
@@ -98,6 +89,15 @@ const Navbar = () => {
           type: 'link-list-icon',
           alignRight: true,
           children: [
+            {
+              type: 'link',
+              label: `${t('user.login.currentlySignedInAs')} ${user?.givenName} ${
+                user?.familyName
+              }`,
+              onClick: () => {
+                navigateTo('/settings')
+              },
+            },
             {
               type: 'link',
               label: t('settings.label'),
