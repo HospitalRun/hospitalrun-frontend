@@ -11,6 +11,7 @@ import { mocked } from 'ts-jest/utils'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import ViewPatients from '../../../patients/list/ViewPatients'
 import * as patientSlice from '../../../patients/patients-slice'
+import AddNewPatient from '../../../patients/view/AddNewPatient'
 import { UnpagedRequest } from '../../../shared/db/PageRequest'
 import PatientRepository from '../../../shared/db/PatientRepository'
 
@@ -35,12 +36,13 @@ describe('Patients', () => {
     },
   ]
 
-  const setup = (isLoading?: boolean, currentPatients = patients) => {
+  const setup = (isLoading?: boolean, currentPatients = patients, count = patients.length) => {
     const store = mockStore({
       patients: {
         patients: currentPatients,
         isLoading,
         pageRequest: UnpagedRequest,
+        count,
       },
     })
     return mount(
@@ -81,7 +83,10 @@ describe('Patients', () => {
     })
 
     it('should render no patients exists when no patients exist', () => {
-      const wrapper = setup(false, [])
+      const wrapper = setup(false, [], 0)
+
+      const addNewPatient = wrapper.find(AddNewPatient)
+      expect(addNewPatient).toHaveLength(1)
 
       const icon = wrapper.find(Icon).first()
       const typography = wrapper.find(Typography)
@@ -93,7 +98,7 @@ describe('Patients', () => {
       const buttonIcon = button.prop('icon')
       const buttonText = button.prop('children')
 
-      expect(iconType).toEqual('patient')
+      expect(iconType).toEqual('patients')
       expect(iconSize).toEqual('6x')
       expect(typographyText).toEqual('patients.noPatients')
       expect(typographyVariant).toEqual('h5')

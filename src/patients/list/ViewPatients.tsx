@@ -1,14 +1,4 @@
-import {
-  Spinner,
-  Button,
-  Container,
-  Row,
-  TextInput,
-  Column,
-  Table,
-  Icon,
-  Typography,
-} from '@hospitalrun/components'
+import { Spinner, Button, Container, Row, TextInput, Column, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -23,6 +13,7 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import useUpdateEffect from '../../shared/hooks/useUpdateEffect'
 import { RootState } from '../../shared/store'
 import { searchPatients } from '../patients-slice'
+import AddNewPatient from '../view/AddNewPatient'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
@@ -32,7 +23,7 @@ const ViewPatients = () => {
   useTitle(t('patients.label'))
   useAddBreadcrumbs(breadcrumbs, true)
   const dispatch = useDispatch()
-  const { patients, isLoading } = useSelector((state: RootState) => state.patients)
+  const { patients, isLoading, count } = useSelector((state: RootState) => state.patients)
 
   const setButtonToolBar = useButtonToolbarSetter()
 
@@ -102,32 +93,8 @@ const ViewPatients = () => {
     setSearchText(event.target.value)
   }
 
-  if (patients && patients.length === 0) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Icon icon="patient" outline={false} size="6x" />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ textAlign: 'center', width: '60%', margin: 16 }}>
-              <Typography variant="h5">{t('patients.noPatients')}</Typography>
-            </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              key="newPatientButton"
-              outlined
-              color="success"
-              icon="patient-add"
-              onClick={() => history.push('/patients/new')}
-            >
-              {t('patients.newPatient')}
-            </Button>
-          </div>
-        </div>
-      </div>
-    )
+  if (count === 0) {
+    return <AddNewPatient />
   }
 
   return (
