@@ -266,7 +266,7 @@ const Sidebar = () => {
           }
           style={expandibleArrow}
         />
-        <Icon icon="lab" /> {!sidebarCollapsed && t('incidents.label')}
+        <Icon icon="incident" /> {!sidebarCollapsed && t('incidents.label')}
       </ListItem>
       {splittedPath[1].includes('incidents') && expandedItem === 'incidents' && (
         <List layout="flush" className="nav flex-column">
