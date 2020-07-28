@@ -1,4 +1,4 @@
-import { Typeahead, Label, Button, Alert } from '@hospitalrun/components'
+import { Typeahead, Label, Button, Alert, Toast } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -40,6 +40,7 @@ const NewLabRequest = () => {
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
       patient: patient.id,
+      fullName: patient.fullName,
     }))
   }
 
@@ -60,12 +61,16 @@ const NewLabRequest = () => {
   }
 
   const onSave = async () => {
-    const newLab = newLabRequest as Lab
-    const onSuccess = (createdLab: Lab) => {
-      history.push(`/labs/${createdLab.id}`)
+    const onSuccessRequest = (newLab: Lab) => {
+      history.push(`/labs/${newLab.id}`)
+      Toast(
+        'success',
+        t('states.success'),
+        `${t('lab.successfullyCreated')} ${newLab.type} ${newLab.patient}`,
+      )
     }
 
-    dispatch(requestLab(newLab, onSuccess))
+    dispatch(requestLab(newLabRequest as Lab, onSuccessRequest))
   }
 
   const onCancel = () => {
@@ -114,6 +119,7 @@ const NewLabRequest = () => {
             <Button className="mr-2" color="success" onClick={onSave}>
               {t('actions.save')}
             </Button>
+
             <Button color="danger" onClick={onCancel}>
               {t('actions.cancel')}
             </Button>
