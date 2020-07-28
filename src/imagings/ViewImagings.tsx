@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarProvider'
 import useTitle from '../page-header/title/useTitle'
-import useDebounce from '../shared/hooks/useDebounce'
 import useTranslator from '../shared/hooks/useTranslator'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
@@ -25,8 +24,6 @@ const ViewImagings = () => {
   const dispatch = useDispatch()
   const { imagings } = useSelector((state: RootState) => state.imagings)
   const [searchFilter, setSearchFilter] = useState<ImagingFilter>('all')
-
-  const debouncedSearchText = useDebounce(' ', 500)
 
   const getButtons = useCallback(() => {
     const buttons: React.ReactNode[] = []
@@ -53,8 +50,8 @@ const ViewImagings = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(searchImagings(debouncedSearchText, searchFilter))
-  }, [dispatch, debouncedSearchText, searchFilter])
+    dispatch(searchImagings(' ', searchFilter))
+  }, [dispatch, searchFilter])
 
   useEffect(() => {
     setButtons(getButtons())
