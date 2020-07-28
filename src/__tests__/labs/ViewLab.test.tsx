@@ -31,6 +31,7 @@ describe('View Lab', () => {
     status: 'requested',
     patient: '1234',
     type: 'lab type',
+    appointment: '7/9/2020, 12:15:00 PM',
     notes: 'lab notes',
     requestedOn: '2020-03-30T04:43:20.102Z',
   } as Lab

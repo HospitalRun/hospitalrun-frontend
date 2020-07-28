@@ -185,8 +185,8 @@ const ViewLab = () => {
             </div>
           </Column>
           <Column>
-            <div>
-              <h4>Appointment</h4>
+            <div className="form-group appointment">
+              <h4>{t('labs.lab.appointment')}</h4>
               <h5>{labToView.appointment}</h5>
             </div>
           </Column>
