@@ -53,6 +53,11 @@ describe('Navbar', () => {
     Permissions.CompleteLab,
     Permissions.ViewLab,
     Permissions.ViewLabs,
+    Permissions.RequestMedication,
+    Permissions.CancelMedication,
+    Permissions.CompleteMedication,
+    Permissions.ViewMedication,
+    Permissions.ViewMedications,
     Permissions.ViewIncidents,
     Permissions.ViewIncident,
     Permissions.ReportIncident,
@@ -89,6 +94,8 @@ describe('Navbar', () => {
         'labs.requests.label',
         'incidents.reports.new',
         'incidents.reports.label',
+        'medications.requests.new',
+        'medications.requests.label',
       ]
 
       children.forEach((option: any) => {

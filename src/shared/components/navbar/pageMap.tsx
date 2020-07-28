@@ -57,7 +57,7 @@ const pageMap: {
     permission: Permissions.ViewMedications,
     label: 'medications.requests.label',
     path: '/medications',
-    icon: 'lab',
+    icon: 'medication',
   },
   newIncident: {
     permission: Permissions.ReportIncident,
