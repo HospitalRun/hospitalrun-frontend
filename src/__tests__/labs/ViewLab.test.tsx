@@ -110,6 +110,15 @@ describe('View Lab', () => {
       expect(labTypeDiv.find('h5').text().trim()).toEqual(expectedLab.type)
     })
 
+    it('should display the appointment', async () => {
+      const expectedLab = { ...mockLab, appointment: '7/9/2020, 12:15:00 PM' } as Lab
+      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const appointmentDiv = wrapper.find('.appointment')
+      expect(appointmentDiv.find('h4').text().trim()).toEqual('labs.lab.appointment')
+
+      expect(appointmentDiv.find('h5').text().trim()).toEqual(expectedLab.appointment)
+    })
+
     it('should display the requested on date', async () => {
       const expectedLab = { ...mockLab, requestedOn: '2020-03-30T04:43:20.102Z' } as Lab
       const wrapper = await setup(expectedLab, [Permissions.ViewLab])
