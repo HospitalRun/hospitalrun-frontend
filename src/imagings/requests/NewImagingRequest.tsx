@@ -123,6 +123,7 @@ const NewImagingRequest = () => {
           options={statusOptions}
           isRequired
           isEditable
+          defaultSelected={statusOptions.filter(({ value }) => value === newImagingRequest.status)}
           onChange={(values) => onStatusChange(values[0])}
         />
         <div className="form-group">

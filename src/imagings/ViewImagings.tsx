@@ -6,9 +6,6 @@ import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarProvider'
 import useTitle from '../page-header/title/useTitle'
-// import SelectWithLabelFormGroup, {
-//   Option,
-// } from '../shared/components/input/SelectWithLableFormGroup'
 import useDebounce from '../shared/hooks/useDebounce'
 import useTranslator from '../shared/hooks/useTranslator'
 import Permissions from '../shared/model/Permissions'
@@ -66,27 +63,8 @@ const ViewImagings = () => {
     }
   }, [dispatch, getButtons, setButtons])
 
-  // const filterOptions: Option[] = [
-  //   { label: t('imagings.status.requested'), value: 'requested' },
-  //   { label: t('imagings.status.completed'), value: 'completed' },
-  //   { label: t('imagings.status.canceled'), value: 'canceled' },
-  //   { label: t('imagings.filter.all'), value: 'all' },
-  // ]
   return (
     <>
-      {/* <div className="row"> 
-        <div className="col-md-3 col-lg-2">
-          <SelectWithLabelFormGroup
-            name="type"
-            label={t('imagings.filterTitle')}
-            options={filterOptions}
-            defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
-            onChange={(values) => setSearchFilter(values[0] as ImagingFilter)}
-            isEditable
-          />
-        </div>
-      </div>   */}
-
       <div className="row">
         <Table
           getID={(row) => row.id}
