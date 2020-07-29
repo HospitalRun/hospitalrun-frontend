@@ -21,14 +21,12 @@ const DuplicateNewPatientModal = (props: Props) => {
     <>
       <Alert
         color="warning"
-        title={t('Warning!')}
-        message={t(
-          'Patient with matching information found in database. Are you sure you want to create this patient?',
-        )}
+        title={t('patients.warning')}
+        message={t('patients.duplicatePatientWarning')}
       />
       <div className="row">
         <div className="col-md-12">
-          {`${t('Possible duplicate patient')}: `}
+          {t('patients.possibleDuplicatePatient')}
           {duplicatePatient !== undefined &&
             Object.entries(duplicatePatient).map(([key, patient]) => (
               <li key={key.toString()}>
