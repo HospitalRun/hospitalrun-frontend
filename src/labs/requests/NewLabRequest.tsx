@@ -1,5 +1,5 @@
 import { Typeahead, Label, Button, Alert } from '@hospitalrun/components'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -12,7 +12,7 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Lab from '../../shared/model/Lab'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
-import { requestLab } from '../lab-slice'
+import { requestLab, resetLab } from '../lab-slice'
 
 const NewLabRequest = () => {
   const { t } = useTranslator()
@@ -27,6 +27,10 @@ const NewLabRequest = () => {
     notes: '',
     status: 'requested',
   })
+
+  useEffect(() => {
+    dispatch(resetLab())
+  }, [dispatch])
 
   const breadcrumbs = [
     {
