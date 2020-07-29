@@ -1,3 +1,8 @@
 export default {
-  settings: {},
+  settings: {
+    label: 'Настройки',
+    language: {
+      label: 'Язык',
+    },
+  },
 }

@@ -1,12 +1,12 @@
 import { sortBy } from 'lodash'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import i18n, { resources } from '../../config/i18n'
+import useTranslator from '../../hooks/useTranslator'
 import SelectWithLabelFormGroup, { Option } from './SelectWithLableFormGroup'
 
 const LanguageSelector = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const [selected, setSelected] = useState(i18n.language)
 
   let languageOptions: Option[] = Object.keys(resources).map((abbr) => ({

@@ -1,9 +1,9 @@
 import { List, ListItem, Icon } from '@hospitalrun/components'
 import React, { useState, CSSProperties } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useHistory } from 'react-router-dom'
 
+import useTranslator from '../hooks/useTranslator'
 import Permissions from '../model/Permissions'
 import { RootState } from '../store'
 import { updateSidebar } from './component-slice'
@@ -13,7 +13,7 @@ const Sidebar = () => {
   const { sidebarCollapsed } = useSelector((state: RootState) => state.components)
   const permissions = useSelector((state: RootState) => state.user.permissions)
 
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const path = useLocation()
   const history = useHistory()
   const { pathname } = path
@@ -266,7 +266,7 @@ const Sidebar = () => {
           }
           style={expandibleArrow}
         />
-        <Icon icon="lab" /> {!sidebarCollapsed && t('incidents.label')}
+        <Icon icon="incident" /> {!sidebarCollapsed && t('incidents.label')}
       </ListItem>
       {splittedPath[1].includes('incidents') && expandedItem === 'incidents' && (
         <List layout="flush" className="nav flex-column">

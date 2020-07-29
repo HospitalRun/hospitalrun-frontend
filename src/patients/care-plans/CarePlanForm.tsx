@@ -1,6 +1,5 @@
 import { Alert, Column, Row } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
 import SelectWithLabelFormGroup, {
@@ -8,6 +7,7 @@ import SelectWithLabelFormGroup, {
 } from '../../shared/components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import useTranslator from '../../shared/hooks/useTranslator'
 import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../shared/model/CarePlan'
 import Patient from '../../shared/model/Patient'
 
@@ -31,7 +31,7 @@ interface Props {
 }
 
 const CarePlanForm = (props: Props) => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const { patient, carePlan, carePlanError, disabled, onChange } = props
 
   const [condition, setCondition] = useState(carePlan.diagnosisId)

@@ -1,6 +1,5 @@
 import { Calendar, Button } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -8,6 +7,7 @@ import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
 import useTitle from '../../page-header/title/useTitle'
 import PatientRepository from '../../shared/db/PatientRepository'
+import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
 import { fetchAppointments } from './appointments-slice'
 
@@ -22,7 +22,7 @@ interface Event {
 const breadcrumbs = [{ i18nKey: 'scheduling.appointments.label', location: '/appointments' }]
 
 const ViewAppointments = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const history = useHistory()
   useTitle(t('scheduling.appointments.label'))
   const dispatch = useDispatch()

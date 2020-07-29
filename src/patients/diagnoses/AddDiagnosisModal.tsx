@@ -1,10 +1,10 @@
 import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import useTranslator from '../../shared/hooks/useTranslator'
 import Diagnosis from '../../shared/model/Diagnosis'
 import { RootState } from '../../shared/store'
 import { addDiagnosis } from '../patient-slice'
@@ -18,7 +18,7 @@ const AddDiagnosisModal = (props: Props) => {
   const { show, onCloseButtonClick } = props
   const dispatch = useDispatch()
   const { diagnosisError, patient } = useSelector((state: RootState) => state.patient)
-  const { t } = useTranslation()
+  const { t } = useTranslator()
 
   const [diagnosis, setDiagnosis] = useState({ name: '', diagnosisDate: new Date().toISOString() })
 

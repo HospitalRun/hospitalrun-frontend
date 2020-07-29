@@ -1,7 +1,6 @@
 import { Button, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -12,6 +11,7 @@ import SelectWithLabelFormGroup, {
 } from '../shared/components/input/SelectWithLableFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useDebounce from '../shared/hooks/useDebounce'
+import useTranslator from '../shared/hooks/useTranslator'
 import Lab from '../shared/model/Lab'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
@@ -20,7 +20,7 @@ import { searchLabs } from './labs-slice'
 type LabFilter = 'requested' | 'completed' | 'canceled' | 'all'
 
 const ViewLabs = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const history = useHistory()
   const setButtons = useButtonToolbarSetter()
   useTitle(t('labs.label'))
@@ -94,8 +94,8 @@ const ViewLabs = () => {
         <div className="col">
           <TextInputWithLabelFormGroup
             name="searchbox"
-            label="Search Labs"
-            placeholder="Search labs by type"
+            label={t('labs.search')}
+            placeholder={t('labs.search')}
             value={searchText}
             isEditable
             onChange={onSearchBoxChange}

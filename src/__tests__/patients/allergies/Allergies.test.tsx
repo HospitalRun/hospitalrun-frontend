@@ -9,8 +9,8 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Allergies from '../../../patients/allergies/Allergies'
+import AllergiesList from '../../../patients/allergies/AllergiesList'
 import PatientRepository from '../../../shared/db/PatientRepository'
-import Allergy from '../../../shared/model/Allergy'
 import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
@@ -26,12 +26,15 @@ const expectedPatient = {
   ],
 } as Patient
 
-let user: any
 let store: any
 
-const setup = (patient = expectedPatient, permissions = [Permissions.AddAllergy]) => {
-  user = { permissions }
-  store = mockStore({ patient, user } as any)
+const setup = (
+  patient = expectedPatient,
+  permissions = [Permissions.AddAllergy],
+  route = '/patients/123/allergies',
+) => {
+  store = mockStore({ patient: { patient }, user: { permissions } } as any)
+  history.push(route)
   const wrapper = mount(
     <Router history={history}>
       <Provider store={store}>
@@ -81,15 +84,11 @@ describe('Allergies', () => {
   })
 
   describe('allergy list', () => {
-    it('should list the patients allergies', () => {
-      const allergies = expectedPatient.allergies as Allergy[]
+    it('should render allergies', () => {
       const wrapper = setup()
+      const allergiesList = wrapper.find(AllergiesList)
 
-      const list = wrapper.find(components.List)
-      const listItems = wrapper.find(components.ListItem)
-
-      expect(list).toHaveLength(1)
-      expect(listItems).toHaveLength(allergies.length)
+      expect(allergiesList).toHaveLength(1)
     })
 
     it('should render a warning message if the patient does not have any allergies', () => {

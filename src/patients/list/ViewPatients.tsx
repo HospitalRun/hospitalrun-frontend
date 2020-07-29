@@ -1,7 +1,6 @@
 import { Spinner, Button, Container, Row, TextInput, Column, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -10,6 +9,7 @@ import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonB
 import useTitle from '../../page-header/title/useTitle'
 import SortRequest from '../../shared/db/SortRequest'
 import useDebounce from '../../shared/hooks/useDebounce'
+import useTranslator from '../../shared/hooks/useTranslator'
 import useUpdateEffect from '../../shared/hooks/useUpdateEffect'
 import { RootState } from '../../shared/store'
 import { searchPatients } from '../patients-slice'
@@ -17,7 +17,7 @@ import { searchPatients } from '../patients-slice'
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
 const ViewPatients = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const history = useHistory()
   useTitle(t('patients.label'))
   useAddBreadcrumbs(breadcrumbs, true)

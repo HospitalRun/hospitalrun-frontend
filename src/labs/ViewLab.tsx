@@ -1,13 +1,13 @@
 import { Row, Column, Badge, Button, Alert, Toast } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
+import useTranslator from '../shared/hooks/useTranslator'
 import Lab from '../shared/model/Lab'
 import Patient from '../shared/model/Patient'
 import Permissions from '../shared/model/Permissions'
@@ -19,7 +19,7 @@ const getTitle = (patient: Patient | undefined, lab: Lab | undefined) =>
 
 const ViewLab = () => {
   const { id } = useParams()
-  const { t } = useTranslation()
+  const { t } = useTranslator()
   const history = useHistory()
   const dispatch = useDispatch()
   const { permissions } = useSelector((state: RootState) => state.user)
