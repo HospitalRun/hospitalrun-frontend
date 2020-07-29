@@ -17,24 +17,19 @@ const DuplicateNewPatientModal = (props: Props) => {
   const { t } = useTranslator()
   const { duplicatePatient, show, toggle, onCloseButtonClick, onContinueButtonClick } = props
 
-  const alertMessage =
-    'Patient with matching information found in database. Are you sure you want to create this patient?'
-
   const body = (
     <>
-      <Alert color="danger" title={t('Warning!')} message={t(alertMessage)} />
+      <Alert
+        color="warning"
+        title={t('Warning!')}
+        message={t(
+          'Patient with matching information found in database. Are you sure you want to create this patient?',
+        )}
+      />
       <div className="row">
         <div className="col-md-12">
           {`${t('Possible duplicate patient')}: `}
           {duplicatePatient !== undefined &&
-            Object.entries(duplicatePatient).length === 1 &&
-            Object.entries(duplicatePatient).map(([key, patient]) => (
-              <Link key={key.toString()} to={`/patients/${patient.id}`}>
-                {patient.fullName}
-              </Link>
-            ))}
-          {duplicatePatient !== undefined &&
-            Object.entries(duplicatePatient).length > 1 &&
             Object.entries(duplicatePatient).map(([key, patient]) => (
               <li key={key.toString()}>
                 <Link to={`/patients/${patient.id}`}>{patient.fullName}</Link>
