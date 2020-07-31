@@ -1,6 +1,5 @@
 import { Button, Row, Column } from '@hospitalrun/components'
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
@@ -10,11 +9,11 @@ import TextFieldWithLabelFormGroup from '../../shared/components/input/TextField
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Incident from '../../shared/model/Incident'
-import { RootState } from '../../shared/store'
-import { reportIncident } from '../incident-slice'
+import useReportIncident from '../hooks/useReportIncident'
+import { IncidentError } from '../util/validate-incident'
 
 const ReportIncident = () => {
-  const dispatch = useDispatch()
+  const [mutate] = useReportIncident()
   const history = useHistory()
   const { t } = useTranslator()
   useTitle(t('incidents.reports.new'))
@@ -25,8 +24,6 @@ const ReportIncident = () => {
     },
   ]
   useAddBreadcrumbs(breadcrumbs)
-
-  const { error } = useSelector((root: RootState) => root.incident)
   const [incident, setIncident] = useState({
     date: new Date().toISOString(),
     department: '',
@@ -34,6 +31,7 @@ const ReportIncident = () => {
     categoryItem: '',
     description: '',
   })
+  const [error, setError] = useState<IncidentError | undefined>(undefined)
 
   const onDateChange = (newDate: Date) => {
     setIncident((prevState) => ({
@@ -49,12 +47,15 @@ const ReportIncident = () => {
     }))
   }
 
-  const onSave = () => {
-    const onSuccess = (newIncident: Incident) => {
-      history.push(`/incidents/${newIncident.id}`)
+  const onSave = async () => {
+    try {
+      const data = await mutate(incident as Incident)
+      history.push(`/incidents/${data.id}`)
+    } catch (e) {
+      console.log('e caught')
+      console.log(e)
+      setError(e)
     }
-
-    dispatch(reportIncident(incident as Incident, onSuccess))
   }
 
   const onCancel = () => {
