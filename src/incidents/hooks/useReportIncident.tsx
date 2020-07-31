@@ -14,6 +14,7 @@ function reportIncident(incident: Incident): Promise<Incident> {
     const updatedIncident: Incident = {
       ...incident,
       code: getIncidentCode(),
+      status: 'reported',
       reportedBy: 'some user',
       reportedOn: new Date(Date.now()).toISOString(),
     }
