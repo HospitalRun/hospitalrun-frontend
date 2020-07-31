@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import useTranslator from '../../shared/hooks/useTranslator'
 
-const AddNewPatient = () => {
+const NoPatientsExist = () => {
   const history = useHistory()
   const { t } = useTranslator()
 
@@ -35,4 +35,4 @@ const AddNewPatient = () => {
   )
 }
 
-export default AddNewPatient
+export default NoPatientsExist

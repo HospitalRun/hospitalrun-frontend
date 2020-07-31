@@ -1,4 +1,4 @@
-import { TextInput, Spinner, Table, Icon, Typography, Button } from '@hospitalrun/components'
+import { TextInput, Spinner, Table } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -11,7 +11,7 @@ import { mocked } from 'ts-jest/utils'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import ViewPatients from '../../../patients/list/ViewPatients'
 import * as patientSlice from '../../../patients/patients-slice'
-import AddNewPatient from '../../../patients/view/AddNewPatient'
+import NoPatientsExist from '../../../patients/view/NoPatientsExist'
 import { UnpagedRequest } from '../../../shared/db/PageRequest'
 import PatientRepository from '../../../shared/db/PatientRepository'
 
@@ -85,25 +85,8 @@ describe('Patients', () => {
     it('should render no patients exists when no patients exist', () => {
       const wrapper = setup(false, [], 0)
 
-      const addNewPatient = wrapper.find(AddNewPatient)
+      const addNewPatient = wrapper.find(NoPatientsExist)
       expect(addNewPatient).toHaveLength(1)
-
-      const icon = wrapper.find(Icon).first()
-      const typography = wrapper.find(Typography)
-      const button = wrapper.find(Button)
-      const iconType = icon.prop('icon')
-      const iconSize = icon.prop('size')
-      const typographyText = typography.prop('children')
-      const typographyVariant = typography.prop('variant')
-      const buttonIcon = button.prop('icon')
-      const buttonText = button.prop('children')
-
-      expect(iconType).toEqual('patients')
-      expect(iconSize).toEqual('6x')
-      expect(typographyText).toEqual('patients.noPatients')
-      expect(typographyVariant).toEqual('h5')
-      expect(buttonIcon).toEqual('patient-add')
-      expect(buttonText).toEqual('patients.newPatient')
     })
 
     it('should render a table of patients', () => {
@@ -147,7 +130,10 @@ describe('Patients', () => {
   describe('search functionality', () => {
     beforeEach(() => jest.useFakeTimers())
 
-    afterEach(() => jest.useRealTimers())
+    afterEach(() => {
+      jest.useRealTimers()
+      jest.restoreAllMocks()
+    })
 
     it('should search for patients after the search text has not changed for 500 milliseconds', () => {
       const searchPatientsSpy = jest.spyOn(patientSlice, 'searchPatients')
@@ -170,6 +156,26 @@ describe('Patients', () => {
       expect(searchPatientsSpy).toHaveBeenLastCalledWith(expectedSearchText, {
         sorts: [{ field: 'index', direction: 'asc' }],
       })
+    })
+
+    it("shound't display NoPatientsFound if a search result has no results", () => {
+      const searchPatientsSpy = jest.spyOn(patientSlice, 'searchPatients')
+      const wrapper = setup()
+      searchPatientsSpy.mockClear()
+      const expectedSearchText = '$$$not a patient$$$'
+
+      act(() => {
+        const onChange = wrapper.find(TextInput).prop('onChange') as any
+        onChange({ target: { value: expectedSearchText } })
+      })
+
+      act(() => {
+        jest.advanceTimersByTime(500)
+      })
+
+      wrapper.update()
+
+      expect(NoPatientsExist).toHaveLength(0)
     })
   })
 })

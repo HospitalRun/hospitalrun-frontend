@@ -13,7 +13,7 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import useUpdateEffect from '../../shared/hooks/useUpdateEffect'
 import { RootState } from '../../shared/store'
 import { searchPatients } from '../patients-slice'
-import AddNewPatient from '../view/AddNewPatient'
+import NoPatientsExist from '../view/NoPatientsExist'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
@@ -94,7 +94,7 @@ const ViewPatients = () => {
   }
 
   if (count === 0) {
-    return <AddNewPatient />
+    return <NoPatientsExist />
   }
 
   return (
