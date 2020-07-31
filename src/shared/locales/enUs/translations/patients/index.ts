@@ -1,6 +1,7 @@
 export default {
   patients: {
     label: 'Patients',
+    warning: 'Warning!',
     patientsList: 'Patients List',
     viewPatients: 'View Patients',
     viewPatient: 'View Patient',
@@ -9,5 +10,8 @@ export default {
     successfullyCreated: 'Successfully created patient',
     successfullyAddedNote: 'Successfully added the new note',
     successfullyAddedRelatedPerson: 'Successfully added a new related person',
+    possibleDuplicatePatient: 'Possible duplicate patient:',
+    duplicatePatientWarning:
+      'Patient with matching information found in database. Are you sure you want to create this patient?',
   },
 }
