@@ -1,15 +1,14 @@
 import { Alert, Container, Panel } from '@hospitalrun/components'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
-import { remoteDb } from '../shared/config/pouchdb'
 import useTranslator from '../shared/hooks/useTranslator'
 import logo from '../shared/static/images/logo-on-transparent.png'
 import { RootState } from '../shared/store'
-import { getCurrentSession, login } from '../user/user-slice'
+import { login } from '../user/user-slice'
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -17,23 +16,6 @@ const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const { loginError, user } = useSelector((root: RootState) => root.user)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const session = await remoteDb.getSession()
-        if (session.userCtx.name) {
-          await dispatch(getCurrentSession(session.userCtx.name))
-        }
-      } catch (e) {
-        console.log(e)
-      }
-      setLoading(false)
-    }
-
-    init()
-  }, [dispatch])
 
   const onUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
@@ -48,10 +30,6 @@ const Login = () => {
   const onSignInClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     await dispatch(login(username, password))
-  }
-
-  if (loading) {
-    return null
   }
 
   if (user) {
