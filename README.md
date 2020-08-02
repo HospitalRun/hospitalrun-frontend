@@ -67,11 +67,7 @@ Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs](https
 ## [Core Contributors](https://github.com/orgs/HospitalRun/teams/core-contributor)
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-<!-- markdownlint-disable -->
 
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## Medical Supervisor
