@@ -16,12 +16,7 @@ import Medication from '../shared/model/Medication'
 import Patient from '../shared/model/Patient'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
-import {
-  cancelMedication,
-  completeMedication,
-  updateMedication,
-  fetchMedication,
-} from './medication-slice'
+import { cancelMedication, updateMedication, fetchMedication } from './medication-slice'
 
 const getTitle = (patient: Patient | undefined, medication: Medication | undefined) =>
   patient && medication ? `${medication.medication} for ${patient.fullName}` : ''
@@ -112,16 +107,6 @@ const ViewMedication = () => {
     }
   }
 
-  const onComplete = async () => {
-    const onSuccess = () => {
-      history.push('/medications')
-    }
-
-    if (medicationToView) {
-      dispatch(completeMedication(medicationToView, onSuccess))
-    }
-  }
-
   const onCancel = async () => {
     const onSuccess = () => {
       history.push('/medications')
@@ -134,7 +119,7 @@ const ViewMedication = () => {
 
   const getButtons = () => {
     const buttons: React.ReactNode[] = []
-    if (medicationToView?.status === 'completed' || medicationToView?.status === 'canceled') {
+    if (medicationToView?.status === 'canceled') {
       return buttons
     }
 
@@ -143,19 +128,6 @@ const ViewMedication = () => {
         {t('actions.update')}
       </Button>,
     )
-
-    if (permissions.includes(Permissions.CompleteMedication)) {
-      buttons.push(
-        <Button
-          className="mr-2"
-          onClick={onComplete}
-          color="primary"
-          key="medications.requests.complete"
-        >
-          {t('medications.requests.complete')}
-        </Button>,
-      )
-    }
 
     if (permissions.includes(Permissions.CancelMedication)) {
       buttons.push(
@@ -170,26 +142,13 @@ const ViewMedication = () => {
 
   if (medicationToView && patient) {
     const getBadgeColor = () => {
-      if (medicationToView.status === 'completed') {
-        return 'primary'
-      }
       if (medicationToView.status === 'canceled') {
         return 'danger'
       }
       return 'warning'
     }
 
-    const getCanceledOnOrCompletedOnDate = () => {
-      if (medicationToView.status === 'completed' && medicationToView.completedOn) {
-        return (
-          <Column>
-            <div className="form-group completed-on">
-              <h4>{t('medications.medication.completedOn')}</h4>
-              <h5>{format(new Date(medicationToView.completedOn), 'yyyy-MM-dd hh:mm a')}</h5>
-            </div>
-          </Column>
-        )
-      }
+    const getCancelledOnDate = () => {
       if (medicationToView.status === 'canceled' && medicationToView.canceledOn) {
         return (
           <Column>
@@ -241,7 +200,7 @@ const ViewMedication = () => {
               <h5>{format(new Date(medicationToView.requestedOn), 'yyyy-MM-dd hh:mm a')}</h5>
             </div>
           </Column>
-          {getCanceledOnOrCompletedOnDate()}
+          {getCancelledOnDate()}
         </Row>
         <Row>
           <Column>

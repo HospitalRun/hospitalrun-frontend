@@ -64,9 +64,6 @@ const medicationSlice = createSlice({
     requestMedicationError: error,
     cancelMedicationStart: start,
     cancelMedicationSuccess: finish,
-    completeMedicationStart: start,
-    completeMedicationSuccess: finish,
-    completeMedicationError: error,
   },
 })
 
@@ -80,9 +77,6 @@ export const {
   requestMedicationError,
   cancelMedicationStart,
   cancelMedicationSuccess,
-  completeMedicationStart,
-  completeMedicationSuccess,
-  completeMedicationError,
 } = medicationSlice.actions
 
 export const fetchMedication = (medicationId: string): AppThunk => async (dispatch) => {
@@ -141,38 +135,6 @@ export const cancelMedication = (
 
   if (onSuccess) {
     onSuccess(canceledMedication)
-  }
-}
-
-const validateCompleteMedication = (medicationToComplete: Medication): Error => {
-  const completeError: Error = {}
-
-  if (!medicationToComplete.quantity) {
-    completeError.quantity = 'medications.requests.error.quantityRequiredToComplete'
-  }
-
-  return completeError
-}
-
-export const completeMedication = (
-  medicationToComplete: Medication,
-  onSuccess?: (medication: Medication) => void,
-): AppThunk => async (dispatch) => {
-  dispatch(completeMedicationStart())
-
-  const completeMedicationErrors = validateCompleteMedication(medicationToComplete)
-  if (Object.keys(completeMedicationErrors).length > 0) {
-    completeMedicationErrors.message = 'medications.requests.error.unableToComplete'
-    dispatch(completeMedicationError(completeMedicationErrors))
-  } else {
-    medicationToComplete.completedOn = new Date(Date.now().valueOf()).toISOString()
-    medicationToComplete.status = 'completed'
-    const completedMedication = await MedicationRepository.saveOrUpdate(medicationToComplete)
-    dispatch(completeMedicationSuccess(completedMedication))
-
-    if (onSuccess) {
-      onSuccess(completedMedication)
-    }
   }
 }
 

@@ -9,14 +9,10 @@ import medicationSlice, {
   updateMedicationSuccess,
   requestMedicationStart,
   requestMedicationSuccess,
-  completeMedicationStart,
-  completeMedicationSuccess,
   cancelMedicationStart,
   cancelMedicationSuccess,
   fetchMedication,
   cancelMedication,
-  completeMedication,
-  completeMedicationError,
   requestMedicationError,
   updateMedication,
 } from '../../medications/medication-slice'
@@ -107,37 +103,6 @@ describe('medication slice', () => {
       expect(medicationStore.error).toEqual(expectedError)
     })
 
-    describe('completeMedicationStart', () => {
-      it('should set status to loading', async () => {
-        const medicationStore = medicationSlice(undefined, completeMedicationStart())
-
-        expect(medicationStore.status).toEqual('loading')
-      })
-    })
-
-    describe('completeMedicationSuccess', () => {
-      it('should set the medication and status to success', () => {
-        const expectedMedication = { id: 'medicationId' } as Medication
-
-        const medicationStore = medicationSlice(
-          undefined,
-          completeMedicationSuccess(expectedMedication),
-        )
-
-        expect(medicationStore.status).toEqual('completed')
-        expect(medicationStore.medication).toEqual(expectedMedication)
-      })
-    })
-
-    describe('completeMedicationError', () => {
-      const expectedError = { message: 'some message', result: 'some result error' }
-
-      const medicationStore = medicationSlice(undefined, completeMedicationError(expectedError))
-
-      expect(medicationStore.status).toEqual('error')
-      expect(medicationStore.error).toEqual(expectedError)
-    })
-
     describe('cancelMedicationStart', () => {
       it('should set status to loading', async () => {
         const medicationStore = medicationSlice(undefined, cancelMedicationStart())
@@ -168,7 +133,6 @@ describe('medication slice', () => {
     const mockMedication = {
       id: 'medicationId',
       patient: 'patient',
-      medication: 'medication',
       medication: 'medication',
       status: 'draft',
       intent: 'order',
@@ -246,75 +210,6 @@ describe('medication slice', () => {
       await store.dispatch(cancelMedication(mockMedication, onSuccessSpy))
 
       expect(onSuccessSpy).toHaveBeenCalledWith(expectedCanceledMedication)
-    })
-  })
-
-  describe('complete medication', () => {
-    const mockMedication = {
-      id: 'medicationId',
-      patient: 'patient',
-      medication: 'medication',
-      status: 'draft',
-      intent: 'order',
-      priority: 'routine',
-      quantity: { value: 1, unit: 'unit' },
-      notes: 'notes',
-    } as Medication
-    let medicationRepositorySaveOrUpdateSpy: any
-
-    beforeEach(() => {
-      Date.now = jest.fn().mockReturnValue(new Date().valueOf())
-      medicationRepositorySaveOrUpdateSpy = jest
-        .spyOn(MedicationRepository, 'saveOrUpdate')
-        .mockResolvedValue(mockMedication)
-    })
-
-    it('should complete a medication', async () => {
-      const expectedCompletedMedication = {
-        ...mockMedication,
-        completedOn: new Date(Date.now()).toISOString(),
-        status: 'completed',
-      } as Medication
-
-      const store = mockStore()
-
-      await store.dispatch(completeMedication(mockMedication))
-      const actions = store.getActions()
-
-      expect(actions[0]).toEqual(completeMedicationStart())
-      expect(medicationRepositorySaveOrUpdateSpy).toHaveBeenCalledWith(expectedCompletedMedication)
-      expect(actions[1]).toEqual(completeMedicationSuccess(expectedCompletedMedication))
-    })
-
-    it('should call on success callback if provided', async () => {
-      const expectedCompletedMedication = {
-        ...mockMedication,
-        completedOn: new Date(Date.now()).toISOString(),
-        status: 'completed',
-      } as Medication
-
-      const store = mockStore()
-      const onSuccessSpy = jest.fn()
-      await store.dispatch(completeMedication(mockMedication, onSuccessSpy))
-
-      expect(onSuccessSpy).toHaveBeenCalledWith(expectedCompletedMedication)
-    })
-
-    it('should validate that the medication can be completed', async () => {
-      const store = mockStore()
-      const onSuccessSpy = jest.fn()
-      const medicationToComplete = mockMedication
-      await store.dispatch(
-        completeMedication({ ...medicationToComplete } as Medication, onSuccessSpy),
-      )
-      const actions = store.getActions()
-
-      expect(actions[1]).not.toEqual(
-        completeMedicationError({
-          message: 'medications.requests.error.unableToComplete',
-        }),
-      )
-      expect(onSuccessSpy).toHaveBeenCalled()
     })
   })
 

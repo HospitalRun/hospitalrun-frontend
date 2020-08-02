@@ -21,39 +21,36 @@ import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
-
+let expectedDate: any
 describe('View Medication', () => {
-  let history: any
-  const mockPatient = { fullName: 'test' }
-  const mockMedication = {
-    id: '12456',
-    status: 'draft',
-    patient: '1234',
-    medication: 'medication',
-    intent: 'order',
-    priority: 'routine',
-    quantity: { value: 1, unit: 'unit' },
-    notes: 'medication notes',
-    requestedOn: '2020-03-30T04:43:20.102Z',
-  } as Medication
-
-  let setButtonToolBarSpy: any
-  let titleSpy: any
-  let medicationRepositorySaveSpy: any
-  const expectedDate = new Date()
   const setup = async (medication: Medication, permissions: Permissions[], error = {}) => {
+    const mockPatient = { fullName: 'test' }
+    const mockMedication = {
+      id: '12456',
+      status: 'draft',
+      patient: '1234',
+      medication: 'medication',
+      intent: 'order',
+      priority: 'routine',
+      quantity: { value: 1, unit: 'unit' },
+      notes: 'medication notes',
+      requestedOn: '2020-03-30T04:43:20.102Z',
+    } as Medication
+
+    expectedDate = new Date()
+
     jest.resetAllMocks()
     Date.now = jest.fn(() => expectedDate.valueOf())
-    setButtonToolBarSpy = jest.fn()
-    titleSpy = jest.spyOn(titleUtil, 'default')
+    const setButtonToolBarSpy = jest.fn()
+    const titleSpy = jest.spyOn(titleUtil, 'default')
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(MedicationRepository, 'find').mockResolvedValue(medication)
-    medicationRepositorySaveSpy = jest
+    const medicationRepositorySaveSpy = jest
       .spyOn(MedicationRepository, 'saveOrUpdate')
       .mockResolvedValue(mockMedication)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient as Patient)
 
-    history = createMemoryHistory()
+    const history = createMemoryHistory()
     history.push(`medications/${medication.id}`)
     const store = mockStore({
       title: '',
@@ -61,7 +58,7 @@ describe('View Medication', () => {
         permissions,
       },
       medication: {
-        medication,
+        medication: { ...mockMedication, ...medication },
         patient: mockPatient,
         error,
         status: Object.keys(error).length > 0 ? 'error' : 'completed',
@@ -83,11 +80,20 @@ describe('View Medication', () => {
       )
     })
     wrapper.update()
-    return wrapper
+    return [
+      wrapper,
+      mockPatient,
+      { ...mockMedication, ...medication },
+      titleSpy,
+      medicationRepositorySaveSpy,
+      history,
+    ]
   }
 
   it('should set the title', async () => {
-    await setup(mockMedication, [Permissions.ViewMedication])
+    const [, mockPatient, mockMedication, titleSpy] = await setup({} as Medication, [
+      Permissions.ViewMedication,
+    ])
 
     expect(titleSpy).toHaveBeenCalledWith(
       `${mockMedication.medication} for ${mockPatient.fullName}`,
@@ -96,8 +102,7 @@ describe('View Medication', () => {
 
   describe('page content', () => {
     it('should display the patient full name for the for', async () => {
-      const expectedMedication = { ...mockMedication } as Medication
-      const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+      const [wrapper, mockPatient] = await setup({} as Medication, [Permissions.ViewMedication])
       const forPatientDiv = wrapper.find('.for-patient')
       expect(forPatientDiv.find('h4').text().trim()).toEqual('medications.medication.for')
 
@@ -105,11 +110,9 @@ describe('View Medication', () => {
     })
 
     it('should display the medication ', async () => {
-      const expectedMedication = {
-        ...mockMedication,
-        medication: 'expected medication',
-      } as Medication
-      const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+      const [wrapper, , expectedMedication] = await setup({} as Medication, [
+        Permissions.ViewMedication,
+      ])
       const medicationTypeDiv = wrapper.find('.medication-medication')
       expect(medicationTypeDiv.find('h4').text().trim()).toEqual(
         'medications.medication.medication',
@@ -119,11 +122,9 @@ describe('View Medication', () => {
     })
 
     it('should display the requested on date', async () => {
-      const expectedMedication = {
-        ...mockMedication,
-        requestedOn: '2020-03-30T04:43:20.102Z',
-      } as Medication
-      const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+      const [wrapper, , expectedMedication] = await setup({} as Medication, [
+        Permissions.ViewMedication,
+      ])
       const requestedOnDiv = wrapper.find('.requested-on')
       expect(requestedOnDiv.find('h4').text().trim()).toEqual('medications.medication.requestedOn')
 
@@ -132,41 +133,30 @@ describe('View Medication', () => {
       )
     })
 
-    it('should not display the completed date if the medication is not completed', async () => {
-      const expectedMedication = { ...mockMedication } as Medication
-      const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
-      const completedOnDiv = wrapper.find('.completed-on')
-
-      expect(completedOnDiv).toHaveLength(0)
-    })
-
     it('should not display the canceled date if the medication is not canceled', async () => {
-      const expectedMedication = { ...mockMedication } as Medication
-      const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+      const [wrapper] = await setup({} as Medication, [Permissions.ViewMedication])
       const completedOnDiv = wrapper.find('.canceled-on')
 
       expect(completedOnDiv).toHaveLength(0)
     })
 
     it('should display the notes in the notes text field', async () => {
-      const expectedMedication = { ...mockMedication, notes: 'expected notes' } as Medication
-      const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+      const [wrapper, , expectedMedication] = await setup({} as Medication, [
+        Permissions.ViewMedication,
+      ])
 
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
 
       expect(notesTextField).toBeDefined()
-
       expect(notesTextField.prop('label')).toEqual('medications.medication.notes')
       expect(notesTextField.prop('value')).toEqual(expectedMedication.notes)
     })
 
     describe('draft medication request', () => {
       it('should display a warning badge if the status is draft', async () => {
-        const expectedMedication = ({
-          ...mockMedication,
-          status: 'draft',
-        } as unknown) as Medication
-        const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+        const [wrapper, , expectedMedication] = await setup({} as Medication, [
+          Permissions.ViewMedication,
+        ])
         const medicationStatusDiv = wrapper.find('.medication-status')
         const badge = medicationStatusDiv.find(Badge)
         expect(medicationStatusDiv.find('h4').text().trim()).toEqual(
@@ -177,10 +167,8 @@ describe('View Medication', () => {
         expect(badge.text().trim()).toEqual(expectedMedication.status)
       })
 
-      it('should display a update medication, complete medication, and cancel medication button if the medication is in a draft state', async () => {
-        const expectedMedication = { ...mockMedication, notes: 'expected notes' } as Medication
-
-        const wrapper = await setup(expectedMedication, [
+      it('should display a update medication and cancel medication button if the medication is in a draft state', async () => {
+        const [wrapper] = await setup({} as Medication, [
           Permissions.ViewMedication,
           Permissions.CompleteMedication,
           Permissions.CancelMedication,
@@ -189,16 +177,15 @@ describe('View Medication', () => {
         const buttons = wrapper.find(Button)
         expect(buttons.at(0).text().trim()).toEqual('actions.update')
 
-        expect(buttons.at(1).text().trim()).toEqual('medications.requests.complete')
-
-        expect(buttons.at(2).text().trim()).toEqual('medications.requests.cancel')
+        expect(buttons.at(1).text().trim()).toEqual('medications.requests.cancel')
       })
     })
 
     describe('canceled medication request', () => {
       it('should display a danger badge if the status is canceled', async () => {
-        const expectedMedication = { ...mockMedication, status: 'canceled' } as Medication
-        const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+        const [wrapper, , expectedMedication] = await setup({ status: 'canceled' } as Medication, [
+          Permissions.ViewMedication,
+        ])
 
         const medicationStatusDiv = wrapper.find('.medication-status')
         const badge = medicationStatusDiv.find(Badge)
@@ -211,12 +198,13 @@ describe('View Medication', () => {
       })
 
       it('should display the canceled on date if the medication request has been canceled', async () => {
-        const expectedMedication = {
-          ...mockMedication,
-          status: 'canceled',
-          canceledOn: '2020-03-30T04:45:20.102Z',
-        } as Medication
-        const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+        const [wrapper, , expectedMedication] = await setup(
+          {
+            status: 'canceled',
+            canceledOn: '2020-03-30T04:45:20.102Z',
+          } as Medication,
+          [Permissions.ViewMedication],
+        )
         const canceledOnDiv = wrapper.find('.canceled-on')
 
         expect(canceledOnDiv.find('h4').text().trim()).toEqual('medications.medication.canceledOn')
@@ -226,79 +214,34 @@ describe('View Medication', () => {
         )
       })
 
-      it('should not display update, complete, and cancel button if the medication is canceled', async () => {
-        const expectedMedication = { ...mockMedication, status: 'canceled' } as Medication
-
-        const wrapper = await setup(expectedMedication, [
-          Permissions.ViewMedication,
-          Permissions.CompleteMedication,
-          Permissions.CancelMedication,
-        ])
+      it('should not display update and cancel button if the medication is canceled', async () => {
+        const [wrapper] = await setup(
+          {
+            status: 'canceled',
+          } as Medication,
+          [Permissions.ViewMedication, Permissions.CancelMedication],
+        )
 
         const buttons = wrapper.find(Button)
         expect(buttons).toHaveLength(0)
       })
 
       it('should not display an update button if the medication is canceled', async () => {
-        const expectedMedication = { ...mockMedication, status: 'canceled' } as Medication
-        const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
+        const [wrapper] = await setup({ status: 'canceled' } as Medication, [
+          Permissions.ViewMedication,
+        ])
 
         const updateButton = wrapper.find(Button)
         expect(updateButton).toHaveLength(0)
-      })
-    })
-
-    describe('completed medication request', () => {
-      it('should display a primary badge if the status is completed', async () => {
-        jest.resetAllMocks()
-        const expectedMedication = { ...mockMedication, status: 'completed' } as Medication
-        const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
-        const medicationStatusDiv = wrapper.find('.medication-status')
-        const badge = medicationStatusDiv.find(Badge)
-        expect(medicationStatusDiv.find('h4').text().trim()).toEqual(
-          'medications.medication.status',
-        )
-
-        expect(badge.prop('color')).toEqual('primary')
-        expect(badge.text().trim()).toEqual(expectedMedication.status)
-      })
-
-      it('should display the completed on date if the medication request has been completed', async () => {
-        const expectedMedication = {
-          ...mockMedication,
-          status: 'completed',
-          completedOn: '2020-03-30T04:44:20.102Z',
-        } as Medication
-        const wrapper = await setup(expectedMedication, [Permissions.ViewMedication])
-        const completedOnDiv = wrapper.find('.completed-on')
-
-        expect(completedOnDiv.find('h4').text().trim()).toEqual(
-          'medications.medication.completedOn',
-        )
-
-        expect(completedOnDiv.find('h5').text().trim()).toEqual(
-          format(new Date(expectedMedication.completedOn as string), 'yyyy-MM-dd hh:mm a'),
-        )
-      })
-
-      it('should not display update, complete, and cancel buttons if the medication is completed', async () => {
-        const expectedMedication = { ...mockMedication, status: 'completed' } as Medication
-
-        const wrapper = await setup(expectedMedication, [
-          Permissions.ViewMedication,
-          Permissions.CompleteMedication,
-          Permissions.CancelMedication,
-        ])
-
-        const buttons = wrapper.find(Button)
-        expect(buttons).toHaveLength(0)
       })
     })
   })
 
   describe('on update', () => {
     it('should update the medication with the new information', async () => {
-      const wrapper = await setup(mockMedication, [Permissions.ViewMedication])
+      const [wrapper, , mockMedication, , medicationRepositorySaveSpy, history] = await setup({}, [
+        Permissions.ViewMedication,
+      ])
       const expectedNotes = 'expected notes'
 
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
@@ -324,42 +267,15 @@ describe('View Medication', () => {
     })
   })
 
-  describe('on complete', () => {
-    it('should mark the status as completed and fill in the completed date with the current time', async () => {
-      const wrapper = await setup(mockMedication, [
-        Permissions.ViewMedication,
-        Permissions.CompleteMedication,
-        Permissions.CancelMedication,
-      ])
-
-      const completeButton = wrapper.find(Button).at(1)
-      await act(async () => {
-        const onClick = completeButton.prop('onClick')
-        await onClick()
-      })
-      wrapper.update()
-
-      expect(medicationRepositorySaveSpy).toHaveBeenCalledTimes(1)
-      expect(medicationRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          ...mockMedication,
-          status: 'completed',
-          completedOn: expectedDate.toISOString(),
-        }),
-      )
-      expect(history.location.pathname).toEqual('/medications')
-    })
-  })
-
   describe('on cancel', () => {
     it('should mark the status as canceled and fill in the cancelled on date with the current time', async () => {
-      const wrapper = await setup(mockMedication, [
+      const [wrapper, , mockMedication, , medicationRepositorySaveSpy, history] = await setup({}, [
         Permissions.ViewMedication,
         Permissions.CompleteMedication,
         Permissions.CancelMedication,
       ])
 
-      const cancelButton = wrapper.find(Button).at(2)
+      const cancelButton = wrapper.find(Button).at(1)
       await act(async () => {
         const onClick = cancelButton.prop('onClick')
         await onClick()

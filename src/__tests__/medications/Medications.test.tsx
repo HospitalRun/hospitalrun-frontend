@@ -1,5 +1,5 @@
 import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -19,114 +19,81 @@ import { RootState } from '../../shared/store'
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Medications', () => {
-  jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
-  jest
-    .spyOn(MedicationRepository, 'find')
-    .mockResolvedValue({ id: '1234', requestedOn: new Date().toISOString() } as Medication)
-  jest
-    .spyOn(PatientRepository, 'find')
-    .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
+  const setup = (route: string, permissions: Array<string>) => {
+    jest.resetAllMocks()
+    jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
+    jest
+      .spyOn(MedicationRepository, 'find')
+      .mockResolvedValue({ id: '1234', requestedOn: new Date().toISOString() } as Medication)
+    jest
+      .spyOn(PatientRepository, 'find')
+      .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
+
+    const store = mockStore({
+      title: 'test',
+      user: { permissions },
+      breadcrumbs: { breadcrumbs: [] },
+      components: { sidebarCollapsed: false },
+      medication: {
+        medication: ({
+          id: 'medicationId',
+          patientId: 'patientId',
+          requestedOn: new Date().toISOString(),
+          medication: 'medication',
+          status: 'draft',
+          intent: 'order',
+          priority: 'routine',
+          quantity: { value: 1, unit: 'unit' },
+          notes: 'medication notes',
+        } as unknown) as Medication,
+        patient: { id: 'patientId', fullName: 'some name' },
+        error: {},
+      },
+    } as any)
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[route]}>
+          <Medications />
+        </MemoryRouter>
+      </Provider>,
+    )
+    return wrapper as ReactWrapper
+  }
 
   describe('routing', () => {
     describe('/medications/new', () => {
       it('should render the new medication request screen when /medications/new is accessed', () => {
-        const store = mockStore({
-          title: 'test',
-          user: { permissions: [Permissions.RequestMedication] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-          medication: {
-            medication: ({ id: 'medicationId', patientId: 'patientId' } as unknown) as Medication,
-            patient: { id: 'patientId', fullName: 'some name' },
-            error: {},
-          },
-        } as any)
-
-        const wrapper = mount(
-          <Provider store={store}>
-            <MemoryRouter initialEntries={['/medications/new']}>
-              <Medications />
-            </MemoryRouter>
-          </Provider>,
-        )
-
+        const route = '/medications/new'
+        const permissions = [Permissions.RequestMedication]
+        const wrapper = setup(route, permissions)
         expect(wrapper.find(NewMedicationRequest)).toHaveLength(1)
       })
 
       it('should not navigate to /medications/new if the user does not have RequestMedication permissions', () => {
-        const store = mockStore({
-          title: 'test',
-          user: { permissions: [] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)
-
-        const wrapper = mount(
-          <Provider store={store}>
-            <MemoryRouter initialEntries={['/medications/new']}>
-              <Medications />
-            </MemoryRouter>
-          </Provider>,
-        )
-
+        const route = '/medications/new'
+        const permissions: never[] = []
+        const wrapper = setup(route, permissions)
         expect(wrapper.find(NewMedicationRequest)).toHaveLength(0)
       })
     })
 
     describe('/medications/:id', () => {
       it('should render the view medication screen when /medications/:id is accessed', async () => {
-        const store = mockStore({
-          title: 'test',
-          user: { permissions: [Permissions.ViewMedication] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-          medication: {
-            medication: ({
-              id: 'medicationId',
-              patientId: 'patientId',
-              requestedOn: new Date().toISOString(),
-              medication: 'medication',
-              status: 'draft',
-              intent: 'order',
-              priority: 'routine',
-              quantity: { value: 1, unit: 'unit' },
-              notes: 'medication notes',
-            } as unknown) as Medication,
-            patient: { id: 'patientId', fullName: 'some name' },
-            error: {},
-          },
-        } as any)
-
+        const route = '/medications/1234'
+        const permissions = [Permissions.ViewMedication]
         let wrapper: any
-
         await act(async () => {
-          wrapper = await mount(
-            <Provider store={store}>
-              <MemoryRouter initialEntries={['/medications/1234']}>
-                <Medications />
-              </MemoryRouter>
-            </Provider>,
-          )
+          wrapper = setup(route, permissions)
 
           expect(wrapper.find(ViewMedication)).toHaveLength(1)
         })
       })
 
       it('should not navigate to /medications/:id if the user does not have ViewMedication permissions', async () => {
-        const store = mockStore({
-          title: 'test',
-          user: { permissions: [] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)
-
-        const wrapper = await mount(
-          <Provider store={store}>
-            <MemoryRouter initialEntries={['/medications/1234']}>
-              <Medications />
-            </MemoryRouter>
-          </Provider>,
-        )
+        const route = '/medications/1234'
+        const permissions: never[] = []
+        const wrapper = setup(route, permissions)
 
         expect(wrapper.find(ViewMedication)).toHaveLength(0)
       })
