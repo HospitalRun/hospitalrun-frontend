@@ -25,6 +25,23 @@ import { RootState } from '../../shared/store'
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('medication slice', () => {
+  const setup = () => {
+    const mockMedication = {
+      id: 'medicationId',
+      patient: 'patient',
+      medication: 'medication',
+      status: 'draft',
+      intent: 'order',
+      priority: 'routine',
+      quantity: { value: 1, unit: 'unit' },
+      notes: 'medication notes',
+    } as Medication
+
+    const mockPatient = {
+      id: 'patient',
+    } as Patient
+    return [mockMedication, mockPatient]
+  }
   describe('reducers', () => {
     describe('fetchMedicationStart', () => {
       it('should set status to loading', async () => {
@@ -36,12 +53,13 @@ describe('medication slice', () => {
 
     describe('fetchMedicationSuccess', () => {
       it('should set the medication, patient, and status to success', () => {
-        const expectedMedication = { id: 'medicationId' } as Medication
-        const expectedPatient = { id: 'patient' } as Patient
-
+        const [expectedMedication, expectedPatient] = setup()
         const medicationStore = medicationSlice(
           undefined,
-          fetchMedicationSuccess({ medication: expectedMedication, patient: expectedPatient }),
+          fetchMedicationSuccess({
+            medication: expectedMedication as Medication,
+            patient: expectedPatient as Patient,
+          }),
         )
 
         expect(medicationStore.status).toEqual('completed')
@@ -60,11 +78,11 @@ describe('medication slice', () => {
 
     describe('updateMedicationSuccess', () => {
       it('should set the medication and status to success', () => {
-        const expectedMedication = { id: 'medicationId' } as Medication
+        const [expectedMedication] = setup()
 
         const medicationStore = medicationSlice(
           undefined,
-          updateMedicationSuccess(expectedMedication),
+          updateMedicationSuccess(expectedMedication as Medication),
         )
 
         expect(medicationStore.status).toEqual('completed')
@@ -82,11 +100,11 @@ describe('medication slice', () => {
 
     describe('requestMedicationSuccess', () => {
       it('should set the medication and status to success', () => {
-        const expectedMedication = { id: 'medicationId' } as Medication
+        const [expectedMedication] = setup()
 
         const medicationStore = medicationSlice(
           undefined,
-          requestMedicationSuccess(expectedMedication),
+          requestMedicationSuccess(expectedMedication as Medication),
         )
 
         expect(medicationStore.status).toEqual('completed')
@@ -113,11 +131,11 @@ describe('medication slice', () => {
 
     describe('cancelMedicationSuccess', () => {
       it('should set the medication and status to success', () => {
-        const expectedMedication = { id: 'medicationId' } as Medication
+        const [expectedMedication] = setup()
 
         const medicationStore = medicationSlice(
           undefined,
-          cancelMedicationSuccess(expectedMedication),
+          cancelMedicationSuccess(expectedMedication as Medication),
         )
 
         expect(medicationStore.status).toEqual('completed')
@@ -130,26 +148,15 @@ describe('medication slice', () => {
     let patientRepositorySpy: any
     let medicationRepositoryFindSpy: any
 
-    const mockMedication = {
-      id: 'medicationId',
-      patient: 'patient',
-      medication: 'medication',
-      status: 'draft',
-      intent: 'order',
-      priority: 'routine',
-      quantity: { value: 1, unit: 'unit' },
-      notes: 'medication notes',
-    } as Medication
-
-    const mockPatient = {
-      id: 'patient',
-    } as Patient
+    const [mockMedication, mockPatient] = setup()
 
     beforeEach(() => {
-      patientRepositorySpy = jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
+      patientRepositorySpy = jest
+        .spyOn(PatientRepository, 'find')
+        .mockResolvedValue(mockPatient as Patient)
       medicationRepositoryFindSpy = jest
         .spyOn(MedicationRepository, 'find')
-        .mockResolvedValue(mockMedication)
+        .mockResolvedValue(mockMedication as Medication)
     })
 
     it('should fetch the medication and patient', async () => {
@@ -162,23 +169,23 @@ describe('medication slice', () => {
       expect(medicationRepositoryFindSpy).toHaveBeenCalledWith(mockMedication.id)
       expect(patientRepositorySpy).toHaveBeenCalledWith(mockMedication.patient)
       expect(actions[1]).toEqual(
-        fetchMedicationSuccess({ medication: mockMedication, patient: mockPatient }),
+        fetchMedicationSuccess({
+          medication: mockMedication as Medication,
+          patient: mockPatient as Patient,
+        }),
       )
     })
   })
 
   describe('cancel medication', () => {
-    const mockMedication = {
-      id: 'medicationId',
-      patient: 'patient',
-    } as Medication
+    const [mockMedication] = setup()
     let medicationRepositorySaveOrUpdateSpy: any
 
     beforeEach(() => {
       Date.now = jest.fn().mockReturnValue(new Date().valueOf())
       medicationRepositorySaveOrUpdateSpy = jest
         .spyOn(MedicationRepository, 'saveOrUpdate')
-        .mockResolvedValue(mockMedication)
+        .mockResolvedValue(mockMedication as Medication)
     })
 
     it('should cancel a medication', async () => {
@@ -190,7 +197,7 @@ describe('medication slice', () => {
 
       const store = mockStore()
 
-      await store.dispatch(cancelMedication(mockMedication))
+      await store.dispatch(cancelMedication(mockMedication as Medication))
       const actions = store.getActions()
 
       expect(actions[0]).toEqual(cancelMedicationStart())
@@ -207,23 +214,14 @@ describe('medication slice', () => {
 
       const store = mockStore()
       const onSuccessSpy = jest.fn()
-      await store.dispatch(cancelMedication(mockMedication, onSuccessSpy))
+      await store.dispatch(cancelMedication(mockMedication as Medication, onSuccessSpy))
 
       expect(onSuccessSpy).toHaveBeenCalledWith(expectedCanceledMedication)
     })
   })
 
   describe('request medication', () => {
-    const mockMedication = {
-      id: 'medicationId',
-      medication: 'medication',
-      patient: 'patient',
-      status: 'draft',
-      intent: 'order',
-      priority: 'routine',
-      quantity: { value: 1, unit: 'unit' },
-      notes: 'notes',
-    } as Medication
+    const [mockMedication] = setup()
     let medicationRepositorySaveSpy: any
 
     beforeEach(() => {
@@ -231,7 +229,7 @@ describe('medication slice', () => {
       Date.now = jest.fn().mockReturnValue(new Date().valueOf())
       medicationRepositorySaveSpy = jest
         .spyOn(MedicationRepository, 'save')
-        .mockResolvedValue(mockMedication)
+        .mockResolvedValue(mockMedication as Medication)
     })
 
     it('should request a new medication', async () => {
@@ -250,7 +248,7 @@ describe('medication slice', () => {
         requestedBy: store.getState().user.user?.id,
       } as Medication
 
-      await store.dispatch(requestMedication(mockMedication))
+      await store.dispatch(requestMedication(mockMedication as Medication))
 
       const actions = store.getActions()
 
@@ -269,19 +267,14 @@ describe('medication slice', () => {
       } as any)
       const onSuccessSpy = jest.fn()
 
-      await store.dispatch(requestMedication(mockMedication, onSuccessSpy))
+      await store.dispatch(requestMedication(mockMedication as Medication, onSuccessSpy))
 
       expect(onSuccessSpy).toHaveBeenCalledWith(mockMedication)
     })
   })
 
   describe('update medication', () => {
-    const mockMedication = ({
-      id: 'medicationId',
-      patient: 'patient',
-      medication: 'medication',
-      status: 'some status',
-    } as unknown) as Medication
+    const [mockMedication] = setup()
     let medicationRepositorySaveOrUpdateSpy: any
 
     const expectedUpdatedMedication = ({
