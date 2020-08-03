@@ -32,6 +32,13 @@ const expectedSearchObject: SearchContainer = {
 }
 
 describe('medications slice', () => {
+  const setup = (medicationSpyOn: string) => {
+    const dispatch = jest.fn()
+    const getState = jest.fn()
+    jest.spyOn(MedicationRepository, medicationSpyOn as any)
+    return [dispatch, getState]
+  }
+
   beforeEach(() => {
     jest.resetAllMocks()
   })
@@ -58,8 +65,7 @@ describe('medications slice', () => {
 
   describe('searchMedications', () => {
     it('should dispatch the FETCH_MEDICATIONS_START action', async () => {
-      const dispatch = jest.fn()
-      const getState = jest.fn()
+      const [dispatch, getState] = setup('search')
 
       await searchMedications('search string', 'all')(dispatch, getState, null)
 
@@ -67,8 +73,7 @@ describe('medications slice', () => {
     })
 
     it('should call the MedicationRepository search method with the correct search criteria', async () => {
-      const dispatch = jest.fn()
-      const getState = jest.fn()
+      const [dispatch, getState] = setup('search')
       jest.spyOn(MedicationRepository, 'search')
 
       await searchMedications(expectedSearchObject.text, expectedSearchObject.status)(
@@ -81,9 +86,7 @@ describe('medications slice', () => {
     })
 
     it('should call the MedicationRepository findAll method if there is no string text and status is set to all', async () => {
-      const dispatch = jest.fn()
-      const getState = jest.fn()
-      jest.spyOn(MedicationRepository, 'findAll')
+      const [dispatch, getState] = setup('findAll')
 
       await searchMedications('', expectedSearchObject.status)(dispatch, getState, null)
 
@@ -91,12 +94,11 @@ describe('medications slice', () => {
     })
 
     it('should dispatch the FETCH_MEDICATIONS_SUCCESS action', async () => {
-      const dispatch = jest.fn()
-      const getState = jest.fn()
+      const [dispatch, getState] = setup('findAll')
 
       const expectedMedications = [
         {
-          type: 'text',
+          medication: 'text',
         },
       ] as Medication[]
 
@@ -118,9 +120,7 @@ describe('medications slice', () => {
 
   describe('sort Request', () => {
     it('should have called findAll with sort request in searchMedications method', async () => {
-      const dispatch = jest.fn()
-      const getState = jest.fn()
-      jest.spyOn(MedicationRepository, 'findAll')
+      const [dispatch, getState] = setup('findAll')
 
       await searchMedications('', expectedSearchObject.status)(dispatch, getState, null)
 
@@ -130,9 +130,7 @@ describe('medications slice', () => {
     })
 
     it('should include sorts in the search criteria', async () => {
-      const dispatch = jest.fn()
-      const getState = jest.fn()
-      jest.spyOn(MedicationRepository, 'search')
+      const [dispatch, getState] = setup('search')
 
       await searchMedications(expectedSearchObject.text, expectedSearchObject.status)(
         dispatch,

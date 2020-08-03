@@ -72,11 +72,14 @@ const ViewMedications = () => {
   }
 
   const filterOptions: Option[] = [
-    // TODO: add other statuses
-    { label: t('medications.status.draft'), value: 'draft' },
-    { label: t('medications.status.completed'), value: 'completed' },
-    { label: t('medications.status.canceled'), value: 'canceled' },
     { label: t('medications.filter.all'), value: 'all' },
+    { label: t('medications.status.draft'), value: 'draft' },
+    { label: t('medications.status.active'), value: 'active' },
+    { label: t('medications.status.onHold'), value: 'on hold' },
+    { label: t('medications.status.completed'), value: 'completed' },
+    { label: t('medications.status.enteredInError'), value: 'entered in error' },
+    { label: t('medications.status.canceled'), value: 'canceled' },
+    { label: t('medications.status.unknown'), value: 'unknown' },
   ]
 
   return (
@@ -84,7 +87,7 @@ const ViewMedications = () => {
       <div className="row">
         <div className="col-md-3 col-lg-2">
           <SelectWithLabelFormGroup
-            name="type"
+            name="filterStatus"
             label={t('medications.filterTitle')}
             options={filterOptions}
             defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
