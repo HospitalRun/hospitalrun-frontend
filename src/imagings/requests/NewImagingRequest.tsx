@@ -40,7 +40,7 @@ const NewImagingRequest = () => {
   const breadcrumbs = [
     {
       i18nKey: 'imagings.requests.new',
-      location: `/imagings/new`,
+      location: `/imaging/new`,
     },
   ]
   useAddBreadcrumbs(breadcrumbs)
@@ -78,14 +78,14 @@ const NewImagingRequest = () => {
   const onSave = async () => {
     const newImaging = newImagingRequest as Imaging
     const onSuccess = () => {
-      history.push(`/imagings`)
+      history.push(`/imaging`)
     }
 
     dispatch(requestImaging(newImaging, onSuccess))
   }
 
   const onCancel = () => {
-    history.push('/imagings')
+    history.push('/imaging')
   }
 
   return (

@@ -13,8 +13,8 @@ const Imagings = () => {
   const { permissions } = useSelector((state: RootState) => state.user)
   const breadcrumbs = [
     {
-      i18nKey: 'imagings.label',
-      location: '/imagings',
+      i18nKey: 'imagings.imaging.label',
+      location: '/imaging',
     },
   ]
   useAddBreadcrumbs(breadcrumbs, true)
@@ -24,13 +24,13 @@ const Imagings = () => {
       <PrivateRoute
         isAuthenticated={permissions.includes(Permissions.ViewImagings)}
         exact
-        path="/imagings"
+        path="/imaging"
         component={ImagingRequests}
       />
       <PrivateRoute
         isAuthenticated={permissions.includes(Permissions.RequestImaging)}
         exact
-        path="/imagings/new"
+        path="/imaging/new"
         component={NewImagingRequest}
       />
     </Switch>

@@ -172,8 +172,8 @@ describe('HospitalRun', () => {
       })
     })
 
-    describe('/imagings', () => {
-      it('should render the Imagings component when /imagings is accessed', async () => {
+    describe('/imaging', () => {
+      it('should render the Imagings component when /imaging is accessed', async () => {
         jest.spyOn(ImagingRepository, 'findAll').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
@@ -187,7 +187,7 @@ describe('HospitalRun', () => {
         await act(async () => {
           wrapper = await mount(
             <Provider store={store}>
-              <MemoryRouter initialEntries={['/imagings']}>
+              <MemoryRouter initialEntries={['/imaging']}>
                 <HospitalRun />
               </MemoryRouter>
             </Provider>,
@@ -209,7 +209,7 @@ describe('HospitalRun', () => {
 
         const wrapper = mount(
           <Provider store={store}>
-            <MemoryRouter initialEntries={['/imagings']}>
+            <MemoryRouter initialEntries={['/imaging']}>
               <HospitalRun />
             </MemoryRouter>
           </Provider>,

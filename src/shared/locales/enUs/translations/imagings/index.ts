@@ -21,6 +21,7 @@ export default {
       },
     },
     imaging: {
+      label: 'imaging',
       code: 'Imaging Code',
       status: 'Status',
       type: 'Type',

@@ -26,8 +26,8 @@ describe('Imagings', () => {
     .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
 
   describe('routing', () => {
-    describe('/imagings/new', () => {
-      it('should render the new imaging request screen when /imagings/new is accessed', () => {
+    describe('/imaging/new', () => {
+      it('should render the new imaging request screen when /imaging/new is accessed', () => {
         const store = mockStore({
           title: 'test',
           user: { permissions: [Permissions.RequestImaging] },
@@ -42,7 +42,7 @@ describe('Imagings', () => {
 
         const wrapper = mount(
           <Provider store={store}>
-            <MemoryRouter initialEntries={['/imagings/new']}>
+            <MemoryRouter initialEntries={['/imaging/new']}>
               <Imagings />
             </MemoryRouter>
           </Provider>,

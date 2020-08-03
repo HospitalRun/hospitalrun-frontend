@@ -537,7 +537,7 @@ describe('Sidebar', () => {
 
   describe('imagings links', () => {
     it('should render the main imagings link', () => {
-      const wrapper = setup('/imagings')
+      const wrapper = setup('/imaging')
 
       const listItems = wrapper.find(ListItem)
 
@@ -552,7 +552,7 @@ describe('Sidebar', () => {
       expect(listItems.at(7).text().trim()).toEqual('imagings.requests.new')
     })
 
-    it('should not render the new imaging request link when user does not have the request imagings privileges', () => {
+    it('should not render the new imaging request link when user does not have the request imaging privileges', () => {
       const wrapper = setupNoPermissions('/imagings')
 
       const listItems = wrapper.find(ListItem)
@@ -588,7 +588,7 @@ describe('Sidebar', () => {
       expect(listItems.at(6).prop('active')).toBeTruthy()
     })
 
-    it('should navigate to /imagings when the main imagings link is clicked', () => {
+    it('should navigate to /imaging when the main imagings link is clicked', () => {
       const wrapper = setup('/')
 
       const listItems = wrapper.find(ListItem)
@@ -598,7 +598,7 @@ describe('Sidebar', () => {
         onClick()
       })
 
-      expect(history.location.pathname).toEqual('/imagings')
+      expect(history.location.pathname).toEqual('/imaging')
     })
 
     it('new imaging request link should be active when the current path is /imagings/new', () => {
@@ -609,7 +609,7 @@ describe('Sidebar', () => {
       expect(listItems.at(7).prop('active')).toBeTruthy()
     })
 
-    it('should navigate to /imagings/new when the new imaging link is clicked', () => {
+    it('should navigate to /imaging/new when the new imaging link is clicked', () => {
       const wrapper = setup('/imagings')
 
       const listItems = wrapper.find(ListItem)
@@ -619,7 +619,7 @@ describe('Sidebar', () => {
         onClick()
       })
 
-      expect(history.location.pathname).toEqual('/imagings/new')
+      expect(history.location.pathname).toEqual('/imaging/new')
     })
 
     it('imagings list link should be active when the current path is /imagings', () => {
@@ -630,7 +630,7 @@ describe('Sidebar', () => {
       expect(listItems.at(8).prop('active')).toBeTruthy()
     })
 
-    it('should navigate to /imagings when the imagings list link is clicked', () => {
+    it('should navigate to /imaging when the imagings list link is clicked', () => {
       const wrapper = setup('/imagings/new')
 
       const listItems = wrapper.find(ListItem)
@@ -640,7 +640,7 @@ describe('Sidebar', () => {
         onClick()
       })
 
-      expect(history.location.pathname).toEqual('/imagings')
+      expect(history.location.pathname).toEqual('/imaging')
     })
   })
 })

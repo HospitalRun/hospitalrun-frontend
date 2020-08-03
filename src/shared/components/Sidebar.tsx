@@ -302,9 +302,9 @@ const Sidebar = () => {
   const getImagingLinks = () => (
     <>
       <ListItem
-        active={splittedPath[1].includes('imagings')}
+        active={splittedPath[1].includes('imaging')}
         onClick={() => {
-          navigateTo('/imagings')
+          navigateTo('/imaging')
           setExpansion('imagings')
         }}
         className="nav-item"
@@ -312,7 +312,7 @@ const Sidebar = () => {
       >
         <Icon
           icon={
-            splittedPath[1].includes('imagings') && expandedItem === 'imagings'
+            splittedPath[1].includes('imaging') && expandedItem === 'imagings'
               ? 'down-arrow'
               : 'right-arrow'
           }
@@ -320,14 +320,14 @@ const Sidebar = () => {
         />
         <Icon icon="image" /> {!sidebarCollapsed && t('imagings.label')}
       </ListItem>
-      {splittedPath[1].includes('imagings') && expandedItem === 'imagings' && (
+      {splittedPath[1].includes('imaging') && expandedItem === 'imagings' && (
         <List layout="flush" className="nav flex-column">
           {permissions.includes(Permissions.RequestImaging) && (
             <ListItem
               className="nav-item"
               style={listSubItemStyleNew}
-              onClick={() => navigateTo('/imagings/new')}
-              active={splittedPath[1].includes('imagings') && splittedPath.length > 2}
+              onClick={() => navigateTo('/imaging/new')}
+              active={splittedPath[1].includes('imaging') && splittedPath.length > 2}
             >
               <Icon icon="add" style={iconMargin} />
               {!sidebarCollapsed && t('imagings.requests.new')}
@@ -337,8 +337,8 @@ const Sidebar = () => {
             <ListItem
               className="nav-item"
               style={listSubItemStyle}
-              onClick={() => navigateTo('/imagings')}
-              active={splittedPath[1].includes('imagings') && splittedPath.length < 3}
+              onClick={() => navigateTo('/imaging')}
+              active={splittedPath[1].includes('imaging') && splittedPath.length < 3}
             >
               <Icon icon="image" style={iconMargin} />
               {!sidebarCollapsed && t('imagings.requests.label')}

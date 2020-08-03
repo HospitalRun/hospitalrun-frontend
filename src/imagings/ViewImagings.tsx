@@ -32,7 +32,7 @@ const ViewImagings = () => {
       buttons.push(
         <Button
           icon="add"
-          onClick={() => history.push('/imagings/new')}
+          onClick={() => history.push('/imaging/new')}
           outlined
           color="success"
           key="imaging.requests.new"
@@ -79,7 +79,7 @@ const ViewImagings = () => {
               label: t('imagings.imaging.requestedBy'),
               key: 'requestedBy',
               formatter: (row) => extractUsername(row.requestedBy),
-            }, // need to be formated later
+            },
             { label: t('imagings.imaging.status'), key: 'status' },
           ]}
           data={imagings}

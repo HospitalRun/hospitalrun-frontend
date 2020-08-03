@@ -62,13 +62,13 @@ const pageMap: {
   newImaging: {
     permission: Permissions.RequestImaging,
     label: 'imagings.requests.new',
-    path: '/imagings/new',
+    path: '/imaging/new',
     icon: 'add',
   },
   viewImagings: {
     permission: Permissions.ReadPatients,
     label: 'imagings.requests.label',
-    path: '/imagings',
+    path: '/imaging',
     icon: 'image',
   },
   settings: {
