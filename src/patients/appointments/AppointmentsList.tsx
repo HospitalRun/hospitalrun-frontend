@@ -1,4 +1,5 @@
-import { Button, List, ListItem, Container, Row } from '@hospitalrun/components'
+import { Button, Container, Row, Table } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -32,15 +33,28 @@ const AppointmentsList = (props: Props) => {
     dispatch(fetchPatientAppointments(patientId))
   }, [dispatch, patientId])
 
-  const list = (
-    // inline style added to pick up on newlines for string literal
-    <ul style={{ whiteSpace: 'pre-line' }}>
-      {appointments.map((a) => (
-        <ListItem action key={a.id} onClick={() => history.push(`/appointments/${a.id}`)}>
-          {new Date(a.startDateTime).toLocaleString()}
-        </ListItem>
-      ))}
-    </ul>
+  const table = (
+    <Table
+      data={appointments}
+      getID={(row) => row.id}
+      onRowClick={(row) => history.push(`/appointments/${row.id}`)}
+      columns={[
+        {
+          label: t('scheduling.appointment.startDate'),
+          key: 'startDateTime',
+          formatter: (row) =>
+            row.startDateTime ? format(new Date(row.startDateTime), 'yyyy-MM-dd, hh:mm a') : '',
+        },
+        {
+          label: t('scheduling.appointment.endDate'),
+          key: 'endDateTime',
+          formatter: (row) =>
+            row.endDateTime ? format(new Date(row.endDateTime), 'yyyy-MM-dd, hh:mm a') : '',
+        },
+        { label: t('scheduling.appointment.location'), key: 'location' },
+        { label: t('scheduling.appointment.type'), key: 'type' },
+      ]}
+    />
   )
 
   return (
@@ -60,11 +74,7 @@ const AppointmentsList = (props: Props) => {
       </div>
       <br />
       <Container>
-        <Row>
-          <List layout="flush" style={{ width: '100%', marginTop: '10px', marginLeft: '-25px' }}>
-            {list}
-          </List>
-        </Row>
+        <Row>{table}</Row>
       </Container>
     </>
   )
