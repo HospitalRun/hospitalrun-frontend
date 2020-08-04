@@ -1,5 +1,6 @@
 import * as components from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { Table } from '@hospitalrun/components'
+import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -59,16 +60,25 @@ const setup = (patient = expectedPatient, appointments = expectedAppointments) =
 }
 
 describe('AppointmentsList', () => {
-  it('should render a list of appointments', () => {
+  it('should render a table of appointments', () => {
     const wrapper = setup()
-    const listItems: ReactWrapper = wrapper.find(components.ListItem)
 
-    expect(listItems.length === 2).toBeTruthy()
-    expect(listItems.at(0).text()).toEqual(
-      new Date(expectedAppointments[0].startDateTime).toLocaleString(),
+    const table = wrapper.find(Table)
+    const columns = table.prop('columns')
+
+    expect(table).toHaveLength(1)
+
+    expect(columns[0]).toEqual(
+      expect.objectContaining({ label: 'scheduling.appointment.startDate', key: 'startDateTime' }),
     )
-    expect(listItems.at(1).text()).toEqual(
-      new Date(expectedAppointments[1].startDateTime).toLocaleString(),
+    expect(columns[1]).toEqual(
+      expect.objectContaining({ label: 'scheduling.appointment.endDate', key: 'endDateTime' }),
+    )
+    expect(columns[2]).toEqual(
+      expect.objectContaining({ label: 'scheduling.appointment.location', key: 'location' }),
+    )
+    expect(columns[3]).toEqual(
+      expect.objectContaining({ label: 'scheduling.appointment.type', key: 'type' }),
     )
   })
 
