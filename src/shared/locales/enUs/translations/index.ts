@@ -1,6 +1,7 @@
 import actions from './actions'
 import bloodType from './blood-type'
 import dashboard from './dashboard'
+import imagings from './imagings'
 import incidents from './incidents'
 import labs from './labs'
 import networkStatus from './network-status'
@@ -26,4 +27,5 @@ export default {
   ...settings,
   ...user,
   ...bloodType,
+  ...imagings,
 }

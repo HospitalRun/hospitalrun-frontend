@@ -13,6 +13,7 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import useUpdateEffect from '../../shared/hooks/useUpdateEffect'
 import { RootState } from '../../shared/store'
 import { searchPatients } from '../patients-slice'
+import NoPatientsExist from '../view/NoPatientsExist'
 
 const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 
@@ -22,7 +23,7 @@ const ViewPatients = () => {
   useTitle(t('patients.label'))
   useAddBreadcrumbs(breadcrumbs, true)
   const dispatch = useDispatch()
-  const { patients, isLoading } = useSelector((state: RootState) => state.patients)
+  const { patients, isLoading, count } = useSelector((state: RootState) => state.patients)
 
   const setButtonToolBar = useButtonToolbarSetter()
 
@@ -48,22 +49,23 @@ const ViewPatients = () => {
   }, [dispatch, debouncedSearchText])
 
   useEffect(() => {
-    setButtonToolBar([
-      <Button
-        key="newPatientButton"
-        outlined
-        color="success"
-        icon="patient-add"
-        onClick={() => history.push('/patients/new')}
-      >
-        {t('patients.newPatient')}
-      </Button>,
-    ])
-
+    if (patients && patients.length > 0) {
+      setButtonToolBar([
+        <Button
+          key="newPatientButton"
+          outlined
+          color="success"
+          icon="patient-add"
+          onClick={() => history.push('/patients/new')}
+        >
+          {t('patients.newPatient')}
+        </Button>,
+      ])
+    }
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, setButtonToolBar, t, history])
+  }, [dispatch, setButtonToolBar, t, history, patients])
 
   const loadingIndicator = <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   const table = (
@@ -89,6 +91,10 @@ const ViewPatients = () => {
 
   const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value)
+  }
+
+  if (count === 0) {
+    return <NoPatientsExist />
   }
 
   return (

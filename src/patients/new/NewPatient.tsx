@@ -10,6 +10,8 @@ import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
 import { createPatient } from '../patient-slice'
+import { isPossibleDuplicatePatient } from '../util/is-possible-duplicate-patient'
+import DuplicateNewPatientModal from './DuplicateNewPatientModal'
 
 const breadcrumbs = [
   { i18nKey: 'patients.label', location: '/patients' },
@@ -21,8 +23,18 @@ const NewPatient = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { createError } = useSelector((state: RootState) => state.patient)
+  const { patients } = Object(useSelector((state: RootState) => state.patients))
 
   const [patient, setPatient] = useState({} as Patient)
+  const [duplicatePatient, setDuplicatePatient] = useState<Patient | undefined>(undefined)
+  const [showDuplicateNewPatientModal, setShowDuplicateNewPatientModal] = useState<boolean>(false)
+
+  const testPatient = {
+    givenName: 'Kelly',
+    familyName: 'Clark',
+    sex: 'female',
+    dateOfBirth: '1963-01-09T05:00:00.000Z',
+  } as Patient
 
   useTitle(t('patients.newPatient'))
   useAddBreadcrumbs(breadcrumbs, true)
@@ -41,11 +53,37 @@ const NewPatient = () => {
   }
 
   const onSave = () => {
-    dispatch(createPatient(patient, onSuccessfulSave))
+    let duplicatePatients = []
+    if (patients !== undefined) {
+      duplicatePatients = patients.filter((existingPatient: any) =>
+        isPossibleDuplicatePatient(patient, existingPatient),
+      )
+    }
+
+    if (duplicatePatients.length > 0) {
+      setShowDuplicateNewPatientModal(true)
+      setDuplicatePatient(duplicatePatients as Patient)
+    } else {
+      dispatch(createPatient(patient, onSuccessfulSave))
+    }
+
+    const testCase = [isPossibleDuplicatePatient(patient, testPatient)]
+    if (testCase.length > 0) {
+      return true
+    }
+    return false
   }
 
   const onPatientChange = (newPatient: Partial<Patient>) => {
     setPatient(newPatient as Patient)
+  }
+
+  const createDuplicateNewPatient = () => {
+    dispatch(createPatient(patient, onSuccessfulSave))
+  }
+
+  const closeDuplicateNewPatientModal = () => {
+    setShowDuplicateNewPatientModal(false)
   }
 
   return (
@@ -66,6 +104,14 @@ const NewPatient = () => {
           </Button>
         </div>
       </div>
+
+      <DuplicateNewPatientModal
+        duplicatePatient={duplicatePatient}
+        show={showDuplicateNewPatientModal}
+        toggle={closeDuplicateNewPatientModal}
+        onContinueButtonClick={createDuplicateNewPatient}
+        onCloseButtonClick={closeDuplicateNewPatientModal}
+      />
     </div>
   )
 }
