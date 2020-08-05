@@ -38,6 +38,8 @@ const initialState: UserState = {
     Permissions.ResolveIncident,
     Permissions.AddCarePlan,
     Permissions.ReadCarePlan,
+    Permissions.ViewImagings,
+    Permissions.RequestImaging,
   ],
 }
 
