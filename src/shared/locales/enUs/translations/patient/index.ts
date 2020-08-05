@@ -52,6 +52,10 @@ export default {
     },
     appointments: {
       new: 'Add Appointment',
+      warning: {
+        noAppointments: 'No Appointments',
+      },
+      addAppointmentAbove: 'Add an appointment using the button above.',
     },
     allergies: {
       label: 'Allergies',

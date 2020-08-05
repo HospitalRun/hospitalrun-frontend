@@ -1,79 +1,91 @@
 import { Typeahead, Label, Button, Alert } from '@hospitalrun/components'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../../page-header/title/useTitle'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../../shared/components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Lab from '../../shared/model/Lab'
+import Imaging from '../../shared/model/Imaging'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
-import { requestLab, resetLab } from '../lab-slice'
+import { requestImaging } from '../imaging-slice'
 
-const NewLabRequest = () => {
+const NewImagingRequest = () => {
   const { t } = useTranslator()
   const dispatch = useDispatch()
   const history = useHistory()
-  useTitle(t('labs.requests.new'))
-  const { status, error } = useSelector((state: RootState) => state.lab)
+  useTitle(t('imagings.requests.new'))
+  const { status, error } = useSelector((state: RootState) => state.imaging)
 
-  const [newLabRequest, setNewLabRequest] = useState({
+  const statusOptions: Option[] = [
+    { label: t('imagings.status.requested'), value: 'requested' },
+    { label: t('imagings.status.completed'), value: 'completed' },
+    { label: t('imagings.status.canceled'), value: 'canceled' },
+  ]
+
+  const [newImagingRequest, setNewImagingRequest] = useState({
     patient: '',
     type: '',
     notes: '',
-    status: 'requested',
+    status: '',
   })
-
-  useEffect(() => {
-    dispatch(resetLab())
-  }, [dispatch])
 
   const breadcrumbs = [
     {
-      i18nKey: 'labs.requests.new',
-      location: `/labs/new`,
+      i18nKey: 'imagings.requests.new',
+      location: `/imaging/new`,
     },
   ]
   useAddBreadcrumbs(breadcrumbs)
 
   const onPatientChange = (patient: Patient) => {
-    setNewLabRequest((previousNewLabRequest) => ({
-      ...previousNewLabRequest,
-      patient: patient.id,
+    setNewImagingRequest((previousNewImagingRequest) => ({
+      ...previousNewImagingRequest,
+      patient: patient.fullName as string,
     }))
   }
 
-  const onLabTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onImagingTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const type = event.currentTarget.value
-    setNewLabRequest((previousNewLabRequest) => ({
-      ...previousNewLabRequest,
+    setNewImagingRequest((previousNewImagingRequest) => ({
+      ...previousNewImagingRequest,
       type,
+    }))
+  }
+
+  const onStatusChange = (value: string) => {
+    setNewImagingRequest((previousNewImagingRequest) => ({
+      ...previousNewImagingRequest,
+      status: value,
     }))
   }
 
   const onNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const notes = event.currentTarget.value
-    setNewLabRequest((previousNewLabRequest) => ({
-      ...previousNewLabRequest,
+    setNewImagingRequest((previousNewImagingRequest) => ({
+      ...previousNewImagingRequest,
       notes,
     }))
   }
 
   const onSave = async () => {
-    const newLab = newLabRequest as Lab
-    const onSuccess = (createdLab: Lab) => {
-      history.push(`/labs/${createdLab.id}`)
+    const newImaging = newImagingRequest as Imaging
+    const onSuccess = () => {
+      history.push(`/imaging`)
     }
 
-    dispatch(requestLab(newLab, onSuccess))
+    dispatch(requestImaging(newImaging, onSuccess))
   }
 
   const onCancel = () => {
-    history.push('/labs')
+    history.push('/imaging')
   }
 
   return (
@@ -83,33 +95,43 @@ const NewLabRequest = () => {
       )}
       <form>
         <div className="form-group patient-typeahead">
-          <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
+          <Label htmlFor="patientTypeahead" isRequired text={t('imagings.imaging.patient')} />
           <Typeahead
             id="patientTypeahead"
-            placeholder={t('labs.lab.patient')}
+            placeholder={t('imagings.imaging.patient')}
             onChange={(p: Patient[]) => onPatientChange(p[0])}
             onSearch={async (query: string) => PatientRepository.search(query)}
             searchAccessor="fullName"
             renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
             isInvalid={!!error.patient}
+            feedback={t(error.patient as string)}
           />
         </div>
         <TextInputWithLabelFormGroup
-          name="labType"
-          label={t('labs.lab.type')}
+          name="imagingType"
+          label={t('imagings.imaging.type')}
           isRequired
           isEditable
           isInvalid={!!error.type}
           feedback={t(error.type as string)}
-          value={newLabRequest.type}
-          onChange={onLabTypeChange}
+          value={newImagingRequest.type}
+          onChange={onImagingTypeChange}
+        />
+        <SelectWithLabelFormGroup
+          name="status"
+          label={t('imagings.imaging.status')}
+          options={statusOptions}
+          isRequired
+          isEditable
+          defaultSelected={statusOptions.filter(({ value }) => value === newImagingRequest.status)}
+          onChange={(values) => onStatusChange(values[0])}
         />
         <div className="form-group">
           <TextFieldWithLabelFormGroup
-            name="labNotes"
-            label={t('labs.lab.notes')}
+            name="ImagingNotes"
+            label={t('imagings.imaging.notes')}
             isEditable
-            value={newLabRequest.notes}
+            value={newImagingRequest.notes}
             onChange={onNoteChange}
           />
         </div>
@@ -128,4 +150,4 @@ const NewLabRequest = () => {
   )
 }
 
-export default NewLabRequest
+export default NewImagingRequest
