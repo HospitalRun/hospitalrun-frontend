@@ -24,7 +24,6 @@ const NewLabRequest = () => {
   const history = useHistory()
   useTitle(t('labs.requests.new'))
   const { status, error } = useSelector((state: RootState) => state.lab)
-  const { appointments } = useSelector((state: RootState) => state.appointments)
 
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
