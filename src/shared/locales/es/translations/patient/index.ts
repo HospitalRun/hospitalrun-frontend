@@ -1,9 +1,9 @@
 export default {
   patient: {
-    code: 'Código de Paciente',
+    code: 'Código',
     firstName: 'Primer Nombre',
     lastName: 'Segundo Nombre',
-    suffix: 'Sufijo?',
+    suffix: 'Sufijo',
     prefix: 'Título',
     givenName: 'Primer Apellido',
     familyName: 'Segundo Apellido',
