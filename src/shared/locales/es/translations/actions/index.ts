@@ -1,9 +1,21 @@
 export default {
   actions: {
+    label: 'Acciones',
     edit: 'Editar',
     save: 'Guardar',
+    update: 'Actualizar',
+    complete: 'Terminar',
+    delete: 'Eliminar',
     cancel: 'Cancelar',
     new: 'Nuevo',
     list: 'Lista',
+    search: 'Buscar',
+    confirmDelete: 'Confirmar Eliminación',
+    next: 'Siguiente',
+    previous: 'Anterior',
+    page: 'Página',
+    add: 'Añadir',
+    view: 'Vista',
+    logout: 'Salir',
   },
 }
