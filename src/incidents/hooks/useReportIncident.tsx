@@ -8,7 +8,7 @@ import validateIncident from '../util/validate-incident'
 
 const getIncidentCode = (): string => `I-${shortid.generate()}`
 
-function reportIncident(incident: Incident): Promise<Incident> {
+export function reportIncident(incident: Incident): Promise<Incident> {
   const error = validateIncident(incident)
   if (isEmpty(error)) {
     const updatedIncident: Incident = {

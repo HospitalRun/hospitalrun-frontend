@@ -25,10 +25,7 @@ function ViewIncidentsTable(props: Props) {
   return (
     <Table
       getID={(row) => row.id}
-      data={data.map((row) => ({
-        ...row,
-        reportedBy: extractUsername(row.reportedBy),
-      }))}
+      data={data}
       columns={[
         { label: t('incidents.reports.code'), key: 'code' },
         {
@@ -36,8 +33,17 @@ function ViewIncidentsTable(props: Props) {
           key: 'date',
           formatter: (row) => (row.date ? format(new Date(row.date), 'yyyy-MM-dd hh:mm a') : ''),
         },
-        { label: t('incidents.reports.reportedBy'), key: 'reportedBy' },
-        { label: t('incidents.reports.reportedOn'), key: 'reportedOn' },
+        {
+          label: t('incidents.reports.reportedBy'),
+          key: 'reportedBy',
+          formatter: (row) => extractUsername(row.reportedBy),
+        },
+        {
+          label: t('incidents.reports.reportedOn'),
+          key: 'reportedOn',
+          formatter: (row) =>
+            row.reportedOn ? format(new Date(row.reportedOn), 'yyyy-MM-dd hh:mm a') : '',
+        },
         { label: t('incidents.reports.status'), key: 'status' },
       ]}
       actionsHeaderText={t('actions.label')}

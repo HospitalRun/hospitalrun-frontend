@@ -1,43 +1,35 @@
 import { Button, Column, Row, Spinner } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 
-import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Permissions from '../../shared/model/Permissions'
-import { RootState } from '../../shared/store'
 import { extractUsername } from '../../shared/util/extractUsername'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
 
 interface Props {
   incidentId: string
+  permissions: (Permissions | null)[]
 }
 
 function ViewIncidentDetails(props: Props) {
-  const { incidentId } = props
+  const { incidentId, permissions } = props
+  const history = useHistory()
   const { t } = useTranslator()
   const { data, isLoading } = useIncident(incidentId)
   const [mutate] = useResolveIncident()
-  useTitle(data ? data.code : '')
-  useAddBreadcrumbs([
-    {
-      i18nKey: data ? data.code : '',
-      location: `/incidents/${data}`,
-    },
-  ])
-  const { permissions } = useSelector((state: RootState) => state.user)
 
   if (data === undefined || isLoading) {
     return <Spinner type="DotLoader" loading />
   }
 
-  const onComplete = async () => {
+  const onResolve = async () => {
     await mutate(data)
+    history.push('/incidents')
   }
 
   const getButtons = () => {
@@ -50,7 +42,7 @@ function ViewIncidentDetails(props: Props) {
       buttons.push(
         <Button
           className="mr-2"
-          onClick={onComplete}
+          onClick={onResolve}
           color="primary"
           key="incidents.reports.resolve"
         >

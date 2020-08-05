@@ -1,13 +1,8 @@
 import { configureStore, combineReducers, Action } from '@reduxjs/toolkit'
 import ReduxThunk, { ThunkAction } from 'redux-thunk'
 
-<<<<<<< HEAD
 import imaging from '../../imagings/imaging-slice'
 import imagings from '../../imagings/imagings-slice'
-import incident from '../../incidents/incident-slice'
-import incidents from '../../incidents/incidents-slice'
-=======
->>>>>>> chore: remove redux from incidents
 import lab from '../../labs/lab-slice'
 import labs from '../../labs/labs-slice'
 import breadcrumbs from '../../page-header/breadcrumbs/breadcrumbs-slice'
