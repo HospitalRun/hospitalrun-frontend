@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import LabRepository from '../shared/db/LabRepository'
 import PatientRepository from '../shared/db/PatientRepository'
+import Appointment from '../shared/model/Appointment'
 import Lab from '../shared/model/Lab'
 import Patient from '../shared/model/Patient'
 import { AppThunk } from '../shared/store'
@@ -9,6 +10,7 @@ import { AppThunk } from '../shared/store'
 interface Error {
   result?: string
   patient?: string
+  appointments?: Array<Appointment>
   type?: string
   message?: string
 }
@@ -17,6 +19,7 @@ interface LabState {
   error: Error
   lab?: Lab
   patient?: Patient
+  appointments?: Array<Appointment>
   status: 'loading' | 'error' | 'completed'
 }
 
@@ -24,6 +27,7 @@ const initialState: LabState = {
   error: {},
   lab: undefined,
   patient: undefined,
+  appointments: undefined,
   status: 'loading',
 }
 
@@ -54,6 +58,7 @@ const labSlice = createSlice({
       state.status = 'completed'
       state.lab = payload.lab
       state.patient = payload.patient
+      state.appointments = payload.appointments
     },
     updateLabStart: start,
     updateLabSuccess: finish,

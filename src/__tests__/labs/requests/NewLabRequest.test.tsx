@@ -26,7 +26,34 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
+      const expectedPatient = {
+        id: '123',
+      }
+      const expectedAppointments = [
+        {
+          id: '456',
+          rev: '1',
+          patient: '1234',
+          startDateTime: new Date(2020, 1, 1, 9, 0, 0, 0).toISOString(),
+          endDateTime: new Date(2020, 1, 1, 9, 30, 0, 0).toISOString(),
+          location: 'location',
+          reason: 'Follow Up',
+        },
+        {
+          id: '123',
+          rev: '1',
+          patient: '1234',
+          startDateTime: new Date(2020, 1, 1, 8, 0, 0, 0).toISOString(),
+          endDateTime: new Date(2020, 1, 1, 8, 30, 0, 0).toISOString(),
+          location: 'location',
+          reason: 'Checkup',
+        },
+      ]
+      const store = mockStore({
+        title: '',
+        patient: expectedPatient,
+        lab: { status: 'loading', error: {}, appointments: expectedAppointments },
+      } as any)
       titleSpy = jest.spyOn(titleUtil, 'default')
       history.push('/labs/new')
 
@@ -49,7 +76,11 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
+      const store = mockStore({
+        title: '',
+        lab: { status: 'loading', error: {} },
+        appointments: [],
+      } as any)
       history.push('/labs/new')
 
       wrapper = mount(
@@ -179,6 +210,7 @@ describe('New Lab Request', () => {
     const expectedDate = new Date()
     const expectedLab = {
       patient: '12345',
+      appointment: '1234',
       type: 'expected type',
       status: 'requested',
       notes: 'expected notes',

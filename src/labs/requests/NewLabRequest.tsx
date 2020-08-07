@@ -23,7 +23,9 @@ const NewLabRequest = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   useTitle(t('labs.requests.new'))
+
   const { status, error } = useSelector((state: RootState) => state.lab)
+  const { appointments } = useSelector((state: RootState) => state.lab)
 
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
@@ -96,10 +98,12 @@ const NewLabRequest = () => {
     history.push('/labs')
   }
 
-  const appointmentOptions: Option[] = appointments.map((appointment) => ({
-    label: `${new Date(appointment.startDateTime).toLocaleString()}`,
-    value: `${new Date(appointment.startDateTime).toLocaleString()}`,
-  }))
+  const appointmentOptions: Option[] =
+    appointments &&
+    appointments.map((appointment: any) => ({
+      label: `${new Date(appointment.startDateTime).toLocaleString()}`,
+      value: `${new Date(appointment.startDateTime).toLocaleString()}`,
+    }))
 
   return (
     <>
