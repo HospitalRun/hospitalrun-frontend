@@ -119,7 +119,7 @@ const DiagnosisForm = (props: Props) => {
         <Column md={12}>
           <SelectWithLabelFormGroup
             name="status"
-            label={t('patient.carePlan.status')}
+            label={t('patient.diagnoses.status')}
             isRequired
             options={statusOptions}
             defaultSelected={statusOptions.filter(({ value }) => value === status)}
