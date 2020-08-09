@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
-import waitUntilQueryIsSuccessful from '../wait-for-query-test-util'
+import waitUntilQueryIsSuccessful from './wait-for-query.util'
 
 export default async function executeQuery(callback: any) {
   let actualData: any
