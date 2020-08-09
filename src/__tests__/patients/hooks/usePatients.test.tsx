@@ -2,7 +2,7 @@ import usePatients from '../../../patients/hooks/usePatients'
 import PatientSearchRequest from '../../../patients/models/PatientSearchRequest'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
-import executeQuery from '../use-query-test-util'
+import executeQuery from '../../test-utils/use-query.util'
 
 describe('use patients', () => {
   it('should search patients with the proper search request', async () => {

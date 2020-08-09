@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react-hooks'
 import usePatientRelatedPersons from '../../../patients/hooks/usePatientRelatedPersons'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
-import waitUntilQueryIsSuccessful from '../../wait-for-query-test-util'
+import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
 
 describe('use patient related persons', () => {
   beforeEach(() => {

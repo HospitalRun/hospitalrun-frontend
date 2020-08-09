@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import useIncident from '../../../incidents/hooks/useIncident'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
-import waitUntilQueryIsSuccessful from '../../wait-for-query-test-util'
+import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
 
 describe('useIncident', () => {
   it('should get an incident by id', async () => {

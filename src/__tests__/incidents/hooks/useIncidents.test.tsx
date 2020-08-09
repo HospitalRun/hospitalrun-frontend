@@ -5,7 +5,7 @@ import IncidentFilter from '../../../incidents/IncidentFilter'
 import IncidentSearchRequest from '../../../incidents/model/IncidentSearchRequest'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
-import waitUntilQueryIsSuccessful from '../../wait-for-query-test-util'
+import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
 
 describe('useIncidents', () => {
   it('it should search incidents', async () => {
