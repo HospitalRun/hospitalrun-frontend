@@ -126,6 +126,12 @@ export const requestLab = (newLab: Lab, onSuccess?: (lab: Lab) => void): AppThun
   }
 }
 
+export const resetLab = (): AppThunk => async (dispatch) => {
+  const labRequestError: Error = {}
+  dispatch(requestLabError(labRequestError))
+  dispatch(fetchLabStart())
+}
+
 export const cancelLab = (labToCancel: Lab, onSuccess?: (lab: Lab) => void): AppThunk => async (
   dispatch,
 ) => {

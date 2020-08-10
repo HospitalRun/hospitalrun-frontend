@@ -132,6 +132,11 @@ export default class Repository<T extends AbstractDBModel> {
   //   return pagedResult
   // }
 
+  async count(): Promise<number> {
+    const result = await this.findAll()
+    return result.length
+  }
+
   async search(criteria: any): Promise<T[]> {
     const response = await this.db.find(criteria)
     const data = await this.db.rel.parseRelDocs(this.type, response.docs)

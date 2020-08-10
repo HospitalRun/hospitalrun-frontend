@@ -1,6 +1,8 @@
 import { configureStore, combineReducers, Action } from '@reduxjs/toolkit'
 import ReduxThunk, { ThunkAction } from 'redux-thunk'
 
+import imaging from '../../imagings/imaging-slice'
+import imagings from '../../imagings/imagings-slice'
 import incident from '../../incidents/incident-slice'
 import incidents from '../../incidents/incidents-slice'
 import lab from '../../labs/lab-slice'
@@ -27,6 +29,8 @@ const reducer = combineReducers({
   incident,
   incidents,
   labs,
+  imagings,
+  imaging,
 })
 
 const store = configureStore({

@@ -59,6 +59,30 @@ const pageMap: {
     path: '/incidents',
     icon: 'incident',
   },
+  newVisit: {
+    permission: Permissions.AddVisit,
+    label: 'visits.visit.new',
+    path: '/visits',
+    icon: 'add',
+  },
+  viewVisits: {
+    permission: Permissions.ReadVisits,
+    label: 'visits.visit.label',
+    path: '/visits',
+    icon: 'visit',
+  },
+  newImaging: {
+    permission: Permissions.RequestImaging,
+    label: 'imagings.requests.new',
+    path: '/imaging/new',
+    icon: 'add',
+  },
+  viewImagings: {
+    permission: Permissions.ReadPatients,
+    label: 'imagings.requests.label',
+    path: '/imaging',
+    icon: 'image',
+  },
   settings: {
     permission: null,
     label: 'settings.label',
