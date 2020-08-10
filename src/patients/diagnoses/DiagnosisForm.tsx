@@ -23,11 +23,12 @@ interface Props {
   diagnosis: Partial<Diagnosis>
   diagnosisError?: Error
   onChange?: (newDiagnosis: Partial<Diagnosis>) => void
+  disabled: boolean
 }
 
 const DiagnosisForm = (props: Props) => {
   const { t } = useTranslation()
-  const { diagnosis, diagnosisError, onChange } = props
+  const { diagnosis, diagnosisError, disabled, onChange } = props
   const [status, setStatus] = useState(diagnosis.status)
 
   const onFieldChange = (name: string, value: string | DiagnosisStatus) => {
@@ -64,7 +65,7 @@ const DiagnosisForm = (props: Props) => {
             name="name"
             feedback={t(diagnosisError?.name || '')}
             isInvalid={!!diagnosisError?.name}
-            isEditable
+            isEditable={!disabled}
             onChange={(event) => onFieldChange('name', event.currentTarget.value)}
           />
         </Column>
@@ -76,7 +77,7 @@ const DiagnosisForm = (props: Props) => {
             name="diagnosisDate"
             label={t('patient.diagnoses.diagnosisDate')}
             value={diagnosis.diagnosisDate ? new Date(diagnosis.diagnosisDate) : new Date()}
-            isEditable
+            isEditable={!disabled}
             onChange={(date) => onFieldChange('diagnosisDate', date.toISOString())}
             isRequired
             feedback={t(diagnosisError?.diagnosisDate || '')}
@@ -91,7 +92,7 @@ const DiagnosisForm = (props: Props) => {
             name="onsetDate"
             label={t('patient.diagnoses.onsetDate')}
             value={diagnosis.onsetDate ? new Date(diagnosis.onsetDate) : new Date()}
-            isEditable
+            isEditable={!disabled}
             onChange={(date) => onFieldChange('onsetDate', date.toISOString())}
             isRequired
             feedback={t(diagnosisError?.onsetDate || '')}
@@ -106,7 +107,7 @@ const DiagnosisForm = (props: Props) => {
             name="abatementDate"
             label={t('patient.diagnoses.abatementDate')}
             value={diagnosis.abatementDate ? new Date(diagnosis.abatementDate) : new Date()}
-            isEditable
+            isEditable={!disabled}
             isRequired
             onChange={(date) => onFieldChange('abatementDate', date.toISOString())}
             feedback={t(diagnosisError?.abatementDate || '')}
@@ -127,7 +128,7 @@ const DiagnosisForm = (props: Props) => {
               onFieldChange('status', values[0])
               setStatus(values[0] as DiagnosisStatus)
             }}
-            isEditable
+            isEditable={!disabled}
             isInvalid={!!diagnosisError?.status}
           />
         </Column>
@@ -141,7 +142,7 @@ const DiagnosisForm = (props: Props) => {
             name="note"
             feedback={t(diagnosisError?.note || '')}
             isInvalid={!!diagnosisError?.note}
-            isEditable
+            isEditable={!disabled}
             onChange={(event) => onFieldChange('note', event.currentTarget.value)}
           />
         </Column>
@@ -150,4 +151,7 @@ const DiagnosisForm = (props: Props) => {
   )
 }
 
+DiagnosisForm.defaultProps = {
+  disabled: false,
+}
 export default DiagnosisForm

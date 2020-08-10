@@ -19,13 +19,14 @@ describe('Diagnosis Form', () => {
     note: 'some note',
   }
 
-  const setup = (initializeDiagnosis = true, error?: any) => {
+  const setup = (disabled = false, initializeDiagnosis = true, error?: any) => {
     onDiagnosisChangeSpy = jest.fn()
     const wrapper = mount(
       <DiagnosisForm
         onChange={onDiagnosisChangeSpy}
         diagnosis={initializeDiagnosis ? diagnosis : {}}
         diagnosisError={error}
+        disabled={disabled}
       />,
     )
     return { wrapper }
@@ -80,32 +81,6 @@ describe('Diagnosis Form', () => {
     expect(onDiagnosisChangeSpy).toHaveBeenCalledWith({ status: expectedNewStatus })
   })
 
-  // it('should render an intent selector', () => {
-  //   const { wrapper } = setup()
-
-  //   const intentSelector = wrapper.findWhere((w) => w.prop('name') === 'intent')
-
-  //   expect(intentSelector).toHaveLength(1)
-  //   expect(intentSelector.prop('patient.carePlan.intent'))
-  //   expect(intentSelector.prop('isRequired')).toBeTruthy()
-  //   expect(intentSelector.prop('defaultSelected')[0].value).toEqual(carePlan.intent)
-  //   expect(intentSelector.prop('options')).toEqual(
-  //     Object.values(CarePlanIntent).map((v) => ({ label: v, value: v })),
-  //   )
-  // })
-
-  // it('should call the on change handler when intent changes', () => {
-  //   const newIntent = CarePlanIntent.Proposal
-  //   const { wrapper } = setup(false, false)
-  //   act(() => {
-  //     const intentSelector = wrapper.findWhere((w) => w.prop('name') === 'intent')
-  //     const onChange = intentSelector.prop('onChange') as any
-  //     onChange([newIntent])
-  //   })
-
-  //   expect(onDiagnosisChangeSpy).toHaveBeenCalledWith({ intent: newIntent })
-  // })
-
   it('should render a diagnosis date picker', () => {
     const { wrapper } = setup()
 
@@ -132,6 +107,58 @@ describe('Diagnosis Form', () => {
     })
   })
 
+  it('should render a onset date picker', () => {
+    const { wrapper } = setup()
+
+    const onsetDatePicker = wrapper.findWhere((w) => w.prop('name') === 'onsetDate')
+
+    expect(onsetDatePicker).toHaveLength(1)
+    expect(onsetDatePicker.prop('patient.diagnoses.onsetDate'))
+    expect(onsetDatePicker.prop('isRequired')).toBeTruthy()
+    expect(onsetDatePicker.prop('value')).toEqual(new Date(diagnosis.onsetDate))
+  })
+
+  it('should call the on change handler when onset date changes', () => {
+    const expectedNewOnsetDate = addDays(1, new Date().getDate())
+    const { wrapper } = setup(false, false)
+
+    const onsetDatePicker = wrapper.findWhere((w) => w.prop('name') === 'onsetDate')
+    act(() => {
+      const onChange = onsetDatePicker.prop('onChange') as any
+      onChange(expectedNewOnsetDate)
+    })
+
+    expect(onDiagnosisChangeSpy).toHaveBeenCalledWith({
+      onsetDate: expectedNewOnsetDate.toISOString(),
+    })
+  })
+
+  it('should render a abatement date picker', () => {
+    const { wrapper } = setup()
+
+    const abatementDatePicker = wrapper.findWhere((w) => w.prop('name') === 'abatementDate')
+
+    expect(abatementDatePicker).toHaveLength(1)
+    expect(abatementDatePicker.prop('patient.diagnoses.abatementDate'))
+    expect(abatementDatePicker.prop('isRequired')).toBeTruthy()
+    expect(abatementDatePicker.prop('value')).toEqual(new Date(diagnosis.abatementDate))
+  })
+
+  it('should call the on change handler when abatementDate date changes', () => {
+    const expectedNewAbatementDate = addDays(1, new Date().getDate())
+    const { wrapper } = setup(false, false)
+
+    const abatementDatePicker = wrapper.findWhere((w) => w.prop('name') === 'abatementDate')
+    act(() => {
+      const onChange = abatementDatePicker.prop('onChange') as any
+      onChange(expectedNewAbatementDate)
+    })
+
+    expect(onDiagnosisChangeSpy).toHaveBeenCalledWith({
+      abatementDate: expectedNewAbatementDate.toISOString(),
+    })
+  })
+
   it('should render a note input', () => {
     const { wrapper } = setup()
 
@@ -154,24 +181,22 @@ describe('Diagnosis Form', () => {
     expect(onDiagnosisChangeSpy).toHaveBeenCalledWith({ note: expectedNewNote })
   })
 
-  // it('should render all of the fields as disabled if the form is disabled', () => {
-  //   const { wrapper } = setup(true)
-  //   const nameInput = wrapper.findWhere((w) => w.prop('name') === 'name')
-  //   const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
-  //   const conditionSelector = wrapper.findWhere((w) => w.prop('name') === 'condition')
-  //   const statusSelector = wrapper.findWhere((w) => w.prop('name') === 'status')
-  //   const startDatePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
-  //   const endDatePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
-  //   const noteInput = wrapper.findWhere((w) => w.prop('name') === 'note')
+  it('should render all of the fields as disabled if the form is disabled', () => {
+    const { wrapper } = setup(true)
+    const nameInput = wrapper.findWhere((w) => w.prop('name') === 'name')
+    const statusSelector = wrapper.findWhere((w) => w.prop('name') === 'status')
+    const diagnosisDatePicker = wrapper.findWhere((w) => w.prop('name') === 'diagnosisDate')
+    const onsetDatePicker = wrapper.findWhere((w) => w.prop('name') === 'onsetDate')
+    const abatementeDatePicker = wrapper.findWhere((w) => w.prop('name') === 'abatementDate')
+    const noteInput = wrapper.findWhere((w) => w.prop('name') === 'note')
 
-  //   expect(nameInput.prop('isEditable')).toBeFalsy()
-  //   expect(descriptionInput.prop('isEditable')).toBeFalsy()
-  //   expect(conditionSelector.prop('isEditable')).toBeFalsy()
-  //   expect(statusSelector.prop('isEditable')).toBeFalsy()
-  //   expect(startDatePicker.prop('isEditable')).toBeFalsy()
-  //   expect(endDatePicker.prop('isEditable')).toBeFalsy()
-  //   expect(noteInput.prop('isEditable')).toBeFalsy()
-  // })
+    expect(nameInput.prop('isEditable')).toBeFalsy()
+    expect(statusSelector.prop('isEditable')).toBeFalsy()
+    expect(diagnosisDatePicker.prop('isEditable')).toBeFalsy()
+    expect(abatementeDatePicker.prop('isEditable')).toBeFalsy()
+    expect(onsetDatePicker.prop('isEditable')).toBeFalsy()
+    expect(noteInput.prop('isEditable')).toBeFalsy()
+  })
 
   it('should render the form fields in an error state', () => {
     const expectedError = {
@@ -184,7 +209,7 @@ describe('Diagnosis Form', () => {
       note: 'some note error',
     }
 
-    const { wrapper } = setup(false, expectedError)
+    const { wrapper } = setup(false, false, expectedError)
 
     const alert = wrapper.find(Alert)
     const nameInput = wrapper.findWhere((w) => w.prop('name') === 'name')

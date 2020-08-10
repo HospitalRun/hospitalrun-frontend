@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils'
 
 import CarePlanForm from '../../../patients/care-plans/CarePlanForm'
 import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../../shared/model/CarePlan'
-import Diagnosis from '../../../shared/model/Diagnosis'
+import Diagnosis, { DiagnosisStatus } from '../../../shared/model/Diagnosis'
 import Patient from '../../../shared/model/Patient'
 
 describe('Care Plan Form', () => {
@@ -15,6 +15,10 @@ describe('Care Plan Form', () => {
     id: '123',
     name: 'some diagnosis name',
     diagnosisDate: new Date().toISOString(),
+    onsetDate: new Date().toISOString(),
+    abatementDate: new Date().toISOString(),
+    status: DiagnosisStatus.Active,
+    note: 'some note',
   }
   const carePlan: CarePlan = {
     id: 'id',
