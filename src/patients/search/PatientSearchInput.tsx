@@ -22,7 +22,7 @@ const PatientSearchInput = (props: Props) => {
       ...searchRequest,
       queryString: debouncedSearchText,
     })
-  }, [debouncedSearchText])
+  }, [debouncedSearchText, onChange, searchRequest])
 
   const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const queryString = event.currentTarget.value
