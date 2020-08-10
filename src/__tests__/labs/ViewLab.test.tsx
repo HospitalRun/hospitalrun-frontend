@@ -329,7 +329,7 @@ describe('View Lab', () => {
       expect(labRepositorySaveSpy).toHaveBeenCalledWith(
         expect.objectContaining({ ...mockLab, result: expectedResult, notes: expectedNotes }),
       )
-      expect(history.location.pathname).toEqual('/labs')
+      expect(history.location.pathname).toEqual('/labs/12456')
     })
   })
 
@@ -365,7 +365,7 @@ describe('View Lab', () => {
           completedOn: expectedDate.toISOString(),
         }),
       )
-      expect(history.location.pathname).toEqual('/labs')
+      expect(history.location.pathname).toEqual('/labs/12456')
     })
   })
 
