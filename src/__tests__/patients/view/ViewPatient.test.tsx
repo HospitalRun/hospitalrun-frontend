@@ -130,7 +130,7 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(8)
+    expect(tabs).toHaveLength(9)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
@@ -139,6 +139,7 @@ describe('ViewPatient', () => {
     expect(tabs.at(5).prop('label')).toEqual('patient.notes.label')
     expect(tabs.at(6).prop('label')).toEqual('patient.labs.label')
     expect(tabs.at(7).prop('label')).toEqual('patient.carePlan.label')
+    expect(tabs.at(8).prop('label')).toEqual('patient.visits.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
