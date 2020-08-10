@@ -32,6 +32,8 @@ describe('Sidebar', () => {
     Permissions.ViewIncidents,
     Permissions.ViewIncident,
     Permissions.ReportIncident,
+    Permissions.ReadVisits,
+    Permissions.AddVisit,
     Permissions.RequestImaging,
     Permissions.ViewImagings,
   ]

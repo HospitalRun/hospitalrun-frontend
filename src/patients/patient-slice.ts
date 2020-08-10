@@ -10,6 +10,7 @@ import Diagnosis from '../shared/model/Diagnosis'
 import Note from '../shared/model/Note'
 import Patient from '../shared/model/Patient'
 import RelatedPerson from '../shared/model/RelatedPerson'
+import Visit from '../shared/model/Visit'
 import { AppThunk } from '../shared/store'
 import { uuid } from '../shared/util/uuid'
 import { cleanupPatient } from './util/set-patient-helper'
@@ -26,6 +27,7 @@ interface PatientState {
   noteError?: AddNoteError
   relatedPersonError?: AddRelatedPersonError
   carePlanError?: AddCarePlanError
+  visitError?: AddVisitError
 }
 
 interface Error {
@@ -75,6 +77,14 @@ interface AddCarePlanError {
   condition?: string
 }
 
+interface AddVisitError {
+  message?: string
+  status?: string
+  intent?: string
+  startDateTime?: string
+  endDateTime?: string
+}
+
 const initialState: PatientState = {
   status: 'loading',
   isUpdatedSuccessfully: false,
@@ -87,6 +97,7 @@ const initialState: PatientState = {
   noteError: undefined,
   relatedPersonError: undefined,
   carePlanError: undefined,
+  visitError: undefined,
 }
 
 function start(state: PatientState) {
@@ -140,6 +151,10 @@ const patientSlice = createSlice({
       state.status = 'error'
       state.carePlanError = payload
     },
+    addVisitError(state, { payload }: PayloadAction<AddVisitError>) {
+      state.status = 'error'
+      state.visitError = payload
+    },
   },
 })
 
@@ -157,6 +172,7 @@ export const {
   addRelatedPersonError,
   addNoteError,
   addCarePlanError,
+  addVisitError,
 } = patientSlice.actions
 
 export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
@@ -491,4 +507,57 @@ export const addCarePlan = (
   }
 }
 
+function validateVisit(visit: Visit): AddVisitError {
+  const error: AddVisitError = {}
+
+  if (!visit.startDateTime) {
+    error.startDateTime = 'patient.visits.error.startDateRequired'
+  }
+
+  if (!visit.endDateTime) {
+    error.endDateTime = 'patient.visits.error.endDateRequired'
+  }
+
+  if (!visit.type) {
+    error.status = 'patient.visits.error.typeRequired'
+  }
+
+  if (visit.startDateTime && visit.endDateTime) {
+    if (isBefore(new Date(visit.endDateTime), new Date(visit.startDateTime))) {
+      error.endDateTime = 'patient.visits.error.endDateMustBeAfterStartDate'
+    }
+  }
+
+  if (!visit.status) {
+    error.status = 'patient.visits.error.statusRequired'
+  }
+  if (!visit.reason) {
+    error.status = 'patient.visits.error.reasonRequired'
+  }
+  if (!visit.location) {
+    error.status = 'patient.visits.error.locationRequired'
+  }
+
+  return error
+}
+
+export const addVisit = (
+  patientId: string,
+  visit: Visit,
+  onSuccess?: (patient: Patient) => void,
+): AppThunk => async (dispatch) => {
+  const visitError = validateVisit(visit)
+  if (isEmpty(visitError)) {
+    const patient = await PatientRepository.find(patientId)
+    const visits = patient.visits || ([] as Visit[])
+    visits.push({
+      id: uuid(),
+      createdAt: new Date(Date.now().valueOf()).toISOString(),
+      ...visit,
+    })
+    patient.visits = visits
+
+    await dispatch(updatePatient(patient, onSuccess))
+  }
+}
 export default patientSlice.reducer
