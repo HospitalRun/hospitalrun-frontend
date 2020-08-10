@@ -22,6 +22,7 @@ const Navbar = () => {
     'scheduling.appointments.new',
     'labs.requests.new',
     'incidents.reports.new',
+    'imagings.requests.new',
     'settings.label',
   ]
 
@@ -43,7 +44,13 @@ const Navbar = () => {
   const hambergerPages = Object.keys(pageMap).map((key) => pageMap[key])
 
   // For Desktop, add shortcuts menu
-  const addPages = [pageMap.newPatient, pageMap.newAppointment, pageMap.newLab, pageMap.newIncident]
+  const addPages = [
+    pageMap.newPatient,
+    pageMap.newAppointment,
+    pageMap.newLab,
+    pageMap.newIncident,
+    pageMap.newImaging,
+  ]
 
   return (
     <HospitalRunNavbar

@@ -52,6 +52,10 @@ export default {
     },
     appointments: {
       new: 'Add Appointment',
+      warning: {
+        noAppointments: 'No Appointments',
+      },
+      addAppointmentAbove: 'Add an appointment using the button above.',
     },
     allergies: {
       label: 'Allergies',
@@ -124,6 +128,27 @@ export default {
         intentRequired: 'Intent is required.',
         startDate: 'Start date is required.',
         endDate: 'End date is required',
+      },
+    },
+    visit: 'Visit',
+    visits: {
+      new: 'Add Visit',
+      label: 'Visits',
+      startDateTime: 'Start Date',
+      endDateTime: 'End Date',
+      type: 'Type',
+      status: 'Status',
+      reason: 'Reason',
+      location: 'Location',
+      error: {
+        unableToAdd: 'Unable to add a new visit.',
+        startDateRequired: 'Start date is required.',
+        endDateRequired: 'End date is required',
+        endDateMustBeAfterStartDate: 'End date must be after start date',
+        typeRequired: 'Type is required.',
+        statusRequired: 'Status is required.',
+        reasonRequired: 'Reason is required.',
+        locationRequired: 'Location is required.',
       },
     },
     types: {

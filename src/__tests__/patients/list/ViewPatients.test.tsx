@@ -11,6 +11,7 @@ import { mocked } from 'ts-jest/utils'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import ViewPatients from '../../../patients/list/ViewPatients'
 import * as patientSlice from '../../../patients/patients-slice'
+import NoPatientsExist from '../../../patients/view/NoPatientsExist'
 import { UnpagedRequest } from '../../../shared/db/PageRequest'
 import PatientRepository from '../../../shared/db/PatientRepository'
 
@@ -35,12 +36,13 @@ describe('Patients', () => {
     },
   ]
 
-  const setup = (isLoading?: boolean) => {
+  const setup = (isLoading?: boolean, currentPatients = patients, count = patients.length) => {
     const store = mockStore({
       patients: {
-        patients,
+        patients: currentPatients,
         isLoading,
         pageRequest: UnpagedRequest,
+        count,
       },
     })
     return mount(
@@ -78,6 +80,13 @@ describe('Patients', () => {
       const wrapper = setup(true)
 
       expect(wrapper.find(Spinner)).toHaveLength(1)
+    })
+
+    it('should render no patients exists when no patients exist', () => {
+      const wrapper = setup(false, [], 0)
+
+      const addNewPatient = wrapper.find(NoPatientsExist)
+      expect(addNewPatient).toHaveLength(1)
     })
 
     it('should render a table of patients', () => {
@@ -121,7 +130,10 @@ describe('Patients', () => {
   describe('search functionality', () => {
     beforeEach(() => jest.useFakeTimers())
 
-    afterEach(() => jest.useRealTimers())
+    afterEach(() => {
+      jest.useRealTimers()
+      jest.restoreAllMocks()
+    })
 
     it('should search for patients after the search text has not changed for 500 milliseconds', () => {
       const searchPatientsSpy = jest.spyOn(patientSlice, 'searchPatients')
@@ -144,6 +156,26 @@ describe('Patients', () => {
       expect(searchPatientsSpy).toHaveBeenLastCalledWith(expectedSearchText, {
         sorts: [{ field: 'index', direction: 'asc' }],
       })
+    })
+
+    it("shound't display NoPatientsFound if a search result has no results", () => {
+      const searchPatientsSpy = jest.spyOn(patientSlice, 'searchPatients')
+      const wrapper = setup()
+      searchPatientsSpy.mockClear()
+      const expectedSearchText = '$$$not a patient$$$'
+
+      act(() => {
+        const onChange = wrapper.find(TextInput).prop('onChange') as any
+        onChange({ target: { value: expectedSearchText } })
+      })
+
+      act(() => {
+        jest.advanceTimersByTime(500)
+      })
+
+      wrapper.update()
+
+      expect(NoPatientsExist).toHaveLength(0)
     })
   })
 })

@@ -81,7 +81,8 @@ describe('patients slice', () => {
 
       await searchPatients('')(dispatch, getState, null)
 
-      expect(PatientRepository.findAll).toHaveBeenCalledTimes(1)
+      // expecting 2 here because searchPatients uses PatientRepository.count() which calls #findAll
+      expect(PatientRepository.findAll).toHaveBeenCalledTimes(2)
     })
 
     it('should dispatch the FETCH_PATIENTS_SUCCESS action', async () => {

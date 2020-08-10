@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 import Dashboard from './dashboard/Dashboard'
+import Imagings from './imagings/Imagings'
 import Incidents from './incidents/Incidents'
 import Labs from './labs/Labs'
 import Breadcrumbs from './page-header/breadcrumbs/Breadcrumbs'
@@ -53,6 +54,7 @@ const HospitalRun = () => {
                   <Route path="/labs" component={Labs} />
                   <Route path="/incidents" component={Incidents} />
                   <Route path="/settings" component={Settings} />
+                  <Route path="/imaging" component={Imagings} />
                 </Switch>
               </div>
               <Toaster autoClose={5000} hideProgressBar draggable />
