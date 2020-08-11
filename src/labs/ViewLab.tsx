@@ -1,4 +1,4 @@
-import { Row, Column, Badge, Button, Alert } from '@hospitalrun/components'
+import { Row, Column, Badge, Button, Alert, Toast } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -64,17 +64,26 @@ const ViewLab = () => {
   }
 
   const onUpdate = async () => {
-    const onSuccess = () => {
-      history.push('/labs')
+    const onSuccess = (update: Lab) => {
+      history.push(`/labs/${update.id}`)
+      Toast(
+        'success',
+        t('states.success'),
+        `${t('labs.successfullyUpdated')} ${update.type} ${patient?.fullName}`,
+      )
     }
     if (labToView) {
       dispatch(updateLab(labToView, onSuccess))
     }
   }
-
   const onComplete = async () => {
-    const onSuccess = () => {
-      history.push('/labs')
+    const onSuccess = (complete: Lab) => {
+      history.push(`/labs/${complete.id}`)
+      Toast(
+        'success',
+        t('states.success'),
+        `${t('labs.successfullyCompleted')} ${complete.type} ${patient?.fullName} `,
+      )
     }
 
     if (labToView) {
