@@ -1,4 +1,3 @@
-import { act, renderHook } from '@testing-library/react-hooks'
 import { subDays } from 'date-fns'
 import shortid from 'shortid'
 
@@ -7,6 +6,7 @@ import * as incidentValidator from '../../../incidents/util/validate-incident'
 import { IncidentError } from '../../../incidents/util/validate-incident'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
+import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('useReportIncident', () => {
   beforeEach(() => {
@@ -38,21 +38,7 @@ describe('useReportIncident', () => {
     jest.spyOn(shortid, 'generate').mockReturnValue(expectedCode)
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue(expectedIncident)
 
-    let mutateToTest: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useReportIncident())
-      const { result, waitForNextUpdate } = renderHookResult
-      await waitForNextUpdate()
-      const [mutate] = result.current
-      mutateToTest = mutate
-    })
-
-    let actualData: any
-    await act(async () => {
-      const result = await mutateToTest(givenIncidentRequest)
-      actualData = result
-    })
-
+    const actualData = await executeMutation(() => useReportIncident(), givenIncidentRequest)
     expect(IncidentRepository.save).toHaveBeenCalledTimes(1)
     expect(IncidentRepository.save).toBeCalledWith(expectedIncident)
     expect(actualData).toEqual(expectedIncident)
@@ -66,19 +52,8 @@ describe('useReportIncident', () => {
     jest.spyOn(incidentValidator, 'default').mockReturnValue(expectedIncidentError)
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue({} as Incident)
 
-    let mutateToTest: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useReportIncident())
-      const { result, waitForNextUpdate } = renderHookResult
-      await waitForNextUpdate()
-      const [mutate] = result.current
-      mutateToTest = mutate
-    })
-
     try {
-      await act(async () => {
-        await mutateToTest({} as Incident)
-      })
+      await executeMutation(() => useReportIncident(), {})
     } catch (e) {
       expect(e).toEqual(expectedIncidentError)
       expect(IncidentRepository.save).not.toHaveBeenCalled()
