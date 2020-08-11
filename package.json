@@ -77,8 +77,8 @@
     "@types/shortid": "^0.0.29",
     "@types/uuid": "^8.0.0",
     "@types/validator": "~13.1.0",
-    "@typescript-eslint/eslint-plugin": "~3.8.0",
-    "@typescript-eslint/parser": "~3.8.0",
+    "@typescript-eslint/eslint-plugin": "~3.9.0",
+    "@typescript-eslint/parser": "~3.9.0",
     "chalk": "^4.0.0",
     "commitizen": "~4.1.2",
     "commitlint-config-cz": "~0.13.0",
@@ -107,7 +107,7 @@
     "rimraf": "~3.0.2",
     "source-map-explorer": "^2.2.2",
     "standard-version": "~8.0.0",
-    "ts-jest": "~26.1.0"
+    "ts-jest": "~26.2.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
