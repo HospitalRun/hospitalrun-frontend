@@ -1,8 +1,8 @@
 import * as components from '@hospitalrun/components'
-import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -28,20 +28,24 @@ const expectedPatient = {
 
 let store: any
 
-const setup = (
+const setup = async (
   patient = expectedPatient,
   permissions = [Permissions.AddAllergy],
   route = '/patients/123/allergies',
 ) => {
   store = mockStore({ patient: { patient }, user: { permissions } } as any)
   history.push(route)
-  const wrapper = mount(
-    <Router history={history}>
-      <Provider store={store}>
-        <Allergies patient={patient} />
-      </Provider>
-    </Router>,
-  )
+
+  let wrapper: any
+  await act(async () => {
+    wrapper = await mount(
+      <Router history={history}>
+        <Provider store={store}>
+          <Allergies patient={patient} />
+        </Provider>
+      </Router>,
+    )
+  })
 
   return wrapper
 }
@@ -49,27 +53,28 @@ const setup = (
 describe('Allergies', () => {
   beforeEach(() => {
     jest.resetAllMocks()
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
   })
 
   describe('add new allergy button', () => {
-    it('should render a button to add new allergies', () => {
-      const wrapper = setup()
+    it('should render a button to add new allergies', async () => {
+      const wrapper = await setup()
 
       const addAllergyButton = wrapper.find(components.Button)
       expect(addAllergyButton).toHaveLength(1)
       expect(addAllergyButton.text().trim()).toEqual('patient.allergies.new')
     })
 
-    it('should not render a button to add new allergies if the user does not have permissions', () => {
-      const wrapper = setup(expectedPatient, [])
+    it('should not render a button to add new allergies if the user does not have permissions', async () => {
+      const wrapper = await setup(expectedPatient, [])
 
       const addAllergyButton = wrapper.find(components.Button)
       expect(addAllergyButton).toHaveLength(0)
     })
 
-    it('should open the New Allergy Modal when clicked', () => {
-      const wrapper = setup()
+    it('should open the New Allergy Modal when clicked', async () => {
+      const wrapper = await setup()
 
       act(() => {
         const addAllergyButton = wrapper.find(components.Button)
@@ -84,21 +89,10 @@ describe('Allergies', () => {
   })
 
   describe('allergy list', () => {
-    it('should render allergies', () => {
-      const wrapper = setup()
-      const allergiesList = wrapper.find(AllergiesList)
+    it('should render allergies', async () => {
+      const wrapper = await setup()
 
-      expect(allergiesList).toHaveLength(1)
-    })
-
-    it('should render a warning message if the patient does not have any allergies', () => {
-      const wrapper = setup({ ...expectedPatient, allergies: [] })
-
-      const alert = wrapper.find(components.Alert)
-
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('title')).toEqual('patient.allergies.warning.noAllergies')
-      expect(alert.prop('message')).toEqual('patient.allergies.addAllergyAbove')
+      expect(wrapper.exists(AllergiesList)).toBeTruthy()
     })
   })
 })
