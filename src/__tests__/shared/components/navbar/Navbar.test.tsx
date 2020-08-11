@@ -56,6 +56,8 @@ describe('Navbar', () => {
     Permissions.ViewIncidents,
     Permissions.ViewIncident,
     Permissions.ReportIncident,
+    Permissions.AddVisit,
+    Permissions.ReadVisits,
     Permissions.RequestImaging,
     Permissions.ViewImagings,
   ]
