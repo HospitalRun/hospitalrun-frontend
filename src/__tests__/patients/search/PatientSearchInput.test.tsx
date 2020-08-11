@@ -7,35 +7,27 @@ import PatientSearchRequest from '../../../patients/models/PatientSearchRequest'
 import PatientSearchInput from '../../../patients/search/PatientSearchInput'
 
 describe('Patient Search Input', () => {
-  const setup = (
-    expectedSearchRequest: PatientSearchRequest,
-    onChange: (s: PatientSearchRequest) => void,
-  ) => {
-    const wrapper = mount(
-      <PatientSearchInput searchRequest={expectedSearchRequest} onChange={onChange} />,
-    )
+  const setup = (onChange: (s: PatientSearchRequest) => void) => {
+    const wrapper = mount(<PatientSearchInput onChange={onChange} />)
 
     return { wrapper }
   }
 
   it('should render a text box', () => {
-    const expectedSearchRequest = { queryString: 'someValue' }
-    const { wrapper } = setup(expectedSearchRequest, jest.fn())
+    const { wrapper } = setup(jest.fn())
 
     const textInput = wrapper.find(TextInput)
     expect(wrapper.exists(TextInput)).toBeTruthy()
     expect(textInput.prop('size')).toEqual('lg')
     expect(textInput.prop('type')).toEqual('text')
-    expect(textInput.prop('value')).toEqual(expectedSearchRequest.queryString)
     expect(textInput.prop('placeholder')).toEqual('actions.search')
   })
 
   it('should call the on change function when the search input changes after debounce time', () => {
     jest.useFakeTimers()
     const expectedNewQueryString = 'some new query string'
-    const expectedSearchRequest = { queryString: 'someValue' }
     const onChangeSpy = jest.fn()
-    const { wrapper } = setup(expectedSearchRequest, onChangeSpy)
+    const { wrapper } = setup(onChangeSpy)
 
     act(() => {
       const textInput = wrapper.find(TextInput)
