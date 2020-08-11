@@ -1,5 +1,5 @@
 import { Column, Container, Row } from '@hospitalrun/components'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import PatientSearchRequest from '../models/PatientSearchRequest'
 import PatientSearchInput from './PatientSearchInput'
@@ -8,16 +8,16 @@ import ViewPatientsTable from './ViewPatientsTable'
 const SearchPatients = () => {
   const [searchRequest, setSearchRequest] = useState<PatientSearchRequest>({ queryString: '' })
 
-  const onSearchRequestChange = (newSearchRequest: PatientSearchRequest) => {
+  const onSearchRequestChange = useCallback((newSearchRequest: PatientSearchRequest) => {
     setSearchRequest(newSearchRequest)
-  }
+  }, [])
 
   return (
     <div>
       <Container>
         <Row>
           <Column md={12}>
-            <PatientSearchInput searchRequest={searchRequest} onChange={onSearchRequestChange} />
+            <PatientSearchInput onChange={onSearchRequestChange} />
           </Column>
         </Row>
         <Row>

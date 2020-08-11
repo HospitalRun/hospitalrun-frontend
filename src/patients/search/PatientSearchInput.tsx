@@ -6,23 +6,21 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import PatientSearchRequest from '../models/PatientSearchRequest'
 
 interface Props {
-  searchRequest: PatientSearchRequest
   onChange: (searchRequest: PatientSearchRequest) => void
 }
 
 const PatientSearchInput = (props: Props) => {
-  const { onChange, searchRequest } = props
+  const { onChange } = props
   const { t } = useTranslator()
 
-  const [searchText, setSearchText] = useState<string>(searchRequest.queryString)
+  const [searchText, setSearchText] = useState<string>('')
   const debouncedSearchText = useDebounce(searchText, 500)
 
   useEffect(() => {
     onChange({
-      ...searchRequest,
       queryString: debouncedSearchText,
     })
-  }, [debouncedSearchText, onChange, searchRequest])
+  }, [debouncedSearchText, onChange])
 
   const onSearchBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const queryString = event.currentTarget.value
@@ -34,7 +32,7 @@ const PatientSearchInput = (props: Props) => {
       size="lg"
       type="text"
       onChange={onSearchBoxChange}
-      value={searchRequest.queryString}
+      value={searchText}
       placeholder={t('actions.search')}
     />
   )
