@@ -58,7 +58,6 @@ const labSlice = createSlice({
       state.status = 'completed'
       state.lab = payload.lab
       state.patient = payload.patient
-      state.appointments = payload.appointments
     },
     updateLabStart: start,
     updateLabSuccess: finish,
