@@ -16,6 +16,7 @@ import { addBreadcrumbs } from '../page-header/breadcrumbs/breadcrumbs-slice'
 import Appointments from '../scheduling/appointments/Appointments'
 import Settings from '../settings/Settings'
 import ImagingRepository from '../shared/db/ImagingRepository'
+import IncidentRepository from '../shared/db/IncidentRepository'
 import LabRepository from '../shared/db/LabRepository'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
@@ -32,7 +33,6 @@ describe('HospitalRun', () => {
           appointments: { appointments: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-          incidents: { incidents: [] },
         } as any)
 
         const wrapper = mount(
@@ -127,12 +127,12 @@ describe('HospitalRun', () => {
 
     describe('/incidents', () => {
       it('should render the Incidents component when /incidents is accessed', async () => {
+        jest.spyOn(IncidentRepository, 'search').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
           user: { user: { id: '123' }, permissions: [Permissions.ViewIncidents] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
-          incidents: { incidents: [] },
         } as any)
 
         let wrapper: any
