@@ -2,7 +2,7 @@ import { Icon, Typography, Button } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import React from 'react'
 
-import NoPatientsExist from '../../../patients/view/NoPatientsExist'
+import NoPatientsExist from '../../../patients/search/NoPatientsExist'
 
 describe('NoPatientsExist', () => {
   const setup = () => mount(<NoPatientsExist />)

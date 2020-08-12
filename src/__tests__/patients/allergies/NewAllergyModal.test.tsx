@@ -1,19 +1,12 @@
 import { Modal, Alert } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import React from 'react'
-import { Provider } from 'react-redux'
-import createMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { act } from 'react-dom/test-utils'
 
 import NewAllergyModal from '../../../patients/allergies/NewAllergyModal'
-import * as patientSlice from '../../../patients/patient-slice'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
-import { RootState } from '../../../shared/store'
-
-const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Allergy Modal', () => {
   const mockPatient = {
@@ -21,27 +14,21 @@ describe('New Allergy Modal', () => {
     givenName: 'someName',
   } as Patient
 
-  beforeEach(() => {
+  const setup = (onCloseSpy = jest.fn()) => {
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(mockPatient)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
-  })
-
-  it('should render a modal with the correct labels', () => {
-    const store = mockStore({
-      patient: {
-        patient: {
-          id: '123',
-        },
-      },
-    } as any)
     const wrapper = mount(
-      <Provider store={store}>
-        <NewAllergyModal show onCloseButtonClick={jest.fn()} />
-      </Provider>,
+      <NewAllergyModal patientId={mockPatient.id} show onCloseButtonClick={onCloseSpy} />,
     )
 
+    return { wrapper }
+  }
+
+  it('should render a modal with the correct labels', () => {
+    const { wrapper } = setup()
+
     const modal = wrapper.find(Modal)
-    expect(modal).toHaveLength(1)
+    expect(wrapper.exists(Modal)).toBeTruthy()
     expect(modal.prop('title')).toEqual('patient.allergies.new')
     expect(modal.prop('closeButton')?.children).toEqual('actions.cancel')
     expect(modal.prop('closeButton')?.color).toEqual('danger')
@@ -50,24 +37,18 @@ describe('New Allergy Modal', () => {
     expect(modal.prop('successButton')?.icon).toEqual('add')
   })
 
-  it('should display the errors', () => {
+  it('should display errors when there is an error saving', async () => {
     const expectedError = {
-      message: 'some error message',
-      name: 'some name message',
+      message: 'patient.allergies.error.unableToAdd',
+      nameError: 'patient.allergies.error.nameRequired',
     }
-    const store = mockStore({
-      patient: {
-        patient: {
-          id: '123',
-        },
-        allergyError: expectedError,
-      },
-    } as any)
-    const wrapper = mount(
-      <Provider store={store}>
-        <NewAllergyModal show onCloseButtonClick={jest.fn()} />
-      </Provider>,
-    )
+    const { wrapper } = setup()
+
+    await act(async () => {
+      const modal = wrapper.find(Modal)
+      const onSave = (modal.prop('successButton') as any).onClick
+      await onSave({} as React.MouseEvent<HTMLButtonElement>)
+    })
     wrapper.update()
 
     const alert = wrapper.find(Alert)
@@ -76,24 +57,13 @@ describe('New Allergy Modal', () => {
     expect(alert.prop('title')).toEqual('states.error')
     expect(alert.prop('message')).toEqual(expectedError.message)
     expect(nameField.prop('isInvalid')).toBeTruthy()
-    expect(nameField.prop('feedback')).toEqual(expectedError.name)
+    expect(nameField.prop('feedback')).toEqual(expectedError.nameError)
   })
 
   describe('cancel', () => {
     it('should call the onCloseButtonClick function when the close button is clicked', () => {
       const onCloseButtonClickSpy = jest.fn()
-      const store = mockStore({
-        patient: {
-          patient: {
-            id: '123',
-          },
-        },
-      } as any)
-      const wrapper = mount(
-        <Provider store={store}>
-          <NewAllergyModal show onCloseButtonClick={onCloseButtonClickSpy} />
-        </Provider>,
-      )
+      const { wrapper } = setup(onCloseButtonClickSpy)
       act(() => {
         const modal = wrapper.find(Modal)
         const { onClick } = modal.prop('closeButton') as any
@@ -105,23 +75,9 @@ describe('New Allergy Modal', () => {
   })
 
   describe('save', () => {
-    it('should dispatch add allergy', () => {
-      jest.spyOn(patientSlice, 'addAllergy')
+    it('should save the allergy for the given patient', async () => {
       const expectedName = 'expected name'
-      const patient = {
-        id: '123',
-      }
-      const store = mockStore({
-        patient: {
-          patient,
-        },
-      } as any)
-      const wrapper = mount(
-        <Provider store={store}>
-          <NewAllergyModal show onCloseButtonClick={jest.fn()} />
-        </Provider>,
-      )
-      wrapper.update()
+      const { wrapper } = setup()
 
       act(() => {
         const input = wrapper.findWhere((c) => c.prop('name') === 'name')
@@ -131,13 +87,18 @@ describe('New Allergy Modal', () => {
 
       wrapper.update()
 
-      act(() => {
+      await act(async () => {
         const modal = wrapper.find(Modal)
         const onSave = (modal.prop('successButton') as any).onClick
-        onSave({} as React.MouseEvent<HTMLButtonElement>)
+        await onSave({} as React.MouseEvent<HTMLButtonElement>)
       })
 
-      expect(patientSlice.addAllergy).toHaveBeenCalledWith(patient.id, { name: expectedName })
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          allergies: [expect.objectContaining({ name: expectedName })],
+        }),
+      )
     })
   })
 })

@@ -1,4 +1,4 @@
-import { Row, Column, Typeahead, Label, Button, Alert } from '@hospitalrun/components'
+import { Row, Column, Typeahead, Label, Button, Alert, Toast } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -171,6 +171,7 @@ const NewLabRequest = () => {
             <Button className="mr-2" color="success" onClick={onSave}>
               {t('actions.save')}
             </Button>
+
             <Button color="danger" onClick={onCancel}>
               {t('actions.cancel')}
             </Button>

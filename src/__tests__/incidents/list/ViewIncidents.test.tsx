@@ -1,4 +1,3 @@
-import { Table } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -10,6 +9,7 @@ import thunk from 'redux-thunk'
 
 import IncidentFilter from '../../../incidents/IncidentFilter'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
+import ViewIncidentsTable from '../../../incidents/list/ViewIncidentsTable'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/title/useTitle'
@@ -51,9 +51,6 @@ describe('View Incidents', () => {
       user: {
         permissions,
       },
-      incidents: {
-        incidents: expectedIncidents,
-      },
     } as any)
 
     let wrapper: any
@@ -71,7 +68,7 @@ describe('View Incidents', () => {
       )
     })
     wrapper.update()
-    return wrapper as ReactWrapper
+    return { wrapper: wrapper as ReactWrapper }
   }
   it('should filter incidents by status=reported on first load ', async () => {
     await setup([Permissions.ViewIncidents])
@@ -88,44 +85,11 @@ describe('View Incidents', () => {
     })
 
     it('should render a table with the incidents', async () => {
-      const wrapper = await setup([Permissions.ViewIncidents])
-      const table = wrapper.find(Table)
-      const columns = table.prop('columns')
-      const actions = table.prop('actions') as any
-      expect(columns[0]).toEqual(
-        expect.objectContaining({ label: 'incidents.reports.code', key: 'code' }),
-      )
-      expect(columns[1]).toEqual(
-        expect.objectContaining({ label: 'incidents.reports.dateOfIncident', key: 'date' }),
-      )
-      expect(columns[2]).toEqual(
-        expect.objectContaining({ label: 'incidents.reports.reportedBy', key: 'reportedBy' }),
-      )
-      expect(columns[3]).toEqual(
-        expect.objectContaining({ label: 'incidents.reports.reportedOn', key: 'reportedOn' }),
-      )
-      expect(columns[4]).toEqual(
-        expect.objectContaining({ label: 'incidents.reports.status', key: 'status' }),
-      )
+      const { wrapper } = await setup([Permissions.ViewIncidents])
+      const table = wrapper.find(ViewIncidentsTable)
 
-      expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
-      expect(table.prop('actionsHeaderText')).toEqual('actions.label')
-      expect(table.prop('data')).toEqual(expectedIncidents)
-    })
-  })
-
-  describe('on view button click', () => {
-    it('should navigate to the incident when the table row is clicked', async () => {
-      const wrapper = await setup([Permissions.ViewIncidents])
-
-      const tr = wrapper.find('tr').at(1)
-
-      act(() => {
-        const onClick = tr.find('button').prop('onClick') as any
-        onClick({ stopPropagation: jest.fn() })
-      })
-
-      expect(history.location.pathname).toEqual(`/incidents/${expectedIncidents[0].id}`)
+      expect(table.exists()).toBeTruthy()
+      expect(table.prop('searchRequest')).toEqual({ status: IncidentFilter.reported })
     })
   })
 })
