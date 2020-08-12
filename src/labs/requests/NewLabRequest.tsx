@@ -135,7 +135,7 @@ const NewLabRequest = () => {
                   label={t('Appointments')}
                   options={appointmentOptions}
                   defaultSelected={appointmentOptions.filter(
-                    ({ value }) => value === newLabRequest.appointment,
+                    (value: string) => value === newLabRequest.appointment,
                   )}
                   onChange={(values) => onAppointmentChange(values[0])}
                   isRequired
