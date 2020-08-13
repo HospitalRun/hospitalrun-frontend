@@ -57,6 +57,7 @@ interface AddDiagnosisError {
   message?: string
   name?: string
   date?: string
+  status?: string
 }
 
 interface AddNoteError {
@@ -354,6 +355,13 @@ function validateDiagnosis(diagnosis: Diagnosis) {
     error.date = 'patient.diagnoses.error.dateRequired'
   }
 
+  if (!diagnosis.onsetDate) {
+    error.date = 'patient.diagnoses.error.dateRequired'
+  }
+
+  if (!diagnosis.status) {
+    error.status = 'patient.diagnoses.error.statusRequired'
+  }
   return error
 }
 
