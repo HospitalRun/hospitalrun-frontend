@@ -91,6 +91,11 @@ const NewLabRequest = () => {
     const newLab = (newLabRequest as unknown) as Lab
     const onSuccess = (createdLab: Lab) => {
       history.push(`/labs/${createdLab.id}`)
+      Toast(
+        'success',
+        t('states.success'),
+        `${t('lab.successfullyCreated')} ${newLab.type} ${newLab.patient}`,
+      )
     }
     dispatch(requestLab(newLab, onSuccess))
   }
