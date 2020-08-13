@@ -548,7 +548,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(6).text().trim()).toEqual('imagings.label')
+      expect(listItems.at(7).text().trim()).toEqual('imagings.label')
     })
 
     it('should render the new imaging request link', () => {
@@ -556,7 +556,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(7).text().trim()).toEqual('imagings.requests.new')
+      expect(listItems.at(8).text().trim()).toEqual('imagings.requests.new')
     })
 
     it('should not render the new imaging request link when user does not have the request imaging privileges', () => {
@@ -574,7 +574,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(8).text().trim()).toEqual('imagings.requests.label')
+      expect(listItems.at(9).text().trim()).toEqual('imagings.requests.label')
     })
 
     it('should not render the imagings list link when user does not have the view imagings privileges', () => {
@@ -592,7 +592,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(6).prop('active')).toBeTruthy()
+      expect(listItems.at(7).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /imaging when the main imagings link is clicked', () => {
@@ -601,7 +601,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        const onClick = listItems.at(6).prop('onClick') as any
+        const onClick = listItems.at(7).prop('onClick') as any
         onClick()
       })
 
@@ -613,7 +613,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(7).prop('active')).toBeTruthy()
+      expect(listItems.at(8).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /imaging/new when the new imaging link is clicked', () => {
@@ -622,7 +622,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        const onClick = listItems.at(7).prop('onClick') as any
+        const onClick = listItems.at(8).prop('onClick') as any
         onClick()
       })
 
@@ -634,7 +634,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(8).prop('active')).toBeTruthy()
+      expect(listItems.at(9).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /imaging when the imagings list link is clicked', () => {
@@ -643,7 +643,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        const onClick = listItems.at(8).prop('onClick') as any
+        const onClick = listItems.at(9).prop('onClick') as any
         onClick()
       })
 
