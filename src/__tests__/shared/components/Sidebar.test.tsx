@@ -634,7 +634,7 @@ describe('Sidebar', () => {
 
       const listItems = wrapper.find(ListItem)
 
-      expect(listItems.at(8).prop('active')).toBeTruthy()
+      expect(listItems.at(7).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /imaging when the imagings list link is clicked', () => {
@@ -643,7 +643,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        const onClick = listItems.at(8).prop('onClick') as any
+        const onClick = listItems.at(7).prop('onClick') as any
         onClick()
       })
 
