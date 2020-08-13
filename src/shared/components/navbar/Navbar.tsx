@@ -23,6 +23,7 @@ const Navbar = () => {
     'labs.requests.new',
     'medications.requests.new',
     'incidents.reports.new',
+    'imagings.requests.new',
     'settings.label',
   ]
 
@@ -50,6 +51,8 @@ const Navbar = () => {
     pageMap.newLab,
     pageMap.newMedication,
     pageMap.newIncident,
+    pageMap.newIncident,
+    pageMap.newImaging,
   ]
 
   return (

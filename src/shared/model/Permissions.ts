@@ -22,6 +22,10 @@ enum Permissions {
   CompleteMedication = 'complete:medication',
   ViewMedication = 'read:medication',
   ViewMedications = 'read:medications',
+  AddVisit = 'write:visit',
+  ReadVisits = 'read:visit',
+  RequestImaging = 'write:imaging',
+  ViewImagings = 'read:imagings',
 }
 
 export default Permissions

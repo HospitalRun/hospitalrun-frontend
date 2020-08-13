@@ -43,6 +43,10 @@ const initialState: UserState = {
     Permissions.CancelMedication,
     Permissions.ViewMedications,
     Permissions.ViewMedication,
+    Permissions.AddVisit,
+    Permissions.ReadVisits,
+    Permissions.ViewImagings,
+    Permissions.RequestImaging,
   ],
 }
 

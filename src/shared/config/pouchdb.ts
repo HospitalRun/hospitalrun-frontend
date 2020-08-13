@@ -48,6 +48,7 @@ export const schema = [
       medications: {
         hasMany: { type: 'medication', options: { queryInverse: 'patient', async: true } },
       },
+      imagings: { hasMany: { type: 'imaging', options: { queryInverse: 'patient', async: true } } },
     },
   },
   {
@@ -67,6 +68,8 @@ export const schema = [
   {
     singular: 'medication',
     plural: 'medications',
+    singular: 'imaging',
+    plural: 'imagings',
     relations: { patient: { belongsTo: 'patient' } },
   },
 ]

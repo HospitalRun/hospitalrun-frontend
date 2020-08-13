@@ -1,14 +1,15 @@
 import { Button } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import ReportIncident from '../../../incidents/report/ReportIncident'
+import * as validationUtil from '../../../incidents/util/validate-incident'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/title/useTitle'
@@ -22,9 +23,12 @@ const mockStore = createMockStore<RootState, any>([thunk])
 describe('Report Incident', () => {
   let history: any
 
-  let setButtonToolBarSpy: any
-  const setup = async (permissions: Permissions[], error: any = {}) => {
+  beforeEach(() => {
     jest.resetAllMocks()
+  })
+
+  let setButtonToolBarSpy: any
+  const setup = async (permissions: Permissions[]) => {
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
     jest.spyOn(titleUtil, 'default')
@@ -39,9 +43,6 @@ describe('Report Incident', () => {
         user: {
           id: 'some id',
         },
-      },
-      incident: {
-        error,
       },
     } as any)
 
@@ -134,43 +135,8 @@ describe('Report Incident', () => {
     })
   })
 
-  describe('error handling', () => {
-    it('should display the error messages', async () => {
-      const error = {
-        date: 'some date error',
-        department: 'some department error',
-        category: 'some category error',
-        categoryItem: 'some category item error',
-        description: 'some description error',
-      }
-
-      const wrapper = await setup([Permissions.ReportIncident], error)
-
-      const dateInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfIncident')
-      const departmentInput = wrapper.findWhere((w) => w.prop('name') === 'department')
-      const categoryInput = wrapper.findWhere((w) => w.prop('name') === 'category')
-      const categoryItemInput = wrapper.findWhere((w) => w.prop('name') === 'categoryItem')
-      const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
-
-      expect(dateInput.prop('isInvalid')).toBeTruthy()
-      expect(dateInput.prop('feedback')).toEqual(error.date)
-
-      expect(departmentInput.prop('isInvalid')).toBeTruthy()
-      expect(departmentInput.prop('feedback')).toEqual(error.department)
-
-      expect(categoryInput.prop('isInvalid')).toBeTruthy()
-      expect(categoryInput.prop('feedback')).toEqual(error.category)
-
-      expect(categoryItemInput.prop('isInvalid')).toBeTruthy()
-      expect(categoryItemInput.prop('feedback')).toEqual(error.categoryItem)
-
-      expect(descriptionInput.prop('isInvalid')).toBeTruthy()
-      expect(descriptionInput.prop('feedback')).toEqual(error.description)
-    })
-  })
-
   describe('on save', () => {
-    it('should dispatch the report incident action', async () => {
+    it('should report the incident', async () => {
       const wrapper = await setup([Permissions.ReportIncident])
       const expectedIncident = {
         date: new Date().toISOString(),
@@ -225,6 +191,49 @@ describe('Report Incident', () => {
         expect.objectContaining(expectedIncident),
       )
       expect(history.location.pathname).toEqual(`/incidents/someId`)
+    })
+
+    it('should display errors if validation fails', async () => {
+      const error = {
+        name: 'incident error',
+        message: 'something went wrong',
+        date: 'some date error',
+        department: 'some department error',
+        category: 'some category error',
+        categoryItem: 'some category item error',
+        description: 'some description error',
+      }
+      jest.spyOn(validationUtil, 'default').mockReturnValue(error)
+
+      const wrapper = await setup([Permissions.ReportIncident])
+
+      const saveButton = wrapper.find(Button).at(0)
+      await act(async () => {
+        const onClick = saveButton.prop('onClick') as any
+        await onClick()
+      })
+      wrapper.update()
+
+      const dateInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfIncident')
+      const departmentInput = wrapper.findWhere((w) => w.prop('name') === 'department')
+      const categoryInput = wrapper.findWhere((w) => w.prop('name') === 'category')
+      const categoryItemInput = wrapper.findWhere((w) => w.prop('name') === 'categoryItem')
+      const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
+
+      expect(dateInput.prop('isInvalid')).toBeTruthy()
+      expect(dateInput.prop('feedback')).toEqual(error.date)
+
+      expect(departmentInput.prop('isInvalid')).toBeTruthy()
+      expect(departmentInput.prop('feedback')).toEqual(error.department)
+
+      expect(categoryInput.prop('isInvalid')).toBeTruthy()
+      expect(categoryInput.prop('feedback')).toEqual(error.category)
+
+      expect(categoryItemInput.prop('isInvalid')).toBeTruthy()
+      expect(categoryItemInput.prop('feedback')).toEqual(error.categoryItem)
+
+      expect(descriptionInput.prop('isInvalid')).toBeTruthy()
+      expect(descriptionInput.prop('feedback')).toEqual(error.description)
     })
   })
 
