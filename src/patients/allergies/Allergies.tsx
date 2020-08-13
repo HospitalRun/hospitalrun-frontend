@@ -1,4 +1,4 @@
-import { Button, Alert } from '@hospitalrun/components'
+import { Button } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
@@ -50,20 +50,14 @@ const Allergies = (props: AllergiesProps) => {
       <br />
       <Switch>
         <Route exact path="/patients/:id/allergies">
-          <AllergiesList />
+          <AllergiesList patientId={patient.id} />
         </Route>
         <Route exact path="/patients/:id/allergies/:allergyId">
           <ViewAllergy />
         </Route>
       </Switch>
-      {(!patient.allergies || patient.allergies.length === 0) && (
-        <Alert
-          color="warning"
-          title={t('patient.allergies.warning.noAllergies')}
-          message={t('patient.allergies.addAllergyAbove')}
-        />
-      )}
       <NewAllergyModal
+        patientId={patient.id}
         show={showNewAllergyModal}
         onCloseButtonClick={() => setShowNewAllergyModal(false)}
       />

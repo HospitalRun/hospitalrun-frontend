@@ -6,8 +6,8 @@ import PrivateRoute from '../shared/components/PrivateRoute'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
 import EditPatient from './edit/EditPatient'
-import ViewPatients from './list/ViewPatients'
 import NewPatient from './new/NewPatient'
+import ViewPatients from './search/ViewPatients'
 import ViewPatient from './view/ViewPatient'
 
 const Patients = () => {
