@@ -11,7 +11,7 @@ interface AddAllergyRequest {
   allergy: Allergy
 }
 
-async function addAllergy(request: AddAllergyRequest): Promise<Allergy> {
+async function addAllergy(request: AddAllergyRequest): Promise<Allergy[]> {
   const error = validateAllergy(request.allergy)
 
   if (isEmpty(error)) {
@@ -28,7 +28,7 @@ async function addAllergy(request: AddAllergyRequest): Promise<Allergy> {
       allergies,
     })
 
-    return newAllergy
+    return allergies
   }
 
   throw error
@@ -36,8 +36,8 @@ async function addAllergy(request: AddAllergyRequest): Promise<Allergy> {
 
 export default function useAddAllergy() {
   return useMutation(addAllergy, {
-    onSuccess: async (_, variables) => {
-      await queryCache.invalidateQueries(['allergies', variables.patientId])
+    onSuccess: async (data, variables) => {
+      await queryCache.setQueryData(['allergies', variables.patientId], data)
     },
     throwOnError: true,
   })
