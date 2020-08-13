@@ -650,7 +650,7 @@ describe('Sidebar', () => {
       expect(history.location.pathname).toEqual('/imaging')
     })
   })
-  
+
   describe('medications links', () => {
     it('should render the main medications link', () => {
       const wrapper = setup('/medications')
