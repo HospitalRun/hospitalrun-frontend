@@ -13,6 +13,8 @@ describe('use add care plan', () => {
   })
 
   it('should add a care plan to the patient', async () => {
+    const expectedCreatedDate = new Date()
+    Date.now = jest.fn().mockReturnValue(expectedCreatedDate)
     const expectedCarePlan: CarePlan = {
       id: 'some id',
       description: 'some description',
@@ -21,7 +23,7 @@ describe('use add care plan', () => {
       title: 'some title',
       intent: CarePlanIntent.Option,
       status: CarePlanStatus.Active,
-      createdOn: new Date().toISOString(),
+      createdOn: expectedCreatedDate.toISOString(),
       diagnosisId: 'someDiagnosis',
       note: 'some note',
     }

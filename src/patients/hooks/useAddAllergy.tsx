@@ -8,7 +8,7 @@ import validateAllergy from '../util/validate-allergy'
 
 interface AddAllergyRequest {
   patientId: string
-  allergy: Allergy
+  allergy: Omit<Allergy, 'id'>
 }
 
 async function addAllergy(request: AddAllergyRequest): Promise<Allergy[]> {
@@ -17,7 +17,7 @@ async function addAllergy(request: AddAllergyRequest): Promise<Allergy[]> {
   if (isEmpty(error)) {
     const patient = await PatientRepository.find(request.patientId)
     const allergies = patient.allergies ? [...patient.allergies] : []
-    const newAllergy = {
+    const newAllergy: Allergy = {
       id: uuid(),
       ...request.allergy,
     }

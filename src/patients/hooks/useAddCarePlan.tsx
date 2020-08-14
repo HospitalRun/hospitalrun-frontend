@@ -8,7 +8,7 @@ import validateCarePlan from '../util/validate-careplan'
 
 interface AddCarePlanRequest {
   patientId: string
-  carePlan: CarePlan
+  carePlan: Omit<CarePlan, 'id' | 'createdOn'>
 }
 
 async function addCarePlan(request: AddCarePlanRequest): Promise<CarePlan[]> {
@@ -18,8 +18,9 @@ async function addCarePlan(request: AddCarePlanRequest): Promise<CarePlan[]> {
     const patient = await PatientRepository.find(request.patientId)
     const carePlans = patient.carePlans ? [...patient.carePlans] : []
 
-    const newCarePlan = {
+    const newCarePlan: CarePlan = {
       id: uuid(),
+      createdOn: new Date(Date.now()).toISOString(),
       ...request.carePlan,
     }
     carePlans.push(newCarePlan)
