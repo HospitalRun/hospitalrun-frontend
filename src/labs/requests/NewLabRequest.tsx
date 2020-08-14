@@ -121,7 +121,7 @@ const NewLabRequest = () => {
         <div className="row float-right">
           <div className="btn-group btn-group-lg mt-3">
             <Button className="mr-2" color="success" onClick={onSave}>
-              {t('actions.save')}
+              {t('labs.requests.save')}
             </Button>
 
             <Button color="danger" onClick={onCancel}>
