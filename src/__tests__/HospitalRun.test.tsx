@@ -12,12 +12,14 @@ import HospitalRun from '../HospitalRun'
 import ViewImagings from '../imagings/ViewImagings'
 import Incidents from '../incidents/Incidents'
 import ViewLabs from '../labs/ViewLabs'
+import ViewMedications from '../medications/ViewMedications'
 import { addBreadcrumbs } from '../page-header/breadcrumbs/breadcrumbs-slice'
 import Appointments from '../scheduling/appointments/Appointments'
 import Settings from '../settings/Settings'
 import ImagingRepository from '../shared/db/ImagingRepository'
 import IncidentRepository from '../shared/db/IncidentRepository'
 import LabRepository from '../shared/db/LabRepository'
+import MedicationRepository from '../shared/db/MedicationRepository'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
 
@@ -121,6 +123,54 @@ describe('HospitalRun', () => {
         )
 
         expect(wrapper.find(ViewLabs)).toHaveLength(0)
+        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      })
+    })
+
+    describe('/medications', () => {
+      it('should render the Medications component when /medications is accessed', async () => {
+        jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
+        const store = mockStore({
+          title: 'test',
+          user: { user: { id: '123' }, permissions: [Permissions.ViewMedications] },
+          medications: { medications: [] },
+          breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
+        } as any)
+
+        let wrapper: any
+        await act(async () => {
+          wrapper = await mount(
+            <Provider store={store}>
+              <MemoryRouter initialEntries={['/medications']}>
+                <HospitalRun />
+              </MemoryRouter>
+            </Provider>,
+          )
+        })
+        wrapper.update()
+
+        expect(wrapper.find(ViewMedications)).toHaveLength(1)
+      })
+
+      it('should render the dashboard if the user does not have permissions to view medications', () => {
+        jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
+        const store = mockStore({
+          title: 'test',
+          user: { user: { id: '123' }, permissions: [] },
+          breadcrumbs: { breadcrumbs: [] },
+          components: { sidebarCollapsed: false },
+        } as any)
+
+        const wrapper = mount(
+          <Provider store={store}>
+            <MemoryRouter initialEntries={['/medications']}>
+              <HospitalRun />
+            </MemoryRouter>
+          </Provider>,
+        )
+
+        expect(wrapper.find(ViewMedications)).toHaveLength(0)
         expect(wrapper.find(Dashboard)).toHaveLength(1)
       })
     })

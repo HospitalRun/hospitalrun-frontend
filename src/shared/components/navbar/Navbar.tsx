@@ -21,6 +21,7 @@ const Navbar = () => {
   const dividerAboveLabels = [
     'scheduling.appointments.new',
     'labs.requests.new',
+    'medications.requests.new',
     'incidents.reports.new',
     'imagings.requests.new',
     'settings.label',
@@ -48,6 +49,8 @@ const Navbar = () => {
     pageMap.newPatient,
     pageMap.newAppointment,
     pageMap.newLab,
+    pageMap.newMedication,
+    pageMap.newIncident,
     pageMap.newIncident,
     pageMap.newImaging,
   ]
