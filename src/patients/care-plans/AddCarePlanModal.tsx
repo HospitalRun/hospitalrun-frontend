@@ -3,7 +3,7 @@ import { addMonths } from 'date-fns'
 import React, { useState, useEffect } from 'react'
 
 import useTranslator from '../../shared/hooks/useTranslator'
-import CarePlan from '../../shared/model/CarePlan'
+import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../shared/model/CarePlan'
 import Patient from '../../shared/model/Patient'
 import useAddCarePlan from '../hooks/useAddCarePlan'
 import { CarePlanError } from '../util/validate-careplan'
@@ -22,6 +22,8 @@ const initialCarePlanState = {
   endDate: addMonths(new Date(), 1).toISOString(),
   note: '',
   diagnosisId: '',
+  status: CarePlanStatus.Active,
+  intent: CarePlanIntent.Plan,
 }
 
 const AddCarePlanModal = (props: Props) => {
@@ -45,7 +47,7 @@ const AddCarePlanModal = (props: Props) => {
 
   const onSaveButtonClick = async () => {
     try {
-      await mutate({ patientId: patient.id, carePlan: carePlan as CarePlan })
+      await mutate({ patientId: patient.id, carePlan })
       onClose()
     } catch (e) {
       setCarePlanError(e)

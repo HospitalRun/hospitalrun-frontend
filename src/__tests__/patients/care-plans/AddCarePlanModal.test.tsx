@@ -61,6 +61,8 @@ describe('Add Care Plan Modal', () => {
   })
 
   it('should save care plan when the save button is clicked and close', async () => {
+    const expectedCreatedDate = new Date()
+    Date.now = jest.fn().mockReturnValue(expectedCreatedDate)
     const expectedCarePlan = {
       id: '123',
       title: 'some title',
@@ -70,6 +72,7 @@ describe('Add Care Plan Modal', () => {
       endDate: new Date().toISOString(),
       status: CarePlanStatus.Active,
       intent: CarePlanIntent.Proposal,
+      createdOn: expectedCreatedDate,
     }
 
     const { wrapper } = setup()

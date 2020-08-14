@@ -45,7 +45,7 @@ export class CarePlanError extends Error {
   }
 }
 
-export default function validateCarePlan(carePlan: CarePlan): CarePlanError {
+export default function validateCarePlan(carePlan: Partial<CarePlan>): CarePlanError {
   const error = {} as CarePlanError
 
   if (!carePlan.title) {
