@@ -146,7 +146,7 @@ export default {
       label: 'Visits',
       startDateTime: 'Start Date',
       endDateTime: 'End Date',
-      type: 'Type',
+      type: 'Visit Type',
       status: 'Status',
       reason: 'Reason',
       location: 'Location',
