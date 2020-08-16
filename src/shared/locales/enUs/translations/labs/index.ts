@@ -13,7 +13,8 @@ export default {
     },
     requests: {
       label: 'Lab Requests',
-      new: 'New Lab Request',
+      new: 'Request Lab',
+      save: 'Request',
       view: 'View Lab',
       cancel: 'Cancel Lab',
       complete: 'Complete Lab',

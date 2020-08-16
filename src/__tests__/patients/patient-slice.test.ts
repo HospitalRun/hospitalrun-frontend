@@ -28,7 +28,7 @@ import patient, {
 import PatientRepository from '../../shared/db/PatientRepository'
 import Allergy from '../../shared/model/Allergy'
 import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../shared/model/CarePlan'
-import Diagnosis from '../../shared/model/Diagnosis'
+import Diagnosis, { DiagnosisStatus } from '../../shared/model/Diagnosis'
 import Patient from '../../shared/model/Patient'
 import RelatedPerson from '../../shared/model/RelatedPerson'
 import { RootState } from '../../shared/store'
@@ -556,6 +556,9 @@ describe('patients slice', () => {
       const expectedDiagnosis = {
         diagnosisDate: new Date().toISOString(),
         name: 'diagnosis name',
+        onsetDate: new Date().toISOString(),
+        abatementDate: new Date().toISOString(),
+        status: DiagnosisStatus.Active,
       } as Diagnosis
 
       const expectedUpdatedPatient = {
@@ -582,6 +585,7 @@ describe('patients slice', () => {
         message: 'patient.diagnoses.error.unableToAdd',
         name: 'patient.diagnoses.error.nameRequired',
         date: 'patient.diagnoses.error.dateRequired',
+        status: 'patient.diagnoses.error.statusRequired',
       }
       const store = mockStore()
       const expectedDiagnosis = {} as Diagnosis
