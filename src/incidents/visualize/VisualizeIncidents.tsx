@@ -1,4 +1,4 @@
-import { Spinner } from '@hospitalrun/components'
+import { Spinner, LineGraph } from '@hospitalrun/components'
 import React from 'react'
 
 import useIncidents from '../hooks/useIncidents'
@@ -14,10 +14,48 @@ const VisualizeIncidents = () => {
     return <Spinner type="DotLoader" loading />
   }
 
+  // reportedOn: "2020-08-12T19:53:30.153Z"
+  // we can use a function that splices the string at position 6-7 to get the month
+
   console.log('data: ', data)
   return (
     <>
-      <h1>Hello from Visualize Incidents</h1>
+      <LineGraph
+        datasets={[
+          {
+            backgroundColor: 'blue',
+            borderColor: 'red',
+            data: [
+              {
+                x: 'January',
+                y: 12,
+              },
+              {
+                x: 'February',
+                y: 11,
+              },
+              {
+                x: 'March',
+                y: 10,
+              },
+            ],
+            label: 'Incidents',
+          },
+        ]}
+        title="Reported Incidents Overtime"
+        xAxes={[
+          {
+            label: 'Months',
+            type: 'category',
+          },
+        ]}
+        yAxes={[
+          {
+            label: 'Numbers',
+            type: 'linear',
+          },
+        ]}
+      />
     </>
   )
 }
