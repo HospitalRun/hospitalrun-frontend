@@ -24,7 +24,7 @@ const VisualizeIncidents = () => {
         datasets={[
           {
             backgroundColor: 'blue',
-            borderColor: 'red',
+            borderColor: 'black',
             data: [
               {
                 x: 'January',
