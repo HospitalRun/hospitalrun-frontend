@@ -11,6 +11,7 @@ import executeMutation from '../../test-utils/use-mutation.util'
 describe('useReportIncident', () => {
   beforeEach(() => {
     jest.restoreAllMocks()
+    console.error = jest.fn()
   })
 
   it('should save the incident with correct data', async () => {
