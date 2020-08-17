@@ -62,83 +62,24 @@ export default class Repository<T extends AbstractDBModel> {
     return relDocs[this.pluralType]
   }
 
-  // async findAllPaged(sort = Unsorted, pageRequest: PageRequest = UnpagedRequest): Promise<Page<T>> {
-  //   const selector: any = {
-  //     _id: { $gt: null },
-  //   }
-  //   if (pageRequest.direction === 'next') {
-  //     sort.sorts.forEach((s) => {
-  //       selector[s.field] = {
-  //         $gte:
-  //           pageRequest.nextPageInfo && pageRequest.nextPageInfo[s.field]
-  //             ? pageRequest.nextPageInfo[s.field]
-  //             : null,
-  //       }
-  //     })
-  //   } else if (pageRequest.direction === 'previous') {
-  //     sort.sorts.forEach((s) => {
-  //       s.direction = s.direction === 'asc' ? 'desc' : 'asc'
-  //       selector[s.field] = {
-  //         $lte:
-  //           pageRequest.previousPageInfo && pageRequest.previousPageInfo[s.field]
-  //             ? pageRequest.previousPageInfo[s.field]
-  //             : null,
-  //       }
-  //     })
-  //   }
-  //
-  //   const result = await this.db.find({
-  //     selector,
-  //     sort: sort.sorts.length > 0 ? sort.sorts.map((s) => ({ [s.field]: s.direction })) : undefined,
-  //     limit: pageRequest.size ? pageRequest.size + 1 : undefined,
-  //   })
-  //   console.log(result)
-  //
-  //   const mappedResult = result.docs.map(mapDocument)
-  //   if (pageRequest.direction === 'previous') {
-  //     mappedResult.reverse()
-  //   }
-  //
-  //   const nextPageInfo: { [key: string]: string } = {}
-  //   const previousPageInfo: { [key: string]: string } = {}
-  //
-  //   if (mappedResult.length > 0) {
-  //     sort.sorts.forEach((s) => {
-  //       nextPageInfo[s.field] = mappedResult[mappedResult.length - 1][s.field]
-  //     })
-  //     sort.sorts.forEach((s) => {
-  //       previousPageInfo[s.field] = mappedResult[0][s.field]
-  //     })
-  //   }
-  //
-  //   const hasNext: boolean =
-  //     pageRequest.size !== undefined && mappedResult.length === pageRequest.size + 1
-  //   const hasPrevious: boolean = pageRequest.number !== undefined && pageRequest.number > 1
-  //
-  //   const pagedResult: Page<T> = {
-  //     content:
-  //       pageRequest.size !== undefined && mappedResult.length === pageRequest.size + 1
-  //         ? mappedResult.slice(0, mappedResult.length - 1)
-  //         : mappedResult,
-  //     hasNext,
-  //     hasPrevious,
-  //     pageRequest: {
-  //       size: pageRequest.size,
-  //       number: pageRequest.number,
-  //       nextPageInfo: hasNext ? nextPageInfo : undefined,
-  //       previousPageInfo: hasPrevious ? previousPageInfo : undefined,
-  //     },
-  //   }
-  //   return pagedResult
-  // }
-
   async count(): Promise<number> {
     const result = await this.findAll()
     return result.length
   }
 
   async search(criteria: any): Promise<T[]> {
-    const response = await this.db.find(criteria)
+    const response = await this.db.find({
+      selector: {
+        $and: [
+          {
+            _id: {
+              $regex: RegExp(this.type, 'i'),
+            },
+          },
+          { ...criteria.selector },
+        ],
+      },
+    })
     const data = await this.db.rel.parseRelDocs(this.type, response.docs)
     return data[this.pluralType]
   }

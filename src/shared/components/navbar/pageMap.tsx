@@ -47,6 +47,18 @@ const pageMap: {
     path: '/labs',
     icon: 'lab',
   },
+  newMedication: {
+    permission: Permissions.RequestMedication,
+    label: 'medications.requests.new',
+    path: '/medications/new',
+    icon: 'add',
+  },
+  viewMedications: {
+    permission: Permissions.ViewMedications,
+    label: 'medications.requests.label',
+    path: '/medications',
+    icon: 'medication',
+  },
   newIncident: {
     permission: Permissions.ReportIncident,
     label: 'incidents.reports.new',
