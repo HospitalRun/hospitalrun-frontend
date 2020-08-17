@@ -17,7 +17,7 @@ import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
-describe('Login Page', () => {
+describe('Login', () => {
   const history = createMemoryHistory()
   let store: MockStore
 
