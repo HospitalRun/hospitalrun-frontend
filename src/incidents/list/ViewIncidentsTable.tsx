@@ -51,7 +51,9 @@ function ViewIncidentsTable(props: Props) {
     const csv = parser.parse(exportData)
     console.log(csv)
 
-    const filename = 'IncidenntsCSV.csv'
+    const incidentsText = t('incidents.label')
+    const filename = incidentsText.concat('.csv')
+
     const text = csv
     const element = document.createElement('a')
     element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`)
