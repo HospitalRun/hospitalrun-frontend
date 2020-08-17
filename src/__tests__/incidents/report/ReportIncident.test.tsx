@@ -25,6 +25,7 @@ describe('Report Incident', () => {
 
   beforeEach(() => {
     jest.resetAllMocks()
+    console.error = jest.fn()
   })
 
   let setButtonToolBarSpy: any
