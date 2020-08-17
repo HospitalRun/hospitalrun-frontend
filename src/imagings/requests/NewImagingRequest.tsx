@@ -137,7 +137,7 @@ const NewImagingRequest = () => {
               {newImagingRequest.patient && visitOption ? (
                 <SelectWithLabelFormGroup
                   name="visit"
-                  label={t('patient.visits.type')}
+                  label={t('imagings.imaging.visit')}
                   isRequired
                   isEditable
                   options={visitOption}
@@ -151,7 +151,7 @@ const NewImagingRequest = () => {
               ) : (
                 <SelectWithLabelFormGroup
                   name="visit"
-                  label={t('patient.visits.type')}
+                  label={t('imagings.imaging.visit')}
                   isRequired
                   isEditable={false}
                   options={[]}
