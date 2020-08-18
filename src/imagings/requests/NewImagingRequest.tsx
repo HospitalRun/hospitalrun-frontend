@@ -1,4 +1,5 @@
 import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -33,6 +34,7 @@ const NewImagingRequest = () => {
 
   const [newImagingRequest, setNewImagingRequest] = useState({
     patient: '',
+    fullName: '',
     type: '',
     notes: '',
     status: '',
@@ -51,17 +53,24 @@ const NewImagingRequest = () => {
     if (patient) {
       setNewImagingRequest((previousNewImagingRequest) => ({
         ...previousNewImagingRequest,
-        patient: patient.fullName as string,
+        patient: patient.id,
+        fullName: patient.fullName as string,
       }))
 
-      const visits = patient.visits?.map((v) => ({ label: v.type, value: v.id }))
+      const visits = patient.visits?.map((v) => ({
+        label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
+        value: v.id,
+      })) as Option[]
+
       setVisitOption(visits)
     } else {
       setNewImagingRequest((previousNewImagingRequest) => ({
         ...previousNewImagingRequest,
         patient: '',
+        fullName: '',
         visitId: '',
       }))
+      setVisitOption([])
     }
   }
 
@@ -108,6 +117,13 @@ const NewImagingRequest = () => {
     history.push('/imaging')
   }
 
+  const defaultSelectedVisitsOption = () => {
+    if (visitOption !== undefined) {
+      return visitOption.filter(({ value }) => value === newImagingRequest.visitId)
+    }
+    return []
+  }
+
   return (
     <>
       {status === 'error' && (
@@ -134,32 +150,17 @@ const NewImagingRequest = () => {
           </Column>
           <Column>
             <div className="visits">
-              {newImagingRequest.patient && visitOption ? (
-                <SelectWithLabelFormGroup
-                  name="visit"
-                  label={t('imagings.imaging.visit')}
-                  isRequired
-                  isEditable
-                  options={visitOption}
-                  defaultSelected={visitOption.filter(
-                    ({ value }) => value === newImagingRequest.visitId,
-                  )}
-                  onChange={(values) => {
-                    onVisitChange(values[0])
-                  }}
-                />
-              ) : (
-                <SelectWithLabelFormGroup
-                  name="visit"
-                  label={t('imagings.imaging.visit')}
-                  isRequired
-                  isEditable={false}
-                  options={[]}
-                  onChange={(values) => {
-                    onVisitChange(values[0])
-                  }}
-                />
-              )}
+              <SelectWithLabelFormGroup
+                name="visit"
+                label={t('imagings.imaging.visit')}
+                isRequired
+                isEditable={newImagingRequest.patient !== undefined}
+                options={visitOption || []}
+                defaultSelected={defaultSelectedVisitsOption()}
+                onChange={(values) => {
+                  onVisitChange(values[0])
+                }}
+              />
             </div>
           </Column>
         </Row>

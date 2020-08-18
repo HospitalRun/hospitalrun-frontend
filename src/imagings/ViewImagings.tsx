@@ -74,7 +74,7 @@ const ViewImagings = () => {
               formatter: (row) =>
                 row.requestedOn ? format(new Date(row.requestedOn), 'yyyy-MM-dd hh:mm a') : '',
             },
-            { label: t('imagings.imaging.patient'), key: 'patient' },
+            { label: t('imagings.imaging.patient'), key: 'fullName' },
             {
               label: t('imagings.imaging.requestedBy'),
               key: 'requestedBy',

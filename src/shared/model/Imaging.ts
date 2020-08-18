@@ -3,6 +3,7 @@ import AbstractDBModel from './AbstractDBModel'
 export default interface Imaging extends AbstractDBModel {
   code: string
   patient: string
+  fullName: string
   type: string
   status: 'requested' | 'completed' | 'canceled'
   visitId: string
