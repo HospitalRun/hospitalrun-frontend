@@ -9,6 +9,7 @@ import executeMutation from '../../test-utils/use-mutation.util'
 describe('use add allergy', () => {
   beforeEach(() => {
     jest.resetAllMocks()
+    console.error = jest.fn()
   })
 
   it('should throw an error if allergy validation fails', async () => {
