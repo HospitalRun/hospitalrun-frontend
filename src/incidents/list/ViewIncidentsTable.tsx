@@ -25,34 +25,42 @@ function ViewIncidentsTable(props: Props) {
 
   // filter data
   const exportData = [{}]
-  let first = true
-  if (data != null) {
-    data.forEach((elm) => {
-      const entry = {
-        code: elm.code,
-        date: format(new Date(elm.date), 'yyyy-MM-dd hh:mm a'),
-        reportedBy: elm.reportedBy,
-        reportedOn: format(new Date(elm.reportedOn), 'yyyy-MM-dd hh:mm a'),
-        status: elm.status,
-      }
-      if (first) {
-        exportData[0] = entry
-        first = false
-      } else {
-        exportData.push(entry)
-      }
-    })
+
+  function populateExportData() {
+    let first = true
+    if (data != null) {
+      data.forEach((elm) => {
+        const entry = {
+          code: elm.code,
+          date: format(new Date(elm.date), 'yyyy-MM-dd hh:mm a'),
+          reportedBy: elm.reportedBy,
+          reportedOn: format(new Date(elm.reportedOn), 'yyyy-MM-dd hh:mm a'),
+          status: elm.status,
+        }
+        if (first) {
+          exportData[0] = entry
+          first = false
+        } else {
+          exportData.push(entry)
+        }
+      })
+    }
   }
 
   function downloadCSV() {
+    populateExportData()
+
     const fields = Object.keys(exportData[0])
     const opts = { fields }
     const parser = new Parser(opts)
     const csv = parser.parse(exportData)
-    console.log(csv)
 
     const incidentsText = t('incidents.label')
-    const filename = incidentsText.concat('.csv')
+
+    const filename = incidentsText
+      .concat('-')
+      .concat(format(new Date(Date.now()), 'yyyy-MM-dd--hh-mma'))
+      .concat('.csv')
 
     const text = csv
     const element = document.createElement('a')
@@ -76,8 +84,20 @@ function ViewIncidentsTable(props: Props) {
     },
   ]
 
+  const dropStyle = {
+    marginLeft: 'auto', // note the capital 'W' here
+    marginBottom: '4px', // 'ms' is the only lowercase vendor prefix
+  }
+
   return (
     <>
+      <Dropdown
+        direction="down"
+        variant="secondary"
+        text={t('incidents.reports.download')}
+        style={dropStyle}
+        items={dropdownItems}
+      />
       <Table
         getID={(row) => row.id}
         data={data}
@@ -115,7 +135,6 @@ function ViewIncidentsTable(props: Props) {
           },
         ]}
       />
-      <Dropdown direction="down" variant="secondary" text="DOWNLOAD" items={dropdownItems} />
     </>
   )
 }
