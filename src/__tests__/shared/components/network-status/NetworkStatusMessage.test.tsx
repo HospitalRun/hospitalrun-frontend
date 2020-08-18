@@ -1,3 +1,4 @@
+import { renderHook } from '@testing-library/react-hooks'
 import { render, shallow } from 'enzyme'
 import React from 'react'
 
@@ -16,10 +17,9 @@ const englishTranslationsMock = {
   'networkStatus.online': 'you are back online',
 }
 
-const useTranslationReturnValue = useTranslation() as any
-useTranslationReturnValue.t = (key: keyof typeof englishTranslationsMock) =>
-  englishTranslationsMock[key]
-const { t } = useTranslationReturnValue
+const { result } = renderHook(() => useTranslation() as any)
+result.current.t = (key: keyof typeof englishTranslationsMock) => englishTranslationsMock[key]
+const { t } = result.current
 
 describe('NetworkStatusMessage', () => {
   it('returns null if the app has always been online', () => {
