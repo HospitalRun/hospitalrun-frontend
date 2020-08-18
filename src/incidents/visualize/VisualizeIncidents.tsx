@@ -46,6 +46,7 @@ const VisualizeIncidents = () => {
     if (data === undefined || isLoading) {
       console.log('data is undefined')
     } else {
+      console.log('data:', data)
       let incidentMonth: string
       const totalIncidents: number = data.length
       for (let incident = 0; incident < totalIncidents; incident += 1) {
@@ -57,7 +58,7 @@ const VisualizeIncidents = () => {
         console.log('incidentMonth: ', incidentMonth)
       }
     }
-  }, [])
+  }, [data])
 
   //   if (data === undefined || isLoading) {
   //     return <Spinner type="DotLoader" loading />
