@@ -78,6 +78,7 @@ export default {
       diagnosisDate: 'Diagnosis Date',
       onsetDate: 'Onset Date',
       abatementDate: 'Abatement Date',
+      visit: 'Visit',
       status: 'Status',
       active: 'Active',
       recurrence: 'Recurrence',
