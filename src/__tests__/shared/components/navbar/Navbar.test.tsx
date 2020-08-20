@@ -53,9 +53,18 @@ describe('Navbar', () => {
     Permissions.CompleteLab,
     Permissions.ViewLab,
     Permissions.ViewLabs,
+    Permissions.RequestMedication,
+    Permissions.CancelMedication,
+    Permissions.CompleteMedication,
+    Permissions.ViewMedication,
+    Permissions.ViewMedications,
     Permissions.ViewIncidents,
     Permissions.ViewIncident,
     Permissions.ReportIncident,
+    Permissions.AddVisit,
+    Permissions.ReadVisits,
+    Permissions.RequestImaging,
+    Permissions.ViewImagings,
   ]
 
   describe('hamberger', () => {
@@ -78,7 +87,7 @@ describe('Navbar', () => {
     })
 
     it('should not show an item if user does not have a permission', () => {
-      // exclude labs and incidents permissions
+      // exclude labs, incidents, and imagings permissions
       const wrapper = setup(cloneDeep(allPermissions).slice(0, 6))
       const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
       const hamberger = hospitalRunNavbar.find('.nav-hamberger')
@@ -89,6 +98,10 @@ describe('Navbar', () => {
         'labs.requests.label',
         'incidents.reports.new',
         'incidents.reports.label',
+        'medications.requests.new',
+        'medications.requests.label',
+        'imagings.requests.new',
+        'imagings.requests.label',
       ]
 
       children.forEach((option: any) => {
@@ -151,6 +164,7 @@ describe('Navbar', () => {
       children.forEach((option: any) => {
         expect(option.props.children).not.toEqual('labs.requests.new')
         expect(option.props.children).not.toEqual('incidents.requests.new')
+        expect(option.props.children).not.toEqual('imagings.requests.new')
       })
     })
   })

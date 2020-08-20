@@ -8,11 +8,13 @@ import { AppThunk } from '../shared/store'
 interface PatientsState {
   isLoading: boolean
   patients: Patient[]
+  count: number
 }
 
 const initialState: PatientsState = {
   isLoading: false,
   patients: [],
+  count: 0,
 }
 
 function startLoading(state: PatientsState) {
@@ -28,9 +30,13 @@ const patientsSlice = createSlice({
       state.isLoading = false
       state.patients = payload
     },
+    fetchCountSuccess(state, { payload }: PayloadAction<number>) {
+      state.count = payload
+    },
   },
 })
-export const { fetchPatientsStart, fetchPatientsSuccess } = patientsSlice.actions
+
+export const { fetchPatientsStart, fetchPatientsSuccess, fetchCountSuccess } = patientsSlice.actions
 
 export const fetchPatients = (sortRequest: SortRequest = Unsorted): AppThunk => async (
   dispatch,
@@ -40,20 +46,17 @@ export const fetchPatients = (sortRequest: SortRequest = Unsorted): AppThunk => 
   dispatch(fetchPatientsSuccess(patients))
 }
 
-export const searchPatients = (
-  searchString: string,
-  sortRequest: SortRequest = Unsorted,
-): AppThunk => async (dispatch) => {
+export const searchPatients = (searchString: string): AppThunk => async (dispatch) => {
   dispatch(fetchPatientsStart())
 
-  console.log(sortRequest)
   let patients
   if (searchString.trim() === '') {
     patients = await PatientRepository.findAll()
   } else {
     patients = await PatientRepository.search(searchString)
   }
-
+  const count = await PatientRepository.count()
+  dispatch(fetchCountSuccess(count))
   dispatch(fetchPatientsSuccess(patients))
 }
 

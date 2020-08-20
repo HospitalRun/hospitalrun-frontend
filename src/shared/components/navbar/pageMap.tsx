@@ -47,6 +47,18 @@ const pageMap: {
     path: '/labs',
     icon: 'lab',
   },
+  newMedication: {
+    permission: Permissions.RequestMedication,
+    label: 'medications.requests.new',
+    path: '/medications/new',
+    icon: 'add',
+  },
+  viewMedications: {
+    permission: Permissions.ViewMedications,
+    label: 'medications.requests.label',
+    path: '/medications',
+    icon: 'medication',
+  },
   newIncident: {
     permission: Permissions.ReportIncident,
     label: 'incidents.reports.new',
@@ -58,6 +70,30 @@ const pageMap: {
     label: 'incidents.reports.label',
     path: '/incidents',
     icon: 'incident',
+  },
+  newVisit: {
+    permission: Permissions.AddVisit,
+    label: 'visits.visit.new',
+    path: '/visits',
+    icon: 'add',
+  },
+  viewVisits: {
+    permission: Permissions.ReadVisits,
+    label: 'visits.visit.label',
+    path: '/visits',
+    icon: 'visit',
+  },
+  newImaging: {
+    permission: Permissions.RequestImaging,
+    label: 'imagings.requests.new',
+    path: '/imaging/new',
+    icon: 'add',
+  },
+  viewImagings: {
+    permission: Permissions.ReadPatients,
+    label: 'imagings.requests.label',
+    path: '/imaging',
+    icon: 'image',
   },
   settings: {
     permission: null,

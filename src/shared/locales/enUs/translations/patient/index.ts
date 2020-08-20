@@ -55,6 +55,10 @@ export default {
     },
     appointments: {
       new: 'Add Appointment',
+      warning: {
+        noAppointments: 'No Appointments',
+      },
+      addAppointmentAbove: 'Add an appointment using the button above.',
     },
     allergies: {
       label: 'Allergies',
@@ -75,6 +79,16 @@ export default {
       new: 'Add Diagnosis',
       diagnosisName: 'Diagnosis Name',
       diagnosisDate: 'Diagnosis Date',
+      onsetDate: 'Onset Date',
+      abatementDate: 'Abatement Date',
+      status: 'Status',
+      active: 'Active',
+      recurrence: 'Recurrence',
+      relapse: 'Relapse',
+      inactive: 'Inactive',
+      remission: 'Remission',
+      resolved: 'Resolved',
+      note: 'Note',
       warning: {
         noDiagnoses: 'No Diagnoses',
       },
@@ -127,6 +141,33 @@ export default {
         intentRequired: 'Intent is required.',
         startDate: 'Start date is required.',
         endDate: 'End date is required',
+      },
+    },
+    carePlans: {
+      warning: {
+        noCarePlans: 'No Care Plans',
+        addCarePlanAbove: 'Add a care plan using the button above.',
+      },
+    },
+    visit: 'Visit',
+    visits: {
+      new: 'Add Visit',
+      label: 'Visits',
+      startDateTime: 'Start Date',
+      endDateTime: 'End Date',
+      type: 'Type',
+      status: 'Status',
+      reason: 'Reason',
+      location: 'Location',
+      error: {
+        unableToAdd: 'Unable to add a new visit.',
+        startDateRequired: 'Start date is required.',
+        endDateRequired: 'End date is required',
+        endDateMustBeAfterStartDate: 'End date must be after start date',
+        typeRequired: 'Type is required.',
+        statusRequired: 'Status is required.',
+        reasonRequired: 'Reason is required.',
+        locationRequired: 'Location is required.',
       },
     },
     types: {

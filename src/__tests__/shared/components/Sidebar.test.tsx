@@ -29,9 +29,18 @@ describe('Sidebar', () => {
     Permissions.CompleteLab,
     Permissions.ViewLab,
     Permissions.ViewLabs,
+    Permissions.RequestMedication,
+    Permissions.CompleteMedication,
+    Permissions.CancelMedication,
+    Permissions.ViewMedications,
+    Permissions.ViewMedication,
     Permissions.ViewIncidents,
     Permissions.ViewIncident,
     Permissions.ReportIncident,
+    Permissions.ReadVisits,
+    Permissions.AddVisit,
+    Permissions.RequestImaging,
+    Permissions.ViewImagings,
   ]
   const store = mockStore({
     components: { sidebarCollapsed: false },
@@ -530,6 +539,224 @@ describe('Sidebar', () => {
       })
 
       expect(history.location.pathname).toEqual('/incidents')
+    })
+  })
+
+  describe('imagings links', () => {
+    it('should render the main imagings link', () => {
+      const wrapper = setup('/imaging')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(7).text().trim()).toEqual('imagings.label')
+    })
+
+    it('should render the new imaging request link', () => {
+      const wrapper = setup('/imagings')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(8).text().trim()).toEqual('imagings.requests.new')
+    })
+
+    it('should not render the new imaging request link when user does not have the request imaging privileges', () => {
+      const wrapper = setupNoPermissions('/imagings')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('imagings.requests.new')
+      })
+    })
+
+    it('should render the imagings list link', () => {
+      const wrapper = setup('/imagings')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(9).text().trim()).toEqual('imagings.requests.label')
+    })
+
+    it('should not render the imagings list link when user does not have the view imagings privileges', () => {
+      const wrapper = setupNoPermissions('/imagings')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('imagings.requests.label')
+      })
+    })
+
+    it('main imagings link should be active when the current path is /imagings', () => {
+      const wrapper = setup('/imagings')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(7).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /imaging when the main imagings link is clicked', () => {
+      const wrapper = setup('/')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(7).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/imaging')
+    })
+
+    it('new imaging request link should be active when the current path is /imagings/new', () => {
+      const wrapper = setup('/imagings/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(8).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /imaging/new when the new imaging link is clicked', () => {
+      const wrapper = setup('/imagings')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(8).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/imaging/new')
+    })
+
+    it('imagings list link should be active when the current path is /imagings', () => {
+      const wrapper = setup('/imagings')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(7).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /imaging when the imagings list link is clicked', () => {
+      const wrapper = setup('/imagings/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(7).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/imaging')
+    })
+  })
+
+  describe('medications links', () => {
+    it('should render the main medications link', () => {
+      const wrapper = setup('/medications')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(6).text().trim()).toEqual('medications.label')
+    })
+
+    it('should render the new medications request link', () => {
+      const wrapper = setup('/medications')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(7).text().trim()).toEqual('medications.requests.new')
+    })
+
+    it('should not render the new medications request link when user does not have request medications privileges', () => {
+      const wrapper = setupNoPermissions('/medications')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('medications.requests.new')
+      })
+    })
+
+    it('should render the medications list link', () => {
+      const wrapper = setup('/medications')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(7).text().trim()).toEqual('medications.requests.new')
+    })
+
+    it('should not render the medications list link when user does not have view medications privileges', () => {
+      const wrapper = setupNoPermissions('/medications')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('medications.requests.new')
+      })
+    })
+
+    it('main medications link should be active when the current path is /medications', () => {
+      const wrapper = setup('/medications')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(6).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /medications when the main lab link is clicked', () => {
+      const wrapper = setup('/')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(6).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/medications')
+    })
+
+    it('new lab request link should be active when the current path is /medications/new', () => {
+      const wrapper = setup('/medications/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(7).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /medications/new when the new medications link is clicked', () => {
+      const wrapper = setup('/medications')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(7).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/medications/new')
+    })
+
+    it('medications list link should be active when the current path is /medications', () => {
+      const wrapper = setup('/medications')
+
+      const listItems = wrapper.find(ListItem)
+
+      expect(listItems.at(8).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /medications when the medications list link is clicked', () => {
+      const wrapper = setup('/medications/new')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(8).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/medications')
     })
   })
 })
