@@ -8,16 +8,16 @@ import validateAllergy from '../util/validate-allergy'
 
 interface AddAllergyRequest {
   patientId: string
-  allergy: Allergy
+  allergy: Omit<Allergy, 'id'>
 }
 
-async function addAllergy(request: AddAllergyRequest): Promise<Allergy> {
+async function addAllergy(request: AddAllergyRequest): Promise<Allergy[]> {
   const error = validateAllergy(request.allergy)
 
   if (isEmpty(error)) {
     const patient = await PatientRepository.find(request.patientId)
     const allergies = patient.allergies ? [...patient.allergies] : []
-    const newAllergy = {
+    const newAllergy: Allergy = {
       id: uuid(),
       ...request.allergy,
     }
@@ -28,7 +28,7 @@ async function addAllergy(request: AddAllergyRequest): Promise<Allergy> {
       allergies,
     })
 
-    return newAllergy
+    return allergies
   }
 
   throw error
@@ -36,8 +36,8 @@ async function addAllergy(request: AddAllergyRequest): Promise<Allergy> {
 
 export default function useAddAllergy() {
   return useMutation(addAllergy, {
-    onSuccess: async (_, variables) => {
-      await queryCache.invalidateQueries(['allergies', variables.patientId])
+    onSuccess: async (data, variables) => {
+      await queryCache.setQueryData(['allergies', variables.patientId], data)
     },
     throwOnError: true,
   })
