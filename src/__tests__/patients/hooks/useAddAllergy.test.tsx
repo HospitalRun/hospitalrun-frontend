@@ -42,6 +42,6 @@ describe('use add allergy', () => {
     expect(PatientRepository.find).toHaveBeenCalledTimes(1)
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedPatient)
-    expect(result).toEqual(expectedAllergy)
+    expect(result).toEqual([expectedAllergy])
   })
 })
