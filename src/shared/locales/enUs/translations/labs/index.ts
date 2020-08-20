@@ -3,6 +3,7 @@ export default {
     label: 'Labs',
     filterTitle: 'Filter by status',
     search: 'Search labs',
+    successfullyUpdated: 'Successfully updated',
     status: {
       requested: 'Requested',
       completed: 'Completed',

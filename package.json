@@ -12,7 +12,7 @@
     "bootstrap": "~4.5.0",
     "date-fns": "~2.15.0",
     "escape-string-regexp": "~4.0.0",
-    "i18next": "~19.6.0",
+    "i18next": "~19.7.0",
     "i18next-browser-languagedetector": "~6.0.0",
     "i18next-xhr-backend": "~3.2.2",
     "lodash": "^4.17.15",
