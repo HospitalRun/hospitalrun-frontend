@@ -9,62 +9,48 @@ const VisualizeIncidents = () => {
   const searchFilter = IncidentFilter.reported
   const searchRequest: IncidentSearchRequest = { status: searchFilter }
   const { data, isLoading } = useIncidents(searchRequest)
-  const [monthlyIncidents, setMonthlyIncidents] = useState({
-    January: 0,
-    February: 0,
-    March: 0,
-    April: 0,
-    May: 0,
-    June: 0,
-    July: 0,
-    August: 0,
-    September: 0,
-    November: 0,
-    December: 0,
-  })
+  const [monthlyIncidents, setMonthlyIncidents] = useState([
+    // monthlyIncidents[0] -> January ... monthlyIncidents[11] -> December
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ])
 
-  const getIncidentMonth = (reportedOn: string) => {
-    // reportedOn: "2020-08-12T19:53:30.153Z"
-    // splices the data.reportedOn string at position 5-6 to get the month
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'November',
-      'December',
-    ]
-    return months[Number(reportedOn.slice(5, 7)) - 1]
+  const handleUpdate = (incidentMonth: number) => {
+    console.log('monthlyIncidents:', monthlyIncidents)
+    const newMonthlyIncidents = [...monthlyIncidents]
+    newMonthlyIncidents[incidentMonth] += 1
+    console.log('newMonthlyIncidents: ', newMonthlyIncidents)
+    setMonthlyIncidents(newMonthlyIncidents)
   }
+
+  const getIncidentMonth = (reportedOn: string) =>
+    // reportedOn: "2020-08-12T19:53:30.153Z"
+    Number(reportedOn.slice(5, 7)) - 1
 
   useEffect(() => {
     if (data === undefined || isLoading) {
       console.log('data is undefined')
     } else {
-      console.log('data:', data)
-      let incidentMonth: string
       const totalIncidents: number = data.length
       for (let incident = 0; incident < totalIncidents; incident += 1) {
-        incidentMonth = getIncidentMonth(data[incident].reportedOn)
-        setMonthlyIncidents((state) => ({
-          ...state,
-          // incidentMonth: incidentMonth + 1,
-        }))
-        console.log('incidentMonth: ', incidentMonth)
+        const incidentMonth = getIncidentMonth(data[incident].reportedOn)
+        console.log('iteration number ', incident)
+        handleUpdate(incidentMonth)
       }
     }
   }, [data])
 
-  //   if (data === undefined || isLoading) {
-  //     return <Spinner type="DotLoader" loading />
-  //   }
-
-  console.log('August: ', monthlyIncidents.August)
+  // console.log("after updating: ", monthlyIncidents)
 
   return (
     <>
