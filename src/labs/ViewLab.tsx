@@ -69,7 +69,7 @@ const ViewLab = () => {
       Toast(
         'success',
         t('states.success'),
-        `${t('labs.successfullyUpdated')} ${update.type} ${patient?.fullName}`,
+        `${t('labs.successfullyUpdated')} ${update.type} for ${patient?.fullName}`,
       )
     }
     if (labToView) {

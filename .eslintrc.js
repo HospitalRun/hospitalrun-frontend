@@ -6,6 +6,7 @@ module.exports = {
     'jest/globals': true,
   },
   extends: [
+    'react-app',
     'airbnb',
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
