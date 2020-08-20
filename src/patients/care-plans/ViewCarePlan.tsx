@@ -1,29 +1,29 @@
-import findLast from 'lodash/findLast'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import CarePlan from '../../shared/model/CarePlan'
-import { RootState } from '../../shared/store'
+import Loading from '../../shared/components/Loading'
+import useCarePlan from '../hooks/useCarePlan'
+import usePatient from '../hooks/usePatient'
 import CarePlanForm from './CarePlanForm'
 
 const ViewCarePlan = () => {
-  const { patient } = useSelector((root: RootState) => root.patient)
-  const { carePlanId } = useParams()
+  const { carePlanId, id: patientId } = useParams()
+  const { data: patient, status: patientStatus } = usePatient(patientId)
+  const { data: carePlan, status: carePlanStatus } = useCarePlan(patientId, carePlanId)
 
-  const [carePlan, setCarePlan] = useState<CarePlan | undefined>()
-
-  useEffect(() => {
-    if (patient && carePlanId) {
-      const currentCarePlan = findLast(patient.carePlans, (c: CarePlan) => c.id === carePlanId)
-      setCarePlan(currentCarePlan)
-    }
-  }, [setCarePlan, carePlanId, patient])
+  if (
+    patient === undefined ||
+    carePlan === undefined ||
+    patientStatus === 'loading' ||
+    carePlanStatus === 'loading'
+  ) {
+    return <Loading />
+  }
 
   if (carePlan) {
     return (
       <>
-        <h2>{carePlan?.title}</h2>
+        <h2>{carePlan.title}</h2>
         <CarePlanForm patient={patient} carePlan={carePlan} disabled />
       </>
     )

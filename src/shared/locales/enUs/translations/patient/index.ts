@@ -140,6 +140,12 @@ export default {
         endDate: 'End date is required',
       },
     },
+    carePlans: {
+      warning: {
+        noCarePlans: 'No Care Plans',
+        addCarePlanAbove: 'Add a care plan using the button above.',
+      },
+    },
     visit: 'Visit',
     visits: {
       new: 'Add Visit',
