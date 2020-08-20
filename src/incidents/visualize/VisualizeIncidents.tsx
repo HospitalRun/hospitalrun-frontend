@@ -25,32 +25,27 @@ const VisualizeIncidents = () => {
     0,
   ])
 
-  const handleUpdate = (incidentMonth: number) => {
-    console.log('monthlyIncidents:', monthlyIncidents)
-    const newMonthlyIncidents = [...monthlyIncidents]
-    newMonthlyIncidents[incidentMonth] += 1
-    console.log('newMonthlyIncidents: ', newMonthlyIncidents)
-    setMonthlyIncidents(newMonthlyIncidents)
-  }
-
   const getIncidentMonth = (reportedOn: string) =>
     // reportedOn: "2020-08-12T19:53:30.153Z"
     Number(reportedOn.slice(5, 7)) - 1
 
+  const handleUpdate = (incidentMonth: number) => {
+    const newMonthlyIncidents = [...monthlyIncidents]
+    newMonthlyIncidents[incidentMonth] += 1
+    setMonthlyIncidents(newMonthlyIncidents)
+  }
+
   useEffect(() => {
     if (data === undefined || isLoading) {
-      console.log('data is undefined')
+      // const spinner = <Spinner type="DotLoader" loading />
     } else {
       const totalIncidents: number = data.length
       for (let incident = 0; incident < totalIncidents; incident += 1) {
         const incidentMonth = getIncidentMonth(data[incident].reportedOn)
-        console.log('iteration number ', incident)
         handleUpdate(incidentMonth)
       }
     }
   }, [data])
-
-  // console.log("after updating: ", monthlyIncidents)
 
   return (
     <>
