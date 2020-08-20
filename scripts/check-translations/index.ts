@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import chalk from 'chalk'
 import { ResourceKey } from 'i18next'
 
