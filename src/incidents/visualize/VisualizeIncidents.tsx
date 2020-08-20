@@ -1,4 +1,4 @@
-import { LineGraph } from '@hospitalrun/components'
+import { LineGraph, Spinner } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
 
 import useIncidents from '../hooks/useIncidents'
@@ -10,6 +10,7 @@ const VisualizeIncidents = () => {
   const searchRequest: IncidentSearchRequest = { status: searchFilter }
   const { data, isLoading } = useIncidents(searchRequest)
   const [incident, setIncident] = useState(0)
+  const [showGraph, setShowGraph] = useState(false)
   const [monthlyIncidents, setMonthlyIncidents] = useState([
     // monthlyIncidents[0] -> January ... monthlyIncidents[11] -> December
     0,
@@ -32,7 +33,7 @@ const VisualizeIncidents = () => {
 
   useEffect(() => {
     if (data === undefined || isLoading) {
-      // const spinner = <Spinner type="DotLoader" loading />
+      // incidents data not loaded yet, do nothing
     } else {
       const totalIncidents: number = data.length
       if (totalIncidents > incident) {
@@ -41,11 +42,16 @@ const VisualizeIncidents = () => {
           prevIncidents.map((value, index) => (index === incidentMonth ? value + 1 : value)),
         )
         setIncident(incident + 1)
+      } else if (totalIncidents === incident) {
+        // incidents data finished processing
+        setShowGraph(true)
       }
     }
   }, [data, monthlyIncidents])
 
-  return (
+  return !showGraph ? (
+    <Spinner type="DotLoader" loading />
+  ) : (
     <>
       <LineGraph
         datasets={[
@@ -55,15 +61,51 @@ const VisualizeIncidents = () => {
             data: [
               {
                 x: 'January',
-                y: 12,
+                y: monthlyIncidents[0],
               },
               {
                 x: 'February',
-                y: 11,
+                y: monthlyIncidents[1],
               },
               {
                 x: 'March',
-                y: 10,
+                y: monthlyIncidents[2],
+              },
+              {
+                x: 'April',
+                y: monthlyIncidents[3],
+              },
+              {
+                x: 'May',
+                y: monthlyIncidents[4],
+              },
+              {
+                x: 'June',
+                y: monthlyIncidents[5],
+              },
+              {
+                x: 'July',
+                y: monthlyIncidents[6],
+              },
+              {
+                x: 'August',
+                y: monthlyIncidents[7],
+              },
+              {
+                x: 'September',
+                y: monthlyIncidents[8],
+              },
+              {
+                x: 'October',
+                y: monthlyIncidents[9],
+              },
+              {
+                x: 'November',
+                y: monthlyIncidents[10],
+              },
+              {
+                x: 'December',
+                y: monthlyIncidents[11],
               },
             ],
             label: 'Incidents',
