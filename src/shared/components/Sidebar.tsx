@@ -421,10 +421,10 @@ const Sidebar = () => {
           {getDashboardLink()}
           {getPatientLinks()}
           {getAppointmentLinks()}
-          {getLabLinks()}
-          {getIncidentLinks()}
           {getMedicationLinks()}
+          {getLabLinks()}
           {getImagingLinks()}
+          {getIncidentLinks()}
         </List>
       </div>
     </nav>
