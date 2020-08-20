@@ -9,6 +9,7 @@ const VisualizeIncidents = () => {
   const searchFilter = IncidentFilter.reported
   const searchRequest: IncidentSearchRequest = { status: searchFilter }
   const { data, isLoading } = useIncidents(searchRequest)
+  const [incident, setIncident] = useState(0)
   const [monthlyIncidents, setMonthlyIncidents] = useState([
     // monthlyIncidents[0] -> January ... monthlyIncidents[11] -> December
     0,
@@ -29,23 +30,20 @@ const VisualizeIncidents = () => {
     // reportedOn: "2020-08-12T19:53:30.153Z"
     Number(reportedOn.slice(5, 7)) - 1
 
-  const handleUpdate = (incidentMonth: number) => {
-    const newMonthlyIncidents = [...monthlyIncidents]
-    newMonthlyIncidents[incidentMonth] += 1
-    setMonthlyIncidents(newMonthlyIncidents)
-  }
-
   useEffect(() => {
     if (data === undefined || isLoading) {
       // const spinner = <Spinner type="DotLoader" loading />
     } else {
       const totalIncidents: number = data.length
-      for (let incident = 0; incident < totalIncidents; incident += 1) {
+      if (totalIncidents > incident) {
         const incidentMonth = getIncidentMonth(data[incident].reportedOn)
-        handleUpdate(incidentMonth)
+        setMonthlyIncidents((prevIncidents) =>
+          prevIncidents.map((value, index) => (index === incidentMonth ? value + 1 : value)),
+        )
+        setIncident(incident + 1)
       }
     }
-  }, [data])
+  }, [data, monthlyIncidents])
 
   return (
     <>
