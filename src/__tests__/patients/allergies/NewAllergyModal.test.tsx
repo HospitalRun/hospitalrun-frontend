@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { Modal, Alert } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import React from 'react'

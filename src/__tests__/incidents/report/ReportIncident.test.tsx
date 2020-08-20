@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { Button } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'

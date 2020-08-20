@@ -1,21 +1,40 @@
-import { Table } from '@hospitalrun/components'
+import { Alert, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import Loading from '../../shared/components/Loading'
 import useTranslator from '../../shared/hooks/useTranslator'
-import { RootState } from '../../shared/store'
+import usePatientCarePlans from '../hooks/usePatientCarePlans'
 
-const CarePlanTable = () => {
+interface Props {
+  patientId: string
+}
+
+const CarePlanTable = (props: Props) => {
+  const { patientId } = props
   const history = useHistory()
   const { t } = useTranslator()
-  const { patient } = useSelector((state: RootState) => state.patient)
+  const { data, status } = usePatientCarePlans(patientId)
+
+  if (data === undefined || status === 'loading') {
+    return <Loading />
+  }
+
+  if (data.length === 0) {
+    return (
+      <Alert
+        color="warning"
+        title={t('patient.carePlans.warning.noCarePlans')}
+        message={t('patient.carePlans.warning.addCarePlanAbove')}
+      />
+    )
+  }
 
   return (
     <Table
       getID={(row) => row.id}
-      data={patient.carePlans || []}
+      data={data}
       columns={[
         { label: t('patient.carePlan.title'), key: 'title' },
         {
@@ -34,7 +53,7 @@ const CarePlanTable = () => {
       actions={[
         {
           label: 'actions.view',
-          action: (row) => history.push(`/patients/${patient.id}/care-plans/${row.id}`),
+          action: (row) => history.push(`/patients/${patientId}/care-plans/${row.id}`),
         },
       ]}
     />
