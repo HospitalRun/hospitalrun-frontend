@@ -11,21 +11,7 @@ const VisualizeIncidents = () => {
   const { data, isLoading } = useIncidents(searchRequest)
   const [incident, setIncident] = useState(0)
   const [showGraph, setShowGraph] = useState(false)
-  const [monthlyIncidents, setMonthlyIncidents] = useState([
-    // monthlyIncidents[0] -> January ... monthlyIncidents[11] -> December
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-  ])
+  const [monthlyIncidents, setMonthlyIncidents] = useState(Array(12).fill(0))
 
   const getIncidentMonth = (reportedOn: string) =>
     // reportedOn: "2020-08-12T19:53:30.153Z"
