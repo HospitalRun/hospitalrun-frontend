@@ -90,7 +90,7 @@ describe('New Imaging Request', () => {
       const wrapper = await setup('loading', {})
       const visitsTypeSelect = wrapper.find('.visits').find(SelectWithLabelFormGroup)
       expect(visitsTypeSelect).toBeDefined()
-      expect(visitsTypeSelect.prop('label')).toEqual('imagings.imaging.visit')
+      expect(visitsTypeSelect.prop('label')).toEqual('patient.visits.label')
       expect(visitsTypeSelect.prop('isRequired')).toBeTruthy()
     })
 

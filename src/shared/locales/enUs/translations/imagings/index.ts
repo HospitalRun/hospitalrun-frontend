@@ -25,7 +25,6 @@ export default {
       code: 'Imaging Code',
       status: 'Status',
       type: 'Type',
-      visit: 'Visit Type',
       notes: 'Notes',
       requestedOn: 'Requested On',
       completedOn: 'Completed On',

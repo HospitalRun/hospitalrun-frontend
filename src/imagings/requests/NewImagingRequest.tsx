@@ -152,7 +152,7 @@ const NewImagingRequest = () => {
             <div className="visits">
               <SelectWithLabelFormGroup
                 name="visit"
-                label={t('imagings.imaging.visit')}
+                label={t('patient.visits.label')}
                 isRequired
                 isEditable={newImagingRequest.patient !== undefined}
                 options={visitOption || []}
