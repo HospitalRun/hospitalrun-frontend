@@ -1,12 +1,9 @@
-import { addDays, subDays } from 'date-fns'
+import { addDays } from 'date-fns'
 import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import patient, {
-  addAllergy,
-  addAllergyError,
-  addCarePlan,
   addDiagnosis,
   addDiagnosisError,
   addRelatedPerson,
@@ -23,11 +20,8 @@ import patient, {
   updatePatientError,
   updatePatientStart,
   updatePatientSuccess,
-  addCarePlanError,
 } from '../../patients/patient-slice'
 import PatientRepository from '../../shared/db/PatientRepository'
-import Allergy from '../../shared/model/Allergy'
-import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../shared/model/CarePlan'
 import Diagnosis, { DiagnosisStatus } from '../../shared/model/Diagnosis'
 import Patient from '../../shared/model/Patient'
 import RelatedPerson from '../../shared/model/RelatedPerson'
@@ -594,141 +588,6 @@ describe('patients slice', () => {
       await store.dispatch(addDiagnosis('some id', expectedDiagnosis, onSuccessSpy))
 
       expect(store.getActions()[0]).toEqual(addDiagnosisError(expectedError))
-      expect(onSuccessSpy).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('add allergy', () => {
-    it('should add the allergy to the patient with the given id', async () => {
-      const expectedAllergyId = 'expected id'
-      const store = mockStore()
-      const expectedPatientId = '123'
-
-      const expectedPatient = {
-        id: expectedPatientId,
-        givenName: 'some name',
-      } as Patient
-
-      const expectedAllergy = {
-        name: 'allergy name',
-      } as Allergy
-
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        allergies: [{ ...expectedAllergy, id: expectedAllergyId }],
-      } as Patient
-
-      const findPatientSpy = jest
-        .spyOn(PatientRepository, 'find')
-        .mockResolvedValue(expectedPatient)
-      jest.spyOn(uuid, 'uuid').mockReturnValue(expectedAllergyId)
-      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(addAllergy(expectedPatientId, expectedAllergy, onSuccessSpy))
-
-      expect(findPatientSpy).toHaveBeenCalledWith(expectedPatientId)
-      expect(store.getActions()[1]).toEqual(updatePatientSuccess(expectedUpdatedPatient))
-      expect(onSuccessSpy).toHaveBeenCalledWith(expectedUpdatedPatient)
-    })
-
-    it('should validate the allergy', async () => {
-      const expectedError = {
-        message: 'patient.allergies.error.unableToAdd',
-        name: 'patient.allergies.error.nameRequired',
-      }
-      const store = mockStore()
-      const expectedAllergy = {} as Allergy
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(addAllergy('some id', expectedAllergy, onSuccessSpy))
-
-      expect(store.getActions()[0]).toEqual(addAllergyError(expectedError))
-      expect(onSuccessSpy).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('add care plan', () => {
-    it('should add a care plan', async () => {
-      const expectedCarePlanId = 'expected id'
-      const store = mockStore()
-      const expectedPatientId = '123'
-
-      const expectedPatient = {
-        id: expectedPatientId,
-        givenName: 'some name',
-      } as Patient
-
-      const expectedCarePlan = {
-        id: 'some id',
-        title: 'care plan title',
-        description: 'care plan description',
-        status: CarePlanStatus.Completed,
-        intent: CarePlanIntent.Proposal,
-        startDate: new Date().toISOString(),
-        endDate: new Date().toISOString(),
-        createdOn: new Date(Date.now()).toISOString(),
-        diagnosisId: 'some diagnosis id',
-        note: 'care plan note',
-      } as CarePlan
-
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        carePlans: [{ ...expectedCarePlan, id: expectedCarePlanId }],
-      } as Patient
-
-      const findPatientSpy = jest
-        .spyOn(PatientRepository, 'find')
-        .mockResolvedValue(expectedPatient)
-      jest.spyOn(uuid, 'uuid').mockReturnValue(expectedCarePlanId)
-      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(addCarePlan(expectedPatientId, expectedCarePlan, onSuccessSpy))
-
-      expect(findPatientSpy).toHaveBeenCalledWith(expectedPatientId)
-      expect(store.getActions()[1]).toEqual(updatePatientSuccess(expectedUpdatedPatient))
-      expect(onSuccessSpy).toHaveBeenCalledWith(expectedUpdatedPatient)
-    })
-
-    it('should validate the required fields', async () => {
-      const expectedError = {
-        message: 'patient.carePlan.error.unableToAdd',
-        title: 'patient.carePlan.error.titleRequired',
-        description: 'patient.carePlan.error.descriptionRequired',
-        status: 'patient.carePlan.error.statusRequired',
-        intent: 'patient.carePlan.error.intentRequired',
-        startDate: 'patient.carePlan.error.startDateRequired',
-        endDate: 'patient.carePlan.error.endDateRequired',
-        condition: 'patient.carePlan.error.conditionRequired',
-      }
-      const store = mockStore()
-      const expectedCarePlan = {} as CarePlan
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(addCarePlan('some id', expectedCarePlan, onSuccessSpy))
-
-      expect(store.getActions()[0]).toEqual(addCarePlanError(expectedError))
-      expect(onSuccessSpy).not.toHaveBeenCalled()
-    })
-
-    it('should validate that start date is before end date', async () => {
-      const store = mockStore()
-      const expectedCarePlan = {
-        startDate: new Date().toISOString(),
-        endDate: subDays(new Date(), 1).toISOString(),
-      } as CarePlan
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(addCarePlan('some id', expectedCarePlan, onSuccessSpy))
-
-      expect(store.getActions()[0]).toEqual(
-        addCarePlanError(
-          expect.objectContaining({
-            endDate: 'patient.carePlan.error.endDateMustBeAfterStartDate',
-          }),
-        ),
-      )
       expect(onSuccessSpy).not.toHaveBeenCalled()
     })
   })
