@@ -26,14 +26,7 @@ if (process.env.NODE_ENV === 'test') {
   })
 
   localDb = new PouchDB('local_hospitalrun')
-  localDb
-    .sync(serverDb, { live: true, retry: true })
-    .on('change', (info) => {
-      console.log(info)
-    })
-    .on('error', (info) => {
-      console.error(info)
-    })
+  localDb.sync(serverDb, { live: true, retry: true })
 }
 
 export const schema = [

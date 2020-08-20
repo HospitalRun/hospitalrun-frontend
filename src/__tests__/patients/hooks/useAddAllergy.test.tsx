@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import useAddAllergy from '../../../patients/hooks/useAddAllergy'
 import * as validateAllergy from '../../../patients/util/validate-allergy'
 import PatientRepository from '../../../shared/db/PatientRepository'
