@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Allergy from '../../shared/model/Allergy'
 import useAddAllergy from '../hooks/useAddAllergy'
 import { AllergyError } from '../util/validate-allergy'
 
@@ -32,7 +31,7 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
 
   const onSaveButtonClick = async () => {
     try {
-      await mutate({ patientId, allergy: allergy as Allergy })
+      await mutate({ patientId, allergy })
       onCloseButtonClick()
     } catch (e) {
       setAllergyError(e)
