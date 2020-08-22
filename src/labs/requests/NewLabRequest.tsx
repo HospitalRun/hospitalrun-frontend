@@ -24,7 +24,7 @@ const NewLabRequest = () => {
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
     type: '',
-    notes: '',
+    notes: [''],
     status: 'requested',
   })
 
@@ -60,7 +60,7 @@ const NewLabRequest = () => {
     const notes = event.currentTarget.value
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
-      notes,
+      notes: [notes],
     }))
   }
 
@@ -114,7 +114,7 @@ const NewLabRequest = () => {
             name="labNotes"
             label={t('labs.lab.notes')}
             isEditable
-            value={newLabRequest.notes}
+            value={newLabRequest.notes[0]}
             onChange={onNoteChange}
           />
         </div>
