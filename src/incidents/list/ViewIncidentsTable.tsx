@@ -1,10 +1,10 @@
 import { Spinner, Table, Dropdown } from '@hospitalrun/components'
 import format from 'date-fns/format'
-import { Parser } from 'json2csv'
 import React from 'react'
 import { useHistory } from 'react-router'
 
 import useTranslator from '../../shared/hooks/useTranslator'
+import { DownloadLink, getCSV } from '../../shared/util/DataHelpers'
 import { extractUsername } from '../../shared/util/extractUsername'
 import useIncidents from '../hooks/useIncidents'
 import IncidentSearchRequest from '../model/IncidentSearchRequest'
@@ -50,10 +50,7 @@ function ViewIncidentsTable(props: Props) {
   function downloadCSV() {
     populateExportData()
 
-    const fields = Object.keys(exportData[0])
-    const opts = { fields }
-    const parser = new Parser(opts)
-    const csv = parser.parse(exportData)
+    const csv = getCSV(exportData)
 
     const incidentsText = t('incidents.label')
 
@@ -62,17 +59,7 @@ function ViewIncidentsTable(props: Props) {
       .concat(format(new Date(Date.now()), 'yyyy-MM-dd--hh-mma'))
       .concat('.csv')
 
-    const text = csv
-    const element = document.createElement('a')
-    element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`)
-    element.setAttribute('download', filename)
-
-    element.style.display = 'none'
-    document.body.appendChild(element)
-
-    element.click()
-
-    document.body.removeChild(element)
+    DownloadLink(csv, filename)
   }
 
   const dropdownItems = [
