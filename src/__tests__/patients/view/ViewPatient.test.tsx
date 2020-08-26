@@ -96,9 +96,7 @@ describe('ViewPatient', () => {
 
     await setup()
 
-    expect(titleUtil.default).toHaveBeenCalledWith(
-      `${patient.givenName} ${patient.familyName} ${patient.suffix} (${patient.code})`,
-    )
+    expect(titleUtil.default).toHaveBeenCalledWith(`patient.label`)
   })
 
   it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', async () => {

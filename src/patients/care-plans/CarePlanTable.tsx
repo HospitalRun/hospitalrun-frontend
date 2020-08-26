@@ -52,7 +52,7 @@ const CarePlanTable = (props: Props) => {
       actionsHeaderText={t('actions.label')}
       actions={[
         {
-          label: 'actions.view',
+          label: t('actions.view'),
           action: (row) => history.push(`/patients/${patientId}/care-plans/${row.id}`),
         },
       ]}
