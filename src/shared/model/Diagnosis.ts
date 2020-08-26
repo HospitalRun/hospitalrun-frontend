@@ -15,4 +15,5 @@ export default interface Diagnosis {
   abatementDate: string
   status: DiagnosisStatus
   note: string
+  visit: string
 }
