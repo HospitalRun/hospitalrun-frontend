@@ -107,7 +107,7 @@
     "rimraf": "~3.0.2",
     "source-map-explorer": "^2.2.2",
     "standard-version": "~9.0.0",
-    "ts-jest": "~26.2.0"
+    "ts-jest": "~26.3.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
