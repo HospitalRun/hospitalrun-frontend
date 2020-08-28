@@ -13,6 +13,7 @@ import settings from './settings'
 import sex from './sex'
 import states from './states'
 import user from './user'
+import visits from './visits'
 
 export default {
   ...actions,
@@ -30,4 +31,5 @@ export default {
   ...user,
   ...bloodType,
   ...imagings,
+  ...visits,
 }

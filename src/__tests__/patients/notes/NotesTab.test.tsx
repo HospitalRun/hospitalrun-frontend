@@ -74,27 +74,4 @@ describe('Notes Tab', () => {
       expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
     })
   })
-
-  describe('notes list', () => {
-    it('should list the patients diagnoses', () => {
-      const notes = expectedPatient.notes as Note[]
-      const wrapper = setup()
-
-      const list = wrapper.find(components.List)
-      const listItems = wrapper.find(components.ListItem)
-
-      expect(list).toHaveLength(1)
-      expect(listItems).toHaveLength(notes.length)
-    })
-
-    it('should render a warning message if the patient does not have any diagnoses', () => {
-      const wrapper = setup({ ...expectedPatient, notes: [] })
-
-      const alert = wrapper.find(components.Alert)
-
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('title')).toEqual('patient.notes.warning.noNotes')
-      expect(alert.prop('message')).toEqual('patient.notes.addNoteAbove')
-    })
-  })
 })
