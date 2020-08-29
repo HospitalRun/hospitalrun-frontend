@@ -45,26 +45,35 @@ const history = createMemoryHistory()
 
 let store: any
 
-const setup = (patient = expectedPatient, appointments = expectedAppointments) => {
+const setup = async (patient = expectedPatient, appointments = expectedAppointments) => {
   jest.resetAllMocks()
   jest.spyOn(PatientRepository, 'getAppointments').mockResolvedValue(appointments)
   store = mockStore({ patient, appointments: { appointments } } as any)
-  const wrapper = mount(
-    <Router history={history}>
-      <Provider store={store}>
-        <AppointmentsList patientId={patient.id} />
-      </Provider>
-    </Router>,
-  )
+
+  let wrapper: any
+
+  await act(async () => {
+    wrapper = await mount(
+      <Router history={history}>
+        <Provider store={store}>
+          <AppointmentsList patientId={patient.id} />
+        </Provider>
+      </Router>,
+    )
+  })
+
+  wrapper.update()
+
   return wrapper
 }
 
 describe('AppointmentsList', () => {
   describe('Table', () => {
-    it('should render a list of appointments', () => {
-      const wrapper = setup()
+    it('should render a list of appointments', async () => {
+      const wrapper = await setup()
 
       const table = wrapper.find(Table)
+
       const columns = table.prop('columns')
       const actions = table.prop('actions') as any
 
@@ -91,7 +100,7 @@ describe('AppointmentsList', () => {
     })
 
     it('should navigate to appointment profile on appointment click', async () => {
-      const wrapper = setup()
+      const wrapper = await setup()
       const tr = wrapper.find('tr').at(1)
 
       act(() => {
@@ -104,8 +113,8 @@ describe('AppointmentsList', () => {
   })
 
   describe('Empty list', () => {
-    it('should render a warning message if there are no appointments', () => {
-      const wrapper = setup(expectedPatient, [])
+    it('should render a warning message if there are no appointments', async () => {
+      const wrapper = await setup(expectedPatient, [])
       const alert = wrapper.find(components.Alert)
 
       expect(alert).toHaveLength(1)
@@ -115,8 +124,8 @@ describe('AppointmentsList', () => {
   })
 
   describe('New appointment button', () => {
-    it('should render a new appointment button', () => {
-      const wrapper = setup()
+    it('should render a new appointment button', async () => {
+      const wrapper = await setup()
 
       const addNewAppointmentButton = wrapper.find(components.Button).at(0)
       expect(addNewAppointmentButton).toHaveLength(1)
@@ -124,7 +133,7 @@ describe('AppointmentsList', () => {
     })
 
     it('should navigate to new appointment page', async () => {
-      const wrapper = setup()
+      const wrapper = await setup()
 
       await act(async () => {
         await wrapper.find(components.Button).at(0).simulate('click')
