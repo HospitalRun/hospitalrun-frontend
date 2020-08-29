@@ -1,24 +1,24 @@
 import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
-import useAddPatientNote from '../hooks/useAddPatientNote'
-import { NoteError } from '../util/validate-note'
+import Note from '../../shared/model/Note'
+import { RootState } from '../../shared/store'
+import { addNote } from '../patient-slice'
 
 interface Props {
   show: boolean
   toggle: () => void
   onCloseButtonClick: () => void
-  patientId: string
 }
 
 const NewNoteModal = (props: Props) => {
-  const { show, toggle, onCloseButtonClick, patientId } = props
+  const { show, toggle, onCloseButtonClick } = props
+  const dispatch = useDispatch()
+  const { patient, noteError } = useSelector((state: RootState) => state.patient)
   const { t } = useTranslator()
-  const [mutate] = useAddPatientNote()
-
-  const [noteError, setNoteError] = useState<NoteError | undefined>(undefined)
   const [note, setNote] = useState({
     text: '',
   })
@@ -35,25 +35,14 @@ const NewNoteModal = (props: Props) => {
     onFieldChange('text', text)
   }
 
-  const onSaveButtonClick = async () => {
-    try {
-      // timestamp when the save button is clicked
-      const newNote = { date: new Date().toISOString(), ...note }
-      await mutate({ patientId, note: newNote })
-      onCloseButtonClick()
-    } catch (e) {
-      setNoteError(e)
-    }
+  const onSaveButtonClick = () => {
+    dispatch(addNote(patient.id, note as Note))
   }
 
   const body = (
     <form>
-      {noteError && (
-        <Alert
-          color="danger"
-          title={t('states.error')}
-          message={t('patient.notes.error.unableToAdd')}
-        />
+      {noteError?.message && (
+        <Alert color="danger" title={t('states.error')} message={t(noteError?.message || '')} />
       )}
       <div className="row">
         <div className="col-md-12">
@@ -64,8 +53,8 @@ const NewNoteModal = (props: Props) => {
               name="noteTextField"
               label={t('patient.note')}
               value={note.text}
-              isInvalid={!!noteError?.noteError}
-              feedback={t(noteError?.noteError || '')}
+              isInvalid={!!noteError?.note}
+              feedback={t(noteError?.note || '')}
               onChange={onNoteTextChange}
             />
           </div>
