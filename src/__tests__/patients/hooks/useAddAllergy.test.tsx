@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import useAddAllergy from '../../../patients/hooks/useAddAllergy'
 import * as validateAllergy from '../../../patients/util/validate-allergy'
 import PatientRepository from '../../../shared/db/PatientRepository'
@@ -42,6 +44,6 @@ describe('use add allergy', () => {
     expect(PatientRepository.find).toHaveBeenCalledTimes(1)
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(expectedPatient)
-    expect(result).toEqual(expectedAllergy)
+    expect(result).toEqual([expectedAllergy])
   })
 })

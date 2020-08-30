@@ -78,6 +78,7 @@ export default {
       diagnosisDate: 'Diagnosis Date',
       onsetDate: 'Onset Date',
       abatementDate: 'Abatement Date',
+      visit: 'Visit',
       status: 'Status',
       active: 'Active',
       recurrence: 'Recurrence',
@@ -138,6 +139,12 @@ export default {
         intentRequired: 'Intent is required.',
         startDate: 'Start date is required.',
         endDate: 'End date is required',
+      },
+    },
+    carePlans: {
+      warning: {
+        noCarePlans: 'No Care Plans',
+        addCarePlanAbove: 'Add a care plan using the button above.',
       },
     },
     visit: 'Visit',
