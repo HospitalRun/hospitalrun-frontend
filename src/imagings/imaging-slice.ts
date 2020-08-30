@@ -10,6 +10,7 @@ interface Error {
   type?: string
   status?: string
   message?: string
+  visitId?: string
 }
 
 interface ImagingState {

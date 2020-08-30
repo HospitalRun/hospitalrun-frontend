@@ -19,6 +19,7 @@ const initialDiagnosisState = {
   onsetDate: new Date().toISOString(),
   abatementDate: new Date().toISOString(),
   note: '',
+  visit: '',
 }
 
 const AddDiagnosisModal = (props: Props) => {
@@ -45,6 +46,7 @@ const AddDiagnosisModal = (props: Props) => {
       diagnosis={diagnosis}
       diagnosisError={diagnosisError}
       onChange={onDiagnosisChange}
+      patient={patient}
     />
   )
   return (

@@ -1,4 +1,5 @@
 import { Alert, Row, Column } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -9,6 +10,7 @@ import SelectWithLabelFormGroup, {
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import Diagnosis, { DiagnosisStatus } from '../../shared/model/Diagnosis'
+import Patient from '../../shared/model/Patient'
 
 interface Error {
   message?: string
@@ -19,16 +21,18 @@ interface Error {
   status?: string
   note?: string
 }
+
 interface Props {
   diagnosis: Partial<Diagnosis>
   diagnosisError?: Error
   onChange?: (newDiagnosis: Partial<Diagnosis>) => void
   disabled: boolean
+  patient: Patient
 }
 
 const DiagnosisForm = (props: Props) => {
   const { t } = useTranslation()
-  const { diagnosis, diagnosisError, disabled, onChange } = props
+  const { diagnosis, diagnosisError, disabled, onChange, patient } = props
   const [status, setStatus] = useState(diagnosis.status)
 
   const onFieldChange = (name: string, value: string | DiagnosisStatus) => {
@@ -39,6 +43,18 @@ const DiagnosisForm = (props: Props) => {
       }
       onChange(newDiagnosis)
     }
+  }
+
+  const patientVisits = patient?.visits?.map((v) => ({
+    label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd, hh:mm a')}`,
+    value: v.id,
+  })) as Option[]
+
+  const defaultSelectedVisitOption = () => {
+    if (patientVisits !== undefined) {
+      return patientVisits.filter(({ value }) => value === diagnosis.visit)
+    }
+    return []
   }
 
   const statusOptions: Option[] = Object.values(DiagnosisStatus).map((v) => ({
@@ -112,6 +128,22 @@ const DiagnosisForm = (props: Props) => {
             onChange={(date) => onFieldChange('abatementDate', date.toISOString())}
             feedback={t(diagnosisError?.abatementDate || '')}
             isInvalid={!!diagnosisError?.abatementDate}
+          />
+        </Column>
+      </Row>
+
+      <Row>
+        <Column md={12}>
+          <SelectWithLabelFormGroup
+            name="visit"
+            label={t('patient.diagnoses.visit')}
+            isRequired={false}
+            options={patientVisits || []}
+            defaultSelected={defaultSelectedVisitOption()}
+            onChange={(values) => {
+              onFieldChange('visit', values[0])
+            }}
+            isEditable={patient?.visits !== undefined}
           />
         </Column>
       </Row>
