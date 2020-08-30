@@ -86,6 +86,14 @@ describe('New Imaging Request', () => {
       expect(typeahead.prop('searchAccessor')).toEqual('fullName')
     })
 
+    it('should render a dropdown list of visits', async () => {
+      const wrapper = await setup('loading', {})
+      const visitsTypeSelect = wrapper.find('.visits').find(SelectWithLabelFormGroup)
+      expect(visitsTypeSelect).toBeDefined()
+      expect(visitsTypeSelect.prop('label')).toEqual('patient.visits.label')
+      expect(visitsTypeSelect.prop('isRequired')).toBeTruthy()
+    })
+
     it('should render a type input box', async () => {
       const wrapper = await setup('loading', {})
       const typeInputBox = wrapper.find(TextInputWithLabelFormGroup)
@@ -98,7 +106,7 @@ describe('New Imaging Request', () => {
 
     it('should render a status types select', async () => {
       const wrapper = await setup('loading', {})
-      const statusTypesSelect = wrapper.find(SelectWithLabelFormGroup)
+      const statusTypesSelect = wrapper.find('.imaging-status').find(SelectWithLabelFormGroup)
 
       expect(statusTypesSelect).toBeDefined()
       expect(statusTypesSelect.prop('label')).toEqual('imagings.imaging.status')
@@ -184,6 +192,7 @@ describe('New Imaging Request', () => {
         patient: 'patient',
         type: 'expected type',
         status: 'requested',
+        visitId: 'expected visitId',
         notes: 'expected notes',
         id: '1234',
         requestedOn: expectedDate.toISOString(),
@@ -204,10 +213,16 @@ describe('New Imaging Request', () => {
         onChange({ currentTarget: { value: expectedImaging.type } })
       })
 
-      const statusSelect = wrapper.find(SelectWithLabelFormGroup)
+      const statusSelect = wrapper.find('.imaging-status').find(SelectWithLabelFormGroup)
       act(() => {
         const onChange = statusSelect.prop('onChange') as any
         onChange({ currentTarget: { value: expectedImaging.status } })
+      })
+
+      const visitsSelect = wrapper.find('.visits').find(SelectWithLabelFormGroup)
+      act(() => {
+        const onChange = visitsSelect.prop('onChange') as any
+        onChange({ currentTarget: { value: expectedImaging.visitId } })
       })
 
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
