@@ -17,7 +17,7 @@ const AppointmentsList = (props: Props) => {
 
   const { patientId } = props
 
-  const { data } = usePatientsAppointments(patientId)
+  const { data, status } = usePatientsAppointments(patientId)
 
   const breadcrumbs = [
     {
@@ -27,6 +27,20 @@ const AppointmentsList = (props: Props) => {
   ]
 
   useAddBreadcrumbs(breadcrumbs)
+
+  if (data === undefined || status === 'loading') {
+    return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
+  }
+
+  if (data.length === 0) {
+    return (
+      <Alert
+        color="warning"
+        title={t('patient.appointments.warning.noAppointments')}
+        message={t('patient.appointments.addAppointmentAbove')}
+      />
+    )
+  }
 
   return (
     <>
@@ -46,50 +60,36 @@ const AppointmentsList = (props: Props) => {
       <br />
       <div className="row">
         <div className="col-md-12">
-          {data ? (
-            data.length > 0 ? (
-              <Table
-                data={data}
-                getID={(row) => row.id}
-                onRowClick={(row) => history.push(`/appointments/${row.id}`)}
-                columns={[
-                  {
-                    label: t('scheduling.appointment.startDate'),
-                    key: 'startDateTime',
-                    formatter: (row) =>
-                      row.startDateTime
-                        ? format(new Date(row.startDateTime), 'yyyy-MM-dd, hh:mm a')
-                        : '',
-                  },
-                  {
-                    label: t('scheduling.appointment.endDate'),
-                    key: 'endDateTime',
-                    formatter: (row) =>
-                      row.endDateTime
-                        ? format(new Date(row.endDateTime), 'yyyy-MM-dd, hh:mm a')
-                        : '',
-                  },
-                  { label: t('scheduling.appointment.location'), key: 'location' },
-                  { label: t('scheduling.appointment.type'), key: 'type' },
-                ]}
-                actionsHeaderText={t('actions.label')}
-                actions={[
-                  {
-                    label: t('actions.view'),
-                    action: (row) => history.push(`/appointments/${row.id}`),
-                  },
-                ]}
-              />
-            ) : (
-              <Alert
-                color="warning"
-                title={t('patient.appointments.warning.noAppointments')}
-                message={t('patient.appointments.addAppointmentAbove')}
-              />
-            )
-          ) : (
-            <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
-          )}
+          <Table
+            data={data}
+            getID={(row) => row.id}
+            onRowClick={(row) => history.push(`/appointments/${row.id}`)}
+            columns={[
+              {
+                label: t('scheduling.appointment.startDate'),
+                key: 'startDateTime',
+                formatter: (row) =>
+                  row.startDateTime
+                    ? format(new Date(row.startDateTime), 'yyyy-MM-dd, hh:mm a')
+                    : '',
+              },
+              {
+                label: t('scheduling.appointment.endDate'),
+                key: 'endDateTime',
+                formatter: (row) =>
+                  row.endDateTime ? format(new Date(row.endDateTime), 'yyyy-MM-dd, hh:mm a') : '',
+              },
+              { label: t('scheduling.appointment.location'), key: 'location' },
+              { label: t('scheduling.appointment.type'), key: 'type' },
+            ]}
+            actionsHeaderText={t('actions.label')}
+            actions={[
+              {
+                label: t('actions.view'),
+                action: (row) => history.push(`/appointments/${row.id}`),
+              },
+            ]}
+          />
         </div>
       </div>
     </>

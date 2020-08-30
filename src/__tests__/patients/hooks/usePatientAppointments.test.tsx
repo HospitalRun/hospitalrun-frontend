@@ -3,8 +3,8 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Appointment from '../../shared/model/Appointment'
 import executeQuery from '../../test-utils/use-query.util'
 
-describe('use patient', () => {
-  it('should return the patient', async () => {
+describe('use patient appointments', () => {
+  it(`should return the should return the patient's appointments`, async () => {
     const expectedPatientId = '123'
 
     const expectedAppointments = [

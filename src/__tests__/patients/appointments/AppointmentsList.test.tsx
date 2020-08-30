@@ -1,6 +1,6 @@
 import * as components from '@hospitalrun/components'
 import { Table } from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -64,13 +64,13 @@ const setup = async (patient = expectedPatient, appointments = expectedAppointme
 
   wrapper.update()
 
-  return wrapper
+  return { wrapper: wrapper as ReactWrapper }
 }
 
 describe('AppointmentsList', () => {
   describe('Table', () => {
     it('should render a list of appointments', async () => {
-      const wrapper = await setup()
+      const { wrapper } = await setup()
 
       const table = wrapper.find(Table)
 
@@ -100,7 +100,7 @@ describe('AppointmentsList', () => {
     })
 
     it('should navigate to appointment profile on appointment click', async () => {
-      const wrapper = await setup()
+      const { wrapper } = await setup()
       const tr = wrapper.find('tr').at(1)
 
       act(() => {
@@ -114,7 +114,7 @@ describe('AppointmentsList', () => {
 
   describe('Empty list', () => {
     it('should render a warning message if there are no appointments', async () => {
-      const wrapper = await setup(expectedPatient, [])
+      const { wrapper } = await setup(expectedPatient, [])
       const alert = wrapper.find(components.Alert)
 
       expect(alert).toHaveLength(1)
@@ -125,7 +125,7 @@ describe('AppointmentsList', () => {
 
   describe('New appointment button', () => {
     it('should render a new appointment button', async () => {
-      const wrapper = await setup()
+      const { wrapper } = await setup()
 
       const addNewAppointmentButton = wrapper.find(components.Button).at(0)
       expect(addNewAppointmentButton).toHaveLength(1)
@@ -133,7 +133,7 @@ describe('AppointmentsList', () => {
     })
 
     it('should navigate to new appointment page', async () => {
-      const wrapper = await setup()
+      const { wrapper } = await setup()
 
       await act(async () => {
         await wrapper.find(components.Button).at(0).simulate('click')
