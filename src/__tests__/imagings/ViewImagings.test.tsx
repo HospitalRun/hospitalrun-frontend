@@ -28,6 +28,7 @@ describe('View Imagings', () => {
     id: '1234',
     type: 'imaging type',
     patient: 'patient',
+    fullName: 'full name',
     status: 'requested',
     requestedOn: expectedDate.toISOString(),
     requestedBy: 'some user',
@@ -110,7 +111,7 @@ describe('View Imagings', () => {
         expect.objectContaining({ label: 'imagings.imaging.requestedOn', key: 'requestedOn' }),
       )
       expect(columns[3]).toEqual(
-        expect.objectContaining({ label: 'imagings.imaging.patient', key: 'patient' }),
+        expect.objectContaining({ label: 'imagings.imaging.patient', key: 'fullName' }),
       )
       expect(columns[4]).toEqual(
         expect.objectContaining({ label: 'imagings.imaging.requestedBy', key: 'requestedBy' }),

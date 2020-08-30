@@ -1,6 +1,6 @@
 import { ListItem } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -74,6 +74,9 @@ describe('Sidebar', () => {
       </Router>,
     )
   }
+
+  const getIndex = (wrapper: ReactWrapper, label: string) =>
+    wrapper.reduce((result, item, index) => (item.text().trim() === label ? index : result), -1)
 
   describe('dashboard links', () => {
     it('should render the dashboard link', () => {
@@ -220,61 +223,64 @@ describe('Sidebar', () => {
       const wrapper = setup('/appointments')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
 
-      expect(listItems.at(3).text().trim()).toEqual('scheduling.label')
+      expect(appointmentsIndex).not.toBe(-1)
     })
 
     it('should render the new appointment link', () => {
       const wrapper = setup('/appointments/new')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.new')
 
-      expect(listItems.at(4).text().trim()).toEqual('scheduling.appointments.new')
+      expect(appointmentsIndex).not.toBe(-1)
     })
 
     it('should not render the new appointment link when the user does not have write appointments privileges', () => {
       const wrapper = setupNoPermissions('/appointments')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.new')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('scheduling.appointments.new')
-      })
+      expect(appointmentsIndex).toBe(-1)
     })
 
     it('should render the appointments schedule link', () => {
       const wrapper = setup('/appointments')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.schedule')
 
-      expect(listItems.at(5).text().trim()).toEqual('scheduling.appointments.schedule')
+      expect(appointmentsIndex).not.toBe(-1)
     })
 
     it('should not render the appointments schedule link when the user does not have read appointments privileges', () => {
       const wrapper = setupNoPermissions('/appointments')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.schedule')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('scheduling.appointments.schedule')
-      })
+      expect(appointmentsIndex).toBe(-1)
     })
 
     it('main scheduling link should be active when the current path is /appointments', () => {
       const wrapper = setup('/appointments')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
 
-      expect(listItems.at(3).prop('active')).toBeTruthy()
+      expect(listItems.at(appointmentsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /appointments when the main scheduling link is clicked', () => {
       const wrapper = setup('/')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
 
       act(() => {
-        const onClick = listItems.at(3).prop('onClick') as any
+        const onClick = listItems.at(appointmentsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -285,17 +291,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/appointments/new')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.new')
 
-      expect(listItems.at(4).prop('active')).toBeTruthy()
+      expect(listItems.at(appointmentsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /appointments/new when the new appointment link is clicked', () => {
       const wrapper = setup('/appointments')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.new')
 
       act(() => {
-        const onClick = listItems.at(4).prop('onClick') as any
+        const onClick = listItems.at(appointmentsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -306,17 +314,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/appointments')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
 
-      expect(listItems.at(5).prop('active')).toBeTruthy()
+      expect(listItems.at(appointmentsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /appointments when the appointments schedule link is clicked', () => {
       const wrapper = setup('/appointments')
 
       const listItems = wrapper.find(ListItem)
+      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
 
       act(() => {
-        const onClick = listItems.at(5).prop('onClick') as any
+        const onClick = listItems.at(appointmentsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -329,61 +339,64 @@ describe('Sidebar', () => {
       const wrapper = setup('/labs')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.label')
 
-      expect(listItems.at(4).text().trim()).toEqual('labs.label')
+      expect(labsIndex).not.toBe(-1)
     })
 
     it('should render the new labs request link', () => {
       const wrapper = setup('/labs')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.requests.new')
 
-      expect(listItems.at(5).text().trim()).toEqual('labs.requests.new')
+      expect(labsIndex).not.toBe(-1)
     })
 
     it('should not render the new labs request link when user does not have request labs privileges', () => {
       const wrapper = setupNoPermissions('/labs')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.requests.new')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('labs.requests.new')
-      })
+      expect(labsIndex).toBe(-1)
     })
 
     it('should render the labs list link', () => {
       const wrapper = setup('/labs')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.requests.label')
 
-      expect(listItems.at(6).text().trim()).toEqual('labs.requests.label')
+      expect(labsIndex).not.toBe(-1)
     })
 
     it('should not render the labs list link when user does not have view labs privileges', () => {
       const wrapper = setupNoPermissions('/labs')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.requests.label')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('labs.requests.label')
-      })
+      expect(labsIndex).toBe(-1)
     })
 
     it('main labs link should be active when the current path is /labs', () => {
       const wrapper = setup('/labs')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.label')
 
-      expect(listItems.at(4).prop('active')).toBeTruthy()
+      expect(listItems.at(labsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /labs when the main lab link is clicked', () => {
       const wrapper = setup('/')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.label')
 
       act(() => {
-        const onClick = listItems.at(4).prop('onClick') as any
+        const onClick = listItems.at(labsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -394,17 +407,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/labs/new')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.requests.new')
 
-      expect(listItems.at(5).prop('active')).toBeTruthy()
+      expect(listItems.at(labsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /labs/new when the new labs link is clicked', () => {
       const wrapper = setup('/labs')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.requests.new')
 
       act(() => {
-        const onClick = listItems.at(5).prop('onClick') as any
+        const onClick = listItems.at(labsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -415,17 +430,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/labs')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.requests.label')
 
-      expect(listItems.at(6).prop('active')).toBeTruthy()
+      expect(listItems.at(labsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /labs when the labs list link is clicked', () => {
       const wrapper = setup('/labs/new')
 
       const listItems = wrapper.find(ListItem)
+      const labsIndex = getIndex(listItems, 'labs.requests.label')
 
       act(() => {
-        const onClick = listItems.at(6).prop('onClick') as any
+        const onClick = listItems.at(labsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -438,61 +455,85 @@ describe('Sidebar', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.label')
 
-      expect(listItems.at(5).text().trim()).toEqual('incidents.label')
+      expect(incidentsIndex).not.toBe(-1)
+    })
+
+    it('should be the last one in the sidebar', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+      const lastOne = listItems.length - 1
+
+      expect(listItems.at(lastOne).text().trim()).toBe('incidents.reports.label')
+      expect(
+        listItems
+          .at(lastOne - 1)
+          .text()
+          .trim(),
+      ).toBe('incidents.reports.new')
+      expect(
+        listItems
+          .at(lastOne - 2)
+          .text()
+          .trim(),
+      ).toBe('incidents.label')
     })
 
     it('should render the new incident report link', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.reports.new')
 
-      expect(listItems.at(6).text().trim()).toEqual('incidents.reports.new')
+      expect(incidentsIndex).not.toBe(-1)
     })
 
     it('should not render the new incident report link when user does not have the report incidents privileges', () => {
       const wrapper = setupNoPermissions('/incidents')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.reports.new')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('incidents.reports.new')
-      })
+      expect(incidentsIndex).toBe(-1)
     })
 
     it('should render the incidents list link', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
 
-      expect(listItems.at(7).text().trim()).toEqual('incidents.reports.label')
+      expect(incidentsIndex).not.toBe(-1)
     })
 
     it('should not render the incidents list link when user does not have the view incidents privileges', () => {
       const wrapper = setupNoPermissions('/incidents')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('incidents.reports.label')
-      })
+      expect(incidentsIndex).toBe(-1)
     })
 
     it('main incidents link should be active when the current path is /incidents', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.label')
 
-      expect(listItems.at(5).prop('active')).toBeTruthy()
+      expect(listItems.at(incidentsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /incidents when the main incident link is clicked', () => {
       const wrapper = setup('/')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.label')
 
       act(() => {
-        const onClick = listItems.at(5).prop('onClick') as any
+        const onClick = listItems.at(incidentsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -503,17 +544,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/incidents/new')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.reports.new')
 
-      expect(listItems.at(6).prop('active')).toBeTruthy()
+      expect(listItems.at(incidentsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /incidents/new when the new labs link is clicked', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.reports.new')
 
       act(() => {
-        const onClick = listItems.at(6).prop('onClick') as any
+        const onClick = listItems.at(incidentsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -524,17 +567,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
 
-      expect(listItems.at(7).prop('active')).toBeTruthy()
+      expect(listItems.at(incidentsIndex).prop('active')).toBeTruthy()
     })
 
-    it('should navigate to /labs when the labs list link is clicked', () => {
+    it('should navigate to /incidents when the incidents list link is clicked', () => {
       const wrapper = setup('/incidents/new')
 
       const listItems = wrapper.find(ListItem)
+      const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
 
       act(() => {
-        const onClick = listItems.at(7).prop('onClick') as any
+        const onClick = listItems.at(incidentsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -547,61 +592,64 @@ describe('Sidebar', () => {
       const wrapper = setup('/imaging')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.label')
 
-      expect(listItems.at(7).text().trim()).toEqual('imagings.label')
+      expect(imagingsIndex).not.toBe(-1)
     })
 
     it('should render the new imaging request link', () => {
       const wrapper = setup('/imagings')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.requests.new')
 
-      expect(listItems.at(8).text().trim()).toEqual('imagings.requests.new')
+      expect(imagingsIndex).not.toBe(-1)
     })
 
     it('should not render the new imaging request link when user does not have the request imaging privileges', () => {
       const wrapper = setupNoPermissions('/imagings')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.requests.new')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('imagings.requests.new')
-      })
+      expect(imagingsIndex).toBe(-1)
     })
 
     it('should render the imagings list link', () => {
       const wrapper = setup('/imagings')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.requests.label')
 
-      expect(listItems.at(9).text().trim()).toEqual('imagings.requests.label')
+      expect(imagingsIndex).not.toBe(-1)
     })
 
     it('should not render the imagings list link when user does not have the view imagings privileges', () => {
       const wrapper = setupNoPermissions('/imagings')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.requests.label')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('imagings.requests.label')
-      })
+      expect(imagingsIndex).toBe(-1)
     })
 
     it('main imagings link should be active when the current path is /imagings', () => {
       const wrapper = setup('/imagings')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.label')
 
-      expect(listItems.at(7).prop('active')).toBeTruthy()
+      expect(listItems.at(imagingsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /imaging when the main imagings link is clicked', () => {
       const wrapper = setup('/')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.label')
 
       act(() => {
-        const onClick = listItems.at(7).prop('onClick') as any
+        const onClick = listItems.at(imagingsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -612,17 +660,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/imagings/new')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.requests.new')
 
-      expect(listItems.at(8).prop('active')).toBeTruthy()
+      expect(listItems.at(imagingsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /imaging/new when the new imaging link is clicked', () => {
       const wrapper = setup('/imagings')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.requests.new')
 
       act(() => {
-        const onClick = listItems.at(8).prop('onClick') as any
+        const onClick = listItems.at(imagingsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -633,17 +683,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/imagings')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.label')
 
-      expect(listItems.at(7).prop('active')).toBeTruthy()
+      expect(listItems.at(imagingsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /imaging when the imagings list link is clicked', () => {
       const wrapper = setup('/imagings/new')
 
       const listItems = wrapper.find(ListItem)
+      const imagingsIndex = getIndex(listItems, 'imagings.label')
 
       act(() => {
-        const onClick = listItems.at(7).prop('onClick') as any
+        const onClick = listItems.at(imagingsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -656,61 +708,64 @@ describe('Sidebar', () => {
       const wrapper = setup('/medications')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.label')
 
-      expect(listItems.at(6).text().trim()).toEqual('medications.label')
+      expect(medicationsIndex).not.toBe(-1)
     })
 
     it('should render the new medications request link', () => {
       const wrapper = setup('/medications')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.requests.new')
 
-      expect(listItems.at(7).text().trim()).toEqual('medications.requests.new')
+      expect(medicationsIndex).not.toBe(-1)
     })
 
     it('should not render the new medications request link when user does not have request medications privileges', () => {
       const wrapper = setupNoPermissions('/medications')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.requests.new')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('medications.requests.new')
-      })
+      expect(medicationsIndex).toBe(-1)
     })
 
     it('should render the medications list link', () => {
       const wrapper = setup('/medications')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.requests.label')
 
-      expect(listItems.at(7).text().trim()).toEqual('medications.requests.new')
+      expect(medicationsIndex).not.toBe(-1)
     })
 
     it('should not render the medications list link when user does not have view medications privileges', () => {
       const wrapper = setupNoPermissions('/medications')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.requests.label')
 
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('medications.requests.new')
-      })
+      expect(medicationsIndex).toBe(-1)
     })
 
     it('main medications link should be active when the current path is /medications', () => {
       const wrapper = setup('/medications')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.label')
 
-      expect(listItems.at(6).prop('active')).toBeTruthy()
+      expect(listItems.at(medicationsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /medications when the main lab link is clicked', () => {
       const wrapper = setup('/')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.label')
 
       act(() => {
-        const onClick = listItems.at(6).prop('onClick') as any
+        const onClick = listItems.at(medicationsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -721,17 +776,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/medications/new')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.requests.new')
 
-      expect(listItems.at(7).prop('active')).toBeTruthy()
+      expect(listItems.at(medicationsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /medications/new when the new medications link is clicked', () => {
       const wrapper = setup('/medications')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.requests.new')
 
       act(() => {
-        const onClick = listItems.at(7).prop('onClick') as any
+        const onClick = listItems.at(medicationsIndex).prop('onClick') as any
         onClick()
       })
 
@@ -742,17 +799,19 @@ describe('Sidebar', () => {
       const wrapper = setup('/medications')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.requests.label')
 
-      expect(listItems.at(8).prop('active')).toBeTruthy()
+      expect(listItems.at(medicationsIndex).prop('active')).toBeTruthy()
     })
 
     it('should navigate to /medications when the medications list link is clicked', () => {
       const wrapper = setup('/medications/new')
 
       const listItems = wrapper.find(ListItem)
+      const medicationsIndex = getIndex(listItems, 'medications.requests.label')
 
       act(() => {
-        const onClick = listItems.at(8).prop('onClick') as any
+        const onClick = listItems.at(medicationsIndex).prop('onClick') as any
         onClick()
       })
 
