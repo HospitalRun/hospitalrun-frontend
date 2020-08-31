@@ -24,7 +24,6 @@ const NewLabRequest = () => {
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
     type: '',
-    // notes: [''],
     status: 'requested',
   })
 
