@@ -76,11 +76,7 @@ const ViewLab = () => {
     if (labToView) {
       const newLab = labToView as Lab
       if (newNotes) {
-        newLab.notes = newLab.notes
-          ? newLab.notes[0] !== ''
-            ? [...newLab.notes, newNotes]
-            : [newNotes]
-          : [newNotes]
+        newLab.notes = newLab.notes ? [...newLab.notes, newNotes] : [newNotes]
         setNewNotes('')
       }
       dispatch(updateLab(newLab, onSuccess))
