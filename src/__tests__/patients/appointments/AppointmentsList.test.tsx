@@ -124,8 +124,16 @@ describe('AppointmentsList', () => {
   })
 
   describe('New appointment button', () => {
-    it('should render a new appointment button', async () => {
+    it('should render a new appointment button if there is an appointment', async () => {
       const { wrapper } = await setup()
+
+      const addNewAppointmentButton = wrapper.find(components.Button).at(0)
+      expect(addNewAppointmentButton).toHaveLength(1)
+      expect(addNewAppointmentButton.text().trim()).toEqual('scheduling.appointments.new')
+    })
+
+    it('should render a new appointment button if there are no appointments', async () => {
+      const { wrapper } = await setup(expectedPatient, [])
 
       const addNewAppointmentButton = wrapper.find(components.Button).at(0)
       expect(addNewAppointmentButton).toHaveLength(1)
