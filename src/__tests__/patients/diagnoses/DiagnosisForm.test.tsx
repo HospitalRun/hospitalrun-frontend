@@ -6,6 +6,7 @@ import { act } from 'react-dom/test-utils'
 
 import DiagnosisForm from '../../../patients/diagnoses/DiagnosisForm'
 import Diagnosis, { DiagnosisStatus } from '../../../shared/model/Diagnosis'
+import Patient from '../../../shared/model/Patient'
 
 describe('Diagnosis Form', () => {
   let onDiagnosisChangeSpy: any
@@ -17,7 +18,13 @@ describe('Diagnosis Form', () => {
     abatementDate: new Date().toISOString(),
     status: DiagnosisStatus.Active,
     note: 'some note',
+    visit: 'some visit',
   }
+
+  const patient = {
+    givenName: 'first',
+    fullName: 'first',
+  } as Patient
 
   const setup = (disabled = false, initializeDiagnosis = true, error?: any) => {
     onDiagnosisChangeSpy = jest.fn()
@@ -27,6 +34,7 @@ describe('Diagnosis Form', () => {
         diagnosis={initializeDiagnosis ? diagnosis : {}}
         diagnosisError={error}
         disabled={disabled}
+        patient={patient}
       />,
     )
     return { wrapper }
@@ -53,6 +61,29 @@ describe('Diagnosis Form', () => {
     })
 
     expect(onDiagnosisChangeSpy).toHaveBeenCalledWith({ name: expectedNewname })
+  })
+
+  it('should render a visit selector', () => {
+    const { wrapper } = setup()
+
+    const visitSelector = wrapper.findWhere((w) => w.prop('name') === 'visit')
+
+    expect(visitSelector).toHaveLength(1)
+    expect(visitSelector.prop('patient.diagnoses.visit'))
+    expect(visitSelector.prop('isRequired')).toBeFalsy()
+    expect(visitSelector.prop('defaultSelected')).toEqual([])
+  })
+
+  it('should call the on change handler when visit changes', () => {
+    const expectedNewVisit = patient.visits
+    const { wrapper } = setup(false, false)
+    act(() => {
+      const visitSelector = wrapper.findWhere((w) => w.prop('name') === 'visit')
+      const onChange = visitSelector.prop('onChange') as any
+      onChange([expectedNewVisit])
+    })
+
+    expect(onDiagnosisChangeSpy).toHaveBeenCalledWith({ status: expectedNewVisit })
   })
 
   it('should render a status selector', () => {
