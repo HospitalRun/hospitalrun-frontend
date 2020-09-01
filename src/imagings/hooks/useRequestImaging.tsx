@@ -2,11 +2,17 @@ import { isEmpty } from 'lodash'
 import { queryCache, useMutation } from 'react-query'
 
 import ImagingRepository from '../../shared/db/ImagingRepository'
-import AbstractDBModel from '../../shared/model/AbstractDBModel'
 import Imaging from '../../shared/model/Imaging'
 import validateImagingRequest from '../util/validate-imaging-request'
 
-type ImagingRequest = Omit<Imaging, 'id' & keyof AbstractDBModel>
+export interface ImagingRequest {
+  status: 'completed' | 'requested' | 'canceled'
+  patient: string
+  visitId: string
+  fullName: string
+  notes?: string
+  type: string
+}
 
 async function requestImaging(request: ImagingRequest): Promise<void> {
   const error = validateImagingRequest(request)
