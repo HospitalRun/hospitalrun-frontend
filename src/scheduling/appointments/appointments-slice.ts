@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import AppointmentRepository from '../../shared/db/AppointmentRepository'
-import PatientRepository from '../../shared/db/PatientRepository'
 import Appointment from '../../shared/model/Appointment'
 import { AppThunk } from '../../shared/store'
 
@@ -36,14 +35,6 @@ export const { fetchAppointmentsStart, fetchAppointmentsSuccess } = appointments
 export const fetchAppointments = (): AppThunk => async (dispatch) => {
   dispatch(fetchAppointmentsStart())
   const appointments = await AppointmentRepository.findAll()
-  dispatch(fetchAppointmentsSuccess(appointments))
-}
-
-export const fetchPatientAppointments = (patientId: string): AppThunk => async (dispatch) => {
-  dispatch(fetchAppointmentsStart())
-
-  const appointments = await PatientRepository.getAppointments(patientId)
-
   dispatch(fetchAppointmentsSuccess(appointments))
 }
 
