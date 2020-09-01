@@ -1,9 +1,9 @@
 import { QueryKey, useQuery } from 'react-query'
 
-import ImagingSearchRequest from '../model/ImagingSearchRequest'
 import ImagingRepository from '../../shared/db/ImagingRepository'
 import SortRequest from '../../shared/db/SortRequest'
 import Imaging from '../../shared/model/Imaging'
+import ImagingSearchRequest from '../model/ImagingSearchRequest'
 
 const defaultSortRequest: SortRequest = {
   sorts: [

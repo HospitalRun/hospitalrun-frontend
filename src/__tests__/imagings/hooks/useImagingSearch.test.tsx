@@ -1,11 +1,11 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
 import useImagingSearch from '../../../imagings/hooks/useImagingSearch'
+import ImagingSearchRequest from '../../../imagings/model/ImagingSearchRequest'
 import ImagingRepository from '../../../shared/db/ImagingRepository'
 import SortRequest from '../../../shared/db/SortRequest'
 import Imaging from '../../../shared/model/Imaging'
 import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
-import ImagingSearchRequest from '../../../imagings/model/ImagingSearchRequest'
 
 const defaultSortRequest: SortRequest = {
   sorts: [
