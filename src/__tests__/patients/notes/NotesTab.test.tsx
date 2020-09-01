@@ -1,6 +1,9 @@
+/* eslint-disable no-console */
+
 import * as components from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
+import assign from 'lodash/assign'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
@@ -26,16 +29,30 @@ const history = createMemoryHistory()
 let user: any
 let store: any
 
-const setup = (patient = expectedPatient, permissions = [Permissions.WritePatients]) => {
+const setup = (props: any = {}) => {
+  const { permissions, patient, route } = assign(
+    {},
+    {
+      patient: expectedPatient,
+      permissions: [Permissions.WritePatients],
+      route: '/patients/123/notes',
+    },
+    props,
+  )
+
   user = { permissions }
   store = mockStore({ patient, user } as any)
-  const wrapper = mount(
-    <Router history={history}>
-      <Provider store={store}>
-        <NoteTab patient={patient} />
-      </Provider>
-    </Router>,
-  )
+  history.push(route)
+  let wrapper: any
+  act(() => {
+    wrapper = mount(
+      <Router history={history}>
+        <Provider store={store}>
+          <NoteTab patient={patient} />
+        </Provider>
+      </Router>,
+    )
+  })
 
   return wrapper
 }
@@ -45,6 +62,7 @@ describe('Notes Tab', () => {
     beforeEach(() => {
       jest.resetAllMocks()
       jest.spyOn(PatientRepository, 'saveOrUpdate')
+      console.error = jest.fn()
     })
 
     it('should render a add notes button', () => {
@@ -56,7 +74,7 @@ describe('Notes Tab', () => {
     })
 
     it('should not render a add notes button if the user does not have permissions', () => {
-      const wrapper = setup(expectedPatient, [])
+      const wrapper = setup({ permissions: [] })
 
       const addNotesButton = wrapper.find(components.Button)
       expect(addNotesButton).toHaveLength(0)
@@ -64,7 +82,6 @@ describe('Notes Tab', () => {
 
     it('should open the Add Notes Modal', () => {
       const wrapper = setup()
-
       act(() => {
         const onClick = wrapper.find(components.Button).prop('onClick') as any
         onClick()
@@ -74,27 +91,14 @@ describe('Notes Tab', () => {
       expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
     })
   })
-
-  describe('notes list', () => {
-    it('should list the patients diagnoses', () => {
-      const notes = expectedPatient.notes as Note[]
-      const wrapper = setup()
-
-      const list = wrapper.find(components.List)
-      const listItems = wrapper.find(components.ListItem)
-
-      expect(list).toHaveLength(1)
-      expect(listItems).toHaveLength(notes.length)
-    })
-
-    it('should render a warning message if the patient does not have any diagnoses', () => {
-      const wrapper = setup({ ...expectedPatient, notes: [] })
-
-      const alert = wrapper.find(components.Alert)
-
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('title')).toEqual('patient.notes.warning.noNotes')
-      expect(alert.prop('message')).toEqual('patient.notes.addNoteAbove')
+  describe('/patients/:id/notes', () => {
+    it('should render the view notes screen when /patients/:id/notes is accessed', () => {
+      const route = '/patients/123/notes'
+      const permissions = [Permissions.WritePatients]
+      const wrapper = setup({ route, permissions })
+      act(() => {
+        expect(wrapper.exists(NoteTab)).toBeTruthy()
+      })
     })
   })
 })
