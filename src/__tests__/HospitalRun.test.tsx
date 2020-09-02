@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import Dashboard from '../dashboard/Dashboard'
 import HospitalRun from '../HospitalRun'
-import ViewImagings from '../imagings/ViewImagings'
+import ViewImagings from '../imagings/search/ViewImagings'
 import Incidents from '../incidents/Incidents'
 import ViewLabs from '../labs/ViewLabs'
 import ViewMedications from '../medications/ViewMedications'
@@ -224,11 +224,10 @@ describe('HospitalRun', () => {
 
     describe('/imaging', () => {
       it('should render the Imagings component when /imaging is accessed', async () => {
-        jest.spyOn(ImagingRepository, 'findAll').mockResolvedValue([])
+        jest.spyOn(ImagingRepository, 'search').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
           user: { user: { id: '123' }, permissions: [Permissions.ViewImagings] },
-          imagings: { imagings: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
