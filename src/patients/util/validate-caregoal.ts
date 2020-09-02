@@ -49,7 +49,7 @@ export default function validateCareGoal(careGoal: Partial<CareGoal>): CareGoalE
   }
 
   if (!careGoal.achievementStatus) {
-    error.achievementStatus = 'patient.careGoal.error.statusRequired'
+    error.achievementStatus = 'patient.careGoal.error.achievementStatusRequired'
   }
 
   if (!careGoal.priority) {
@@ -66,7 +66,7 @@ export default function validateCareGoal(careGoal: Partial<CareGoal>): CareGoalE
 
   if (careGoal.startDate && careGoal.dueDate) {
     if (isBefore(new Date(careGoal.dueDate), new Date(careGoal.startDate))) {
-      error.dueDate = 'patient.careGoal.error.dueDataMustBeAfterStartDate'
+      error.dueDate = 'patient.careGoal.error.dueDateMustBeAfterStartDate'
     }
   }
 

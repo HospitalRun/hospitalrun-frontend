@@ -143,7 +143,7 @@ export default {
         achievementStatusRequired: 'Achievement Status is required.',
         startDate: 'Start date is required.',
         dueDate: 'Due date is required.',
-        dueDataMustBeAfterStartDate: 'Due date must be after start date',
+        dueDateMustBeAfterStartDate: 'Due date must be after start date',
       },
     },
     careGoals: {
