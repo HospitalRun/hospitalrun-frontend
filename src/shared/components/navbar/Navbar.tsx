@@ -48,10 +48,10 @@ const Navbar = () => {
   const addPages = [
     pageMap.newPatient,
     pageMap.newAppointment,
-    pageMap.newLab,
     pageMap.newMedication,
-    pageMap.newIncident,
+    pageMap.newLab,
     pageMap.newImaging,
+    pageMap.newIncident,
   ]
 
   return (
