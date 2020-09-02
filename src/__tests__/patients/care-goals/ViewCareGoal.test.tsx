@@ -1,4 +1,4 @@
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -35,7 +35,7 @@ describe('View Care Goal', () => {
 
     wrapper.update()
 
-    return { wrapper }
+    return { wrapper: wrapper as ReactWrapper }
   }
 
   it('should render the care goal form', async () => {

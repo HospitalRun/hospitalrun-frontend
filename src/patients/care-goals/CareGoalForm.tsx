@@ -164,6 +164,7 @@ const CareGoalForm = (props: Props) => {
           <TextFieldWithLabelFormGroup
             name="note"
             label={t('patient.careGoal.note')}
+            value={careGoal.note}
             isEditable={!disabled}
             isInvalid={!!careGoalError?.note}
             feedback={t(careGoalError?.note) || ''}

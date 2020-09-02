@@ -321,4 +321,25 @@ describe('ViewPatient', () => {
     expect(tabs.at(7).prop('active')).toBeTruthy()
     expect(carePlansTab).toHaveLength(1)
   })
+
+  it('should mark the care goals tab as active when it is clicked and render the care goal tab component when route is /patients/:id/care-goals', async () => {
+    const { wrapper } = await setup()
+
+    await act(async () => {
+      const tabHeader = wrapper.find(TabsHeader)
+      const tabs = tabHeader.find(Tab)
+      const onClick = tabs.at(8).prop('onClick') as any
+      onClick()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const careGoalsTab = tabs.at(8)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-goals`)
+    expect(careGoalsTab.prop('active')).toBeTruthy()
+    expect(careGoalsTab).toHaveLength(1)
+  })
 })
