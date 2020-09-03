@@ -61,7 +61,7 @@
     "@commitlint/config-conventional": "~9.1.1",
     "@commitlint/core": "~9.1.1",
     "@commitlint/prompt": "~9.1.1",
-    "@testing-library/react": "~10.4.0",
+    "@testing-library/react": "~11.0.0",
     "@testing-library/react-hooks": "~3.4.1",
     "@types/enzyme": "^3.10.5",
     "@types/jest": "~26.0.0",
