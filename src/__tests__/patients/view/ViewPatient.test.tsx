@@ -16,7 +16,7 @@ import AppointmentsList from '../../../patients/appointments/AppointmentsList'
 import CarePlanTab from '../../../patients/care-plans/CarePlanTab'
 import Diagnoses from '../../../patients/diagnoses/Diagnoses'
 import GeneralInformation from '../../../patients/GeneralInformation'
-import LabsTab from '../../../patients/labs/LabsTab'
+import Labs from '../../../patients/labs/Labs'
 import NotesTab from '../../../patients/notes/NoteTab'
 import * as patientSlice from '../../../patients/patient-slice'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
@@ -29,7 +29,7 @@ import { RootState } from '../../../shared/store'
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('ViewPatient', () => {
-  const patient = {
+  const patient = ({
     id: '123',
     prefix: 'prefix',
     givenName: 'givenName',
@@ -44,7 +44,7 @@ describe('ViewPatient', () => {
     address: 'address',
     code: 'P00001',
     dateOfBirth: new Date().toISOString(),
-  } as Patient
+  } as unknown) as Patient
 
   let history: any
   let store: MockStore
@@ -59,6 +59,7 @@ describe('ViewPatient', () => {
       patient: { patient },
       user: { permissions },
       appointments: { appointments: [] },
+      labs: { labs: [] },
     } as any)
 
     history.push('/patients/123')
@@ -291,12 +292,12 @@ describe('ViewPatient', () => {
 
     const tabsHeader = wrapper.find(TabsHeader)
     const tabs = tabsHeader.find(Tab)
-    const labsTab = wrapper.find(LabsTab)
+    const labsTab = wrapper.find(Labs)
 
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/labs`)
     expect(tabs.at(6).prop('active')).toBeTruthy()
     expect(labsTab).toHaveLength(1)
-    expect(labsTab.prop('patientId')).toEqual(patient.id)
+    expect(labsTab.prop('patient')).toEqual(patient)
   })
 
   it('should mark the care plans tab as active when it is clicked and render the care plan tab component when route is /patients/:id/care-plans', async () => {
