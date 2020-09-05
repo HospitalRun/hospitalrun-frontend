@@ -1,15 +1,15 @@
 import { Button, Alert, Spinner, Table } from '@hospitalrun/components'
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
-import { removeRelatedPerson } from '../patient-slice'
+import usePatientRelatedPersons from '../hooks/usePatientRelatedPersons'
+import useRemovePatientRelatedPerson from '../hooks/useRemovePatientRelatedPerson'
 import AddRelatedPersonModal from './AddRelatedPersonModal'
 
 interface Props {
@@ -17,7 +17,6 @@ interface Props {
 }
 
 const RelatedPersonTab = (props: Props) => {
-  const dispatch = useDispatch()
   const history = useHistory()
 
   const navigateTo = (location: string) => {
@@ -27,7 +26,7 @@ const RelatedPersonTab = (props: Props) => {
   const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewRelatedPersonModal, setShowRelatedPersonModal] = useState<boolean>(false)
-  const [relatedPersons, setRelatedPersons] = useState<Patient[] | undefined>(undefined)
+  const [mutate] = useRemovePatientRelatedPerson()
 
   const breadcrumbs = [
     {
@@ -37,23 +36,7 @@ const RelatedPersonTab = (props: Props) => {
   ]
   useAddBreadcrumbs(breadcrumbs)
 
-  useEffect(() => {
-    const fetchRelatedPersons = async () => {
-      const fetchedRelatedPersons: Patient[] = []
-      if (patient.relatedPersons) {
-        await Promise.all(
-          patient.relatedPersons.map(async (person) => {
-            const fetchedRelatedPerson = await PatientRepository.find(person.patientId)
-            fetchedRelatedPersons.push({ ...fetchedRelatedPerson, type: person.type })
-          }),
-        )
-      }
-
-      setRelatedPersons(fetchedRelatedPersons)
-    }
-
-    fetchRelatedPersons()
-  }, [patient.relatedPersons])
+  const { data: relatedPersons } = usePatientRelatedPersons(patient.id)
 
   const onNewRelatedPersonClick = () => {
     setShowRelatedPersonModal(true)
@@ -64,7 +47,7 @@ const RelatedPersonTab = (props: Props) => {
   }
 
   const onRelatedPersonDelete = (relatedPerson: Patient) => {
-    dispatch(removeRelatedPerson(patient.id, relatedPerson.id))
+    mutate({ patientId: patient.id, relatedPersonId: relatedPerson.id })
   }
 
   return (
@@ -121,6 +104,7 @@ const RelatedPersonTab = (props: Props) => {
       </div>
 
       <AddRelatedPersonModal
+        patientId={patient.id}
         show={showNewRelatedPersonModal}
         toggle={closeNewRelatedPersonModal}
         onCloseButtonClick={closeNewRelatedPersonModal}
