@@ -13,6 +13,27 @@ interface Props {
   searchRequest: IncidentSearchRequest
 }
 
+export function populateExportData(dataToPopulate: any, theData: any) {
+  let first = true
+  if (theData != null) {
+    theData.forEach((elm: any) => {
+      const entry = {
+        code: elm.code,
+        date: format(new Date(elm.date), 'yyyy-MM-dd hh:mm a'),
+        reportedBy: elm.reportedBy,
+        reportedOn: format(new Date(elm.reportedOn), 'yyyy-MM-dd hh:mm a'),
+        status: elm.status,
+      }
+      if (first) {
+        dataToPopulate[0] = entry
+        first = false
+      } else {
+        dataToPopulate.push(entry)
+      }
+    })
+  }
+}
+
 function ViewIncidentsTable(props: Props) {
   const { searchRequest } = props
   const { t } = useTranslator()
@@ -26,29 +47,8 @@ function ViewIncidentsTable(props: Props) {
   // filter data
   const exportData = [{}]
 
-  function populateExportData() {
-    let first = true
-    if (data != null) {
-      data.forEach((elm) => {
-        const entry = {
-          code: elm.code,
-          date: format(new Date(elm.date), 'yyyy-MM-dd hh:mm a'),
-          reportedBy: elm.reportedBy,
-          reportedOn: format(new Date(elm.reportedOn), 'yyyy-MM-dd hh:mm a'),
-          status: elm.status,
-        }
-        if (first) {
-          exportData[0] = entry
-          first = false
-        } else {
-          exportData.push(entry)
-        }
-      })
-    }
-  }
-
   function downloadCSV() {
-    populateExportData()
+    populateExportData(exportData, data)
 
     const csv = getCSV(exportData)
 

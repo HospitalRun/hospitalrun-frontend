@@ -1,4 +1,4 @@
-import { Table } from '@hospitalrun/components'
+import { Table, Dropdown } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router'
 
 import IncidentFilter from '../../../incidents/IncidentFilter'
-import ViewIncidentsTable from '../../../incidents/list/ViewIncidentsTable'
+import ViewIncidentsTable, { populateExportData } from '../../../incidents/list/ViewIncidentsTable'
 import IncidentSearchRequest from '../../../incidents/model/IncidentSearchRequest'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
@@ -71,6 +71,58 @@ describe('View Incidents Table', () => {
       expect.objectContaining({ label: 'incidents.reports.status', key: 'status' }),
     ])
     expect(incidentsTable.prop('actionsHeaderText')).toEqual('actions.label')
+  })
+
+  it('should display a download button', async () => {
+    const expectedIncidents: Incident[] = [
+      {
+        id: 'incidentId1',
+        code: 'someCode',
+        date: new Date(2020, 7, 4, 0, 0, 0, 0).toISOString(),
+        reportedOn: new Date(2020, 8, 4, 0, 0, 0, 0).toISOString(),
+        reportedBy: 'com.test:user',
+        status: 'reported',
+      } as Incident,
+    ]
+    const { wrapper } = await setup({ status: IncidentFilter.all }, expectedIncidents)
+
+    const dropDownButton = wrapper.find(Dropdown)
+    expect(dropDownButton.exists()).toBeTruthy()
+  })
+
+  it('should populate export data correctly', async () => {
+    const data = [
+      {
+        category: 'asdf',
+        categoryItem: 'asdf',
+        code: 'I-eClU6OdkR',
+        createdAt: '2020-09-06T04:02:38.011Z',
+        date: '2020-09-06T04:02:32.855Z',
+        department: 'asdf',
+        description: 'asdf',
+        id: 'af9f968f-61d9-47c3-9321-5da3f381c38b',
+        reportedBy: 'some user',
+        reportedOn: '2020-09-06T04:02:38.011Z',
+        rev: '1-91d1ba60588b779c9554c7e20e15419c',
+        status: 'reported',
+        updatedAt: '2020-09-06T04:02:38.011Z',
+      },
+    ]
+
+    const expectedExportData = [
+      {
+        code: 'I-eClU6OdkR',
+        date: '2020-09-06 12:02 PM',
+        reportedBy: 'some user',
+        reportedOn: '2020-09-06 12:02 PM',
+        status: 'reported',
+      },
+    ]
+
+    const exportData = [{}]
+    populateExportData(exportData, data)
+
+    expect(exportData).toEqual(expectedExportData)
   })
 
   it('should format the data correctly', async () => {
