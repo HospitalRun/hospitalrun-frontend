@@ -11,9 +11,9 @@ describe('Use Data Helpers util', () => {
         status: 'reported',
       },
     ]
-    const output = getCSV(input)
+    const output = getCSV(input).replace(/(\r\n|\n|\r)/gm, '')
     const expectedOutput =
-      '"code","date","reportedBy","reportedOn","status"\r\n"I-eClU6OdkR","2020-09-06 12:02 PM","some user","2020-09-06 12:02 PM","reported"'
+      '"code","date","reportedBy","reportedOn","status""I-eClU6OdkR","2020-09-06 12:02 PM","some user","2020-09-06 12:02 PM","reported"'
     expect(output).toMatch(expectedOutput)
   })
 
