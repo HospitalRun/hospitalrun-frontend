@@ -1,4 +1,5 @@
 import { Table, Dropdown } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -112,9 +113,9 @@ describe('View Incidents Table', () => {
     const expectedExportData = [
       {
         code: 'I-eClU6OdkR',
-        date: '2020-09-06 12:02 PM',
+        date: format(new Date(data[0].date), 'yyyy-MM-dd hh:mm a'),
         reportedBy: 'some user',
-        reportedOn: '2020-09-06 12:02 PM',
+        reportedOn: format(new Date(data[0].reportedOn), 'yyyy-MM-dd hh:mm a'),
         status: 'reported',
       },
     ]
