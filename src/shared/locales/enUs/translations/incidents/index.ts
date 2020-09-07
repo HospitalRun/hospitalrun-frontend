@@ -34,5 +34,9 @@ export default {
         descriptionRequired: 'Description is required',
       },
     },
+    visualize: {
+      label: 'Visualize',
+      view: 'Visualize Incidents',
+    },
   },
 }

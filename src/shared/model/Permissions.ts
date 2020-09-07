@@ -28,6 +28,7 @@ enum Permissions {
   ReadVisits = 'read:visit',
   RequestImaging = 'write:imaging',
   ViewImagings = 'read:imagings',
+  ViewIncidentWidgets = 'read:incident_widgets',
 }
 
 export default Permissions
