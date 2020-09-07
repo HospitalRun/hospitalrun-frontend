@@ -1,17 +1,13 @@
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { Provider } from 'react-redux'
+import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
-import createMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import CarePlanForm from '../../../patients/care-plans/CarePlanForm'
 import ViewCarePlan from '../../../patients/care-plans/ViewCarePlan'
+import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
-import { RootState } from '../../../shared/store'
-
-const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Care Plan', () => {
   const patient = {
@@ -20,31 +16,34 @@ describe('View Care Plan', () => {
     carePlans: [{ id: '123', title: 'some title' }],
   } as Patient
 
-  const setup = () => {
-    const store = mockStore({ patient: { patient }, user: { user: { id: '123' } } } as any)
+  const setup = async () => {
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     const history = createMemoryHistory()
     history.push(`/patients/${patient.id}/care-plans/${patient.carePlans[0].id}`)
-    const wrapper = mount(
-      <Provider store={store}>
+    let wrapper: any
+
+    await act(async () => {
+      wrapper = await mount(
         <Router history={history}>
           <Route path="/patients/:id/care-plans/:carePlanId">
             <ViewCarePlan />
           </Route>
-        </Router>
-      </Provider>,
-    )
+        </Router>,
+      )
+    })
+    wrapper.update()
 
     return { wrapper }
   }
 
-  it('should render the care plan title', () => {
-    const { wrapper } = setup()
+  it('should render the care plan title', async () => {
+    const { wrapper } = await setup()
 
     expect(wrapper.find('h2').text()).toEqual(patient.carePlans[0].title)
   })
 
-  it('should render a care plan form with the correct data', () => {
-    const { wrapper } = setup()
+  it('should render a care plan form with the correct data', async () => {
+    const { wrapper } = await setup()
 
     const carePlanForm = wrapper.find(CarePlanForm)
     expect(carePlanForm).toHaveLength(1)

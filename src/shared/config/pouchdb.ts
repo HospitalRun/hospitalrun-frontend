@@ -26,14 +26,7 @@ if (process.env.NODE_ENV === 'test') {
   })
 
   localDb = new PouchDB('local_hospitalrun')
-  localDb
-    .sync(serverDb, { live: true, retry: true })
-    .on('change', (info) => {
-      console.log(info)
-    })
-    .on('error', (info) => {
-      console.error(info)
-    })
+  localDb.sync(serverDb, { live: true, retry: true })
 }
 
 export const schema = [
@@ -45,6 +38,9 @@ export const schema = [
         hasMany: { type: 'appointment', options: { queryInverse: 'patient', async: true } },
       },
       labs: { hasMany: { type: 'lab', options: { queryInverse: 'patient', async: true } } },
+      medications: {
+        hasMany: { type: 'medication', options: { queryInverse: 'patient', async: true } },
+      },
       imagings: { hasMany: { type: 'imaging', options: { queryInverse: 'patient', async: true } } },
     },
   },
@@ -65,6 +61,11 @@ export const schema = [
   {
     singular: 'imaging',
     plural: 'imagings',
+    relations: { patient: { belongsTo: 'patient' } },
+  },
+  {
+    singular: 'medication',
+    plural: 'medications',
     relations: { patient: { belongsTo: 'patient' } },
   },
 ]

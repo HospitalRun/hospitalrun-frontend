@@ -1,21 +1,21 @@
-import { Table } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import ViewImagings from '../../imagings/ViewImagings'
-import * as breadcrumbUtil from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../page-header/title/useTitle'
-import ImagingRepository from '../../shared/db/ImagingRepository'
-import Imaging from '../../shared/model/Imaging'
-import Permissions from '../../shared/model/Permissions'
-import { RootState } from '../../shared/store'
+import ImagingRequestTable from '../../../imagings/search/ImagingRequestTable'
+import ViewImagings from '../../../imagings/search/ViewImagings'
+import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
+import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import * as titleUtil from '../../../page-header/title/useTitle'
+import ImagingRepository from '../../../shared/db/ImagingRepository'
+import Imaging from '../../../shared/model/Imaging'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -28,6 +28,7 @@ describe('View Imagings', () => {
     id: '1234',
     type: 'imaging type',
     patient: 'patient',
+    fullName: 'full name',
     status: 'requested',
     requestedOn: expectedDate.toISOString(),
     requestedBy: 'some user',
@@ -38,7 +39,7 @@ describe('View Imagings', () => {
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
     jest.spyOn(titleUtil, 'default')
-    jest.spyOn(ImagingRepository, 'findAll').mockResolvedValue(mockImagings)
+    jest.spyOn(ImagingRepository, 'search').mockResolvedValue(mockImagings)
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
 
     history = createMemoryHistory()
@@ -47,7 +48,6 @@ describe('View Imagings', () => {
     const store = mockStore({
       title: '',
       user: { permissions },
-      imagings: { imagings: mockImagings },
     } as any)
 
     let wrapper: any
@@ -64,8 +64,8 @@ describe('View Imagings', () => {
         </ButtonBarProvider.ButtonBarProvider>,
       )
     })
-
     wrapper.update()
+
     return wrapper as ReactWrapper
   }
 
@@ -98,28 +98,8 @@ describe('View Imagings', () => {
         [Permissions.ViewIncident, Permissions.RequestImaging],
         [expectedImaging],
       )
-      const table = wrapper.find(Table)
-      const columns = table.prop('columns')
-      expect(columns[0]).toEqual(
-        expect.objectContaining({ label: 'imagings.imaging.code', key: 'code' }),
-      )
-      expect(columns[1]).toEqual(
-        expect.objectContaining({ label: 'imagings.imaging.type', key: 'type' }),
-      )
-      expect(columns[2]).toEqual(
-        expect.objectContaining({ label: 'imagings.imaging.requestedOn', key: 'requestedOn' }),
-      )
-      expect(columns[3]).toEqual(
-        expect.objectContaining({ label: 'imagings.imaging.patient', key: 'patient' }),
-      )
-      expect(columns[4]).toEqual(
-        expect.objectContaining({ label: 'imagings.imaging.requestedBy', key: 'requestedBy' }),
-      )
-      expect(columns[5]).toEqual(
-        expect.objectContaining({ label: 'imagings.imaging.status', key: 'status' }),
-      )
 
-      expect(table.prop('data')).toEqual([expectedImaging])
+      expect(wrapper.exists(ImagingRequestTable))
     })
   })
 })

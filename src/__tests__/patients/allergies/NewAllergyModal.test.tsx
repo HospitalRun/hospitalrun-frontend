@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { Modal, Alert } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import React from 'react'
@@ -23,6 +25,10 @@ describe('New Allergy Modal', () => {
 
     return { wrapper }
   }
+
+  beforeEach(() => {
+    console.error = jest.fn()
+  })
 
   it('should render a modal with the correct labels', () => {
     const { wrapper } = setup()
