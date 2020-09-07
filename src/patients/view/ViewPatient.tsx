@@ -22,7 +22,7 @@ import AppointmentsList from '../appointments/AppointmentsList'
 import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
-import Labs from '../labs/LabsTab'
+import Labs from '../labs/Labs'
 import Note from '../notes/NoteTab'
 import { fetchPatient } from '../patient-slice'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
@@ -160,7 +160,7 @@ const ViewPatient = () => {
           <Note patient={patient} />
         </Route>
         <Route exact path={`${path}/labs`}>
-          <Labs patientId={patient.id} />
+          <Labs patient={patient} />
         </Route>
         <Route path={`${path}/care-plans`}>
           <CarePlanTab />
