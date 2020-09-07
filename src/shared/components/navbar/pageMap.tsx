@@ -83,6 +83,12 @@ const pageMap: {
     path: '/incidents',
     icon: 'incident',
   },
+  viewIncidentWidgets: {
+    permission: Permissions.ViewIncidentWidgets,
+    label: 'incidents.visualize.label',
+    path: '/incidents/visualize',
+    icon: 'incident',
+  },
   newVisit: {
     permission: Permissions.AddVisit,
     label: 'visits.visit.new',
