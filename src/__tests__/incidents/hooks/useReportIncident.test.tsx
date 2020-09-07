@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { subDays } from 'date-fns'
 import shortid from 'shortid'
 

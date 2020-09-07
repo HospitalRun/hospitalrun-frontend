@@ -7,7 +7,7 @@ import PrivateRoute from '../shared/components/PrivateRoute'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
 import NewImagingRequest from './requests/NewImagingRequest'
-import ImagingRequests from './ViewImagings'
+import ImagingRequests from './search/ViewImagings'
 
 const Imagings = () => {
   const { permissions } = useSelector((state: RootState) => state.user)
