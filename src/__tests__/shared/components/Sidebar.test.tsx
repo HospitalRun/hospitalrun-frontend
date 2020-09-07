@@ -465,18 +465,18 @@ describe('Sidebar', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
-      const lastOne = listItems.length - 1
+      const reportsLabel = listItems.length - 2
 
-      expect(listItems.at(lastOne).text().trim()).toBe('incidents.reports.label')
+      expect(listItems.at(reportsLabel).text().trim()).toBe('incidents.reports.label')
       expect(
         listItems
-          .at(lastOne - 1)
+          .at(reportsLabel - 1)
           .text()
           .trim(),
       ).toBe('incidents.reports.new')
       expect(
         listItems
-          .at(lastOne - 2)
+          .at(reportsLabel - 2)
           .text()
           .trim(),
       ).toBe('incidents.label')
@@ -522,8 +522,7 @@ describe('Sidebar', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
-
-      expect(listItems.at(8).text().trim()).toEqual('incidents.visualize.label')
+      expect(listItems.at(10).text().trim()).toEqual('incidents.visualize.label')
     })
 
     it('should not render the incidents visualize link when user does not have the view incident widgets privileges', () => {
@@ -588,7 +587,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        const onClick = listItems.at(8).prop('onClick') as any
+        const onClick = listItems.at(10).prop('onClick') as any
         onClick()
       })
 
