@@ -17,6 +17,7 @@ export default {
       resolve: 'Resolve Incident',
       dateOfIncident: 'Date of Incident',
       department: 'Department',
+      download: 'Download',
       category: 'Category',
       categoryItem: 'Category Item',
       description: 'Description of Incident',
