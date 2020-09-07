@@ -19,6 +19,7 @@ import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 import Allergies from '../allergies/Allergies'
 import AppointmentsList from '../appointments/AppointmentsList'
+import CareGoalTab from '../care-goals/CareGoalTab'
 import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
@@ -135,6 +136,11 @@ const ViewPatient = () => {
           onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
         />
         <Tab
+          active={location.pathname === `/patients/${patient.id}/care-goals`}
+          label={t('patient.careGoal.label')}
+          onClick={() => history.push(`/patients/${patient.id}/care-goals`)}
+        />
+        <Tab
           active={location.pathname === `/patients/${patient.id}/visits`}
           label={t('patient.visits.label')}
           onClick={() => history.push(`/patients/${patient.id}/visits`)}
@@ -164,6 +170,9 @@ const ViewPatient = () => {
         </Route>
         <Route path={`${path}/care-plans`}>
           <CarePlanTab />
+        </Route>
+        <Route path={`${path}/care-goals`}>
+          <CareGoalTab />
         </Route>
         <Route path={`${path}/visits`}>
           <VisitTab />
