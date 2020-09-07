@@ -37,7 +37,7 @@ const VisualizeIncidents = () => {
         setShowGraph(true)
       }
     }
-  }, [data, monthlyIncidents])
+  }, [data, monthlyIncidents, isLoading, incident])
 
   return !showGraph ? (
     <Spinner type="DotLoader" loading />
