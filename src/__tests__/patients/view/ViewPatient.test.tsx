@@ -131,7 +131,7 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(9)
+    expect(tabs).toHaveLength(10)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
@@ -140,7 +140,8 @@ describe('ViewPatient', () => {
     expect(tabs.at(5).prop('label')).toEqual('patient.notes.label')
     expect(tabs.at(6).prop('label')).toEqual('patient.labs.label')
     expect(tabs.at(7).prop('label')).toEqual('patient.carePlan.label')
-    expect(tabs.at(8).prop('label')).toEqual('patient.visits.label')
+    expect(tabs.at(8).prop('label')).toEqual('patient.careGoal.label')
+    expect(tabs.at(9).prop('label')).toEqual('patient.visits.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -319,5 +320,26 @@ describe('ViewPatient', () => {
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-plans`)
     expect(tabs.at(7).prop('active')).toBeTruthy()
     expect(carePlansTab).toHaveLength(1)
+  })
+
+  it('should mark the care goals tab as active when it is clicked and render the care goal tab component when route is /patients/:id/care-goals', async () => {
+    const { wrapper } = await setup()
+
+    await act(async () => {
+      const tabHeader = wrapper.find(TabsHeader)
+      const tabs = tabHeader.find(Tab)
+      const onClick = tabs.at(8).prop('onClick') as any
+      onClick()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const careGoalsTab = tabs.at(8)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-goals`)
+    expect(careGoalsTab.prop('active')).toBeTruthy()
+    expect(careGoalsTab).toHaveLength(1)
   })
 })

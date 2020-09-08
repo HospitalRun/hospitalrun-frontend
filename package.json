@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "@hospitalrun/components": "~1.16.0",
+    "@hospitalrun/components": "~2.0.0",
     "@reduxjs/toolkit": "~1.4.0",
     "@types/escape-string-regexp": "~2.0.1",
     "@types/json2csv": "~5.0.1",
@@ -100,7 +100,7 @@
     "eslint-plugin-react": "~7.20.0",
     "eslint-plugin-react-hooks": "~4.1.0",
     "history": "4.10.1",
-    "husky": "~4.2.1",
+    "husky": "~4.3.0",
     "jest": "24.9.0",
     "lint-staged": "~10.3.0",
     "memdown": "~5.1.0",
