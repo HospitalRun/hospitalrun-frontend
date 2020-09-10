@@ -36,6 +36,7 @@ describe('Sidebar', () => {
     Permissions.ViewMedication,
     Permissions.ViewIncidents,
     Permissions.ViewIncident,
+    Permissions.ViewIncidentWidgets,
     Permissions.ReportIncident,
     Permissions.ReadVisits,
     Permissions.AddVisit,
@@ -464,18 +465,18 @@ describe('Sidebar', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
-      const lastOne = listItems.length - 1
+      const reportsLabel = listItems.length - 2
 
-      expect(listItems.at(lastOne).text().trim()).toBe('incidents.reports.label')
+      expect(listItems.at(reportsLabel).text().trim()).toBe('incidents.reports.label')
       expect(
         listItems
-          .at(lastOne - 1)
+          .at(reportsLabel - 1)
           .text()
           .trim(),
       ).toBe('incidents.reports.new')
       expect(
         listItems
-          .at(lastOne - 2)
+          .at(reportsLabel - 2)
           .text()
           .trim(),
       ).toBe('incidents.label')
@@ -515,6 +516,23 @@ describe('Sidebar', () => {
       const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
 
       expect(incidentsIndex).toBe(-1)
+    })
+
+    it('should render the incidents visualize link', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+      expect(listItems.at(10).text().trim()).toEqual('incidents.visualize.label')
+    })
+
+    it('should not render the incidents visualize link when user does not have the view incident widgets privileges', () => {
+      const wrapper = setupNoPermissions('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      listItems.forEach((_, i) => {
+        expect(listItems.at(i).text().trim()).not.toEqual('incidents.visualize.label')
+      })
     })
 
     it('main incidents link should be active when the current path is /incidents', () => {
@@ -561,6 +579,19 @@ describe('Sidebar', () => {
       })
 
       expect(history.location.pathname).toEqual('/incidents/new')
+    })
+
+    it('should navigate to /incidents/visualize when the incidents visualize link is clicked', () => {
+      const wrapper = setup('/incidents')
+
+      const listItems = wrapper.find(ListItem)
+
+      act(() => {
+        const onClick = listItems.at(10).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/incidents/visualize')
     })
 
     it('incidents list link should be active when the current path is /incidents', () => {

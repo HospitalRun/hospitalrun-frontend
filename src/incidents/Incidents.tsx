@@ -9,6 +9,7 @@ import { RootState } from '../shared/store'
 import ViewIncidents from './list/ViewIncidents'
 import ReportIncident from './report/ReportIncident'
 import ViewIncident from './view/ViewIncident'
+import VisualizeIncidents from './visualize/VisualizeIncidents'
 
 const Incidents = () => {
   const { permissions } = useSelector((state: RootState) => state.user)
@@ -33,6 +34,12 @@ const Incidents = () => {
         exact
         path="/incidents/new"
         component={ReportIncident}
+      />
+      <PrivateRoute
+        isAuthenticated={permissions.includes(Permissions.ViewIncidentWidgets)}
+        exact
+        path="/incidents/visualize"
+        component={VisualizeIncidents}
       />
       <PrivateRoute
         isAuthenticated={permissions.includes(Permissions.ViewIncident)}
