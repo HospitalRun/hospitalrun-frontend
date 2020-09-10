@@ -26,13 +26,12 @@ describe('Add Related Person Modal', () => {
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
-  let wrapper: ReactWrapper
 
-  beforeEach(() => {
+  const setup = () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
 
-    wrapper = mount(
+    return mount(
       <AddRelatedPersonModal
         show
         patientId={patient.id}
@@ -40,16 +39,18 @@ describe('Add Related Person Modal', () => {
         toggle={jest.fn()}
       />,
     )
-  })
+  }
 
   describe('layout', () => {
     it('should render a modal', () => {
+      const wrapper = setup()
       const modal = wrapper.find(Modal)
       expect(modal).toHaveLength(1)
       expect(modal.prop('show')).toBeTruthy()
     })
 
     it('should render a patient search typeahead', () => {
+      const wrapper = setup()
       const patientSearchTypeahead = wrapper.find(Typeahead)
 
       expect(patientSearchTypeahead).toHaveLength(1)
@@ -57,6 +58,7 @@ describe('Add Related Person Modal', () => {
     })
 
     it('should render a relationship type text input', () => {
+      const wrapper = setup()
       const relationshipTypeTextInput = wrapper.findWhere((w: any) => w.prop('name') === 'type')
 
       expect(relationshipTypeTextInput).toHaveLength(1)
@@ -69,6 +71,7 @@ describe('Add Related Person Modal', () => {
     })
 
     it('should render a cancel button', () => {
+      const wrapper = setup()
       const cancelButton = wrapper.findWhere(
         (w: { text: () => string }) => w.text() === 'actions.cancel',
       )
@@ -77,13 +80,15 @@ describe('Add Related Person Modal', () => {
     })
 
     it('should render an add new related person button button', () => {
+      const wrapper = setup()
       const modal = wrapper.find(Modal) as any
       expect(modal.prop('successButton').children).toEqual('patient.relatedPersons.add')
     })
 
     it('should render the error when there is an error saving', async () => {
+      const wrapper = setup()
       const expectedError = {
-        message: 'some message',
+        message: 'patient.relatedPersons.error.unableToAddRelatedPerson',
         relatedPersonError: 'patient.relatedPersons.error.relatedPersonRequired',
         relationshipTypeError: 'patient.relatedPersons.error.relationshipTypeRequired',
       }
@@ -99,7 +104,7 @@ describe('Add Related Person Modal', () => {
       const typeahead = wrapper.find(Typeahead)
       const relationshipTypeInput = wrapper.find(TextInputWithLabelFormGroup)
 
-      expect(alert.prop('message')).toEqual(expectedError.relatedPersonError)
+      expect(alert.prop('message')).toEqual(expectedError.message)
       expect(alert.prop('title')).toEqual('states.error')
       expect(typeahead.prop('isInvalid')).toBeTruthy()
       expect(relationshipTypeInput.prop('isInvalid')).toBeTruthy()
@@ -109,6 +114,7 @@ describe('Add Related Person Modal', () => {
 
   describe('save', () => {
     it('should call the save function with the correct data', async () => {
+      const wrapper = setup()
       act(() => {
         const patientTypeahead = wrapper.find(Typeahead)
         patientTypeahead.prop('onChange')([{ id: '123' }])

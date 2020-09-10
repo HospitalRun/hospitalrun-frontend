@@ -3,9 +3,9 @@ import format from 'date-fns/format'
 import React, { useState } from 'react'
 
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
-import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
+import usePatients from '../hooks/usePatients'
 import useAddPatientRelatedPerson from '../hooks/useAddPatientRelatedPerson'
 import { RelatedPersonError } from '../util/validate-related-person'
 
@@ -24,6 +24,14 @@ const AddRelatedPersonModal = (props: Props) => {
     patientId: '',
     type: '',
   })
+
+  const [patientQuery, setPatientQuery] = useState<string>('')
+
+  const {data, status} = usePatients({queryString: patientQuery})
+  let patients = [] as Patient[]
+  if(data !== undefined && status !== 'loading') {
+    patients = data.patients.filter((p: Patient) => p.id !== patientId)
+  }
 
   const [mutate] = useAddPatientRelatedPerson()
   const [relatedPersonError, setRelatedPersonError] = useState<RelatedPersonError | undefined>(
@@ -46,8 +54,8 @@ const AddRelatedPersonModal = (props: Props) => {
   }
 
   const onSearch = async (query: string) => {
-    const patients: Patient[] = await PatientRepository.search(query)
-    return patients.filter((p: Patient) => p.id !== patientId)
+    setPatientQuery(query)
+    return [...patients]
   }
 
   const onSaveButtonClick = async () => {
@@ -68,7 +76,7 @@ const AddRelatedPersonModal = (props: Props) => {
           color="danger"
           title={t('states.error')}
           message={t(
-            relatedPersonError.relatedPersonError || relatedPersonError.relationshipTypeError,
+            'patient.relatedPersons.error.unableToAddRelatedPerson',
           )}
         />
       )}
@@ -103,7 +111,7 @@ const AddRelatedPersonModal = (props: Props) => {
             value={relatedPerson.type}
             isEditable
             isInvalid={!!relatedPersonError?.relationshipTypeError}
-            feedback={t(relatedPersonError?.relationshipTypeError || '')}
+            feedback={t(relatedPersonError?.relationshipTypeError)}
             isRequired
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onInputElementChange(event, 'type')
