@@ -5,8 +5,8 @@ import React, { useState } from 'react'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
-import usePatients from '../hooks/usePatients'
 import useAddPatientRelatedPerson from '../hooks/useAddPatientRelatedPerson'
+import usePatients from '../hooks/usePatients'
 import { RelatedPersonError } from '../util/validate-related-person'
 
 interface Props {
@@ -27,9 +27,9 @@ const AddRelatedPersonModal = (props: Props) => {
 
   const [patientQuery, setPatientQuery] = useState<string>('')
 
-  const {data, status} = usePatients({queryString: patientQuery})
+  const { data, status } = usePatients({ queryString: patientQuery })
   let patients = [] as Patient[]
-  if(data !== undefined && status !== 'loading') {
+  if (data !== undefined && status !== 'loading') {
     patients = data.patients.filter((p: Patient) => p.id !== patientId)
   }
 
@@ -75,9 +75,7 @@ const AddRelatedPersonModal = (props: Props) => {
         <Alert
           color="danger"
           title={t('states.error')}
-          message={t(
-            'patient.relatedPersons.error.unableToAddRelatedPerson',
-          )}
+          message={t('patient.relatedPersons.error.unableToAddRelatedPerson')}
         />
       )}
       <div className="row">

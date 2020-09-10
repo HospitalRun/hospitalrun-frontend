@@ -1,6 +1,6 @@
 import { Modal, Alert, Typeahead } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { ReactWrapper, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
 
 import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
@@ -25,7 +25,6 @@ describe('Add Related Person Modal', () => {
     code: 'P00001',
     dateOfBirth: new Date().toISOString(),
   } as Patient
-
 
   const setup = () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
