@@ -82,7 +82,7 @@ const ViewLab = () => {
       Toast(
         'success',
         t('states.success'),
-        `${t('labs.successfullyCompleted')} ${complete.type} ${patient?.fullName} `,
+        `${t('labs.successfullyCompleted')} ${complete.type} for ${patient?.fullName} `,
       )
     }
 
