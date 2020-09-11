@@ -12,7 +12,7 @@ import HospitalRun from '../HospitalRun'
 import ViewImagings from '../imagings/search/ViewImagings'
 import Incidents from '../incidents/Incidents'
 import ViewLabs from '../labs/ViewLabs'
-import ViewMedications from '../medications/ViewMedications'
+import ViewMedications from '../medications/search/ViewMedications'
 import { addBreadcrumbs } from '../page-header/breadcrumbs/breadcrumbs-slice'
 import Appointments from '../scheduling/appointments/Appointments'
 import Settings from '../settings/Settings'
@@ -129,11 +129,10 @@ describe('HospitalRun', () => {
 
     describe('/medications', () => {
       it('should render the Medications component when /medications is accessed', async () => {
-        jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
+        jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
         const store = mockStore({
           title: 'test',
           user: { user: { id: '123' }, permissions: [Permissions.ViewMedications] },
-          medications: { medications: [] },
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
         } as any)
