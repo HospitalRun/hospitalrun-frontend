@@ -21,7 +21,6 @@ import Sidebar from './shared/components/Sidebar'
 import { RootState } from './shared/store'
 
 const HospitalRun = () => {
-  // const { title } = useSelector((state: RootState) => state.title)
   const { title } = useTitle()
   const { sidebarCollapsed } = useSelector((state: RootState) => state.components)
   const { user } = useSelector((root: RootState) => root.user)
