@@ -50,7 +50,9 @@ const AddRelatedPersonModal = (props: Props) => {
   }
 
   const onPatientSelect = (p: Patient[]) => {
-    setRelatedPerson({ ...relatedPerson, patientId: p[0].id })
+    if(p.length > 0) {
+      setRelatedPerson({ ...relatedPerson, patientId: p[0].id })
+    }
   }
 
   const onSearch = async (query: string) => {
