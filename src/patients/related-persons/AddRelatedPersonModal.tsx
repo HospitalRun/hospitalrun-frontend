@@ -50,7 +50,7 @@ const AddRelatedPersonModal = (props: Props) => {
   }
 
   const onPatientSelect = (p: Patient[]) => {
-    if(p.length > 0) {
+    if (p.length > 0) {
       setRelatedPerson({ ...relatedPerson, patientId: p[0].id })
     }
   }
