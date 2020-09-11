@@ -11,7 +11,7 @@ import Medications from './medications/Medications'
 import Breadcrumbs from './page-header/breadcrumbs/Breadcrumbs'
 import { ButtonBarProvider } from './page-header/button-toolbar/ButtonBarProvider'
 import ButtonToolBar from './page-header/button-toolbar/ButtonToolBar'
-import { useTitleState } from './page-header/title/TitleContext'
+import { useTitle } from './page-header/title/TitleContext'
 import Patients from './patients/Patients'
 import Appointments from './scheduling/appointments/Appointments'
 import Settings from './settings/Settings'
@@ -22,7 +22,7 @@ import { RootState } from './shared/store'
 
 const HospitalRun = () => {
   // const { title } = useSelector((state: RootState) => state.title)
-  const { title } = useTitleState()
+  const { title } = useTitle()
   const { sidebarCollapsed } = useSelector((state: RootState) => state.components)
   const { user } = useSelector((root: RootState) => root.user)
 

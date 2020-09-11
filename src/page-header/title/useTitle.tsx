@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 // import { useDispatch } from 'react-redux'
 
 // import { updateTitle } from './title-slice'
-import { useTitleDispatch } from './TitleContext'
+import { useUpdateTitle } from './TitleContext'
 
 export default function useTitle(title: string): void {
   // const dispatch = useDispatch()
-  const dispatch = useTitleDispatch()
+  const updateTitle = useUpdateTitle()
 
-  useEffect(() => dispatch({ type: 'setTitle', payload: title }), [dispatch, title])
+  useEffect(() => updateTitle(title))
 }

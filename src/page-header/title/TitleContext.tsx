@@ -1,41 +1,31 @@
 import * as React from 'react'
 
-type Action = { type: 'setTitle'; payload: string }
-type Dispatch = (action: Action) => void
+type SetTitle = (title: string) => void
 type State = { title: string }
 type TitleProviderProps = { children: React.ReactNode }
 const TitleStateContext = React.createContext<State | undefined>(undefined)
-const TitleDispatchContext = React.createContext<Dispatch | undefined>(undefined)
-function titleReducer(state: State, action: Action) {
-  switch (action.type) {
-    case 'setTitle': {
-      return { ...state, title: action.payload }
-    }
-    default: {
-      throw new Error(`Unhandled action type: ${action.type}`)
-    }
-  }
-}
+const TitleDispatchContext = React.createContext<SetTitle | undefined>(undefined)
+
 function TitleProvider({ children }: TitleProviderProps) {
-  const [state, dispatch] = React.useReducer(titleReducer, { title: '' })
+  const [title, setTitle] = React.useState('')
   return (
-    <TitleStateContext.Provider value={state}>
-      <TitleDispatchContext.Provider value={dispatch}>{children}</TitleDispatchContext.Provider>
+    <TitleStateContext.Provider value={{ title }}>
+      <TitleDispatchContext.Provider value={setTitle}>{children}</TitleDispatchContext.Provider>
     </TitleStateContext.Provider>
   )
 }
-function useTitleState() {
+function useTitle() {
   const context = React.useContext(TitleStateContext)
   if (context === undefined) {
-    throw new Error('useTitleState must be used within a TitleProvider')
+    throw new Error('useTitle must be used within a TitleProvider')
   }
   return context
 }
-function useTitleDispatch() {
+function useUpdateTitle() {
   const context = React.useContext(TitleDispatchContext)
   if (context === undefined) {
-    throw new Error('useTitleDispatch must be used within a TitleProvider')
+    throw new Error('useUpdateTitle must be used within a TitleProvider')
   }
   return context
 }
-export { TitleProvider, useTitleState, useTitleDispatch }
+export { TitleProvider, useTitle, useUpdateTitle }
