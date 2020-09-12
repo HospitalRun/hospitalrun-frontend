@@ -1,22 +1,15 @@
 import { Modal } from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
-import createMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import * as patientSlice from '../../../patients/patient-slice'
 import AddVisitModal from '../../../patients/visits/AddVisitModal'
 import VisitForm from '../../../patients/visits/VisitForm'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import { VisitStatus } from '../../../shared/model/Visit'
-import { RootState } from '../../../shared/store'
-
-const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Add Visit Modal', () => {
   const patient = {
@@ -34,26 +27,20 @@ describe('Add Visit Modal', () => {
     ],
   } as Patient
 
-  const visitError = {
-    title: 'visit error',
-  }
-
   const onCloseSpy = jest.fn()
   const setup = () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
-    const store = mockStore({ patient: { patient, visitError } } as any)
     const history = createMemoryHistory()
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <AddVisitModal show onCloseButtonClick={onCloseSpy} />
-        </Router>
-      </Provider>,
+      <Router history={history}>
+        <AddVisitModal show onCloseButtonClick={onCloseSpy} patientId={patient.id} />
+      </Router>,
     )
 
     wrapper.update()
-    return { wrapper }
+
+    return { wrapper: wrapper as ReactWrapper }
   }
 
   it('should render a modal', () => {
@@ -74,31 +61,8 @@ describe('Add Visit Modal', () => {
   it('should render the visit form', () => {
     const { wrapper } = setup()
 
-    const visitForm = wrapper.find(VisitForm)
-    expect(visitForm).toHaveLength(1)
-    expect(visitForm.prop('visitError')).toEqual(visitError)
-  })
-
-  it('should dispatch add visit when the save button is clicked', async () => {
-    const { wrapper } = setup()
-    jest.spyOn(patientSlice, 'addVisit')
-
-    act(() => {
-      const visitForm = wrapper.find(VisitForm)
-      const onChange = visitForm.prop('onChange') as any
-      onChange(patient.visits[0])
-    })
-    wrapper.update()
-
-    await act(async () => {
-      const modal = wrapper.find(Modal)
-      const successButton = modal.prop('successButton')
-      const onClick = successButton?.onClick as any
-      await onClick()
-    })
-
-    expect(patientSlice.addVisit).toHaveBeenCalledTimes(1)
-    expect(patientSlice.addVisit).toHaveBeenCalledWith(patient.id, patient.visits[0])
+    const addVisitModal = wrapper.find(AddVisitModal)
+    expect(addVisitModal).toHaveLength(1)
   })
 
   it('should call the on close function when the cancel button is clicked', () => {
@@ -115,5 +79,26 @@ describe('Add Visit Modal', () => {
     })
 
     expect(onCloseSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('should save the visit when the save button is clicked', async () => {
+    const { wrapper } = setup()
+
+    act(() => {
+      const visitForm = wrapper.find(VisitForm)
+      const onChange = visitForm.prop('onChange') as any
+      onChange(patient.visits[0])
+    })
+    wrapper.update()
+
+    await act(async () => {
+      const modal = wrapper.find(Modal)
+      const successButton = modal.prop('successButton')
+      const onClick = successButton?.onClick as any
+      await onClick()
+    })
+
+    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
+    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
   })
 })

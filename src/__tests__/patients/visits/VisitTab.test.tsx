@@ -22,32 +22,37 @@ describe('Visit Tab', () => {
     id: 'patientId',
   }
 
-  const setup = (route: string, permissions: Permissions[]) => {
-    const store = mockStore({ patient: { patient }, user: { permissions } } as any)
+  const setup = async (route: string, permissions: Permissions[]) => {
+    const store = mockStore({ user: { permissions } } as any)
     const history = createMemoryHistory()
     history.push(route)
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <VisitTab />
-        </Router>
-      </Provider>,
-    )
+    let wrapper: any
+
+    await act(async () => {
+      wrapper = await mount(
+        <Provider store={store}>
+          <Router history={history}>
+            <VisitTab patientId={patient.id} />
+          </Router>
+        </Provider>,
+      )
+    })
 
     wrapper.update()
+
     return { wrapper, history }
   }
 
-  it('should render an add visit button if user has correct permissions', () => {
-    const { wrapper } = setup('/patients/123/visits', [Permissions.AddVisit])
+  it('should render an add visit button if user has correct permissions', async () => {
+    const { wrapper } = await setup('/patients/123/visits', [Permissions.AddVisit])
 
     const addNewButton = wrapper.find(Button).at(0)
     expect(addNewButton).toHaveLength(1)
     expect(addNewButton.text().trim()).toEqual('patient.visits.new')
   })
 
-  it('should open the add visit modal on click', () => {
-    const { wrapper } = setup('/patients/123/visits', [Permissions.AddVisit])
+  it('should open the add visit modal on click', async () => {
+    const { wrapper } = await setup('/patients/123/visits', [Permissions.AddVisit])
 
     act(() => {
       const addNewButton = wrapper.find(Button).at(0)
@@ -60,8 +65,8 @@ describe('Visit Tab', () => {
     expect(modal.prop('show')).toBeTruthy()
   })
 
-  it('should close the modal when the close button is clicked', () => {
-    const { wrapper } = setup('/patients/123/visits', [Permissions.AddVisit])
+  it('should close the modal when the close button is clicked', async () => {
+    const { wrapper } = await setup('/patients/123/visits', [Permissions.AddVisit])
 
     act(() => {
       const addNewButton = wrapper.find(Button).at(0)
@@ -80,20 +85,20 @@ describe('Visit Tab', () => {
     expect(wrapper.find(AddVisitModal).prop('show')).toBeFalsy()
   })
 
-  it('should not render visit button if user does not have permissions', () => {
-    const { wrapper } = setup('/patients/123/visits', [])
+  it('should not render visit button if user does not have permissions', async () => {
+    const { wrapper } = await setup('/patients/123/visits', [])
 
     expect(wrapper.find(Button)).toHaveLength(0)
   })
 
-  it('should render the visits table when on /patient/:id/visits', () => {
-    const { wrapper } = setup('/patients/123/visits', [Permissions.ReadVisits])
+  it('should render the visits table when on /patient/:id/visits', async () => {
+    const { wrapper } = await setup('/patients/123/visits', [Permissions.ReadVisits])
 
     expect(wrapper.find(VisitTable)).toHaveLength(1)
   })
 
-  it('should render the visit view when on /patient/:id/visits/:visitId', () => {
-    const { wrapper } = setup('/patients/123/visits/456', [Permissions.ReadVisits])
+  it('should render the visit view when on /patient/:id/visits/:visitId', async () => {
+    const { wrapper } = await setup('/patients/123/visits/456', [Permissions.ReadVisits])
 
     expect(wrapper.find(ViewVisit)).toHaveLength(1)
   })
