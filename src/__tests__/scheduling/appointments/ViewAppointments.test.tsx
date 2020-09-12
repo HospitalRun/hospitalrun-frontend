@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import ViewAppointments from '../../../scheduling/appointments/ViewAppointments'
 import AppointmentRepository from '../../../shared/db/AppointmentRepository'
@@ -42,7 +43,9 @@ describe('ViewAppointments', () => {
     return mount(
       <Provider store={mockStore({ appointments: { appointments: expectedAppointments } } as any)}>
         <MemoryRouter initialEntries={['/appointments']}>
-          <ViewAppointments />
+          <TitleProvider>
+            <ViewAppointments />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )

@@ -11,6 +11,7 @@ import ViewIncident from '../../../incidents/view/ViewIncident'
 import ViewIncidentDetails from '../../../incidents/view/ViewIncidentDetails'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
@@ -47,7 +48,9 @@ describe('View Incident', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/incidents/:id">
-                <ViewIncident />
+                <TitleProvider>
+                  <ViewIncident />
+                </TitleProvider>
               </Route>
             </Router>
           </Provider>

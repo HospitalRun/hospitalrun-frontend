@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import ViewImagings from '../../imagings/ViewImagings'
 import * as breadcrumbUtil from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import * as titleUtil from '../../page-header/title/useTitle'
 import ImagingRepository from '../../shared/db/ImagingRepository'
 import Imaging from '../../shared/model/Imaging'
@@ -57,7 +58,9 @@ describe('View Imagings', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/imaging">
-                <ViewImagings />
+                <TitleProvider>
+                  <ViewImagings />
+                </TitleProvider>
               </Route>
             </Router>
           </Provider>

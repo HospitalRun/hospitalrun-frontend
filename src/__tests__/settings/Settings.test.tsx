@@ -6,6 +6,7 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import * as titleUtil from '../../page-header/title/useTitle'
 import Settings from '../../settings/Settings'
 import { RootState } from '../../shared/store'
@@ -24,7 +25,9 @@ describe('Settings', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Settings />
+          <TitleProvider>
+            <Settings />
+          </TitleProvider>
         </Router>
       </Provider>,
     )

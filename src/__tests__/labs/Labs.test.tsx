@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Labs from '../../labs/Labs'
 import NewLabRequest from '../../labs/requests/NewLabRequest'
 import ViewLab from '../../labs/ViewLab'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import LabRepository from '../../shared/db/LabRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Lab from '../../shared/model/Lab'
@@ -45,7 +46,9 @@ describe('Labs', () => {
         const wrapper = mount(
           <Provider store={store}>
             <MemoryRouter initialEntries={['/labs/new']}>
-              <Labs />
+              <TitleProvider>
+                <Labs />
+              </TitleProvider>
             </MemoryRouter>
           </Provider>,
         )
@@ -64,7 +67,9 @@ describe('Labs', () => {
         const wrapper = mount(
           <Provider store={store}>
             <MemoryRouter initialEntries={['/labs/new']}>
-              <Labs />
+              <TitleProvider>
+                <Labs />
+              </TitleProvider>
             </MemoryRouter>
           </Provider>,
         )
@@ -97,7 +102,9 @@ describe('Labs', () => {
           wrapper = await mount(
             <Provider store={store}>
               <MemoryRouter initialEntries={['/labs/1234']}>
-                <Labs />
+                <TitleProvider>
+                  <Labs />
+                </TitleProvider>
               </MemoryRouter>
             </Provider>,
           )
@@ -117,7 +124,9 @@ describe('Labs', () => {
         const wrapper = await mount(
           <Provider store={store}>
             <MemoryRouter initialEntries={['/labs/1234']}>
-              <Labs />
+              <TitleProvider>
+                <Labs />
+              </TitleProvider>
             </MemoryRouter>
           </Provider>,
         )

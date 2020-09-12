@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../../page-header/title/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
@@ -65,7 +66,9 @@ describe('View Appointment', () => {
         <Provider store={store}>
           <Router history={history}>
             <Route path="/appointments/:id">
-              <ViewAppointment />
+              <TitleProvider>
+                <ViewAppointment />
+              </TitleProvider>
             </Route>
           </Router>
         </Provider>,

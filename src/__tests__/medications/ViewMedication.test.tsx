@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 
 import ViewMedication from '../../medications/ViewMedication'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import * as titleUtil from '../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import MedicationRepository from '../../shared/db/MedicationRepository'
@@ -72,7 +73,9 @@ describe('View Medication', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/medications/:id">
-                <ViewMedication />
+                <TitleProvider>
+                  <ViewMedication />
+                </TitleProvider>
               </Route>
             </Router>
           </Provider>

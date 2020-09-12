@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import * as labsSlice from '../../labs/labs-slice'
 import ViewLabs from '../../labs/ViewLabs'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import * as titleUtil from '../../page-header/title/useTitle'
 import LabRepository from '../../shared/db/LabRepository'
 import Lab from '../../shared/model/Lab'
@@ -34,7 +35,9 @@ describe('View Labs', () => {
         await mount(
           <Provider store={store}>
             <Router history={createMemoryHistory()}>
-              <ViewLabs />
+              <TitleProvider>
+                <ViewLabs />
+              </TitleProvider>
             </Router>
           </Provider>,
         )
@@ -60,7 +63,9 @@ describe('View Labs', () => {
         await mount(
           <Provider store={store}>
             <Router history={createMemoryHistory()}>
-              <ViewLabs />
+              <TitleProvider>
+                <ViewLabs />
+              </TitleProvider>
             </Router>
           </Provider>,
         )
@@ -83,7 +88,9 @@ describe('View Labs', () => {
         await mount(
           <Provider store={store}>
             <Router history={createMemoryHistory()}>
-              <ViewLabs />
+              <TitleProvider>
+                <ViewLabs />
+              </TitleProvider>
             </Router>
           </Provider>,
         )
@@ -119,7 +126,9 @@ describe('View Labs', () => {
         wrapper = await mount(
           <Provider store={store}>
             <Router history={history}>
-              <ViewLabs />
+              <TitleProvider>
+                <ViewLabs />
+              </TitleProvider>
             </Router>
           </Provider>,
         )
@@ -182,7 +191,9 @@ describe('View Labs', () => {
           wrapper = await mount(
             <Provider store={store}>
               <Router history={history}>
-                <ViewLabs />
+                <TitleProvider>
+                  <ViewLabs />
+                </TitleProvider>
               </Router>
             </Provider>,
           )
@@ -236,7 +247,9 @@ describe('View Labs', () => {
           wrapper = await mount(
             <Provider store={store}>
               <Router history={history}>
-                <ViewLabs />
+                <TitleProvider>
+                  <ViewLabs />
+                </TitleProvider>
               </Router>
             </Provider>,
           )

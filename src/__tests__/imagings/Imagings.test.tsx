@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 
 import Imagings from '../../imagings/Imagings'
 import NewImagingRequest from '../../imagings/requests/NewImagingRequest'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import ImagingRepository from '../../shared/db/ImagingRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Imaging from '../../shared/model/Imaging'
@@ -43,7 +44,9 @@ describe('Imagings', () => {
         const wrapper = mount(
           <Provider store={store}>
             <MemoryRouter initialEntries={['/imaging/new']}>
-              <Imagings />
+              <TitleProvider>
+                <Imagings />
+              </TitleProvider>
             </MemoryRouter>
           </Provider>,
         )

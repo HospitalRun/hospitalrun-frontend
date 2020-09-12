@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import * as medicationsSlice from '../../medications/medications-slice'
 import ViewMedications from '../../medications/ViewMedications'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import * as titleUtil from '../../page-header/title/useTitle'
 import MedicationRepository from '../../shared/db/MedicationRepository'
 import Medication from '../../shared/model/Medication'
@@ -48,7 +49,9 @@ describe('View Medications', () => {
       wrapper = await mount(
         <Provider store={store}>
           <Router history={history}>
-            <ViewMedications />
+            <TitleProvider>
+              <ViewMedications />
+            </TitleProvider>
           </Router>
         </Provider>,
       )

@@ -10,6 +10,7 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
+import { TitleProvider } from '../../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../../page-header/title/useTitle'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
@@ -74,7 +75,9 @@ describe('Edit Appointment', () => {
       <Provider store={store}>
         <Router history={history}>
           <Route path="/appointments/edit/:id">
-            <EditAppointment />
+            <TitleProvider>
+              <EditAppointment />
+            </TitleProvider>
           </Route>
         </Router>
       </Provider>,

@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import Allergies from '../../../patients/allergies/Allergies'
 import AppointmentsList from '../../../patients/appointments/AppointmentsList'
@@ -68,7 +69,9 @@ describe('ViewPatient', () => {
         <Provider store={store}>
           <Router history={history}>
             <Route path="/patients/:id">
-              <ViewPatient />
+              <TitleProvider>
+                <ViewPatient />
+              </TitleProvider>
             </Route>
           </Router>
         </Provider>,

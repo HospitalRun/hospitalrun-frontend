@@ -12,6 +12,7 @@ import ViewIncidents from '../../../incidents/list/ViewIncidents'
 import ViewIncidentsTable from '../../../incidents/list/ViewIncidentsTable'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
@@ -60,7 +61,9 @@ describe('View Incidents', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/incidents">
-                <ViewIncidents />
+                <TitleProvider>
+                  <ViewIncidents />
+                </TitleProvider>
               </Route>
             </Router>
           </Provider>

@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Incidents from '../../incidents/Incidents'
 import ReportIncident from '../../incidents/report/ReportIncident'
 import ViewIncident from '../../incidents/view/ViewIncident'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import IncidentRepository from '../../shared/db/IncidentRepository'
 import Incident from '../../shared/model/Incident'
 import Permissions from '../../shared/model/Permissions'
@@ -38,7 +39,9 @@ describe('Incidents', () => {
       wrapper = await mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[path]}>
-            <Incidents />
+            <TitleProvider>
+              <Incidents />
+            </TitleProvider>
           </MemoryRouter>
         </Provider>,
       )

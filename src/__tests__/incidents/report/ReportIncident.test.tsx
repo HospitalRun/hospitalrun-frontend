@@ -12,6 +12,7 @@ import ReportIncident from '../../../incidents/report/ReportIncident'
 import * as validationUtil from '../../../incidents/util/validate-incident'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
@@ -53,7 +54,9 @@ describe('Report Incident', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/incidents/new">
-                <ReportIncident />
+                <TitleProvider>
+                  <ReportIncident />
+                </TitleProvider>
               </Route>
             </Router>
           </Provider>

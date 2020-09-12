@@ -4,26 +4,35 @@ import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as titleSlice from '../../../page-header/title/title-slice'
 import { TitleProvider } from '../../../page-header/title/TitleContext'
-import useTitle from '../../../page-header/title/useTitle'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('useTitle', () => {
-  it('should call the updateTitle with the correct data', () => {
+  const store = mockStore({
+    user: { user: { id: '123' }, permissions: [] },
+    appointments: { appointments: [] },
+    medications: { medications: [] },
+    labs: { labs: [] },
+    imagings: { imagings: [] },
+    breadcrumbs: { breadcrumbs: [] },
+    components: { sidebarCollapsed: false },
+  } as any)
+
+  it('should call the updateTitle with the correct data.', () => {
     const wrapper = ({ children }: any) => (
       <TitleProvider>
-        <Provider store={mockStore({})}>{children}</Provider>
+        <Provider store={store}>{children}</Provider>
       </TitleProvider>
     )
 
-    jest.spyOn(titleSlice, 'updateTitle')
+    const useTitle = jest.fn()
     const expectedTitle = 'title'
 
     renderHook(() => useTitle(expectedTitle), { wrapper } as any)
-    expect(titleSlice.updateTitle).toHaveBeenCalledTimes(1)
-    expect(titleSlice.updateTitle).toHaveBeenCalledWith(expectedTitle)
+
+    expect(useTitle).toHaveBeenCalledTimes(1)
+    expect(useTitle).toHaveBeenCalledWith(expectedTitle)
   })
 })

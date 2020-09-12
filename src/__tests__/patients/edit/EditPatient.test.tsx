@@ -8,6 +8,7 @@ import { Router, Route } from 'react-router-dom'
 import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import EditPatient from '../../../patients/edit/EditPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
@@ -53,7 +54,9 @@ describe('Edit Patient', () => {
       <Provider store={store}>
         <Router history={history}>
           <Route path="/patients/edit/:id">
-            <EditPatient />
+            <TitleProvider>
+              <EditPatient />
+            </TitleProvider>
           </Route>
         </Router>
       </Provider>,

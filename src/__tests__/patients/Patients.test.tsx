@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Dashboard from '../../dashboard/Dashboard'
 import HospitalRun from '../../HospitalRun'
 import { addBreadcrumbs } from '../../page-header/breadcrumbs/breadcrumbs-slice'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import EditPatient from '../../patients/edit/EditPatient'
 import NewPatient from '../../patients/new/NewPatient'
 import ViewPatient from '../../patients/view/ViewPatient'
@@ -35,7 +36,9 @@ describe('/patients/new', () => {
       wrapper = await mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={['/patients/new']}>
-            <HospitalRun />
+            <TitleProvider>
+              <HospitalRun />
+            </TitleProvider>
           </MemoryRouter>
         </Provider>,
       )
@@ -63,7 +66,9 @@ describe('/patients/new', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/patients/new']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -99,7 +104,9 @@ describe('/patients/edit/:id', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/patients/edit/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -127,7 +134,9 @@ describe('/patients/edit/:id', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/patients/edit/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -146,7 +155,9 @@ describe('/patients/edit/:id', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/patients/edit/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -179,7 +190,9 @@ describe('/patients/:id', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/patients/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -206,7 +219,9 @@ describe('/patients/:id', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/patients/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )

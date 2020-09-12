@@ -9,6 +9,7 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import NewLabRequest from '../../../labs/requests/NewLabRequest'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
@@ -33,7 +34,9 @@ describe('New Lab Request', () => {
       mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewLabRequest />
+            <TitleProvider>
+              <NewLabRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
@@ -55,7 +58,9 @@ describe('New Lab Request', () => {
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewLabRequest />
+            <TitleProvider>
+              <NewLabRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
@@ -122,7 +127,9 @@ describe('New Lab Request', () => {
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewLabRequest />
+            <TitleProvider>
+              <NewLabRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
@@ -154,7 +161,9 @@ describe('New Lab Request', () => {
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewLabRequest />
+            <TitleProvider>
+              <NewLabRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
@@ -204,7 +213,9 @@ describe('New Lab Request', () => {
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewLabRequest />
+            <TitleProvider>
+              <NewLabRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )

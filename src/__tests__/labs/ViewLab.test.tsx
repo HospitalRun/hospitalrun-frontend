@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 
 import ViewLab from '../../labs/ViewLab'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import * as titleUtil from '../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import LabRepository from '../../shared/db/LabRepository'
@@ -71,7 +72,9 @@ describe('View Lab', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/labs/:id">
-                <ViewLab />
+                <TitleProvider>
+                  <ViewLab />
+                </TitleProvider>
               </Route>
             </Router>
           </Provider>

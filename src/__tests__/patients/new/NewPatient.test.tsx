@@ -9,6 +9,7 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import NewPatient from '../../../patients/new/NewPatient'
@@ -41,7 +42,9 @@ describe('New Patient', () => {
       <Provider store={store}>
         <Router history={history}>
           <Route path="/patients/new">
-            <NewPatient />
+            <TitleProvider>
+              <NewPatient />
+            </TitleProvider>
           </Route>
         </Router>
       </Provider>,

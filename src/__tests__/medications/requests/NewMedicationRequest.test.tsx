@@ -9,6 +9,7 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import NewMedicationRequest from '../../../medications/requests/NewMedicationRequest'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
@@ -33,7 +34,9 @@ describe('New Medication Request', () => {
       mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewMedicationRequest />
+            <TitleProvider>
+              <NewMedicationRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
@@ -55,7 +58,9 @@ describe('New Medication Request', () => {
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewMedicationRequest />
+            <TitleProvider>
+              <NewMedicationRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
@@ -117,7 +122,9 @@ describe('New Medication Request', () => {
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewMedicationRequest />
+            <TitleProvider>
+              <NewMedicationRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
@@ -171,7 +178,9 @@ describe('New Medication Request', () => {
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
-            <NewMedicationRequest />
+            <TitleProvider>
+              <NewMedicationRequest />
+            </TitleProvider>
           </Router>
         </Provider>,
       )

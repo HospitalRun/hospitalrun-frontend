@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Dashboard from '../../../dashboard/Dashboard'
 import HospitalRun from '../../../HospitalRun'
 import { addBreadcrumbs } from '../../../page-header/breadcrumbs/breadcrumbs-slice'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import Appointments from '../../../scheduling/appointments/Appointments'
 import EditAppointment from '../../../scheduling/appointments/edit/EditAppointment'
 import NewAppointment from '../../../scheduling/appointments/new/NewAppointment'
@@ -35,7 +36,9 @@ describe('/appointments', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments']}>
-          <Appointments />
+          <TitleProvider>
+            <Appointments />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -65,7 +68,9 @@ describe('/appointments', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/appointments']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -87,7 +92,9 @@ describe('/appointments/new', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments/new']}>
-          <Appointments />
+          <TitleProvider>
+            <Appointments />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -115,7 +122,9 @@ describe('/appointments/new', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/appointments/new']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -149,7 +158,9 @@ describe('/appointments/edit/:id', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/appointments/edit/123']}>
-          <Appointments />
+          <TitleProvider>
+            <Appointments />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -180,7 +191,9 @@ describe('/appointments/edit/:id', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/appointments/edit/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -199,7 +212,9 @@ describe('/appointments/edit/:id', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/appointments/edit/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )

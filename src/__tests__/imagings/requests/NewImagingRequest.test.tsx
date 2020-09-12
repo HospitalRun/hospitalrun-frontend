@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import NewImagingRequest from '../../../imagings/requests/NewImagingRequest'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
@@ -51,7 +52,9 @@ describe('New Imaging Request', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/imaging/new">
-                <NewImagingRequest />
+                <TitleProvider>
+                  <NewImagingRequest />
+                </TitleProvider>
               </Route>
             </Router>
           </Provider>
