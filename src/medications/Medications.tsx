@@ -7,8 +7,8 @@ import PrivateRoute from '../shared/components/PrivateRoute'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
 import NewMedicationRequest from './requests/NewMedicationRequest'
+import MedicationRequests from './search/ViewMedications'
 import ViewMedication from './ViewMedication'
-import MedicationRequests from './ViewMedications'
 
 const Medications = () => {
   const { permissions } = useSelector((state: RootState) => state.user)
