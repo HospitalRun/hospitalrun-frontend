@@ -1,4 +1,4 @@
-import { TextInput, Select, Table } from '@hospitalrun/components'
+import { Select, Table } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -20,81 +20,65 @@ import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
+let history: any
+const expectedLab = {
+  code: 'L-1234',
+  id: '1234',
+  type: 'lab type',
+  patient: 'patientId',
+  status: 'requested',
+  requestedOn: new Date().toISOString(),
+} as Lab
+
+const setup = (permissions: Permissions[] = [Permissions.ViewLabs, Permissions.RequestLab]) => {
+  const store = mockStore({
+    title: '',
+    user: { permissions },
+    labs: { labs: [expectedLab] },
+  } as any)
+  history = createMemoryHistory()
+
+  jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
+
+  const wrapper = mount(
+    <Provider store={store}>
+      <Router history={history}>
+        <TitleProvider>
+          <ViewLabs />
+        </TitleProvider>
+      </Router>
+    </Provider>,
+  )
+
+  wrapper.update()
+  return { wrapper: wrapper as ReactWrapper }
+}
+
 describe('View Labs', () => {
   describe('title', () => {
-    let titleSpy: any
-    beforeEach(async () => {
-      const store = mockStore({
-        title: '',
-        user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
-        labs: { labs: [] },
-      } as any)
-      titleSpy = jest.spyOn(titleUtil, 'default')
-      jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-      await act(async () => {
-        await mount(
-          <Provider store={store}>
-            <Router history={createMemoryHistory()}>
-              <TitleProvider>
-                <ViewLabs />
-              </TitleProvider>
-            </Router>
-          </Provider>,
-        )
-      })
-    })
-
+    const titleSpy = jest.spyOn(titleUtil, 'default')
     it('should have the title', () => {
+      setup()
       expect(titleSpy).toHaveBeenCalledWith('labs.label')
     })
   })
 
   describe('button bar', () => {
     it('should display button to add new lab request', async () => {
-      const store = mockStore({
-        title: '',
-        user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
-        labs: { labs: [] },
-      } as any)
       const setButtonToolBarSpy = jest.fn()
       jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
       jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-      await act(async () => {
-        await mount(
-          <Provider store={store}>
-            <Router history={createMemoryHistory()}>
-              <TitleProvider>
-                <ViewLabs />
-              </TitleProvider>
-            </Router>
-          </Provider>,
-        )
-      })
+      setup()
 
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect((actualButtons[0] as any).props.children).toEqual('labs.requests.new')
     })
 
     it('should not display button to add new lab request if the user does not have permissions', async () => {
-      const store = mockStore({
-        title: '',
-        user: { permissions: [Permissions.ViewLabs] },
-        labs: { labs: [] },
-      } as any)
       const setButtonToolBarSpy = jest.fn()
       jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
       jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-      await act(async () => {
-        await mount(
-          <Provider store={store}>
-            <Router history={createMemoryHistory()}>
-              <TitleProvider>
-                <ViewLabs />
-              </TitleProvider>
-            </Router>
-          </Provider>,
-        )
-      })
+      setup([])
 
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect(actualButtons).toEqual([])
@@ -102,42 +86,8 @@ describe('View Labs', () => {
   })
 
   describe('table', () => {
-    let wrapper: ReactWrapper
-    let history: any
-    const expectedLab = {
-      code: 'L-1234',
-      id: '1234',
-      type: 'lab type',
-      patient: 'patientId',
-      status: 'requested',
-      requestedOn: '2020-03-30T04:43:20.102Z',
-    } as Lab
-
-    beforeEach(async () => {
-      const store = mockStore({
-        title: '',
-        user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
-        labs: { labs: [expectedLab] },
-      } as any)
-      history = createMemoryHistory()
-
-      jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
-      await act(async () => {
-        wrapper = await mount(
-          <Provider store={store}>
-            <Router history={history}>
-              <TitleProvider>
-                <ViewLabs />
-              </TitleProvider>
-            </Router>
-          </Provider>,
-        )
-      })
-
-      wrapper.update()
-    })
-
     it('should render a table with data', () => {
+      const { wrapper } = setup()
       const table = wrapper.find(Table)
       const columns = table.prop('columns')
       const actions = table.prop('actions') as any
@@ -156,6 +106,7 @@ describe('View Labs', () => {
     })
 
     it('should navigate to the lab when the view button is clicked', () => {
+      const { wrapper } = setup()
       const tr = wrapper.find('tr').at(1)
 
       act(() => {
@@ -169,114 +120,53 @@ describe('View Labs', () => {
   describe('dropdown', () => {
     it('should search for labs when dropdown changes', () => {
       const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
-      let wrapper: ReactWrapper
-      let history: any
-      const expectedLab = {
-        id: '1234',
-        type: 'lab type',
-        patient: 'patientId',
-        status: 'requested',
-        requestedOn: '2020-03-30T04:43:20.102Z',
-      } as Lab
+      const { wrapper } = setup()
 
-      beforeEach(async () => {
-        const store = mockStore({
-          title: '',
-          user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
-          labs: { labs: [expectedLab] },
-        } as any)
-        history = createMemoryHistory()
+      searchLabsSpy.mockClear()
 
-        await act(async () => {
-          wrapper = await mount(
-            <Provider store={store}>
-              <Router history={history}>
-                <TitleProvider>
-                  <ViewLabs />
-                </TitleProvider>
-              </Router>
-            </Provider>,
-          )
+      act(() => {
+        const onChange = wrapper.find(Select).prop('onChange') as any
+        onChange({
+          target: {
+            value: 'requested',
+          },
+          preventDefault: jest.fn(),
         })
-
-        searchLabsSpy.mockClear()
-
-        act(() => {
-          const onChange = wrapper.find(Select).prop('onChange') as any
-          onChange({
-            target: {
-              value: 'requested',
-            },
-            preventDefault: jest.fn(),
-          })
-        })
-
-        wrapper.update()
-        expect(searchLabsSpy).toHaveBeenCalledTimes(1)
       })
+
+      wrapper.update()
+      expect(searchLabsSpy).toHaveBeenCalledTimes(1)
     })
   })
+})
 
-  describe('search functionality', () => {
-    beforeEach(() => jest.useFakeTimers())
+describe('search functionality', () => {
+  beforeEach(() => jest.useFakeTimers())
 
-    afterEach(() => jest.useRealTimers())
+  afterEach(() => jest.useRealTimers())
 
-    it('should search for labs after the search text has not changed for 500 milliseconds', () => {
-      const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
-      let wrapper: ReactWrapper
-      let history: any
-      const expectedLab = {
-        id: '1234',
-        type: 'lab type',
-        patient: 'patientId',
-        status: 'requested',
-        requestedOn: '2020-03-30T04:43:20.102Z',
-      } as Lab
+  it('should search for labs after the search text has not changed for 500 milliseconds', async () => {
+    const searchLabsSpy = jest.spyOn(labsSlice, 'searchLabs')
 
-      beforeEach(async () => {
-        const store = mockStore({
-          title: '',
-          user: { permissions: [Permissions.ViewLabs, Permissions.RequestLab] },
-          labs: { labs: [expectedLab] },
-        } as any)
-        history = createMemoryHistory()
+    searchLabsSpy.mockClear()
 
-        jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
-        await act(async () => {
-          wrapper = await mount(
-            <Provider store={store}>
-              <Router history={history}>
-                <TitleProvider>
-                  <ViewLabs />
-                </TitleProvider>
-              </Router>
-            </Provider>,
-          )
+    beforeEach(async () => {
+      const { wrapper } = setup()
+
+      searchLabsSpy.mockClear()
+
+      act(() => {
+        const onChange = wrapper.find(Select).prop('onChange') as any
+        onChange({
+          target: {
+            value: 'requested',
+          },
+          preventDefault: jest.fn(),
         })
-
-        searchLabsSpy.mockClear()
-        const expectedSearchText = 'search text'
-
-        act(() => {
-          const onClick = wrapper.find(TextInput).prop('onChange') as any
-          onClick({
-            target: {
-              value: expectedSearchText,
-            },
-            preventDefault: jest.fn(),
-          })
-        })
-
-        act(() => {
-          jest.advanceTimersByTime(500)
-        })
-
-        wrapper.update()
-
-        expect(searchLabsSpy).toHaveBeenCalledTimes(1)
-        expect(searchLabsSpy).toHaveBeenLastCalledWith(expectedSearchText)
       })
+
+      wrapper.update()
+      expect(searchLabsSpy).toHaveBeenCalledTimes(1)
     })
   })
 })
