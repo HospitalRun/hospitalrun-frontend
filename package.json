@@ -60,7 +60,7 @@
   ],
   "devDependencies": {
     "@commitlint/cli": "~9.1.2",
-    "@commitlint/config-conventional": "~9.1.1",
+    "@commitlint/config-conventional": "~11.0.0",
     "@commitlint/core": "~11.0.0",
     "@commitlint/prompt": "~11.0.0",
     "@testing-library/react": "~11.0.0",
