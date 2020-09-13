@@ -3,7 +3,7 @@ import { addMonths } from 'date-fns'
 import React, { useState, useEffect } from 'react'
 
 import useTranslator from '../../shared/hooks/useTranslator'
-import Visit from '../../shared/model/Visit'
+import Visit, { VisitStatus } from '../../shared/model/Visit'
 import useAddVisit, { RequestVisit } from '../hooks/useAddVisit'
 import VisitForm from './VisitForm'
 
@@ -16,13 +16,19 @@ interface Props {
 const initialVisitState = {
   startDateTime: new Date().toISOString(),
   endDateTime: addMonths(new Date(), 1).toISOString(),
+  updatedAt: '',
+  type: '',
+  status: '' as VisitStatus,
+  reason: '',
+  location: '',
+  rev: '',
 }
 
 const AddVisitModal = ({ show, onCloseButtonClick, patientId }: Props) => {
   const { t } = useTranslator()
 
   const [mutate] = useAddVisit()
-  const [visit, setVisit] = useState<Partial<RequestVisit>>(initialVisitState)
+  const [visit, setVisit] = useState<RequestVisit>(initialVisitState)
   const [error, setError] = useState<Error | undefined>(undefined)
 
   useEffect(() => {
@@ -38,7 +44,7 @@ const AddVisitModal = ({ show, onCloseButtonClick, patientId }: Props) => {
 
   const onSaveButtonClick = async () => {
     try {
-      await mutate({ patientId, visit: visit as RequestVisit })
+      await mutate({ patientId, visit })
       onClose()
     } catch (e) {
       setError(e)
