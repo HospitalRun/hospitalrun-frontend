@@ -17,10 +17,6 @@ const ViewVisit = ({ patientId }: Props) => {
     return <Loading />
   }
 
-  if (!visit) {
-    return <></>
-  }
-
   return (
     <>
       <h2>{visit.reason}</h2>

@@ -44,9 +44,11 @@ export default function validateVisit(visit: Partial<Visit>) {
   if (!visit.status) {
     error.status = 'patient.visits.error.statusRequired'
   }
+
   if (!visit.reason) {
     error.status = 'patient.visits.error.reasonRequired'
   }
+
   if (!visit.location) {
     error.status = 'patient.visits.error.locationRequired'
   }

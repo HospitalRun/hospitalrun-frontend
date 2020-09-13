@@ -6,9 +6,10 @@ import Visit from '../../shared/model/Visit'
 import { uuid } from '../../shared/util/uuid'
 import validateVisit from '../util/validate-visit'
 
+export type RequestVisit = Omit<Visit, 'id' | 'createdAt'>
 interface AddVisitRequest {
   patientId: string
-  visit: Omit<Visit, 'id' | 'createdAt'>
+  visit: RequestVisit
 }
 
 async function addVisit(request: AddVisitRequest): Promise<Visit[]> {

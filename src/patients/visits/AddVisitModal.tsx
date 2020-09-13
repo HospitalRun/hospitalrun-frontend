@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 
 import useTranslator from '../../shared/hooks/useTranslator'
 import Visit from '../../shared/model/Visit'
-import useAddVisit from '../hooks/useAddVisit'
+import useAddVisit, { RequestVisit } from '../hooks/useAddVisit'
 import VisitForm from './VisitForm'
 
 interface Props {
@@ -16,14 +16,14 @@ interface Props {
 const initialVisitState = {
   startDateTime: new Date().toISOString(),
   endDateTime: addMonths(new Date(), 1).toISOString(),
-} as Visit
+}
 
 const AddVisitModal = ({ show, onCloseButtonClick, patientId }: Props) => {
   const { t } = useTranslator()
 
   const [mutate] = useAddVisit()
-  const [visit, setVisit] = useState<Visit>(initialVisitState)
-  const [error, setError] = useState({})
+  const [visit, setVisit] = useState<Partial<RequestVisit>>(initialVisitState)
+  const [error, setError] = useState<Error | undefined>(undefined)
 
   useEffect(() => {
     setVisit(initialVisitState)
@@ -38,7 +38,7 @@ const AddVisitModal = ({ show, onCloseButtonClick, patientId }: Props) => {
 
   const onSaveButtonClick = async () => {
     try {
-      await mutate({ patientId, visit })
+      await mutate({ patientId, visit: visit as RequestVisit })
       onClose()
     } catch (e) {
       setError(e)
