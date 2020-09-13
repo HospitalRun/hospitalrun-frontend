@@ -21,7 +21,7 @@ const mockStore = createMockStore<RootState, any>([thunk])
 describe('Medications', () => {
   const setup = (route: string, permissions: Array<string>) => {
     jest.resetAllMocks()
-    jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
+    jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
     jest
       .spyOn(MedicationRepository, 'find')
       .mockResolvedValue({ id: '1234', requestedOn: new Date().toISOString() } as Medication)
