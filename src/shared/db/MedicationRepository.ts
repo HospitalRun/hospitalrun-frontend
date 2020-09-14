@@ -1,20 +1,10 @@
+import MedicationSearchRequest from '../../medications/models/MedicationSearchRequest'
 import { relationalDb } from '../config/pouchdb'
 import Medication from '../model/Medication'
 import Repository from './Repository'
 import SortRequest from './SortRequest'
 
-interface SearchContainer {
-  text: string
-  status:
-    | 'draft'
-    | 'active'
-    | 'on hold'
-    | 'canceled'
-    | 'completed'
-    | 'entered in error'
-    | 'stopped'
-    | 'unknown'
-    | 'all'
+interface SearchContainer extends MedicationSearchRequest {
   defaultSortRequest: SortRequest
 }
 class MedicationRepository extends Repository<Medication> {
@@ -29,10 +19,7 @@ class MedicationRepository extends Repository<Medication> {
         {
           $or: [
             {
-              'data.type': searchValue,
-            },
-            {
-              'data.code': searchValue,
+              'data.medication': searchValue,
             },
           ],
         },
