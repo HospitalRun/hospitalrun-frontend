@@ -97,31 +97,9 @@ describe('HospitalRun', () => {
 
     describe('/medications', () => {
       it('should render the Medications component when /medications is accessed', async () => {
-<<<<<<< HEAD
-        jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
+        jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewMedications]
         const { wrapper } = await setup('/medications', permissions)
-=======
-        jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
-        const store = mockStore({
-          title: 'test',
-          user: { user: { id: '123' }, permissions: [Permissions.ViewMedications] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)
-
-        let wrapper: any
-        await act(async () => {
-          wrapper = await mount(
-            <Provider store={store}>
-              <MemoryRouter initialEntries={['/medications']}>
-                <HospitalRun />
-              </MemoryRouter>
-            </Provider>,
-          )
-        })
-        wrapper.update()
->>>>>>> 201af450e3eb6c2c87686961adb4f151cc8d4fd2
 
         expect(wrapper.find(ViewMedications)).toHaveLength(1)
       })
@@ -155,31 +133,9 @@ describe('HospitalRun', () => {
 
     describe('/imaging', () => {
       it('should render the Imagings component when /imaging is accessed', async () => {
-<<<<<<< HEAD
-        jest.spyOn(ImagingRepository, 'findAll').mockResolvedValue([])
+        jest.spyOn(ImagingRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewImagings]
         const { wrapper } = await setup('/imaging', permissions)
-=======
-        jest.spyOn(ImagingRepository, 'search').mockResolvedValue([])
-        const store = mockStore({
-          title: 'test',
-          user: { user: { id: '123' }, permissions: [Permissions.ViewImagings] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)
-
-        let wrapper: any
-        await act(async () => {
-          wrapper = await mount(
-            <Provider store={store}>
-              <MemoryRouter initialEntries={['/imaging']}>
-                <HospitalRun />
-              </MemoryRouter>
-            </Provider>,
-          )
-        })
-        wrapper.update()
->>>>>>> 201af450e3eb6c2c87686961adb4f151cc8d4fd2
 
         expect(wrapper.find(ViewImagings)).toHaveLength(1)
       })
