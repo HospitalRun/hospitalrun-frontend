@@ -19,10 +19,11 @@ import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 import Allergies from '../allergies/Allergies'
 import AppointmentsList from '../appointments/AppointmentsList'
+import CareGoalTab from '../care-goals/CareGoalTab'
 import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
-import Labs from '../labs/LabsTab'
+import Labs from '../labs/Labs'
 import Note from '../notes/NoteTab'
 import { fetchPatient } from '../patient-slice'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
@@ -135,6 +136,11 @@ const ViewPatient = () => {
           onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
         />
         <Tab
+          active={location.pathname === `/patients/${patient.id}/care-goals`}
+          label={t('patient.careGoal.label')}
+          onClick={() => history.push(`/patients/${patient.id}/care-goals`)}
+        />
+        <Tab
           active={location.pathname === `/patients/${patient.id}/visits`}
           label={t('patient.visits.label')}
           onClick={() => history.push(`/patients/${patient.id}/visits`)}
@@ -156,14 +162,17 @@ const ViewPatient = () => {
         <Route exact path={`${path}/diagnoses`}>
           <Diagnoses patient={patient} />
         </Route>
-        <Route exact path={`${path}/notes`}>
+        <Route path={`${path}/notes`}>
           <Note patient={patient} />
         </Route>
         <Route exact path={`${path}/labs`}>
-          <Labs patientId={patient.id} />
+          <Labs patient={patient} />
         </Route>
         <Route path={`${path}/care-plans`}>
           <CarePlanTab />
+        </Route>
+        <Route path={`${path}/care-goals`}>
+          <CareGoalTab />
         </Route>
         <Route path={`${path}/visits`}>
           <VisitTab />

@@ -17,6 +17,8 @@ enum Permissions {
   ResolveIncident = 'resolve:incident',
   AddCarePlan = 'write:care_plan',
   ReadCarePlan = 'read:care_plan',
+  AddCareGoal = 'write:care_goal',
+  ReadCareGoal = 'read:care_goal',
   RequestMedication = 'write:medications',
   CancelMedication = 'cancel:medication',
   CompleteMedication = 'complete:medication',
@@ -26,6 +28,7 @@ enum Permissions {
   ReadVisits = 'read:visit',
   RequestImaging = 'write:imaging',
   ViewImagings = 'read:imagings',
+  ViewIncidentWidgets = 'read:incident_widgets',
 }
 
 export default Permissions

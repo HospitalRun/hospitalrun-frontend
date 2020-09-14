@@ -6,6 +6,7 @@ module.exports = {
     'jest/globals': true,
   },
   extends: [
+    'react-app',
     'airbnb',
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -56,7 +57,7 @@ module.exports = {
     'no-param-reassign': ['error', { props: false }],
     'import/prefer-default-export': 'off',
     'import/no-cycle': 'off',
-    'no-console': 'off',
+    'no-console': 'error',
     'eol-last': ['error', 'always'],
     'no-debugger': 'error',
     'no-nested-ternary': 'off',

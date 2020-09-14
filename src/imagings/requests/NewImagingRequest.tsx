@@ -1,6 +1,6 @@
-import { Typeahead, Label, Button, Alert } from '@hospitalrun/components'
+import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
@@ -12,17 +12,17 @@ import TextFieldWithLabelFormGroup from '../../shared/components/input/TextField
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Imaging from '../../shared/model/Imaging'
 import Patient from '../../shared/model/Patient'
-import { RootState } from '../../shared/store'
-import { requestImaging } from '../imaging-slice'
+import useRequestImaging, { ImagingRequest } from '../hooks/useRequestImaging'
+import { ImagingRequestError } from '../util/validate-imaging-request'
 
 const NewImagingRequest = () => {
   const { t } = useTranslator()
-  const dispatch = useDispatch()
   const history = useHistory()
+  const [mutate] = useRequestImaging()
   useTitle(t('imagings.requests.new'))
-  const { status, error } = useSelector((state: RootState) => state.imaging)
+  const [error, setError] = useState<ImagingRequestError>()
+  const [visitOption, setVisitOption] = useState([] as Option[])
 
   const statusOptions: Option[] = [
     { label: t('imagings.status.requested'), value: 'requested' },
@@ -30,11 +30,13 @@ const NewImagingRequest = () => {
     { label: t('imagings.status.canceled'), value: 'canceled' },
   ]
 
-  const [newImagingRequest, setNewImagingRequest] = useState({
+  const [newImagingRequest, setNewImagingRequest] = useState<ImagingRequest>({
     patient: '',
-    type: '',
+    fullName: '',
+    status: 'requested',
     notes: '',
-    status: '',
+    type: '',
+    visitId: '',
   })
 
   const breadcrumbs = [
@@ -46,10 +48,28 @@ const NewImagingRequest = () => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onPatientChange = (patient: Patient) => {
-    setNewImagingRequest((previousNewImagingRequest) => ({
-      ...previousNewImagingRequest,
-      patient: patient.fullName as string,
-    }))
+    if (patient) {
+      setNewImagingRequest((previousNewImagingRequest) => ({
+        ...previousNewImagingRequest,
+        patient: patient.id,
+        fullName: patient.fullName as string,
+      }))
+
+      const visits = patient.visits?.map((v) => ({
+        label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
+        value: v.id,
+      })) as Option[]
+
+      setVisitOption(visits)
+    } else {
+      setNewImagingRequest((previousNewImagingRequest) => ({
+        ...previousNewImagingRequest,
+        patient: '',
+        fullName: '',
+        visitId: '',
+      }))
+      setVisitOption([])
+    }
   }
 
   const onImagingTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +83,14 @@ const NewImagingRequest = () => {
   const onStatusChange = (value: string) => {
     setNewImagingRequest((previousNewImagingRequest) => ({
       ...previousNewImagingRequest,
-      status: value,
+      status: value as 'completed' | 'canceled' | 'requested',
+    }))
+  }
+
+  const onVisitChange = (value: string) => {
+    setNewImagingRequest((previousNewImagingRequest) => ({
+      ...previousNewImagingRequest,
+      visitId: value,
     }))
   }
 
@@ -76,56 +103,89 @@ const NewImagingRequest = () => {
   }
 
   const onSave = async () => {
-    const newImaging = newImagingRequest as Imaging
-    const onSuccess = () => {
+    try {
+      await mutate(newImagingRequest)
       history.push(`/imaging`)
+    } catch (e) {
+      setError(e)
     }
-
-    dispatch(requestImaging(newImaging, onSuccess))
   }
 
   const onCancel = () => {
     history.push('/imaging')
   }
 
+  const defaultSelectedVisitsOption = () => {
+    if (visitOption !== undefined) {
+      return visitOption.filter(({ value }) => value === newImagingRequest.visitId)
+    }
+    return []
+  }
+
   return (
     <>
-      {status === 'error' && (
-        <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
+      {error !== undefined && (
+        <Alert color="danger" title={t('states.error')} message={t(error.message)} />
       )}
       <form>
-        <div className="form-group patient-typeahead">
-          <Label htmlFor="patientTypeahead" isRequired text={t('imagings.imaging.patient')} />
-          <Typeahead
-            id="patientTypeahead"
-            placeholder={t('imagings.imaging.patient')}
-            onChange={(p: Patient[]) => onPatientChange(p[0])}
-            onSearch={async (query: string) => PatientRepository.search(query)}
-            searchAccessor="fullName"
-            renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
-            isInvalid={!!error.patient}
-            feedback={t(error.patient as string)}
-          />
-        </div>
+        <Row>
+          <Column>
+            <div className="form-group patient-typeahead">
+              <Label htmlFor="patientTypeahead" isRequired text={t('imagings.imaging.patient')} />
+              <Typeahead
+                id="patientTypeahead"
+                placeholder={t('imagings.imaging.patient')}
+                onChange={(p: Patient[]) => {
+                  onPatientChange(p[0])
+                }}
+                onSearch={async (query: string) => PatientRepository.search(query)}
+                searchAccessor="fullName"
+                renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+                isInvalid={!!error?.patient}
+                feedback={t(error?.patient)}
+              />
+            </div>
+          </Column>
+          <Column>
+            <div className="visits">
+              <SelectWithLabelFormGroup
+                name="visit"
+                label={t('patient.visits.label')}
+                isRequired
+                isEditable={newImagingRequest.patient !== undefined}
+                options={visitOption || []}
+                defaultSelected={defaultSelectedVisitsOption()}
+                onChange={(values) => {
+                  onVisitChange(values[0])
+                }}
+              />
+            </div>
+          </Column>
+        </Row>
+
         <TextInputWithLabelFormGroup
           name="imagingType"
           label={t('imagings.imaging.type')}
           isRequired
           isEditable
-          isInvalid={!!error.type}
-          feedback={t(error.type as string)}
+          isInvalid={!!error?.type}
+          feedback={t(error?.type)}
           value={newImagingRequest.type}
           onChange={onImagingTypeChange}
         />
-        <SelectWithLabelFormGroup
-          name="status"
-          label={t('imagings.imaging.status')}
-          options={statusOptions}
-          isRequired
-          isEditable
-          defaultSelected={statusOptions.filter(({ value }) => value === newImagingRequest.status)}
-          onChange={(values) => onStatusChange(values[0])}
-        />
+        <div className="imaging-status">
+          <SelectWithLabelFormGroup
+            name="status"
+            label={t('imagings.imaging.status')}
+            options={statusOptions}
+            isRequired
+            isEditable
+            defaultSelected={statusOptions.filter(
+              ({ value }) => value === newImagingRequest.status,
+            )}
+            onChange={(values) => onStatusChange(values[0])}
+          />
+        </div>
         <div className="form-group">
           <TextFieldWithLabelFormGroup
             name="ImagingNotes"
