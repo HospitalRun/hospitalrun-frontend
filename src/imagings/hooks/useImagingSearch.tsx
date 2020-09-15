@@ -1,4 +1,4 @@
-import { QueryKey, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 import ImagingRepository from '../../shared/db/ImagingRepository'
 import SortRequest from '../../shared/db/SortRequest'
@@ -14,10 +14,7 @@ const defaultSortRequest: SortRequest = {
   ],
 }
 
-function searchImagingRequests(
-  _: QueryKey<string>,
-  searchRequest: ImagingSearchRequest,
-): Promise<Imaging[]> {
+function searchImagingRequests(_: string, searchRequest: ImagingSearchRequest): Promise<Imaging[]> {
   return ImagingRepository.search({ ...searchRequest, defaultSortRequest })
 }
 

@@ -1,10 +1,10 @@
-import { useQuery, QueryKey } from 'react-query'
+import { useQuery } from 'react-query'
 
 import PatientRepository from '../../shared/db/PatientRepository'
 import Visit from '../../shared/model/Visit'
 
 async function fetchVisit(
-  _: QueryKey<string>,
+  _: string,
   patientId: string,
   visitsId: string,
 ): Promise<Visit | undefined> {

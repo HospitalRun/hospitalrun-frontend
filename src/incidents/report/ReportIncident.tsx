@@ -50,7 +50,7 @@ const ReportIncident = () => {
   const onSave = async () => {
     try {
       const data = await mutate(incident as Incident)
-      history.push(`/incidents/${data.id}`)
+      history.push(`/incidents/${data?.id}`)
     } catch (e) {
       setError(e)
     }
