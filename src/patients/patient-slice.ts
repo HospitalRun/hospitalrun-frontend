@@ -6,7 +6,6 @@ import validator from 'validator'
 import PatientRepository from '../shared/db/PatientRepository'
 import Diagnosis from '../shared/model/Diagnosis'
 import Patient from '../shared/model/Patient'
-import RelatedPerson from '../shared/model/RelatedPerson'
 import { AppThunk } from '../shared/store'
 import { uuid } from '../shared/util/uuid'
 import { cleanupPatient } from './util/set-patient-helper'
@@ -99,10 +98,6 @@ const patientSlice = createSlice({
       state.status = 'error'
       state.diagnosisError = payload
     },
-    addRelatedPersonError(state, { payload }: PayloadAction<AddRelatedPersonError>) {
-      state.status = 'error'
-      state.relatedPersonError = payload
-    },
   },
 })
 
@@ -116,7 +111,6 @@ export const {
   updatePatientSuccess,
   updatePatientError,
   addDiagnosisError,
-  addRelatedPersonError,
 } = patientSlice.actions
 
 export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
@@ -241,51 +235,6 @@ export const updatePatient = (
     updateError.message = 'patient.errors.updatePatientError'
     dispatch(updatePatientError(updateError))
   }
-}
-
-function validateRelatedPerson(relatedPerson: RelatedPerson) {
-  const error: AddRelatedPersonError = {}
-
-  if (!relatedPerson.patientId) {
-    error.relatedPerson = 'patient.relatedPersons.error.relatedPersonRequired'
-  }
-
-  if (!relatedPerson.type) {
-    error.relationshipType = 'patient.relatedPersons.error.relationshipTypeRequired'
-  }
-
-  return error
-}
-
-export const addRelatedPerson = (
-  patientId: string,
-  relatedPerson: RelatedPerson,
-  onSuccess?: (patient: Patient) => void,
-): AppThunk => async (dispatch) => {
-  const newRelatedPersonError = validateRelatedPerson(relatedPerson)
-
-  if (isEmpty(newRelatedPersonError)) {
-    const patient = await PatientRepository.find(patientId)
-    const relatedPersons = patient.relatedPersons || []
-    relatedPersons.push({ id: uuid(), ...relatedPerson })
-    patient.relatedPersons = relatedPersons
-
-    await dispatch(updatePatient(patient, onSuccess))
-  } else {
-    newRelatedPersonError.message = 'patient.relatedPersons.error.unableToAddRelatedPerson'
-    dispatch(addRelatedPersonError(newRelatedPersonError))
-  }
-}
-
-export const removeRelatedPerson = (
-  patientId: string,
-  relatedPersonId: string,
-  onSuccess?: (patient: Patient) => void,
-): AppThunk => async (dispatch) => {
-  const patient = await PatientRepository.find(patientId)
-  patient.relatedPersons = patient.relatedPersons?.filter((r) => r.patientId !== relatedPersonId)
-
-  await dispatch(updatePatient(patient, onSuccess))
 }
 
 function validateDiagnosis(diagnosis: Diagnosis) {

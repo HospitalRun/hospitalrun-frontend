@@ -414,7 +414,7 @@ const Sidebar = () => {
 
   return (
     <nav
-      className="col-md-2 d-none d-md-block bg-light sidebar"
+      className="d-none d-md-block bg-light sidebar"
       style={{ width: sidebarCollapsed ? '56px' : '' }}
     >
       <div className="sidebar-sticky">
