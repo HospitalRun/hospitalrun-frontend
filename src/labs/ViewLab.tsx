@@ -1,4 +1,4 @@
-import { Row, Column, Badge, Button, Alert, Toast } from '@hospitalrun/components'
+import { Row, Column, Badge, Button, Alert, Toast, Callout, Label } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -12,6 +12,7 @@ import Lab from '../shared/model/Lab'
 import Patient from '../shared/model/Patient'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
+import { uuid } from '../shared/util/uuid'
 import { cancelLab, completeLab, updateLab, fetchLab } from './lab-slice'
 
 const getTitle = (patient: Patient | undefined, lab: Lab | undefined) =>
@@ -26,6 +27,7 @@ const ViewLab = () => {
   const { lab, patient, status, error } = useSelector((state: RootState) => state.lab)
 
   const [labToView, setLabToView] = useState<Lab>()
+  const [newNotes, setNewNotes] = useState<string>()
   const [isEditable, setIsEditable] = useState<boolean>(true)
 
   useTitle(getTitle(patient, labToView))
@@ -59,8 +61,7 @@ const ViewLab = () => {
 
   const onNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const notes = event.currentTarget.value
-    const newLab = labToView as Lab
-    setLabToView({ ...newLab, notes })
+    setNewNotes(notes)
   }
 
   const onUpdate = async () => {
@@ -73,7 +74,12 @@ const ViewLab = () => {
       )
     }
     if (labToView) {
-      dispatch(updateLab(labToView, onSuccess))
+      const newLab = labToView as Lab
+      if (newNotes) {
+        newLab.notes = newLab.notes ? [...newLab.notes, newNotes] : [newNotes]
+        setNewNotes('')
+      }
+      dispatch(updateLab(newLab, onSuccess))
     }
   }
   const onComplete = async () => {
@@ -167,6 +173,18 @@ const ViewLab = () => {
       return <></>
     }
 
+    const getPastNotes = () => {
+      if (labToView.notes && labToView.notes[0] !== '') {
+        return labToView.notes.map((note: string) => (
+          <Callout key={uuid()} data-test="note" color="info">
+            <p>{note}</p>
+          </Callout>
+        ))
+      }
+
+      return <></>
+    }
+
     return (
       <>
         {status === 'error' && (
@@ -212,13 +230,16 @@ const ViewLab = () => {
             feedback={t(error.result as string)}
             onChange={onResultChange}
           />
-          <TextFieldWithLabelFormGroup
-            name="notes"
-            label={t('labs.lab.notes')}
-            value={labToView.notes}
-            isEditable={isEditable}
-            onChange={onNotesChange}
-          />
+          <Label text={t('labs.lab.notes')} htmlFor="notesTextField" />
+          {getPastNotes()}
+          {isEditable && (
+            <TextFieldWithLabelFormGroup
+              name="notes"
+              value={newNotes}
+              isEditable={isEditable}
+              onChange={onNotesChange}
+            />
+          )}
           {isEditable && (
             <div className="row float-right">
               <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>
