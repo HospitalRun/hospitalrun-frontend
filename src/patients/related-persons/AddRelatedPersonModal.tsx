@@ -1,32 +1,42 @@
 import { Modal, Alert, Typeahead, Label } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
-import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
-import RelatedPerson from '../../shared/model/RelatedPerson'
-import { RootState } from '../../shared/store'
-import { addRelatedPerson } from '../patient-slice'
+import useAddPatientRelatedPerson from '../hooks/useAddPatientRelatedPerson'
+import usePatients from '../hooks/usePatients'
+import { RelatedPersonError } from '../util/validate-related-person'
 
 interface Props {
+  patientId: string
   show: boolean
   toggle: () => void
   onCloseButtonClick: () => void
 }
 
 const AddRelatedPersonModal = (props: Props) => {
-  const dispatch = useDispatch()
   const { t } = useTranslator()
-  const { patient, relatedPersonError } = useSelector((state: RootState) => state.patient)
 
-  const { show, toggle, onCloseButtonClick } = props
+  const { patientId, show, toggle, onCloseButtonClick } = props
   const [relatedPerson, setRelatedPerson] = useState({
     patientId: '',
     type: '',
   })
+
+  const [patientQuery, setPatientQuery] = useState<string>('')
+
+  const { data, status } = usePatients({ queryString: patientQuery })
+  let patients = [] as Patient[]
+  if (data !== undefined && status !== 'loading') {
+    patients = data.patients.filter((p: Patient) => p.id !== patientId)
+  }
+
+  const [mutate] = useAddPatientRelatedPerson()
+  const [relatedPersonError, setRelatedPersonError] = useState<RelatedPersonError | undefined>(
+    undefined,
+  )
 
   const onFieldChange = (key: string, value: string) => {
     setRelatedPerson({
@@ -40,20 +50,35 @@ const AddRelatedPersonModal = (props: Props) => {
   }
 
   const onPatientSelect = (p: Patient[]) => {
-    setRelatedPerson({ ...relatedPerson, patientId: p[0].id })
+    if (p.length > 0) {
+      setRelatedPerson({ ...relatedPerson, patientId: p[0].id })
+    }
   }
 
   const onSearch = async (query: string) => {
-    const patients: Patient[] = await PatientRepository.search(query)
-    return patients.filter((p: Patient) => p.id !== patient.id)
+    setPatientQuery(query)
+    return [...patients]
+  }
+
+  const onSaveButtonClick = async () => {
+    try {
+      await mutate({ patientId, relatedPerson })
+      onCloseButtonClick()
+    } catch (e) {
+      setRelatedPersonError(e)
+    }
   }
 
   const formattedDate = (date: string) => (date ? format(new Date(date), 'yyyy-MM-dd') : '')
 
   const body = (
     <form>
-      {relatedPersonError?.message && (
-        <Alert color="danger" title={t('states.error')} message={t(relatedPersonError?.message)} />
+      {relatedPersonError && (
+        <Alert
+          color="danger"
+          title={t('states.error')}
+          message={t('patient.relatedPersons.error.unableToAddRelatedPerson')}
+        />
       )}
       <div className="row">
         <div className="col-md-12">
@@ -64,15 +89,15 @@ const AddRelatedPersonModal = (props: Props) => {
               searchAccessor="fullName"
               placeholder={t('patient.relatedPerson')}
               onChange={onPatientSelect}
-              isInvalid={!!relatedPersonError?.relatedPerson}
+              isInvalid={!!relatedPersonError?.relatedPersonError}
               onSearch={onSearch}
               renderMenuItemChildren={(p: Patient) => (
                 <div>{`${p.fullName} - ${formattedDate(p.dateOfBirth)} (${p.code})`}</div>
               )}
             />
-            {relatedPersonError?.relatedPerson && (
+            {relatedPersonError?.relatedPersonError && (
               <div className="text-left ml-3 mt-1 text-small text-danger invalid-feedback d-block related-person-feedback">
-                {t(relatedPersonError?.relatedPerson)}
+                {t(relatedPersonError?.relatedPersonError)}
               </div>
             )}
           </div>
@@ -85,8 +110,8 @@ const AddRelatedPersonModal = (props: Props) => {
             label={t('patient.relatedPersons.relationshipType')}
             value={relatedPerson.type}
             isEditable
-            isInvalid={!!relatedPersonError?.relationshipType}
-            feedback={t(relatedPersonError?.relationshipType || '')}
+            isInvalid={!!relatedPersonError?.relationshipTypeError}
+            feedback={t(relatedPersonError?.relationshipTypeError)}
             isRequired
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onInputElementChange(event, 'type')
@@ -113,9 +138,7 @@ const AddRelatedPersonModal = (props: Props) => {
         color: 'success',
         icon: 'add',
         iconLocation: 'left',
-        onClick: () => {
-          dispatch(addRelatedPerson(patient.id, relatedPerson as RelatedPerson))
-        },
+        onClick: onSaveButtonClick,
       }}
     />
   )

@@ -1,19 +1,12 @@
 import { Modal, Alert, Typeahead } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { ReactWrapper, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
-import { Provider } from 'react-redux'
-import createMockStore, { MockStore } from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import * as patientSlice from '../../../patients/patient-slice'
 import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
-import { RootState } from '../../../shared/store'
-
-const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Add Related Person Modal', () => {
   const patient = {
@@ -33,32 +26,30 @@ describe('Add Related Person Modal', () => {
     dateOfBirth: new Date().toISOString(),
   } as Patient
 
-  let store: MockStore
+  const setup = () => {
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+    jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
+
+    return mount(
+      <AddRelatedPersonModal
+        show
+        patientId={patient.id}
+        onCloseButtonClick={jest.fn()}
+        toggle={jest.fn()}
+      />,
+    )
+  }
 
   describe('layout', () => {
-    let wrapper: ReactWrapper
-
-    store = mockStore({
-      patient: { patient },
-    } as any)
-    beforeEach(() => {
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
-      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
-
-      wrapper = mount(
-        <Provider store={store}>
-          <AddRelatedPersonModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
-        </Provider>,
-      )
-    })
-
     it('should render a modal', () => {
+      const wrapper = setup()
       const modal = wrapper.find(Modal)
       expect(modal).toHaveLength(1)
       expect(modal.prop('show')).toBeTruthy()
     })
 
     it('should render a patient search typeahead', () => {
+      const wrapper = setup()
       const patientSearchTypeahead = wrapper.find(Typeahead)
 
       expect(patientSearchTypeahead).toHaveLength(1)
@@ -66,6 +57,7 @@ describe('Add Related Person Modal', () => {
     })
 
     it('should render a relationship type text input', () => {
+      const wrapper = setup()
       const relationshipTypeTextInput = wrapper.findWhere((w: any) => w.prop('name') === 'type')
 
       expect(relationshipTypeTextInput).toHaveLength(1)
@@ -78,6 +70,7 @@ describe('Add Related Person Modal', () => {
     })
 
     it('should render a cancel button', () => {
+      const wrapper = setup()
       const cancelButton = wrapper.findWhere(
         (w: { text: () => string }) => w.text() === 'actions.cancel',
       )
@@ -86,27 +79,25 @@ describe('Add Related Person Modal', () => {
     })
 
     it('should render an add new related person button button', () => {
+      const wrapper = setup()
       const modal = wrapper.find(Modal) as any
       expect(modal.prop('successButton').children).toEqual('patient.relatedPersons.add')
     })
 
-    it('should render the error', () => {
+    it('should render the error when there is an error saving', async () => {
+      const wrapper = setup()
       const expectedError = {
-        message: 'some message',
-        relatedPerson: 'some related person error',
-        relationshipType: 'some relationship type error',
+        message: 'patient.relatedPersons.error.unableToAddRelatedPerson',
+        relatedPersonError: 'patient.relatedPersons.error.relatedPersonRequired',
+        relationshipTypeError: 'patient.relatedPersons.error.relationshipTypeRequired',
       }
-      store = mockStore({
-        patient: {
-          patient,
-          relatedPersonError: expectedError,
-        },
-      } as any)
-      wrapper = mount(
-        <Provider store={store}>
-          <AddRelatedPersonModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
-        </Provider>,
-      )
+
+      await act(async () => {
+        const modal = wrapper.find(Modal)
+        const onSave = (modal.prop('successButton') as any).onClick
+        await onSave({} as React.MouseEvent<HTMLButtonElement>)
+      })
+      wrapper.update()
 
       const alert = wrapper.find(Alert)
       const typeahead = wrapper.find(Typeahead)
@@ -116,27 +107,13 @@ describe('Add Related Person Modal', () => {
       expect(alert.prop('title')).toEqual('states.error')
       expect(typeahead.prop('isInvalid')).toBeTruthy()
       expect(relationshipTypeInput.prop('isInvalid')).toBeTruthy()
-      expect(relationshipTypeInput.prop('feedback')).toEqual(expectedError.relationshipType)
+      expect(relationshipTypeInput.prop('feedback')).toEqual(expectedError.relationshipTypeError)
     })
   })
 
   describe('save', () => {
-    jest.spyOn(patientSlice, 'addRelatedPerson')
-    let wrapper: ReactWrapper
-    store = mockStore({
-      patient: {
-        patient,
-      },
-    } as any)
-    beforeEach(() => {
-      wrapper = mount(
-        <Provider store={store}>
-          <AddRelatedPersonModal show onCloseButtonClick={jest.fn()} toggle={jest.fn()} />
-        </Provider>,
-      )
-    })
-
-    it('should call the save function with the correct data', () => {
+    it('should call the save function with the correct data', async () => {
+      const wrapper = setup()
       act(() => {
         const patientTypeahead = wrapper.find(Typeahead)
         patientTypeahead.prop('onChange')([{ id: '123' }])
@@ -149,15 +126,22 @@ describe('Add Related Person Modal', () => {
       })
       wrapper.update()
 
-      act(() => {
+      await act(async () => {
         const { onClick } = wrapper.find(Modal).prop('successButton') as any
-        onClick({} as React.MouseEvent<HTMLButtonElement, MouseEvent>)
+        await onClick({} as React.MouseEvent<HTMLButtonElement, MouseEvent>)
       })
 
-      expect(patientSlice.addRelatedPerson).toHaveBeenCalledWith(patient.id, {
-        patientId: '123',
-        type: 'relationship',
-      })
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          relatedPersons: [
+            expect.objectContaining({
+              patientId: '123',
+              type: 'relationship',
+            }),
+          ],
+        }),
+      )
     })
   })
 })
