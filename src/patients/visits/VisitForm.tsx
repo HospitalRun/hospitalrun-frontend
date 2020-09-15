@@ -8,7 +8,8 @@ import SelectWithLabelFormGroup, {
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Visit, { VisitStatus } from '../../shared/model/Visit'
+import { VisitStatus } from '../../shared/model/Visit'
+import { RequestVisit } from '../hooks/useAddVisit'
 
 interface Error {
   message?: string
@@ -20,9 +21,9 @@ interface Error {
   location?: string
 }
 interface Props {
-  visit: Partial<Visit>
+  visit: RequestVisit
   visitError?: Error
-  onChange?: (newVisit: Partial<Visit>) => void
+  onChange?: (newVisit: Partial<RequestVisit>) => void
   disabled?: boolean
 }
 
@@ -139,6 +140,8 @@ const VisitForm = (props: Props) => {
 
 VisitForm.defaultProps = {
   disabled: false,
+  onChange: (newVisit: Partial<RequestVisit>) => newVisit,
+  visitError: {},
 }
 
 export default VisitForm
