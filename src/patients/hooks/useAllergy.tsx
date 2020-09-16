@@ -1,13 +1,9 @@
-import { QueryKey, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 import PatientRepository from '../../shared/db/PatientRepository'
 import Allergy from '../../shared/model/Allergy'
 
-async function getAllergy(
-  _: QueryKey<string>,
-  patientId: string,
-  allergyId: string,
-): Promise<Allergy> {
+async function getAllergy(_: string, patientId: string, allergyId: string): Promise<Allergy> {
   const patient = await PatientRepository.find(patientId)
   const maybeAllergy = patient.allergies?.find((a) => a.id === allergyId)
   if (!maybeAllergy) {

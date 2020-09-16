@@ -36,7 +36,7 @@ describe('Labs', () => {
           breadcrumbs: { breadcrumbs: [] },
           components: { sidebarCollapsed: false },
           lab: {
-            lab: { id: 'labId', patientId: 'patientId' } as Lab,
+            lab: { id: 'labId', patient: 'patientId' } as Lab,
             patient: { id: 'patientId', fullName: 'some name' },
             error: {},
           },
@@ -83,7 +83,7 @@ describe('Labs', () => {
           lab: {
             lab: {
               id: 'labId',
-              patientId: 'patientId',
+              patient: 'patientId',
               requestedOn: new Date().toISOString(),
             } as Lab,
             patient: { id: 'patientId', fullName: 'some name' },

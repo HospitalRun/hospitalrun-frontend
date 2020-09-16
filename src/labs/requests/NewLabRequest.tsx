@@ -24,9 +24,10 @@ const NewLabRequest = () => {
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
     type: '',
-    notes: '',
     status: 'requested',
   })
+
+  const [newNote, setNewNote] = useState('')
 
   useEffect(() => {
     dispatch(resetLab())
@@ -58,9 +59,10 @@ const NewLabRequest = () => {
 
   const onNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const notes = event.currentTarget.value
+    setNewNote(notes)
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
-      notes,
+      notes: [notes],
     }))
   }
 
@@ -114,7 +116,7 @@ const NewLabRequest = () => {
             name="labNotes"
             label={t('labs.lab.notes')}
             isEditable
-            value={newLabRequest.notes}
+            value={newNote}
             onChange={onNoteChange}
           />
         </div>

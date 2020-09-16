@@ -4,6 +4,7 @@ export default {
     filterTitle: 'Filter by status',
     search: 'Search labs',
     successfullyUpdated: 'Successfully updated',
+    successfullyCompleted: 'Successfully completed',
     status: {
       requested: 'Requested',
       completed: 'Completed',

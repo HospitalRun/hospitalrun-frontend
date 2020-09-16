@@ -1,21 +1,29 @@
 import { Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import Loading from '../../shared/components/Loading'
 import useTranslator from '../../shared/hooks/useTranslator'
-import { RootState } from '../../shared/store'
+import usePatientVisits from '../hooks/usePatientVisits'
 
-const VisitTable = () => {
+interface Props {
+  patientId: string
+}
+const VisitTable = ({ patientId }: Props) => {
   const history = useHistory()
   const { t } = useTranslator()
-  const { patient } = useSelector((state: RootState) => state.patient)
+
+  const { data: patientVisits, status } = usePatientVisits(patientId)
+
+  if (patientVisits === undefined && status === 'loading') {
+    return <Loading />
+  }
 
   return (
     <Table
       getID={(row) => row.id}
-      data={patient.visits || []}
+      data={patientVisits || []}
       columns={[
         {
           label: t('patient.visits.startDateTime'),
@@ -36,7 +44,7 @@ const VisitTable = () => {
       actions={[
         {
           label: t('actions.view'),
-          action: (row) => history.push(`/patients/${patient.id}/visits/${row.id}`),
+          action: (row) => history.push(`/patients/${patientId}/visits/${row.id}`),
         },
       ]}
     />

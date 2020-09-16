@@ -346,6 +346,17 @@ const Sidebar = () => {
               {!sidebarCollapsed && t('incidents.reports.label')}
             </ListItem>
           )}
+          {permissions.includes(Permissions.ViewIncidentWidgets) && (
+            <ListItem
+              className="nav-item"
+              style={listSubItemStyle}
+              onClick={() => navigateTo('/incidents/visualize')}
+              active={splittedPath[1].includes('incidents') && splittedPath.length < 3}
+            >
+              <Icon icon="incident" style={iconMargin} />
+              {!sidebarCollapsed && t('incidents.visualize.label')}
+            </ListItem>
+          )}
         </List>
       )}
     </>
@@ -403,7 +414,7 @@ const Sidebar = () => {
 
   return (
     <nav
-      className="col-md-2 d-none d-md-block bg-light sidebar"
+      className="d-none d-md-block bg-light sidebar"
       style={{ width: sidebarCollapsed ? '56px' : '' }}
     >
       <div className="sidebar-sticky">

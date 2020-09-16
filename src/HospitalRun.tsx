@@ -33,7 +33,9 @@ const HospitalRun = () => {
       <NetworkStatusMessage />
       <Navbar />
       <div className="container-fluid">
-        <Sidebar />
+        <div className="col-md-2">
+          <Sidebar />
+        </div>
         <ButtonBarProvider>
           <div className="row">
             <main

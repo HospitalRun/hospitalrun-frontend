@@ -3,17 +3,12 @@ import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
-import createMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import VisitTable from '../../../patients/visits/VisitTable'
+import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import Visit, { VisitStatus } from '../../../shared/model/Visit'
-import { RootState } from '../../../shared/store'
-
-const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Visit Table', () => {
   const visit: Visit = {
@@ -31,23 +26,27 @@ describe('Visit Table', () => {
     visits: [visit],
   } as Patient
 
-  const setup = () => {
-    const store = mockStore({ patient: { patient } } as any)
+  const setup = async () => {
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     const history = createMemoryHistory()
     history.push(`/patients/${patient.id}/visits/${patient.visits[0].id}`)
-    const wrapper = mount(
-      <Provider store={store}>
+
+    let wrapper: any
+    await act(async () => {
+      wrapper = await mount(
         <Router history={history}>
-          <VisitTable />
-        </Router>
-      </Provider>,
-    )
+          <VisitTable patientId={patient.id} />
+        </Router>,
+      )
+    })
+
+    wrapper.update()
 
     return { wrapper: wrapper as ReactWrapper, history }
   }
 
-  it('should render a table', () => {
-    const { wrapper } = setup()
+  it('should render a table', async () => {
+    const { wrapper } = await setup()
 
     const table = wrapper.find(Table)
     const columns = table.prop('columns')
@@ -76,8 +75,8 @@ describe('Visit Table', () => {
     expect(table.prop('data')).toEqual(patient.visits)
   })
 
-  it('should navigate to the visit view when the view details button is clicked', () => {
-    const { wrapper, history } = setup()
+  it('should navigate to the visit view when the view details button is clicked', async () => {
+    const { wrapper, history } = await setup()
 
     const tr = wrapper.find('tr').at(1)
 

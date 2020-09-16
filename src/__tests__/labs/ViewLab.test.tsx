@@ -1,7 +1,7 @@
 import { Badge, Button, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import format from 'date-fns/format'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -31,7 +31,7 @@ describe('View Lab', () => {
     status: 'requested',
     patient: '1234',
     type: 'lab type',
-    notes: 'lab notes',
+    notes: ['lab notes'],
     requestedOn: '2020-03-30T04:43:20.102Z',
   } as Lab
 
@@ -150,15 +150,31 @@ describe('View Lab', () => {
       expect(resultTextField.prop('value')).toEqual(expectedLab.result)
     })
 
-    it('should display the notes in the notes text field', async () => {
-      const expectedLab = { ...mockLab, notes: 'expected notes' } as Lab
+    it('should display the past notes', async () => {
+      const expectedNotes = 'expected notes'
+      const expectedLab = { ...mockLab, notes: [expectedNotes] } as Lab
+      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+
+      const notes = wrapper.find('[data-test="note"]')
+      const pastNotesIndex = notes.reduce(
+        (result: number, item: ReactWrapper, index: number) =>
+          item.text().trim() === expectedNotes ? index : result,
+        -1,
+      )
+
+      expect(pastNotesIndex).not.toBe(-1)
+      expect(notes.length).toBe(1)
+    })
+
+    it('should display the notes text field empty', async () => {
+      const expectedNotes = 'expected notes'
+      const expectedLab = { ...mockLab, notes: [expectedNotes] } as Lab
       const wrapper = await setup(expectedLab, [Permissions.ViewLab])
 
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(1)
 
       expect(notesTextField).toBeDefined()
-      expect(notesTextField.prop('label')).toEqual('labs.lab.notes')
-      expect(notesTextField.prop('value')).toEqual(expectedLab.notes)
+      expect(notesTextField.prop('value')).toEqual('')
     })
 
     it('should display errors', async () => {
@@ -188,9 +204,7 @@ describe('View Lab', () => {
       })
 
       it('should display a update lab, complete lab, and cancel lab button if the lab is in a requested state', async () => {
-        const expectedLab = { ...mockLab, notes: 'expected notes' } as Lab
-
-        const wrapper = await setup(expectedLab, [
+        const wrapper = await setup(mockLab, [
           Permissions.ViewLab,
           Permissions.CompleteLab,
           Permissions.CancelLab,
@@ -254,6 +268,18 @@ describe('View Lab', () => {
         const updateButton = wrapper.find(Button)
         expect(updateButton).toHaveLength(0)
       })
+
+      it('should not display notes text field if the status is canceled', async () => {
+        const expectedLab = { ...mockLab, status: 'canceled' } as Lab
+
+        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+
+        const textsField = wrapper.find(TextFieldWithLabelFormGroup)
+        const notesTextField = wrapper.find('notesTextField')
+
+        expect(textsField.length).toBe(1)
+        expect(notesTextField).toHaveLength(0)
+      })
     })
 
     describe('completed lab request', () => {
@@ -297,6 +323,22 @@ describe('View Lab', () => {
         const buttons = wrapper.find(Button)
         expect(buttons).toHaveLength(0)
       })
+
+      it('should not display notes text field if the status is completed', async () => {
+        const expectedLab = { ...mockLab, status: 'completed' } as Lab
+
+        const wrapper = await setup(expectedLab, [
+          Permissions.ViewLab,
+          Permissions.CompleteLab,
+          Permissions.CancelLab,
+        ])
+
+        const textsField = wrapper.find(TextFieldWithLabelFormGroup)
+        const notesTextField = wrapper.find('notesTextField')
+
+        expect(textsField.length).toBe(1)
+        expect(notesTextField).toHaveLength(0)
+      })
     })
   })
 
@@ -304,7 +346,7 @@ describe('View Lab', () => {
     it('should update the lab with the new information', async () => {
       const wrapper = await setup(mockLab, [Permissions.ViewLab])
       const expectedResult = 'expected result'
-      const expectedNotes = 'expected notes'
+      const newNotes = 'expected notes'
 
       const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
       act(() => {
@@ -316,7 +358,7 @@ describe('View Lab', () => {
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(1)
       act(() => {
         const onChange = notesTextField.prop('onChange')
-        onChange({ currentTarget: { value: expectedNotes } })
+        onChange({ currentTarget: { value: newNotes } })
       })
       wrapper.update()
       const updateButton = wrapper.find(Button)
@@ -324,6 +366,8 @@ describe('View Lab', () => {
         const onClick = updateButton.prop('onClick')
         onClick()
       })
+
+      const expectedNotes = mockLab.notes ? [...mockLab.notes, newNotes] : [newNotes]
 
       expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
       expect(labRepositorySaveSpy).toHaveBeenCalledWith(
