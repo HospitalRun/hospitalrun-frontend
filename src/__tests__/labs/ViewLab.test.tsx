@@ -9,6 +9,8 @@ import { Router, Route } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import * as validateUtil from '../../labs/utils/validate-lab'
+import { LabError } from '../../labs/utils/validate-lab'
 import ViewLab from '../../labs/ViewLab'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../page-header/title/useTitle'
@@ -36,18 +38,17 @@ describe('View Lab', () => {
   } as Lab
 
   let setButtonToolBarSpy: any
-  let titleSpy: any
   let labRepositorySaveSpy: any
   const expectedDate = new Date()
+
   const setup = async (lab: Lab, permissions: Permissions[], error = {}) => {
     jest.resetAllMocks()
     Date.now = jest.fn(() => expectedDate.valueOf())
     setButtonToolBarSpy = jest.fn()
-    titleSpy = jest.spyOn(titleUtil, 'default')
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
-    jest.spyOn(LabRepository, 'find').mockResolvedValue(lab)
     labRepositorySaveSpy = jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(mockLab)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient as Patient)
+    jest.spyOn(LabRepository, 'find').mockResolvedValue(lab)
 
     history = createMemoryHistory()
     history.push(`labs/${lab.id}`)
@@ -83,6 +84,8 @@ describe('View Lab', () => {
   }
 
   it('should set the title', async () => {
+    const titleSpy = jest.spyOn(titleUtil, 'default')
+
     await setup(mockLab, [Permissions.ViewLab])
 
     expect(titleSpy).toHaveBeenCalledWith(
@@ -95,6 +98,7 @@ describe('View Lab', () => {
       const expectedLab = { ...mockLab } as Lab
       const wrapper = await setup(expectedLab, [Permissions.ViewLab])
       const forPatientDiv = wrapper.find('.for-patient')
+
       expect(forPatientDiv.find('h4').text().trim()).toEqual('labs.lab.for')
 
       expect(forPatientDiv.find('h5').text().trim()).toEqual(mockPatient.fullName)
@@ -179,8 +183,17 @@ describe('View Lab', () => {
 
     it('should display errors', async () => {
       const expectedLab = { ...mockLab, status: 'requested' } as Lab
-      const expectedError = { message: 'some message', result: 'some result feedback' }
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab], expectedError)
+      const wrapper = await setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab])
+
+      const expectedError = { message: 'some message', result: 'some result feedback' } as LabError
+      jest.spyOn(validateUtil, 'validateLabComplete').mockReturnValue(expectedError)
+
+      const completeButton = wrapper.find(Button).at(1)
+      await act(async () => {
+        const onClick = completeButton.prop('onClick')
+        await onClick()
+      })
+      wrapper.update()
 
       const alert = wrapper.find(Alert)
       const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)

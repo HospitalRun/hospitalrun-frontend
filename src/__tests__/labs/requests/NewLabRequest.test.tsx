@@ -9,6 +9,7 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import NewLabRequest from '../../../labs/requests/NewLabRequest'
+import * as validationUtil from '../../../labs/utils/validate-lab'
 import * as titleUtil from '../../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
@@ -16,17 +17,15 @@ import LabRepository from '../../../shared/db/LabRepository'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Lab from '../../../shared/model/Lab'
 import Patient from '../../../shared/model/Patient'
-import { RootState } from '../../../shared/store'
 
-const mockStore = createMockStore<RootState, any>([thunk])
-
+const mockStore = createMockStore([thunk])
 describe('New Lab Request', () => {
   describe('title and breadcrumbs', () => {
     let titleSpy: any
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
+      const store = mockStore({ title: '', user: { user: { id: 'userId' } } } as any)
       titleSpy = jest.spyOn(titleUtil, 'default')
       history.push('/labs/new')
 
@@ -49,7 +48,7 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
+      const store = mockStore({ title: '', user: { user: { id: 'userId' } } } as any)
       history.push('/labs/new')
 
       wrapper = mount(
@@ -114,11 +113,12 @@ describe('New Lab Request', () => {
       message: 'some message',
       patient: 'some patient message',
       type: 'some type error',
-    }
+    } as validationUtil.LabError
 
     beforeEach(() => {
       history.push('/labs/new')
-      const store = mockStore({ title: '', lab: { status: 'error', error } } as any)
+      const store = mockStore({ title: '', user: { user: { id: 'userId' } } } as any)
+      jest.spyOn(validationUtil, 'validateLabRequest').mockReturnValue(error)
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
@@ -128,7 +128,15 @@ describe('New Lab Request', () => {
       )
     })
 
-    it('should display errors', () => {
+    it('should display errors', async () => {
+      const saveButton = wrapper.find(Button).at(0)
+      await act(async () => {
+        const onClick = saveButton.prop('onClick') as any
+        await onClick()
+      })
+
+      wrapper.update()
+
       const alert = wrapper.find(Alert)
       const typeInput = wrapper.find(TextInputWithLabelFormGroup)
       const patientTypeahead = wrapper.find(Typeahead)
@@ -150,7 +158,7 @@ describe('New Lab Request', () => {
 
     beforeEach(() => {
       history.push('/labs/new')
-      const store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any)
+      const store = mockStore({ title: '', user: { user: { id: 'userId' } } } as any)
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
@@ -197,11 +205,7 @@ describe('New Lab Request', () => {
         .mockResolvedValue([{ id: expectedLab.patient, fullName: 'some full name' }] as Patient[])
 
       history.push('/labs/new')
-      const store = mockStore({
-        title: '',
-        lab: { status: 'loading', error: {} },
-        user: { user: { id: 'fake id' } },
-      } as any)
+      const store = mockStore({ title: '', user: { user: { id: 'userId' } } } as any)
       wrapper = mount(
         <Provider store={store}>
           <Router history={history}>
