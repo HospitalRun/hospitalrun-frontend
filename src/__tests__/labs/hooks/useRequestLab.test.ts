@@ -37,19 +37,45 @@ describe('Use Request lab', () => {
   })
 
   it('should return errors', async () => {
+<<<<<<< HEAD
     const labError = {
+=======
+<<<<<<< HEAD
+    const labError = {
+=======
+    expect.hasAssertions()
+
+    const expectedError = {
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
       message: 'error message',
       patient: 'error patient',
       type: 'error type',
     } as LabError
 
+<<<<<<< HEAD
     jest.spyOn(validateLabRequest, 'validateLabRequest').mockReturnValue(labError)
+=======
+<<<<<<< HEAD
+    jest.spyOn(validateLabRequest, 'validateLabRequest').mockReturnValue(labError)
+=======
+    jest.spyOn(validateLabRequest, 'validateLabRequest').mockReturnValue(expectedError)
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
 
     await act(async () => {
       try {
         await executeMutation(() => useRequestLab(), lab)
       } catch (e) {
+<<<<<<< HEAD
         expect(e).toEqual(labError)
+=======
+<<<<<<< HEAD
+        expect(e).toEqual(labError)
+=======
+        expect(e).toEqual(expectedError)
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
         expect(LabRepository.save).not.toHaveBeenCalled()
       }
     })

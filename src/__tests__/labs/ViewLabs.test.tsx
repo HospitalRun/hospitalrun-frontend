@@ -46,6 +46,10 @@ describe('View Labs', () => {
       )
     })
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
     wrapper.update()
     return { wrapper: wrapper as ReactWrapper }
   }
@@ -56,34 +60,81 @@ describe('View Labs', () => {
     it('should have the title', async () => {
       const { wrapper } = await setup([Permissions.ViewLabs, Permissions.RequestLab])
       wrapper.update()
+<<<<<<< HEAD
+=======
+=======
+    return { wrapper: wrapper as ReactWrapper }
+  }
+
+  describe('title', () => {
+    const titleSpy = jest.spyOn(titleUtil, 'default')
+
+    it('should have the title', async () => {
+      await setup([Permissions.ViewLabs, Permissions.RequestLab])
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
 
       expect(titleSpy).toHaveBeenCalledWith('labs.label')
     })
   })
 
+<<<<<<< HEAD
   describe.only('button bar', () => {
+=======
+<<<<<<< HEAD
+  describe.only('button bar', () => {
+=======
+  describe('button bar', () => {
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
     afterEach(() => {
       setButtonToolBarSpy.mockReset()
     })
 
     it('should display button to add new lab request', async () => {
+<<<<<<< HEAD
       const { wrapper } = await setup([Permissions.ViewLab, Permissions.RequestLab])
       wrapper.update()
+=======
+<<<<<<< HEAD
+      const { wrapper } = await setup([Permissions.ViewLab, Permissions.RequestLab])
+      wrapper.update()
+=======
+      await setup([Permissions.ViewLab, Permissions.RequestLab])
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
 
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect((actualButtons[0] as any).props.children).toEqual('labs.requests.new')
     })
 
     it('should not display button to add new lab request if the user does not have permissions', async () => {
+<<<<<<< HEAD
       const { wrapper } = await setup([Permissions.ViewLabs])
       wrapper.update()
+=======
+<<<<<<< HEAD
+      const { wrapper } = await setup([Permissions.ViewLabs])
+      wrapper.update()
+=======
+      await setup([Permissions.ViewLabs])
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
 
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect(actualButtons).toEqual([])
     })
   })
 
+<<<<<<< HEAD
   describe.only('table', () => {
+=======
+<<<<<<< HEAD
+  describe.only('table', () => {
+=======
+  describe('table', () => {
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
     const expectedLab = {
       code: 'L-1234',
       id: '1234',
@@ -127,11 +178,27 @@ describe('View Labs', () => {
     })
   })
 
+<<<<<<< HEAD
   describe.only('dropdown', () => {
     const searchLabsSpy = jest.spyOn(LabRepository, 'search')
 
     afterEach(() => {
       searchLabsSpy.mockReset()
+=======
+<<<<<<< HEAD
+  describe.only('dropdown', () => {
+    const searchLabsSpy = jest.spyOn(LabRepository, 'search')
+
+    afterEach(() => {
+      searchLabsSpy.mockReset()
+=======
+  describe('dropdown', () => {
+    const searchLabsSpy = jest.spyOn(LabRepository, 'search')
+
+    beforeEach(() => {
+      searchLabsSpy.mockClear()
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
     })
 
     it('should search for labs when dropdown changes', async () => {
@@ -143,8 +210,16 @@ describe('View Labs', () => {
         await onChange([expectedStatus])
       })
 
+<<<<<<< HEAD
       wrapper.update()
 
+=======
+<<<<<<< HEAD
+      wrapper.update()
+
+=======
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
       expect(searchLabsSpy).toHaveBeenCalledTimes(1)
       expect(searchLabsSpy).toHaveBeenCalledWith(
         expect.objectContaining({ status: expectedStatus }),
@@ -152,6 +227,7 @@ describe('View Labs', () => {
     })
   })
 
+<<<<<<< HEAD
   describe.only('search functionality', () => {
     const searchLabsSpy = jest.spyOn(LabRepository, 'search')
 
@@ -165,6 +241,33 @@ describe('View Labs', () => {
     })
 
     it('should search for labs after the search text has not changed for 500 milliseconds', async () => {
+=======
+<<<<<<< HEAD
+  describe.only('search functionality', () => {
+    const searchLabsSpy = jest.spyOn(LabRepository, 'search')
+
+    beforeEach(() => {
+      jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+      searchLabsSpy.mockReset()
+    })
+
+    it('should search for labs after the search text has not changed for 500 milliseconds', async () => {
+=======
+  describe('search functionality', () => {
+    const searchLabsSpy = jest.spyOn(LabRepository, 'search')
+
+    beforeEach(() => {
+      searchLabsSpy.mockClear()
+    })
+
+    it('should search for labs after the search text has not changed for 500 milliseconds', async () => {
+      jest.useFakeTimers()
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
       const { wrapper } = await setup([Permissions.ViewLabs])
 
       const expectedSearchText = 'search text'
@@ -183,8 +286,16 @@ describe('View Labs', () => {
         jest.advanceTimersByTime(500)
       })
 
+<<<<<<< HEAD
       wrapper.update()
 
+=======
+<<<<<<< HEAD
+      wrapper.update()
+
+=======
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
       expect(searchLabsSpy).toHaveBeenCalledTimes(1)
       expect(searchLabsSpy).toHaveBeenCalledWith(
         expect.objectContaining({ text: expectedSearchText }),

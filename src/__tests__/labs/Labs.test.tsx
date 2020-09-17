@@ -1,5 +1,5 @@
 import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -27,8 +27,28 @@ describe('Labs', () => {
     .spyOn(PatientRepository, 'find')
     .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
 
+  const setup = async (initialEntry: string, permissions: Permissions[]) => {
+    const store = mockStore({
+      user: { permissions },
+    } as any)
+
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={[initialEntry]}>
+            <Labs />
+          </MemoryRouter>
+        </Provider>,
+      )
+    })
+
+    return { wrapper: wrapper as ReactWrapper }
+  }
+
   describe('routing', () => {
     describe('/labs/new', () => {
+<<<<<<< HEAD
       it('should render the new lab request screen when /labs/new is accessed', () => {
         const store = mockStore({
           title: 'test',
@@ -44,25 +64,16 @@ describe('Labs', () => {
             </MemoryRouter>
           </Provider>,
         )
+=======
+      it('should render the new lab request screen when /labs/new is accessed', async () => {
+        const { wrapper } = await setup('/labs/new', [Permissions.RequestLab])
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
 
         expect(wrapper.find(NewLabRequest)).toHaveLength(1)
       })
 
-      it('should not navigate to /labs/new if the user does not have RequestLab permissions', () => {
-        const store = mockStore({
-          title: 'test',
-          user: { permissions: [] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)
-
-        const wrapper = mount(
-          <Provider store={store}>
-            <MemoryRouter initialEntries={['/labs/new']}>
-              <Labs />
-            </MemoryRouter>
-          </Provider>,
-        )
+      it('should not navigate to /labs/new if the user does not have RequestLab permissions', async () => {
+        const { wrapper } = await setup('/labs/new', [])
 
         expect(wrapper.find(NewLabRequest)).toHaveLength(0)
       })
@@ -70,52 +81,13 @@ describe('Labs', () => {
 
     describe('/labs/:id', () => {
       it('should render the view lab screen when /labs/:id is accessed', async () => {
-        const store = mockStore({
-          title: 'test',
-          user: { permissions: [Permissions.ViewLab] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-          lab: {
-            lab: {
-              id: 'labId',
-              patient: 'patientId',
-              requestedOn: new Date().toISOString(),
-            } as Lab,
-            patient: { id: 'patientId', fullName: 'some name' },
-            error: {},
-          },
-        } as any)
+        const { wrapper } = await setup('/labs/1234', [Permissions.ViewLab])
 
-        let wrapper: any
-
-        await act(async () => {
-          wrapper = await mount(
-            <Provider store={store}>
-              <MemoryRouter initialEntries={['/labs/1234']}>
-                <Labs />
-              </MemoryRouter>
-            </Provider>,
-          )
-
-          expect(wrapper.find(ViewLab)).toHaveLength(1)
-        })
+        expect(wrapper.find(ViewLab)).toHaveLength(1)
       })
 
       it('should not navigate to /labs/:id if the user does not have ViewLab permissions', async () => {
-        const store = mockStore({
-          title: 'test',
-          user: { permissions: [] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)
-
-        const wrapper = await mount(
-          <Provider store={store}>
-            <MemoryRouter initialEntries={['/labs/1234']}>
-              <Labs />
-            </MemoryRouter>
-          </Provider>,
-        )
+        const { wrapper } = await setup('/labs/1234', [])
 
         expect(wrapper.find(ViewLab)).toHaveLength(0)
       })

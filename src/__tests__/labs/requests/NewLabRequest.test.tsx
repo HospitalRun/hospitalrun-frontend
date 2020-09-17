@@ -10,6 +10,13 @@ import thunk from 'redux-thunk'
 
 import NewLabRequest from '../../../labs/requests/NewLabRequest'
 import * as validationUtil from '../../../labs/utils/validate-lab'
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+import { LabError } from '../../../labs/utils/validate-lab'
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
 import * as titleUtil from '../../../page-header/title/useTitle'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
@@ -113,7 +120,15 @@ describe('New Lab Request', () => {
       message: 'some message',
       patient: 'some patient message',
       type: 'some type error',
+<<<<<<< HEAD
     } as validationUtil.LabError
+=======
+<<<<<<< HEAD
+    } as validationUtil.LabError
+=======
+    } as LabError
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
 
     beforeEach(() => {
       history.push('/labs/new')

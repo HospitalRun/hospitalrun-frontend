@@ -80,7 +80,7 @@ describe('View Lab', () => {
       )
     })
     wrapper.update()
-    return wrapper
+    return { wrapper: wrapper as ReactWrapper }
   }
 
   it('should set the title', async () => {
@@ -96,7 +96,7 @@ describe('View Lab', () => {
   describe('page content', () => {
     it('should display the patient full name for the for', async () => {
       const expectedLab = { ...mockLab } as Lab
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
       const forPatientDiv = wrapper.find('.for-patient')
 
       expect(forPatientDiv.find('h4').text().trim()).toEqual('labs.lab.for')
@@ -106,7 +106,7 @@ describe('View Lab', () => {
 
     it('should display the lab type for type', async () => {
       const expectedLab = { ...mockLab, type: 'expected type' } as Lab
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
       const labTypeDiv = wrapper.find('.lab-type')
       expect(labTypeDiv.find('h4').text().trim()).toEqual('labs.lab.type')
 
@@ -115,7 +115,7 @@ describe('View Lab', () => {
 
     it('should display the requested on date', async () => {
       const expectedLab = { ...mockLab, requestedOn: '2020-03-30T04:43:20.102Z' } as Lab
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
       const requestedOnDiv = wrapper.find('.requested-on')
       expect(requestedOnDiv.find('h4').text().trim()).toEqual('labs.lab.requestedOn')
 
@@ -126,7 +126,7 @@ describe('View Lab', () => {
 
     it('should not display the completed date if the lab is not completed', async () => {
       const expectedLab = { ...mockLab } as Lab
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
       const completedOnDiv = wrapper.find('.completed-on')
 
       expect(completedOnDiv).toHaveLength(0)
@@ -134,7 +134,7 @@ describe('View Lab', () => {
 
     it('should not display the canceled date if the lab is not canceled', async () => {
       const expectedLab = { ...mockLab } as Lab
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
       const completedOnDiv = wrapper.find('.canceled-on')
 
       expect(completedOnDiv).toHaveLength(0)
@@ -145,7 +145,7 @@ describe('View Lab', () => {
         ...mockLab,
         result: 'expected results',
       } as Lab
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
 
       const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
 
@@ -157,7 +157,7 @@ describe('View Lab', () => {
     it('should display the past notes', async () => {
       const expectedNotes = 'expected notes'
       const expectedLab = { ...mockLab, notes: [expectedNotes] } as Lab
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
 
       const notes = wrapper.find('[data-test="note"]')
       const pastNotesIndex = notes.reduce(
@@ -173,7 +173,7 @@ describe('View Lab', () => {
     it('should display the notes text field empty', async () => {
       const expectedNotes = 'expected notes'
       const expectedLab = { ...mockLab, notes: [expectedNotes] } as Lab
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
 
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(1)
 
@@ -183,14 +183,30 @@ describe('View Lab', () => {
 
     it('should display errors', async () => {
       const expectedLab = { ...mockLab, status: 'requested' } as Lab
+<<<<<<< HEAD
       const wrapper = await setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab])
+=======
+<<<<<<< HEAD
+      const wrapper = await setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab])
+=======
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab])
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
 
       const expectedError = { message: 'some message', result: 'some result feedback' } as LabError
       jest.spyOn(validateUtil, 'validateLabComplete').mockReturnValue(expectedError)
 
       const completeButton = wrapper.find(Button).at(1)
       await act(async () => {
+<<<<<<< HEAD
         const onClick = completeButton.prop('onClick')
+=======
+<<<<<<< HEAD
+        const onClick = completeButton.prop('onClick')
+=======
+        const onClick = completeButton.prop('onClick') as any
+>>>>>>> 81b32d25... refactor(labs): use react query instead of redux
+>>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
         await onClick()
       })
       wrapper.update()
@@ -207,7 +223,7 @@ describe('View Lab', () => {
     describe('requested lab request', () => {
       it('should display a warning badge if the status is requested', async () => {
         const expectedLab = { ...mockLab, status: 'requested' } as Lab
-        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
         const labStatusDiv = wrapper.find('.lab-status')
         const badge = labStatusDiv.find(Badge)
         expect(labStatusDiv.find('h4').text().trim()).toEqual('labs.lab.status')
@@ -217,7 +233,7 @@ describe('View Lab', () => {
       })
 
       it('should display a update lab, complete lab, and cancel lab button if the lab is in a requested state', async () => {
-        const wrapper = await setup(mockLab, [
+        const { wrapper } = await setup(mockLab, [
           Permissions.ViewLab,
           Permissions.CompleteLab,
           Permissions.CancelLab,
@@ -235,7 +251,7 @@ describe('View Lab', () => {
     describe('canceled lab request', () => {
       it('should display a danger badge if the status is canceled', async () => {
         const expectedLab = { ...mockLab, status: 'canceled' } as Lab
-        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
 
         const labStatusDiv = wrapper.find('.lab-status')
         const badge = labStatusDiv.find(Badge)
@@ -251,7 +267,7 @@ describe('View Lab', () => {
           status: 'canceled',
           canceledOn: '2020-03-30T04:45:20.102Z',
         } as Lab
-        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
         const canceledOnDiv = wrapper.find('.canceled-on')
 
         expect(canceledOnDiv.find('h4').text().trim()).toEqual('labs.lab.canceledOn')
@@ -264,7 +280,7 @@ describe('View Lab', () => {
       it('should not display update, complete, and cancel button if the lab is canceled', async () => {
         const expectedLab = { ...mockLab, status: 'canceled' } as Lab
 
-        const wrapper = await setup(expectedLab, [
+        const { wrapper } = await setup(expectedLab, [
           Permissions.ViewLab,
           Permissions.CompleteLab,
           Permissions.CancelLab,
@@ -276,7 +292,7 @@ describe('View Lab', () => {
 
       it('should not display an update button if the lab is canceled', async () => {
         const expectedLab = { ...mockLab, status: 'canceled' } as Lab
-        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
 
         const updateButton = wrapper.find(Button)
         expect(updateButton).toHaveLength(0)
@@ -285,7 +301,7 @@ describe('View Lab', () => {
       it('should not display notes text field if the status is canceled', async () => {
         const expectedLab = { ...mockLab, status: 'canceled' } as Lab
 
-        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
 
         const textsField = wrapper.find(TextFieldWithLabelFormGroup)
         const notesTextField = wrapper.find('notesTextField')
@@ -299,7 +315,7 @@ describe('View Lab', () => {
       it('should display a primary badge if the status is completed', async () => {
         jest.resetAllMocks()
         const expectedLab = { ...mockLab, status: 'completed' } as Lab
-        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
         const labStatusDiv = wrapper.find('.lab-status')
         const badge = labStatusDiv.find(Badge)
         expect(labStatusDiv.find('h4').text().trim()).toEqual('labs.lab.status')
@@ -314,7 +330,7 @@ describe('View Lab', () => {
           status: 'completed',
           completedOn: '2020-03-30T04:44:20.102Z',
         } as Lab
-        const wrapper = await setup(expectedLab, [Permissions.ViewLab])
+        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
         const completedOnDiv = wrapper.find('.completed-on')
 
         expect(completedOnDiv.find('h4').text().trim()).toEqual('labs.lab.completedOn')
@@ -327,7 +343,7 @@ describe('View Lab', () => {
       it('should not display update, complete, and cancel buttons if the lab is completed', async () => {
         const expectedLab = { ...mockLab, status: 'completed' } as Lab
 
-        const wrapper = await setup(expectedLab, [
+        const { wrapper } = await setup(expectedLab, [
           Permissions.ViewLab,
           Permissions.CompleteLab,
           Permissions.CancelLab,
@@ -340,7 +356,7 @@ describe('View Lab', () => {
       it('should not display notes text field if the status is completed', async () => {
         const expectedLab = { ...mockLab, status: 'completed' } as Lab
 
-        const wrapper = await setup(expectedLab, [
+        const { wrapper } = await setup(expectedLab, [
           Permissions.ViewLab,
           Permissions.CompleteLab,
           Permissions.CancelLab,
@@ -357,26 +373,26 @@ describe('View Lab', () => {
 
   describe('on update', () => {
     it('should update the lab with the new information', async () => {
-      const wrapper = await setup(mockLab, [Permissions.ViewLab])
+      const { wrapper } = await setup(mockLab, [Permissions.ViewLab])
       const expectedResult = 'expected result'
       const newNotes = 'expected notes'
 
       const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
       act(() => {
-        const onChange = resultTextField.prop('onChange')
+        const onChange = resultTextField.prop('onChange') as any
         onChange({ currentTarget: { value: expectedResult } })
       })
       wrapper.update()
 
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(1)
       act(() => {
-        const onChange = notesTextField.prop('onChange')
+        const onChange = notesTextField.prop('onChange') as any
         onChange({ currentTarget: { value: newNotes } })
       })
       wrapper.update()
       const updateButton = wrapper.find(Button)
       await act(async () => {
-        const onClick = updateButton.prop('onClick')
+        const onClick = updateButton.prop('onClick') as any
         onClick()
       })
 
@@ -392,7 +408,7 @@ describe('View Lab', () => {
 
   describe('on complete', () => {
     it('should mark the status as completed and fill in the completed date with the current time', async () => {
-      const wrapper = await setup(mockLab, [
+      const { wrapper } = await setup(mockLab, [
         Permissions.ViewLab,
         Permissions.CompleteLab,
         Permissions.CancelLab,
@@ -401,14 +417,14 @@ describe('View Lab', () => {
 
       const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
       await act(async () => {
-        const onChange = resultTextField.prop('onChange')
+        const onChange = resultTextField.prop('onChange') as any
         await onChange({ currentTarget: { value: expectedResult } })
       })
       wrapper.update()
 
       const completeButton = wrapper.find(Button).at(1)
       await act(async () => {
-        const onClick = completeButton.prop('onClick')
+        const onClick = completeButton.prop('onClick') as any
         await onClick()
       })
       wrapper.update()
@@ -428,7 +444,7 @@ describe('View Lab', () => {
 
   describe('on cancel', () => {
     it('should mark the status as canceled and fill in the cancelled on date with the current time', async () => {
-      const wrapper = await setup(mockLab, [
+      const { wrapper } = await setup(mockLab, [
         Permissions.ViewLab,
         Permissions.CompleteLab,
         Permissions.CancelLab,
@@ -437,14 +453,14 @@ describe('View Lab', () => {
 
       const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
       await act(async () => {
-        const onChange = resultTextField.prop('onChange')
+        const onChange = resultTextField.prop('onChange') as any
         await onChange({ currentTarget: { value: expectedResult } })
       })
       wrapper.update()
 
       const cancelButton = wrapper.find(Button).at(2)
       await act(async () => {
-        const onClick = cancelButton.prop('onClick')
+        const onClick = cancelButton.prop('onClick') as any
         await onClick()
       })
       wrapper.update()
