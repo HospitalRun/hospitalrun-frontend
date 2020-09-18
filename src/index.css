@@ -1,5 +1,5 @@
 html {
-  scroll-behavior: smooth;
+  behavior: sr;
 }
 
 body {
