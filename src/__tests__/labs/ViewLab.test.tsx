@@ -183,30 +183,14 @@ describe('View Lab', () => {
 
     it('should display errors', async () => {
       const expectedLab = { ...mockLab, status: 'requested' } as Lab
-<<<<<<< HEAD
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab])
-=======
-<<<<<<< HEAD
-      const wrapper = await setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab])
-=======
       const { wrapper } = await setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab])
->>>>>>> 81b32d25... refactor(labs): use react query instead of redux
->>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
 
       const expectedError = { message: 'some message', result: 'some result feedback' } as LabError
       jest.spyOn(validateUtil, 'validateLabComplete').mockReturnValue(expectedError)
 
       const completeButton = wrapper.find(Button).at(1)
       await act(async () => {
-<<<<<<< HEAD
-        const onClick = completeButton.prop('onClick')
-=======
-<<<<<<< HEAD
-        const onClick = completeButton.prop('onClick')
-=======
         const onClick = completeButton.prop('onClick') as any
->>>>>>> 81b32d25... refactor(labs): use react query instead of redux
->>>>>>> 9a7d1db6... refactor(labs): use react query instead of redux
         await onClick()
       })
       wrapper.update()

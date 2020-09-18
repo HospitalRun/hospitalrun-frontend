@@ -48,26 +48,8 @@ describe('Labs', () => {
 
   describe('routing', () => {
     describe('/labs/new', () => {
-<<<<<<< HEAD
-      it('should render the new lab request screen when /labs/new is accessed', () => {
-        const store = mockStore({
-          title: 'test',
-          user: { permissions: [Permissions.RequestLab] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)
-
-        const wrapper = mount(
-          <Provider store={store}>
-            <MemoryRouter initialEntries={['/labs/new']}>
-              <Labs />
-            </MemoryRouter>
-          </Provider>,
-        )
-=======
       it('should render the new lab request screen when /labs/new is accessed', async () => {
         const { wrapper } = await setup('/labs/new', [Permissions.RequestLab])
->>>>>>> 81b32d25... refactor(labs): use react query instead of redux
 
         expect(wrapper.find(NewLabRequest)).toHaveLength(1)
       })
