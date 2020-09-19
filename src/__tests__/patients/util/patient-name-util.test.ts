@@ -1,4 +1,8 @@
-import { getPatientFullName, getPatientName } from '../../../patients/util/patient-name-util'
+import {
+  getPatientCode,
+  getPatientFullName,
+  getPatientName,
+} from '../../../patients/util/patient-name-util'
 import Patient from '../../../shared/model/Patient'
 
 describe('patient name util', () => {
@@ -56,10 +60,32 @@ describe('patient name util', () => {
       suffix: 'suffix',
     } as Patient
 
-    const expectedFullName = `${patient.givenName} ${patient.familyName} ${patient.suffix}`
+    it('should return the patients name given a patient', () => {
+      const expectedFullName = `${patient.givenName} ${patient.familyName} ${patient.suffix}`
 
-    const actualFullName = getPatientFullName(patient)
+      const actualFullName = getPatientFullName(patient)
 
-    expect(actualFullName).toEqual(expectedFullName)
+      expect(actualFullName).toEqual(expectedFullName)
+    })
+
+    it('should return a empty string given undefined', () => {
+      expect(getPatientFullName(undefined)).toEqual('')
+    })
+  })
+
+  describe('getPatientCode', () => {
+    const patient = {
+      code: 'code',
+    } as Patient
+
+    it('should return the patients code given a patient', () => {
+      const actualFullName = getPatientCode(patient)
+
+      expect(actualFullName).toEqual(patient.code)
+    })
+
+    it('should return a empty string given undefined', () => {
+      expect(getPatientCode(undefined)).toEqual('')
+    })
   })
 })

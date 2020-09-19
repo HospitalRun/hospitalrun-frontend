@@ -1,5 +1,5 @@
 import { subDays } from 'date-fns'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -41,7 +41,7 @@ describe('Edit Patient', () => {
   let history: any
   let store: MockStore
 
-  const setup = () => {
+  const setup = async () => {
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
 
@@ -49,18 +49,23 @@ describe('Edit Patient', () => {
     store = mockStore({ patient: { patient } } as any)
 
     history.push('/patients/edit/123')
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Route path="/patients/edit/:id">
-            <EditPatient />
-          </Route>
-        </Router>
-      </Provider>,
-    )
+
+    let wrapper: any
+    await act(async () => {
+      wrapper = await mount(
+        <Provider store={store}>
+          <Router history={history}>
+            <Route path="/patients/edit/:id">
+              <EditPatient />
+            </Route>
+          </Router>
+        </Provider>,
+      )
+    })
 
     wrapper.update()
-    return wrapper
+
+    return wrapper as ReactWrapper
   }
 
   beforeEach(() => {
@@ -73,6 +78,8 @@ describe('Edit Patient', () => {
       wrapper = await setup()
     })
 
+    wrapper.update()
+
     expect(wrapper.find(GeneralInformation)).toHaveLength(1)
   })
 
@@ -82,8 +89,6 @@ describe('Edit Patient', () => {
     })
 
     expect(PatientRepository.find).toHaveBeenCalledWith(patient.id)
-    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientStart())
-    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientSuccess(patient))
   })
 
   it('should use "Edit Patient: " plus patient full name as the title', async () => {

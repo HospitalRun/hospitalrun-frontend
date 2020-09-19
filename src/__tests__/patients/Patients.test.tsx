@@ -9,8 +9,10 @@ import thunk from 'redux-thunk'
 import Dashboard from '../../dashboard/Dashboard'
 import HospitalRun from '../../HospitalRun'
 import { addBreadcrumbs } from '../../page-header/breadcrumbs/breadcrumbs-slice'
+import { changeTitle } from '../../page-header/title/title-slice'
 import EditPatient from '../../patients/edit/EditPatient'
 import NewPatient from '../../patients/new/NewPatient'
+import * as patientNameUtil from '../../patients/util/patient-name-util'
 import ViewPatient from '../../patients/view/ViewPatient'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Patient from '../../shared/model/Patient'
@@ -24,8 +26,8 @@ describe('/patients/new', () => {
     const store = mockStore({
       title: 'test',
       user: { user: { id: '123' }, permissions: [Permissions.WritePatients] },
-      patient: {},
       breadcrumbs: { breadcrumbs: [] },
+      patient: {},
       components: { sidebarCollapsed: false },
     } as any)
 
@@ -40,6 +42,8 @@ describe('/patients/new', () => {
         </Provider>,
       )
     })
+
+    wrapper.update()
 
     expect(wrapper.find(NewPatient)).toHaveLength(1)
 
@@ -84,6 +88,9 @@ describe('/patients/edit/:id', () => {
     } as Patient
 
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+    jest
+      .spyOn(patientNameUtil, 'getPatientFullName')
+      .mockReturnValue(`${patient.prefix} ${patient.givenName} ${patient.familyName}`)
 
     const store = mockStore({
       title: 'test',
@@ -106,14 +113,20 @@ describe('/patients/edit/:id', () => {
 
     expect(wrapper.find(EditPatient)).toHaveLength(1)
 
-    expect(store.getActions()).toContainEqual(
-      addBreadcrumbs([
+    expect(store.getActions()).toContainEqual({
+      ...addBreadcrumbs([
         { i18nKey: 'patients.label', location: '/patients' },
         { text: 'test test test', location: `/patients/${patient.id}` },
         { i18nKey: 'patients.editPatient', location: `/patients/${patient.id}/edit` },
         { i18nKey: 'dashboard.label', location: '/' },
       ]),
-    )
+      ...changeTitle(
+        `patients.editPatient: ${patient.prefix} ${patient.givenName} ${patient.familyName} ()`,
+      ),
+      ...changeTitle(
+        `patients.editPatient: ${patient.prefix} ${patient.givenName} ${patient.familyName} ()`,
+      ),
+    })
   })
 
   it('should render the Dashboard when the user does not have read patient privileges', () => {
