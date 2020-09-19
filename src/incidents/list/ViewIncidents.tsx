@@ -6,7 +6,7 @@ import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonB
 import useTitle from '../../page-header/title/useTitle'
 import SelectWithLabelFormGroup, {
   Option,
-} from '../../shared/components/input/SelectWithLableFormGroup'
+} from '../../shared/components/input/SelectWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import IncidentFilter from '../IncidentFilter'
 import ViewIncidentsTable from './ViewIncidentsTable'
