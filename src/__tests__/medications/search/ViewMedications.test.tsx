@@ -49,7 +49,9 @@ describe('View Medications', () => {
       wrapper = await mount(
         <Provider store={store}>
           <Router history={history}>
-            <ViewMedications />
+            <TitleProvider>
+              <ViewMedications />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
