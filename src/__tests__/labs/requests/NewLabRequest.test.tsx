@@ -144,11 +144,12 @@ describe('New Lab Request', () => {
     const history = createMemoryHistory()
     let labRepositorySaveSpy: any
     const expectedDate = new Date()
+    const expectedNotes = 'expected notes'
     const expectedLab = {
       patient: '12345',
       type: 'expected type',
       status: 'requested',
-      notes: 'expected notes',
+      notes: [expectedNotes],
       id: '1234',
       requestedOn: expectedDate.toISOString(),
     } as Lab
@@ -183,7 +184,7 @@ describe('New Lab Request', () => {
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
       act(() => {
         const onChange = notesTextField.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedLab.notes } })
+        onChange({ currentTarget: { value: expectedNotes } })
       })
       wrapper.update()
 

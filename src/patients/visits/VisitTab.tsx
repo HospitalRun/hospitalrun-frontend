@@ -10,7 +10,11 @@ import AddVisitModal from './AddVisitModal'
 import ViewVisit from './ViewVisit'
 import VisitTable from './VisitTable'
 
-const VisitTab = () => {
+interface Props {
+  patientId: string
+}
+
+const VisitTab = ({ patientId }: Props) => {
   const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showAddVisitModal, setShowAddVisitModal] = useState(false)
@@ -34,14 +38,15 @@ const VisitTab = () => {
       <br />
       <Switch>
         <Route exact path="/patients/:id/visits">
-          <VisitTable />
+          <VisitTable patientId={patientId} />
         </Route>
         <Route exact path="/patients/:id/visits/:visitId">
-          <ViewVisit />
+          <ViewVisit patientId={patientId} />
         </Route>
       </Switch>
       <AddVisitModal
         show={showAddVisitModal}
+        patientId={patientId}
         onCloseButtonClick={() => setShowAddVisitModal(false)}
       />
     </>

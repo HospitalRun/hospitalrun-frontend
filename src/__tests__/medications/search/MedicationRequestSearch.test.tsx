@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils'
 
 import MedicationSearchRequest from '../../../medications/models/MedicationSearchRequest'
 import MedicationRequestSearch from '../../../medications/search/MedicationRequestSearch'
-import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLableFormGroup'
+import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 
 describe('Medication Request Search', () => {

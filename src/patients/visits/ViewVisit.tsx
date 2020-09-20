@@ -1,34 +1,28 @@
-import findLast from 'lodash/findLast'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import Visit from '../../shared/model/Visit'
-import { RootState } from '../../shared/store'
+import Loading from '../../shared/components/Loading'
+import useVisit from '../hooks/useVisit'
 import VisitForm from './VisitForm'
 
-const ViewVisit = () => {
-  const { patient } = useSelector((root: RootState) => root.patient)
+interface Props {
+  patientId: string
+}
+const ViewVisit = ({ patientId }: Props) => {
   const { visitId } = useParams()
 
-  const [visit, setVisit] = useState<Visit | undefined>()
+  const { data: visit, status } = useVisit(patientId, visitId)
 
-  useEffect(() => {
-    if (patient && visitId) {
-      const currentVisit = findLast(patient.visits, (c: Visit) => c.id === visitId)
-      setVisit(currentVisit)
-    }
-  }, [setVisit, visitId, patient])
-
-  if (visit) {
-    return (
-      <>
-        <h2>{visit?.reason}</h2>
-        <VisitForm visit={visit} disabled />
-      </>
-    )
+  if (visit === undefined || status === 'loading') {
+    return <Loading />
   }
-  return <></>
+
+  return (
+    <>
+      <h2>{visit.reason}</h2>
+      <VisitForm visit={visit} disabled />
+    </>
+  )
 }
 
 export default ViewVisit
