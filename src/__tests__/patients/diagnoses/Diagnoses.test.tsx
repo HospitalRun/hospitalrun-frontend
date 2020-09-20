@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import * as components from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -46,8 +48,8 @@ describe('Diagnoses', () => {
     beforeEach(() => {
       jest.resetAllMocks()
       jest.spyOn(PatientRepository, 'saveOrUpdate')
+      console.error = jest.fn()
     })
-
     it('should render a add diagnoses button', () => {
       const wrapper = setup()
 
@@ -73,29 +75,6 @@ describe('Diagnoses', () => {
       wrapper.update()
 
       expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
-    })
-  })
-
-  describe('diagnoses list', () => {
-    it('should list the patients diagnoses', () => {
-      const diagnoses = expectedPatient.diagnoses as Diagnosis[]
-      const wrapper = setup()
-
-      const list = wrapper.find(components.List)
-      const listItems = wrapper.find(components.ListItem)
-
-      expect(list).toHaveLength(1)
-      expect(listItems).toHaveLength(diagnoses.length)
-    })
-
-    it('should render a warning message if the patient does not have any diagnoses', () => {
-      const wrapper = setup({ ...expectedPatient, diagnoses: [] })
-
-      const alert = wrapper.find(components.Alert)
-
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('title')).toEqual('patient.diagnoses.warning.noDiagnoses')
-      expect(alert.prop('message')).toEqual('patient.diagnoses.addDiagnosisAbove')
     })
   })
 })
