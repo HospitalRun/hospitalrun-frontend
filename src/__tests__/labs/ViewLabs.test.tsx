@@ -31,7 +31,6 @@ const expectedLab = {
 
 const setup = (permissions: Permissions[] = [Permissions.ViewLabs, Permissions.RequestLab]) => {
   const store = mockStore({
-    title: '',
     user: { permissions },
     labs: { labs: [expectedLab] },
   } as any)

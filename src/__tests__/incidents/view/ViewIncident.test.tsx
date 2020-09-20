@@ -35,7 +35,6 @@ describe('View Incident', () => {
     history.push(`/incidents/1234`)
 
     const store = mockStore({
-      title: '',
       user: {
         permissions,
       },

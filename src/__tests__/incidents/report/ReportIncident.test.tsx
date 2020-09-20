@@ -40,7 +40,6 @@ describe('Report Incident', () => {
     history = createMemoryHistory()
     history.push(`/incidents/new`)
     const store = mockStore({
-      title: '',
       user: {
         permissions,
         user: {

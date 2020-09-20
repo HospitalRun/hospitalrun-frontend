@@ -47,7 +47,6 @@ describe('View Incidents', () => {
     history = createMemoryHistory()
     history.push(`/incidents`)
     const store = mockStore({
-      title: '',
       user: {
         permissions,
       },

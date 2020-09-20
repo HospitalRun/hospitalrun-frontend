@@ -30,7 +30,6 @@ describe('Labs', () => {
     .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
   const setup = (route: string, permissions: Permissions[] = []) => {
     const store = mockStore({
-      title: 'test',
       user: { permissions },
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },

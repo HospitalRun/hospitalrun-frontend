@@ -35,9 +35,7 @@ describe('New Imaging Request', () => {
 
     history = createMemoryHistory()
     history.push(`/imaging/new`)
-    const store = mockStore({
-      title: '',
-    } as any)
+    const store = mockStore({} as any)
 
     let wrapper: any
     await act(async () => {
@@ -62,7 +60,7 @@ describe('New Imaging Request', () => {
 
   describe('title and breadcrumbs', () => {
     it('should have called the useUpdateTitle hook', async () => {
-      await setup('loading', {})
+      await setup()
       expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
     })
   })

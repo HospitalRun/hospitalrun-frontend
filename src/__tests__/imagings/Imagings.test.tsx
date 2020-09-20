@@ -29,7 +29,6 @@ describe('Imagings', () => {
     .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
   const setup = (permissions: Permissions[], isNew = false) => {
     const store = mockStore({
-      title: 'test',
       user: { permissions: [permissions] },
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },

@@ -21,8 +21,6 @@ import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
 
-import { AnyCnameRecord } from 'dns'
-
 const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 let route: any

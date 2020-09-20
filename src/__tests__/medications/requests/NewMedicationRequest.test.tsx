@@ -22,7 +22,7 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Medication Request', () => {
   const setup = async (
-    store = mockStore({ title: '', medication: { status: 'loading', error: {} } } as any),
+    store = mockStore({ medication: { status: 'loading', error: {} } } as any),
   ) => {
     const history = createMemoryHistory()
     history.push(`/medications/new`)
@@ -129,7 +129,6 @@ describe('New Medication Request', () => {
       requestedOn: expectedDate.toISOString(),
     } as Medication
     const store = mockStore({
-      title: '',
       medication: { status: 'loading', error: {} },
       user: { user: { id: 'fake id' } },
     } as any)

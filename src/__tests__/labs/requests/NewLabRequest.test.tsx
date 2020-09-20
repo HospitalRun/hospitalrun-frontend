@@ -21,9 +21,7 @@ import { RootState } from '../../../shared/store'
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Lab Request', () => {
-  const setup = async (
-    store = mockStore({ title: '', lab: { status: 'loading', error: {} } } as any),
-  ) => {
+  const setup = async (store = mockStore({ lab: { status: 'loading', error: {} } } as any)) => {
     const history = createMemoryHistory()
     history.push(`/labs/new`)
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
@@ -106,7 +104,7 @@ describe('New Lab Request', () => {
       patient: 'some patient message',
       type: 'some type error',
     }
-    const store = mockStore({ title: '', lab: { status: 'error', error } } as any)
+    const store = mockStore({ lab: { status: 'error', error } } as any)
     const { wrapper } = await setup(store)
 
     it('should display errors', async () => {
@@ -155,7 +153,6 @@ describe('New Lab Request', () => {
       requestedOn: expectedDate.toISOString(),
     } as Lab
     const store = mockStore({
-      title: '',
       lab: { status: 'loading', error: {} },
       user: { user: { id: 'fake id' } },
     } as any)

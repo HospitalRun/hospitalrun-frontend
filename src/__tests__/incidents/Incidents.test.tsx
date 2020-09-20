@@ -30,7 +30,6 @@ describe('Incidents', () => {
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue([])
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(expectedIncident)
     const store = mockStore({
-      title: 'test',
       user: { permissions },
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },

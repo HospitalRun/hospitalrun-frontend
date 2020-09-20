@@ -51,7 +51,6 @@ describe('View Lab', () => {
     history = createMemoryHistory()
     history.push(`labs/${lab.id}`)
     const store = mockStore({
-      title: '',
       user: {
         permissions,
       },
