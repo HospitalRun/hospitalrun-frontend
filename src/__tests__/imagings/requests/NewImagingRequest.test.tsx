@@ -11,8 +11,7 @@ import thunk from 'redux-thunk'
 import NewImagingRequest from '../../../imagings/requests/NewImagingRequest'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import { TitleProvider } from '../../../page-header/title/TitleContext'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLableFormGroup'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
@@ -31,7 +30,7 @@ describe('New Imaging Request', () => {
     jest.resetAllMocks()
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
-    jest.spyOn(titleUtil, 'default')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
 
     history = createMemoryHistory()
@@ -52,23 +51,24 @@ describe('New Imaging Request', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/imaging/new">
-                <TitleProvider>
+                <titleUtil.TitleProvider>
                   <NewImagingRequest />
-                </TitleProvider>
+                </titleUtil.TitleProvider>
               </Route>
             </Router>
           </Provider>
         </ButtonBarProvider.ButtonBarProvider>,
       )
     })
+    wrapper.find(NewImagingRequest).props().updateTitle = jest.fn()
     wrapper.update()
     return wrapper as ReactWrapper
   }
 
   describe('title and breadcrumbs', () => {
-    it('should have New Imaging Request as the title', async () => {
+    it('should have called the useUpdateTitle hook', async () => {
       await setup('loading', {})
-      expect(titleUtil.default).toHaveBeenCalledWith('imagings.requests.new')
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
     })
   })
 

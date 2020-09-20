@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import Dashboard from '../../dashboard/Dashboard'
 import HospitalRun from '../../HospitalRun'
 import { addBreadcrumbs } from '../../page-header/breadcrumbs/breadcrumbs-slice'
-import { TitleProvider } from '../../page-header/title/TitleContext'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import EditPatient from '../../patients/edit/EditPatient'
 import NewPatient from '../../patients/new/NewPatient'
 import ViewPatient from '../../patients/view/ViewPatient'
@@ -18,9 +18,11 @@ import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('/patients/new', () => {
+  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   it('should render the new patient screen when /patients/new is accessed', async () => {
     const store = mockStore({
       title: 'test',

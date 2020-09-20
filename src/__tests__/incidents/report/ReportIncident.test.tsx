@@ -12,8 +12,7 @@ import ReportIncident from '../../../incidents/report/ReportIncident'
 import * as validationUtil from '../../../incidents/util/validate-incident'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import { TitleProvider } from '../../../page-header/title/TitleContext'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
 import Permissions from '../../../shared/model/Permissions'
@@ -32,7 +31,7 @@ describe('Report Incident', () => {
   const setup = async (permissions: Permissions[]) => {
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
-    jest.spyOn(titleUtil, 'default')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
 
     history = createMemoryHistory()
@@ -54,26 +53,28 @@ describe('Report Incident', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/incidents/new">
-                <TitleProvider>
+                <titleUtil.TitleProvider>
                   <ReportIncident />
-                </TitleProvider>
+                </titleUtil.TitleProvider>
               </Route>
             </Router>
           </Provider>
         </ButtonBarProvider.ButtonBarProvider>,
       )
     })
+    wrapper.find(ReportIncident).props().updateTitle = jest.fn()
     wrapper.update()
     return wrapper as ReactWrapper
   }
 
-  describe('layout', () => {
-    it('should set the title', async () => {
+  describe('title', () => {
+    it('should have called the useUpdateTitle hook', async () => {
       await setup([Permissions.ReportIncident])
-
-      expect(titleUtil.default).toHaveBeenCalledWith('incidents.reports.new')
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
     })
+  })
 
+  describe('layout', () => {
     it('should set the breadcrumbs properly', async () => {
       await setup([Permissions.ReportIncident])
 

@@ -9,8 +9,7 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import { TitleProvider } from '../../../page-header/title/TitleContext'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import NewPatient from '../../../patients/new/NewPatient'
 import * as patientSlice from '../../../patients/patient-slice'
@@ -18,6 +17,7 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Patient', () => {
@@ -30,6 +30,7 @@ describe('New Patient', () => {
   let store: MockStore
 
   const setup = (error?: any) => {
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(PatientRepository, 'save')
     const mockedPatientRepository = mocked(PatientRepository, true)
     mockedPatientRepository.save.mockResolvedValue(patient)
@@ -65,15 +66,6 @@ describe('New Patient', () => {
     })
 
     expect(wrapper.find(GeneralInformation)).toHaveLength(1)
-  })
-
-  it('should use "New Patient" as the header', async () => {
-    jest.spyOn(titleUtil, 'default')
-    await act(async () => {
-      await setup()
-    })
-
-    expect(titleUtil.default).toHaveBeenCalledWith('patients.newPatient')
   })
 
   it('should pass the error object to general information', async () => {

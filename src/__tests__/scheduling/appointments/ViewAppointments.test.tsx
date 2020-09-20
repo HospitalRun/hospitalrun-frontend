@@ -9,14 +9,15 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import { TitleProvider } from '../../../page-header/title/TitleContext'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import ViewAppointments from '../../../scheduling/appointments/ViewAppointments'
 import AppointmentRepository from '../../../shared/db/AppointmentRepository'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Appointment from '../../../shared/model/Appointment'
 import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
+
+const { TitleProvider } = titleUtil
 
 describe('ViewAppointments', () => {
   const expectedAppointments = [
@@ -32,6 +33,7 @@ describe('ViewAppointments', () => {
   ] as Appointment[]
 
   const setup = async () => {
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'findAll').mockResolvedValue(expectedAppointments)
     jest.spyOn(PatientRepository, 'find')
     const mockedPatientRepository = mocked(PatientRepository, true)
@@ -51,12 +53,11 @@ describe('ViewAppointments', () => {
     )
   }
 
-  it('should use "Appointments" as the header', async () => {
-    jest.spyOn(titleUtil, 'default')
+  it('should have called the useUpdateTitle hook', async () => {
     await act(async () => {
       await setup()
     })
-    expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.label')
+    expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
   })
 
   it('should add a "New Appointment" button to the button tool bar', async () => {

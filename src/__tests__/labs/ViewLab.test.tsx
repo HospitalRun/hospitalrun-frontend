@@ -11,8 +11,7 @@ import thunk from 'redux-thunk'
 
 import ViewLab from '../../labs/ViewLab'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
-import { TitleProvider } from '../../page-header/title/TitleContext'
-import * as titleUtil from '../../page-header/title/useTitle'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import LabRepository from '../../shared/db/LabRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -37,14 +36,13 @@ describe('View Lab', () => {
   } as Lab
 
   let setButtonToolBarSpy: any
-  let titleSpy: any
   let labRepositorySaveSpy: any
   const expectedDate = new Date()
   const setup = async (lab: Lab, permissions: Permissions[], error = {}) => {
     jest.resetAllMocks()
     Date.now = jest.fn(() => expectedDate.valueOf())
     setButtonToolBarSpy = jest.fn()
-    titleSpy = jest.spyOn(titleUtil, 'default')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(LabRepository, 'find').mockResolvedValue(lab)
     labRepositorySaveSpy = jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(mockLab)
@@ -72,25 +70,26 @@ describe('View Lab', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/labs/:id">
-                <TitleProvider>
+                <titleUtil.TitleProvider>
                   <ViewLab />
-                </TitleProvider>
+                </titleUtil.TitleProvider>
               </Route>
             </Router>
           </Provider>
         </ButtonBarProvider.ButtonBarProvider>,
       )
     })
+    wrapper.find(ViewLab).props().updateTitle = jest.fn()
     wrapper.update()
     return wrapper
   }
 
-  it('should set the title', async () => {
-    await setup(mockLab, [Permissions.ViewLab])
-
-    expect(titleSpy).toHaveBeenCalledWith(
-      `${mockLab.type} for ${mockPatient.fullName}(${mockLab.code})`,
-    )
+  describe('title', () => {
+    it('should have called the useUpdateTitle hook', async () => {
+      const expectedLab = { ...mockLab } as Lab
+      await setup(expectedLab, [Permissions.ViewLab])
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
+    })
   })
 
   describe('page content', () => {

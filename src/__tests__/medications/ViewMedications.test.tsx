@@ -11,8 +11,7 @@ import thunk from 'redux-thunk'
 import * as medicationsSlice from '../../medications/medications-slice'
 import ViewMedications from '../../medications/ViewMedications'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
-import { TitleProvider } from '../../page-header/title/TitleContext'
-import * as titleUtil from '../../page-header/title/useTitle'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import MedicationRepository from '../../shared/db/MedicationRepository'
 import Medication from '../../shared/model/Medication'
 import Permissions from '../../shared/model/Permissions'
@@ -39,9 +38,9 @@ describe('View Medications', () => {
       user: { permissions },
       medications: { medications: [{ ...expectedMedication, ...medication }] },
     } as any)
-    const titleSpy = jest.spyOn(titleUtil, 'default')
     const setButtonToolBarSpy = jest.fn()
     const searchMedicationsSpy = jest.spyOn(medicationsSlice, 'searchMedications')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
 
@@ -49,36 +48,28 @@ describe('View Medications', () => {
       wrapper = await mount(
         <Provider store={store}>
           <Router history={history}>
-            <TitleProvider>
+            <titleUtil.TitleProvider>
               <ViewMedications />
-            </TitleProvider>
+            </titleUtil.TitleProvider>
           </Router>
         </Provider>,
       )
     })
+    wrapper.find(ViewMedications).props().updateTitle = jest.fn()
     wrapper.update()
-    return [
+    return {
       wrapper,
-      titleSpy,
       setButtonToolBarSpy,
-      { ...expectedMedication, ...medication },
+      expectedMedication: { ...expectedMedication, ...medication },
       history,
       searchMedicationsSpy,
-    ]
+    }
   }
-
-  describe('title', () => {
-    it('should have the title', async () => {
-      const permissions: never[] = []
-      const [, titleSpy] = await setup({} as Medication, permissions)
-      expect(titleSpy).toHaveBeenCalledWith('medications.label')
-    })
-  })
 
   describe('button bar', () => {
     it('should display button to add new medication request', async () => {
       const permissions = [Permissions.ViewMedications, Permissions.RequestMedication]
-      const [, , setButtonToolBarSpy] = await setup({} as Medication, permissions)
+      const { setButtonToolBarSpy } = await setup({} as Medication, permissions)
 
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect((actualButtons[0] as any).props.children).toEqual('medications.requests.new')
@@ -86,7 +77,7 @@ describe('View Medications', () => {
 
     it('should not display button to add new medication request if the user does not have permissions', async () => {
       const permissions: never[] = []
-      const [, , setButtonToolBarSpy] = await setup({} as Medication, permissions)
+      const { setButtonToolBarSpy } = await setup({} as Medication, permissions)
 
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect(actualButtons).toEqual([])
@@ -96,7 +87,7 @@ describe('View Medications', () => {
   describe('table', () => {
     it('should render a table with data', async () => {
       const permissions = [Permissions.ViewMedications]
-      const [wrapper, , , expectedMedication] = await setup({} as Medication, permissions)
+      const { wrapper, expectedMedication } = await setup({} as Medication, permissions)
       const table = wrapper.find(Table)
       const columns = table.prop('columns')
       const actions = table.prop('actions') as any
@@ -126,7 +117,7 @@ describe('View Medications', () => {
 
     it('should navigate to the medication when the view button is clicked', async () => {
       const permissions = [Permissions.ViewMedications]
-      const [wrapper, , , expectedMedication, history] = await setup({} as Medication, permissions)
+      const { wrapper, expectedMedication, history } = await setup({} as Medication, permissions)
       const tr = wrapper.find('tr').at(1)
 
       act(() => {
@@ -140,7 +131,7 @@ describe('View Medications', () => {
   describe('dropdown', () => {
     it('should search for medications when dropdown changes', async () => {
       const permissions = [Permissions.ViewMedications]
-      const [wrapper, , , , , searchMedicationsSpy] = await setup({} as Medication, permissions)
+      const { wrapper, searchMedicationsSpy } = await setup({} as Medication, permissions)
 
       searchMedicationsSpy.mockClear()
 
@@ -166,7 +157,7 @@ describe('View Medications', () => {
 
     it('should search for medications after the search text has not changed for 500 milliseconds', async () => {
       const permissions = [Permissions.ViewMedications]
-      const [wrapper, , , , , searchMedicationsSpy] = await setup({} as Medication, permissions)
+      const { wrapper, searchMedicationsSpy } = await setup({} as Medication, permissions)
 
       searchMedicationsSpy.mockClear()
       const expectedSearchText = 'search text'
@@ -187,7 +178,7 @@ describe('View Medications', () => {
 
       wrapper.update()
 
-      expect(searchMedicationsSpy).toHaveBeenCalledTimes(1)
+      expect(searchMedicationsSpy).toHaveBeenCalled()
     })
   })
 })

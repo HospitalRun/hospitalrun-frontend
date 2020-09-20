@@ -11,8 +11,7 @@ import thunk from 'redux-thunk'
 import ViewImagings from '../../imagings/ViewImagings'
 import * as breadcrumbUtil from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
-import { TitleProvider } from '../../page-header/title/TitleContext'
-import * as titleUtil from '../../page-header/title/useTitle'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import ImagingRepository from '../../shared/db/ImagingRepository'
 import Imaging from '../../shared/model/Imaging'
 import Permissions from '../../shared/model/Permissions'
@@ -38,7 +37,7 @@ describe('View Imagings', () => {
     jest.resetAllMocks()
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
-    jest.spyOn(titleUtil, 'default')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ImagingRepository, 'findAll').mockResolvedValue(mockImagings)
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
 
@@ -46,7 +45,6 @@ describe('View Imagings', () => {
     history.push(`/imaging`)
 
     const store = mockStore({
-      title: '',
       user: { permissions },
       imagings: { imagings: mockImagings },
     } as any)
@@ -58,9 +56,9 @@ describe('View Imagings', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/imaging">
-                <TitleProvider>
+                <titleUtil.TitleProvider>
                   <ViewImagings />
-                </TitleProvider>
+                </titleUtil.TitleProvider>
               </Route>
             </Router>
           </Provider>
@@ -68,6 +66,7 @@ describe('View Imagings', () => {
       )
     })
 
+    wrapper.find(ViewImagings).props().updateTitle = jest.fn()
     wrapper.update()
     return wrapper as ReactWrapper
   }
@@ -75,7 +74,7 @@ describe('View Imagings', () => {
   describe('title', () => {
     it('should have the title', async () => {
       await setup([Permissions.ViewImagings], [])
-      expect(titleUtil.default).toHaveBeenCalledWith('imagings.label')
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
     })
   })
 

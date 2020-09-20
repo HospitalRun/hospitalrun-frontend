@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../../shared/components/input/SelectWithLableFormGroup'
@@ -21,7 +21,8 @@ const NewImagingRequest = () => {
   const { t } = useTranslator()
   const dispatch = useDispatch()
   const history = useHistory()
-  useTitle(t('imagings.requests.new'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('imagings.requests.new'))
   const { status, error } = useSelector((state: RootState) => state.imaging)
 
   const statusOptions: Option[] = [

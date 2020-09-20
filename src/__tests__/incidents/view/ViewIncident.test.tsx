@@ -11,20 +11,20 @@ import ViewIncident from '../../../incidents/view/ViewIncident'
 import ViewIncidentDetails from '../../../incidents/view/ViewIncidentDetails'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import { TitleProvider } from '../../../page-header/title/TitleContext'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Incident', () => {
   const setup = async (permissions: Permissions[]) => {
     jest.resetAllMocks()
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(breadcrumbUtil, 'default')
-    jest.spyOn(titleUtil, 'default')
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue({
       id: '1234',
       date: new Date().toISOString(),
@@ -61,18 +61,11 @@ describe('View Incident', () => {
     return { wrapper: wrapper as ReactWrapper, history }
   }
 
-  it('should render the title correctly', async () => {
-    await setup([Permissions.ViewIncident])
-
-    expect(titleUtil.default).toHaveBeenCalledTimes(1)
-    expect(titleUtil.default).toHaveBeenCalledWith('View Incident')
-  })
-
   it('should set the breadcrumbs properly', async () => {
     await setup([Permissions.ViewIncident])
 
     expect(breadcrumbUtil.default).toHaveBeenCalledWith([
-      { i18nKey: 'View Incident', location: '/incidents/1234' },
+      { i18nKey: 'incidents.reports.view', location: '/incidents/1234' },
     ])
   })
 

@@ -14,7 +14,7 @@ import Incidents from '../incidents/Incidents'
 import ViewLabs from '../labs/ViewLabs'
 import ViewMedications from '../medications/ViewMedications'
 import { addBreadcrumbs } from '../page-header/breadcrumbs/breadcrumbs-slice'
-import { TitleProvider } from '../page-header/title/TitleContext'
+import * as titleUtil from '../page-header/title/TitleContext'
 import Appointments from '../scheduling/appointments/Appointments'
 import Settings from '../settings/Settings'
 import ImagingRepository from '../shared/db/ImagingRepository'
@@ -24,10 +24,12 @@ import MedicationRepository from '../shared/db/MedicationRepository'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('HospitalRun', () => {
   const setup = async (route: string, permissions: Permissions[] = []) => {
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     const store = mockStore({
       title: 'test',
       user: { user: { id: '123' }, permissions },

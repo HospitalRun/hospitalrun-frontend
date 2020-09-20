@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../page-header/title/useTitle'
+import { useUpdateTitle } from '../page-header/title/TitleContext'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
 import Lab from '../shared/model/Lab'
@@ -28,7 +28,8 @@ const ViewLab = () => {
   const [labToView, setLabToView] = useState<Lab>()
   const [isEditable, setIsEditable] = useState<boolean>(true)
 
-  useTitle(getTitle(patient, labToView))
+  const updateTitle = useUpdateTitle()
+  updateTitle(getTitle(patient, labToView))
 
   const breadcrumbs = [
     {

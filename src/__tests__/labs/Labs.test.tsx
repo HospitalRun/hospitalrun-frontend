@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import Labs from '../../labs/Labs'
 import NewLabRequest from '../../labs/requests/NewLabRequest'
 import ViewLab from '../../labs/ViewLab'
-import { TitleProvider } from '../../page-header/title/TitleContext'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import LabRepository from '../../shared/db/LabRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Lab from '../../shared/model/Lab'
@@ -16,9 +16,11 @@ import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Labs', () => {
+  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
   jest
     .spyOn(LabRepository, 'find')

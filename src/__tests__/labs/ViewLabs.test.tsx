@@ -11,8 +11,7 @@ import thunk from 'redux-thunk'
 import * as labsSlice from '../../labs/labs-slice'
 import ViewLabs from '../../labs/ViewLabs'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
-import { TitleProvider } from '../../page-header/title/TitleContext'
-import * as titleUtil from '../../page-header/title/useTitle'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import LabRepository from '../../shared/db/LabRepository'
 import Lab from '../../shared/model/Lab'
 import Permissions from '../../shared/model/Permissions'
@@ -38,31 +37,32 @@ const setup = (permissions: Permissions[] = [Permissions.ViewLabs, Permissions.R
   } as any)
   history = createMemoryHistory()
 
+  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
 
   const wrapper = mount(
     <Provider store={store}>
       <Router history={history}>
-        <TitleProvider>
+        <titleUtil.TitleProvider>
           <ViewLabs />
-        </TitleProvider>
+        </titleUtil.TitleProvider>
       </Router>
     </Provider>,
   )
 
+  wrapper.find(ViewLabs).props().updateTitle = jest.fn()
   wrapper.update()
   return { wrapper: wrapper as ReactWrapper }
 }
 
-describe('View Labs', () => {
-  describe('title', () => {
-    const titleSpy = jest.spyOn(titleUtil, 'default')
-    it('should have the title', () => {
-      setup()
-      expect(titleSpy).toHaveBeenCalledWith('labs.label')
-    })
+describe('title', () => {
+  it('should have called the useUpdateTitle hook', async () => {
+    setup()
+    expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
   })
+})
 
+describe('View Labs', () => {
   describe('button bar', () => {
     it('should display button to add new lab request', async () => {
       const setButtonToolBarSpy = jest.fn()
