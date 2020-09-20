@@ -8,7 +8,7 @@ import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarP
 import useTitle from '../page-header/title/useTitle'
 import SelectWithLabelFormGroup, {
   Option,
-} from '../shared/components/input/SelectWithLableFormGroup'
+} from '../shared/components/input/SelectWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useDebounce from '../shared/hooks/useDebounce'
 import useTranslator from '../shared/hooks/useTranslator'

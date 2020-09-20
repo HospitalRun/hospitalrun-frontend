@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react'
 
 import SelectWithLabelFormGroup, {
   Option,
-} from '../../shared/components/input/SelectWithLableFormGroup'
+} from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import MedicationSearchRequest from '../models/MedicationSearchRequest'

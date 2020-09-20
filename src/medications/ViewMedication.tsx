@@ -8,7 +8,7 @@ import useAddBreadcrumbs from '../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTitle from '../page-header/title/useTitle'
 import SelectWithLabelFormGroup, {
   Option,
-} from '../shared/components/input/SelectWithLableFormGroup'
+} from '../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
