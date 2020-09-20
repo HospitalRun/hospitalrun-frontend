@@ -176,7 +176,7 @@ const ViewPatient = () => {
           <CareGoalTab />
         </Route>
         <Route path={`${path}/visits`}>
-          <VisitTab />
+          <VisitTab patientId={patient.id} />
         </Route>
       </Panel>
     </div>

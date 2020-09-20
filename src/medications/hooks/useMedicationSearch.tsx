@@ -1,4 +1,4 @@
-import { QueryKey, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 import MedicationRepository from '../../shared/db/MedicationRepository'
 import SortRequest from '../../shared/db/SortRequest'
@@ -15,7 +15,7 @@ const defaultSortRequest: SortRequest = {
 }
 
 function searchMedicationRequests(
-  _: QueryKey<string>,
+  _: string,
   searchRequest: MedicationSearchRequest,
 ): Promise<Medication[]> {
   return MedicationRepository.search({

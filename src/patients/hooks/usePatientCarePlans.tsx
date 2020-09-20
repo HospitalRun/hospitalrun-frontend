@@ -1,9 +1,9 @@
-import { QueryKey, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 import PatientRepository from '../../shared/db/PatientRepository'
 import CarePlan from '../../shared/model/CarePlan'
 
-async function fetchPatientCarePlans(_: QueryKey<string>, patientId: string): Promise<CarePlan[]> {
+async function fetchPatientCarePlans(_: string, patientId: string): Promise<CarePlan[]> {
   const patient = await PatientRepository.find(patientId)
   return patient.carePlans || []
 }

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import i18n, { resources } from '../../config/i18n'
 import useTranslator from '../../hooks/useTranslator'
-import SelectWithLabelFormGroup, { Option } from './SelectWithLableFormGroup'
+import SelectWithLabelFormGroup, { Option } from './SelectWithLabelFormGroup'
 
 const LanguageSelector = () => {
   const { t } = useTranslator()

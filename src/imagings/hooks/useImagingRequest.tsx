@@ -1,9 +1,9 @@
-import { QueryKey, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 import ImagingRepository from '../../shared/db/ImagingRepository'
 import Imaging from '../../shared/model/Imaging'
 
-function getImagingRequestById(_: QueryKey<string>, imagingRequestId: string): Promise<Imaging> {
+function getImagingRequestById(_: string, imagingRequestId: string): Promise<Imaging> {
   return ImagingRepository.find(imagingRequestId)
 }
 
