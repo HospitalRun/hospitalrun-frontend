@@ -1,14 +1,14 @@
-import { Button, List, ListItem, Alert } from '@hospitalrun/components'
+import { Button } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Diagnosis from '../../shared/model/Diagnosis'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 import AddDiagnosisModal from './AddDiagnosisModal'
+import DiagnosesList from './DiagnosesList'
 
 interface Props {
   patient: Patient
@@ -50,19 +50,12 @@ const Diagnoses = (props: Props) => {
         </div>
       </div>
       <br />
-      {(!patient.diagnoses || patient.diagnoses.length === 0) && (
-        <Alert
-          color="warning"
-          title={t('patient.diagnoses.warning.noDiagnoses')}
-          message={t('patient.diagnoses.addDiagnosisAbove')}
-        />
-      )}
-      <List>
-        {patient.diagnoses?.map((a: Diagnosis) => (
-          <ListItem key={a.id}>{a.name}</ListItem>
-        ))}
-      </List>
-      <AddDiagnosisModal show={showDiagnosisModal} onCloseButtonClick={onAddDiagnosisModalClose} />
+      <DiagnosesList patientId={patient.id} />
+      <AddDiagnosisModal
+        show={showDiagnosisModal}
+        onCloseButtonClick={onAddDiagnosisModalClose}
+        patient={patient}
+      />
     </>
   )
 }
