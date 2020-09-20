@@ -346,6 +346,17 @@ const Sidebar = () => {
               {!sidebarCollapsed && t('incidents.reports.label')}
             </ListItem>
           )}
+          {permissions.includes(Permissions.ViewIncidentWidgets) && (
+            <ListItem
+              className="nav-item"
+              style={listSubItemStyle}
+              onClick={() => navigateTo('/incidents/visualize')}
+              active={splittedPath[1].includes('incidents') && splittedPath.length < 3}
+            >
+              <Icon icon="incident" style={iconMargin} />
+              {!sidebarCollapsed && t('incidents.visualize.label')}
+            </ListItem>
+          )}
         </List>
       )}
     </>
@@ -421,10 +432,10 @@ const Sidebar = () => {
           {getDashboardLink()}
           {getPatientLinks()}
           {getAppointmentLinks()}
-          {getLabLinks()}
-          {getIncidentLinks()}
           {getMedicationLinks()}
+          {getLabLinks()}
           {getImagingLinks()}
+          {getIncidentLinks()}
         </List>
       </div>
     </nav>

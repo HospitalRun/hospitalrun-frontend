@@ -70,7 +70,7 @@ const ViewLab = () => {
       Toast(
         'success',
         t('states.success'),
-        `${t('labs.successfullyUpdated')} ${update.type} ${patient?.fullName}`,
+        `${t('labs.successfullyUpdated')} ${update.type} for ${patient?.fullName}`,
       )
     }
     if (labToView) {
@@ -83,7 +83,7 @@ const ViewLab = () => {
       Toast(
         'success',
         t('states.success'),
-        `${t('labs.successfullyCompleted')} ${complete.type} ${patient?.fullName} `,
+        `${t('labs.successfullyCompleted')} ${complete.type} for ${patient?.fullName} `,
       )
     }
 

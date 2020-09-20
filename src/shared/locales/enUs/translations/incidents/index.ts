@@ -17,6 +17,7 @@ export default {
       resolve: 'Resolve Incident',
       dateOfIncident: 'Date of Incident',
       department: 'Department',
+      download: 'Download',
       category: 'Category',
       categoryItem: 'Category Item',
       description: 'Description of Incident',
@@ -33,6 +34,10 @@ export default {
         categoryItemRequired: 'Category Item is required',
         descriptionRequired: 'Description is required',
       },
+    },
+    visualize: {
+      label: 'Visualize',
+      view: 'Visualize Incidents',
     },
   },
 }

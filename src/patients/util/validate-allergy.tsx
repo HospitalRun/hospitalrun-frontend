@@ -10,7 +10,7 @@ export class AllergyError extends Error {
   }
 }
 
-export default function validateAllergy(allergy: Allergy) {
+export default function validateAllergy(allergy: Partial<Allergy>) {
   const error: any = {}
   if (!allergy.name) {
     error.nameError = 'patient.allergies.error.nameRequired'

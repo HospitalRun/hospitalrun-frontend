@@ -35,6 +35,18 @@ const pageMap: {
     path: '/appointments',
     icon: 'appointment',
   },
+  newMedication: {
+    permission: Permissions.RequestMedication,
+    label: 'medications.requests.new',
+    path: '/medications/new',
+    icon: 'add',
+  },
+  viewMedications: {
+    permission: Permissions.ViewMedications,
+    label: 'medications.requests.label',
+    path: '/medications',
+    icon: 'medication',
+  },
   newLab: {
     permission: Permissions.RequestLab,
     label: 'labs.requests.new',
@@ -47,17 +59,17 @@ const pageMap: {
     path: '/labs',
     icon: 'lab',
   },
-  newMedication: {
-    permission: Permissions.RequestMedication,
-    label: 'medications.requests.new',
-    path: '/medications/new',
+  newImaging: {
+    permission: Permissions.RequestImaging,
+    label: 'imagings.requests.new',
+    path: '/imaging/new',
     icon: 'add',
   },
-  viewMedications: {
-    permission: Permissions.ViewMedications,
-    label: 'medications.requests.label',
-    path: '/medications',
-    icon: 'medication',
+  viewImagings: {
+    permission: Permissions.ReadPatients,
+    label: 'imagings.requests.label',
+    path: '/imaging',
+    icon: 'image',
   },
   newIncident: {
     permission: Permissions.ReportIncident,
@@ -71,6 +83,12 @@ const pageMap: {
     path: '/incidents',
     icon: 'incident',
   },
+  viewIncidentWidgets: {
+    permission: Permissions.ViewIncidentWidgets,
+    label: 'incidents.visualize.label',
+    path: '/incidents/visualize',
+    icon: 'incident',
+  },
   newVisit: {
     permission: Permissions.AddVisit,
     label: 'visits.visit.new',
@@ -82,18 +100,6 @@ const pageMap: {
     label: 'visits.visit.label',
     path: '/visits',
     icon: 'visit',
-  },
-  newImaging: {
-    permission: Permissions.RequestImaging,
-    label: 'imagings.requests.new',
-    path: '/imaging/new',
-    icon: 'add',
-  },
-  viewImagings: {
-    permission: Permissions.ReadPatients,
-    label: 'imagings.requests.label',
-    path: '/imaging',
-    icon: 'image',
   },
   settings: {
     permission: null,

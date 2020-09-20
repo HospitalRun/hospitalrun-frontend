@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { Button } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -25,6 +27,7 @@ describe('Report Incident', () => {
 
   beforeEach(() => {
     jest.resetAllMocks()
+    console.error = jest.fn()
   })
 
   let setButtonToolBarSpy: any

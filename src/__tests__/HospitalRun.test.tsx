@@ -9,10 +9,10 @@ import thunk from 'redux-thunk'
 
 import Dashboard from '../dashboard/Dashboard'
 import HospitalRun from '../HospitalRun'
-import ViewImagings from '../imagings/ViewImagings'
+import ViewImagings from '../imagings/search/ViewImagings'
 import Incidents from '../incidents/Incidents'
 import ViewLabs from '../labs/ViewLabs'
-import ViewMedications from '../medications/ViewMedications'
+import ViewMedications from '../medications/search/ViewMedications'
 import { addBreadcrumbs } from '../page-header/breadcrumbs/breadcrumbs-slice'
 import * as titleUtil from '../page-header/title/TitleContext'
 import Appointments from '../scheduling/appointments/Appointments'
@@ -99,7 +99,7 @@ describe('HospitalRun', () => {
 
     describe('/medications', () => {
       it('should render the Medications component when /medications is accessed', async () => {
-        jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
+        jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewMedications]
         const { wrapper } = await setup('/medications', permissions)
 
@@ -135,7 +135,7 @@ describe('HospitalRun', () => {
 
     describe('/imaging', () => {
       it('should render the Imagings component when /imaging is accessed', async () => {
-        jest.spyOn(ImagingRepository, 'findAll').mockResolvedValue([])
+        jest.spyOn(ImagingRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewImagings]
         const { wrapper } = await setup('/imaging', permissions)
 

@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Incidents from '../../incidents/Incidents'
 import ReportIncident from '../../incidents/report/ReportIncident'
 import ViewIncident from '../../incidents/view/ViewIncident'
+import VisualizeIncidents from '../../incidents/visualize/VisualizeIncidents'
 import * as titleUtil from '../../page-header/title/TitleContext'
 import IncidentRepository from '../../shared/db/IncidentRepository'
 import Incident from '../../shared/model/Incident'
@@ -72,6 +73,20 @@ describe('Incidents', () => {
         const { wrapper } = await setup([], '/incidents/new')
 
         expect(wrapper.find(ReportIncident)).toHaveLength(0)
+      })
+    })
+
+    describe('/incidents/visualize', () => {
+      it('should render the incident visualize screen when /incidents/visualize is accessed', async () => {
+        const { wrapper } = await setup([Permissions.ViewIncidentWidgets], '/incidents/visualize')
+
+        expect(wrapper.find(VisualizeIncidents)).toHaveLength(1)
+      })
+
+      it('should not navigate to /incidents/visualize if the user does not have ViewIncidentWidgets permissions', async () => {
+        const { wrapper } = await setup([], '/incidents/visualize')
+
+        expect(wrapper.find(VisualizeIncidents)).toHaveLength(0)
       })
     })
 
