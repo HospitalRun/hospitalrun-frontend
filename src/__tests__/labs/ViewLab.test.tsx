@@ -159,7 +159,7 @@ describe('View Lab', () => {
       const expectedLab = { ...mockLab, notes: [expectedNotes] } as Lab
       const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
 
-      const notes = wrapper.find('[data-test="note"]')
+      const notes = wrapper.findWhere((w) => w.prop('data-test') === 'note')
       const pastNotesIndex = notes.reduce(
         (result: number, item: ReactWrapper, index: number) =>
           item.text().trim() === expectedNotes ? index : result,
@@ -167,7 +167,16 @@ describe('View Lab', () => {
       )
 
       expect(pastNotesIndex).not.toBe(-1)
-      expect(notes.length).toBe(1)
+      expect(notes).toHaveLength(1)
+    })
+
+    it('should not display past notes if there is not', async () => {
+      const expectedLab = { ...mockLab, notes: undefined } as Lab
+      const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
+
+      const notes = wrapper.findWhere((w) => w.prop('data-test') === 'note')
+
+      expect(notes).toHaveLength(0)
     })
 
     it('should display the notes text field empty', async () => {

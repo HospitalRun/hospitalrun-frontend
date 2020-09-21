@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
 import useLabsSearch from '../../../labs/hooks/useLabsSearch'
+import LabSearchRequest from '../../../labs/model/LabSearchRequest'
 import LabRepository from '../../../shared/db/LabRepository'
 import Lab from '../../../shared/model/Lab'
 import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
@@ -22,12 +23,14 @@ describe('Use Labs Search', () => {
   })
 
   it('should return all labs', async () => {
-    const expectedSearchText = ''
-    const expectedStatus = 'all'
+    const expectedLabsSearchRequest = {
+      text: '',
+      status: 'all',
+    } as LabSearchRequest
 
     let actualData: any
     await act(async () => {
-      const renderHookResult = renderHook(() => useLabsSearch(expectedSearchText, expectedStatus))
+      const renderHookResult = renderHook(() => useLabsSearch(expectedLabsSearchRequest))
       const { result } = renderHookResult
       await waitUntilQueryIsSuccessful(renderHookResult)
       actualData = result.current.data
@@ -39,12 +42,14 @@ describe('Use Labs Search', () => {
   })
 
   it('should search for labs', async () => {
-    const expectedSearchText = 'search text'
-    const expectedStatus = 'all'
+    const expectedLabsSearchRequest = {
+      text: 'search text',
+      status: 'all',
+    } as LabSearchRequest
 
     let actualData: any
     await act(async () => {
-      const renderHookResult = renderHook(() => useLabsSearch(expectedSearchText, expectedStatus))
+      const renderHookResult = renderHook(() => useLabsSearch(expectedLabsSearchRequest))
       const { result } = renderHookResult
       await waitUntilQueryIsSuccessful(renderHookResult)
       actualData = result.current.data
@@ -53,7 +58,7 @@ describe('Use Labs Search', () => {
     expect(labRepositoryFindAllSpy).not.toHaveBeenCalled()
     expect(labRepositorySearchSpy).toHaveBeenCalledTimes(1)
     expect(labRepositorySearchSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ text: expectedSearchText, status: expectedStatus }),
+      expect.objectContaining(expectedLabsSearchRequest),
     )
     expect(actualData).toEqual(expectedLabs)
   })

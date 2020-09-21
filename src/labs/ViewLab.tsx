@@ -33,7 +33,6 @@ const ViewLab = () => {
   const [newNotes, setNewNotes] = useState<string>()
   const [isEditable, setIsEditable] = useState<boolean>(true)
 
-  // teste
   const { data: lab } = useLab(id)
   const { data: patient } = usePatient(lab?.patient)
   const [updateLab] = useUpdateLab()
@@ -88,21 +87,6 @@ const ViewLab = () => {
     }
     setError(undefined)
   }
-
-  // const onComplete = async () => {
-  //   const onSuccess = (complete: Lab) => {
-  //     history.push(`/labs/${complete.id}`)
-  //     Toast(
-  //       'success',
-  //       t('states.success'),
-  //       `${t('labs.successfullyCompleted')} ${complete.type} for ${patient?.fullName} `,
-  //     )
-  //   }
-
-  //   if (labToView) {
-  //     dispatch(completeLab(labToView, onSuccess))
-  //   }
-  // }
 
   const onComplete = async () => {
     try {

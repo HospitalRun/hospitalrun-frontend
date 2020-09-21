@@ -9,9 +9,9 @@ function updateLab(labToUpdate: Lab): Promise<Lab> {
 
 export default function useUpdateLab() {
   return useMutation(updateLab, {
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      queryCache.setQueryData(['lab', data.id], data)
       await queryCache.invalidateQueries('labs')
-      await queryCache.invalidateQueries('lab')
     },
   })
 }

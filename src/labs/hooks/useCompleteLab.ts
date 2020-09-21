@@ -23,9 +23,9 @@ function completeLab(lab: Lab): Promise<Lab> {
 
 export default function useCompleteLab() {
   return useMutation(completeLab, {
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      queryCache.setQueryData(['lab', data.id], data)
       await queryCache.invalidateQueries('labs')
-      await queryCache.invalidateQueries('lab')
     },
     throwOnError: true,
   })

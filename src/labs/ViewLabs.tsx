@@ -16,8 +16,7 @@ import Lab from '../shared/model/Lab'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
 import useLabsSearch from './hooks/useLabsSearch'
-
-type LabFilter = 'requested' | 'completed' | 'canceled' | 'all'
+import { LabFilter } from './model/LabSearchRequest'
 
 const ViewLabs = () => {
   const { t } = useTranslator()
@@ -29,7 +28,10 @@ const ViewLabs = () => {
   const [searchFilter, setSearchFilter] = useState<LabFilter>('all')
   const [searchText, setSearchText] = useState<string>('')
   const debouncedSearchText = useDebounce(searchText, 500)
-  const { data: labs } = useLabsSearch(debouncedSearchText, searchFilter)
+  const { data: labs } = useLabsSearch({
+    text: debouncedSearchText,
+    status: searchFilter,
+  })
 
   const getButtons = useCallback(() => {
     const buttons: React.ReactNode[] = []
