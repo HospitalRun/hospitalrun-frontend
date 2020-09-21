@@ -1,6 +1,5 @@
 import { Calendar, Button } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
@@ -8,8 +7,7 @@ import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonB
 import useTitle from '../../page-header/title/useTitle'
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
-import { RootState } from '../../shared/store'
-import { fetchAppointments } from './appointments-slice'
+import useAppointments from '../hooks/useAppointments'
 
 interface Event {
   id: string
@@ -25,14 +23,12 @@ const ViewAppointments = () => {
   const { t } = useTranslator()
   const history = useHistory()
   useTitle(t('scheduling.appointments.label'))
-  const dispatch = useDispatch()
-  const { appointments } = useSelector((state: RootState) => state.appointments)
+  const appointments = useAppointments()
   const [events, setEvents] = useState<Event[]>([])
   const setButtonToolBar = useButtonToolbarSetter()
   useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
-    dispatch(fetchAppointments())
     setButtonToolBar([
       <Button
         key="newAppointmentButton"
@@ -48,29 +44,26 @@ const ViewAppointments = () => {
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, setButtonToolBar, history, t])
+  }, [setButtonToolBar, history, t])
 
   useEffect(() => {
-    const getAppointments = async () => {
-      const newEvents = await Promise.all(
-        appointments.map(async (a) => {
-          const patient = await PatientRepository.find(a.patient)
-          return {
-            id: a.id,
-            start: new Date(a.startDateTime),
-            end: new Date(a.endDateTime),
-            title: patient.fullName || '',
-            allDay: false,
-          }
-        }),
-      )
-
-      setEvents(newEvents)
-    }
-
-    if (appointments) {
-      getAppointments()
-    }
+    appointments.then(async (results) => {
+      if (results) {
+        const newEvents = await Promise.all(
+          results.map(async (result) => {
+            const patient = await PatientRepository.find(result.patient)
+            return {
+              id: result.id,
+              start: new Date(result.startDateTime),
+              end: new Date(result.endDateTime),
+              title: patient.fullName || '',
+              allDay: false,
+            }
+          }),
+        )
+        setEvents(newEvents)
+      }
+    })
   }, [appointments])
 
   return (
