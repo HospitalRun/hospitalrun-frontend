@@ -11,7 +11,6 @@ import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../../page-header/title/useTitle'
-import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import ViewAppointment from '../../../../scheduling/appointments/view/ViewAppointment'
 import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
@@ -39,8 +38,11 @@ const patient = {
 describe('View Appointment', () => {
   let history: any
   let store: MockStore
+  let setButtonToolBarSpy: any
 
   const setup = async (status = 'completed', permissions = [Permissions.ReadAppointments]) => {
+    setButtonToolBarSpy = jest.fn()
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(appointment)
     jest.spyOn(AppointmentRepository, 'delete').mockResolvedValue(appointment)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
@@ -88,9 +90,6 @@ describe('View Appointment', () => {
   })
 
   it('should add a "Edit Appointment" button to the button tool bar if has WriteAppointment permissions', async () => {
-    const setButtonToolBarSpy = jest.fn()
-    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
-
     await setup('loading', [Permissions.WriteAppointments, Permissions.ReadAppointments])
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
@@ -98,10 +97,6 @@ describe('View Appointment', () => {
   })
 
   it('should add a "Delete Appointment" button to the button tool bar if has DeleteAppointment permissions', async () => {
-    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
-    const setButtonToolBarSpy = jest.fn()
-    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
-
     await setup('loading', [Permissions.DeleteAppointment, Permissions.ReadAppointments])
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
@@ -111,32 +106,23 @@ describe('View Appointment', () => {
   })
 
   it('button toolbar empty if has only ReadAppointments permission', async () => {
-    const setButtonToolBarSpy = jest.fn()
-    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
-
     await setup('loading')
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
     expect(actualButtons.length).toEqual(0)
   })
 
-  it('should dispatch getAppointment if id is present', async () => {
+  it('should call getAppointment by id if id is present', async () => {
     await setup()
-
     expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
-    expect(store.getActions()).toContainEqual(appointmentSlice.fetchAppointmentStart())
-    expect(store.getActions()).toContainEqual(
-      appointmentSlice.fetchAppointmentSuccess({ appointment, patient }),
-    )
   })
 
-  it('should render a loading spinner', async () => {
-    const { wrapper } = await setup('loading')
+  // it('should render a loading spinner', async () => {
+  //   const { wrapper } = await setup('loading')
+  //   expect(wrapper.find(components.Spinner)).toHaveLength(1)
+  // })
 
-    expect(wrapper.find(components.Spinner)).toHaveLength(1)
-  })
-
-  it('should render a AppointmentDetailForm with the correct data', async () => {
+  it('should render an AppointmentDetailForm with the correct data', async () => {
     const { wrapper } = await setup()
 
     const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
@@ -159,20 +145,20 @@ describe('View Appointment', () => {
   })
 
   describe('delete appointment', () => {
-    let setButtonToolBarSpy = jest.fn()
+    // let setButtonToolBarSpy = jest.fn()
     let deleteAppointmentSpy = jest.spyOn(AppointmentRepository, 'delete')
     beforeEach(() => {
-      jest.resetAllMocks()
+      jest.restoreAllMocks()
       jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
       deleteAppointmentSpy = jest.spyOn(AppointmentRepository, 'delete')
-      setButtonToolBarSpy = jest.fn()
-      mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+      // setButtonToolBarSpy = jest.fn()
+      // mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
     })
 
     it('should render a delete appointment button in the button toolbar', async () => {
       await setup('completed', [Permissions.ReadAppointments, Permissions.DeleteAppointment])
 
-      expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
+      expect(setButtonToolBarSpy).toHaveBeenCalled()
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect((actualButtons[0] as any).props.children).toEqual(
         'scheduling.appointments.deleteAppointment',
@@ -185,7 +171,7 @@ describe('View Appointment', () => {
         Permissions.DeleteAppointment,
       ])
 
-      expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
+      expect(setButtonToolBarSpy).toHaveBeenCalled()
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
 
       act(() => {
@@ -204,7 +190,7 @@ describe('View Appointment', () => {
         Permissions.DeleteAppointment,
       ])
 
-      expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
+      expect(setButtonToolBarSpy).toHaveBeenCalled()
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
 
       act(() => {
@@ -223,7 +209,7 @@ describe('View Appointment', () => {
       expect(deleteConfirmationModal.prop('show')).toEqual(false)
     })
 
-    it('should dispatch DELETE_APPOINTMENT action when modal confirmation button is clicked', async () => {
+    it('should delete from appointment repository when modal confirmation button is clicked', async () => {
       const { wrapper } = await setup('completed', [
         Permissions.ReadAppointments,
         Permissions.DeleteAppointment,
@@ -239,9 +225,6 @@ describe('View Appointment', () => {
 
       expect(deleteAppointmentSpy).toHaveBeenCalledTimes(1)
       expect(deleteAppointmentSpy).toHaveBeenCalledWith(appointment)
-
-      expect(store.getActions()).toContainEqual(appointmentSlice.deleteAppointmentStart())
-      expect(store.getActions()).toContainEqual(appointmentSlice.deleteAppointmentSuccess())
     })
 
     it('should navigate to /appointments and display a message when delete is successful', async () => {
