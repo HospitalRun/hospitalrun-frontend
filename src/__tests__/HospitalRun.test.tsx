@@ -31,7 +31,6 @@ describe('HospitalRun', () => {
   const setup = async (route: string, permissions: Permissions[] = []) => {
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     const store = mockStore({
-      title: 'test',
       user: { user: { id: '123' }, permissions },
       appointments: { appointments: [] },
       medications: { medications: [] },
