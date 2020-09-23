@@ -1,17 +1,13 @@
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { Provider } from 'react-redux'
+import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
-import createMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import ViewVisit from '../../../patients/visits/ViewVisit'
 import VisitForm from '../../../patients/visits/VisitForm'
+import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
-import { RootState } from '../../../shared/store'
-
-const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Visit', () => {
   const patient = {
@@ -19,31 +15,35 @@ describe('View Visit', () => {
     visits: [{ id: '123', reason: 'reason for visit' }],
   } as Patient
 
-  const setup = () => {
-    const store = mockStore({ patient: { patient }, user: { user: { id: '123' } } } as any)
+  const setup = async () => {
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     const history = createMemoryHistory()
     history.push(`/patients/${patient.id}/visits/${patient.visits[0].id}`)
-    const wrapper = mount(
-      <Provider store={store}>
+    let wrapper: any
+
+    await act(async () => {
+      wrapper = await mount(
         <Router history={history}>
           <Route path="/patients/:id/visits/:visitId">
-            <ViewVisit />
+            <ViewVisit patientId={patient.id} />
           </Route>
-        </Router>
-      </Provider>,
-    )
+        </Router>,
+      )
+    })
 
-    return { wrapper }
+    wrapper.update()
+
+    return { wrapper: wrapper as ReactWrapper }
   }
 
-  it('should render the visit reason', () => {
-    const { wrapper } = setup()
+  it('should render the visit reason', async () => {
+    const { wrapper } = await setup()
 
     expect(wrapper.find('h2').text()).toEqual(patient.visits[0].reason)
   })
 
-  it('should render a visit form with the correct data', () => {
-    const { wrapper } = setup()
+  it('should render a visit form with the correct data', async () => {
+    const { wrapper } = await setup()
 
     const visitForm = wrapper.find(VisitForm)
     expect(visitForm).toHaveLength(1)

@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Medications from '../../medications/Medications'
 import NewMedicationRequest from '../../medications/requests/NewMedicationRequest'
 import ViewMedication from '../../medications/ViewMedication'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import MedicationRepository from '../../shared/db/MedicationRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Medication from '../../shared/model/Medication'
@@ -21,7 +22,7 @@ const mockStore = createMockStore<RootState, any>([thunk])
 describe('Medications', () => {
   const setup = (route: string, permissions: Array<string>) => {
     jest.resetAllMocks()
-    jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
+    jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
     jest
       .spyOn(MedicationRepository, 'find')
       .mockResolvedValue({ id: '1234', requestedOn: new Date().toISOString() } as Medication)
@@ -54,7 +55,9 @@ describe('Medications', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>
-          <Medications />
+          <TitleProvider>
+            <Medications />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )

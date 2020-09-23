@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../../../page-header/title/useTitle'
+import * as titleUtil from '../../../../page-header/title/TitleContext'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import ViewAppointment from '../../../../scheduling/appointments/view/ViewAppointment'
@@ -21,6 +21,7 @@ import Patient from '../../../../shared/model/Patient'
 import Permissions from '../../../../shared/model/Permissions'
 import { RootState } from '../../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 const appointment = {
@@ -41,6 +42,7 @@ describe('View Appointment', () => {
   let store: MockStore
 
   const setup = async (status = 'completed', permissions = [Permissions.ReadAppointments]) => {
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(appointment)
     jest.spyOn(AppointmentRepository, 'delete').mockResolvedValue(appointment)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
@@ -65,7 +67,9 @@ describe('View Appointment', () => {
         <Provider store={store}>
           <Router history={history}>
             <Route path="/appointments/:id">
-              <ViewAppointment />
+              <TitleProvider>
+                <ViewAppointment />
+              </TitleProvider>
             </Route>
           </Router>
         </Provider>,
@@ -80,11 +84,10 @@ describe('View Appointment', () => {
     jest.restoreAllMocks()
   })
 
-  it('should use the correct title', async () => {
-    jest.spyOn(titleUtil, 'default')
+  it('should have called the useUpdateTitle hook', async () => {
     await setup()
 
-    expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.viewAppointment')
+    expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
   })
 
   it('should add a "Edit Appointment" button to the button tool bar if has WriteAppointment permissions', async () => {

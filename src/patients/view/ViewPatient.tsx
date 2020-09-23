@@ -12,16 +12,17 @@ import {
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 import Allergies from '../allergies/Allergies'
 import AppointmentsList from '../appointments/AppointmentsList'
+import CareGoalTab from '../care-goals/CareGoalTab'
 import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
-import Labs from '../labs/LabsTab'
+import Labs from '../labs/Labs'
 import Note from '../notes/NoteTab'
 import { fetchPatient } from '../patient-slice'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
@@ -39,7 +40,8 @@ const ViewPatient = () => {
   const { patient, status } = useSelector((state: RootState) => state.patient)
   const { permissions } = useSelector((state: RootState) => state.user)
 
-  useTitle(t('patient.label'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('patient.label'))
 
   const setButtonToolBar = useButtonToolbarSetter()
 
@@ -130,6 +132,11 @@ const ViewPatient = () => {
             onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
           />
           <Tab
+            active={location.pathname === `/patients/${patient.id}/care-goals`}
+            label={t('patient.careGoal.label')}
+            onClick={() => history.push(`/patients/${patient.id}/care-goals`)}
+          />
+          <Tab
             active={location.pathname === `/patients/${patient.id}/visits`}
             label={t('patient.visits.label')}
             onClick={() => history.push(`/patients/${patient.id}/visits`)}
@@ -155,13 +162,16 @@ const ViewPatient = () => {
             <Note patient={patient} />
           </Route>
           <Route exact path={`${path}/labs`}>
-            <Labs patientId={patient.id} />
+            <Labs patient={patient} />
           </Route>
           <Route path={`${path}/care-plans`}>
             <CarePlanTab />
           </Route>
+          <Route path={`${path}/care-goals`}>
+            <CareGoalTab />
+          </Route>
           <Route path={`${path}/visits`}>
-            <VisitTab />
+            <VisitTab patientId={patient.id} />
           </Route>
         </Panel>
       </div>

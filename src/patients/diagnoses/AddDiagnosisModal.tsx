@@ -1,14 +1,15 @@
 import { Modal } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 import useTranslator from '../../shared/hooks/useTranslator'
-import Diagnosis from '../../shared/model/Diagnosis'
-import { RootState } from '../../shared/store'
-import { addDiagnosis } from '../patient-slice'
+import Diagnosis, { DiagnosisStatus } from '../../shared/model/Diagnosis'
+import Patient from '../../shared/model/Patient'
+import useAddPatientDiagnosis from '../hooks/useAddPatientDiagnosis'
+import { DiagnosisError } from '../util/validate-diagnosis'
 import DiagnosisForm from './DiagnosisForm'
 
-interface Props {
+interface NewDiagnosisModalProps {
+  patient: Patient
   show: boolean
   onCloseButtonClick: () => void
 }
@@ -20,16 +21,16 @@ const initialDiagnosisState = {
   abatementDate: new Date().toISOString(),
   note: '',
   visit: '',
+  status: DiagnosisStatus.Active,
 }
 
-const AddDiagnosisModal = (props: Props) => {
-  const { show, onCloseButtonClick } = props
-  const dispatch = useDispatch()
-  const { diagnosisError, patient } = useSelector((state: RootState) => state.patient)
+const AddDiagnosisModal = (props: NewDiagnosisModalProps) => {
+  const { show, onCloseButtonClick, patient } = props
   const { t } = useTranslator()
+  const [mutate] = useAddPatientDiagnosis()
 
   const [diagnosis, setDiagnosis] = useState(initialDiagnosisState)
-
+  const [diagnosisError, setDiagnosisError] = useState<DiagnosisError | undefined>(undefined)
   useEffect(() => {
     setDiagnosis(initialDiagnosisState)
   }, [show])
@@ -37,8 +38,13 @@ const AddDiagnosisModal = (props: Props) => {
   const onDiagnosisChange = (newDiagnosis: Partial<Diagnosis>) => {
     setDiagnosis(newDiagnosis as Diagnosis)
   }
-  const onSaveButtonClick = () => {
-    dispatch(addDiagnosis(patient.id, diagnosis as Diagnosis))
+  const onSaveButtonClick = async () => {
+    try {
+      await mutate({ diagnosis, patientId: patient.id })
+      onCloseButtonClick()
+    } catch (e) {
+      setDiagnosisError(e)
+    }
   }
 
   const body = (

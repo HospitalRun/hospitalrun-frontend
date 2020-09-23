@@ -1,4 +1,4 @@
-import { Panel, Container, Row, Table, Button, Typography } from '@hospitalrun/components'
+import { Row, Table, Button, Typography } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { CSSProperties, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -14,7 +14,6 @@ import NewAllergyModal from '../allergies/NewAllergyModal'
 import AddCarePlanModal from '../care-plans/AddCarePlanModal'
 import AddDiagnosisModal from '../diagnoses/AddDiagnosisModal'
 import AddVisitModal from '../visits/AddVisitModal'
-// import  {getPatientFullName} from '../util/patient-name-util'
 
 interface Props {
   patient: Patient
@@ -69,154 +68,137 @@ const ImportantPatientInfo = (props: Props) => {
 
   return (
     <div>
-      <Panel collapsible title="Brief Patient Information">
-        <Container>
-          <Row>
-            <div className="col-2">
-              <h3>{patient.fullName}</h3>
-            </div>
-            <div className="col-2">
-              <div style={patientCodeStyle}>
-                <strong>{t('patient.code')}</strong>
-                <h6>{getPatientCode(patient)}</h6>
-              </div>
-            </div>
-            <div className="col d-flex justify-content-end">
-              {permissions.includes(Permissions.AddVisit) && (
-                <Button
-                  outlined
-                  color="success"
-                  icon="add"
-                  iconLocation="left"
-                  onClick={() => setShowAddVisitModal(true)}
-                >
-                  {t('patient.visits.new')}
-                </Button>
-              )}
-            </div>
-          </Row>
-          <Row>
-            <div className="col">
-              <div className="patient-sex">
-                <strong>{t('patient.sex')}</strong>
-                <h6>{patient.sex}</h6>
-              </div>
-              <div className="patient-dateOfBirth">
-                <strong>{t('patient.dateOfBirth')}</strong>
-                <h6>
-                  {patient.dateOfBirth
-                    ? format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
-                    : t('patient.unknownDateOfBirth')}
-                </h6>
-              </div>
-              {/* <Row>
-                  <strong>Sex</strong>
-                </Row>
-                <Row>{patient.sex}</Row>
-                <Row>
-                  <strong>DateOfBirth</strong>
-                </Row>
-                <Row>
-                  {patient.dateOfBirth
-                    ? format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
-                    : 'Unknown'}
-                </Row> */}
-              <br />
+      <Row>
+        <div className="col-2">
+          <h3>{patient.fullName}</h3>
+        </div>
+        <div className="col-2">
+          <div style={patientCodeStyle}>
+            <strong>{t('patient.code')}</strong>
+            <h6>{getPatientCode(patient)}</h6>
+          </div>
+        </div>
+        <div className="col d-flex justify-content-end">
+          {permissions.includes(Permissions.AddVisit) && (
+            <Button
+              outlined
+              color="success"
+              icon="add"
+              iconLocation="left"
+              onClick={() => setShowAddVisitModal(true)}
+            >
+              {t('patient.visits.new')}
+            </Button>
+          )}
+        </div>
+      </Row>
+      <Row>
+        <div className="col">
+          <div className="patient-sex">
+            <strong>{t('patient.sex')}</strong>
+            <h6>{patient.sex}</h6>
+          </div>
+          <div className="patient-dateOfBirth">
+            <strong>{t('patient.dateOfBirth')}</strong>
+            <h6>
+              {patient.dateOfBirth
+                ? format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
+                : t('patient.unknownDateOfBirth')}
+            </h6>
+          </div>
+          <br />
 
-              <div style={allergiesSectionStyle}>
-                <Typography variant="h5">{t('patient.allergies.label')}</Typography>
-                {patient.allergies ? (
-                  patient.allergies?.map((a: Allergy) => (
-                    <li key={a.id.toString()}>
-                      <Link to={`/patients/${patient.id}/allergies`}>{a.name}</Link>
-                    </li>
-                  ))
-                ) : (
-                  <></>
-                )}
-                {permissions.includes(Permissions.AddAllergy) && (
-                  <Button
-                    style={addAllergyButtonStyle}
-                    color="primary"
-                    icon="add"
-                    outlined
-                    iconLocation="left"
-                    onClick={() => setShowNewAllergyModal(true)}
-                  >
-                    {t('patient.allergies.new')}
-                  </Button>
-                )}
-              </div>
-            </div>
+          <div style={allergiesSectionStyle}>
+            <Typography variant="h5">{t('patient.allergies.label')}</Typography>
+            {patient.allergies ? (
+              patient.allergies?.map((a: Allergy) => (
+                <li key={a.id.toString()}>
+                  <Link to={`/patients/${patient.id}/allergies`}>{a.name}</Link>
+                </li>
+              ))
+            ) : (
+              <></>
+            )}
+            {permissions.includes(Permissions.AddAllergy) && (
+              <Button
+                style={addAllergyButtonStyle}
+                color="primary"
+                icon="add"
+                outlined
+                iconLocation="left"
+                onClick={() => setShowNewAllergyModal(true)}
+              >
+                {t('patient.allergies.new')}
+              </Button>
+            )}
+          </div>
+        </div>
 
-            <div className="col diagnoses-section">
-              <Typography variant="h5">{t('patient.diagnoses.label')}</Typography>
-              <div className="border border-primary" style={tableStyle}>
-                <Table
-                  getID={(row) => row.id}
-                  columns={[
-                    { label: t('patient.diagnoses.diagnosisName'), key: 'name' },
-                    {
-                      label: t('patient.diagnoses.diagnosisDate'),
-                      key: 'diagnosisDate',
-                      formatter: (row) =>
-                        row.diagnosisDate
-                          ? format(new Date(row.diagnosisDate), 'yyyy-MM-dd hh:mm a')
-                          : '',
-                    },
-                  ]}
-                  data={patient.diagnoses ? (patient.diagnoses as Diagnosis[]) : []}
-                />
-              </div>
-              {permissions.includes(Permissions.AddDiagnosis) && (
-                <Button
-                  color="light"
-                  icon="add"
-                  iconLocation="left"
-                  onClick={() => setShowDiagnosisModal(true)}
-                >
-                  {t('patient.diagnoses.new')}
-                </Button>
-              )}
-            </div>
-            <div className="col carePlan-section">
-              <Typography variant="h5">{t('patient.carePlan.label')}</Typography>
-              <div className="border border-primary" style={tableStyle}>
-                {/* <CarePlanTable /> */}
-                <Table
-                  onRowClick={(row) => history.push(`/patients/${patient.id}/care-plans/${row.id}`)}
-                  getID={(row) => row.id}
-                  data={patient.carePlans || []}
-                  columns={[
-                    { label: t('patient.carePlan.title'), key: 'title' },
-                    {
-                      label: t('patient.carePlan.startDate'),
-                      key: 'startDate',
-                      formatter: (row) => format(new Date(row.startDate), 'yyyy-MM-dd'),
-                    },
-                    {
-                      label: t('patient.carePlan.endDate'),
-                      key: 'endDate',
-                      formatter: (row) => format(new Date(row.endDate), 'yyyy-MM-dd'),
-                    },
-                    { label: t('patient.carePlan.status'), key: 'status' },
-                  ]}
-                />
-              </div>
-              {permissions.includes(Permissions.AddCarePlan) && (
-                <Button
-                  color="light"
-                  icon="add"
-                  iconLocation="left"
-                  onClick={() => setShowAddCarePlanModal(true)}
-                >
-                  {t('patient.carePlan.new')}
-                </Button>
-              )}
-            </div>
-          </Row>
-        </Container>
-      </Panel>
+        <div className="col diagnoses-section">
+          <Typography variant="h5">{t('patient.diagnoses.label')}</Typography>
+          <div className="border border-primary" style={tableStyle}>
+            <Table
+              getID={(row) => row.id}
+              columns={[
+                { label: t('patient.diagnoses.diagnosisName'), key: 'name' },
+                {
+                  label: t('patient.diagnoses.diagnosisDate'),
+                  key: 'diagnosisDate',
+                  formatter: (row) =>
+                    row.diagnosisDate
+                      ? format(new Date(row.diagnosisDate), 'yyyy-MM-dd hh:mm a')
+                      : '',
+                },
+              ]}
+              data={patient.diagnoses ? (patient.diagnoses as Diagnosis[]) : []}
+            />
+          </div>
+          {permissions.includes(Permissions.AddDiagnosis) && (
+            <Button
+              color="light"
+              icon="add"
+              iconLocation="left"
+              onClick={() => setShowDiagnosisModal(true)}
+            >
+              {t('patient.diagnoses.new')}
+            </Button>
+          )}
+        </div>
+        <div className="col carePlan-section">
+          <Typography variant="h5">{t('patient.carePlan.label')}</Typography>
+          <div className="border border-primary" style={tableStyle}>
+            <Table
+              onRowClick={(row) => history.push(`/patients/${patient.id}/care-plans/${row.id}`)}
+              getID={(row) => row.id}
+              data={patient.carePlans || []}
+              columns={[
+                { label: t('patient.carePlan.title'), key: 'title' },
+                {
+                  label: t('patient.carePlan.startDate'),
+                  key: 'startDate',
+                  formatter: (row) => format(new Date(row.startDate), 'yyyy-MM-dd'),
+                },
+                {
+                  label: t('patient.carePlan.endDate'),
+                  key: 'endDate',
+                  formatter: (row) => format(new Date(row.endDate), 'yyyy-MM-dd'),
+                },
+                { label: t('patient.carePlan.status'), key: 'status' },
+              ]}
+            />
+          </div>
+          {permissions.includes(Permissions.AddCarePlan) && (
+            <Button
+              color="light"
+              icon="add"
+              iconLocation="left"
+              onClick={() => setShowAddCarePlanModal(true)}
+            >
+              {t('patient.carePlan.new')}
+            </Button>
+          )}
+        </div>
+      </Row>
 
       <NewAllergyModal
         show={showNewAllergyModal}
@@ -227,6 +209,7 @@ const ImportantPatientInfo = (props: Props) => {
       <AddDiagnosisModal
         show={showDiagnosisModal}
         onCloseButtonClick={() => setShowDiagnosisModal(false)}
+        patient={patient}
       />
 
       <AddCarePlanModal
@@ -238,6 +221,7 @@ const ImportantPatientInfo = (props: Props) => {
       <AddVisitModal
         show={showAddVisitModal}
         onCloseButtonClick={() => setShowAddVisitModal(false)}
+        patientId={patient.id}
       />
       <br />
     </div>

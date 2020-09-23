@@ -10,13 +10,13 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import Allergies from '../../../patients/allergies/Allergies'
 import AppointmentsList from '../../../patients/appointments/AppointmentsList'
 import CarePlanTab from '../../../patients/care-plans/CarePlanTab'
 import Diagnoses from '../../../patients/diagnoses/Diagnoses'
 import GeneralInformation from '../../../patients/GeneralInformation'
-import LabsTab from '../../../patients/labs/LabsTab'
+import Labs from '../../../patients/labs/Labs'
 import NotesTab from '../../../patients/notes/NoteTab'
 import * as patientSlice from '../../../patients/patient-slice'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
@@ -26,10 +26,11 @@ import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('ViewPatient', () => {
-  const patient = {
+  const patient = ({
     id: '123',
     prefix: 'prefix',
     givenName: 'givenName',
@@ -44,12 +45,13 @@ describe('ViewPatient', () => {
     address: 'address',
     code: 'P00001',
     dateOfBirth: new Date().toISOString(),
-  } as Patient
+  } as unknown) as Patient
 
   let history: any
   let store: MockStore
 
   const setup = async (permissions = [Permissions.ReadPatients]) => {
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(PatientRepository, 'find')
     jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
     const mockedPatientRepository = mocked(PatientRepository, true)
@@ -59,6 +61,7 @@ describe('ViewPatient', () => {
       patient: { patient },
       user: { permissions },
       appointments: { appointments: [] },
+      labs: { labs: [] },
     } as any)
 
     history.push('/patients/123')
@@ -68,12 +71,15 @@ describe('ViewPatient', () => {
         <Provider store={store}>
           <Router history={history}>
             <Route path="/patients/:id">
-              <ViewPatient />
+              <TitleProvider>
+                <ViewPatient />
+              </TitleProvider>
             </Route>
           </Router>
         </Provider>,
       )
     })
+    wrapper.find(ViewPatient).props().updateTitle = jest.fn()
     wrapper.update()
 
     return { wrapper: wrapper as ReactWrapper }
@@ -91,12 +97,10 @@ describe('ViewPatient', () => {
     expect(store.getActions()).toContainEqual(patientSlice.fetchPatientSuccess(patient))
   })
 
-  it('should render a header with the patients given, family, and suffix', async () => {
-    jest.spyOn(titleUtil, 'default')
-
+  it('should have called useUpdateTitle hook', async () => {
     await setup()
 
-    expect(titleUtil.default).toHaveBeenCalledWith(`patient.label`)
+    expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
   })
 
   it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', async () => {
@@ -128,7 +132,7 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(9)
+    expect(tabs).toHaveLength(10)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
@@ -137,7 +141,8 @@ describe('ViewPatient', () => {
     expect(tabs.at(5).prop('label')).toEqual('patient.notes.label')
     expect(tabs.at(6).prop('label')).toEqual('patient.labs.label')
     expect(tabs.at(7).prop('label')).toEqual('patient.carePlan.label')
-    expect(tabs.at(8).prop('label')).toEqual('patient.visits.label')
+    expect(tabs.at(8).prop('label')).toEqual('patient.careGoal.label')
+    expect(tabs.at(9).prop('label')).toEqual('patient.visits.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -289,12 +294,12 @@ describe('ViewPatient', () => {
 
     const tabsHeader = wrapper.find(TabsHeader)
     const tabs = tabsHeader.find(Tab)
-    const labsTab = wrapper.find(LabsTab)
+    const labsTab = wrapper.find(Labs)
 
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/labs`)
     expect(tabs.at(6).prop('active')).toBeTruthy()
     expect(labsTab).toHaveLength(1)
-    expect(labsTab.prop('patientId')).toEqual(patient.id)
+    expect(labsTab.prop('patient')).toEqual(patient)
   })
 
   it('should mark the care plans tab as active when it is clicked and render the care plan tab component when route is /patients/:id/care-plans', async () => {
@@ -316,5 +321,26 @@ describe('ViewPatient', () => {
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-plans`)
     expect(tabs.at(7).prop('active')).toBeTruthy()
     expect(carePlansTab).toHaveLength(1)
+  })
+
+  it('should mark the care goals tab as active when it is clicked and render the care goal tab component when route is /patients/:id/care-goals', async () => {
+    const { wrapper } = await setup()
+
+    await act(async () => {
+      const tabHeader = wrapper.find(TabsHeader)
+      const tabs = tabHeader.find(Tab)
+      const onClick = tabs.at(8).prop('onClick') as any
+      onClick()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
+    const careGoalsTab = tabs.at(8)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-goals`)
+    expect(careGoalsTab.prop('active')).toBeTruthy()
+    expect(careGoalsTab).toHaveLength(1)
   })
 })

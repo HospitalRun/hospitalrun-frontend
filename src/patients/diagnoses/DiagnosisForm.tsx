@@ -3,12 +3,7 @@ import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLableFormGroup'
-import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import Input, { Option } from '../../shared/components/input'
 import Diagnosis, { DiagnosisStatus } from '../../shared/model/Diagnosis'
 import Patient from '../../shared/model/Patient'
 
@@ -74,7 +69,7 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <TextInputWithLabelFormGroup
+          <Input.TextInputWithLabelFormGroup
             isRequired
             value={diagnosis.name}
             label={t('patient.diagnoses.diagnosisName')}
@@ -89,7 +84,7 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <DatePickerWithLabelFormGroup
+          <Input.DatePickerWithLabelFormGroup
             name="diagnosisDate"
             label={t('patient.diagnoses.diagnosisDate')}
             value={diagnosis.diagnosisDate ? new Date(diagnosis.diagnosisDate) : new Date()}
@@ -104,7 +99,7 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <DatePickerWithLabelFormGroup
+          <Input.DatePickerWithLabelFormGroup
             name="onsetDate"
             label={t('patient.diagnoses.onsetDate')}
             value={diagnosis.onsetDate ? new Date(diagnosis.onsetDate) : new Date()}
@@ -119,7 +114,7 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <DatePickerWithLabelFormGroup
+          <Input.DatePickerWithLabelFormGroup
             name="abatementDate"
             label={t('patient.diagnoses.abatementDate')}
             value={diagnosis.abatementDate ? new Date(diagnosis.abatementDate) : new Date()}
@@ -134,7 +129,7 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <SelectWithLabelFormGroup
+          <Input.SelectWithLabelFormGroup
             name="visit"
             label={t('patient.diagnoses.visit')}
             isRequired={false}
@@ -150,7 +145,7 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <SelectWithLabelFormGroup
+          <Input.SelectWithLabelFormGroup
             name="status"
             label={t('patient.diagnoses.status')}
             isRequired
@@ -168,7 +163,7 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <TextFieldWithLabelFormGroup
+          <Input.TextFieldWithLabelFormGroup
             value={diagnosis.note}
             label={t('patient.diagnoses.note')}
             name="note"

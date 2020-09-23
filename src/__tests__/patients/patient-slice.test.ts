@@ -6,8 +6,6 @@ import thunk from 'redux-thunk'
 import patient, {
   addDiagnosis,
   addDiagnosisError,
-  addRelatedPerson,
-  addRelatedPersonError,
   createPatient,
   createPatientError,
   createPatientStart,
@@ -15,7 +13,6 @@ import patient, {
   fetchPatient,
   fetchPatientStart,
   fetchPatientSuccess,
-  removeRelatedPerson,
   updatePatient,
   updatePatientError,
   updatePatientStart,
@@ -24,7 +21,6 @@ import patient, {
 import PatientRepository from '../../shared/db/PatientRepository'
 import Diagnosis, { DiagnosisStatus } from '../../shared/model/Diagnosis'
 import Patient from '../../shared/model/Patient'
-import RelatedPerson from '../../shared/model/RelatedPerson'
 import { RootState } from '../../shared/store'
 import * as uuid from '../../shared/util/uuid'
 
@@ -444,95 +440,6 @@ describe('patients slice', () => {
           preferredLanguage: 'patient.errors.patientNumInPreferredLanguageFeedback',
         }),
       )
-    })
-  })
-
-  describe('add related person', () => {
-    it('should add the related person to the patient with the given id', async () => {
-      const expectedRelatedPersonId = 'expected id'
-      const store = mockStore()
-      const expectedPatientId = '123'
-
-      const expectedPatient = {
-        id: expectedPatientId,
-        givenName: 'some name',
-      } as Patient
-
-      const expectedRelatedPerson = {
-        patientId: '456',
-        type: '1234',
-      } as RelatedPerson
-
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        relatedPersons: [{ ...expectedRelatedPerson, id: expectedRelatedPersonId }],
-      } as Patient
-
-      const findPatientSpy = jest
-        .spyOn(PatientRepository, 'find')
-        .mockResolvedValue(expectedPatient)
-      jest.spyOn(uuid, 'uuid').mockReturnValue(expectedRelatedPersonId)
-      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(addRelatedPerson(expectedPatientId, expectedRelatedPerson, onSuccessSpy))
-
-      expect(findPatientSpy).toHaveBeenCalledWith(expectedPatientId)
-      expect(store.getActions()[1]).toEqual(updatePatientSuccess(expectedUpdatedPatient))
-      expect(onSuccessSpy).toHaveBeenCalledWith(expectedUpdatedPatient)
-    })
-
-    it('should validate the related person', async () => {
-      const expectedError = {
-        message: 'patient.relatedPersons.error.unableToAddRelatedPerson',
-        relationshipType: 'patient.relatedPersons.error.relationshipTypeRequired',
-        relatedPerson: 'patient.relatedPersons.error.relatedPersonRequired',
-      }
-      const store = mockStore()
-      const expectedRelatedPerson = {} as RelatedPerson
-      const onSuccessSpy = jest.fn()
-
-      await store.dispatch(addRelatedPerson('some id', expectedRelatedPerson, onSuccessSpy))
-
-      expect(store.getActions()[0]).toEqual(addRelatedPersonError(expectedError))
-      expect(onSuccessSpy).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('remove related person', () => {
-    it('should remove the related related person rom patient with the given id', async () => {
-      const store = mockStore()
-
-      const expectedRelatedPersonPatientId = 'expected id'
-      const expectedPatientId = '123'
-
-      const expectedRelatedPerson = {
-        id: 'some id',
-        patientId: expectedRelatedPersonPatientId,
-        type: 'some type',
-      } as RelatedPerson
-
-      const expectedPatient = {
-        id: expectedPatientId,
-        givenName: 'some name',
-        relatedPersons: [expectedRelatedPerson],
-      } as Patient
-
-      const expectedUpdatedPatient = {
-        ...expectedPatient,
-        relatedPersons: [],
-      } as Patient
-
-      const findPatientSpy = jest
-        .spyOn(PatientRepository, 'find')
-        .mockResolvedValue(expectedPatient)
-      jest.spyOn(uuid, 'uuid').mockReturnValue(expectedRelatedPersonPatientId)
-      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedUpdatedPatient)
-
-      await store.dispatch(removeRelatedPerson(expectedPatientId, expectedRelatedPersonPatientId))
-
-      expect(findPatientSpy).toHaveBeenCalledWith(expectedPatientId)
-      expect(store.getActions()[1]).toEqual(updatePatientSuccess(expectedUpdatedPatient))
     })
   })
 

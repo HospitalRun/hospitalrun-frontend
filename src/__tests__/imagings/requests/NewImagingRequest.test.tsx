@@ -1,4 +1,4 @@
-import { Button, Typeahead, Label, Alert } from '@hospitalrun/components'
+import { Button, Typeahead, Label } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -11,8 +11,8 @@ import thunk from 'redux-thunk'
 import NewImagingRequest from '../../../imagings/requests/NewImagingRequest'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/title/useTitle'
-import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLableFormGroup'
+import * as titleUtil from '../../../page-header/title/TitleContext'
+import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import ImagingRepository from '../../../shared/db/ImagingRepository'
@@ -26,23 +26,16 @@ describe('New Imaging Request', () => {
   let history: any
   let setButtonToolBarSpy: any
 
-  const setup = async (status: string, error: any = {}) => {
+  const setup = async () => {
     jest.resetAllMocks()
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
-    jest.spyOn(titleUtil, 'default')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
 
     history = createMemoryHistory()
     history.push(`/imaging/new`)
-    const store = mockStore({
-      title: '',
-      user: { user: { id: '1234' } },
-      imaging: {
-        status,
-        error,
-      },
-    } as any)
+    const store = mockStore({} as any)
 
     let wrapper: any
     await act(async () => {
@@ -51,27 +44,30 @@ describe('New Imaging Request', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/imaging/new">
-                <NewImagingRequest />
+                <titleUtil.TitleProvider>
+                  <NewImagingRequest />
+                </titleUtil.TitleProvider>
               </Route>
             </Router>
           </Provider>
         </ButtonBarProvider.ButtonBarProvider>,
       )
     })
+    wrapper.find(NewImagingRequest).props().updateTitle = jest.fn()
     wrapper.update()
     return wrapper as ReactWrapper
   }
 
   describe('title and breadcrumbs', () => {
-    it('should have New Imaging Request as the title', async () => {
-      await setup('loading', {})
-      expect(titleUtil.default).toHaveBeenCalledWith('imagings.requests.new')
+    it('should have called the useUpdateTitle hook', async () => {
+      await setup()
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('form layout', () => {
     it('should render a patient typeahead', async () => {
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       const typeaheadDiv = wrapper.find('.patient-typeahead')
 
       expect(typeaheadDiv).toBeDefined()
@@ -87,7 +83,7 @@ describe('New Imaging Request', () => {
     })
 
     it('should render a dropdown list of visits', async () => {
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       const visitsTypeSelect = wrapper.find('.visits').find(SelectWithLabelFormGroup)
       expect(visitsTypeSelect).toBeDefined()
       expect(visitsTypeSelect.prop('label')).toEqual('patient.visits.label')
@@ -95,7 +91,7 @@ describe('New Imaging Request', () => {
     })
 
     it('should render a type input box', async () => {
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       const typeInputBox = wrapper.find(TextInputWithLabelFormGroup)
 
       expect(typeInputBox).toBeDefined()
@@ -105,7 +101,7 @@ describe('New Imaging Request', () => {
     })
 
     it('should render a status types select', async () => {
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       const statusTypesSelect = wrapper.find('.imaging-status').find(SelectWithLabelFormGroup)
 
       expect(statusTypesSelect).toBeDefined()
@@ -122,7 +118,7 @@ describe('New Imaging Request', () => {
     })
 
     it('should render a notes text field', async () => {
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
 
       expect(notesTextField).toBeDefined()
@@ -132,48 +128,23 @@ describe('New Imaging Request', () => {
     })
 
     it('should render a save button', async () => {
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       const saveButton = wrapper.find(Button).at(0)
       expect(saveButton).toBeDefined()
       expect(saveButton.text().trim()).toEqual('actions.save')
     })
 
     it('should render a cancel button', async () => {
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       const cancelButton = wrapper.find(Button).at(1)
       expect(cancelButton).toBeDefined()
       expect(cancelButton.text().trim()).toEqual('actions.cancel')
     })
   })
 
-  describe('errors', () => {
-    const error = {
-      message: 'some message',
-      patient: 'some patient message',
-      type: 'some type error',
-      status: 'status type error',
-    }
-
-    it('should display errors', async () => {
-      const wrapper = await setup('error', error)
-      const alert = wrapper.find(Alert)
-      const typeInput = wrapper.find(TextInputWithLabelFormGroup)
-      const patientTypeahead = wrapper.find(Typeahead)
-
-      expect(alert.prop('message')).toEqual(error.message)
-      expect(alert.prop('title')).toEqual('states.error')
-      expect(alert.prop('color')).toEqual('danger')
-
-      expect(patientTypeahead.prop('isInvalid')).toBeTruthy()
-
-      expect(typeInput.prop('feedback')).toEqual(error.type)
-      expect(typeInput.prop('isInvalid')).toBeTruthy()
-    })
-  })
-
   describe('on cancel', () => {
     it('should navigate back to /imaging', async () => {
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       const cancelButton = wrapper.find(Button).at(1)
 
       act(() => {
@@ -198,7 +169,7 @@ describe('New Imaging Request', () => {
         requestedOn: expectedDate.toISOString(),
       } as Imaging
 
-      const wrapper = await setup('loading', {})
+      const wrapper = await setup()
       jest.spyOn(ImagingRepository, 'save').mockResolvedValue({ ...expectedImaging })
 
       const patientTypeahead = wrapper.find(Typeahead)

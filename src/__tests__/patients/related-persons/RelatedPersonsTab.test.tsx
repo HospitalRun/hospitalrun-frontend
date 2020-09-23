@@ -9,7 +9,6 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as patientSlice from '../../../patients/patient-slice'
 import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
 import PatientRepository from '../../../shared/db/PatientRepository'
@@ -119,7 +118,10 @@ describe('Related Persons Tab', () => {
 
     beforeEach(async () => {
       jest.spyOn(PatientRepository, 'saveOrUpdate')
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedRelatedPerson)
+      jest
+        .spyOn(PatientRepository, 'find')
+        .mockResolvedValueOnce(patient)
+        .mockResolvedValueOnce(expectedRelatedPerson)
 
       await act(async () => {
         wrapper = await mount(
@@ -157,14 +159,14 @@ describe('Related Persons Tab', () => {
     })
 
     it('should remove the related person when the delete button is clicked', async () => {
-      const removeRelatedPersonSpy = jest.spyOn(patientSlice, 'removeRelatedPerson')
+      const removeRelatedPersonSpy = jest.spyOn(PatientRepository, 'saveOrUpdate')
       const tr = wrapper.find('tr').at(1)
 
-      act(() => {
+      await act(async () => {
         const onClick = tr.find('button').at(1).prop('onClick') as any
-        onClick({ stopPropagation: jest.fn() })
+        await onClick({ stopPropagation: jest.fn() })
       })
-      expect(removeRelatedPersonSpy).toHaveBeenCalledWith(patient.id, expectedRelatedPerson.id)
+      expect(removeRelatedPersonSpy).toHaveBeenCalledWith({ ...patient, relatedPersons: [] })
     })
 
     it('should navigate to related person patient profile on related person click', async () => {

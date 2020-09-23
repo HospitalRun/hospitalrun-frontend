@@ -1,13 +1,10 @@
-import { QueryKey, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 import IncidentRepository from '../../shared/db/IncidentRepository'
 import Incident from '../../shared/model/Incident'
 import IncidentSearchRequest from '../model/IncidentSearchRequest'
 
-function fetchIncidents(
-  _: QueryKey<string>,
-  searchRequest: IncidentSearchRequest,
-): Promise<Incident[]> {
+function fetchIncidents(_: string, searchRequest: IncidentSearchRequest): Promise<Incident[]> {
   return IncidentRepository.search(searchRequest)
 }
 
