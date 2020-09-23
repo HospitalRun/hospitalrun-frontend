@@ -12,7 +12,7 @@ import {
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
@@ -26,7 +26,7 @@ import usePatient from '../hooks/usePatient'
 import Labs from '../labs/Labs'
 import Note from '../notes/NoteTab'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
-import { getPatientCode, getPatientFullName } from '../util/patient-name-util'
+import { getPatientCode, getPatientFullName } from '../util/patient-util'
 import VisitTab from '../visits/VisitTab'
 
 const ViewPatient = () => {
@@ -40,7 +40,8 @@ const ViewPatient = () => {
   const { permissions } = useSelector((state: RootState) => state.user)
   const { data: patient, status } = usePatient(id)
 
-  useTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
+  const updateTitle = useUpdateTitle()
+  updateTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },

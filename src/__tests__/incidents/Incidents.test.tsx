@@ -10,6 +10,7 @@ import Incidents from '../../incidents/Incidents'
 import ReportIncident from '../../incidents/report/ReportIncident'
 import ViewIncident from '../../incidents/view/ViewIncident'
 import VisualizeIncidents from '../../incidents/visualize/VisualizeIncidents'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import IncidentRepository from '../../shared/db/IncidentRepository'
 import Incident from '../../shared/model/Incident'
 import Permissions from '../../shared/model/Permissions'
@@ -25,10 +26,10 @@ describe('Incidents', () => {
       date: new Date().toISOString(),
       reportedOn: new Date().toISOString(),
     } as Incident
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue([])
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(expectedIncident)
     const store = mockStore({
-      title: 'test',
       user: { permissions },
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
@@ -39,15 +40,25 @@ describe('Incidents', () => {
       wrapper = await mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[path]}>
-            <Incidents />
+            <titleUtil.TitleProvider>
+              <Incidents />
+            </titleUtil.TitleProvider>
           </MemoryRouter>
         </Provider>,
       )
     })
+    wrapper.find(Incidents).props().updateTitle = jest.fn()
     wrapper.update()
 
     return { wrapper: wrapper as ReactWrapper }
   }
+
+  describe('title', () => {
+    it('should have called the useUpdateTitle hook', async () => {
+      await setup([Permissions.ViewIncidents], '/incidents')
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
+    })
+  })
 
   describe('routing', () => {
     describe('/incidents/new', () => {

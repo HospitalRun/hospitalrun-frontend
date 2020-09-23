@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import Allergies from '../../../patients/allergies/Allergies'
 import AppointmentsList from '../../../patients/appointments/AppointmentsList'
 import CarePlanTab from '../../../patients/care-plans/CarePlanTab'
@@ -25,6 +25,7 @@ import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('ViewPatient', () => {
@@ -49,6 +50,7 @@ describe('ViewPatient', () => {
   let store: MockStore
 
   const setup = async (permissions = [Permissions.ReadPatients]) => {
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(PatientRepository, 'find')
     jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
     const mockedPatientRepository = mocked(PatientRepository, true)
@@ -68,12 +70,16 @@ describe('ViewPatient', () => {
         <Provider store={store}>
           <Router history={history}>
             <Route path="/patients/:id">
-              <ViewPatient />
+              <TitleProvider>
+                <ViewPatient />
+              </TitleProvider>
             </Route>
           </Router>
         </Provider>,
       )
     })
+    wrapper.find(ViewPatient).props().updateTitle = jest.fn()
+    wrapper.update()
 
     return { wrapper: wrapper as ReactWrapper }
   }
@@ -88,14 +94,10 @@ describe('ViewPatient', () => {
     expect(PatientRepository.find).toHaveBeenCalledWith(patient.id)
   })
 
-  it('should render a header with the patients given, family, and suffix', async () => {
-    jest.spyOn(titleUtil, 'default')
-
+  it('should have called useUpdateTitle hook', async () => {
     await setup()
 
-    expect(titleUtil.default).toHaveBeenCalledWith(
-      `${patient.givenName} ${patient.familyName} ${patient.suffix} (${patient.code})`,
-    )
+    expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
   })
 
   it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', async () => {

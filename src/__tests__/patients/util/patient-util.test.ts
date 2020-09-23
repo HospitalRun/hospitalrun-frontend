@@ -2,10 +2,10 @@ import {
   getPatientCode,
   getPatientFullName,
   getPatientName,
-} from '../../../patients/util/patient-name-util'
+} from '../../../patients/util/patient-util'
 import Patient from '../../../shared/model/Patient'
 
-describe('patient name util', () => {
+describe('patient util', () => {
   describe('getPatientName', () => {
     it('should build the patients name when three different type of names are passed in', () => {
       const expectedGiven = 'given'

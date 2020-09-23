@@ -2,7 +2,7 @@ import { Label, Select } from '@hospitalrun/components'
 import { shallow } from 'enzyme'
 import React from 'react'
 
-import SelectWithLabelFormGroup from '../../../../shared/components/input/SelectWithLableFormGroup'
+import SelectWithLabelFormGroup from '../../../../shared/components/input/SelectWithLabelFormGroup'
 
 describe('select with label form group', () => {
   describe('layout', () => {

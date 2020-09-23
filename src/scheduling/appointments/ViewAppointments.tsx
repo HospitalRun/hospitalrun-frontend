@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
@@ -24,7 +24,8 @@ const breadcrumbs = [{ i18nKey: 'scheduling.appointments.label', location: '/app
 const ViewAppointments = () => {
   const { t } = useTranslator()
   const history = useHistory()
-  useTitle(t('scheduling.appointments.label'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('scheduling.appointments.label'))
   const dispatch = useDispatch()
   const { appointments } = useSelector((state: RootState) => state.appointments)
   const [events, setEvents] = useState<Event[]>([])

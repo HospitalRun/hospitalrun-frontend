@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
 import SelectWithLabelFormGroup, {
   Option,
-} from '../../shared/components/input/SelectWithLableFormGroup'
+} from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'

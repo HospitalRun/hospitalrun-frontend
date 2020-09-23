@@ -1,6 +1,6 @@
 import { Button } from '@hospitalrun/components'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -10,7 +10,7 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import * as titleUtil from '../../../../page-header/title/useTitle'
+import * as titleUtil from '../../../../page-header/title/TitleContext'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import EditAppointment from '../../../../scheduling/appointments/edit/EditAppointment'
@@ -20,6 +20,7 @@ import Appointment from '../../../../shared/model/Appointment'
 import Patient from '../../../../shared/model/Patient'
 import { RootState } from '../../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Edit Appointment', () => {
@@ -33,7 +34,7 @@ describe('Edit Appointment', () => {
     type: 'type',
   } as Appointment
 
-  const patient = {
+  const patient = ({
     id: '456',
     prefix: 'prefix',
     givenName: 'givenName',
@@ -49,12 +50,13 @@ describe('Edit Appointment', () => {
     address: 'address',
     code: 'P00001',
     dateOfBirth: new Date().toISOString(),
-  } as Patient
+  } as unknown) as Patient
 
   let history: any
   let store: MockStore
 
-  const setup = () => {
+  const setup = async () => {
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'saveOrUpdate')
     jest.spyOn(AppointmentRepository, 'find')
     jest.spyOn(PatientRepository, 'find')
@@ -70,18 +72,21 @@ describe('Edit Appointment', () => {
     store = mockStore({ appointment: { appointment, patient } } as any)
 
     history.push('/appointments/edit/123')
-    const wrapper = mount(
+    const wrapper = await mount(
       <Provider store={store}>
         <Router history={history}>
           <Route path="/appointments/edit/:id">
-            <EditAppointment />
+            <TitleProvider>
+              <EditAppointment />
+            </TitleProvider>
           </Route>
         </Router>
       </Provider>,
     )
 
+    wrapper.find(EditAppointment).props().updateTitle = jest.fn()
     wrapper.update()
-    return wrapper
+    return { wrapper: wrapper as ReactWrapper }
   }
 
   beforeEach(() => {
@@ -89,19 +94,15 @@ describe('Edit Appointment', () => {
   })
 
   it('should render an edit appointment form', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
-
-    wrapper.update()
+    const { wrapper } = await setup()
 
     expect(wrapper.find(AppointmentDetailForm)).toHaveLength(1)
   })
 
   it('should dispatch fetchAppointment when component loads', async () => {
+    const { wrapper } = await setup()
     await act(async () => {
-      await setup()
+      await wrapper.update()
     })
 
     expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
@@ -112,21 +113,16 @@ describe('Edit Appointment', () => {
     )
   })
 
-  it('should use the correct title', async () => {
-    jest.spyOn(titleUtil, 'default')
-    await act(async () => {
-      await setup()
-    })
-    expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.editAppointment')
+  it('should have called useUpdateTitle hook', async () => {
+    await setup()
+    expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
   })
 
   it('should dispatch updateAppointment when save button is clicked', async () => {
-    let wrapper: any
+    const { wrapper } = await setup()
     await act(async () => {
-      wrapper = await setup()
+      await wrapper.update()
     })
-
-    wrapper.update()
 
     const saveButton = wrapper.find(Button).at(0)
     const onClick = saveButton.prop('onClick') as any
@@ -144,12 +140,7 @@ describe('Edit Appointment', () => {
   })
 
   it('should navigate to /appointments/:id when save is successful', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
-
-    wrapper.update()
+    const { wrapper } = await setup()
 
     const saveButton = wrapper.find(Button).at(0)
     const onClick = saveButton.prop('onClick') as any
@@ -162,12 +153,7 @@ describe('Edit Appointment', () => {
   })
 
   it('should navigate to /appointments/:id when cancel is clicked', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
-    })
-
-    wrapper.update()
+    const { wrapper } = await setup()
 
     const cancelButton = wrapper.find(Button).at(1)
     const onClick = cancelButton.prop('onClick') as any

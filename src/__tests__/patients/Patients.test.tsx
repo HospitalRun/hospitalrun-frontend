@@ -9,19 +9,21 @@ import thunk from 'redux-thunk'
 import Dashboard from '../../dashboard/Dashboard'
 import HospitalRun from '../../HospitalRun'
 import { addBreadcrumbs } from '../../page-header/breadcrumbs/breadcrumbs-slice'
-import { changeTitle } from '../../page-header/title/title-slice'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import EditPatient from '../../patients/edit/EditPatient'
 import NewPatient from '../../patients/new/NewPatient'
-import * as patientNameUtil from '../../patients/util/patient-name-util'
+import * as patientNameUtil from '../../patients/util/patient-util'
 import ViewPatient from '../../patients/view/ViewPatient'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('/patients/new', () => {
+  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   it('should render the new patient screen when /patients/new is accessed', async () => {
     const store = mockStore({
       title: 'test',
@@ -37,7 +39,9 @@ describe('/patients/new', () => {
       wrapper = await mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={['/patients/new']}>
-            <HospitalRun />
+            <TitleProvider>
+              <HospitalRun />
+            </TitleProvider>
           </MemoryRouter>
         </Provider>,
       )
@@ -67,7 +71,9 @@ describe('/patients/new', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/patients/new']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -106,7 +112,9 @@ describe('/patients/edit/:id', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/patients/edit/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -120,12 +128,6 @@ describe('/patients/edit/:id', () => {
         { i18nKey: 'patients.editPatient', location: `/patients/${patient.id}/edit` },
         { i18nKey: 'dashboard.label', location: '/' },
       ]),
-      ...changeTitle(
-        `patients.editPatient: ${patient.prefix} ${patient.givenName} ${patient.familyName} ()`,
-      ),
-      ...changeTitle(
-        `patients.editPatient: ${patient.prefix} ${patient.givenName} ${patient.familyName} ()`,
-      ),
     })
   })
 
@@ -140,7 +142,9 @@ describe('/patients/edit/:id', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/patients/edit/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -159,7 +163,9 @@ describe('/patients/edit/:id', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/patients/edit/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -192,7 +198,9 @@ describe('/patients/:id', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/patients/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
@@ -219,7 +227,9 @@ describe('/patients/:id', () => {
         } as any)}
       >
         <MemoryRouter initialEntries={['/patients/123']}>
-          <HospitalRun />
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )

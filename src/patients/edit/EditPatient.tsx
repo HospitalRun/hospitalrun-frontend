@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
 import usePatient from '../hooks/usePatient'
 import { updatePatient } from '../patient-slice'
-import { getPatientCode, getPatientFullName } from '../util/patient-name-util'
+import { getPatientCode, getPatientFullName } from '../util/patient-util'
 
 const EditPatient = () => {
   const { t } = useTranslator()
@@ -24,18 +24,20 @@ const EditPatient = () => {
 
   const { updateError } = useSelector((state: RootState) => state.patient)
 
+  const updateTitle = useUpdateTitle()
+
+  updateTitle(
+    `${t('patients.editPatient')}: ${getPatientFullName(givenPatient)} (${getPatientCode(
+      givenPatient,
+    )})`,
+  )
+
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
     { text: getPatientFullName(givenPatient), location: `/patients/${id}` },
     { i18nKey: 'patients.editPatient', location: `/patients/${id}/edit` },
   ]
   useAddBreadcrumbs(breadcrumbs, true)
-
-  useTitle(
-    `${t('patients.editPatient')}: ${getPatientFullName(givenPatient)} (${getPatientCode(
-      givenPatient,
-    )})`,
-  )
 
   useEffect(() => {
     setPatient(givenPatient || ({} as Patient))
