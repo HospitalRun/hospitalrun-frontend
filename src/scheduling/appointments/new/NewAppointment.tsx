@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../../page-header/title/TitleContext'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Appointment from '../../../shared/model/Appointment'
 import { RootState } from '../../../shared/store'
@@ -22,7 +22,8 @@ const NewAppointment = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const dispatch = useDispatch()
-  useTitle(t('scheduling.appointments.new'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('scheduling.appointments.new'))
   useAddBreadcrumbs(breadcrumbs, true)
   const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
   const endDateTime = addMinutes(startDateTime, 60)

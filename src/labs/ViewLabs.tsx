@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../page-header/title/useTitle'
+import { useUpdateTitle } from '../page-header/title/TitleContext'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../shared/components/input/SelectWithLabelFormGroup'
@@ -23,7 +23,8 @@ const ViewLabs = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const setButtons = useButtonToolbarSetter()
-  useTitle(t('labs.label'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('labs.label'))
 
   const { permissions } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()

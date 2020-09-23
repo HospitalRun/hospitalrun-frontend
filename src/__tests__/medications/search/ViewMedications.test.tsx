@@ -12,12 +12,13 @@ import MedicationRequestSearch from '../../../medications/search/MedicationReque
 import MedicationRequestTable from '../../../medications/search/MedicationRequestTable'
 import ViewMedications from '../../../medications/search/ViewMedications'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import MedicationRepository from '../../../shared/db/MedicationRepository'
 import Medication from '../../../shared/model/Medication'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Medications', () => {
@@ -35,11 +36,10 @@ describe('View Medications', () => {
     } as unknown) as Medication
     const history = createMemoryHistory()
     const store = mockStore({
-      title: '',
       user: { permissions },
       medications: { medications: [{ ...expectedMedication, ...medication }] },
     } as any)
-    const titleSpy = jest.spyOn(titleUtil, 'default')
+    const titleSpy = jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     const setButtonToolBarSpy = jest.fn()
     jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
@@ -49,7 +49,9 @@ describe('View Medications', () => {
       wrapper = await mount(
         <Provider store={store}>
           <Router history={history}>
-            <ViewMedications />
+            <TitleProvider>
+              <ViewMedications />
+            </TitleProvider>
           </Router>
         </Provider>,
       )
@@ -64,10 +66,10 @@ describe('View Medications', () => {
   }
 
   describe('title', () => {
-    it('should have the title', async () => {
+    it('should have called the useUpdateTitle hook', async () => {
       const { titleSpy } = await setup({} as Medication)
 
-      expect(titleSpy).toHaveBeenCalledWith('medications.label')
+      expect(titleSpy).toHaveBeenCalled()
     })
   })
 

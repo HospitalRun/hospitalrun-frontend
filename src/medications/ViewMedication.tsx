@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../page-header/title/useTitle'
+import { useUpdateTitle } from '../page-header/title/TitleContext'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../shared/components/input/SelectWithLabelFormGroup'
@@ -32,7 +32,8 @@ const ViewMedication = () => {
   const [medicationToView, setMedicationToView] = useState<Medication>()
   const [isEditable, setIsEditable] = useState<boolean>(true)
 
-  useTitle(getTitle(patient, medicationToView))
+  const updateTitle = useUpdateTitle()
+  updateTitle(getTitle(patient, medicationToView))
 
   const breadcrumbs = [
     {

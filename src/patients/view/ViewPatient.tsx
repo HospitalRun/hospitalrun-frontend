@@ -12,7 +12,7 @@ import {
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
@@ -48,7 +48,8 @@ const ViewPatient = () => {
   const { patient, status } = useSelector((state: RootState) => state.patient)
   const { permissions } = useSelector((state: RootState) => state.user)
 
-  useTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
+  const updateTitle = useUpdateTitle()
+  updateTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
 
   const setButtonToolBar = useButtonToolbarSetter()
 

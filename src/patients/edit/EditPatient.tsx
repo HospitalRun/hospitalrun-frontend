@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
@@ -31,7 +31,8 @@ const EditPatient = () => {
     (state: RootState) => state.patient,
   )
 
-  useTitle(
+  const updateTitle = useUpdateTitle()
+  updateTitle(
     `${t('patients.editPatient')}: ${getPatientFullName(reduxPatient)} (${getPatientCode(
       reduxPatient,
     )})`,

@@ -6,15 +6,16 @@ import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as titleUtil from '../../page-header/title/useTitle'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import Settings from '../../settings/Settings'
 import { RootState } from '../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Settings', () => {
   const setup = () => {
-    jest.spyOn(titleUtil, 'default')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
 
     const store = mockStore({ title: 'test' } as any)
 
@@ -24,7 +25,9 @@ describe('Settings', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <Settings />
+          <TitleProvider>
+            <Settings />
+          </TitleProvider>
         </Router>
       </Provider>,
     )
@@ -33,9 +36,9 @@ describe('Settings', () => {
   }
 
   describe('layout', () => {
-    it('should set the title', () => {
+    it('should call the useUpdateTitle hook', () => {
       setup()
-      expect(titleUtil.default).toHaveBeenCalledWith('settings.label')
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
     })
   })
 })
