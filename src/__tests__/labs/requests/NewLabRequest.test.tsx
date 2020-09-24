@@ -141,8 +141,6 @@ describe('New Lab Request', () => {
   })
 
   describe('on cancel', () => {
-    // const store = mockStore({ title: '', user: { user: { id: 'userId' } } } as any)
-
     it('should navigate back to /labs', async () => {
       const { wrapper } = await setup()
       const cancelButton = wrapper.find(Button).at(1)
@@ -157,7 +155,6 @@ describe('New Lab Request', () => {
   })
 
   describe('on save', () => {
-    // const history = createMemoryHistory()
     let labRepositorySaveSpy: any
     const expectedDate = new Date()
     const expectedNotes = 'expected notes'

@@ -48,8 +48,11 @@ describe('ViewPatient', () => {
 
   let history: any
   let store: MockStore
+  let setButtonToolBarSpy: any
 
   const setup = async (permissions = [Permissions.ReadPatients]) => {
+    setButtonToolBarSpy = jest.fn()
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(PatientRepository, 'find')
     jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
@@ -101,10 +104,6 @@ describe('ViewPatient', () => {
   })
 
   it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', async () => {
-    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
-    const setButtonToolBarSpy = jest.fn()
-    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
-
     await setup([Permissions.WritePatients])
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
@@ -112,10 +111,6 @@ describe('ViewPatient', () => {
   })
 
   it('button toolbar empty if only has ReadPatients permission', async () => {
-    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
-    const setButtonToolBarSpy = jest.fn()
-    mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
-
     await setup()
 
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
