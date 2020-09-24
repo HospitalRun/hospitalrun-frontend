@@ -5,7 +5,7 @@ import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../../page-header/title/TitleContext'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
@@ -15,7 +15,8 @@ import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 
 const ViewAppointment = () => {
   const { t } = useTranslator()
-  useTitle(t('scheduling.appointments.viewAppointment'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('scheduling.appointments.viewAppointment'))
   const dispatch = useDispatch()
   const { id } = useParams()
   const history = useHistory()

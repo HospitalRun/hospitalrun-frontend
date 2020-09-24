@@ -9,7 +9,7 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import NewMedicationRequest from '../../../medications/requests/NewMedicationRequest'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import MedicationRepository from '../../../shared/db/MedicationRepository'
@@ -21,47 +21,36 @@ import { RootState } from '../../../shared/store'
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Medication Request', () => {
-  describe('title and breadcrumbs', () => {
-    let titleSpy: any
+  const setup = async (
+    store = mockStore({ medication: { status: 'loading', error: {} } } as any),
+  ) => {
     const history = createMemoryHistory()
+    history.push(`/medications/new`)
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
 
-    beforeEach(() => {
-      const store = mockStore({ title: '', medication: { status: 'loading', error: {} } } as any)
-      titleSpy = jest.spyOn(titleUtil, 'default')
-      history.push('/medications/new')
-
-      mount(
-        <Provider store={store}>
-          <Router history={history}>
+    const wrapper: ReactWrapper = await mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <titleUtil.TitleProvider>
             <NewMedicationRequest />
-          </Router>
-        </Provider>,
-      )
-    })
+          </titleUtil.TitleProvider>
+        </Router>
+      </Provider>,
+    )
 
-    it('should have New Medication Request as the title', () => {
-      expect(titleSpy).toHaveBeenCalledWith('medications.requests.new')
-    })
-  })
+    wrapper.find(NewMedicationRequest).props().updateTitle = jest.fn()
+    wrapper.update()
+    return { wrapper }
+  }
 
   describe('form layout', () => {
-    let wrapper: ReactWrapper
-    const history = createMemoryHistory()
-
-    beforeEach(() => {
-      const store = mockStore({ title: '', medication: { status: 'loading', error: {} } } as any)
-      history.push('/medications/new')
-
-      wrapper = mount(
-        <Provider store={store}>
-          <Router history={history}>
-            <NewMedicationRequest />
-          </Router>
-        </Provider>,
-      )
+    it('should have called the useUpdateTitle hook', async () => {
+      await setup()
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
     })
 
-    it('should render a patient typeahead', () => {
+    it('should render a patient typeahead', async () => {
+      const { wrapper } = await setup()
       const typeaheadDiv = wrapper.find('.patient-typeahead')
 
       expect(typeaheadDiv).toBeDefined()
@@ -76,7 +65,8 @@ describe('New Medication Request', () => {
       expect(typeahead.prop('searchAccessor')).toEqual('fullName')
     })
 
-    it('should render a medication input box', () => {
+    it('should render a medication input box', async () => {
+      const { wrapper } = await setup()
       const typeInputBox = wrapper.find(TextInputWithLabelFormGroup).at(0)
 
       expect(typeInputBox).toBeDefined()
@@ -85,7 +75,8 @@ describe('New Medication Request', () => {
       expect(typeInputBox.prop('isEditable')).toBeTruthy()
     })
 
-    it('should render a notes text field', () => {
+    it('should render a notes text field', async () => {
+      const { wrapper } = await setup()
       const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
 
       expect(notesTextField).toBeDefined()
@@ -94,34 +85,24 @@ describe('New Medication Request', () => {
       expect(notesTextField.prop('isEditable')).toBeTruthy()
     })
 
-    it('should render a save button', () => {
+    it('should render a save button', async () => {
+      const { wrapper } = await setup()
       const saveButton = wrapper.find(Button).at(0)
       expect(saveButton).toBeDefined()
       expect(saveButton.text().trim()).toEqual('actions.save')
     })
 
-    it('should render a cancel button', () => {
+    it('should render a cancel button', async () => {
+      const { wrapper } = await setup()
       const cancelButton = wrapper.find(Button).at(1)
       expect(cancelButton).toBeDefined()
       expect(cancelButton.text().trim()).toEqual('actions.cancel')
     })
   })
 
-  describe('on cancel', () => {
-    let wrapper: ReactWrapper
+  describe('on cancel', async () => {
     const history = createMemoryHistory()
-
-    beforeEach(() => {
-      history.push('/medications/new')
-      const store = mockStore({ title: '', medication: { status: 'loading', error: {} } } as any)
-      wrapper = mount(
-        <Provider store={store}>
-          <Router history={history}>
-            <NewMedicationRequest />
-          </Router>
-        </Provider>,
-      )
-    })
+    const { wrapper } = await setup()
 
     it('should navigate back to /medications', () => {
       const cancelButton = wrapper.find(Button).at(1)
@@ -135,8 +116,7 @@ describe('New Medication Request', () => {
     })
   })
 
-  describe('on save', () => {
-    let wrapper: ReactWrapper
+  describe('on save', async () => {
     const history = createMemoryHistory()
     let medicationRepositorySaveSpy: any
     const expectedDate = new Date()
@@ -148,7 +128,11 @@ describe('New Medication Request', () => {
       id: '1234',
       requestedOn: expectedDate.toISOString(),
     } as Medication
-
+    const store = mockStore({
+      medication: { status: 'loading', error: {} },
+      user: { user: { id: 'fake id' } },
+    } as any)
+    const { wrapper } = await setup(store)
     beforeEach(() => {
       jest.resetAllMocks()
       Date.now = jest.fn(() => expectedDate.valueOf())
@@ -161,20 +145,6 @@ describe('New Medication Request', () => {
         .mockResolvedValue([
           { id: expectedMedication.patient, fullName: 'some full name' },
         ] as Patient[])
-
-      history.push('/medications/new')
-      const store = mockStore({
-        title: '',
-        medication: { status: 'loading', error: {} },
-        user: { user: { id: 'fake id' } },
-      } as any)
-      wrapper = mount(
-        <Provider store={store}>
-          <Router history={history}>
-            <NewMedicationRequest />
-          </Router>
-        </Provider>,
-      )
     })
 
     it('should save the medication request and navigate to "/medications/:id"', async () => {

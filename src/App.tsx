@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import HospitalRun from './HospitalRun'
 import Login from './login/Login'
+import { TitleProvider } from './page-header/title/TitleContext'
 import { remoteDb } from './shared/config/pouchdb'
 import { getCurrentSession } from './user/user-slice'
 
@@ -41,7 +42,9 @@ const App: React.FC = () => {
         <Suspense fallback={<Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />}>
           <Switch>
             <Route exact path="/login" component={Login} />
-            <Route path="/" component={HospitalRun} />
+            <TitleProvider>
+              <Route path="/" component={HospitalRun} />
+            </TitleProvider>
           </Switch>
         </Suspense>
       </BrowserRouter>

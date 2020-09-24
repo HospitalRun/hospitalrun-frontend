@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
@@ -16,7 +16,8 @@ const ReportIncident = () => {
   const [mutate] = useReportIncident()
   const history = useHistory()
   const { t } = useTranslator()
-  useTitle(t('incidents.reports.new'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('incidents.reports.new'))
   const breadcrumbs = [
     {
       i18nKey: 'incidents.reports.new',

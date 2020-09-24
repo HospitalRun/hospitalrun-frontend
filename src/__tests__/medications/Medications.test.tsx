@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Medications from '../../medications/Medications'
 import NewMedicationRequest from '../../medications/requests/NewMedicationRequest'
 import ViewMedication from '../../medications/ViewMedication'
+import { TitleProvider } from '../../page-header/title/TitleContext'
 import MedicationRepository from '../../shared/db/MedicationRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Medication from '../../shared/model/Medication'
@@ -54,7 +55,9 @@ describe('Medications', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>
-          <Medications />
+          <TitleProvider>
+            <Medications />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )

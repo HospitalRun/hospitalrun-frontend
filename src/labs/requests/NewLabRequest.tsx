@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -18,11 +18,12 @@ import { LabError } from '../utils/validate-lab'
 const NewLabRequest = () => {
   const { t } = useTranslator()
   const history = useHistory()
-  useTitle(t('labs.requests.new'))
   const { user } = useSelector((state: RootState) => state.user)
   const [mutate] = useRequestLab()
   const [newNote, setNewNote] = useState('')
   const [error, setError] = useState<LabError | undefined>(undefined)
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('labs.requests.new'))
 
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',

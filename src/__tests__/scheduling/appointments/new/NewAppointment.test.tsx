@@ -10,7 +10,7 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
-import * as titleUtil from '../../../../page-header/title/useTitle'
+import * as titleUtil from '../../../../page-header/title/TitleContext'
 import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import NewAppointment from '../../../../scheduling/appointments/new/NewAppointment'
@@ -21,6 +21,7 @@ import Lab from '../../../../shared/model/Lab'
 import Patient from '../../../../shared/model/Patient'
 import { RootState } from '../../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 const mockedComponents = mocked(components, true)
 
@@ -30,6 +31,7 @@ describe('New Appointment', () => {
   const expectedNewAppointment = { id: '123' }
 
   const setup = () => {
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'save')
     mocked(AppointmentRepository, true).save.mockResolvedValue(
       expectedNewAppointment as Appointment,
@@ -49,7 +51,9 @@ describe('New Appointment', () => {
       <Provider store={store}>
         <Router history={history}>
           <Route path="/appointments/new">
-            <NewAppointment />
+            <TitleProvider>
+              <NewAppointment />
+            </TitleProvider>
           </Route>
         </Router>
       </Provider>,
@@ -60,13 +64,12 @@ describe('New Appointment', () => {
   }
 
   describe('header', () => {
-    it('should use "New Appointment" as the header', async () => {
-      jest.spyOn(titleUtil, 'default')
+    it('should have called useUpdateTitle hook', async () => {
       await act(async () => {
         await setup()
       })
 
-      expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.new')
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
     })
   })
 

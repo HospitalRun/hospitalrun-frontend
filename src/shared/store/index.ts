@@ -3,7 +3,6 @@ import ReduxThunk, { ThunkAction } from 'redux-thunk'
 
 import medication from '../../medications/medication-slice'
 import breadcrumbs from '../../page-header/breadcrumbs/breadcrumbs-slice'
-import title from '../../page-header/title/title-slice'
 import patient from '../../patients/patient-slice'
 import patients from '../../patients/patients-slice'
 import appointment from '../../scheduling/appointments/appointment-slice'
@@ -14,7 +13,6 @@ import components from '../components/component-slice'
 const reducer = combineReducers({
   patient,
   patients,
-  title,
   user,
   appointment,
   appointments,

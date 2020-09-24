@@ -1,4 +1,4 @@
-import { TextInput, Select, Table } from '@hospitalrun/components'
+import { Select, Table, TextInput } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import ViewLabs from '../../labs/ViewLabs'
 import * as ButtonBarProvider from '../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../page-header/title/useTitle'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import LabRepository from '../../shared/db/LabRepository'
 import Lab from '../../shared/model/Lab'
 import Permissions from '../../shared/model/Permissions'
@@ -23,8 +23,9 @@ describe('View Labs', () => {
   const setButtonToolBarSpy = jest.fn()
   jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
 
-  const setup = async (permissions: Permissions[]) => {
+  const setup = async (permissions: Permissions[] = []) => {
     history = createMemoryHistory()
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
 
     const store = mockStore({
       title: '',
@@ -39,28 +40,29 @@ describe('View Labs', () => {
         <ButtonBarProvider.ButtonBarProvider>
           <Provider store={store}>
             <Router history={history}>
-              <ViewLabs />
+              <titleUtil.TitleProvider>
+                <ViewLabs />
+              </titleUtil.TitleProvider>
             </Router>
           </Provider>
         </ButtonBarProvider.ButtonBarProvider>,
       )
     })
 
+    wrapper.find(ViewLabs).props().updateTitle = jest.fn()
+    wrapper.update()
     return { wrapper: wrapper as ReactWrapper }
   }
 
   describe('title', () => {
-    const titleSpy = jest.spyOn(titleUtil, 'default')
-
-    it('should have the title', async () => {
-      await setup([Permissions.ViewLabs, Permissions.RequestLab])
-
-      expect(titleSpy).toHaveBeenCalledWith('labs.label')
+    it('should have called the useUpdateTitle hook', async () => {
+      await setup()
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
     })
   })
 
   describe('button bar', () => {
-    afterEach(() => {
+    beforeEach(() => {
       setButtonToolBarSpy.mockReset()
     })
 

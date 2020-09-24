@@ -1,7 +1,7 @@
 import { LineGraph, Spinner } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
 
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import useIncidents from '../hooks/useIncidents'
 import IncidentFilter from '../IncidentFilter'
@@ -9,7 +9,9 @@ import IncidentSearchRequest from '../model/IncidentSearchRequest'
 
 const VisualizeIncidents = () => {
   const { t } = useTranslator()
-  useTitle(t('incidents.visualize.view'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('incidents.visualize.view'))
+
   const searchFilter = IncidentFilter.reported
   const searchRequest: IncidentSearchRequest = { status: searchFilter }
   const { data, isLoading } = useIncidents(searchRequest)

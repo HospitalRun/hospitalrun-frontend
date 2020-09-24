@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Labs from '../../labs/Labs'
 import NewLabRequest from '../../labs/requests/NewLabRequest'
 import ViewLab from '../../labs/ViewLab'
+import * as titleUtil from '../../page-header/title/TitleContext'
 import LabRepository from '../../shared/db/LabRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Lab from '../../shared/model/Lab'
@@ -16,9 +17,11 @@ import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Labs', () => {
+  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
   jest
     .spyOn(LabRepository, 'find')
@@ -27,22 +30,25 @@ describe('Labs', () => {
     .spyOn(PatientRepository, 'find')
     .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
 
-  const setup = async (initialEntry: string, permissions: Permissions[]) => {
+  const setup = async (initialEntry: string, permissions: Permissions[] = []) => {
     const store = mockStore({
       user: { permissions },
     } as any)
 
     let wrapper: any
     await act(async () => {
-      wrapper = mount(
+      wrapper = await mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[initialEntry]}>
-            <Labs />
+            <TitleProvider>
+              <Labs />
+            </TitleProvider>
           </MemoryRouter>
         </Provider>,
       )
     })
 
+    wrapper.update()
     return { wrapper: wrapper as ReactWrapper }
   }
 
@@ -55,7 +61,7 @@ describe('Labs', () => {
       })
 
       it('should not navigate to /labs/new if the user does not have RequestLab permissions', async () => {
-        const { wrapper } = await setup('/labs/new', [])
+        const { wrapper } = await setup('/labs/new')
 
         expect(wrapper.find(NewLabRequest)).toHaveLength(0)
       })
@@ -67,12 +73,12 @@ describe('Labs', () => {
 
         expect(wrapper.find(ViewLab)).toHaveLength(1)
       })
+    })
 
-      it('should not navigate to /labs/:id if the user does not have ViewLab permissions', async () => {
-        const { wrapper } = await setup('/labs/1234', [])
+    it('should not navigate to /labs/:id if the user does not have ViewLab permissions', async () => {
+      const { wrapper } = await setup('/labs/1234')
 
-        expect(wrapper.find(ViewLab)).toHaveLength(0)
-      })
+      expect(wrapper.find(ViewLab)).toHaveLength(0)
     })
   })
 })

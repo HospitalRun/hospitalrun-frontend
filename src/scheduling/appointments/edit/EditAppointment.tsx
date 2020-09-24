@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../../page-header/title/TitleContext'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Appointment from '../../../shared/model/Appointment'
 import { RootState } from '../../../shared/store'
@@ -14,7 +14,8 @@ import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 
 const EditAppointment = () => {
   const { t } = useTranslator()
-  useTitle(t('scheduling.appointments.editAppointment'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('scheduling.appointments.editAppointment'))
   const history = useHistory()
   const dispatch = useDispatch()
 
