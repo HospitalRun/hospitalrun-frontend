@@ -18,7 +18,6 @@ import Diagnoses from '../../../patients/diagnoses/Diagnoses'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import Labs from '../../../patients/labs/Labs'
 import NotesTab from '../../../patients/notes/NoteTab'
-import * as patientSlice from '../../../patients/patient-slice'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
 import ViewPatient from '../../../patients/view/ViewPatient'
 import PatientRepository from '../../../shared/db/PatientRepository'
@@ -93,8 +92,6 @@ describe('ViewPatient', () => {
     await setup()
 
     expect(PatientRepository.find).toHaveBeenCalledWith(patient.id)
-    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientStart())
-    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientSuccess(patient))
   })
 
   it('should have called useUpdateTitle hook', async () => {

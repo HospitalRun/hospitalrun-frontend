@@ -9,52 +9,39 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
-import { updatePatient, fetchPatient } from '../patient-slice'
-import { getPatientFullName } from '../util/patient-name-util'
-
-const getPatientCode = (p: Patient): string => {
-  if (p) {
-    return p.code
-  }
-
-  return ''
-}
+import usePatient from '../hooks/usePatient'
+import { updatePatient } from '../patient-slice'
+import { getPatientCode, getPatientFullName } from '../util/patient-util'
 
 const EditPatient = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const dispatch = useDispatch()
+  const { id } = useParams()
 
+  const { data: givenPatient, status } = usePatient(id)
   const [patient, setPatient] = useState({} as Patient)
 
-  const { patient: reduxPatient, status, updateError } = useSelector(
-    (state: RootState) => state.patient,
-  )
+  const { updateError } = useSelector((state: RootState) => state.patient)
 
   const updateTitle = useUpdateTitle()
+
   updateTitle(
-    `${t('patients.editPatient')}: ${getPatientFullName(reduxPatient)} (${getPatientCode(
-      reduxPatient,
+    `${t('patients.editPatient')}: ${getPatientFullName(givenPatient)} (${getPatientCode(
+      givenPatient,
     )})`,
   )
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
-    { text: getPatientFullName(reduxPatient), location: `/patients/${reduxPatient.id}` },
-    { i18nKey: 'patients.editPatient', location: `/patients/${reduxPatient.id}/edit` },
+    { text: getPatientFullName(givenPatient), location: `/patients/${id}` },
+    { i18nKey: 'patients.editPatient', location: `/patients/${id}/edit` },
   ]
   useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
-    setPatient(reduxPatient)
-  }, [reduxPatient])
-
-  const { id } = useParams()
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchPatient(id))
-    }
-  }, [id, dispatch])
+    setPatient(givenPatient || ({} as Patient))
+  }, [givenPatient])
 
   const onCancel = () => {
     history.push(`/patients/${patient.id}`)

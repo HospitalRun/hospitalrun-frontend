@@ -11,7 +11,6 @@ import thunk from 'redux-thunk'
 import * as titleUtil from '../../../page-header/title/TitleContext'
 import EditPatient from '../../../patients/edit/EditPatient'
 import GeneralInformation from '../../../patients/GeneralInformation'
-import * as patientSlice from '../../../patients/patient-slice'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
@@ -63,7 +62,9 @@ describe('Edit Patient', () => {
     )
 
     wrapper.find(EditPatient).props().updateTitle = jest.fn()
+
     wrapper.update()
+
     return wrapper
   }
 
@@ -87,14 +88,12 @@ describe('Edit Patient', () => {
     expect(wrapper.find(GeneralInformation)).toHaveLength(1)
   })
 
-  it('should dispatch fetchPatient when component loads', async () => {
+  it('should load a Patient when component loads', async () => {
     await act(async () => {
       await setup()
     })
 
     expect(PatientRepository.find).toHaveBeenCalledWith(patient.id)
-    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientStart())
-    expect(store.getActions()).toContainEqual(patientSlice.fetchPatientSuccess(patient))
   })
 
   it('should dispatch updatePatient when save button is clicked', async () => {
@@ -114,8 +113,6 @@ describe('Edit Patient', () => {
     })
 
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
-    expect(store.getActions()).toContainEqual(patientSlice.updatePatientStart())
-    expect(store.getActions()).toContainEqual(patientSlice.updatePatientSuccess(patient))
   })
 
   it('should navigate to /patients/:id when cancel is clicked', async () => {
