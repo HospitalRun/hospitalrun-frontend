@@ -9,6 +9,8 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import NewLabRequest from '../../../labs/requests/NewLabRequest'
+import * as validationUtil from '../../../labs/utils/validate-lab'
+import { LabError } from '../../../labs/utils/validate-lab'
 import * as titleUtil from '../../../page-header/title/TitleContext'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
@@ -19,26 +21,31 @@ import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
-
 describe('New Lab Request', () => {
-  const setup = async (store = mockStore({ lab: { status: 'loading', error: {} } } as any)) => {
-    const history = createMemoryHistory()
+  let history: any
+  const setup = async (
+    store = mockStore({ title: '', user: { user: { id: 'userId' } } } as any),
+  ) => {
+    history = createMemoryHistory()
     history.push(`/labs/new`)
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
 
-    const wrapper: ReactWrapper = await mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <titleUtil.TitleProvider>
-            <NewLabRequest />
-          </titleUtil.TitleProvider>
-        </Router>
-      </Provider>,
-    )
+    let wrapper: any
+    await act(async () => {
+      wrapper = await mount(
+        <Provider store={store}>
+          <Router history={history}>
+            <titleUtil.TitleProvider>
+              <NewLabRequest />
+            </titleUtil.TitleProvider>
+          </Router>
+        </Provider>,
+      )
+    })
 
     wrapper.find(NewLabRequest).props().updateTitle = jest.fn()
     wrapper.update()
-    return { wrapper }
+    return { wrapper: wrapper as ReactWrapper }
   }
 
   describe('form layout', () => {
@@ -98,16 +105,26 @@ describe('New Lab Request', () => {
     })
   })
 
-  describe('errors', async () => {
+  describe('errors', () => {
     const error = {
       message: 'some message',
       patient: 'some patient message',
       type: 'some type error',
-    }
-    const store = mockStore({ lab: { status: 'error', error } } as any)
-    const { wrapper } = await setup(store)
+    } as LabError
+
+    jest.spyOn(validationUtil, 'validateLabRequest').mockReturnValue(error)
 
     it('should display errors', async () => {
+      const { wrapper } = await setup()
+
+      const saveButton = wrapper.find(Button).at(0)
+      await act(async () => {
+        const onClick = saveButton.prop('onClick') as any
+        await onClick()
+      })
+
+      wrapper.update()
+
       const alert = wrapper.find(Alert)
       const typeInput = wrapper.find(TextInputWithLabelFormGroup)
       const patientTypeahead = wrapper.find(Typeahead)
@@ -123,12 +140,9 @@ describe('New Lab Request', () => {
     })
   })
 
-  describe('on cancel', async () => {
-    const history = createMemoryHistory()
-
-    const { wrapper } = await setup()
-
-    it('should navigate back to /labs', () => {
+  describe('on cancel', () => {
+    it('should navigate back to /labs', async () => {
+      const { wrapper } = await setup()
       const cancelButton = wrapper.find(Button).at(1)
 
       act(() => {
@@ -140,8 +154,7 @@ describe('New Lab Request', () => {
     })
   })
 
-  describe('on save', async () => {
-    const history = createMemoryHistory()
+  describe('on save', () => {
     let labRepositorySaveSpy: any
     const expectedDate = new Date()
     const expectedNotes = 'expected notes'
@@ -157,7 +170,7 @@ describe('New Lab Request', () => {
       lab: { status: 'loading', error: {} },
       user: { user: { id: 'fake id' } },
     } as any)
-    const { wrapper } = await setup(store)
+
     beforeEach(() => {
       jest.resetAllMocks()
       Date.now = jest.fn(() => expectedDate.valueOf())
@@ -169,6 +182,8 @@ describe('New Lab Request', () => {
     })
 
     it('should save the lab request and navigate to "/labs/:id"', async () => {
+      const { wrapper } = await setup(store)
+
       const patientTypeahead = wrapper.find(Typeahead)
       await act(async () => {
         const onChange = patientTypeahead.prop('onChange')

@@ -1,3 +1,4 @@
+import { act } from '@testing-library/react'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -28,46 +29,39 @@ describe('Labs', () => {
   jest
     .spyOn(PatientRepository, 'find')
     .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
-  const setup = (route: string, permissions: Permissions[] = []) => {
+
+  const setup = async (initialEntry: string, permissions: Permissions[] = []) => {
     const store = mockStore({
       user: { permissions },
-      breadcrumbs: { breadcrumbs: [] },
-      components: { sidebarCollapsed: false },
-      lab: {
-        lab: ({
-          id: '1234',
-          patientId: 'patientId',
-          requestedOn: new Date().toISOString(),
-        } as unknown) as Lab,
-        patient: { id: 'patientId', fullName: 'some name' },
-        error: {},
-      },
     } as any)
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[route]}>
-          <TitleProvider>
-            <Labs />
-          </TitleProvider>
-        </MemoryRouter>
-      </Provider>,
-    )
+    let wrapper: any
+    await act(async () => {
+      wrapper = await mount(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={[initialEntry]}>
+            <TitleProvider>
+              <Labs />
+            </TitleProvider>
+          </MemoryRouter>
+        </Provider>,
+      )
+    })
+
     wrapper.update()
     return { wrapper: wrapper as ReactWrapper }
   }
 
   describe('routing', () => {
     describe('/labs/new', () => {
-      it('should render the new lab request screen when /labs/new is accessed', () => {
-        const permissions: Permissions[] = [Permissions.RequestLab]
-        const { wrapper } = setup('/labs/new', permissions)
+      it('should render the new lab request screen when /labs/new is accessed', async () => {
+        const { wrapper } = await setup('/labs/new', [Permissions.RequestLab])
 
         expect(wrapper.find(NewLabRequest)).toHaveLength(1)
       })
 
-      it('should not navigate to /labs/new if the user does not have RequestLab permissions', () => {
-        const { wrapper } = setup('/labs/new')
+      it('should not navigate to /labs/new if the user does not have RequestLab permissions', async () => {
+        const { wrapper } = await setup('/labs/new')
 
         expect(wrapper.find(NewLabRequest)).toHaveLength(0)
       })
@@ -75,15 +69,14 @@ describe('Labs', () => {
 
     describe('/labs/:id', () => {
       it('should render the view lab screen when /labs/:id is accessed', async () => {
-        const permissions: Permissions[] = [Permissions.ViewLab]
-        const { wrapper } = setup('/labs/1234', permissions)
+        const { wrapper } = await setup('/labs/1234', [Permissions.ViewLab])
 
         expect(wrapper.find(ViewLab)).toHaveLength(1)
       })
     })
 
     it('should not navigate to /labs/:id if the user does not have ViewLab permissions', async () => {
-      const { wrapper } = setup('/labs/1234')
+      const { wrapper } = await setup('/labs/1234')
 
       expect(wrapper.find(ViewLab)).toHaveLength(0)
     })
