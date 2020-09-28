@@ -12,11 +12,9 @@ interface Props {
   patientId: string
 }
 
-const AppointmentsList = (props: Props) => {
+const AppointmentsList = ({ patientId }: Props) => {
   const history = useHistory()
   const { t } = useTranslator()
-
-  const { patientId } = props
 
   const { data, status } = usePatientsAppointments(patientId)
 

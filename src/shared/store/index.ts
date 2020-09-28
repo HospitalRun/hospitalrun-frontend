@@ -1,8 +1,6 @@
 import { configureStore, combineReducers, Action } from '@reduxjs/toolkit'
 import ReduxThunk, { ThunkAction } from 'redux-thunk'
 
-import lab from '../../labs/lab-slice'
-import labs from '../../labs/labs-slice'
 import medication from '../../medications/medication-slice'
 import breadcrumbs from '../../page-header/breadcrumbs/breadcrumbs-slice'
 import patient from '../../patients/patient-slice'
@@ -20,8 +18,6 @@ const reducer = combineReducers({
   appointments,
   breadcrumbs,
   components,
-  lab,
-  labs,
   medication,
 })
 

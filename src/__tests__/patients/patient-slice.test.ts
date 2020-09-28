@@ -10,9 +10,6 @@ import patient, {
   createPatientError,
   createPatientStart,
   createPatientSuccess,
-  fetchPatient,
-  fetchPatientStart,
-  fetchPatientSuccess,
   updatePatient,
   updatePatientError,
   updatePatientStart,
@@ -36,34 +33,6 @@ describe('patients slice', () => {
       const patientStore = patient(undefined, {} as AnyAction)
       expect(patientStore.status).toEqual('loading')
       expect(patientStore.patient).toEqual({})
-    })
-
-    it('should handle the FETCH_PATIENT_START action', () => {
-      const patientStore = patient(undefined, {
-        type: fetchPatientStart.type,
-      })
-
-      expect(patientStore.status).toEqual('loading')
-    })
-
-    it('should handle the FETCH_PATIENT_SUCCESS actions', () => {
-      const expectedPatient = {
-        id: '123',
-        rev: '123',
-        sex: 'male',
-        dateOfBirth: new Date().toISOString(),
-        givenName: 'test',
-        familyName: 'test',
-      }
-      const patientStore = patient(undefined, {
-        type: fetchPatientSuccess.type,
-        payload: {
-          ...expectedPatient,
-        },
-      })
-
-      expect(patientStore.status).toEqual('completed')
-      expect(patientStore.patient).toEqual(expectedPatient)
     })
 
     it('should handle the CREATE_PATIENT_START action', () => {
@@ -321,42 +290,6 @@ describe('patients slice', () => {
       )
     })
   })
-
-  describe('fetch patient', () => {
-    it('should dispatch the FETCH_PATIENT_START action', async () => {
-      const store = mockStore()
-      const expectedPatientId = 'sliceId6'
-      const expectedPatient = { id: expectedPatientId, givenName: 'some name' } as Patient
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
-
-      await store.dispatch(fetchPatient(expectedPatientId))
-
-      expect(store.getActions()[0]).toEqual(fetchPatientStart())
-    })
-
-    it('should call the PatientRepository find method with the correct patient id', async () => {
-      const store = mockStore()
-      const expectedPatientId = 'sliceId6'
-      const expectedPatient = { id: expectedPatientId, givenName: 'some name' } as Patient
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
-
-      await store.dispatch(fetchPatient(expectedPatientId))
-
-      expect(PatientRepository.find).toHaveBeenCalledWith(expectedPatientId)
-    })
-
-    it('should dispatch the FETCH_PATIENT_SUCCESS action with the correct data', async () => {
-      const store = mockStore()
-      const expectedPatientId = 'sliceId6'
-      const expectedPatient = { id: expectedPatientId, givenName: 'some name' } as Patient
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
-
-      await store.dispatch(fetchPatient(expectedPatientId))
-
-      expect(store.getActions()[1]).toEqual(fetchPatientSuccess(expectedPatient))
-    })
-  })
-
   describe('update patient', () => {
     it('should dispatch the UPDATE_PATIENT_START action', async () => {
       const store = mockStore()

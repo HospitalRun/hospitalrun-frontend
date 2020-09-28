@@ -72,11 +72,6 @@ const patientSlice = createSlice({
   name: 'patient',
   initialState,
   reducers: {
-    fetchPatientStart: start,
-    fetchPatientSuccess(state, { payload }: PayloadAction<Patient>) {
-      state.status = 'completed'
-      state.patient = payload
-    },
     createPatientStart: start,
     createPatientSuccess(state) {
       state.status = 'completed'
@@ -102,8 +97,6 @@ const patientSlice = createSlice({
 })
 
 export const {
-  fetchPatientStart,
-  fetchPatientSuccess,
   createPatientStart,
   createPatientSuccess,
   createPatientError,
@@ -112,12 +105,6 @@ export const {
   updatePatientError,
   addDiagnosisError,
 } = patientSlice.actions
-
-export const fetchPatient = (id: string): AppThunk => async (dispatch) => {
-  dispatch(fetchPatientStart())
-  const patient = await PatientRepository.find(id)
-  dispatch(fetchPatientSuccess(patient))
-}
 
 function validatePatient(patient: Patient) {
   const error: Error = {}
