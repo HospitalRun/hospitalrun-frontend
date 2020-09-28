@@ -11,7 +11,6 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as titleUtil from '../../../../page-header/title/useTitle'
-import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import EditAppointment from '../../../../scheduling/appointments/edit/EditAppointment'
 import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
@@ -99,17 +98,13 @@ describe('Edit Appointment', () => {
     expect(wrapper.find(AppointmentDetailForm)).toHaveLength(1)
   })
 
-  it('should dispatch fetchAppointment when component loads', async () => {
+  it('should load an appointment when component loads', async () => {
     await act(async () => {
       await setup()
     })
 
     expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
     expect(PatientRepository.find).toHaveBeenCalledWith(appointment.patient)
-    expect(store.getActions()).toContainEqual(appointmentSlice.fetchAppointmentStart())
-    expect(store.getActions()).toContainEqual(
-      appointmentSlice.fetchAppointmentSuccess({ appointment, patient }),
-    )
   })
 
   it('should use the correct title', async () => {
@@ -120,7 +115,7 @@ describe('Edit Appointment', () => {
     expect(titleUtil.default).toHaveBeenCalledWith('scheduling.appointments.editAppointment')
   })
 
-  it('should dispatch updateAppointment when save button is clicked', async () => {
+  it('should updateAppointment when save button is clicked', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = await setup()
@@ -137,10 +132,6 @@ describe('Edit Appointment', () => {
     })
 
     expect(AppointmentRepository.saveOrUpdate).toHaveBeenCalledWith(appointment)
-    expect(store.getActions()).toContainEqual(appointmentSlice.updateAppointmentStart())
-    expect(store.getActions()).toContainEqual(
-      appointmentSlice.updateAppointmentSuccess(appointment),
-    )
   })
 
   it('should navigate to /appointments/:id when save is successful', async () => {

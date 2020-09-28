@@ -25,11 +25,11 @@ const ViewAppointment = () => {
   const setButtonToolBar = useButtonToolbarSetter()
   const { permissions } = useSelector((state: RootState) => state.user)
 
-  const { data } = useAppointment(id)
-  const { data: patient } = usePatient(data ? data.patient : id)
+  const { data: appointment } = useAppointment(id)
+  const { data: patient } = usePatient(appointment ? appointment.patient : id)
   const breadcrumbs = [
     { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
-    { text: data ? getAppointmentLabel(data) : '', location: `/patients/${id}` },
+    { text: appointment ? getAppointmentLabel(appointment) : '', location: `/patients/${id}` },
   ]
   useAddBreadcrumbs(breadcrumbs, true)
 
@@ -39,11 +39,11 @@ const ViewAppointment = () => {
   }
 
   const onDeleteConfirmationButtonClick = () => {
-    if (!data) {
+    if (!appointment) {
       return
     }
 
-    deleteMutate({ appointmentId: data.id }).then(() => {
+    deleteMutate({ appointmentId: appointment.id }).then(() => {
       history.push('/appointments')
       Toast('success', t('states.success'), t('scheduling.appointment.successfullyDeleted'))
     })
@@ -52,7 +52,7 @@ const ViewAppointment = () => {
 
   const getButtons = useCallback(() => {
     const buttons: React.ReactNode[] = []
-    if (data && permissions.includes(Permissions.WriteAppointments)) {
+    if (appointment && permissions.includes(Permissions.WriteAppointments)) {
       buttons.push(
         <Button
           key="editAppointmentButton"
@@ -60,7 +60,7 @@ const ViewAppointment = () => {
           icon="edit"
           outlined
           onClick={() => {
-            history.push(`/appointments/edit/${data.id}`)
+            history.push(`/appointments/edit/${appointment.id}`)
           }}
         >
           {t('actions.edit')}
@@ -82,7 +82,7 @@ const ViewAppointment = () => {
     }
 
     return buttons
-  }, [data, permissions, t, history])
+  }, [appointment, permissions, t, history])
 
   useEffect(() => {
     setButtonToolBar(getButtons())
@@ -94,9 +94,9 @@ const ViewAppointment = () => {
 
   return (
     <>
-      {patient && data ? (
+      {patient && appointment ? (
         <div>
-          <AppointmentDetailForm appointment={data} isEditable={false} patient={patient} />
+          <AppointmentDetailForm appointment={appointment} isEditable={false} patient={patient} />
           <Modal
             body={t('scheduling.appointment.deleteConfirmationMessage')}
             buttonsAlignment="right"

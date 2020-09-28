@@ -47,24 +47,28 @@ const ViewAppointments = () => {
   }, [setButtonToolBar, history, t])
 
   useEffect(() => {
-    appointments.then(async (results) => {
-      if (results) {
-        const newEvents = await Promise.all(
-          results.map(async (result) => {
-            const patient = await PatientRepository.find(result.patient)
-            return {
-              id: result.id,
-              start: new Date(result.startDateTime),
-              end: new Date(result.endDateTime),
-              title: patient.fullName || '',
-              allDay: false,
-            }
-          }),
-        )
-        setEvents(newEvents)
-      }
-    })
-  }, [appointments])
+    // get appointments, find patients, then make Event objects out of the two and set events.
+    const getAppointments = async () => {
+      appointments.then(async (appointmentsList) => {
+        if (appointmentsList) {
+          const newEvents = await Promise.all(
+            appointmentsList.map(async (appointment) => {
+              const patient = await PatientRepository.find(appointment.patient)
+              return {
+                id: appointment.id,
+                start: new Date(appointment.startDateTime),
+                end: new Date(appointment.endDateTime),
+                title: patient.fullName || '',
+                allDay: false,
+              }
+            }),
+          )
+          setEvents(newEvents)
+        }
+      })
+    }
+    getAppointments()
+  }, []) // provide an empty dependency array, to ensure this useEffect will only run on mount.
 
   return (
     <div>

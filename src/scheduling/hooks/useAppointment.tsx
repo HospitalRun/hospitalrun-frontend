@@ -1,9 +1,9 @@
-import { QueryKey, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 import AppointmentRepository from '../../shared/db/AppointmentRepository'
 import Appointment from '../../shared/model/Appointment'
 
-function getAppointmentById(_: QueryKey<string>, appointmentId: string): Promise<Appointment> {
+function getAppointmentById(_: string, appointmentId: string): Promise<Appointment> {
   return AppointmentRepository.find(appointmentId)
 }
 

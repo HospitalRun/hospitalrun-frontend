@@ -15,7 +15,7 @@ async function deleteAppointment(request: deleteAppointmentRequest): Promise<App
 export default function useDeleteAppointment() {
   return useMutation(deleteAppointment, {
     onSuccess: async () => {
-      queryCache.invalidateQueries('appointment')
+      await queryCache.invalidateQueries('appointment')
     },
   })
 }

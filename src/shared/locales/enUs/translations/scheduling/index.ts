@@ -32,6 +32,7 @@ export default {
       deleteConfirmationMessage: 'Are you sure that you want to delete this appointment?',
       successfullyCreated: 'Successfully created appointment.',
       successfullyDeleted: 'Successfully deleted appointment.',
+      successfullyUpdated: 'Successfully updated appointment.',
     },
   },
 }
