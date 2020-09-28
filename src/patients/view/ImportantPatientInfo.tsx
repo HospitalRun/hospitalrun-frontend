@@ -50,6 +50,7 @@ const ImportantPatientInfo = (props: Props) => {
     color: 'black',
     backgroundColor: 'rgba(245,245,245,1)',
     fontSize: 'small',
+    padding: '10px',
   }
 
   const tableStyle: CSSProperties = {
@@ -61,9 +62,9 @@ const ImportantPatientInfo = (props: Props) => {
 
   const addAllergyButtonStyle: CSSProperties = {
     fontSize: 'small',
-    position: 'absolute',
-    top: '0px',
-    right: '0px',
+    position: 'relative',
+    top: '5px',
+    bottom: '5px',
   }
 
   return (
@@ -138,6 +139,7 @@ const ImportantPatientInfo = (props: Props) => {
           <Typography variant="h5">{t('patient.diagnoses.label')}</Typography>
           <div className="border border-primary" style={tableStyle}>
             <Table
+              onRowClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
               getID={(row) => row.id}
               columns={[
                 { label: t('patient.diagnoses.diagnosisName'), key: 'name' },
@@ -149,6 +151,7 @@ const ImportantPatientInfo = (props: Props) => {
                       ? format(new Date(row.diagnosisDate), 'yyyy-MM-dd hh:mm a')
                       : '',
                 },
+                { label: t('patient.diagnoses.status'), key: 'status' },
               ]}
               data={patient.diagnoses ? (patient.diagnoses as Diagnosis[]) : []}
             />
