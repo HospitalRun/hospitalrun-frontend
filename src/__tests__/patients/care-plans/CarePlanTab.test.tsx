@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
+import { Router, Route } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -33,7 +33,9 @@ describe('Care Plan Tab', () => {
       wrapper = await mount(
         <Provider store={store}>
           <Router history={history}>
-            <CarePlanTab />
+            <Route path="/patients/:id/care-plans">
+              <CarePlanTab />
+            </Route>
           </Router>
         </Provider>,
       )

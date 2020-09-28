@@ -5,8 +5,8 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../../page-header/title/useTitle'
 import usePatient from '../../../patients/hooks/usePatient'
+import { useUpdateTitle } from '../../../page-header/title/TitleContext'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
@@ -17,8 +17,9 @@ import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 
 const ViewAppointment = () => {
   const { t } = useTranslator()
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('scheduling.appointments.viewAppointment'))
   const { id } = useParams()
-  useTitle(t('scheduling.appointments.viewAppointment'))
   const history = useHistory()
   const [deleteMutate] = useDeleteAppointment()
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false)

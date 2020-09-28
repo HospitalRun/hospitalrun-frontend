@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../../shared/components/input/SelectWithLabelFormGroup'
@@ -15,7 +15,8 @@ const ViewIncidents = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const setButtonToolBar = useButtonToolbarSetter()
-  useTitle(t('incidents.reports.label'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('incidents.reports.label'))
   const [searchFilter, setSearchFilter] = useState(IncidentFilter.reported)
 
   useEffect(() => {

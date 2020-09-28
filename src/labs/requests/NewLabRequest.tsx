@@ -1,10 +1,10 @@
 import { Typeahead, Label, Button, Alert, Toast } from '@hospitalrun/components'
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -12,26 +12,25 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Lab from '../../shared/model/Lab'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
-import { requestLab, resetLab } from '../lab-slice'
+import useRequestLab from '../hooks/useRequestLab'
+import { LabError } from '../utils/validate-lab'
 
 const NewLabRequest = () => {
   const { t } = useTranslator()
-  const dispatch = useDispatch()
   const history = useHistory()
-  useTitle(t('labs.requests.new'))
-  const { status, error } = useSelector((state: RootState) => state.lab)
+  const { user } = useSelector((state: RootState) => state.user)
+  const [mutate] = useRequestLab()
+  const [newNote, setNewNote] = useState('')
+  const [error, setError] = useState<LabError | undefined>(undefined)
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('labs.requests.new'))
 
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
     type: '',
     status: 'requested',
+    requestedBy: user?.id || '',
   })
-
-  const [newNote, setNewNote] = useState('')
-
-  useEffect(() => {
-    dispatch(resetLab())
-  }, [dispatch])
 
   const breadcrumbs = [
     {
@@ -67,16 +66,18 @@ const NewLabRequest = () => {
   }
 
   const onSave = async () => {
-    const onSuccessRequest = (newLab: Lab) => {
-      history.push(`/labs/${newLab.id}`)
+    try {
+      const newLab = await mutate(newLabRequest as Lab)
+      history.push(`/labs/${newLab?.id}`)
       Toast(
         'success',
         t('states.success'),
-        `${t('lab.successfullyCreated')} ${newLab.type} ${newLab.patient}`,
+        `${t('lab.successfullyCreated')} ${newLab?.type} ${newLab?.patient}`,
       )
+      setError(undefined)
+    } catch (e) {
+      setError(e)
     }
-
-    dispatch(requestLab(newLabRequest as Lab, onSuccessRequest))
   }
 
   const onCancel = () => {
@@ -85,9 +86,7 @@ const NewLabRequest = () => {
 
   return (
     <>
-      {status === 'error' && (
-        <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
-      )}
+      {error && <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />}
       <form>
         <div className="form-group patient-typeahead">
           <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
@@ -98,7 +97,8 @@ const NewLabRequest = () => {
             onSearch={async (query: string) => PatientRepository.search(query)}
             searchAccessor="fullName"
             renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
-            isInvalid={!!error.patient}
+            isInvalid={!!error?.patient}
+            feedback={t(error?.patient as string)}
           />
         </div>
         <TextInputWithLabelFormGroup
@@ -106,8 +106,8 @@ const NewLabRequest = () => {
           label={t('labs.lab.type')}
           isRequired
           isEditable
-          isInvalid={!!error.type}
-          feedback={t(error.type as string)}
+          isInvalid={!!error?.type}
+          feedback={t(error?.type as string)}
           value={newLabRequest.type}
           onChange={onLabTypeChange}
         />

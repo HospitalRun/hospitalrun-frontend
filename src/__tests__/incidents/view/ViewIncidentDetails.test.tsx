@@ -8,7 +8,6 @@ import { Router } from 'react-router'
 import ViewIncidentDetails from '../../../incidents/view/ViewIncidentDetails'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/title/useTitle'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
 import Permissions from '../../../shared/model/Permissions'
@@ -35,7 +34,6 @@ describe('View Incident Details', () => {
     jest.resetAllMocks()
     Date.now = jest.fn(() => expectedResolveDate.valueOf())
     jest.spyOn(breadcrumbUtil, 'default')
-    jest.spyOn(titleUtil, 'default')
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(mockIncident)
     incidentRepositorySaveSpy = jest
       .spyOn(IncidentRepository, 'saveOrUpdate')

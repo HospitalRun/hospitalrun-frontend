@@ -1,4 +1,4 @@
-import { mount } from 'enzyme'
+import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import Dashboard from '../../../dashboard/Dashboard'
 import HospitalRun from '../../../HospitalRun'
 import { addBreadcrumbs } from '../../../page-header/breadcrumbs/breadcrumbs-slice'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import Appointments from '../../../scheduling/appointments/Appointments'
 import EditAppointment from '../../../scheduling/appointments/edit/EditAppointment'
 import NewAppointment from '../../../scheduling/appointments/new/NewAppointment'
@@ -20,29 +21,54 @@ import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
 
+const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
+let route: any
 
 describe('/appointments', () => {
-  it('should render the appointments screen when /appointments is accessed', async () => {
+  // eslint-disable-next-line no-shadow
+  const setup = (route: string, permissions: Permissions[], renderHr: boolean = false) => {
+    const appointment = {
+      id: '123',
+      patient: '456',
+    } as Appointment
+
+    const patient = {
+      id: '456',
+    } as Patient
+
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
+    jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(appointment)
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+
     const store = mockStore({
       title: 'test',
-      user: { permissions: [Permissions.ReadAppointments] },
-      appointments: { appointments: [] },
+      user: { user: { id: '123' }, permissions },
+      appointment: { appointment, patient: { id: '456' } as Patient },
+      appointments: [{ appointment, patient: { id: '456' } as Patient }],
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
     } as any)
 
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={['/appointments']}>
-          <Appointments />
+        <MemoryRouter initialEntries={[route]}>
+          <TitleProvider>{renderHr ? <HospitalRun /> : <Appointments />}</TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
+    if (!renderHr) {
+      wrapper.find(Appointments).props().updateTitle = jest.fn()
+    }
+    wrapper.update()
 
-    await act(async () => {
-      wrapper.update()
-    })
+    return { wrapper: wrapper as ReactWrapper, store }
+  }
+
+  it('should render the appointments screen when /appointments is accessed', async () => {
+    route = '/appointments'
+    const permissions: Permissions[] = [Permissions.ReadAppointments]
+    const { wrapper, store } = setup(route, permissions)
 
     expect(wrapper.find(ViewAppointments)).toHaveLength(1)
 
@@ -54,45 +80,65 @@ describe('/appointments', () => {
     )
   })
 
-  it('should render the Dashboard when the user does not have read appointment privileges', () => {
-    const wrapper = mount(
-      <Provider
-        store={mockStore({
-          title: 'test',
-          user: { user: { id: '123' }, permissions: [] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)}
-      >
-        <MemoryRouter initialEntries={['/appointments']}>
-          <HospitalRun />
-        </MemoryRouter>
-      </Provider>,
-    )
+  it('should render the Dashboard when the user does not have read appointment privileges', async () => {
+    route = '/appointments'
+    const permissions: Permissions[] = []
+    const { wrapper } = setup(route, permissions, true)
 
+    await act(async () => {
+      wrapper.update()
+    })
     expect(wrapper.find(Dashboard)).toHaveLength(1)
   })
 })
 
 describe('/appointments/new', () => {
-  it('should render the new appointment screen when /appointments/new is accessed', async () => {
+  // eslint-disable-next-line no-shadow
+  const setup = (route: string, permissions: Permissions[], renderHr: boolean = false) => {
+    const appointment = {
+      id: '123',
+      patient: '456',
+    } as Appointment
+
+    const patient = {
+      id: '456',
+    } as Patient
+
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
+    jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(appointment)
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+
     const store = mockStore({
       title: 'test',
-      user: { permissions: [Permissions.WriteAppointments] },
-      appointment: {},
+      user: { user: { id: '123' }, permissions },
+      appointment: { appointment, patient: { id: '456' } as Patient },
+      appointments: [{ appointment, patient: { id: '456' } as Patient }],
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
     } as any)
 
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={['/appointments/new']}>
-          <Appointments />
+        <MemoryRouter initialEntries={[route]}>
+          <TitleProvider>{renderHr ? <HospitalRun /> : <NewAppointment />}</TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
-
+    if (!renderHr) {
+      wrapper.find(NewAppointment).props().updateTitle = jest.fn()
+    }
     wrapper.update()
+
+    return { wrapper: wrapper as ReactWrapper, store }
+  }
+  it('should render the new appointment screen when /appointments/new is accessed', async () => {
+    route = '/appointments/new'
+    const permissions: Permissions[] = [Permissions.WriteAppointments]
+    const { wrapper, store } = setup(route, permissions, false)
+
+    await act(async () => {
+      await wrapper.update()
+    })
 
     expect(wrapper.find(NewAppointment)).toHaveLength(1)
     expect(store.getActions()).toContainEqual(
@@ -105,27 +151,17 @@ describe('/appointments/new', () => {
   })
 
   it('should render the Dashboard when the user does not have read appointment privileges', () => {
-    const wrapper = mount(
-      <Provider
-        store={mockStore({
-          title: 'test',
-          user: { user: { id: '123' }, permissions: [] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)}
-      >
-        <MemoryRouter initialEntries={['/appointments/new']}>
-          <HospitalRun />
-        </MemoryRouter>
-      </Provider>,
-    )
+    route = '/appointments/new'
+    const permissions: Permissions[] = []
+    const { wrapper } = setup(route, permissions, true)
 
     expect(wrapper.find(Dashboard)).toHaveLength(1)
   })
 })
 
 describe('/appointments/edit/:id', () => {
-  it('should render the edit appointment screen when /appointments/edit/:id is accessed', () => {
+  // eslint-disable-next-line no-shadow
+  const setup = (route: string, permissions: Permissions[], renderHr: boolean = false) => {
     const appointment = {
       id: '123',
       patient: '456',
@@ -135,24 +171,38 @@ describe('/appointments/edit/:id', () => {
       id: '456',
     } as Patient
 
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(appointment)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
 
     const store = mockStore({
       title: 'test',
-      user: { permissions: [Permissions.WriteAppointments, Permissions.ReadAppointments] },
-      appointment: { appointment, patient: {} as Patient },
+      user: { user: { id: '123' }, permissions },
+      appointment: { appointment, patient: { id: '456' } as Patient },
+      appointments: [{ appointment, patient: { id: '456' } as Patient }],
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
     } as any)
 
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={['/appointments/edit/123']}>
-          <Appointments />
+        <MemoryRouter initialEntries={[route]}>
+          <TitleProvider>{renderHr ? <HospitalRun /> : <EditAppointment />}</TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
+    if (!renderHr) {
+      wrapper.find(EditAppointment).props().updateTitle = jest.fn()
+    }
+    wrapper.update()
+
+    return { wrapper: wrapper as ReactWrapper, store }
+  }
+
+  it('should render the edit appointment screen when /appointments/edit/:id is accessed', () => {
+    route = '/appointments/edit/123'
+    const permissions: Permissions[] = [Permissions.WriteAppointments, Permissions.ReadAppointments]
+    const { wrapper, store } = setup(route, permissions, false)
 
     expect(wrapper.find(EditAppointment)).toHaveLength(1)
     expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
@@ -173,39 +223,17 @@ describe('/appointments/edit/:id', () => {
   })
 
   it('should render the Dashboard when the user does not have read appointment privileges', () => {
-    const wrapper = mount(
-      <Provider
-        store={mockStore({
-          title: 'test',
-          user: { user: { id: '123' }, permissions: [Permissions.WriteAppointments] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)}
-      >
-        <MemoryRouter initialEntries={['/appointments/edit/123']}>
-          <HospitalRun />
-        </MemoryRouter>
-      </Provider>,
-    )
+    route = '/appointments/edit/123'
+    const permissions: Permissions[] = []
+    const { wrapper } = setup(route, permissions, true)
 
     expect(wrapper.find(Dashboard)).toHaveLength(1)
   })
 
   it('should render the Dashboard when the user does not have write appointment privileges', () => {
-    const wrapper = mount(
-      <Provider
-        store={mockStore({
-          title: 'test',
-          user: { user: { id: '123' }, permissions: [Permissions.ReadAppointments] },
-          breadcrumbs: { breadcrumbs: [] },
-          components: { sidebarCollapsed: false },
-        } as any)}
-      >
-        <MemoryRouter initialEntries={['/appointments/edit/123']}>
-          <HospitalRun />
-        </MemoryRouter>
-      </Provider>,
-    )
+    route = '/appointments/edit/123'
+    const permissions: Permissions[] = []
+    const { wrapper } = setup(route, permissions, true)
 
     expect(wrapper.find(Dashboard)).toHaveLength(1)
   })

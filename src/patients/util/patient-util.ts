@@ -19,7 +19,15 @@ export function getPatientName(givenName?: string, familyName?: string, suffix?:
   return name.trim()
 }
 
-export function getPatientFullName(patient: Patient): string {
+export const getPatientCode = (p: Patient | undefined): string => {
+  if (p) {
+    return p.code
+  }
+
+  return ''
+}
+
+export function getPatientFullName(patient: Patient | undefined): string {
   if (!patient) {
     return ''
   }

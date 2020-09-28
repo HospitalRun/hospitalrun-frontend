@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../../shared/components/input/SelectWithLabelFormGroup'
@@ -19,8 +19,9 @@ import { ImagingRequestError } from '../util/validate-imaging-request'
 const NewImagingRequest = () => {
   const { t } = useTranslator()
   const history = useHistory()
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('imagings.requests.new'))
   const [mutate] = useRequestImaging()
-  useTitle(t('imagings.requests.new'))
   const [error, setError] = useState<ImagingRequestError>()
   const [visitOption, setVisitOption] = useState([] as Option[])
 

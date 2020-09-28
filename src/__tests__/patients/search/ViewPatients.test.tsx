@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { TitleProvider } from '../../../page-header/title/TitleContext'
 import SearchPatients from '../../../patients/search/SearchPatients'
 import ViewPatients from '../../../patients/search/ViewPatients'
 import PatientRepository from '../../../shared/db/PatientRepository'
@@ -18,7 +19,9 @@ describe('Patients', () => {
     return mount(
       <Provider store={store}>
         <MemoryRouter>
-          <ViewPatients />
+          <TitleProvider>
+            <ViewPatients />
+          </TitleProvider>
         </MemoryRouter>
       </Provider>,
     )

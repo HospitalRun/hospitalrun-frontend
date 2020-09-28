@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../../page-header/title/useTitle'
 import usePatient from '../../../patients/hooks/usePatient'
+import { useUpdateTitle } from '../../../page-header/title/TitleContext'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Appointment from '../../../shared/model/Appointment'
 import useAppointment from '../../hooks/useAppointment'
@@ -16,7 +16,8 @@ const EditAppointment = () => {
   const { t } = useTranslator()
   const { id } = useParams()
 
-  useTitle(t('scheduling.appointments.editAppointment'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('scheduling.appointments.editAppointment'))
   const history = useHistory()
 
   const [newAppointment, setAppointment] = useState({} as Appointment)
