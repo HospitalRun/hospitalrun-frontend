@@ -26,7 +26,7 @@ import usePatient from '../hooks/usePatient'
 import Labs from '../labs/Labs'
 import Note from '../notes/NoteTab'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
-import { getPatientCode, getPatientFullName } from '../util/patient-util'
+import { getPatientFullName } from '../util/patient-util'
 import VisitTab from '../visits/VisitTab'
 import ImportantPatientInfo from './ImportantPatientInfo'
 
