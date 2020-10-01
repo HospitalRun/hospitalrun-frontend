@@ -6,7 +6,7 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 
 interface Props {
-  duplicatePatient?: Patient
+  duplicatePatient: Patient
   show: boolean
   toggle: () => void
   onCloseButtonClick: () => void

@@ -14,10 +14,10 @@ import Patient from '../../shared/model/Patient'
 
 interface Props {
   appointment: Appointment
-  patient?: Patient
-  isEditable: boolean
-  error?: any
-  onFieldChange?: (key: string, value: string | boolean) => void
+  patient: Patient
+  isEditable?: boolean
+  error: any
+  onFieldChange: (key: string, value: string | boolean) => void
 }
 
 const AppointmentDetailForm = (props: Props) => {

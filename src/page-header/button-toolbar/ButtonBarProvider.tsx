@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 type Props = {
-  children?: React.ReactNode
+  children: React.ReactNode
 }
 
 type ButtonUpdater = (buttons: React.ReactNode[]) => void

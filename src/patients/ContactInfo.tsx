@@ -13,12 +13,12 @@ import ContactInfoTypes from './ContactInfoTypes'
 
 interface Props {
   component: 'TextInputWithLabelFormGroup' | 'TextFieldWithLabelFormGroup'
-  data: ContactInfoPiece[]
-  errors?: (string | undefined)[]
+  data?: ContactInfoPiece[]
+  errors: (string | undefined)[]
   label: string
   name: string
-  isEditable?: boolean
-  onChange?: (newData: ContactInfoPiece[]) => void
+  isEditable: boolean
+  onChange: (newData: ContactInfoPiece[]) => void
 }
 
 const ContactInfo = (props: Props): ReactElement => {

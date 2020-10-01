@@ -2,16 +2,16 @@ import { TextInput, Label } from '@hospitalrun/components'
 import React from 'react'
 
 interface Props {
-  value: string
-  label?: string
+  value?: string
+  label: string
   name: string
-  isEditable?: boolean
-  type: 'text' | 'email' | 'number' | 'tel' | 'password'
-  placeholder?: string
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-  isRequired?: boolean
-  feedback?: string
-  isInvalid?: boolean
+  isEditable: boolean
+  type?: 'text' | 'email' | 'number' | 'tel' | 'password'
+  placeholder: string
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  isRequired: boolean
+  feedback: string
+  isInvalid: boolean
 }
 
 const TextInputWithLabelFormGroup = (props: Props) => {

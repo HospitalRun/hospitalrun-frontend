@@ -2,14 +2,14 @@ import { TextField, Label } from '@hospitalrun/components'
 import React from 'react'
 
 interface Props {
-  value: string
-  label?: string
+  value?: string
+  label: string
   name: string
-  isEditable?: boolean
-  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
-  isRequired?: boolean
-  feedback?: string
-  isInvalid?: boolean
+  isEditable: boolean
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+  isRequired: boolean
+  feedback: string
+  isInvalid: boolean
 }
 
 const TextFieldWithLabelFormGroup = (props: Props) => {

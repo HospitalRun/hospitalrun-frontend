@@ -22,9 +22,9 @@ interface Error {
 
 interface Props {
   careGoal: Partial<CareGoal>
-  careGoalError?: Error
-  onChange?: (newCareGoal: Partial<CareGoal>) => void
-  disabled: boolean
+  careGoalError: Error
+  onChange: (newCareGoal: Partial<CareGoal>) => void
+  disabled?: boolean
 }
 
 const CareGoalForm = (props: Props) => {

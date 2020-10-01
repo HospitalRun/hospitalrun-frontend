@@ -25,9 +25,9 @@ interface Error {
 interface Props {
   patient: Patient
   carePlan: Partial<CarePlan>
-  carePlanError?: Error
-  onChange?: (newCarePlan: Partial<CarePlan>) => void
-  disabled: boolean
+  carePlanError: Error
+  onChange: (newCarePlan: Partial<CarePlan>) => void
+  disabled?: boolean
 }
 
 const CarePlanForm = (props: Props) => {

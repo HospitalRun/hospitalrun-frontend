@@ -5,12 +5,12 @@ interface Props {
   name: string
   label: string
   value: Date | undefined
-  isEditable?: boolean
-  onChange?: (date: Date) => void
-  isRequired?: boolean
-  feedback?: string
-  isInvalid?: boolean
-  maxDate?: Date
+  isEditable: boolean
+  onChange: (date: Date) => void
+  isRequired: boolean
+  feedback: string
+  isInvalid: boolean
+  maxDate: Date
 }
 
 const DatePickerWithLabelFormGroup = (props: Props) => {

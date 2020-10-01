@@ -9,15 +9,15 @@ interface Option {
 // todo: add feedback in next round
 interface Props {
   name: string
-  label?: string
-  isRequired?: boolean
+  label: string
+  isRequired: boolean
   options: Option[]
-  defaultSelected?: Option[]
-  onChange?: (values: string[]) => void
-  placeholder: string
-  multiple?: boolean
-  isEditable?: boolean
-  isInvalid?: boolean
+  defaultSelected: Option[]
+  onChange: (values: string[]) => void
+  placeholder?: string
+  multiple: boolean
+  isEditable: boolean
+  isInvalid: boolean
 }
 
 const SelectWithLabelFormGroup = (props: Props) => {

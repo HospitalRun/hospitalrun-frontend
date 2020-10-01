@@ -19,9 +19,9 @@ interface Error {
 
 interface Props {
   diagnosis: Partial<Diagnosis>
-  diagnosisError?: Error
-  onChange?: (newDiagnosis: Partial<Diagnosis>) => void
-  disabled: boolean
+  diagnosisError: Error
+  onChange: (newDiagnosis: Partial<Diagnosis>) => void
+  disabled?: boolean
   patient: Patient
 }
 
