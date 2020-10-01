@@ -5,7 +5,7 @@ import { useHistory } from 'react-router'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import SearchPatients from './SearchPatients'
 
@@ -14,7 +14,8 @@ const breadcrumbs = [{ i18nKey: 'patients.label', location: '/patients' }]
 const ViewPatients = () => {
   const { t } = useTranslator()
   const history = useHistory()
-  useTitle(t('patients.label'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('patients.label'))
   const dispatch = useDispatch()
   const setButtonToolBar = useButtonToolbarSetter()
 

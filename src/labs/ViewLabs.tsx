@@ -1,11 +1,11 @@
 import { Button, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../page-header/title/useTitle'
+import { useUpdateTitle } from '../page-header/title/TitleContext'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../shared/components/input/SelectWithLabelFormGroup'
@@ -15,22 +15,24 @@ import useTranslator from '../shared/hooks/useTranslator'
 import Lab from '../shared/model/Lab'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
-import { searchLabs } from './labs-slice'
-
-type LabFilter = 'requested' | 'completed' | 'canceled' | 'all'
+import useLabsSearch from './hooks/useLabsSearch'
+import { LabFilter } from './model/LabSearchRequest'
 
 const ViewLabs = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const setButtons = useButtonToolbarSetter()
-  useTitle(t('labs.label'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('labs.label'))
 
   const { permissions } = useSelector((state: RootState) => state.user)
-  const dispatch = useDispatch()
-  const { labs } = useSelector((state: RootState) => state.labs)
   const [searchFilter, setSearchFilter] = useState<LabFilter>('all')
   const [searchText, setSearchText] = useState<string>('')
   const debouncedSearchText = useDebounce(searchText, 500)
+  const { data: labs } = useLabsSearch({
+    text: debouncedSearchText,
+    status: searchFilter,
+  })
 
   const getButtons = useCallback(() => {
     const buttons: React.ReactNode[] = []
@@ -53,15 +55,11 @@ const ViewLabs = () => {
   }, [permissions, history, t])
 
   useEffect(() => {
-    dispatch(searchLabs(debouncedSearchText, searchFilter))
-  }, [dispatch, debouncedSearchText, searchFilter])
-
-  useEffect(() => {
     setButtons(getButtons())
     return () => {
       setButtons([])
     }
-  }, [dispatch, getButtons, setButtons])
+  }, [getButtons, setButtons])
 
   const onViewClick = (lab: Lab) => {
     history.push(`/labs/${lab.id}`)
@@ -116,7 +114,7 @@ const ViewLabs = () => {
             },
             { label: t('labs.lab.status'), key: 'status' },
           ]}
-          data={labs}
+          data={labs || []}
           actionsHeaderText={t('actions.label')}
           actions={[{ label: t('actions.view'), action: (row) => onViewClick(row as Lab) }]}
         />

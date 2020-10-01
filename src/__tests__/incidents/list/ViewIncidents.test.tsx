@@ -12,7 +12,7 @@ import ViewIncidents from '../../../incidents/list/ViewIncidents'
 import ViewIncidentsTable from '../../../incidents/list/ViewIncidentsTable'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/title/useTitle'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
 import Permissions from '../../../shared/model/Permissions'
@@ -39,7 +39,7 @@ describe('View Incidents', () => {
     jest.resetAllMocks()
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
-    jest.spyOn(titleUtil, 'default')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(IncidentRepository, 'findAll').mockResolvedValue(expectedIncidents)
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
@@ -47,7 +47,6 @@ describe('View Incidents', () => {
     history = createMemoryHistory()
     history.push(`/incidents`)
     const store = mockStore({
-      title: '',
       user: {
         permissions,
       },
@@ -60,16 +59,25 @@ describe('View Incidents', () => {
           <Provider store={store}>
             <Router history={history}>
               <Route path="/incidents">
-                <ViewIncidents />
+                <titleUtil.TitleProvider>
+                  <ViewIncidents />
+                </titleUtil.TitleProvider>
               </Route>
             </Router>
           </Provider>
         </ButtonBarProvider.ButtonBarProvider>,
       )
     })
+    wrapper.find(ViewIncidents).props().updateTitle = jest.fn()
     wrapper.update()
     return { wrapper: wrapper as ReactWrapper }
   }
+
+  it('should have called the useUpdateTitle hook', async () => {
+    await setup([Permissions.ViewIncidents])
+    expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
+  })
+
   it('should filter incidents by status=reported on first load ', async () => {
     await setup([Permissions.ViewIncidents])
 
@@ -78,12 +86,6 @@ describe('View Incidents', () => {
   })
 
   describe('layout', () => {
-    it('should set the title', async () => {
-      await setup([Permissions.ViewIncidents])
-
-      expect(titleUtil.default).toHaveBeenCalledWith('incidents.reports.label')
-    })
-
     it('should render a table with the incidents', async () => {
       const { wrapper } = await setup([Permissions.ViewIncidents])
       const table = wrapper.find(ViewIncidentsTable)

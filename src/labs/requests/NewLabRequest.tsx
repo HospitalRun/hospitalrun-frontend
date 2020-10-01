@@ -72,7 +72,7 @@ const NewLabRequest = () => {
       Toast(
         'success',
         t('states.success'),
-        `${t('labs.lab.successfullyCreated')} ${newLab?.type} ${t('labs.lab.for')} ${newLab?.patient}`,
+        `${t('labs.lab.successfullyCreated')} ${newLab?.type} ${t('labs.lab.for')} ${newLab?.fullName}`,
       )
       setError(undefined)
     } catch (e) {

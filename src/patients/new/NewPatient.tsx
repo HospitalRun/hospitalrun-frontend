@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
@@ -36,7 +36,8 @@ const NewPatient = () => {
     dateOfBirth: '1963-01-09T05:00:00.000Z',
   } as Patient
 
-  useTitle(t('patients.newPatient'))
+  const updateTitle = useUpdateTitle()
+  updateTitle(t('patients.newPatient'))
   useAddBreadcrumbs(breadcrumbs, true)
 
   const onCancel = () => {

@@ -1,6 +1,6 @@
 import { Panel, Spinner, TabsHeader, Tab, Button } from '@hospitalrun/components'
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
   useParams,
   withRouter,
@@ -12,9 +12,8 @@ import {
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
-import useTitle from '../../page-header/title/useTitle'
+import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 import Allergies from '../allergies/Allergies'
@@ -23,47 +22,34 @@ import CareGoalTab from '../care-goals/CareGoalTab'
 import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
+import usePatient from '../hooks/usePatient'
 import Labs from '../labs/Labs'
 import Note from '../notes/NoteTab'
-import { fetchPatient } from '../patient-slice'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
-import { getPatientFullName } from '../util/patient-name-util'
+import { getPatientCode, getPatientFullName } from '../util/patient-util'
 import VisitTab from '../visits/VisitTab'
-
-const getPatientCode = (p: Patient): string => {
-  if (p) {
-    return p.code
-  }
-
-  return ''
-}
 
 const ViewPatient = () => {
   const { t } = useTranslator()
   const history = useHistory()
-  const dispatch = useDispatch()
   const location = useLocation()
   const { path } = useRouteMatch()
-
-  const { patient, status } = useSelector((state: RootState) => state.patient)
-  const { permissions } = useSelector((state: RootState) => state.user)
-
-  useTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
-
   const setButtonToolBar = useButtonToolbarSetter()
+
+  const { id } = useParams()
+  const { permissions } = useSelector((state: RootState) => state.user)
+  const { data: patient, status } = usePatient(id)
+
+  const updateTitle = useUpdateTitle()
+  updateTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
-    { text: getPatientFullName(patient), location: `/patients/${patient.id}` },
+    { text: getPatientFullName(patient), location: `/patients/${id}` },
   ]
   useAddBreadcrumbs(breadcrumbs, true)
 
-  const { id } = useParams()
   useEffect(() => {
-    if (id) {
-      dispatch(fetchPatient(id))
-    }
-
     const buttons = []
     if (permissions.includes(Permissions.WritePatients)) {
       buttons.push(
@@ -73,7 +59,7 @@ const ViewPatient = () => {
           icon="edit"
           outlined
           onClick={() => {
-            history.push(`/patients/edit/${patient.id}`)
+            history.push(`/patients/edit/${id}`)
           }}
         >
           {t('actions.edit')}
@@ -86,7 +72,7 @@ const ViewPatient = () => {
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, id, setButtonToolBar, history, patient.id, permissions, t])
+  }, [setButtonToolBar, history, id, permissions, t])
 
   if (status === 'loading' || !patient) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />

@@ -1,5 +1,5 @@
 import Patient from '../../shared/model/Patient'
-import { getPatientName } from './patient-name-util'
+import { getPatientName } from './patient-util'
 
 /**
  * Add full name. Get rid of empty phone numbers, emails, and addresses.
