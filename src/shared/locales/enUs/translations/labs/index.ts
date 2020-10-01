@@ -38,6 +38,7 @@ export default {
       completedOn: 'Completed On',
       canceledOn: 'Canceled On',
       patient: 'Patient',
+      successfullyCreated: 'Successfully created',
     },
   },
 }
