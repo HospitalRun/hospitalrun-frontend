@@ -1,4 +1,5 @@
 import * as components from '@hospitalrun/components'
+import { Alert, Typeahead } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
 import { mount } from 'enzyme'
@@ -11,9 +12,9 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as titleUtil from '../../../../page-header/title/TitleContext'
-import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import NewAppointment from '../../../../scheduling/appointments/new/NewAppointment'
+import DateTimePickerWithLabelFormGroup from '../../../../shared/components/input/DateTimePickerWithLabelFormGroup'
 import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
 import LabRepository from '../../../../shared/db/LabRepository'
 import Appointment from '../../../../shared/model/Appointment'
@@ -74,7 +75,7 @@ describe('New Appointment', () => {
   })
 
   describe('layout', () => {
-    it('should render a Appointment Detail Component', async () => {
+    it('should render an Appointment Detail Component', async () => {
       let wrapper: any
       await act(async () => {
         wrapper = await setup()
@@ -85,7 +86,99 @@ describe('New Appointment', () => {
   })
 
   describe('on save click', () => {
-    it('should dispatch createAppointment when save button is clicked', async () => {
+    it('should have error when error saving without patient', async () => {
+      let wrapper: any
+      await act(async () => {
+        wrapper = await setup()
+      })
+      const expectedError = {
+        message: 'scheduling.appointment.errors.createAppointmentError',
+        patient: 'scheduling.appointment.errors.patientRequired',
+      }
+      const expectedAppointment = {
+        patient: '',
+        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
+        endDateTime: addMinutes(
+          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
+          60,
+        ).toISOString(),
+        location: 'location',
+        reason: 'reason',
+        type: 'type',
+      } as Appointment
+
+      act(() => {
+        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
+        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
+        onFieldChange('patient', expectedAppointment.patient)
+      })
+
+      wrapper.update()
+
+      const saveButton = wrapper.find(mockedComponents.Button).at(0)
+      expect(saveButton.text().trim()).toEqual('actions.save')
+      const onClick = saveButton.prop('onClick') as any
+
+      await act(async () => {
+        await onClick()
+      })
+      wrapper.update()
+      const alert = wrapper.find(Alert)
+      const typeahead = wrapper.find(Typeahead)
+
+      expect(AppointmentRepository.save).toHaveBeenCalledTimes(0)
+      expect(alert.prop('message')).toEqual(expectedError.message)
+      expect(typeahead.prop('isInvalid')).toBeTruthy()
+    })
+
+    it('should have error when error saving with end time earlier than start time', async () => {
+      let wrapper: any
+      await act(async () => {
+        wrapper = await setup()
+      })
+      const expectedError = {
+        message: 'scheduling.appointment.errors.createAppointmentError',
+        startDateTime: 'scheduling.appointment.errors.startDateMustBeBeforeEndDate',
+      }
+      const expectedAppointment = {
+        patient: 'Mr Popo',
+        startDateTime: new Date(2020, 10, 10, 0, 0, 0, 0).toISOString(),
+        endDateTime: new Date(1957, 10, 10, 0, 0, 0, 0).toISOString(),
+        location: 'location',
+        reason: 'reason',
+        type: 'type',
+      } as Appointment
+
+      act(() => {
+        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
+        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
+        onFieldChange('patient', expectedAppointment.patient)
+        onFieldChange('startDateTime', expectedAppointment.startDateTime)
+        onFieldChange('endDateTime', expectedAppointment.endDateTime)
+      })
+
+      wrapper.update()
+
+      const saveButton = wrapper.find(mockedComponents.Button).at(0)
+      expect(saveButton.text().trim()).toEqual('actions.save')
+      const onClick = saveButton.prop('onClick') as any
+
+      await act(async () => {
+        await onClick()
+      })
+      wrapper.update()
+      const alert = wrapper.find(Alert)
+      const typeahead = wrapper.find(Typeahead)
+      const dateInput = wrapper.find(DateTimePickerWithLabelFormGroup).at(0)
+
+      expect(AppointmentRepository.save).toHaveBeenCalledTimes(0)
+      expect(alert.prop('message')).toEqual(expectedError.message)
+      expect(typeahead.prop('isInvalid')).toBeTruthy()
+      expect(dateInput.prop('isInvalid')).toBeTruthy()
+      expect(dateInput.prop('feedback')).toEqual(expectedError.startDateTime)
+    })
+
+    it('should call AppointmentRepo.save when save button is clicked', async () => {
       let wrapper: any
       await act(async () => {
         wrapper = await setup()
@@ -160,8 +253,6 @@ describe('New Appointment', () => {
       })
 
       expect(AppointmentRepository.save).toHaveBeenCalledWith(expectedAppointment)
-      expect(store.getActions()).toContainEqual(appointmentSlice.createAppointmentStart())
-      expect(store.getActions()).toContainEqual(appointmentSlice.createAppointmentSuccess())
     })
 
     it('should navigate to /appointments/:id when a new appointment is created', async () => {
