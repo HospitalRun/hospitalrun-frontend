@@ -59,7 +59,7 @@ const ViewAppointments = () => {
                 id: appointment.id,
                 start: new Date(appointment.startDateTime),
                 end: new Date(appointment.endDateTime),
-                title: patient.fullName || '',
+                title: patient && patient.fullName ? patient.fullName : '',
                 allDay: false,
               }
             }),

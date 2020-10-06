@@ -1,10 +1,11 @@
 import { Spinner, Button, Toast } from '@hospitalrun/components'
+import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
-import usePatient from '../../../patients/hooks/usePatient'
 import { useUpdateTitle } from '../../../page-header/title/TitleContext'
+import usePatient from '../../../patients/hooks/usePatient'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Appointment from '../../../shared/model/Appointment'
 import useAppointment from '../../hooks/useAppointment'
@@ -55,7 +56,7 @@ const EditAppointment = () => {
   }
 
   const onSave = () => {
-    if (Object.keys(updateMutateError).length === 0 && !isErrorUpdate) {
+    if (_.isEmpty(updateMutateError) && !isErrorUpdate) {
       updateMutate(newAppointment).then(() => {
         Toast('success', t('states.success'), t('scheduling.appointment.successfullyUpdated'))
         history.push(`/appointments/${newAppointment.id}`)

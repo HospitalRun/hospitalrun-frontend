@@ -1,17 +1,17 @@
-import { Button, Toast } from '@hospitalrun/components'
+import { Button, Spinner, Toast } from '@hospitalrun/components'
 import addMinutes from 'date-fns/addMinutes'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import _ from 'lodash'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../../page-header/title/TitleContext'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Appointment from '../../../shared/model/Appointment'
-import { RootState } from '../../../shared/store'
-import { createAppointment } from '../appointment-slice'
+import useScheduleAppointment from '../../hooks/useScheduleAppointment'
 import AppointmentDetailForm from '../AppointmentDetailForm'
+import { AppointmentError } from '../util/validate-appointment'
 
 const breadcrumbs = [
   { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
@@ -21,39 +21,63 @@ const breadcrumbs = [
 const NewAppointment = () => {
   const { t } = useTranslator()
   const history = useHistory()
-  const dispatch = useDispatch()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('scheduling.appointments.new'))
+  useEffect(() => {
+    updateTitle(t('scheduling.appointments.new'))
+  })
   useAddBreadcrumbs(breadcrumbs, true)
+
   const startDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
   const endDateTime = addMinutes(startDateTime, 60)
-  const { error } = useSelector((state: RootState) => state.appointment)
-
-  const [appointment, setAppointment] = useState({
+  const [saved, setSaved] = useState(false)
+  const [newAppointmentMutateError, setError] = useState<AppointmentError>({} as AppointmentError)
+  const [newAppointment, setAppointment] = useState({
     patient: '',
     startDateTime: startDateTime.toISOString(),
     endDateTime: endDateTime.toISOString(),
     location: '',
     reason: '',
     type: '',
-  })
+  } as Appointment)
+
+  const {
+    mutate: newAppointmentMutate,
+    isLoading: isLoadingNewAppointment,
+    isError: isErrorNewAppointment,
+    validator: validateNewAppointment,
+  } = useScheduleAppointment()
 
   const onCancelClick = () => {
     history.push('/appointments')
   }
 
-  const onSaveSuccess = (newAppointment: Appointment) => {
-    history.push(`/appointments/${newAppointment.id}`)
-    Toast('success', t('states.success'), `${t('scheduling.appointment.successfullyCreated')}`)
+  const onSave = () => {
+    setSaved(true)
+    setError(validateNewAppointment(newAppointment))
   }
 
-  const onSave = () => {
-    dispatch(createAppointment(appointment as Appointment, onSaveSuccess))
+  useEffect(() => {
+    // if save click and no error proceed, else give error message.
+    if (saved) {
+      if (_.isEmpty(newAppointmentMutateError) && !isErrorNewAppointment) {
+        newAppointmentMutate(newAppointment).then((result) => {
+          Toast('success', t('states.success'), t('scheduling.appointment.successfullyCreated'))
+          history.push(`/appointments/${result?.id}`)
+        })
+      } else if (!_.isEmpty(newAppointmentMutateError)) {
+        newAppointmentMutateError.message = 'scheduling.appointment.errors.createAppointmentError'
+      }
+    }
+    setSaved(false)
+  }, [saved, newAppointmentMutateError])
+
+  if (isLoadingNewAppointment) {
+    return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {
     setAppointment({
-      ...appointment,
+      ...newAppointment,
       [key]: value,
     })
   }
@@ -62,8 +86,8 @@ const NewAppointment = () => {
     <div>
       <form>
         <AppointmentDetailForm
-          appointment={appointment as Appointment}
-          error={error}
+          appointment={newAppointment as Appointment}
+          error={newAppointmentMutateError}
           onFieldChange={onFieldChange}
         />
         <div className="row float-right">

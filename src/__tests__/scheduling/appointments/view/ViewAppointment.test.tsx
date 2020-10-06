@@ -29,6 +29,7 @@ const appointment = {
   endDateTime: new Date().toISOString(),
   reason: 'reason',
   location: 'location',
+  patient: '123',
 } as Appointment
 
 const patient = {
@@ -40,13 +41,17 @@ describe('View Appointment', () => {
   let history: any
   let store: MockStore
   let setButtonToolBarSpy: any
+  let deleteAppointmentSpy: any
+  let findAppointmentSpy: any
 
   const setup = async (status = 'completed', permissions = [Permissions.ReadAppointments]) => {
-    setButtonToolBarSpy = jest.fn()
-    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(appointment)
-    jest.spyOn(AppointmentRepository, 'delete').mockResolvedValue(appointment)
+    if (status === 'completed') {
+      findAppointmentSpy = jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(appointment)
+      deleteAppointmentSpy = jest
+        .spyOn(AppointmentRepository, 'delete')
+        .mockResolvedValue(appointment)
+    }
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
 
     history = createMemoryHistory()
@@ -83,7 +88,13 @@ describe('View Appointment', () => {
   }
 
   beforeEach(() => {
-    jest.restoreAllMocks()
+    jest.resetAllMocks()
+    jest.clearAllMocks()
+    setButtonToolBarSpy = jest.fn()
+    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
+  })
+  afterEach(() => {
+    setButtonToolBarSpy.mockReset()
   })
 
   it('should have called the useUpdateTitle hook', async () => {
@@ -117,16 +128,17 @@ describe('View Appointment', () => {
 
   it('should call getAppointment by id if id is present', async () => {
     await setup()
-    expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
+    expect(findAppointmentSpy).toHaveBeenCalledWith(appointment.id)
   })
 
-  // it('should render a loading spinner', async () => {
-  //   const { wrapper } = await setup('loading')
-  //   expect(wrapper.find(components.Spinner)).toHaveLength(1)
-  // })
+  it('should render a loading spinner', async () => {
+    const { wrapper } = await setup('loading')
+    expect(wrapper.find(components.Spinner)).toHaveLength(1)
+  })
 
   it('should render an AppointmentDetailForm with the correct data', async () => {
     const { wrapper } = await setup()
+    wrapper.update()
 
     const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
     expect(appointmentDetailForm.prop('appointment')).toEqual(appointment)
@@ -147,112 +159,109 @@ describe('View Appointment', () => {
     expect(deleteAppointmentConfirmationModal.prop('title')).toEqual('actions.confirmDelete')
   })
 
-  describe('delete appointment', () => {
-    // let setButtonToolBarSpy = jest.fn()
-    let deleteAppointmentSpy = jest.spyOn(AppointmentRepository, 'delete')
-    beforeEach(() => {
-      jest.restoreAllMocks()
-      jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
-      deleteAppointmentSpy = jest.spyOn(AppointmentRepository, 'delete')
-      // setButtonToolBarSpy = jest.fn()
-      // mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+  // describe('delete appointment', () => {
+  // beforeEach(() => {
+  // setButtonToolBarSpy = jest.fn()
+  // deleteAppointmentSpy = jest.spyOn(AppointmentRepository, 'delete')
+  // jest.resetAllMocks()
+  // jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
+  // mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
+  // })
+
+  it('should render a delete appointment button in the button toolbar', async () => {
+    await setup('completed', [Permissions.ReadAppointments, Permissions.DeleteAppointment])
+    expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+    expect((actualButtons[0] as any).props.children).toEqual(
+      'scheduling.appointments.deleteAppointment',
+    )
+  })
+
+  it('should pop up the modal when on delete appointment click', async () => {
+    const { wrapper } = await setup('completed', [
+      Permissions.ReadAppointments,
+      Permissions.DeleteAppointment,
+    ])
+
+    expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+
+    act(() => {
+      const { onClick } = (actualButtons[0] as any).props
+      onClick({ preventDefault: jest.fn() })
     })
+    wrapper.update()
 
-    it('should render a delete appointment button in the button toolbar', async () => {
-      await setup('completed', [Permissions.ReadAppointments, Permissions.DeleteAppointment])
+    const deleteConfirmationModal = wrapper.find(components.Modal)
+    expect(deleteConfirmationModal.prop('show')).toEqual(true)
+  })
 
-      expect(setButtonToolBarSpy).toHaveBeenCalled()
-      const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
-      expect((actualButtons[0] as any).props.children).toEqual(
-        'scheduling.appointments.deleteAppointment',
-      )
+  it('should close the modal when the toggle button is clicked', async () => {
+    const { wrapper } = await setup('completed', [
+      Permissions.ReadAppointments,
+      Permissions.DeleteAppointment,
+    ])
+
+    expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
+    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+
+    act(() => {
+      const { onClick } = (actualButtons[0] as any).props
+      onClick({ preventDefault: jest.fn() })
     })
+    wrapper.update()
 
-    it('should pop up the modal when on delete appointment click', async () => {
-      const { wrapper } = await setup('completed', [
-        Permissions.ReadAppointments,
-        Permissions.DeleteAppointment,
-      ])
-
-      expect(setButtonToolBarSpy).toHaveBeenCalled()
-      const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
-
-      act(() => {
-        const { onClick } = (actualButtons[0] as any).props
-        onClick({ preventDefault: jest.fn() })
-      })
-      wrapper.update()
-
+    act(() => {
       const deleteConfirmationModal = wrapper.find(components.Modal)
-      expect(deleteConfirmationModal.prop('show')).toEqual(true)
+      deleteConfirmationModal.prop('toggle')()
     })
+    wrapper.update()
 
-    it('should close the modal when the toggle button is clicked', async () => {
-      const { wrapper } = await setup('completed', [
-        Permissions.ReadAppointments,
-        Permissions.DeleteAppointment,
-      ])
+    const deleteConfirmationModal = wrapper.find(components.Modal)
+    expect(deleteConfirmationModal.prop('show')).toEqual(false)
+  })
 
-      expect(setButtonToolBarSpy).toHaveBeenCalled()
-      const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
+  it('should delete from appointment repository when modal confirmation button is clicked', async () => {
+    const { wrapper } = await setup('completed', [
+      Permissions.ReadAppointments,
+      Permissions.DeleteAppointment,
+    ])
 
-      act(() => {
-        const { onClick } = (actualButtons[0] as any).props
-        onClick({ preventDefault: jest.fn() })
-      })
-      wrapper.update()
+    const deleteConfirmationModal = wrapper.find(components.Modal)
 
-      act(() => {
-        const deleteConfirmationModal = wrapper.find(components.Modal)
-        deleteConfirmationModal.prop('toggle')()
-      })
-      wrapper.update()
-
-      const deleteConfirmationModal = wrapper.find(components.Modal)
-      expect(deleteConfirmationModal.prop('show')).toEqual(false)
+    await act(async () => {
+      const closeButton = (await deleteConfirmationModal.prop('closeButton')) as any
+      closeButton.onClick()
     })
+    wrapper.update()
 
-    it('should delete from appointment repository when modal confirmation button is clicked', async () => {
-      const { wrapper } = await setup('completed', [
-        Permissions.ReadAppointments,
-        Permissions.DeleteAppointment,
-      ])
+    expect(deleteAppointmentSpy).toHaveBeenCalledTimes(1)
+    expect(deleteAppointmentSpy).toHaveBeenCalledWith(appointment)
+  })
 
-      const deleteConfirmationModal = wrapper.find(components.Modal)
+  it('should navigate to /appointments and display a message when delete is successful', async () => {
+    jest.spyOn(components, 'Toast')
+    const mockedComponents = mocked(components, true)
 
-      await act(async () => {
-        const closeButton = (await deleteConfirmationModal.prop('closeButton')) as any
-        closeButton.onClick()
-      })
-      wrapper.update()
+    const { wrapper } = await setup('completed', [
+      Permissions.ReadAppointments,
+      Permissions.DeleteAppointment,
+    ])
 
-      expect(deleteAppointmentSpy).toHaveBeenCalledTimes(1)
-      expect(deleteAppointmentSpy).toHaveBeenCalledWith(appointment)
+    const deleteConfirmationModal = wrapper.find(components.Modal)
+
+    await act(async () => {
+      const closeButton = (await deleteConfirmationModal.prop('closeButton')) as any
+      closeButton.onClick()
     })
+    wrapper.update()
 
-    it('should navigate to /appointments and display a message when delete is successful', async () => {
-      jest.spyOn(components, 'Toast')
-      const mockedComponents = mocked(components, true)
-
-      const { wrapper } = await setup('completed', [
-        Permissions.ReadAppointments,
-        Permissions.DeleteAppointment,
-      ])
-
-      const deleteConfirmationModal = wrapper.find(components.Modal)
-
-      await act(async () => {
-        const closeButton = (await deleteConfirmationModal.prop('closeButton')) as any
-        closeButton.onClick()
-      })
-      wrapper.update()
-
-      expect(history.location.pathname).toEqual('/appointments')
-      expect(mockedComponents.Toast).toHaveBeenCalledWith(
-        'success',
-        'states.success',
-        'scheduling.appointment.successfullyDeleted',
-      )
-    })
+    expect(history.location.pathname).toEqual('/appointments')
+    expect(mockedComponents.Toast).toHaveBeenCalledWith(
+      'success',
+      'states.success',
+      'scheduling.appointment.successfullyDeleted',
+    )
+    // })
   })
 })
