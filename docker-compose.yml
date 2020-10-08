@@ -1,6 +1,6 @@
 # Dockerc compose only for developing purpose
 
-version: "3.3"
+version: "3.8"
 
 services:
   couchdb:
