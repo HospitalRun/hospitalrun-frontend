@@ -12,7 +12,11 @@ function toLocaleString(date: Date) {
   return date.toLocaleString([], options)
 }
 
-export function getAppointmentLabel(appointment: Appointment) {
+export function getAppointmentLabel(appointment: Appointment | undefined) {
+  if (!appointment) {
+    return ''
+  }
+
   const { id, startDateTime, endDateTime } = appointment
 
   return startDateTime && endDateTime

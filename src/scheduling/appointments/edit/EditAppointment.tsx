@@ -35,7 +35,7 @@ const EditAppointment = () => {
   const breadcrumbs = [
     { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
     {
-      text: currentAppointment ? getAppointmentLabel(currentAppointment) : '',
+      text: getAppointmentLabel(currentAppointment),
       location: `/appointments/${id}`,
     },
     {

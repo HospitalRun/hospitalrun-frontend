@@ -16,9 +16,7 @@ import AppointmentDetailForm from '../../../../scheduling/appointments/Appointme
 import NewAppointment from '../../../../scheduling/appointments/new/NewAppointment'
 import DateTimePickerWithLabelFormGroup from '../../../../shared/components/input/DateTimePickerWithLabelFormGroup'
 import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
-import LabRepository from '../../../../shared/db/LabRepository'
 import Appointment from '../../../../shared/model/Appointment'
-import Lab from '../../../../shared/model/Lab'
 import Patient from '../../../../shared/model/Patient'
 import { RootState } from '../../../../shared/store'
 
@@ -37,8 +35,6 @@ describe('New Appointment', () => {
     mocked(AppointmentRepository, true).save.mockResolvedValue(
       expectedNewAppointment as Appointment,
     )
-    jest.spyOn(LabRepository, 'findAllByPatientId').mockResolvedValue([] as Lab[])
-
     history = createMemoryHistory()
     store = mockStore({
       appointment: {
