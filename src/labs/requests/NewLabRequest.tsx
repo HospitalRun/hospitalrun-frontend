@@ -72,7 +72,9 @@ const NewLabRequest = () => {
       Toast(
         'success',
         t('states.success'),
-        `${t('lab.successfullyCreated')} ${newLab?.type} ${newLab?.patient}`,
+        `${t('labs.successfullyCreated')} ${newLab?.type} ${t('labs.lab.for')} ${
+          (await PatientRepository.find(newLab?.patient || '')).fullName
+        }`,
       )
       setError(undefined)
     } catch (e) {
