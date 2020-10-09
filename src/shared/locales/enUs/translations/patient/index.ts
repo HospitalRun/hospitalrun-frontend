@@ -1,5 +1,6 @@
 export default {
   patient: {
+    label: 'Patient',
     code: 'Patient Code',
     firstName: 'First Name',
     lastName: 'Last Name',
