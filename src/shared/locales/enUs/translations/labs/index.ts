@@ -5,6 +5,7 @@ export default {
     search: 'Search labs',
     successfullyUpdated: 'Successfully updated',
     successfullyCompleted: 'Successfully completed',
+    successfullyCreated: 'Successfully created',
     status: {
       requested: 'Requested',
       completed: 'Completed',
