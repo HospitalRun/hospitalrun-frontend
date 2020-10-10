@@ -26,8 +26,9 @@ import usePatient from '../hooks/usePatient'
 import Labs from '../labs/Labs'
 import Note from '../notes/NoteTab'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
-import { getPatientCode, getPatientFullName } from '../util/patient-util'
+import { getPatientFullName } from '../util/patient-util'
 import VisitTab from '../visits/VisitTab'
+import ImportantPatientInfo from './ImportantPatientInfo'
 
 const ViewPatient = () => {
   const { t } = useTranslator()
@@ -41,7 +42,7 @@ const ViewPatient = () => {
   const { data: patient, status } = usePatient(id)
 
   const updateTitle = useUpdateTitle()
-  updateTitle(`${getPatientFullName(patient)} (${getPatientCode(patient)})`)
+  updateTitle(t('patient.label'))
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
@@ -80,90 +81,94 @@ const ViewPatient = () => {
 
   return (
     <div>
-      <TabsHeader>
-        <Tab
-          active={location.pathname === `/patients/${patient.id}`}
-          label={t('patient.generalInformation')}
-          onClick={() => history.push(`/patients/${patient.id}`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/relatedpersons`}
-          label={t('patient.relatedPersons.label')}
-          onClick={() => history.push(`/patients/${patient.id}/relatedpersons`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/appointments`}
-          label={t('scheduling.appointments.label')}
-          onClick={() => history.push(`/patients/${patient.id}/appointments`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/allergies`}
-          label={t('patient.allergies.label')}
-          onClick={() => history.push(`/patients/${patient.id}/allergies`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/diagnoses`}
-          label={t('patient.diagnoses.label')}
-          onClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/notes`}
-          label={t('patient.notes.label')}
-          onClick={() => history.push(`/patients/${patient.id}/notes`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/labs`}
-          label={t('patient.labs.label')}
-          onClick={() => history.push(`/patients/${patient.id}/labs`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/care-plans`}
-          label={t('patient.carePlan.label')}
-          onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/care-goals`}
-          label={t('patient.careGoal.label')}
-          onClick={() => history.push(`/patients/${patient.id}/care-goals`)}
-        />
-        <Tab
-          active={location.pathname === `/patients/${patient.id}/visits`}
-          label={t('patient.visits.label')}
-          onClick={() => history.push(`/patients/${patient.id}/visits`)}
-        />
-      </TabsHeader>
-      <Panel>
-        <Route exact path={path}>
-          <GeneralInformation patient={patient} />
-        </Route>
-        <Route exact path={`${path}/relatedpersons`}>
-          <RelatedPerson patient={patient} />
-        </Route>
-        <Route exact path={`${path}/appointments`}>
-          <AppointmentsList patientId={patient.id} />
-        </Route>
-        <Route path={`${path}/allergies`}>
-          <Allergies patient={patient} />
-        </Route>
-        <Route exact path={`${path}/diagnoses`}>
-          <Diagnoses patient={patient} />
-        </Route>
-        <Route path={`${path}/notes`}>
-          <Note patient={patient} />
-        </Route>
-        <Route exact path={`${path}/labs`}>
-          <Labs patient={patient} />
-        </Route>
-        <Route path={`${path}/care-plans`}>
-          <CarePlanTab />
-        </Route>
-        <Route path={`${path}/care-goals`}>
-          <CareGoalTab />
-        </Route>
-        <Route path={`${path}/visits`}>
-          <VisitTab patientId={patient.id} />
-        </Route>
-      </Panel>
+      {' '}
+      <ImportantPatientInfo patient={patient} />
+      <div>
+        <TabsHeader>
+          <Tab
+            active={location.pathname === `/patients/${patient.id}`}
+            label={t('patient.generalInformation')}
+            onClick={() => history.push(`/patients/${patient.id}`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/relatedpersons`}
+            label={t('patient.relatedPersons.label')}
+            onClick={() => history.push(`/patients/${patient.id}/relatedpersons`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/appointments`}
+            label={t('scheduling.appointments.label')}
+            onClick={() => history.push(`/patients/${patient.id}/appointments`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/allergies`}
+            label={t('patient.allergies.label')}
+            onClick={() => history.push(`/patients/${patient.id}/allergies`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/diagnoses`}
+            label={t('patient.diagnoses.label')}
+            onClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/notes`}
+            label={t('patient.notes.label')}
+            onClick={() => history.push(`/patients/${patient.id}/notes`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/labs`}
+            label={t('patient.labs.label')}
+            onClick={() => history.push(`/patients/${patient.id}/labs`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/care-plans`}
+            label={t('patient.carePlan.label')}
+            onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/care-goals`}
+            label={t('patient.careGoal.label')}
+            onClick={() => history.push(`/patients/${patient.id}/care-goals`)}
+          />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/visits`}
+            label={t('patient.visits.label')}
+            onClick={() => history.push(`/patients/${patient.id}/visits`)}
+          />
+        </TabsHeader>
+        <Panel>
+          <Route exact path={path}>
+            <GeneralInformation patient={patient} />
+          </Route>
+          <Route exact path={`${path}/relatedpersons`}>
+            <RelatedPerson patient={patient} />
+          </Route>
+          <Route exact path={`${path}/appointments`}>
+            <AppointmentsList patientId={patient.id} />
+          </Route>
+          <Route path={`${path}/allergies`}>
+            <Allergies patient={patient} />
+          </Route>
+          <Route exact path={`${path}/diagnoses`}>
+            <Diagnoses patient={patient} />
+          </Route>
+          <Route exact path={`${path}/notes`}>
+            <Note patient={patient} />
+          </Route>
+          <Route exact path={`${path}/labs`}>
+            <Labs patient={patient} />
+          </Route>
+          <Route path={`${path}/care-plans`}>
+            <CarePlanTab />
+          </Route>
+          <Route path={`${path}/care-goals`}>
+            <CareGoalTab />
+          </Route>
+          <Route path={`${path}/visits`}>
+            <VisitTab patientId={patient.id} />
+          </Route>
+        </Panel>
+      </div>
     </div>
   )
 }
