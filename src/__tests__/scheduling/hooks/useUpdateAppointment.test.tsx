@@ -1,6 +1,5 @@
 import { act } from '@testing-library/react-hooks'
 
-import useUpdateLab from '../../../labs/hooks/useUpdateLab'
 import useUpdateAppointment from '../../../scheduling/hooks/useUpdateAppointment'
 import AppointmentRepository from '../../../shared/db/AppointmentRepository'
 import Appointment from '../../../shared/model/Appointment'

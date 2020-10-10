@@ -93,9 +93,6 @@ describe('View Appointment', () => {
     setButtonToolBarSpy = jest.fn()
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
   })
-  afterEach(() => {
-    setButtonToolBarSpy.mockReset()
-  })
 
   it('should have called the useUpdateTitle hook', async () => {
     await setup()
@@ -158,15 +155,6 @@ describe('View Appointment', () => {
     )
     expect(deleteAppointmentConfirmationModal.prop('title')).toEqual('actions.confirmDelete')
   })
-
-  // describe('delete appointment', () => {
-  // beforeEach(() => {
-  // setButtonToolBarSpy = jest.fn()
-  // deleteAppointmentSpy = jest.spyOn(AppointmentRepository, 'delete')
-  // jest.resetAllMocks()
-  // jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter')
-  // mocked(ButtonBarProvider).useButtonToolbarSetter.mockReturnValue(setButtonToolBarSpy)
-  // })
 
   it('should render a delete appointment button in the button toolbar', async () => {
     await setup('completed', [Permissions.ReadAppointments, Permissions.DeleteAppointment])
@@ -262,6 +250,5 @@ describe('View Appointment', () => {
       'states.success',
       'scheduling.appointment.successfullyDeleted',
     )
-    // })
   })
 })

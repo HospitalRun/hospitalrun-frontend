@@ -27,7 +27,7 @@ let route: any
 describe('/appointments', () => {
   // eslint-disable-next-line no-shadow
 
-  const setup = (setup_route: string, permissions: Permissions[], renderHr: boolean = false) => {
+  const setup = (setupRoute: string, permissions: Permissions[], renderHr: boolean = false) => {
     const appointment = {
       id: '123',
       patient: '456',
@@ -52,7 +52,7 @@ describe('/appointments', () => {
     jest.useFakeTimers()
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[setup_route]}>
+        <MemoryRouter initialEntries={[setupRoute]}>
           <TitleProvider>{renderHr ? <HospitalRun /> : <Appointments />}</TitleProvider>
         </MemoryRouter>
       </Provider>,
@@ -201,7 +201,7 @@ describe('/appointments/edit/:id', () => {
   it('should render the edit appointment screen when /appointments/edit/:id is accessed', async () => {
     route = '/appointments/edit/123'
     const permissions: Permissions[] = [Permissions.WriteAppointments, Permissions.ReadAppointments]
-    const { wrapper, store } = await setup(route, permissions, false)
+    const { wrapper } = await setup(route, permissions, false)
 
     expect(wrapper.find(EditAppointment)).toHaveLength(1)
     expect(AppointmentRepository.find).toHaveBeenCalledTimes(1)

@@ -91,7 +91,7 @@ const ViewAppointment = () => {
     return () => {
       setButtonToolBar([])
     }
-  }, [setButtonToolBar, getButtons])
+  }, [getButtons])
 
   return (
     <>
