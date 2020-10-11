@@ -69,7 +69,15 @@ const NewAppointment = () => {
       }
     }
     setSaved(false)
-  }, [saved, newAppointmentMutateError])
+  }, [
+    saved,
+    newAppointmentMutateError,
+    isErrorNewAppointment,
+    newAppointmentMutate,
+    newAppointment,
+    t,
+    history,
+  ])
 
   if (isLoadingNewAppointment) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
