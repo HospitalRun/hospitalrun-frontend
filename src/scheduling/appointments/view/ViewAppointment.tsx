@@ -83,7 +83,7 @@ const ViewAppointment = () => {
     }
 
     return buttons
-  }, [appointment, permissions])
+  }, [appointment, history, permissions, t])
 
   useEffect(() => {
     setButtonToolBar(getButtons())
@@ -91,7 +91,7 @@ const ViewAppointment = () => {
     return () => {
       setButtonToolBar([])
     }
-  }, [getButtons])
+  }, [getButtons, setButtonToolBar])
 
   return (
     <>
