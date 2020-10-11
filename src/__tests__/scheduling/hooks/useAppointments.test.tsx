@@ -1,8 +1,9 @@
-import { act } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useAppointments from '../../../scheduling/hooks/useAppointments'
 import AppointmentRepository from '../../../shared/db/AppointmentRepository'
 import Appointment from '../../../shared/model/Appointment'
+import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
 
 describe('useAppointments', () => {
   it('should get an appointment by id', async () => {
@@ -30,16 +31,16 @@ describe('useAppointments', () => {
     ] as Appointment[]
     jest.spyOn(AppointmentRepository, 'findAll').mockResolvedValue(expectedAppointments)
 
-    // let actualData: any
+    let actualData: any
     await act(async () => {
-      // const renderHookResult = renderHook(() => useAppointments())
-      const result = useAppointments()
-      // await waitUntilQueryIsSuccessful(result)
-      result.then((actualData) => {
-        expect(AppointmentRepository.findAll).toHaveBeenCalledTimes(1)
-        // expect(AppointmentRepository.findAll).toBeCalledWith(expectedAppointmentId)
-        expect(actualData).toEqual(expectedAppointments)
+      await act(async () => {
+        const renderHookResult = renderHook(() => useAppointments())
+        const { result } = renderHookResult
+        await waitUntilQueryIsSuccessful(renderHookResult)
+        actualData = result.current.data
       })
+      expect(AppointmentRepository.findAll).toHaveBeenCalledTimes(1)
+      expect(actualData).toEqual(expectedAppointments)
     })
   })
 })

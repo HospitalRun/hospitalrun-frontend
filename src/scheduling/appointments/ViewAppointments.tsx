@@ -5,8 +5,10 @@ import { useHistory } from 'react-router-dom'
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
+import Loading from '../../shared/components/Loading'
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
+import Appointment from '../../shared/model/Appointment'
 import useAppointments from '../hooks/useAppointments'
 
 interface Event {
@@ -24,7 +26,7 @@ const ViewAppointments = () => {
   const history = useHistory()
   const updateTitle = useUpdateTitle()
   updateTitle(t('scheduling.appointments.label'))
-  const appointments = useAppointments()
+  const { data: appointments, isLoading } = useAppointments()
   const [events, setEvents] = useState<Event[]>([])
   const setButtonToolBar = useButtonToolbarSetter()
   useAddBreadcrumbs(breadcrumbs, true)
@@ -48,28 +50,29 @@ const ViewAppointments = () => {
   }, [setButtonToolBar, history, t])
 
   useEffect(() => {
-    // get appointments, find patients, then make Event objects out of the two and set events.
-    const getAppointments = async () => {
-      appointments.then(async (appointmentsList) => {
-        if (appointmentsList) {
-          const newEvents = await Promise.all(
-            appointmentsList.map(async (appointment) => {
-              const patient = await PatientRepository.find(appointment.patient)
-              return {
-                id: appointment.id,
-                start: new Date(appointment.startDateTime),
-                end: new Date(appointment.endDateTime),
-                title: patient && patient.fullName ? patient.fullName : '',
-                allDay: false,
-              }
-            }),
-          )
-          setEvents(newEvents)
-        }
+    if (appointments && !isLoading) {
+      appointments.map(async (appointment: Appointment) => {
+        const patient = await PatientRepository.find(appointment.patient)
+        setEvents((eventsArray) => [
+          ...eventsArray,
+          {
+            id: appointment.id,
+            start: new Date(appointment.startDateTime),
+            end: new Date(appointment.endDateTime),
+            title: patient && patient.fullName ? patient.fullName : '',
+            allDay: false,
+          },
+        ])
       })
     }
-    getAppointments()
-  }, []) // provide an empty dependency array, to ensure this useEffect will only run on mount.
+    return () => {
+      setEvents([])
+    }
+  }, [appointments, isLoading])
+
+  if (isLoading || appointments === undefined) {
+    return <Loading />
+  }
 
   return (
     <div>
