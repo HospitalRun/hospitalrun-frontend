@@ -89,7 +89,6 @@ describe('View Appointment', () => {
 
   beforeEach(() => {
     jest.resetAllMocks()
-    jest.clearAllMocks()
     setButtonToolBarSpy = jest.fn()
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
   })
@@ -158,7 +157,6 @@ describe('View Appointment', () => {
 
   it('should render a delete appointment button in the button toolbar', async () => {
     await setup('completed', [Permissions.ReadAppointments, Permissions.DeleteAppointment])
-    // expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
     expect((actualButtons[0] as any).props.children).toEqual(
       'scheduling.appointments.deleteAppointment',
@@ -171,7 +169,6 @@ describe('View Appointment', () => {
       Permissions.DeleteAppointment,
     ])
 
-    // expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
 
     act(() => {
@@ -190,7 +187,6 @@ describe('View Appointment', () => {
       Permissions.DeleteAppointment,
     ])
 
-    // expect(setButtonToolBarSpy).toHaveBeenCalledTimes(1)
     const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
 
     act(() => {

@@ -1,4 +1,4 @@
-import { Button, Spinner } from '@hospitalrun/components'
+import { Button } from '@hospitalrun/components'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as titleUtil from '../../../../page-header/title/TitleContext'
+import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import EditAppointment from '../../../../scheduling/appointments/edit/EditAppointment'
 import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
 import PatientRepository from '../../../../shared/db/PatientRepository'
@@ -56,7 +57,6 @@ describe('Edit Appointment', () => {
   const setup = async (mockAppointment: Appointment, mockPatient: Patient) => {
     jest.resetAllMocks()
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    // jest.spyOn(titleUtil, 'useUpdateAppointment').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'saveOrUpdate')
     jest.spyOn(AppointmentRepository, 'find')
     jest.spyOn(PatientRepository, 'find')
@@ -91,12 +91,6 @@ describe('Edit Appointment', () => {
 
   beforeEach(() => {
     jest.restoreAllMocks()
-  })
-
-  it('should render an edit appointment form', async () => {
-    const { wrapper } = await setup(expectedAppointment, expectedPatient)
-
-    expect(wrapper.find(Spinner)).toHaveLength(1)
   })
 
   it('should load an appointment when component loads', async () => {
@@ -157,5 +151,12 @@ describe('Edit Appointment', () => {
 
     wrapper.update()
     expect(history.location.pathname).toEqual('/appointments/123')
+  })
+  it('should render an edit appointment form', async () => {
+    const { wrapper } = await setup(expectedAppointment, expectedPatient)
+    await act(async () => {
+      await wrapper.update()
+    })
+    expect(wrapper.find(AppointmentDetailForm)).toHaveLength(1)
   })
 })
