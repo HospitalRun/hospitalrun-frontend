@@ -1,15 +1,17 @@
 import { Spinner, Button, Modal, Toast } from '@hospitalrun/components'
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useButtonToolbarSetter } from '../../../page-header/button-toolbar/ButtonBarProvider'
 import { useUpdateTitle } from '../../../page-header/title/TitleContext'
+import usePatient from '../../../patients/hooks/usePatient'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
-import { fetchAppointment, deleteAppointment } from '../appointment-slice'
+import useAppointment from '../../hooks/useAppointment'
+import useDeleteAppointment from '../../hooks/useDeleteAppointment'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 
@@ -17,17 +19,18 @@ const ViewAppointment = () => {
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
   updateTitle(t('scheduling.appointments.viewAppointment'))
-  const dispatch = useDispatch()
   const { id } = useParams()
   const history = useHistory()
-  const { appointment, patient, status } = useSelector((state: RootState) => state.appointment)
-  const { permissions } = useSelector((state: RootState) => state.user)
+  const [deleteMutate] = useDeleteAppointment()
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false)
   const setButtonToolBar = useButtonToolbarSetter()
+  const { permissions } = useSelector((state: RootState) => state.user)
 
+  const { data: appointment } = useAppointment(id)
+  const { data: patient } = usePatient(appointment ? appointment.patient : id)
   const breadcrumbs = [
     { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
-    { text: getAppointmentLabel(appointment), location: `/patients/${appointment.id}` },
+    { text: appointment ? getAppointmentLabel(appointment) : '', location: `/patients/${id}` },
   ]
   useAddBreadcrumbs(breadcrumbs, true)
 
@@ -36,19 +39,21 @@ const ViewAppointment = () => {
     setShowDeleteConfirmation(true)
   }
 
-  const onDeleteSuccess = () => {
-    history.push('/appointments')
-    Toast('success', t('states.success'), t('scheduling.appointment.successfullyDeleted'))
-  }
-
   const onDeleteConfirmationButtonClick = () => {
-    dispatch(deleteAppointment(appointment, onDeleteSuccess))
+    if (!appointment) {
+      return
+    }
+
+    deleteMutate({ appointmentId: appointment.id }).then(() => {
+      history.push('/appointments')
+      Toast('success', t('states.success'), t('scheduling.appointment.successfullyDeleted'))
+    })
     setShowDeleteConfirmation(false)
   }
 
-  useEffect(() => {
-    const buttons = []
-    if (permissions.includes(Permissions.WriteAppointments)) {
+  const getButtons = useCallback(() => {
+    const buttons: React.ReactNode[] = []
+    if (appointment && permissions.includes(Permissions.WriteAppointments)) {
       buttons.push(
         <Button
           key="editAppointmentButton"
@@ -77,39 +82,39 @@ const ViewAppointment = () => {
       )
     }
 
-    setButtonToolBar(buttons)
-  }, [appointment.id, history, permissions, setButtonToolBar, t])
+    return buttons
+  }, [appointment, history, permissions, t])
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchAppointment(id))
-    }
+    setButtonToolBar(getButtons())
 
     return () => {
       setButtonToolBar([])
     }
-  }, [dispatch, id, setButtonToolBar])
-
-  if (status === 'loading') {
-    return <Spinner type="BarLoader" loading />
-  }
+  }, [getButtons, setButtonToolBar])
 
   return (
-    <div>
-      <AppointmentDetailForm appointment={appointment} isEditable={false} patient={patient} />
-      <Modal
-        body={t('scheduling.appointment.deleteConfirmationMessage')}
-        buttonsAlignment="right"
-        show={showDeleteConfirmation}
-        closeButton={{
-          children: t('actions.delete'),
-          color: 'danger',
-          onClick: onDeleteConfirmationButtonClick,
-        }}
-        title={t('actions.confirmDelete')}
-        toggle={() => setShowDeleteConfirmation(false)}
-      />
-    </div>
+    <>
+      {patient && appointment ? (
+        <div>
+          <AppointmentDetailForm appointment={appointment} isEditable={false} patient={patient} />
+          <Modal
+            body={t('scheduling.appointment.deleteConfirmationMessage')}
+            buttonsAlignment="right"
+            show={showDeleteConfirmation}
+            closeButton={{
+              children: t('actions.delete'),
+              color: 'danger',
+              onClick: onDeleteConfirmationButtonClick,
+            }}
+            title={t('actions.confirmDelete')}
+            toggle={() => setShowDeleteConfirmation(false)}
+          />
+        </div>
+      ) : (
+        <Spinner type="BarLoader" loading />
+      )}
+    </>
   )
 }
 
