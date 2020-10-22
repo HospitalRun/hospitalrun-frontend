@@ -24,6 +24,8 @@ interface PatientState {
 
 interface Error {
   message?: string
+  streetAddress?: string
+  zip?: string
   givenName?: string
   dateOfBirth?: string
   suffix?: string
@@ -110,6 +112,14 @@ function validatePatient(patient: Patient) {
   const error: Error = {}
 
   const regexContainsNumber = /\d/
+
+  if (!patient.streetAddress) {
+    error.streetAddress = 'patient.errors.invalidStreetAddress'
+  }
+
+  if (!patient.zip) {
+    error.zip = 'patient.errors.invalidZip'
+  }
 
   if (!patient.givenName) {
     error.givenName = 'patient.errors.patientGivenNameFeedback'

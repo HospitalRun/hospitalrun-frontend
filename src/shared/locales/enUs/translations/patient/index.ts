@@ -6,6 +6,11 @@ export default {
     lastName: 'Last Name',
     suffix: 'Suffix',
     prefix: 'Prefix',
+    streetAddress: 'Street Address',
+    streetAddress2: 'Street Address 2 (optional)',
+    zip: 'Zip/Postcode',
+    city: 'Town/City',
+    country: 'Country',
     givenName: 'Given Name',
     familyName: 'Family Name',
     dateOfBirth: 'Date of Birth',
@@ -217,6 +222,9 @@ export default {
       patientNumInPreferredLanguageFeedback: 'Cannot contain numbers.',
       invalidEmail: 'Must be a valid email.',
       invalidPhoneNumber: 'Must be a valid phone number.',
+
+      invalidStreetAddress: 'Must be a valid address',
+      invalidZip: 'Must be a valid zip',
     },
   },
 }

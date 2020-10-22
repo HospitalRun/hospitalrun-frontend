@@ -145,7 +145,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint-staged",
-      "commit-msg": "npm run commitlint -- -E HUSKY_GIT_PARAMS"
+      "commit-msg": "npm run commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "config": {

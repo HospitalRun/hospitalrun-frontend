@@ -11,6 +11,11 @@ import Visit from './Visit'
 
 export default interface Patient extends AbstractDBModel, Name, ContactInformation {
   sex: string
+  streetAddress: string
+  streetAddress2: string
+  zip: string
+  city: string
+  country: string
   dateOfBirth: string
   isApproximateDateOfBirth: boolean
   preferredLanguage?: string

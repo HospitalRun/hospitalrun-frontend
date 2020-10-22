@@ -14,6 +14,10 @@ import ContactInfo from './ContactInfo'
 
 interface Error {
   message?: string
+  streetAddress?: string
+  zip?: string
+  city?: string
+  country?: string
   prefix?: string
   givenName?: string
   familyName?: string
@@ -256,14 +260,73 @@ const GeneralInformation = (props: Props): ReactElement => {
         </div>
         <div>
           <Panel title={t('patient.address')} color="primary" collapsible>
-            <ContactInfo
+            <div className="row">
+              <div className="col-md-6">
+                <TextInputWithLabelFormGroup
+                  label={t('patient.streetAddress')}
+                  name="streetAddress"
+                  value={patient.streetAddress}
+                  isEditable={isEditable}
+                  isRequired
+                  onChange={(event) => onFieldChange('streetAddress', event.currentTarget.value)}
+                  isInvalid={!!error?.streetAddress}
+                  feedback={t(error?.streetAddress)}
+                />
+              </div>
+              <div className="col-md-6">
+                <TextInputWithLabelFormGroup
+                  label={t('patient.streetAddress2')}
+                  name="streetAddress2"
+                  value={patient.streetAddress2}
+                  isEditable={isEditable}
+                  onChange={(event) => onFieldChange('streetAddress2', event.currentTarget.value)}
+                />
+              </div>
+              <div className="col-md-4">
+                <TextInputWithLabelFormGroup
+                  label={t('patient.city')}
+                  name="city"
+                  value={patient.city}
+                  isEditable={isEditable}
+                  isRequired
+                  onChange={(event) => onFieldChange('city', event.currentTarget.value)}
+                  isInvalid={!!error?.city}
+                  feedback={t(error?.city)}
+                />
+              </div>
+              <div className="col-md-4">
+                <TextInputWithLabelFormGroup
+                  label={t('patient.zip')}
+                  name="zip"
+                  value={patient.zip}
+                  isEditable={isEditable}
+                  isRequired
+                  onChange={(event) => onFieldChange('zip', event.currentTarget.value)}
+                  isInvalid={!!error?.zip}
+                  feedback={t(error?.zip)}
+                />
+              </div>
+              <div className="col-md-4">
+                <TextInputWithLabelFormGroup
+                  label={t('patient.country')}
+                  name="country"
+                  value={patient.country}
+                  isEditable={isEditable}
+                  isRequired
+                  onChange={(event) => onFieldChange('country', event.currentTarget.value)}
+                  isInvalid={!!error?.country}
+                  feedback={t(error?.country)}
+                />
+              </div>
+            </div>
+            {/* <ContactInfo
               component="TextFieldWithLabelFormGroup"
               data={patient.addresses}
               label="patient.address"
               name="address"
               isEditable={isEditable}
               onChange={(newAddresses) => onFieldChange('addresses', newAddresses)}
-            />
+            /> */}
           </Panel>
         </div>
       </Panel>
