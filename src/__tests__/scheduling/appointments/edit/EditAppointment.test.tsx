@@ -11,7 +11,6 @@ import thunk from 'redux-thunk'
 import { mocked } from 'ts-jest/utils'
 
 import * as titleUtil from '../../../../page-header/title/TitleContext'
-import * as appointmentSlice from '../../../../scheduling/appointments/appointment-slice'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import EditAppointment from '../../../../scheduling/appointments/edit/EditAppointment'
 import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
@@ -24,7 +23,7 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Edit Appointment', () => {
-  const appointment = {
+  const expectedAppointment = {
     id: '123',
     patient: '456',
     startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
@@ -34,7 +33,7 @@ describe('Edit Appointment', () => {
     type: 'type',
   } as Appointment
 
-  const patient = ({
+  const expectedPatient = ({
     id: '456',
     prefix: 'prefix',
     givenName: 'givenName',
@@ -55,21 +54,22 @@ describe('Edit Appointment', () => {
   let history: any
   let store: MockStore
 
-  const setup = async () => {
+  const setup = async (mockAppointment: Appointment, mockPatient: Patient) => {
+    jest.resetAllMocks()
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'saveOrUpdate')
     jest.spyOn(AppointmentRepository, 'find')
     jest.spyOn(PatientRepository, 'find')
 
     const mockedAppointmentRepository = mocked(AppointmentRepository, true)
-    mockedAppointmentRepository.find.mockResolvedValue(appointment)
-    mockedAppointmentRepository.saveOrUpdate.mockResolvedValue(appointment)
+    mockedAppointmentRepository.find.mockResolvedValue(mockAppointment)
+    mockedAppointmentRepository.saveOrUpdate.mockResolvedValue(mockAppointment)
 
     const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.find.mockResolvedValue(patient)
+    mockedPatientRepository.find.mockResolvedValue(mockPatient)
 
     history = createMemoryHistory()
-    store = mockStore({ appointment: { appointment, patient } } as any)
+    store = mockStore({ appointment: { mockAppointment, mockPatient } } as any)
 
     history.push('/appointments/edit/123')
     const wrapper = await mount(
@@ -93,33 +93,23 @@ describe('Edit Appointment', () => {
     jest.restoreAllMocks()
   })
 
-  it('should render an edit appointment form', async () => {
-    const { wrapper } = await setup()
-
-    expect(wrapper.find(AppointmentDetailForm)).toHaveLength(1)
-  })
-
-  it('should dispatch fetchAppointment when component loads', async () => {
-    const { wrapper } = await setup()
+  it('should load an appointment when component loads', async () => {
+    const { wrapper } = await setup(expectedAppointment, expectedPatient)
     await act(async () => {
       await wrapper.update()
     })
 
-    expect(AppointmentRepository.find).toHaveBeenCalledWith(appointment.id)
-    expect(PatientRepository.find).toHaveBeenCalledWith(appointment.patient)
-    expect(store.getActions()).toContainEqual(appointmentSlice.fetchAppointmentStart())
-    expect(store.getActions()).toContainEqual(
-      appointmentSlice.fetchAppointmentSuccess({ appointment, patient }),
-    )
+    expect(AppointmentRepository.find).toHaveBeenCalledWith(expectedAppointment.id)
+    expect(PatientRepository.find).toHaveBeenCalledWith(expectedAppointment.patient)
   })
 
   it('should have called useUpdateTitle hook', async () => {
-    await setup()
+    await setup(expectedAppointment, expectedPatient)
     expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
   })
 
-  it('should dispatch updateAppointment when save button is clicked', async () => {
-    const { wrapper } = await setup()
+  it('should updateAppointment when save button is clicked', async () => {
+    const { wrapper } = await setup(expectedAppointment, expectedPatient)
     await act(async () => {
       await wrapper.update()
     })
@@ -132,15 +122,11 @@ describe('Edit Appointment', () => {
       await onClick()
     })
 
-    expect(AppointmentRepository.saveOrUpdate).toHaveBeenCalledWith(appointment)
-    expect(store.getActions()).toContainEqual(appointmentSlice.updateAppointmentStart())
-    expect(store.getActions()).toContainEqual(
-      appointmentSlice.updateAppointmentSuccess(appointment),
-    )
+    expect(AppointmentRepository.saveOrUpdate).toHaveBeenCalledWith(expectedAppointment)
   })
 
   it('should navigate to /appointments/:id when save is successful', async () => {
-    const { wrapper } = await setup()
+    const { wrapper } = await setup(expectedAppointment, expectedPatient)
 
     const saveButton = wrapper.find(Button).at(0)
     const onClick = saveButton.prop('onClick') as any
@@ -153,7 +139,7 @@ describe('Edit Appointment', () => {
   })
 
   it('should navigate to /appointments/:id when cancel is clicked', async () => {
-    const { wrapper } = await setup()
+    const { wrapper } = await setup(expectedAppointment, expectedPatient)
 
     const cancelButton = wrapper.find(Button).at(1)
     const onClick = cancelButton.prop('onClick') as any
@@ -165,5 +151,12 @@ describe('Edit Appointment', () => {
 
     wrapper.update()
     expect(history.location.pathname).toEqual('/appointments/123')
+  })
+  it('should render an edit appointment form', async () => {
+    const { wrapper } = await setup(expectedAppointment, expectedPatient)
+    await act(async () => {
+      await wrapper.update()
+    })
+    expect(wrapper.find(AppointmentDetailForm)).toHaveLength(1)
   })
 })

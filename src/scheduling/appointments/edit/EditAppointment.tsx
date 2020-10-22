@@ -1,73 +1,77 @@
-import { Spinner, Button } from '@hospitalrun/components'
+import { Spinner, Button, Toast } from '@hospitalrun/components'
+import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../../page-header/title/TitleContext'
+import usePatient from '../../../patients/hooks/usePatient'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Appointment from '../../../shared/model/Appointment'
-import { RootState } from '../../../shared/store'
-import { updateAppointment, fetchAppointment } from '../appointment-slice'
+import useAppointment from '../../hooks/useAppointment'
+import useUpdateAppointment from '../../hooks/useUpdateAppointment'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 
 const EditAppointment = () => {
   const { t } = useTranslator()
+  const { id } = useParams()
+
   const updateTitle = useUpdateTitle()
   updateTitle(t('scheduling.appointments.editAppointment'))
   const history = useHistory()
-  const dispatch = useDispatch()
 
-  const [appointment, setAppointment] = useState({} as Appointment)
+  const [newAppointment, setAppointment] = useState({} as Appointment)
+  const { data: currentAppointment, isLoading: isLoadingAppointment } = useAppointment(id)
 
-  const { appointment: reduxAppointment, patient, status, error } = useSelector(
-    (state: RootState) => state.appointment,
-  )
+  const {
+    mutate: updateMutate,
+    isLoading: isLoadingUpdate,
+    isError: isErrorUpdate,
+    error: updateMutateError,
+  } = useUpdateAppointment(newAppointment)
+  const { data: patient } = usePatient(currentAppointment ? currentAppointment.patient : id)
+
   const breadcrumbs = [
     { i18nKey: 'scheduling.appointments.label', location: '/appointments' },
     {
-      text: getAppointmentLabel(reduxAppointment),
-      location: `/appointments/${reduxAppointment.id}`,
+      text: getAppointmentLabel(currentAppointment),
+      location: `/appointments/${id}`,
     },
     {
       i18nKey: 'scheduling.appointments.editAppointment',
-      location: `/appointments/edit/${reduxAppointment.id}`,
+      location: `/appointments/edit/${id}`,
     },
   ]
   useAddBreadcrumbs(breadcrumbs, true)
 
   useEffect(() => {
-    setAppointment(reduxAppointment)
-  }, [reduxAppointment])
-
-  const { id } = useParams()
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchAppointment(id))
+    if (currentAppointment !== undefined) {
+      setAppointment(currentAppointment)
     }
-  }, [id, dispatch])
+  }, [currentAppointment])
 
   const onCancel = () => {
-    history.push(`/appointments/${appointment.id}`)
-  }
-
-  const onSaveSuccess = () => {
-    history.push(`/appointments/${appointment.id}`)
+    history.push(`/appointments/${newAppointment.id}`)
   }
 
   const onSave = () => {
-    dispatch(updateAppointment(appointment as Appointment, onSaveSuccess))
+    if (_.isEmpty(updateMutateError) && !isErrorUpdate) {
+      updateMutate(newAppointment).then(() => {
+        Toast('success', t('states.success'), t('scheduling.appointment.successfullyUpdated'))
+        history.push(`/appointments/${newAppointment.id}`)
+      })
+    }
   }
 
   const onFieldChange = (key: string, value: string | boolean) => {
     setAppointment({
-      ...appointment,
+      ...newAppointment,
       [key]: value,
     })
   }
 
-  if (status === 'loading') {
+  if (isLoadingAppointment || isLoadingUpdate) {
     return <Spinner color="blue" loading size={[10, 25]} type="ScaleLoader" />
   }
 
@@ -75,10 +79,10 @@ const EditAppointment = () => {
     <div>
       <AppointmentDetailForm
         isEditable
-        appointment={appointment}
+        appointment={newAppointment}
         patient={patient}
         onFieldChange={onFieldChange}
-        error={error}
+        error={updateMutateError}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">
