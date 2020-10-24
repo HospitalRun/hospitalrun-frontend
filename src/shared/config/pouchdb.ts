@@ -21,12 +21,7 @@ if (process.env.NODE_ENV === 'test') {
   serverDb = new PouchDB('hospitalrun', { skip_setup: true, adapter: 'memory' })
   localDb = new PouchDB('local_hospitalrun', { skip_setup: true, adapter: 'memory' })
 } else {
-  serverDb = new PouchDB(`${process.env.REACT_APP_HOSPITALRUN_API}/hospitalrun`, {
-    skip_setup: true,
-  })
-
   localDb = new PouchDB('local_hospitalrun', { skip_setup: true })
-  localDb.sync(serverDb, { live: true, retry: true })
 }
 
 export const schema = [
