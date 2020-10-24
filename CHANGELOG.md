@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0-alpha.6](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2020-10-24)
+
+
+### Features
+
+* **patient:** add panel to display useful patient information ([0baf3af](https://github.com/HospitalRun/hospitalrun-frontend/commit/0baf3af504c1cc0b9512c1d1be4d0b1eeb268f49)), closes [#2259](https://github.com/HospitalRun/hospitalrun-frontend/issues/2259)
+* **patient:** refactor add allergy button ([4b234a1](https://github.com/HospitalRun/hospitalrun-frontend/commit/4b234a1968802e45038197f1e765020e9ca15bff)), closes [#2259](https://github.com/HospitalRun/hospitalrun-frontend/issues/2259)
+* **patient:** remove unused function ([eba6074](https://github.com/HospitalRun/hospitalrun-frontend/commit/eba6074adb0a52be03cc5e4b6c2945f4d7d24f9c)), closes [#2259](https://github.com/HospitalRun/hospitalrun-frontend/issues/2259)
+* **patient:** resolve merge conflict ([981f59f](https://github.com/HospitalRun/hospitalrun-frontend/commit/981f59f48ded2c48b932180e45ff677b28d63f14)), closes [#2259](https://github.com/HospitalRun/hospitalrun-frontend/issues/2259)
+
+
+### Bug Fixes
+
+* **EditAppointment:** refactor editing appointment to use ([56e058f](https://github.com/HospitalRun/hospitalrun-frontend/commit/56e058f9c78f519be6c598b10d8eb48f3d7df97d))
+* **lab request:** Update toast success message ([734ac30](https://github.com/HospitalRun/hospitalrun-frontend/commit/734ac3029da18ec0abf2e8d21dc7fb8f6b931eee))
+* **scheduling:** added hook tests ([da046c7](https://github.com/HospitalRun/hospitalrun-frontend/commit/da046c7087626cc269c4a96ad97989deee2e207f))
+
 ## [2.0.0-alpha.5](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2020-09-28)
 
 
