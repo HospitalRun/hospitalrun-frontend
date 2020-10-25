@@ -15,7 +15,12 @@ const ViewPatients = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('patients.label'))
+
+  // set patients page label
+  useEffect(() => {
+    updateTitle(t('patients.label'))
+  })
+
   const dispatch = useDispatch()
   const setButtonToolBar = useButtonToolbarSetter()
 

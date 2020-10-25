@@ -1,5 +1,5 @@
 import { Button, Row, Column } from '@hospitalrun/components'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
@@ -17,7 +17,12 @@ const ReportIncident = () => {
   const history = useHistory()
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('incidents.reports.new'))
+
+  // set report incident page label
+  useEffect(() => {
+    updateTitle(t('incidents.reports.new'))
+  })
+
   const breadcrumbs = [
     {
       i18nKey: 'incidents.reports.new',

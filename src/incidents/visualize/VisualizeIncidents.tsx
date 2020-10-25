@@ -10,7 +10,11 @@ import IncidentSearchRequest from '../model/IncidentSearchRequest'
 const VisualizeIncidents = () => {
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('incidents.visualize.view'))
+
+  // set visualize incidents page label
+  useEffect(() => {
+    updateTitle(t('incidents.visualize.view'))
+  })
 
   const searchFilter = IncidentFilter.reported
   const searchRequest: IncidentSearchRequest = { status: searchFilter }
