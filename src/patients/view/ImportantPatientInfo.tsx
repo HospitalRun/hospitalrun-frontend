@@ -13,6 +13,7 @@ import { RootState } from '../../shared/store'
 import NewAllergyModal from '../allergies/NewAllergyModal'
 import AddCarePlanModal from '../care-plans/AddCarePlanModal'
 import AddDiagnosisModal from '../diagnoses/AddDiagnosisModal'
+import usePatientAllergies from '../hooks/usePatientAllergies'
 import AddVisitModal from '../visits/AddVisitModal'
 
 interface Props {
@@ -36,6 +37,7 @@ const ImportantPatientInfo = (props: Props) => {
   const [showDiagnosisModal, setShowDiagnosisModal] = useState(false)
   const [showAddCarePlanModal, setShowAddCarePlanModal] = useState(false)
   const [showAddVisitModal, setShowAddVisitModal] = useState(false)
+  const { data, status } = usePatientAllergies(patient.id)
 
   const patientCodeStyle: CSSProperties = {
     position: 'relative',
@@ -111,8 +113,8 @@ const ImportantPatientInfo = (props: Props) => {
 
           <div style={allergiesSectionStyle}>
             <Typography variant="h5">{t('patient.allergies.label')}</Typography>
-            {patient.allergies ? (
-              patient.allergies?.map((a: Allergy) => (
+            {data && status !== 'loading' ? (
+              data?.map((a: Allergy) => (
                 <li key={a.id.toString()}>
                   <Link to={`/patients/${patient.id}/allergies`}>{a.name}</Link>
                 </li>
