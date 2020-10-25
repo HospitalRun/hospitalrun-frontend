@@ -20,12 +20,9 @@ const NewImagingRequest = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const updateTitle = useUpdateTitle()
-
-  // set new imaging request page label
   useEffect(() => {
     updateTitle(t('imagings.requests.new'))
   })
-
   const [mutate] = useRequestImaging()
   const [error, setError] = useState<ImagingRequestError>()
   const [visitOption, setVisitOption] = useState([] as Option[])

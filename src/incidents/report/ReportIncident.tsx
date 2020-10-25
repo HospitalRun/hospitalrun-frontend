@@ -17,12 +17,9 @@ const ReportIncident = () => {
   const history = useHistory()
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
-
-  // set report incident page label
   useEffect(() => {
     updateTitle(t('incidents.reports.new'))
   })
-
   const breadcrumbs = [
     {
       i18nKey: 'incidents.reports.new',

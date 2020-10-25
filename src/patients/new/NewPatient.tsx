@@ -37,12 +37,9 @@ const NewPatient = () => {
   } as Patient
 
   const updateTitle = useUpdateTitle()
-
-  // set new patient page label
   useEffect(() => {
     updateTitle(t('patients.newPatient'))
   })
-
   useAddBreadcrumbs(breadcrumbs, true)
 
   const onCancel = () => {

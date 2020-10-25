@@ -6,12 +6,9 @@ import useTranslator from '../shared/hooks/useTranslator'
 const Dashboard: React.FC = () => {
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
-
-  // set dashboard page label
   useEffect(() => {
     updateTitle(t('dashboard.label'))
   })
-  
   return <h3>Example</h3>
 }
 

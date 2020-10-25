@@ -22,12 +22,9 @@ const NewMedicationRequest = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const updateTitle = useUpdateTitle()
-
-  // set request medication page label
   useEffect(() => {
     updateTitle(t('medications.requests.new'))
   })
-
   const { status, error } = useSelector((state: RootState) => state.medication)
 
   const [newMedicationRequest, setNewMedicationRequest] = useState(({

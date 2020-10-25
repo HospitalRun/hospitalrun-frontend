@@ -8,12 +8,9 @@ import useTranslator from '../shared/hooks/useTranslator'
 const Settings = () => {
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
-
-  // set settings page label
   useEffect(() => {
     updateTitle(t('settings.label'))
   })
-
   return (
     <>
       <Row>

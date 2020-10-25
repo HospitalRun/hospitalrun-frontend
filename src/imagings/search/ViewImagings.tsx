@@ -17,12 +17,9 @@ const ViewImagings = () => {
   const history = useHistory()
   const setButtons = useButtonToolbarSetter()
   const updateTitle = useUpdateTitle()
-
-  // set imagings page label
   useEffect(() => {
     updateTitle(t('imagings.label'))
   })
-
   const [searchRequest, setSearchRequest] = useState<ImagingSearchRequest>({
     status: 'all',
     text: '',

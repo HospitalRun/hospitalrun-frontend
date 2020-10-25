@@ -23,12 +23,9 @@ const NewLabRequest = () => {
   const [newNote, setNewNote] = useState('')
   const [error, setError] = useState<LabError | undefined>(undefined)
   const updateTitle = useUpdateTitle()
-
-  // set request lab page label
   useEffect(() => {
     updateTitle(t('labs.requests.new'))
   })
-
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
     type: '',

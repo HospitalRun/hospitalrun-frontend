@@ -17,12 +17,9 @@ const ViewMedications = () => {
   const history = useHistory()
   const setButtons = useButtonToolbarSetter()
   const updateTitle = useUpdateTitle()
-
-  // set medications page label
   useEffect(() => {
     updateTitle(t('medications.label'))
   })
-
   const { permissions } = useSelector((state: RootState) => state.user)
 
   const getButtons = useCallback(() => {
