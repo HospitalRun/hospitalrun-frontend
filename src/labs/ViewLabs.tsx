@@ -23,8 +23,9 @@ const ViewLabs = () => {
   const history = useHistory()
   const setButtons = useButtonToolbarSetter()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('labs.label'))
-
+  useEffect(() => {
+    updateTitle(t('labs.label'))
+  })
   const { permissions } = useSelector((state: RootState) => state.user)
   const [searchFilter, setSearchFilter] = useState<LabFilter>('all')
   const [searchText, setSearchText] = useState<string>('')

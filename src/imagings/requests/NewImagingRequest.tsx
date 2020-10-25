@@ -1,6 +1,6 @@
 import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
 import format from 'date-fns/format'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
@@ -20,7 +20,9 @@ const NewImagingRequest = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('imagings.requests.new'))
+  useEffect(() => {
+    updateTitle(t('imagings.requests.new'))
+  })
   const [mutate] = useRequestImaging()
   const [error, setError] = useState<ImagingRequestError>()
   const [visitOption, setVisitOption] = useState([] as Option[])

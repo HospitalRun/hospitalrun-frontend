@@ -1,5 +1,5 @@
 import { Button, Toast } from '@hospitalrun/components'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -37,7 +37,9 @@ const NewPatient = () => {
   } as Patient
 
   const updateTitle = useUpdateTitle()
-  updateTitle(t('patients.newPatient'))
+  useEffect(() => {
+    updateTitle(t('patients.newPatient'))
+  })
   useAddBreadcrumbs(breadcrumbs, true)
 
   const onCancel = () => {

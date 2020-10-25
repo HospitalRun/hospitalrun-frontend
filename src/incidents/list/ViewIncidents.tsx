@@ -16,7 +16,9 @@ const ViewIncidents = () => {
   const history = useHistory()
   const setButtonToolBar = useButtonToolbarSetter()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('incidents.reports.label'))
+  useEffect(() => {
+    updateTitle(t('incidents.reports.label'))
+  })
   const [searchFilter, setSearchFilter] = useState(IncidentFilter.reported)
 
   useEffect(() => {
