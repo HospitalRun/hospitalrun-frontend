@@ -158,8 +158,9 @@ const ImportantPatientInfo = (props: Props) => {
           </div>
           {permissions.includes(Permissions.AddDiagnosis) && (
             <Button
-              color="light"
+              color="primary"
               icon="add"
+              outlined
               iconLocation="left"
               onClick={() => setShowDiagnosisModal(true)}
             >
@@ -192,9 +193,10 @@ const ImportantPatientInfo = (props: Props) => {
           </div>
           {permissions.includes(Permissions.AddCarePlan) && (
             <Button
-              color="light"
-              icon="add"
-              iconLocation="left"
+               color="primary"
+               icon="add"
+               outlined
+               iconLocation="left"
               onClick={() => setShowAddCarePlanModal(true)}
             >
               {t('patient.carePlan.new')}
