@@ -1,5 +1,5 @@
 import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -22,7 +22,9 @@ const NewMedicationRequest = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('medications.requests.new'))
+  useEffect(() => {
+    updateTitle(t('medications.requests.new'))
+  })
   const { status, error } = useSelector((state: RootState) => state.medication)
 
   const [newMedicationRequest, setNewMedicationRequest] = useState(({

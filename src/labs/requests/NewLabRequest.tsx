@@ -1,5 +1,5 @@
 import { Typeahead, Label, Button, Alert, Toast } from '@hospitalrun/components'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -23,8 +23,9 @@ const NewLabRequest = () => {
   const [newNote, setNewNote] = useState('')
   const [error, setError] = useState<LabError | undefined>(undefined)
   const updateTitle = useUpdateTitle()
-  updateTitle(t('labs.requests.new'))
-
+  useEffect(() => {
+    updateTitle(t('labs.requests.new'))
+  })
   const [newLabRequest, setNewLabRequest] = useState({
     patient: '',
     type: '',

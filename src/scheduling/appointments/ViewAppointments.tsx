@@ -25,7 +25,9 @@ const ViewAppointments = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('scheduling.appointments.label'))
+  useEffect(() => {
+    updateTitle(t('scheduling.appointments.label'))
+  })
   const { data: appointments, isLoading } = useAppointments()
   const [events, setEvents] = useState<Event[]>([])
   const setButtonToolBar = useButtonToolbarSetter()
