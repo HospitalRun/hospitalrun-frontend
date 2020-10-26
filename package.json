@@ -29,7 +29,7 @@
     "react-bootstrap-typeahead": "~5.1.0",
     "react-dom": "~16.13.0",
     "react-i18next": "~11.7.0",
-    "react-query": "~2.23.0",
+    "react-query": "~2.25.2",
     "react-query-devtools": "~2.6.0",
     "react-redux": "~7.2.0",
     "react-router": "~5.2.0",
@@ -39,7 +39,7 @@
     "redux-thunk": "~2.3.0",
     "relational-pouch": "~4.0.0",
     "shortid": "^2.2.15",
-    "typescript": "~3.8.3",
+    "typescript": "~3x.8.3",
     "uuid": "^8.0.0",
     "validator": "^13.0.0"
   },
