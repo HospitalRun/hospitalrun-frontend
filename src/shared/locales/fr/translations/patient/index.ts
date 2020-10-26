@@ -59,8 +59,8 @@ export default {
     diagnoses: {
       label: 'Diagnostics',
       new: 'Ajouter un diagnostic',
-      diagnosisName: 'Nom du diagnostic',
-      diagnosisDate: 'Date du diagnostic',
+      diagnosisName: 'Nom',
+      diagnosisDate: 'Date',
       warning: {
         noDiagnoses: 'Aucun diagnostic',
       },
