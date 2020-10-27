@@ -3,6 +3,7 @@ import escapeStringRegexp from 'escape-string-regexp'
 import { relationalDb } from '../config/pouchdb'
 import Appointment from '../model/Appointment'
 import Lab from '../model/Lab'
+import Medication from '../model/Medication'
 import Patient from '../model/Patient'
 import generateCode from '../util/generateCode'
 import Repository from './Repository'
@@ -54,6 +55,11 @@ class PatientRepository extends Repository<Patient> {
   async getLabs(patientId: string): Promise<Lab[]> {
     const result = await this.db.rel.findHasMany('lab', 'patient', patientId)
     return result.labs
+  }
+
+  async getMedications(patientId: string): Promise<Medication[]> {
+    const result = await this.db.rel.findHasMany('medication', 'patient', patientId)
+    return result.medications
   }
 }
 
