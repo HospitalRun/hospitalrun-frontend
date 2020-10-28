@@ -86,7 +86,6 @@ const ImportantPatientInfo = (props: Props) => {
 
   return (
     <div>
-      {/* Patien Info header row */}
       <Row style={headerRowStyle}>
         <div className="col-2">
           <div style={headerInfoPatientNameStyle}>
@@ -132,7 +131,6 @@ const ImportantPatientInfo = (props: Props) => {
         </div>
       </Row>
 
-      {/* Patien Info middle row */}
       <Row style={middleRowStyle}>
         <div className="col allergies-section" style={middleRowSectionStyle}>
           <Typography variant="h5">{t('patient.allergies.label')}</Typography>
