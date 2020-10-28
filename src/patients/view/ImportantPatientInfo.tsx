@@ -109,7 +109,7 @@ const ImportantPatientInfo = (props: Props) => {
             <strong>{t('patient.dateOfBirth')}</strong>
             <h6>
               {patient.dateOfBirth
-                ? format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
+                ? formatDate(patient.dateOfBirth)
                 : t('patient.unknownDateOfBirth')}
             </h6>
           </div>
