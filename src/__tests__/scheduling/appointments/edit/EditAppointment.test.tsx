@@ -8,7 +8,6 @@ import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
 import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { mocked } from 'ts-jest/utils'
 
 import * as titleUtil from '../../../../page-header/title/TitleContext'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
@@ -57,16 +56,9 @@ describe('Edit Appointment', () => {
   const setup = async (mockAppointment: Appointment, mockPatient: Patient) => {
     jest.resetAllMocks()
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest.spyOn(AppointmentRepository, 'saveOrUpdate')
-    jest.spyOn(AppointmentRepository, 'find')
-    jest.spyOn(PatientRepository, 'find')
-
-    const mockedAppointmentRepository = mocked(AppointmentRepository, true)
-    mockedAppointmentRepository.find.mockResolvedValue(mockAppointment)
-    mockedAppointmentRepository.saveOrUpdate.mockResolvedValue(mockAppointment)
-
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.find.mockResolvedValue(mockPatient)
+    jest.spyOn(AppointmentRepository, 'saveOrUpdate').mockResolvedValue(mockAppointment)
+    jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(mockAppointment)
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
 
     history = createMemoryHistory()
     store = mockStore({ appointment: { mockAppointment, mockPatient } } as any)

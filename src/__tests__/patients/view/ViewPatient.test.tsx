@@ -7,7 +7,6 @@ import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/title/TitleContext'
@@ -54,10 +53,8 @@ describe('ViewPatient', () => {
     setButtonToolBarSpy = jest.fn()
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest.spyOn(PatientRepository, 'find')
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.find.mockResolvedValue(patient)
     history = createMemoryHistory()
     store = mockStore({
       patient: { patient },
