@@ -7,7 +7,6 @@ import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
 import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { mocked } from 'ts-jest/utils'
 
 import * as titleUtil from '../../../page-header/title/TitleContext'
 import GeneralInformation from '../../../patients/GeneralInformation'
@@ -31,9 +30,7 @@ describe('New Patient', () => {
 
   const setup = (error?: any) => {
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest.spyOn(PatientRepository, 'save')
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.save.mockResolvedValue(patient)
+    jest.spyOn(PatientRepository, 'save').mockResolvedValue(patient)
 
     history = createMemoryHistory()
     store = mockStore({ patient: { patient: {} as Patient, createError: error } } as any)
@@ -126,8 +123,7 @@ describe('New Patient', () => {
   })
 
   it('should navigate to /patients/:id and display a message after a new patient is successfully created', async () => {
-    jest.spyOn(components, 'Toast')
-    const mockedComponents = mocked(components, true)
+    jest.spyOn(components, 'Toast').mockImplementation(jest.fn())
     let wrapper: any
     await act(async () => {
       wrapper = await setup()
@@ -150,7 +146,7 @@ describe('New Patient', () => {
     })
 
     expect(history.location.pathname).toEqual(`/patients/${patient.id}`)
-    expect(mockedComponents.Toast).toHaveBeenCalledWith(
+    expect(components.Toast).toHaveBeenCalledWith(
       'success',
       'states.success',
       `patients.successfullyCreated ${patient.fullName}`,

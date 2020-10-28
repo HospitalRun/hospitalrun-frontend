@@ -1,10 +1,10 @@
 import { Table } from '@hospitalrun/components'
-import format from 'date-fns/format'
 import React from 'react'
 import { useHistory } from 'react-router'
 
 import Loading from '../../shared/components/Loading'
 import useTranslator from '../../shared/hooks/useTranslator'
+import { formatDate } from '../../shared/util/formatDate'
 import usePatients from '../hooks/usePatients'
 import PatientSearchRequest from '../models/PatientSearchRequest'
 import NoPatientsExist from './NoPatientsExist'
@@ -39,8 +39,7 @@ const ViewPatientsTable = (props: Props) => {
         {
           label: t('patient.dateOfBirth'),
           key: 'dateOfBirth',
-          formatter: (row) =>
-            row.dateOfBirth ? format(new Date(row.dateOfBirth), 'yyyy-MM-dd') : '',
+          formatter: (row) => formatDate(row.dateOfBirth),
         },
       ]}
       actionsHeaderText={t('actions.label')}
