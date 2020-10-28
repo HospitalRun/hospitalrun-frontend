@@ -1,5 +1,4 @@
 import { Row, Table, Button, Typography } from '@hospitalrun/components'
-import format from 'date-fns/format'
 import React, { CSSProperties, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
@@ -10,6 +9,7 @@ import Diagnosis from '../../shared/model/Diagnosis'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
+import { formatDate } from '../../shared/util/formatDate'
 import NewAllergyModal from '../allergies/NewAllergyModal'
 import AddCarePlanModal from '../care-plans/AddCarePlanModal'
 import AddDiagnosisModal from '../diagnoses/AddDiagnosisModal'
@@ -81,7 +81,7 @@ const ImportantPatientInfo = (props: Props) => {
             <h6>{getPatientCode(patient)}</h6>
           </div>
         </div>
-        <div className="col d-flex justify-content-end">
+        <div className="col d-flex justify-content-end h-100">
           {permissions.includes(Permissions.AddVisit) && (
             <Button
               outlined
@@ -105,7 +105,7 @@ const ImportantPatientInfo = (props: Props) => {
             <strong>{t('patient.dateOfBirth')}</strong>
             <h6>
               {patient.dateOfBirth
-                ? format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
+                ? formatDate(patient.dateOfBirth)
                 : t('patient.unknownDateOfBirth')}
             </h6>
           </div>
@@ -148,10 +148,7 @@ const ImportantPatientInfo = (props: Props) => {
                 {
                   label: t('patient.diagnoses.diagnosisDate'),
                   key: 'diagnosisDate',
-                  formatter: (row) =>
-                    row.diagnosisDate
-                      ? format(new Date(row.diagnosisDate), 'yyyy-MM-dd hh:mm a')
-                      : '',
+                  formatter: (row) => formatDate(row.diagnosisDate),
                 },
                 { label: t('patient.diagnoses.status'), key: 'status' },
               ]}
@@ -181,12 +178,12 @@ const ImportantPatientInfo = (props: Props) => {
                 {
                   label: t('patient.carePlan.startDate'),
                   key: 'startDate',
-                  formatter: (row) => format(new Date(row.startDate), 'yyyy-MM-dd'),
+                  formatter: (row) => formatDate(row.startDate),
                 },
                 {
                   label: t('patient.carePlan.endDate'),
                   key: 'endDate',
-                  formatter: (row) => format(new Date(row.endDate), 'yyyy-MM-dd'),
+                  formatter: (row) => formatDate(row.endDate),
                 },
                 { label: t('patient.carePlan.status'), key: 'status' },
               ]}
