@@ -81,7 +81,7 @@ const ImportantPatientInfo = (props: Props) => {
             <h6>{getPatientCode(patient)}</h6>
           </div>
         </div>
-        <div className="col d-flex justify-content-end">
+        <div className="col d-flex justify-content-end h-100">
           {permissions.includes(Permissions.AddVisit) && (
             <Button
               outlined
