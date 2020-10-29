@@ -16,6 +16,7 @@ import CarePlanTab from '../../../patients/care-plans/CarePlanTab'
 import Diagnoses from '../../../patients/diagnoses/Diagnoses'
 import GeneralInformation from '../../../patients/GeneralInformation'
 import Labs from '../../../patients/labs/Labs'
+import Medications from '../../../patients/medications/Medications'
 import NotesTab from '../../../patients/notes/NoteTab'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
 import ViewPatient from '../../../patients/view/ViewPatient'
@@ -55,12 +56,14 @@ describe('ViewPatient', () => {
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
+    jest.spyOn(PatientRepository, 'getMedications').mockResolvedValue([])
     history = createMemoryHistory()
     store = mockStore({
       patient: { patient },
       user: { permissions },
       appointments: { appointments: [] },
       labs: { labs: [] },
+      medications: { medications: [] },
     } as any)
 
     history.push('/patients/123')
@@ -121,17 +124,18 @@ describe('ViewPatient', () => {
     const tabs = tabsHeader.find(Tab)
     expect(tabsHeader).toHaveLength(1)
 
-    expect(tabs).toHaveLength(10)
+    expect(tabs).toHaveLength(11)
     expect(tabs.at(0).prop('label')).toEqual('patient.generalInformation')
     expect(tabs.at(1).prop('label')).toEqual('patient.relatedPersons.label')
     expect(tabs.at(2).prop('label')).toEqual('scheduling.appointments.label')
     expect(tabs.at(3).prop('label')).toEqual('patient.allergies.label')
     expect(tabs.at(4).prop('label')).toEqual('patient.diagnoses.label')
     expect(tabs.at(5).prop('label')).toEqual('patient.notes.label')
-    expect(tabs.at(6).prop('label')).toEqual('patient.labs.label')
-    expect(tabs.at(7).prop('label')).toEqual('patient.carePlan.label')
-    expect(tabs.at(8).prop('label')).toEqual('patient.careGoal.label')
-    expect(tabs.at(9).prop('label')).toEqual('patient.visits.label')
+    expect(tabs.at(6).prop('label')).toEqual('patient.medications.label')
+    expect(tabs.at(7).prop('label')).toEqual('patient.labs.label')
+    expect(tabs.at(8).prop('label')).toEqual('patient.carePlan.label')
+    expect(tabs.at(9).prop('label')).toEqual('patient.careGoal.label')
+    expect(tabs.at(10).prop('label')).toEqual('patient.visits.label')
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
@@ -269,7 +273,7 @@ describe('ViewPatient', () => {
     expect(notesTab.prop('patient')).toEqual(patient)
   })
 
-  it('should mark the labs tab as active when it is clicked and render the lab component when route is /patients/:id/labs', async () => {
+  it('should mark the medications tab as active when it is clicked and render the medication component when route is /patients/:id/medications', async () => {
     const { wrapper } = await setup()
 
     await act(async () => {
@@ -283,15 +287,15 @@ describe('ViewPatient', () => {
 
     const tabsHeader = wrapper.find(TabsHeader)
     const tabs = tabsHeader.find(Tab)
-    const labsTab = wrapper.find(Labs)
+    const medicationsTab = wrapper.find(Medications)
 
-    expect(history.location.pathname).toEqual(`/patients/${patient.id}/labs`)
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/medications`)
     expect(tabs.at(6).prop('active')).toBeTruthy()
-    expect(labsTab).toHaveLength(1)
-    expect(labsTab.prop('patient')).toEqual(patient)
+    expect(medicationsTab).toHaveLength(1)
+    expect(medicationsTab.prop('patient')).toEqual(patient)
   })
 
-  it('should mark the care plans tab as active when it is clicked and render the care plan tab component when route is /patients/:id/care-plans', async () => {
+  it('should mark the labs tab as active when it is clicked and render the lab component when route is /patients/:id/labs', async () => {
     const { wrapper } = await setup()
 
     await act(async () => {
@@ -305,10 +309,32 @@ describe('ViewPatient', () => {
 
     const tabsHeader = wrapper.find(TabsHeader)
     const tabs = tabsHeader.find(Tab)
+    const labsTab = wrapper.find(Labs)
+
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/labs`)
+    expect(tabs.at(7).prop('active')).toBeTruthy()
+    expect(labsTab).toHaveLength(1)
+    expect(labsTab.prop('patient')).toEqual(patient)
+  })
+
+  it('should mark the care plans tab as active when it is clicked and render the care plan tab component when route is /patients/:id/care-plans', async () => {
+    const { wrapper } = await setup()
+
+    await act(async () => {
+      const tabsHeader = wrapper.find(TabsHeader)
+      const tabs = tabsHeader.find(Tab)
+      const onClick = tabs.at(8).prop('onClick') as any
+      onClick()
+    })
+
+    wrapper.update()
+
+    const tabsHeader = wrapper.find(TabsHeader)
+    const tabs = tabsHeader.find(Tab)
     const carePlansTab = wrapper.find(CarePlanTab)
 
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-plans`)
-    expect(tabs.at(7).prop('active')).toBeTruthy()
+    expect(tabs.at(8).prop('active')).toBeTruthy()
     expect(carePlansTab).toHaveLength(1)
   })
 
@@ -318,7 +344,7 @@ describe('ViewPatient', () => {
     await act(async () => {
       const tabHeader = wrapper.find(TabsHeader)
       const tabs = tabHeader.find(Tab)
-      const onClick = tabs.at(8).prop('onClick') as any
+      const onClick = tabs.at(9).prop('onClick') as any
       onClick()
     })
 
@@ -326,7 +352,7 @@ describe('ViewPatient', () => {
 
     const tabsHeader = wrapper.find(TabsHeader)
     const tabs = tabsHeader.find(Tab)
-    const careGoalsTab = tabs.at(8)
+    const careGoalsTab = tabs.at(9)
 
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-goals`)
     expect(careGoalsTab.prop('active')).toBeTruthy()
