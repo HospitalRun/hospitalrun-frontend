@@ -120,6 +120,14 @@ export default {
       },
       noLabsMessage: 'No labs requests for this person.',
     },
+    medications: {
+      label: 'Medications',
+      new: 'Add New Medication',
+      warning: {
+        noMedications: 'No Medications',
+      },
+      noMedicationsMessage: 'No medications requests for this person.',
+    },
     careGoal: {
       new: 'Add Care Goal',
       label: 'Care Goals',
