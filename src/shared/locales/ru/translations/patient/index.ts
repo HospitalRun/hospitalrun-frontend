@@ -95,6 +95,14 @@ export default {
       },
       addNoteAbove: 'Добавьте заметку, используя кнопку выше.',
     },
+    medications: {
+      label: 'Лекарства',
+      new: 'Добавить новое лекарство',
+      warning: {
+        noMedications: 'Никаких лекарств',
+      },
+      noMedicationsMessage: 'Нет запросов на лекарства для этого человека.',
+    },
     labs: {
       label: 'Анализы',
       new: 'Добавить новый анализ',
