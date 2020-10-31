@@ -1,6 +1,6 @@
 import { Button, Toast } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
@@ -9,7 +9,7 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
-import { createPatient } from '../patient-slice'
+import useCreatePatient from '../hooks/useCreatePatient'
 import { isPossibleDuplicatePatient } from '../util/is-possible-duplicate-patient'
 import DuplicateNewPatientModal from './DuplicateNewPatientModal'
 
@@ -21,13 +21,13 @@ const breadcrumbs = [
 const NewPatient = () => {
   const { t } = useTranslator()
   const history = useHistory()
-  const dispatch = useDispatch()
-  const { createError } = useSelector((state: RootState) => state.patient)
   const { patients } = Object(useSelector((state: RootState) => state.patients))
 
   const [patient, setPatient] = useState({} as Patient)
   const [duplicatePatient, setDuplicatePatient] = useState<Patient | undefined>(undefined)
   const [showDuplicateNewPatientModal, setShowDuplicateNewPatientModal] = useState<boolean>(false)
+
+  const [createPatient, { error: createError }] = useCreatePatient()
 
   const testPatient = {
     givenName: 'Kelly',
@@ -46,16 +46,19 @@ const NewPatient = () => {
     history.push('/patients')
   }
 
-  const onSuccessfulSave = (newPatient: Patient) => {
-    history.push(`/patients/${newPatient.id}`)
-    Toast(
-      'success',
-      t('states.success'),
-      `${t('patients.successfullyCreated')} ${newPatient.fullName}`,
-    )
+  const savePatient = async () => {
+    const data = await createPatient(patient)
+
+    if (!data) {
+      return
+    }
+
+    history.push(`/patients/${data.id}`)
+
+    Toast('success', t('states.success'), `${t('patients.successfullyCreated')} ${data.fullName}`)
   }
 
-  const onSave = () => {
+  const onSave = async () => {
     let duplicatePatients = []
     if (patients !== undefined) {
       duplicatePatients = patients.filter((existingPatient: any) =>
@@ -67,7 +70,7 @@ const NewPatient = () => {
       setShowDuplicateNewPatientModal(true)
       setDuplicatePatient(duplicatePatients as Patient)
     } else {
-      dispatch(createPatient(patient, onSuccessfulSave))
+      savePatient()
     }
 
     const testCase = [isPossibleDuplicatePatient(patient, testPatient)]
@@ -82,7 +85,7 @@ const NewPatient = () => {
   }
 
   const createDuplicateNewPatient = () => {
-    dispatch(createPatient(patient, onSuccessfulSave))
+    savePatient()
   }
 
   const closeDuplicateNewPatientModal = () => {
@@ -95,7 +98,7 @@ const NewPatient = () => {
         patient={patient}
         isEditable
         onChange={onPatientChange}
-        error={createError}
+        error={createError ?? undefined}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg mt-3">
