@@ -1,28 +1,25 @@
 import { Spinner, Button, Toast } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
-import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
 import usePatient from '../hooks/usePatient'
-import { updatePatient } from '../patient-slice'
+import useUpdatePatient from '../hooks/useUpdatePatient'
 import { getPatientCode, getPatientFullName } from '../util/patient-util'
 
 const EditPatient = () => {
   const { t } = useTranslator()
   const history = useHistory()
-  const dispatch = useDispatch()
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
 
   const { data: givenPatient, status } = usePatient(id)
   const [patient, setPatient] = useState({} as Patient)
 
-  const { updateError } = useSelector((state: RootState) => state.patient)
+  const [updatePatient, { error: updateError }] = useUpdatePatient()
 
   const updateTitle = useUpdateTitle()
 
@@ -47,17 +44,18 @@ const EditPatient = () => {
     history.push(`/patients/${patient.id}`)
   }
 
-  const onSuccessfulSave = (updatedPatient: Patient) => {
-    history.push(`/patients/${updatedPatient.id}`)
-    Toast(
-      'success',
-      t('states.success'),
-      `${t('patients.successfullyUpdated')} ${patient.fullName}`,
-    )
-  }
-
   const onSave = async () => {
-    await dispatch(updatePatient(patient, onSuccessfulSave))
+    const updatedPatient = await updatePatient(patient)
+
+    if (updatedPatient) {
+      history.push(`/patients/${updatedPatient.id}`)
+
+      Toast(
+        'success',
+        t('states.success'),
+        `${t('patients.successfullyUpdated')} ${updatedPatient.fullName}`,
+      )
+    }
   }
 
   const onPatientChange = (newPatient: Partial<Patient>) => {
@@ -74,7 +72,7 @@ const EditPatient = () => {
         patient={patient}
         isEditable
         onChange={onPatientChange}
-        error={updateError}
+        error={updateError?.toError()}
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg">

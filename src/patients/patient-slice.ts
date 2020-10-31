@@ -112,7 +112,9 @@ export const createPatient = (
   dispatch(createPatientStart())
 
   const cleanPatient = cleanupPatient(patient)
-  const newPatientError = validatePatient(cleanPatient)
+  const newPatientError = validatePatient(cleanPatient, {
+    errorMessage: 'patient.errors.createPatientError',
+  })
 
   if (!newPatientError) {
     const newPatient = await PatientRepository.save(cleanPatient)
@@ -122,12 +124,7 @@ export const createPatient = (
       onSuccess(newPatient)
     }
   } else {
-    dispatch(
-      createPatientError({
-        ...newPatientError.fieldErrors,
-        message: 'patient.errors.createPatientError',
-      }),
-    )
+    dispatch(createPatientError(newPatientError.toError()))
   }
 }
 
@@ -138,7 +135,9 @@ export const updatePatient = (
   dispatch(updatePatientStart())
 
   const cleanPatient = cleanupPatient(patient)
-  const updateError = validatePatient(cleanPatient)
+  const updateError = validatePatient(cleanPatient, {
+    errorMessage: 'patient.errors.updatePatientError',
+  })
 
   if (!updateError) {
     const updatedPatient = await PatientRepository.saveOrUpdate(cleanPatient)
@@ -148,12 +147,7 @@ export const updatePatient = (
       onSuccess(updatedPatient)
     }
   } else {
-    dispatch(
-      updatePatientError({
-        ...updateError.fieldErrors,
-        message: 'patient.errors.updatePatientError',
-      }),
-    )
+    dispatch(updatePatientError(updateError.toError()))
   }
 }
 

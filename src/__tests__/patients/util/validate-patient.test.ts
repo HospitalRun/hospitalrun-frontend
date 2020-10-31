@@ -106,4 +106,18 @@ describe('validate patient', () => {
 
     expect(error?.count).toEqual(4)
   })
+
+  describe('#toError', () => {
+    it('transforms PatientValidationError on a plain error object', () => {
+      const error = validatePatient(
+        { ...patient, givenName: '' },
+        { errorMessage: 'Custom error message' },
+      )
+
+      expect(error?.toError()).toEqual({
+        message: 'Custom error message',
+        givenName: 'patient.errors.patientGivenNameFeedback',
+      })
+    })
+  })
 })

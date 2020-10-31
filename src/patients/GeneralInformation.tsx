@@ -28,7 +28,7 @@ interface Props {
   patient: Patient
   isEditable?: boolean
   onChange?: (newPatient: Partial<Patient>) => void
-  error?: Error
+  error?: Error | null
 }
 
 const GeneralInformation = (props: Props): ReactElement => {

@@ -38,11 +38,15 @@ interface IPatientFieldErrors {
   phoneNumbers?: ('patient.errors.invalidPhoneNumber' | undefined)[]
 }
 
+interface IError extends IPatientFieldErrors {
+  message: string
+}
+
 export class PatientValidationError extends Error {
   public fieldErrors: IPatientFieldErrors
 
-  constructor() {
-    super('Patient data is invalid.')
+  constructor(message = 'Patient data is invalid.') {
+    super(message)
     this.name = 'PatientValidationError'
     this.fieldErrors = {}
   }
@@ -50,10 +54,21 @@ export class PatientValidationError extends Error {
   get count(): number {
     return Object.keys(this.fieldErrors).length
   }
+
+  toError(): IError {
+    return {
+      message: this.message,
+      ...this.fieldErrors,
+    }
+  }
 }
 
-export default function validatePatient(patient: Patient) {
-  const error = new PatientValidationError()
+interface IValidateOptions {
+  errorMessage?: string
+}
+
+export default function validatePatient(patient: Patient, { errorMessage }: IValidateOptions = {}) {
+  const error = new PatientValidationError(errorMessage)
 
   if (!patient.givenName) {
     error.fieldErrors.givenName = 'patient.errors.patientGivenNameFeedback'
