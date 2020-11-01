@@ -22,6 +22,7 @@ import CareGoalTab from '../care-goals/CareGoalTab'
 import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
+import HistoryTab from '../history/HistoryTab'
 import usePatient from '../hooks/usePatient'
 import Labs from '../labs/Labs'
 import Note from '../notes/NoteTab'
@@ -135,6 +136,11 @@ const ViewPatient = () => {
             label={t('patient.visits.label')}
             onClick={() => history.push(`/patients/${patient.id}/visits`)}
           />
+          <Tab
+            active={location.pathname === `/patients/${patient.id}/history`}
+            label={t('patient.history.label')}
+            onClick={() => history.push(`/patients/${patient.id}/history`)}
+          />
         </TabsHeader>
         <Panel>
           <Route exact path={path}>
@@ -166,6 +172,9 @@ const ViewPatient = () => {
           </Route>
           <Route path={`${path}/visits`}>
             <VisitTab patientId={patient.id} />
+          </Route>
+          <Route path={`${path}/history`}>
+            <HistoryTab patientId={patient.id} />
           </Route>
         </Panel>
       </div>

@@ -202,6 +202,12 @@ export default {
         locationRequired: 'Location is required.',
       },
     },
+    history: {
+      label: 'History',
+      entryDate: 'Entry date',
+      recordType: 'Record type',
+      information: 'Information',
+    },
     types: {
       charity: 'Charity',
       private: 'Private',

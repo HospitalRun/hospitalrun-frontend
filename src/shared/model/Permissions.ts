@@ -11,6 +11,7 @@ enum Permissions {
   CompleteLab = 'complete:lab',
   ViewLab = 'read:lab',
   ViewLabs = 'read:labs',
+  ViewPatientHistory = 'read:history', 
   ViewIncidents = 'read:incidents',
   ViewIncident = 'read:incident',
   ReportIncident = 'write:incident',
