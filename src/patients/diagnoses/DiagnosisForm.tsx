@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import Input, { Option } from '../../shared/components/input'
 import Diagnosis, { DiagnosisStatus } from '../../shared/model/Diagnosis'
 import Patient from '../../shared/model/Patient'
+import usePatientVisits from '../hooks/usePatientVisits'
 
 interface Error {
   message?: string
@@ -29,6 +30,7 @@ const DiagnosisForm = (props: Props) => {
   const { t } = useTranslation()
   const { diagnosis, diagnosisError, disabled, onChange, patient } = props
   const [status, setStatus] = useState(diagnosis.status)
+  const { data: visits } = usePatientVisits(patient?.id)
 
   const onFieldChange = (name: string, value: string | DiagnosisStatus) => {
     if (onChange) {
@@ -40,7 +42,7 @@ const DiagnosisForm = (props: Props) => {
     }
   }
 
-  const patientVisits = patient?.visits?.map((v) => ({
+  const patientVisits = visits?.map((v) => ({
     label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd, hh:mm a')}`,
     value: v.id,
   })) as Option[]
