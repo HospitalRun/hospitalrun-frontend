@@ -19,6 +19,12 @@ interface UserState {
 }
 
 const initialState: UserState = {
+  user: {
+    givenName: 'HospitalRun',
+    familyName: 'Test',
+    fullName: 'HospitalRun Test',
+    id: 'test-hospitalrun',
+  },
   permissions: [
     Permissions.ReadPatients,
     Permissions.WritePatients,

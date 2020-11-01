@@ -1,5 +1,5 @@
 import * as components from '@hospitalrun/components'
-import { Alert, Typeahead } from '@hospitalrun/components'
+import { Alert, Button, Typeahead } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
 import { mount } from 'enzyme'
@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
 import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { mocked } from 'ts-jest/utils'
 
 import * as titleUtil from '../../../../page-header/title/TitleContext'
 import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
@@ -22,7 +21,6 @@ import { RootState } from '../../../../shared/store'
 
 const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
-const mockedComponents = mocked(components, true)
 
 describe('New Appointment', () => {
   let history: MemoryHistory
@@ -31,10 +29,9 @@ describe('New Appointment', () => {
 
   const setup = () => {
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest.spyOn(AppointmentRepository, 'save')
-    mocked(AppointmentRepository, true).save.mockResolvedValue(
-      expectedNewAppointment as Appointment,
-    )
+    jest
+      .spyOn(AppointmentRepository, 'save')
+      .mockResolvedValue(expectedNewAppointment as Appointment)
     history = createMemoryHistory()
     store = mockStore({
       appointment: {
@@ -111,7 +108,7 @@ describe('New Appointment', () => {
 
       wrapper.update()
 
-      const saveButton = wrapper.find(mockedComponents.Button).at(0)
+      const saveButton = wrapper.find(Button).at(0)
       expect(saveButton.text().trim()).toEqual('actions.save')
       const onClick = saveButton.prop('onClick') as any
 
@@ -155,7 +152,7 @@ describe('New Appointment', () => {
 
       wrapper.update()
 
-      const saveButton = wrapper.find(mockedComponents.Button).at(0)
+      const saveButton = wrapper.find(Button).at(0)
       expect(saveButton.text().trim()).toEqual('actions.save')
       const onClick = saveButton.prop('onClick') as any
 
@@ -240,7 +237,7 @@ describe('New Appointment', () => {
 
       wrapper.update()
 
-      const saveButton = wrapper.find(mockedComponents.Button).at(0)
+      const saveButton = wrapper.find(Button).at(0)
       expect(saveButton.text().trim()).toEqual('actions.save')
       const onClick = saveButton.prop('onClick') as any
 
@@ -276,7 +273,7 @@ describe('New Appointment', () => {
         onFieldChange('patient', expectedAppointment.patient)
       })
       wrapper.update()
-      const saveButton = wrapper.find(mockedComponents.Button).at(0)
+      const saveButton = wrapper.find(Button).at(0)
       expect(saveButton.text().trim()).toEqual('actions.save')
       const onClick = saveButton.prop('onClick') as any
 
@@ -285,7 +282,7 @@ describe('New Appointment', () => {
       })
 
       expect(history.location.pathname).toEqual(`/appointments/${expectedNewAppointment.id}`)
-      expect(mockedComponents.Toast).toHaveBeenCalledWith(
+      expect(components.Toast).toHaveBeenCalledWith(
         'success',
         'states.success',
         `scheduling.appointment.successfullyCreated`,
@@ -300,7 +297,7 @@ describe('New Appointment', () => {
         wrapper = await setup()
       })
 
-      const cancelButton = wrapper.find(mockedComponents.Button).at(1)
+      const cancelButton = wrapper.find(Button).at(1)
 
       act(() => {
         const onClick = cancelButton.prop('onClick') as any

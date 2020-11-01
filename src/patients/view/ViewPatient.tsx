@@ -24,6 +24,7 @@ import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
 import usePatient from '../hooks/usePatient'
 import Labs from '../labs/Labs'
+import Medications from '../medications/Medications'
 import Note from '../notes/NoteTab'
 import RelatedPerson from '../related-persons/RelatedPersonTab'
 import { getPatientFullName } from '../util/patient-util'
@@ -116,6 +117,11 @@ const ViewPatient = () => {
             onClick={() => history.push(`/patients/${patient.id}/notes`)}
           />
           <Tab
+            active={location.pathname === `/patients/${patient.id}/medications`}
+            label={t('patient.medications.label')}
+            onClick={() => history.push(`/patients/${patient.id}/medications`)}
+          />
+          <Tab
             active={location.pathname === `/patients/${patient.id}/labs`}
             label={t('patient.labs.label')}
             onClick={() => history.push(`/patients/${patient.id}/labs`)}
@@ -154,6 +160,9 @@ const ViewPatient = () => {
           </Route>
           <Route exact path={`${path}/notes`}>
             <Note patient={patient} />
+          </Route>
+          <Route exact path={`${path}/medications`}>
+            <Medications patient={patient} />
           </Route>
           <Route exact path={`${path}/labs`}>
             <Labs patient={patient} />
