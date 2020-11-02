@@ -1,8 +1,9 @@
 import { addDays } from 'date-fns'
 
-import validatePatient from '../../../patients/util/validate-patient'
+import validatePatient, { PatientValidationError } from '../../../patients/util/validate-patient'
+import Patient from '../../../shared/model/Patient'
 
-const patient = {
+const patient: Patient = {
   id: 'abc123',
   sex: 'Male',
   givenName: 'John',
@@ -23,12 +24,38 @@ const patient = {
 }
 
 describe('validate patient', () => {
+  describe('PatientValidationError class', () => {
+    it('should count the amount of errors', () => {
+      const error = new PatientValidationError()
+
+      expect(error.count).toEqual(0)
+
+      error.fieldErrors.givenName = 'patient.errors.patientGivenNameFeedback'
+      error.fieldErrors.dateOfBirth = 'patient.errors.patientDateOfBirthFeedback'
+      error.fieldErrors.suffix = 'patient.errors.patientNumInSuffixFeedback'
+
+      expect(error.count).toEqual(3)
+
+      error.fieldErrors.prefix = 'patient.errors.patientNumInPrefixFeedback'
+      error.fieldErrors.familyName = 'patient.errors.patientNumInFamilyNameFeedback'
+      error.fieldErrors.preferredLanguage = 'patient.errors.patientNumInPreferredLanguageFeedback'
+      error.fieldErrors.emails = ['patient.errors.invalidEmail']
+      error.fieldErrors.phoneNumbers = ['patient.errors.invalidPhoneNumber']
+
+      expect(error.count).toEqual(8)
+    })
+  })
+
+  it('returns null when patient is valid', () => {
+    const error = validatePatient({ ...patient })
+    expect(error).toEqual(null)
+  })
+
   it('should validate the patient required fields', () => {
     const error = validatePatient({ ...patient, givenName: '' })
 
-    expect(error).toEqual({
-      givenName: 'patient.errors.patientGivenNameFeedback',
-    })
+    expect(error?.fieldErrors.givenName).toEqual('patient.errors.patientGivenNameFeedback')
+    expect(error?.count).toEqual(1)
   })
 
   it('should validate that the patient birthday is not a future date', () => {
@@ -37,9 +64,8 @@ describe('validate patient', () => {
       dateOfBirth: addDays(new Date(), 4).toISOString(),
     })
 
-    expect(error).toEqual({
-      dateOfBirth: 'patient.errors.patientDateOfBirthFeedback',
-    })
+    expect(error?.fieldErrors.dateOfBirth).toEqual('patient.errors.patientDateOfBirthFeedback')
+    expect(error?.count).toEqual(1)
   })
 
   it('should validate that the patient phone number is a valid phone number', () => {
@@ -48,9 +74,8 @@ describe('validate patient', () => {
       phoneNumbers: [{ id: 'abc', value: 'not a phone number' }],
     })
 
-    expect(error).toEqual({
-      phoneNumbers: ['patient.errors.invalidPhoneNumber'],
-    })
+    expect(error?.fieldErrors.phoneNumbers).toEqual(['patient.errors.invalidPhoneNumber'])
+    expect(error?.count).toEqual(1)
   })
 
   it('should validate that the patient email is a valid email', () => {
@@ -59,9 +84,8 @@ describe('validate patient', () => {
       emails: [{ id: 'abc', value: 'not a phone number' }],
     })
 
-    expect(error).toEqual({
-      emails: ['patient.errors.invalidEmail'],
-    })
+    expect(error?.fieldErrors.emails).toEqual(['patient.errors.invalidEmail'])
+    expect(error?.count).toEqual(1)
   })
 
   it('should validate fields that should only contian alpha characters', () => {
@@ -73,11 +97,13 @@ describe('validate patient', () => {
       preferredLanguage: 'D321',
     })
 
-    expect(error).toEqual({
-      suffix: 'patient.errors.patientNumInSuffixFeedback',
-      familyName: 'patient.errors.patientNumInFamilyNameFeedback',
-      prefix: 'patient.errors.patientNumInPrefixFeedback',
-      preferredLanguage: 'patient.errors.patientNumInPreferredLanguageFeedback',
-    })
+    expect(error?.fieldErrors.suffix).toEqual('patient.errors.patientNumInSuffixFeedback')
+    expect(error?.fieldErrors.familyName).toEqual('patient.errors.patientNumInFamilyNameFeedback')
+    expect(error?.fieldErrors.prefix).toEqual('patient.errors.patientNumInPrefixFeedback')
+    expect(error?.fieldErrors.preferredLanguage).toEqual(
+      'patient.errors.patientNumInPreferredLanguageFeedback',
+    )
+
+    expect(error?.count).toEqual(4)
   })
 })

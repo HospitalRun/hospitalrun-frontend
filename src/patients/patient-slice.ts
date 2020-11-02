@@ -114,7 +114,7 @@ export const createPatient = (
   const cleanPatient = cleanupPatient(patient)
   const newPatientError = validatePatient(cleanPatient)
 
-  if (isEmpty(newPatientError)) {
+  if (!newPatientError) {
     const newPatient = await PatientRepository.save(cleanPatient)
     dispatch(createPatientSuccess())
 
@@ -122,8 +122,12 @@ export const createPatient = (
       onSuccess(newPatient)
     }
   } else {
-    newPatientError.message = 'patient.errors.createPatientError'
-    dispatch(createPatientError(newPatientError))
+    dispatch(
+      createPatientError({
+        ...newPatientError.fieldErrors,
+        message: 'patient.errors.createPatientError',
+      }),
+    )
   }
 }
 
@@ -136,7 +140,7 @@ export const updatePatient = (
   const cleanPatient = cleanupPatient(patient)
   const updateError = validatePatient(cleanPatient)
 
-  if (isEmpty(updateError)) {
+  if (!updateError) {
     const updatedPatient = await PatientRepository.saveOrUpdate(cleanPatient)
     dispatch(updatePatientSuccess(updatedPatient))
 
@@ -144,8 +148,12 @@ export const updatePatient = (
       onSuccess(updatedPatient)
     }
   } else {
-    updateError.message = 'patient.errors.updatePatientError'
-    dispatch(updatePatientError(updateError))
+    dispatch(
+      updatePatientError({
+        ...updateError.fieldErrors,
+        message: 'patient.errors.updatePatientError',
+      }),
+    )
   }
 }
 
