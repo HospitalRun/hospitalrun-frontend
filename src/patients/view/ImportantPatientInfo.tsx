@@ -70,7 +70,7 @@ const ImportantPatientInfo = (props: Props) => {
     height: '100%',
   }
 
-  const headerAddVisiButtonStyle: CSSProperties = {
+  const headerAddVisitButtonStyle: CSSProperties = {
     height: '2.5rem',
   }
 
@@ -99,13 +99,13 @@ const ImportantPatientInfo = (props: Props) => {
           </div>
         </div>
         <div className="col-2">
-          <div style={headerInfoStyle}>
+          <div style={headerInfoStyle} className="patient-sex">
             <strong>{t('patient.sex')}</strong>
             <h6>{patient.sex}</h6>
           </div>
         </div>
         <div className="col-2">
-          <div style={headerInfoStyle}>
+          <div style={headerInfoStyle} className="patient-dateOfBirth">
             <strong>{t('patient.dateOfBirth')}</strong>
             <h6>
               {patient.dateOfBirth
@@ -122,7 +122,7 @@ const ImportantPatientInfo = (props: Props) => {
               color="success"
               icon="add"
               iconLocation="left"
-              style={headerAddVisiButtonStyle}
+              style={headerAddVisitButtonStyle}
               onClick={() => setShowAddVisitModal(true)}
             >
               {t('patient.visits.new')}
