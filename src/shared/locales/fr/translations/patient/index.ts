@@ -84,6 +84,14 @@ export default {
       },
       addNoteAbove: "Ajouter une nouvelle note à l'aide du bouton ci-dessus..",
     },
+    medications: {
+      label: 'Médicaments',
+      new: 'Ajouter un nouveau médicament',
+      warning: {
+        noMedications: 'Pas de médicaments',
+      },
+      noMedicationsMessage: 'Aucune demande de médicaments pour cette personne.',
+    },
     types: {
       charity: 'Charité',
       private: 'Privé',

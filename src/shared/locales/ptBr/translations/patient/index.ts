@@ -84,6 +84,14 @@ export default {
       },
       addNoteAbove: 'Adicione uma nota utilizando o botão acima.',
     },
+    medications: {
+      label: 'Remédios',
+      new: 'Adicionar novo medicamento',
+      warning: {
+        noMedications: 'Nomejikachion s',
+      },
+      noMedicationsMessage: 'Nenhum pedido de medicamentos para esta pessoa.',
+    },
     types: {
       charity: 'Caridade',
       private: 'Particular',

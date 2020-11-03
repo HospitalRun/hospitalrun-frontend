@@ -2,6 +2,7 @@ import actions from './actions'
 import dashboard from './dashboard'
 import incidents from './incidents'
 import labs from './labs'
+import medications from './medications'
 import networkStatus from './network-status'
 import patient from './patient'
 import patients from './patients'
@@ -22,4 +23,5 @@ export default {
   ...patient,
   ...patients,
   ...settings,
+  ...medications,
 }

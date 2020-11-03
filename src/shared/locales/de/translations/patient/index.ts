@@ -93,6 +93,14 @@ export default {
       },
       noLabsMessage: 'Keine Laboranfragen für diese Person.',
     },
+    medications: {
+      label: 'Medications',
+      new: 'Neue Medikamente hinzufügen',
+      warning: {
+        noMedications: 'Keine Medikamente',
+      },
+      noMedicationsMessage: 'Keine Medikamentenanfragen für diese Person.',
+    },
     types: {
       charity: 'Charity',
       private: 'Privat',

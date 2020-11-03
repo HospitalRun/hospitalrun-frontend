@@ -86,6 +86,14 @@ export default {
       },
       addNoteAbove: 'Aggiungi una nota utilizzando il pulsante soprastante.',
     },
+    medications: {
+      label: 'Farmaci',
+      new: 'Aggiungi nuovo farmaco',
+      warning: {
+        noMedications: 'Nessun farmaco',
+      },
+      noMedicationsMessage: 'Nessuna richiesta di farmaci per questa persona.',
+    },
     types: {
       charity: 'Beneficenza',
       private: 'Privato',
