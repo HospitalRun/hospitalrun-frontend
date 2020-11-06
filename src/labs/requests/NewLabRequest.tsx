@@ -1,10 +1,14 @@
-import { Typeahead, Label, Button, Alert, Toast } from '@hospitalrun/components'
+import { Typeahead, Label, Button, Alert, Toast, Column, Row } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
+import SelectWithLabelFormGroup, {
+  Option,
+} from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -22,6 +26,8 @@ const NewLabRequest = () => {
   const [mutate] = useRequestLab()
   const [newNote, setNewNote] = useState('')
   const [error, setError] = useState<LabError | undefined>(undefined)
+  const [visitOptions, setVisitOptions] = useState([] as Option[])
+
   const updateTitle = useUpdateTitle()
   useEffect(() => {
     updateTitle(t('labs.requests.new'))
@@ -31,6 +37,8 @@ const NewLabRequest = () => {
     type: '',
     status: 'requested',
     requestedBy: user?.id || '',
+    requestedOn: '',
+    visitId: '',
   })
 
   const breadcrumbs = [
@@ -42,6 +50,12 @@ const NewLabRequest = () => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onPatientChange = (patient: Patient) => {
+    const visits = patient.visits?.map((v) => ({
+      label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
+      value: v.id,
+    })) as Option[]
+    setVisitOptions(visits)
+
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
       patient: patient.id,
@@ -83,27 +97,60 @@ const NewLabRequest = () => {
     }
   }
 
+  const onVisitChange = (value: string) => {
+    setNewLabRequest((previousNewLabRequest) => ({
+      ...previousNewLabRequest,
+      visitId: value,
+    }))
+  }
+
   const onCancel = () => {
     history.push('/labs')
+  }
+
+  const defaultSelectedVisitsOption = () => {
+    if (visitOptions !== undefined) {
+      return visitOptions.filter(({ value }) => value === newLabRequest.visitId)
+    }
+    return []
   }
 
   return (
     <>
       {error && <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />}
       <form>
-        <div className="form-group patient-typeahead">
-          <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
-          <Typeahead
-            id="patientTypeahead"
-            placeholder={t('labs.lab.patient')}
-            onChange={(p: Patient[]) => onPatientChange(p[0])}
-            onSearch={async (query: string) => PatientRepository.search(query)}
-            searchAccessor="fullName"
-            renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
-            isInvalid={!!error?.patient}
-            feedback={t(error?.patient as string)}
-          />
-        </div>
+        <Row>
+          <Column>
+            <div className="form-group patient-typeahead">
+              <Label htmlFor="patientTypeahead" isRequired text={t('labs.lab.patient')} />
+              <Typeahead
+                id="patientTypeahead"
+                placeholder={t('labs.lab.patient')}
+                onChange={(p: Patient[]) => onPatientChange(p[0])}
+                onSearch={async (query: string) => PatientRepository.search(query)}
+                searchAccessor="fullName"
+                renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+                isInvalid={!!error?.patient}
+                feedback={t(error?.patient as string)}
+              />
+            </div>
+          </Column>
+          <Column>
+            <div className="form-group">
+              <SelectWithLabelFormGroup
+                name="visit"
+                label={t('patient.visit')}
+                isRequired
+                isEditable={newLabRequest.patient !== undefined}
+                options={visitOptions || []}
+                defaultSelected={defaultSelectedVisitsOption()}
+                onChange={(values) => {
+                  onVisitChange(values[0])
+                }}
+              />
+            </div>
+          </Column>
+        </Row>
         <TextInputWithLabelFormGroup
           name="labType"
           label={t('labs.lab.type')}

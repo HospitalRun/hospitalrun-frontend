@@ -12,6 +12,7 @@ import NewLabRequest from '../../../labs/requests/NewLabRequest'
 import * as validationUtil from '../../../labs/utils/validate-lab'
 import { LabError } from '../../../labs/utils/validate-lab'
 import * as titleUtil from '../../../page-header/title/TitleContext'
+import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import LabRepository from '../../../shared/db/LabRepository'
@@ -88,6 +89,15 @@ describe('New Lab Request', () => {
       expect(notesTextField.prop('label')).toEqual('labs.lab.notes')
       expect(notesTextField.prop('isRequired')).toBeFalsy()
       expect(notesTextField.prop('isEditable')).toBeTruthy()
+    })
+
+    it('should render a visit select', async () => {
+      const { wrapper } = await setup()
+      const visitSelect = wrapper.find(SelectWithLabelFormGroup)
+
+      expect(visitSelect).toBeDefined()
+      expect(visitSelect.prop('label') as string).toEqual('patient.visit')
+      expect(visitSelect.prop('isRequired')).toBeTruthy()
     })
 
     it('should render a save button', async () => {
