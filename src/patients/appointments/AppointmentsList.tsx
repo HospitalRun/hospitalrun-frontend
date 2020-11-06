@@ -6,15 +6,17 @@ import { useHistory } from 'react-router-dom'
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import Loading from '../../shared/components/Loading'
 import useTranslator from '../../shared/hooks/useTranslator'
+import Patient from '../../shared/model/Patient'
 import usePatientsAppointments from '../hooks/usePatientAppointments'
 
 interface Props {
-  patientId: string
+  patient: Patient
 }
 
-const AppointmentsList = ({ patientId }: Props) => {
+const AppointmentsList = ({ patient }: Props) => {
   const history = useHistory()
   const { t } = useTranslator()
+  const patientId = patient.id
 
   const { data, status } = usePatientsAppointments(patientId)
 
@@ -40,7 +42,7 @@ const AppointmentsList = ({ patientId }: Props) => {
             outlined
             color="success"
             icon="appointment-add"
-            onClick={() => history.push('/appointments/new')}
+            onClick={() => history.push({ pathname: '/appointments/new', state: { patient } })}
           >
             {t('scheduling.appointments.new')}
           </Button>
