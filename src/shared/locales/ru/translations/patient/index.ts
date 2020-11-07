@@ -69,8 +69,8 @@ export default {
     diagnoses: {
       label: 'Диагнозы',
       new: 'Добавить диагноз',
-      diagnosisName: 'Название диагноза',
-      diagnosisDate: 'Дата диагноза',
+      diagnosisName: 'имя',
+      diagnosisDate: 'Дата',
       warning: {
         noDiagnoses: 'Нет диагнозов',
       },

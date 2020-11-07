@@ -150,7 +150,7 @@ const ViewPatient = () => {
             <RelatedPerson patient={patient} />
           </Route>
           <Route exact path={`${path}/appointments`}>
-            <AppointmentsList patientId={patient.id} />
+            <AppointmentsList patient={patient} />
           </Route>
           <Route path={`${path}/allergies`}>
             <Allergies patient={patient} />
