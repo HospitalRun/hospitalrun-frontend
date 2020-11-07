@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.0.0-alpha.7](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.6...v2.0.0-alpha.7) (2020-11-07)
 
+### CI
+
+* **nodejs:** move from node v12 lts to v14 lts
+
 ## [2.0.0-alpha.6](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2020-10-24)
 
 ### ⚠ BREAKING CHANGES
