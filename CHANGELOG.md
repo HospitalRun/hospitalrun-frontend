@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0-alpha.7](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.6...v2.0.0-alpha.7) (2020-11-07)
+
 ## [2.0.0-alpha.6](https://github.com/HospitalRun/hospitalrun-frontend/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2020-10-24)
 
 ### ⚠ BREAKING CHANGES
