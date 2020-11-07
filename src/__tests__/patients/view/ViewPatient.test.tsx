@@ -204,7 +204,7 @@ describe('ViewPatient', () => {
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/appointments`)
     expect(tabs.at(2).prop('active')).toBeTruthy()
     expect(appointmentsTab).toHaveLength(1)
-    expect(appointmentsTab.prop('patientId')).toEqual(patient.id)
+    expect(appointmentsTab.prop('patient')).toEqual(patient)
   })
 
   it('should mark the allergies tab as active when it is clicked and render the allergies component when route is /patients/:id/allergies', async () => {
