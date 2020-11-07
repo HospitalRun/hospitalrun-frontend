@@ -56,7 +56,7 @@ const setup = async (patient = expectedPatient, appointments = expectedAppointme
     wrapper = await mount(
       <Router history={history}>
         <Provider store={store}>
-          <AppointmentsList patientId={patient.id} />
+          <AppointmentsList patient={patient} />
         </Provider>
       </Router>,
     )
