@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "@hospitalrun/components": "~3.0.3",
-    "@reduxjs/toolkit": "~1.4.0",
+    "@reduxjs/toolkit": "~1.5.0",
     "@types/escape-string-regexp": "~2.0.1",
     "@types/json2csv": "~5.0.1",
     "@types/pouchdb-find": "~6.3.4",
