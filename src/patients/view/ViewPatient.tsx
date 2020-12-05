@@ -163,8 +163,8 @@ const ViewPatient = () => {
           <Route path={`${path}/allergies`}>
             <Allergies patient={patient} />
           </Route>
-          <Route exact path={`${path}/diagnoses`}>
-            <Diagnoses patient={patient} />
+          <Route path={`${path}/diagnoses`}>
+            <Diagnoses />
           </Route>
           <Route exact path={`${path}/notes`}>
             <Note patient={patient} />
