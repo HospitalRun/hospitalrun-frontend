@@ -146,7 +146,7 @@ const ImportantPatientInfo = (props: Props) => {
           {permissions.includes(Permissions.AddAllergy) && (
             <Button
               size="small"
-              color="light"
+              color="primary"
               icon="add"
               iconLocation="left"
               onClick={() => setShowNewAllergyModal(true)}
@@ -180,7 +180,6 @@ const ImportantPatientInfo = (props: Props) => {
               size="small"
               color="primary"
               icon="add"
-              outlined
               iconLocation="left"
               onClick={() => setShowDiagnosisModal(true)}
             >
