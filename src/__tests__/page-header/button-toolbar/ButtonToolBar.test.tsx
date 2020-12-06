@@ -1,7 +1,6 @@
 import { Button } from '@hospitalrun/components'
 import { mount } from 'enzyme'
 import React from 'react'
-import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import ButtonToolBar from '../../../page-header/button-toolbar/ButtonToolBar'
@@ -16,8 +15,7 @@ describe('Button Tool Bar', () => {
       <Button key="test1">Test 1</Button>,
       <Button key="test2">Test 2</Button>,
     ]
-    jest.spyOn(ButtonBarProvider, 'useButtons')
-    mocked(ButtonBarProvider).useButtons.mockReturnValue(buttons)
+    jest.spyOn(ButtonBarProvider, 'useButtons').mockReturnValue(buttons)
 
     const wrapper = mount(<ButtonToolBar />).find('.button-toolbar')
 
@@ -26,8 +24,7 @@ describe('Button Tool Bar', () => {
   })
 
   it('should return null when there is no button in the provider', () => {
-    jest.spyOn(ButtonBarProvider, 'useButtons')
-    mocked(ButtonBarProvider).useButtons.mockReturnValue([])
+    jest.spyOn(ButtonBarProvider, 'useButtons').mockReturnValue([])
 
     const wrapper = mount(<ButtonToolBar />)
 

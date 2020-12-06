@@ -59,8 +59,8 @@ export default {
     diagnoses: {
       label: 'Diagnostics',
       new: 'Ajouter un diagnostic',
-      diagnosisName: 'Nom du diagnostic',
-      diagnosisDate: 'Date du diagnostic',
+      diagnosisName: 'Nom',
+      diagnosisDate: 'Date',
       warning: {
         noDiagnoses: 'Aucun diagnostic',
       },
@@ -83,6 +83,14 @@ export default {
         unableToAdd: "Impossible d'ajouter une nouvelle note.",
       },
       addNoteAbove: "Ajouter une nouvelle note à l'aide du bouton ci-dessus..",
+    },
+    medications: {
+      label: 'Médicaments',
+      new: 'Ajouter un nouveau médicament',
+      warning: {
+        noMedications: 'Pas de médicaments',
+      },
+      noMedicationsMessage: 'Aucune demande de médicaments pour cette personne.',
     },
     types: {
       charity: 'Charité',

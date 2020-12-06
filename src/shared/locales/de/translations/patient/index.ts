@@ -59,8 +59,8 @@ export default {
     diagnoses: {
       label: 'Diagnosen',
       new: 'Diagnose hinzufügen',
-      diagnosisName: 'Name der Diagnose',
-      diagnosisDate: 'Diagnosedatum',
+      diagnosisName: 'Name',
+      diagnosisDate: 'Datum',
       warning: {
         noDiagnoses: 'Keine Diagnosen',
       },
@@ -92,6 +92,14 @@ export default {
         noLabs: 'Keine Labore',
       },
       noLabsMessage: 'Keine Laboranfragen für diese Person.',
+    },
+    medications: {
+      label: 'Medications',
+      new: 'Neue Medikamente hinzufügen',
+      warning: {
+        noMedications: 'Keine Medikamente',
+      },
+      noMedicationsMessage: 'Keine Medikamentenanfragen für diese Person.',
     },
     types: {
       charity: 'Charity',

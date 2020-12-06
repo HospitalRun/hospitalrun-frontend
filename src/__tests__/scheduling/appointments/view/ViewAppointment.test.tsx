@@ -7,7 +7,6 @@ import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
 import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { mocked } from 'ts-jest/utils'
 
 import * as ButtonBarProvider from '../../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../../page-header/title/TitleContext'
@@ -225,7 +224,6 @@ describe('View Appointment', () => {
 
   it('should navigate to /appointments and display a message when delete is successful', async () => {
     jest.spyOn(components, 'Toast')
-    const mockedComponents = mocked(components, true)
 
     const { wrapper } = await setup('completed', [
       Permissions.ReadAppointments,
@@ -241,7 +239,7 @@ describe('View Appointment', () => {
     wrapper.update()
 
     expect(history.location.pathname).toEqual('/appointments')
-    expect(mockedComponents.Toast).toHaveBeenCalledWith(
+    expect(components.Toast).toHaveBeenCalledWith(
       'success',
       'states.success',
       'scheduling.appointment.successfullyDeleted',

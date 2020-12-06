@@ -99,8 +99,8 @@ describe('Important Patient Info Panel', () => {
 
     it("should render patient's dateOfDate", async () => {
       const wrapper = await setup(expectedPatient, [])
-      const sex = wrapper.find('.patient-dateOfBirth')
-      expect(sex.text()).toEqual(`patient.dateOfBirth${expectedPatient.dateOfBirth}`)
+      const dateOfBirth = wrapper.find('.patient-dateOfBirth')
+      expect(dateOfBirth.text()).toEqual(`patient.dateOfBirth${expectedPatient.dateOfBirth}`)
     })
   })
 

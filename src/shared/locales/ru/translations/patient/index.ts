@@ -69,8 +69,8 @@ export default {
     diagnoses: {
       label: 'Диагнозы',
       new: 'Добавить диагноз',
-      diagnosisName: 'Название диагноза',
-      diagnosisDate: 'Дата диагноза',
+      diagnosisName: 'имя',
+      diagnosisDate: 'Дата',
       warning: {
         noDiagnoses: 'Нет диагнозов',
       },
@@ -94,6 +94,14 @@ export default {
         unableToAdd: 'Невозможно добавить новую заметку.',
       },
       addNoteAbove: 'Добавьте заметку, используя кнопку выше.',
+    },
+    medications: {
+      label: 'Лекарства',
+      new: 'Добавить новое лекарство',
+      warning: {
+        noMedications: 'Никаких лекарств',
+      },
+      noMedicationsMessage: 'Нет запросов на лекарства для этого человека.',
     },
     labs: {
       label: 'Анализы',

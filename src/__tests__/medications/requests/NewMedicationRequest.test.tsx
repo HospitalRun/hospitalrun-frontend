@@ -38,9 +38,8 @@ describe('New Medication Request', () => {
       </Provider>,
     )
 
-    wrapper.find(NewMedicationRequest).props().updateTitle = jest.fn()
     wrapper.update()
-    return { wrapper }
+    return { wrapper, history }
   }
 
   describe('form layout', () => {
@@ -100,11 +99,9 @@ describe('New Medication Request', () => {
     })
   })
 
-  describe('on cancel', async () => {
-    const history = createMemoryHistory()
-    const { wrapper } = await setup()
-
-    it('should navigate back to /medications', () => {
+  describe('on cancel', () => {
+    it('should navigate back to /medications', async () => {
+      const { wrapper, history } = await setup()
       const cancelButton = wrapper.find(Button).at(1)
 
       act(() => {
@@ -116,8 +113,7 @@ describe('New Medication Request', () => {
     })
   })
 
-  describe('on save', async () => {
-    const history = createMemoryHistory()
+  describe('on save', () => {
     let medicationRepositorySaveSpy: any
     const expectedDate = new Date()
     const expectedMedication = {
@@ -132,7 +128,6 @@ describe('New Medication Request', () => {
       medication: { status: 'loading', error: {} },
       user: { user: { id: 'fake id' } },
     } as any)
-    const { wrapper } = await setup(store)
     beforeEach(() => {
       jest.resetAllMocks()
       Date.now = jest.fn(() => expectedDate.valueOf())
@@ -148,6 +143,8 @@ describe('New Medication Request', () => {
     })
 
     it('should save the medication request and navigate to "/medications/:id"', async () => {
+      const { wrapper, history } = await setup(store)
+
       const patientTypeahead = wrapper.find(Typeahead)
       await act(async () => {
         const onChange = patientTypeahead.prop('onChange')
