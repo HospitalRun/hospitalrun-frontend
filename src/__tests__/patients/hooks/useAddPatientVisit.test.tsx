@@ -2,7 +2,7 @@ import useAddVisit from '../../../patients/hooks/useAddVisit'
 import * as validateVisit from '../../../patients/util/validate-visit'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
-import Visit from '../../../shared/model/Visit'
+import Visit, { VisitStatus } from '../../../shared/model/Visit'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add visit', () => {
@@ -23,8 +23,9 @@ describe('use add visit', () => {
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         type: 'type',
-        status: 'planned',
-        reason: 'given reason',
+        status: VisitStatus.Planned, //'planned',
+        rev: 'rev',
+        // reason: 'given reason',
         location: 'give location',
       },
     ]

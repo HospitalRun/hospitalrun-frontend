@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import { queryCache, useMutation } from 'react-query'
+import { queryCache, useMutation } from 'react-query/'
 
 import PatientRepository from '../../shared/db/PatientRepository'
 import Visit from '../../shared/model/Visit'
@@ -34,7 +34,7 @@ async function addVisit(request: AddVisitRequest): Promise<Visit[]> {
 
 export default function useAddVisit() {
   return useMutation(addVisit, {
-    onSuccess: async (data, variables) => {
+    onSuccess: async (data: any, variables: { patientId: any }) => {
       await queryCache.setQueryData(['visits', variables.patientId], data)
     },
     throwOnError: true,

@@ -1,4 +1,4 @@
-import { useMutation, queryCache } from 'react-query'
+import { useMutation, queryCache } from 'react-query/'
 
 import LabRepository from '../../shared/db/LabRepository'
 import Lab from '../../shared/model/Lab'
@@ -9,7 +9,7 @@ function updateLab(labToUpdate: Lab): Promise<Lab> {
 
 export default function useUpdateLab() {
   return useMutation(updateLab, {
-    onSuccess: async (data) => {
+    onSuccess: async (data: { id: any }) => {
       queryCache.setQueryData(['lab', data.id], data)
       await queryCache.invalidateQueries('labs')
     },

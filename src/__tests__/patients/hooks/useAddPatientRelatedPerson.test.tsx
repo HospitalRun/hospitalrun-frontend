@@ -1,3 +1,4 @@
+import { Console } from 'console'
 import useAddPatientRelatedPerson from '../../../patients/hooks/useAddPatientRelatedPerson'
 import * as validateRelatedPerson from '../../../patients/util/validate-related-person'
 import PatientRepository from '../../../shared/db/PatientRepository'
@@ -39,6 +40,7 @@ describe('use add patient related person', () => {
         relatedPerson: { patientId: '456' },
       })
     } catch (e) {
+
       expect(e).toEqual(expectedError)
     }
 
