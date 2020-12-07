@@ -28,11 +28,7 @@ const ViewDiagnosis = () => {
       </>
     )
   }
-  return (
-    <>
-      <h2>This did not work.</h2>
-    </>
-  )
+  return <></>
 }
 
 export default ViewDiagnosis
