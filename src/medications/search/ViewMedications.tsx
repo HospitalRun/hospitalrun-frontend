@@ -1,4 +1,4 @@
-import { Button, Column, Container, Row } from '@hospitalrun/components'
+import { Button, Container, Row } from '@hospitalrun/components'
 import React, { useEffect, useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -62,9 +62,7 @@ const ViewMedications = () => {
     <Container>
       <MedicationRequestSearch searchRequest={searchRequest} onChange={onSearchRequestChange} />
       <Row>
-        <Column md={12}>
-          <MedicationRequestTable searchRequest={searchRequest} />
-        </Column>
+        <MedicationRequestTable searchRequest={searchRequest} />
       </Row>
     </Container>
   )
