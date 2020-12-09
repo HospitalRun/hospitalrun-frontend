@@ -1,4 +1,4 @@
-import { Button } from '@hospitalrun/components'
+import { Button, Container, Row, Column } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
@@ -45,9 +45,9 @@ const ViewIncidents = () => {
   }))
 
   return (
-    <>
-      <div className="row">
-        <div className="col-md-3 col-lg-2">
+    <Container>
+      <Row>
+        <Column md={3} lg={2}>
           <SelectWithLabelFormGroup
             name="type"
             label={t('incidents.filterTitle')}
@@ -56,12 +56,12 @@ const ViewIncidents = () => {
             onChange={(values) => setSearchFilter(values[0] as IncidentFilter)}
             isEditable
           />
-        </div>
-      </div>
-      <div className="row">
+        </Column>
+      </Row>
+      <Row>
         <ViewIncidentsTable searchRequest={{ status: searchFilter }} />
-      </div>
-    </>
+      </Row>
+    </Container>
   )
 }
 
