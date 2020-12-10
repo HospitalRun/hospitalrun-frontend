@@ -1,4 +1,6 @@
+export type ImagingFilter = 'completed' | 'requested' | 'canceled' | 'all'
+
 export default interface ImagingSearchRequest {
-  status: 'completed' | 'requested' | 'canceled' | 'all'
+  status: ImagingFilter
   text: string
 }

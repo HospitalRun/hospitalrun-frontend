@@ -1,4 +1,4 @@
-import { Button, Container, Row } from '@hospitalrun/components'
+import { Button } from '@hospitalrun/components'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -56,13 +56,7 @@ const ViewImagings = () => {
     }
   }, [getButtons, setButtons])
 
-  return (
-    <Container>
-      <Row>
-        <ImagingRequestTable searchRequest={searchRequest} />
-      </Row>
-    </Container>
-  )
+  return <ImagingRequestTable searchRequest={searchRequest} />
 }
 
 export default ViewImagings

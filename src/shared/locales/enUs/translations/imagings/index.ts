@@ -1,10 +1,16 @@
 export default {
   imagings: {
     label: 'Imagings',
+    filterTitle: 'Filter by status',
+    search: 'Search imaging',
+    searchPlaceholder: 'X-ray, CT, PET, etc.',
     status: {
       requested: 'Requested',
       completed: 'Completed',
       canceled: 'Canceled',
+    },
+    filter: {
+      all: 'All Statuses',
     },
     requests: {
       label: 'Imaging Requests',
