@@ -7,7 +7,7 @@ export default {
       draft: 'Draft',
       active: 'Active',
       onHold: 'On Hold',
-      cancelled: 'Cancelled',
+      canceled: 'Canceled',
       completed: 'Completed',
       enteredInError: 'Entered In Error',
       stopped: 'Stopped',
