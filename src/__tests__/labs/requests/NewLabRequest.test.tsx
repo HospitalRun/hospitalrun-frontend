@@ -1,4 +1,5 @@
 import { Button, Typeahead, Label, Alert } from '@hospitalrun/components'
+import format from 'date-fns/format'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -19,6 +20,7 @@ import LabRepository from '../../../shared/db/LabRepository'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Lab from '../../../shared/model/Lab'
 import Patient from '../../../shared/model/Patient'
+import Visit from '../../../shared/model/Visit'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -97,7 +99,8 @@ describe('New Lab Request', () => {
 
       expect(visitSelect).toBeDefined()
       expect(visitSelect.prop('label') as string).toEqual('patient.visit')
-      expect(visitSelect.prop('isRequired')).toBeTruthy()
+      expect(visitSelect.prop('isRequired')).toBeFalsy()
+      expect(visitSelect.prop('defaultSelected')).toEqual([])
     })
 
     it('should render a save button', async () => {
@@ -112,6 +115,54 @@ describe('New Lab Request', () => {
       const cancelButton = wrapper.find(Button).at(1)
       expect(cancelButton).toBeDefined()
       expect(cancelButton.text().trim()).toEqual('actions.cancel')
+    })
+
+    it('should clear visit when patient is changed', async () => {
+      const { wrapper } = await setup()
+      const patientTypeahead = wrapper.find(Typeahead)
+      const expectedDate = new Date()
+      const expectedNotes = 'expected notes'
+      const expectedLab = {
+        patient: '1234567',
+        type: 'expected type',
+        status: 'requested',
+        notes: [expectedNotes],
+        id: '1234',
+        requestedOn: expectedDate.toISOString(),
+      } as Lab
+
+      const visits = [
+        {
+          startDateTime: new Date().toISOString(),
+          id: 'visit_id',
+          type: 'visit_type',
+        },
+      ] as Visit[]
+
+      await act(async () => {
+        const onChange = patientTypeahead.prop('onChange') as any
+        await onChange([{ id: expectedLab.patient, visits }] as Patient[])
+      })
+      wrapper.update()
+
+      // The visits dropdown should be populated with the patient's visits.
+      expect(wrapper.find(SelectWithLabelFormGroup).prop('options')).toEqual([
+        {
+          label: `${visits[0].type} at ${format(
+            new Date(visits[0].startDateTime),
+            'yyyy-MM-dd hh:mm a',
+          )}`,
+          value: 'visit_id',
+        },
+      ])
+      await act(async () => {
+        const onChange = patientTypeahead.prop('onChange')
+        await onChange([] as Patient[])
+      })
+
+      wrapper.update()
+      // The visits dropdown option should be reset when the patient is changed.
+      expect(wrapper.find(SelectWithLabelFormGroup).prop('options')).toEqual([])
     })
   })
 
@@ -197,7 +248,7 @@ describe('New Lab Request', () => {
       const patientTypeahead = wrapper.find(Typeahead)
       await act(async () => {
         const onChange = patientTypeahead.prop('onChange')
-        await onChange([{ id: expectedLab.patient }] as Patient[])
+        await onChange([{ id: expectedLab.patient, visits: [] as Visit[] }] as Patient[])
       })
 
       const typeInput = wrapper.find(TextInputWithLabelFormGroup)

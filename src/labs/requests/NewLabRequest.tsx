@@ -50,17 +50,26 @@ const NewLabRequest = () => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onPatientChange = (patient: Patient) => {
-    const visits = patient.visits?.map((v) => ({
-      label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
-      value: v.id,
-    })) as Option[]
-    setVisitOptions(visits)
+    if (patient) {
+      const visits = patient.visits.map((v) => ({
+        label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
+        value: v.id,
+      })) as Option[]
 
-    setNewLabRequest((previousNewLabRequest) => ({
-      ...previousNewLabRequest,
-      patient: patient.id,
-      fullName: patient.fullName,
-    }))
+      setVisitOptions(visits)
+      setNewLabRequest((previousNewLabRequest) => ({
+        ...previousNewLabRequest,
+        patient: patient.id,
+        fullName: patient.fullName,
+      }))
+    } else {
+      setVisitOptions([])
+      setNewLabRequest((previousNewLabRequest) => ({
+        ...previousNewLabRequest,
+        patient: '',
+        visitId: '',
+      }))
+    }
   }
 
   const onLabTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,10 +106,10 @@ const NewLabRequest = () => {
     }
   }
 
-  const onVisitChange = (value: string) => {
+  const onVisitChange = (visitId: string) => {
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
-      visitId: value,
+      visitId,
     }))
   }
 
@@ -140,9 +149,8 @@ const NewLabRequest = () => {
               <SelectWithLabelFormGroup
                 name="visit"
                 label={t('patient.visit')}
-                isRequired
                 isEditable={newLabRequest.patient !== undefined}
-                options={visitOptions || []}
+                options={visitOptions}
                 defaultSelected={defaultSelectedVisitsOption()}
                 onChange={(values) => {
                   onVisitChange(values[0])
