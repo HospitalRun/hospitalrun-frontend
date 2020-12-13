@@ -164,6 +164,55 @@ describe('New Lab Request', () => {
       // The visits dropdown option should be reset when the patient is changed.
       expect(wrapper.find(SelectWithLabelFormGroup).prop('options')).toEqual([])
     })
+
+    it('should support selecting a visit', async () => {
+      const { wrapper } = await setup()
+      const patientTypeahead = wrapper.find(Typeahead)
+      const expectedDate = new Date()
+      const expectedNotes = 'expected notes'
+      const expectedLab = {
+        patient: '123456789',
+        type: 'expected type',
+        status: 'requested',
+        notes: [expectedNotes],
+        id: '1234',
+        requestedOn: expectedDate.toISOString(),
+      } as Lab
+
+      const visits = [
+        {
+          startDateTime: new Date().toISOString(),
+          id: 'visit_id',
+          type: 'visit_type',
+        },
+      ] as Visit[]
+      const visitOptions = [
+        {
+          label: `${visits[0].type} at ${format(
+            new Date(visits[0].startDateTime),
+            'yyyy-MM-dd hh:mm a',
+          )}`,
+          value: 'visit_id',
+        },
+      ]
+      expect(wrapper.find(SelectWithLabelFormGroup).prop('defaultSelected')).toEqual([])
+      await act(async () => {
+        const onChange = patientTypeahead.prop('onChange') as any
+        await onChange([{ id: expectedLab.patient, visits }] as Patient[])
+      })
+      wrapper.update()
+      expect(wrapper.find(SelectWithLabelFormGroup).prop('defaultSelected')).toEqual([])
+      const dropdown = wrapper.find(SelectWithLabelFormGroup)
+      await act(async () => {
+        // The onChange method takes a list of possible values,
+        // but our dropdown is single-select, so the argument passed to onChange()
+        // is a list with just one element. This is why we pass
+        // the whole array `visitOptions` as opposed to `visitOptions[0]`.
+        await (dropdown.prop('onChange') as any)(visitOptions.map((option) => option.value))
+      })
+      wrapper.update()
+      expect(wrapper.find(SelectWithLabelFormGroup).prop('defaultSelected')).toEqual(visitOptions)
+    })
   })
 
   describe('errors', () => {
