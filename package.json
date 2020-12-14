@@ -64,7 +64,7 @@
     "@commitlint/core": "~11.0.0",
     "@commitlint/prompt": "~11.0.0",
     "@testing-library/react": "~11.2.0",
-    "@testing-library/react-hooks": "~3.4.1",
+    "@testing-library/react-hooks": "~3.7.0",
     "@types/enzyme": "^3.10.5",
     "@types/jest": "~26.0.0",
     "@types/lodash": "^4.14.150",
