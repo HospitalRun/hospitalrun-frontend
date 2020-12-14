@@ -43,7 +43,6 @@ const Incidents = () => {
       />
       <PrivateRoute
         isAuthenticated={permissions.includes(Permissions.ViewIncident)}
-        exact
         path="/incidents/:id"
         component={ViewIncident}
       />
