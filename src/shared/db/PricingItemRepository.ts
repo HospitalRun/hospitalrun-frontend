@@ -1,5 +1,3 @@
-import { capitalize } from 'lodash'
-
 import { relationalDb } from '../config/pouchdb'
 import { PricingItem } from '../model/PricingItem'
 import Repository from './Repository'
@@ -17,12 +15,6 @@ class PricingItemRepository extends Repository<PricingItem> {
   }
 
   async save(entity: PricingItem): Promise<PricingItem> {
-    if (!entity.type) {
-      if (entity.category === 'imaging' || entity.category === 'lab') {
-        entity.type = `${capitalize(entity.category)} Procedure`
-      }
-    }
-
     return super.save(entity)
   }
 
@@ -36,6 +28,7 @@ class PricingItemRepository extends Repository<PricingItem> {
         },
         ...(container.category !== 'all' ? [{ 'data.category': container.category }] : [undefined]),
       ],
+      sorts: container.defaultSortRequest,
     }
 
     return super.search({

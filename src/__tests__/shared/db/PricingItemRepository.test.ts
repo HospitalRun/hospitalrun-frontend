@@ -1,5 +1,4 @@
 import { getTime, isAfter } from 'date-fns'
-import { capitalize } from 'lodash'
 import { validate as uuidValidate, version as uuidVersion } from 'uuid'
 
 import { relationalDb } from '../../../shared/config/pouchdb'
@@ -35,30 +34,6 @@ describe('Pricing Item Repository', () => {
       const newPricingItem = await PricingItemRepository.save(expectedPricingItem)
 
       expect(uuidValidateV4(newPricingItem.id)).toBeTruthy()
-    })
-
-    describe('if type not specified', () => {
-      // function for testing when type is not filled AND when category is one of the below
-      const itShouldSaveTypeAsCategoryProcedure = (category: string) => {
-        it(`should save type as '${capitalize(category)} Procedure'`, async () => {
-          const expectedPricingItemType = `${capitalize(category)} Procedure`
-
-          const newPricingItem = await PricingItemRepository.save({
-            ...expectedPricingItem,
-            category,
-          } as PricingItem)
-
-          expect(newPricingItem.type).toEqual(expectedPricingItemType)
-        })
-      }
-
-      describe('imaging category', () => {
-        itShouldSaveTypeAsCategoryProcedure('imaging')
-      })
-
-      describe('lab category', () => {
-        itShouldSaveTypeAsCategoryProcedure('lab')
-      })
     })
   })
 
