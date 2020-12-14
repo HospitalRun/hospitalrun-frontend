@@ -86,7 +86,7 @@
     "commitlint-config-cz": "~0.13.0",
     "cross-env": "~7.0.0",
     "cz-conventional-changelog": "~3.3.0",
-    "dateformat": "~4.0.0",
+    "dateformat": "~4.3.1",
     "enzyme": "~3.11.0",
     "enzyme-adapter-react-16": "~1.15.2",
     "eslint": "~6.8.0",
