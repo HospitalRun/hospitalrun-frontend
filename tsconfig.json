@@ -2,7 +2,7 @@
   "include": [
     "src",
     "types",
-    "setupTests.js"
+    "./setupTests.js"
   ],
   "exclude": [
     "node_modules",
