@@ -6,6 +6,7 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Diagnosis, { DiagnosisStatus } from '../../../shared/model/Diagnosis'
 import Patient from '../../../shared/model/Patient'
 import * as uuid from '../../../shared/util/uuid'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add diagnosis', () => {
@@ -16,6 +17,7 @@ describe('use add diagnosis', () => {
 
   it('should throw an error if diagnosis validation fails', async () => {
     const expectedError = { name: 'some error' }
+    expectOneConsoleError(expectedError as Error)
     jest.spyOn(validateDiagnosis, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
