@@ -5,6 +5,7 @@ import * as validateLabRequest from '../../../labs/utils/validate-lab'
 import { LabError } from '../../../labs/utils/validate-lab'
 import LabRepository from '../../../shared/db/LabRepository'
 import Lab from '../../../shared/model/Lab'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('Use Request lab', () => {
@@ -45,6 +46,7 @@ describe('Use Request lab', () => {
       type: 'error type',
     } as LabError
 
+    expectOneConsoleError(expectedError)
     jest.spyOn(validateLabRequest, 'validateLabRequest').mockReturnValue(expectedError)
 
     await act(async () => {

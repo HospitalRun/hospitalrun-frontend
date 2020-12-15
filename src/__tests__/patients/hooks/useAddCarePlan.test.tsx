@@ -5,6 +5,7 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../../shared/model/CarePlan'
 import Patient from '../../../shared/model/Patient'
 import * as uuid from '../../../shared/util/uuid'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add care plan', () => {
@@ -45,8 +46,12 @@ describe('use add care plan', () => {
   })
 
   it('should throw an error if validation fails', async () => {
-    const expectedError = { message: 'patient.carePlan.error.unableToAdd', title: 'some error' }
-    jest.spyOn(validateCarePlan, 'default').mockReturnValue(expectedError as CarePlanError)
+    const expectedError = {
+      message: 'patient.carePlan.error.unableToAdd',
+      title: 'some error',
+    } as CarePlanError
+    expectOneConsoleError(expectedError)
+    jest.spyOn(validateCarePlan, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {

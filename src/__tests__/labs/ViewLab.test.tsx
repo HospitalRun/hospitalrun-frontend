@@ -21,6 +21,7 @@ import Lab from '../../shared/model/Lab'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
+import { expectOneConsoleError } from '../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -196,6 +197,7 @@ describe('View Lab', () => {
       const { wrapper } = await setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab])
 
       const expectedError = { message: 'some message', result: 'some result feedback' } as LabError
+      expectOneConsoleError(expectedError)
       jest.spyOn(validateUtil, 'validateLabComplete').mockReturnValue(expectedError)
 
       const completeButton = wrapper.find(Button).at(1)

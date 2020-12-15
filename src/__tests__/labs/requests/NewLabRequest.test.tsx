@@ -19,6 +19,7 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Lab from '../../../shared/model/Lab'
 import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 describe('New Lab Request', () => {
@@ -112,6 +113,7 @@ describe('New Lab Request', () => {
       type: 'some type error',
     } as LabError
 
+    expectOneConsoleError(error)
     jest.spyOn(validationUtil, 'validateLabRequest').mockReturnValue(error)
 
     it('should display errors', async () => {
