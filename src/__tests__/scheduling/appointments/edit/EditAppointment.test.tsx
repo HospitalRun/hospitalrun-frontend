@@ -116,7 +116,7 @@ describe('Edit Appointment', () => {
 
     const saveButton = wrapper.find(Button).at(0)
     const onClick = saveButton.prop('onClick') as any
-    expect(saveButton.text().trim()).toEqual('Update Appointment')
+    expect(saveButton.text().trim()).toEqual('scheduling.appointments.updateAppointment')
 
     await act(async () => {
       await onClick()

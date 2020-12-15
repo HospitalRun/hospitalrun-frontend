@@ -126,7 +126,7 @@ const ViewMedication = () => {
 
     buttons.push(
       <Button className="mr-2" color="success" onClick={onUpdate} key="actions.update">
-        {t('Update Medication')}
+        {t('medications.requests.update')}
       </Button>,
     )
 

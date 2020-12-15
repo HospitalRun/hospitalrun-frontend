@@ -101,7 +101,7 @@ const NewAppointment = () => {
         <div className="row float-right">
           <div className="btn-group btn-group-lg">
             <Button className="mr-2" color="success" onClick={onSave}>
-              {t('Schedule Appointment')}
+              {t('scheduling.appointments.createAppointment')}
             </Button>
             <Button color="danger" onClick={onCancelClick}>
               {t('actions.cancel')}
