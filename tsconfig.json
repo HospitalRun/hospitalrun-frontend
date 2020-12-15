@@ -2,7 +2,7 @@
   "include": [
     "src",
     "types",
-    "./jest.setup.ts"
+    "./setupTests.js"
   ],
   "exclude": [
     "node_modules",
@@ -35,5 +35,5 @@
     "noEmit": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true
-  },
+  }
 }
