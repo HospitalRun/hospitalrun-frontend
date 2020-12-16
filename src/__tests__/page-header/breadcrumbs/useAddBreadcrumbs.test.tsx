@@ -13,16 +13,21 @@ const mockStore = createMockStore<RootState, any>([thunk])
 describe('useAddBreadcrumbs', () => {
   beforeEach(() => jest.clearAllMocks())
 
-  it('should call addBreadcrumbs with the correct data', () => {
-    const wrapper = ({ children }: any) => <Provider store={mockStore({})}>{children}</Provider>
-
-    jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
+  const setup = () => {
     const breadcrumbs = [
       {
         text: 'Patients',
         location: '/patients',
       },
     ]
+    const wrapper = ({ children }: any) => <Provider store={mockStore({})}>{children}</Provider>
+
+    return { breadcrumbs, wrapper }
+  }
+
+  it('should call addBreadcrumbs with the correct data', () => {
+    jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
+    const { breadcrumbs, wrapper } = setup()
 
     renderHook(() => useAddBreadcrumbs(breadcrumbs), { wrapper } as any)
     expect(breadcrumbsSlice.addBreadcrumbs).toHaveBeenCalledTimes(1)
@@ -30,15 +35,8 @@ describe('useAddBreadcrumbs', () => {
   })
 
   it('should call addBreadcrumbs with an additional dashboard breadcrumb', () => {
-    const wrapper = ({ children }: any) => <Provider store={mockStore({})}>{children}</Provider>
-
     jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
-    const breadcrumbs = [
-      {
-        text: 'Patients',
-        location: '/patients',
-      },
-    ]
+    const { breadcrumbs, wrapper } = setup()
 
     renderHook(() => useAddBreadcrumbs(breadcrumbs, true), { wrapper } as any)
     expect(breadcrumbsSlice.addBreadcrumbs).toHaveBeenCalledTimes(1)
@@ -49,16 +47,8 @@ describe('useAddBreadcrumbs', () => {
   })
 
   it('should call removeBreadcrumbs with the correct data after unmount', () => {
-    const wrapper = ({ children }: any) => <Provider store={mockStore({})}>{children}</Provider>
-
-    jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
     jest.spyOn(breadcrumbsSlice, 'removeBreadcrumbs')
-    const breadcrumbs = [
-      {
-        text: 'Patients',
-        location: '/patients',
-      },
-    ]
+    const { breadcrumbs, wrapper } = setup()
 
     const { unmount } = renderHook(() => useAddBreadcrumbs(breadcrumbs), { wrapper } as any)
     unmount()
