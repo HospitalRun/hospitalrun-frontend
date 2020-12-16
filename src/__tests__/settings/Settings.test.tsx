@@ -1,4 +1,4 @@
-import { mount } from 'enzyme'
+import { render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -22,17 +22,16 @@ describe('Settings', () => {
     const history = createMemoryHistory()
     history.push('/settings')
 
-    const wrapper = mount(
+    // eslint-disable-next-line react/prop-types
+    const Wrapper: React.FC = ({ children }) => (
       <Provider store={store}>
         <Router history={history}>
-          <TitleProvider>
-            <Settings />
-          </TitleProvider>
+          <TitleProvider>{children}</TitleProvider>
         </Router>
-      </Provider>,
+      </Provider>
     )
 
-    return wrapper
+    return render(<Settings />, { wrapper: Wrapper })
   }
 
   describe('layout', () => {
