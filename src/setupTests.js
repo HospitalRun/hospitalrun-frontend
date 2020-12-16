@@ -9,4 +9,3 @@ import './__mocks__/matchMediaMock'
 import './__mocks__/react-i18next'
 
 Enzyme.configure({ adapter: new Adapter() })
-// eslint-disable-next-line import/no-extraneous-dependencies
