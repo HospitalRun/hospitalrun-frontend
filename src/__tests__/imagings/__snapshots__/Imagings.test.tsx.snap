@@ -1,6 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Imagings routing /imaging/new should not navigate to /imagings/new if the user does not have RequestImaging permissions 1`] = `<div />`;
 
 exports[`Imagings routing /imaging/new should render the new imaging request screen when /imaging/new is accessed 1`] = `
 <div>
