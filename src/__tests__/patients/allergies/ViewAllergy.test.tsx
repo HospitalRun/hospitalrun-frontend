@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -19,10 +19,9 @@ describe('View Care Plan', () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     const history = createMemoryHistory()
     history.push(`/patients/${patient.id}/allergies/${patient.allergies![0].id}`)
-    let wrapper: any
 
     await act(async () => {
-      wrapper = await mount(
+      await render(
         <Router history={history}>
           <Route path="/patients/:id/allergies/:allergyId">
             <ViewAllergy />
@@ -30,17 +29,13 @@ describe('View Care Plan', () => {
         </Router>,
       )
     })
-
-    wrapper.update()
-
-    return { wrapper: wrapper as ReactWrapper }
   }
 
   it('should render a allergy input with the correct data', async () => {
-    const { wrapper } = await setup()
+    await setup()
 
-    const allergyName = wrapper.find(TextInputWithLabelFormGroup)
-    expect(allergyName).toHaveLength(1)
-    expect(allergyName.prop('value')).toEqual(patient.allergies![0].name)
+    const allergyName = screen.getByDisplayValue(/some name/)
+
+    expect(allergyName).toBeInTheDocument()
   })
 })
