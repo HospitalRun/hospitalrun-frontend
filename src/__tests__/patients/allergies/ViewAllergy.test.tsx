@@ -5,7 +5,6 @@ import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
 
 import ViewAllergy from '../../../patients/allergies/ViewAllergy'
-import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 
