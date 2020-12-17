@@ -28,6 +28,6 @@ describe('Button Tool Bar', () => {
     jest.spyOn(ButtonBarProvider, 'useButtons').mockReturnValue([])
 
     render(<ButtonToolBar />)
-    expect(screen.queryAllByRole('button')).toHaveLength(0)
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 })
