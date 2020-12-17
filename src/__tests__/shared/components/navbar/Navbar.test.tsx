@@ -1,4 +1,3 @@
-import { Navbar as HospitalRunNavbar } from '@hospitalrun/components'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
@@ -86,6 +85,7 @@ describe('Navbar', () => {
         'visits.visit.new',
         'settings.label',
       ]
+
       labels.forEach((label) => expect(screen.getByText(label)).toBeInTheDocument())
     })
 
@@ -106,21 +106,25 @@ describe('Navbar', () => {
         // TODO: Mention to Jack this was not passing, was previously rendering
         // 'imagings.requests.label',
       ]
+
       labels.forEach((label) => expect(screen.queryByText(label)).not.toBeInTheDocument())
     })
 
     describe('header', () => {
       it('should render a HospitalRun Navbar', () => {
         setup(allPermissions)
+
         expect(screen.getByText(/hospitalrun/i)).toBeInTheDocument()
         expect(screen.getByRole('button')).toBeInTheDocument()
       })
 
       it('should navigate to / when the header is clicked', () => {
         setup(allPermissions)
+
         history.location.pathname = '/enterprise-1701'
         expect(history.location.pathname).not.toEqual('/')
         userEvent.click(screen.getByText(/hospitalrun/i))
+
         expect(history.location.pathname).toEqual('/')
       })
     })
@@ -128,9 +132,9 @@ describe('Navbar', () => {
     describe('add new', () => {
       it('should show a shortcut if user has a permission', () => {
         setup(allPermissions)
+
         const navButton = screen.getByRole('button')
         userEvent.click(navButton)
-
         expect(
           screen.getByRole('button', {
             name: /patients\.newpatient/i,
@@ -144,35 +148,35 @@ describe('Navbar', () => {
 
     describe('account', () => {
       it("should render a link with the user's identification", () => {
-        const expectedUserName = `user.login.currentlySignedInAs ${userName.givenName} ${userName.familyName}`
+        const { container } = setup(allPermissions, userName)
+        const navButton = container.querySelector('.nav-account')?.firstElementChild as Element
+        userEvent.click(navButton)
 
-        setup(allPermissions, userName)
-        const navButton = screen.getByRole('button')
-
-        screen.debug(undefined, Infinity)
+        expect(
+          screen.getByText(/user\.login\.currentlysignedinas givenname familyname/i),
+        ).toBeInTheDocument()
       })
 
-      // it('should render a setting link list', () => {
-      //   setup(allPermissions)
-      //   const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      //   const accountLinkList = hospitalRunNavbar.find('.nav-account')
-      //   const { children } = accountLinkList.first().props() as any
+      it('should render a setting link list', () => {
+        setup(allPermissions)
+        const { container } = setup(allPermissions, userName)
 
-      //   expect(children[1].props.children).toEqual([undefined, 'settings.label'])
-      // })
+        const navButton = container.querySelector('.nav-account')?.firstElementChild as Element
+        userEvent.click(navButton)
 
-      // it('should navigate to /settings when the list option is selected', () => {
-      //   setup(allPermissions)
-      //   const hospitalRunNavbar = wrapper.find(HospitalRunNavbar)
-      //   const accountLinkList = hospitalRunNavbar.find('.nav-account')
-      //   const { children } = accountLinkList.first().props() as any
+        expect(screen.getByText('settings.label')).toBeInTheDocument()
+      })
 
-      //   act(() => {
-      //     children[0].props.onClick()
-      //     children[1].props.onClick()
-      //   })
+      it('should navigate to /settings when the list option is selected', () => {
+        setup(allPermissions)
+        const { container } = setup(allPermissions, userName)
 
-      //   expect(history.location.pathname).toEqual('/settings')
+        const navButton = container.querySelector('.nav-account')?.firstElementChild as Element
+        userEvent.click(navButton)
+        userEvent.click(screen.getByText('settings.label'))
+
+        expect(history.location.pathname).toEqual('/settings')
+      })
     })
   })
 })
