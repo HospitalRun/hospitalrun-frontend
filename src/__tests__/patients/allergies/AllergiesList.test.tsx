@@ -44,9 +44,7 @@ describe('Allergies list', () => {
     const expectedAllergies = [{ id: '456', name: 'some name' }]
     const { history } = await setup(expectedAllergies)
     const listItems = screen.getAllByRole('button')
-    act(() => {
-      userEvent.click(listItems[0])
-    })
+    userEvent.click(listItems[0])
     expect(history.location.pathname).toEqual(`/patients/123/allergies/${expectedAllergies[0].id}`)
   })
 })
