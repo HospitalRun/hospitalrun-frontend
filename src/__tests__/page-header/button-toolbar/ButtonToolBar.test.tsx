@@ -1,5 +1,5 @@
 import { Button } from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
@@ -17,17 +17,17 @@ describe('Button Tool Bar', () => {
     ]
     jest.spyOn(ButtonBarProvider, 'useButtons').mockReturnValue(buttons)
 
-    const wrapper = mount(<ButtonToolBar />).find('.button-toolbar')
+    render(<ButtonToolBar />)
+    const renderedButtons = screen.getAllByRole('button')
 
-    expect(wrapper.childAt(0).getElement()).toEqual(buttons[0])
-    expect(wrapper.childAt(1).getElement()).toEqual(buttons[1])
+    expect(renderedButtons[0]).toHaveTextContent(/test 1/i)
+    expect(renderedButtons[1]).toHaveTextContent(/test 2/i)
   })
 
   it('should return null when there is no button in the provider', () => {
     jest.spyOn(ButtonBarProvider, 'useButtons').mockReturnValue([])
 
-    const wrapper = mount(<ButtonToolBar />)
-
-    expect(wrapper.html()).toBeNull()
+    render(<ButtonToolBar />)
+    expect(screen.queryAllByRole('button')).toHaveLength(0)
   })
 })
