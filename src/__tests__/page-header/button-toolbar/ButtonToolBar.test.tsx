@@ -20,8 +20,8 @@ describe('Button Tool Bar', () => {
     render(<ButtonToolBar />)
     const renderedButtons = screen.getAllByRole('button')
 
-    expect(renderedButtons[0]).toHaveTextContent(/test 1/i)
-    expect(renderedButtons[1]).toHaveTextContent(/test 2/i)
+    expect(renderedButtons[0]).toHaveTextContent('Test 1')
+    expect(renderedButtons[1]).toHaveTextContent('Test 2')
   })
 
   it('should return null when there is no button in the provider', () => {
