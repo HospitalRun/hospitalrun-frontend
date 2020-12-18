@@ -3,7 +3,6 @@ import { queryCache, useMutation } from 'react-query'
 
 import PatientRepository from '../../shared/db/PatientRepository'
 import Note from '../../shared/model/Note'
-import { uuid } from '../../shared/util/uuid'
 import validateNote from '../util/validate-note'
 
 interface AddNoteRequest {

@@ -12,7 +12,6 @@ import ViewIncidentDetails from './ViewIncidentDetails'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
 import NotesTable from './NotesTable'
-import NewNoteModal from '../../patients/notes/NewNoteModal'
 
 const ViewIncident = () => {
   const { id } = useParams() as any
@@ -85,12 +84,12 @@ const ViewIncident = () => {
           </div>
         )}
 
-      <NewNoteModal
+      {/* <NewNoteModal
         show={showNewNoteModal}
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
         patientId={'Random String for now'}
-      />
+      /> */}
     </div>
   )
 }

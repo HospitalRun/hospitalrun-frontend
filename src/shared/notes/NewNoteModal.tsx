@@ -3,37 +3,40 @@ import React, { useState } from 'react'
 
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
-import useAddPatientNote from '../hooks/useAddPatientNote'
+import { uuid } from '../../shared/util/uuid'
+import Note from '../../shared/model/Note'
 import { NoteError } from '../util/validate-note'
 
 interface Props {
   show: boolean
   toggle: () => void
   onCloseButtonClick: () => void
-  patientId: string
+  onSave: (note: Note) => void
 }
-const initialNoteState = { text: '', date: new Date().toISOString() }
 
 const NewNoteModal = (props: Props) => {
-  const { show, toggle, onCloseButtonClick, patientId } = props
+
+  
+
+  const { show, toggle, onCloseButtonClick, onSave } = props
   const { t } = useTranslator()
-  const [mutate] = useAddPatientNote()
 
   const [noteError, setNoteError] = useState<NoteError | undefined>(undefined)
-  const [note, setNote] = useState(initialNoteState)
+  const [text, setText] = useState('')
 
   const onNoteTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const text = event.currentTarget.value
-    setNote({
-      ...note,
-      text,
-    })
+    setText(event.currentTarget.value)
   }
 
   const onSaveButtonClick = async () => {
     try {
-      await mutate({ patientId, note })
-      setNote(initialNoteState)
+      onSave({
+        id: uuid(),
+        date: new Date().toISOString(),
+        // TODO: Implement givenBy
+        text,
+      })
+      setText('')
       onCloseButtonClick()
     } catch (e) {
       setNoteError(e)
@@ -57,7 +60,7 @@ const NewNoteModal = (props: Props) => {
               isRequired
               name="noteTextField"
               label={t('patient.note')}
-              value={note.text}
+              value={text}
               isInvalid={!!noteError?.noteError}
               feedback={t(noteError?.noteError || '')}
               onChange={onNoteTextChange}
