@@ -109,7 +109,7 @@ describe('New Appointment', () => {
       wrapper.update()
 
       const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
       const onClick = saveButton.prop('onClick') as any
 
       await act(async () => {
@@ -153,7 +153,7 @@ describe('New Appointment', () => {
       wrapper.update()
 
       const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
       const onClick = saveButton.prop('onClick') as any
 
       await act(async () => {
@@ -238,7 +238,7 @@ describe('New Appointment', () => {
       wrapper.update()
 
       const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
       const onClick = saveButton.prop('onClick') as any
 
       await act(async () => {
@@ -274,7 +274,7 @@ describe('New Appointment', () => {
       })
       wrapper.update()
       const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
       const onClick = saveButton.prop('onClick') as any
 
       await act(async () => {
