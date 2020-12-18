@@ -75,8 +75,8 @@ export default {
     diagnoses: {
       label: 'Diagnoses',
       new: 'Add Diagnosis',
-      diagnosisName: 'Diagnosis Name',
-      diagnosisDate: 'Diagnosis Date',
+      diagnosisName: 'Name',
+      diagnosisDate: 'Date',
       onsetDate: 'Onset Date',
       abatementDate: 'Abatement Date',
       visit: 'Visit',
@@ -119,6 +119,14 @@ export default {
         noLabs: 'No Labs',
       },
       noLabsMessage: 'No labs requests for this person.',
+    },
+    medications: {
+      label: 'Medications',
+      new: 'Add New Medication',
+      warning: {
+        noMedications: 'No Medications',
+      },
+      noMedicationsMessage: 'No medications requests for this person.',
     },
     careGoal: {
       new: 'Add Care Goal',

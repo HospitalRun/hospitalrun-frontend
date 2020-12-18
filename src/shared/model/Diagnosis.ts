@@ -3,7 +3,7 @@ export enum DiagnosisStatus {
   Recurrence = 'recurrence',
   Relapse = 'relapse',
   Inactive = 'inactive',
-  Remission = 'remisison',
+  Remission = 'remission',
   Resolved = 'resolved',
 }
 

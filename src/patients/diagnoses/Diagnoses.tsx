@@ -1,35 +1,39 @@
 import { Button } from '@hospitalrun/components'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Route, Switch, useParams } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
+import Loading from '../../shared/components/Loading'
 import useTranslator from '../../shared/hooks/useTranslator'
-import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
+import usePatient from '../hooks/usePatient'
 import AddDiagnosisModal from './AddDiagnosisModal'
-import DiagnosesList from './DiagnosesList'
+import ViewDiagnoses from './ViewDiagnoses'
+import ViewDiagnosis from './ViewDiagnosis'
 
-interface Props {
-  patient: Patient
-}
-
-const Diagnoses = (props: Props) => {
-  const { patient } = props
+const Diagnoses = () => {
+  const { id: patientId } = useParams()
   const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
+  const { data, status } = usePatient(patientId)
   const [showDiagnosisModal, setShowDiagnosisModal] = useState(false)
 
   const breadcrumbs = [
     {
       i18nKey: 'patient.diagnoses.label',
-      location: `/patients/${patient.id}/diagnoses`,
+      location: `/patients/${patientId}/diagnoses`,
     },
   ]
   useAddBreadcrumbs(breadcrumbs)
 
   const onAddDiagnosisModalClose = () => {
     setShowDiagnosisModal(false)
+  }
+
+  if (data === undefined || status === 'loading') {
+    return <Loading />
   }
 
   return (
@@ -50,11 +54,18 @@ const Diagnoses = (props: Props) => {
         </div>
       </div>
       <br />
-      <DiagnosesList patientId={patient.id} />
+      <Switch>
+        <Route exact path="/patients/:id/diagnoses">
+          <ViewDiagnoses />
+        </Route>
+        <Route exact path="/patients/:id/diagnoses/:diagnosisId">
+          <ViewDiagnosis />
+        </Route>
+      </Switch>
       <AddDiagnosisModal
         show={showDiagnosisModal}
         onCloseButtonClick={onAddDiagnosisModalClose}
-        patient={patient}
+        patient={data}
       />
     </>
   )

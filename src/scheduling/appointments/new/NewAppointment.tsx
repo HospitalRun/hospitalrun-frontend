@@ -3,12 +3,13 @@ import addMinutes from 'date-fns/addMinutes'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../../page-header/title/TitleContext'
 import useTranslator from '../../../shared/hooks/useTranslator'
 import Appointment from '../../../shared/model/Appointment'
+import Patient from '../../../shared/model/Patient'
 import useScheduleAppointment from '../../hooks/useScheduleAppointment'
 import AppointmentDetailForm from '../AppointmentDetailForm'
 import { AppointmentError } from '../util/validate-appointment'
@@ -18,9 +19,18 @@ const breadcrumbs = [
   { i18nKey: 'scheduling.appointments.new', location: '/appointments/new' },
 ]
 
+interface LocationProps {
+  pathname: string
+  state?: {
+    patient: Patient
+  }
+}
+
 const NewAppointment = () => {
   const { t } = useTranslator()
   const history = useHistory()
+  const location: LocationProps = useLocation()
+  const patient = location.state?.patient
   const updateTitle = useUpdateTitle()
   useEffect(() => {
     updateTitle(t('scheduling.appointments.new'))
@@ -32,7 +42,7 @@ const NewAppointment = () => {
   const [saved, setSaved] = useState(false)
   const [newAppointmentMutateError, setError] = useState<AppointmentError>({} as AppointmentError)
   const [newAppointment, setAppointment] = useState({
-    patient: '',
+    patient: patient || '',
     startDateTime: startDateTime.toISOString(),
     endDateTime: endDateTime.toISOString(),
     location: '',
@@ -95,6 +105,7 @@ const NewAppointment = () => {
       <form>
         <AppointmentDetailForm
           appointment={newAppointment as Appointment}
+          patient={patient as Patient}
           error={newAppointmentMutateError}
           onFieldChange={onFieldChange}
         />
