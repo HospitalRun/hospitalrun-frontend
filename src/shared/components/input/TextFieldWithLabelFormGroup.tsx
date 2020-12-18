@@ -19,6 +19,7 @@ const TextFieldWithLabelFormGroup = (props: Props) => {
     <div className="form-group">
       {label && <Label text={label} htmlFor={id} isRequired={isRequired} />}
       <TextField
+        id={id}
         rows={4}
         value={value}
         disabled={!isEditable}
