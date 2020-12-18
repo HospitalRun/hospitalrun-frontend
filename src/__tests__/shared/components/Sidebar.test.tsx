@@ -321,18 +321,21 @@ describe('Sidebar', () => {
       expect(history.location.pathname).toEqual('/labs')
     })
   })
-  /*
+
   describe('incident links', () => {
     it('should render the main incidents link', () => {
-      const wrapper = setup('/incidents')
+      render('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.label')
-
-      expect(incidentsIndex).not.toBe(-1)
+      expect(screen.getByText(/incidents.label/i)).toBeInTheDocument()
     })
 
-    it('should be the last one in the sidebar', () => {
+    it('should render the new incident report link', () => {
+      render('/incidents')
+
+      expect(screen.getByText(/incidents.reports.new/i)).toBeInTheDocument()
+    })
+
+    it.skip('should be the last one in the sidebar', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
@@ -353,142 +356,88 @@ describe('Sidebar', () => {
       ).toBe('incidents.label')
     })
 
-    it('should render the new incident report link', () => {
-      const wrapper = setup('/incidents')
-
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.reports.new')
-
-      expect(incidentsIndex).not.toBe(-1)
-    })
-
     it('should not render the new incident report link when user does not have the report incidents privileges', () => {
-      const wrapper = setupNoPermissions('/incidents')
+      renderNoPermissions('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.reports.new')
-
-      expect(incidentsIndex).toBe(-1)
+      expect(screen.queryByText(/incidents.reports.new/i)).not.toBeInTheDocument()
     })
 
     it('should render the incidents list link', () => {
-      const wrapper = setup('/incidents')
+      render('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
-
-      expect(incidentsIndex).not.toBe(-1)
+      expect(screen.getByText(/incidents.reports.label/i)).toBeInTheDocument()
     })
 
     it('should not render the incidents list link when user does not have the view incidents privileges', () => {
-      const wrapper = setupNoPermissions('/incidents')
+      renderNoPermissions('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
-
-      expect(incidentsIndex).toBe(-1)
+      expect(screen.queryByText(/incidents.reports.label/i)).not.toBeInTheDocument()
     })
 
     it('should render the incidents visualize link', () => {
-      const wrapper = setup('/incidents')
+      render('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-      expect(listItems.at(10).text().trim()).toEqual('incidents.visualize.label')
+      expect(screen.getByText(/incidents.visualize.label/i)).toBeInTheDocument()
     })
 
     it('should not render the incidents visualize link when user does not have the view incident widgets privileges', () => {
-      const wrapper = setupNoPermissions('/incidents')
+      renderNoPermissions('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-
-      listItems.forEach((_, i) => {
-        expect(listItems.at(i).text().trim()).not.toEqual('incidents.visualize.label')
-      })
+      expect(screen.queryByText(/incidents.visualize.label/i)).not.toBeInTheDocument()
     })
 
     it('main incidents link should be active when the current path is /incidents', () => {
-      const wrapper = setup('/incidents')
+      const { container } = render('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.label')
-
-      expect(listItems.at(incidentsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelector('.active')).toHaveTextContent(/incidents.labe/i)
     })
 
     it('should navigate to /incidents when the main incident link is clicked', () => {
-      const wrapper = setup('/')
+      render('/')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.label')
-
-      act(() => {
-        const onClick = listItems.at(incidentsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/incidents.label/i))
 
       expect(history.location.pathname).toEqual('/incidents')
     })
 
     it('new incident report link should be active when the current path is /incidents/new', () => {
-      const wrapper = setup('/incidents/new')
+      const { container } = render('/incidents/new')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.reports.new')
-
-      expect(listItems.at(incidentsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/incidents.reports.new/i)
     })
 
-    it('should navigate to /incidents/new when the new labs link is clicked', () => {
-      const wrapper = setup('/incidents')
+    it('should navigate to /incidents/new when the new incidents link is clicked', () => {
+      render('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.reports.new')
-
-      act(() => {
-        const onClick = listItems.at(incidentsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/incidents.reports.new/i))
 
       expect(history.location.pathname).toEqual('/incidents/new')
     })
 
     it('should navigate to /incidents/visualize when the incidents visualize link is clicked', () => {
-      const wrapper = setup('/incidents')
+      render('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-
-      act(() => {
-        const onClick = listItems.at(10).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/incidents.visualize.label/i))
 
       expect(history.location.pathname).toEqual('/incidents/visualize')
     })
 
     it('incidents list link should be active when the current path is /incidents', () => {
-      const wrapper = setup('/incidents')
+      const { container } = render('/incidents')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
-
-      expect(listItems.at(incidentsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/incidents.reports.label/i)
     })
 
-    it('should navigate to /incidents when the incidents list link is clicked', () => {
-      const wrapper = setup('/incidents/new')
+    it('should navigate to /incidents/new when the incidents list link is clicked', () => {
+      render('/incidents/new')
 
-      const listItems = wrapper.find(ListItem)
-      const incidentsIndex = getIndex(listItems, 'incidents.reports.label')
-
-      act(() => {
-        const onClick = listItems.at(incidentsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/incidents.reports.label/i))
 
       expect(history.location.pathname).toEqual('/incidents')
     })
   })
 
+  /*
   describe('imagings links', () => {
     it('should render the main imagings link', () => {
       const wrapper = setup('/imaging')
