@@ -146,7 +146,7 @@ const ImportantPatientInfo = (props: Props) => {
           {permissions.includes(Permissions.AddAllergy) && (
             <Button
               size="small"
-              color="light"
+              color="primary"
               icon="add"
               iconLocation="left"
               onClick={() => setShowNewAllergyModal(true)}
@@ -178,7 +178,7 @@ const ImportantPatientInfo = (props: Props) => {
           {permissions.includes(Permissions.AddDiagnosis) && (
             <Button
               size="small"
-              color="light"
+              color="primary"
               icon="add"
               iconLocation="left"
               onClick={() => setShowDiagnosisModal(true)}
@@ -215,7 +215,7 @@ const ImportantPatientInfo = (props: Props) => {
           {permissions.includes(Permissions.AddCarePlan) && (
             <Button
               size="small"
-              color="light"
+              color="primary"
               icon="add"
               iconLocation="left"
               onClick={() => setShowAddCarePlanModal(true)}
