@@ -173,117 +173,76 @@ describe('Sidebar', () => {
     })
   })
 
-  /*   describe('appointments link', () => {
+  describe('appointments link', () => {
     it('should render the scheduling link', () => {
-      const wrapper = setup('/appointments')
+      render('/appointments')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
-
-      expect(appointmentsIndex).not.toBe(-1)
+      expect(screen.getByText(/scheduling.label/i)).toBeInTheDocument()
     })
 
     it('should render the new appointment link', () => {
-      const wrapper = setup('/appointments/new')
+      render('/appointments/new')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.new')
-
-      expect(appointmentsIndex).not.toBe(-1)
+      expect(screen.getByText(/scheduling.appointments.new/i)).toBeInTheDocument()
     })
 
     it('should not render the new appointment link when the user does not have write appointments privileges', () => {
-      const wrapper = setupNoPermissions('/appointments')
+      renderNoPermissions('/appointments')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.new')
-
-      expect(appointmentsIndex).toBe(-1)
+      expect(screen.queryByText(/scheduling.appointments.new/i)).not.toBeInTheDocument()
     })
 
     it('should render the appointments schedule link', () => {
-      const wrapper = setup('/appointments')
+      render('/appointments')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.schedule')
-
-      expect(appointmentsIndex).not.toBe(-1)
+      expect(screen.getByText(/scheduling.appointments.schedule/i)).toBeInTheDocument()
     })
 
     it('should not render the appointments schedule link when the user does not have read appointments privileges', () => {
-      const wrapper = setupNoPermissions('/appointments')
+      renderNoPermissions('/appointments')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.schedule')
-
-      expect(appointmentsIndex).toBe(-1)
+      expect(screen.queryByText(/scheduling.appointments.schedule/i)).not.toBeInTheDocument()
     })
 
     it('main scheduling link should be active when the current path is /appointments', () => {
-      const wrapper = setup('/appointments')
+      const { container } = render('/appointments')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
-
-      expect(listItems.at(appointmentsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelector('.active')).toHaveTextContent(/scheduling.label/i)
     })
 
     it('should navigate to /appointments when the main scheduling link is clicked', () => {
-      const wrapper = setup('/')
+      render('/')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
-
-      act(() => {
-        const onClick = listItems.at(appointmentsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/scheduling.label/i))
 
       expect(history.location.pathname).toEqual('/appointments')
     })
 
     it('new appointment link should be active when the current path is /appointments/new', () => {
-      const wrapper = setup('/appointments/new')
+      const { container } = render('/appointments/new')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.new')
-
-      expect(listItems.at(appointmentsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/appointments.new/i)
     })
 
     it('should navigate to /appointments/new when the new appointment link is clicked', () => {
-      const wrapper = setup('/appointments')
-
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.appointments.new')
-
-      act(() => {
-        const onClick = listItems.at(appointmentsIndex).prop('onClick') as any
-        onClick()
-      })
+      render('/appointments')
+      userEvent.click(screen.getByText(/scheduling.appointments.new/i))
 
       expect(history.location.pathname).toEqual('/appointments/new')
     })
 
     it('appointments schedule link should be active when the current path is /appointments', () => {
-      const wrapper = setup('/appointments')
+      const { container } = render('/appointments')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
-
-      expect(listItems.at(appointmentsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(
+        /scheduling.appointments.schedule/i,
+      )
     })
 
     it('should navigate to /appointments when the appointments schedule link is clicked', () => {
-      const wrapper = setup('/appointments')
+      render('/appointments')
 
-      const listItems = wrapper.find(ListItem)
-      const appointmentsIndex = getIndex(listItems, 'scheduling.label')
-
-      act(() => {
-        const onClick = listItems.at(appointmentsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/scheduling.appointments.schedule/i))
 
       expect(history.location.pathname).toEqual('/appointments')
     })
@@ -291,120 +250,78 @@ describe('Sidebar', () => {
 
   describe('labs links', () => {
     it('should render the main labs link', () => {
-      const wrapper = setup('/labs')
+      render('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.label')
-
-      expect(labsIndex).not.toBe(-1)
+      expect(screen.getByText(/labs.label/i)).toBeInTheDocument()
     })
 
     it('should render the new labs request link', () => {
-      const wrapper = setup('/labs')
+      render('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.requests.new')
-
-      expect(labsIndex).not.toBe(-1)
+      expect(screen.getByText(/labs.requests.new/i)).toBeInTheDocument()
     })
 
     it('should not render the new labs request link when user does not have request labs privileges', () => {
-      const wrapper = setupNoPermissions('/labs')
+      renderNoPermissions('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.requests.new')
-
-      expect(labsIndex).toBe(-1)
+      expect(screen.queryByText(/labs.requests.new/i)).not.toBeInTheDocument()
     })
 
     it('should render the labs list link', () => {
-      const wrapper = setup('/labs')
+      render('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.requests.label')
-
-      expect(labsIndex).not.toBe(-1)
+      expect(screen.getByText(/labs.requests.label/i)).toBeInTheDocument()
     })
 
     it('should not render the labs list link when user does not have view labs privileges', () => {
-      const wrapper = setupNoPermissions('/labs')
+      renderNoPermissions('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.requests.label')
-
-      expect(labsIndex).toBe(-1)
+      expect(screen.queryByText(/labs.requests.label/i)).not.toBeInTheDocument()
     })
 
     it('main labs link should be active when the current path is /labs', () => {
-      const wrapper = setup('/labs')
+      const { container } = render('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.label')
-
-      expect(listItems.at(labsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelector('.active')).toHaveTextContent(/labs.label/i)
     })
 
     it('should navigate to /labs when the main lab link is clicked', () => {
-      const wrapper = setup('/')
+      render('/')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.label')
-
-      act(() => {
-        const onClick = listItems.at(labsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/labs.label/i))
 
       expect(history.location.pathname).toEqual('/labs')
     })
 
     it('new lab request link should be active when the current path is /labs/new', () => {
-      const wrapper = setup('/labs/new')
+      const { container } = render('/labs/new')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.requests.new')
-
-      expect(listItems.at(labsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/labs.requests.new/i)
     })
 
     it('should navigate to /labs/new when the new labs link is clicked', () => {
-      const wrapper = setup('/labs')
+      render('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.requests.new')
-
-      act(() => {
-        const onClick = listItems.at(labsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/labs.requests.new/))
 
       expect(history.location.pathname).toEqual('/labs/new')
     })
 
     it('labs list link should be active when the current path is /labs', () => {
-      const wrapper = setup('/labs')
+      const { container } = render('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.requests.label')
-
-      expect(listItems.at(labsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/labs.requests.label/i)
     })
 
     it('should navigate to /labs when the labs list link is clicked', () => {
-      const wrapper = setup('/labs/new')
+      render('/labs')
 
-      const listItems = wrapper.find(ListItem)
-      const labsIndex = getIndex(listItems, 'labs.requests.label')
-
-      act(() => {
-        const onClick = listItems.at(labsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/labs.label/i))
 
       expect(history.location.pathname).toEqual('/labs')
     })
   })
-
+  /*
   describe('incident links', () => {
     it('should render the main incidents link', () => {
       const wrapper = setup('/incidents')
