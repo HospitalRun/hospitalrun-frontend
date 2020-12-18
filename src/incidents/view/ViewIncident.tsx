@@ -1,5 +1,5 @@
 import { Button, Tab, Panel, TabsHeader } from '@hospitalrun/components'
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 
@@ -12,6 +12,7 @@ import ViewIncidentDetails from './ViewIncidentDetails'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
 import NotesTable from './NotesTable'
+import NewNoteModal from '../../patients/notes/NewNoteModal'
 
 const ViewIncident = () => {
   const { id } = useParams() as any
@@ -29,6 +30,15 @@ const ViewIncident = () => {
       location: `/incidents/${id}`,
     },
   ])
+
+  //New Note Modal
+  const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
+  const onNewNoteClick = () => {
+    setShowNoteModal(true)
+  }
+  const closeNewNoteModal = () => {
+    setShowNoteModal(false)
+  }
 
   if (id === undefined || permissions === undefined) {
     return <></>
@@ -51,7 +61,7 @@ const ViewIncident = () => {
       </TabsHeader>
       <Panel>
         <div className="col-md-12 d-flex justify-content-end">
-          <Button outlined color="success" icon="add" iconLocation="right">
+          <Button outlined color="success" icon="add" iconLocation="right" onClick={onNewNoteClick}>
             {t('patient.notes.new')}
           </Button>
         </div>
@@ -74,6 +84,13 @@ const ViewIncident = () => {
             </div>
           </div>
         )}
+
+      <NewNoteModal
+        show={showNewNoteModal}
+        toggle={closeNewNoteModal}
+        onCloseButtonClick={closeNewNoteModal}
+        patientId={'Random String for now'}
+      />
     </div>
   )
 }
