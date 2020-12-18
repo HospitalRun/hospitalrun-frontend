@@ -1,5 +1,6 @@
 export default interface Note {
   id: string
   date: string
-  text: string
+  text: string,
+  givenBy?: string,
 }

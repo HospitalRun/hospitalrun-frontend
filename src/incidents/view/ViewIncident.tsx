@@ -1,7 +1,7 @@
 import { Button, Tab, Panel, TabsHeader } from '@hospitalrun/components'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useParams, useHistory, useLocation, Route } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
@@ -11,6 +11,7 @@ import Permissions from '../../shared/model/Permissions'
 import ViewIncidentDetails from './ViewIncidentDetails'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
+import NotesTable from './NotesTable'
 
 const ViewIncident = () => {
   const { id } = useParams() as any
@@ -38,53 +39,43 @@ const ViewIncident = () => {
     history.push('/incidents')
   }
 
-
   return (
     <div>
       <ViewIncidentDetails isLoading={isLoading} incident={data} />
       <TabsHeader>
         <Tab
-            active={location.pathname === `/incidents/${id}/notes`}
-            label={t('patient.notes.label')}
-            onClick={() => history.push(`/incidents/${id}/notes`)}
+          active={location.pathname === `/incidents/${id}/notes`}
+          label={t('patient.notes.label')}
+          onClick={() => history.push(`/incidents/${id}/notes`)}
         />
       </TabsHeader>
       <Panel>
-        <Route exact path={`/incidents/${id}/notes`}>
-          <Button
-              outlined
-              color="success"
-              icon="add"
-              iconLocation="left"
-              onClick={() => {}}
-            >
-              {t('patient.notes.new')}
-            </Button>
-        </Route>
+        <div className="col-md-12 d-flex justify-content-end">
+          <Button outlined color="success" icon="add" iconLocation="right">
+            {t('patient.notes.new')}
+          </Button>
+        </div>
+        <NotesTable />
       </Panel>
-      {
-        data && 
+      {data &&
         data.resolvedOn === undefined &&
-        data.status !== 'resolved' && 
-        permissions.includes(Permissions.ResolveIncident) && 
-        (<div className="row float-right">
-          <div className="btn-group btn-group-lg mt-3">
-            <Button
-              className="mr-2"
-              onClick={onResolve}
-              color="primary"
-              key="incidents.reports.resolve"
-            >
-              {t('incidents.reports.resolve')}
-            </Button>
+        data.status !== 'resolved' &&
+        permissions.includes(Permissions.ResolveIncident) && (
+          <div className="row float-right">
+            <div className="btn-group btn-group-lg mt-3">
+              <Button
+                className="mr-2"
+                onClick={onResolve}
+                color="primary"
+                key="incidents.reports.resolve"
+              >
+                {t('incidents.reports.resolve')}
+              </Button>
+            </div>
           </div>
-        </div>)
-      }
-
+        )}
     </div>
-
   )
-  
 }
 
 export default ViewIncident
