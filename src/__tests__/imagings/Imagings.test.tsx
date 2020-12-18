@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -39,31 +39,29 @@ describe('Imagings', () => {
       },
     } as any)
 
-    const wrapper = mount(
+    return render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/imaging/new']}>
           <TitleProvider>{isNew ? <NewImagingRequest /> : <Imagings />}</TitleProvider>
         </MemoryRouter>
       </Provider>,
     )
-    wrapper.update()
-    return { wrapper: wrapper as ReactWrapper }
   }
 
   describe('routing', () => {
     describe('/imaging/new', () => {
       it('should render the new imaging request screen when /imaging/new is accessed', async () => {
         const permissions: Permissions[] = [Permissions.RequestImaging]
-        const { wrapper } = setup(permissions, true)
+        const { container } = setup(permissions, true)
 
-        expect(wrapper.find(NewImagingRequest)).toHaveLength(1)
+        expect(container).toMatchSnapshot()
       })
 
       it('should not navigate to /imagings/new if the user does not have RequestImaging permissions', async () => {
         const permissions: Permissions[] = []
-        const { wrapper } = setup(permissions)
+        const { container } = setup(permissions)
 
-        expect(wrapper.find(NewImagingRequest)).toHaveLength(0)
+        expect(container).toMatchInlineSnapshot(`<div />`)
       })
     })
   })
