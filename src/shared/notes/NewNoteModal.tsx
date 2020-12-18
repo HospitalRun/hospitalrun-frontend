@@ -1,11 +1,11 @@
 import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
-import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
-import useTranslator from '../../shared/hooks/useTranslator'
-import { uuid } from '../../shared/util/uuid'
-import Note from '../../shared/model/Note'
-import { NoteError } from '../util/validate-note'
+import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
+import useTranslator from '../hooks/useTranslator'
+import { uuid } from '../util/uuid'
+import Note from '../model/Note'
+import { NoteError } from '../../patients/util/validate-note'
 
 interface Props {
   show: boolean
@@ -15,8 +15,6 @@ interface Props {
 }
 
 const NewNoteModal = (props: Props) => {
-
-  
 
   const { show, toggle, onCloseButtonClick, onSave } = props
   const { t } = useTranslator()
