@@ -336,8 +336,9 @@ describe('Sidebar', () => {
     })
 
     it.skip('should be the last one in the sidebar', () => {
-      const wrapper = setup('/incidents')
+      render('/incidents')
 
+      screen.debug(wrapper)
       const listItems = wrapper.find(ListItem)
       const reportsLabel = listItems.length - 2
 
@@ -437,123 +438,81 @@ describe('Sidebar', () => {
     })
   })
 
-  /*
   describe('imagings links', () => {
     it('should render the main imagings link', () => {
-      const wrapper = setup('/imaging')
+      render('/imaging')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.label')
-
-      expect(imagingsIndex).not.toBe(-1)
+      expect(screen.getByText(/imagings.label/i)).toBeInTheDocument()
     })
 
     it('should render the new imaging request link', () => {
-      const wrapper = setup('/imagings')
+      render('/imagings')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.requests.new')
-
-      expect(imagingsIndex).not.toBe(-1)
+      expect(screen.getByText(/imagings.requests.new/i)).toBeInTheDocument()
     })
 
     it('should not render the new imaging request link when user does not have the request imaging privileges', () => {
-      const wrapper = setupNoPermissions('/imagings')
+      renderNoPermissions('/imagings')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.requests.new')
-
-      expect(imagingsIndex).toBe(-1)
+      expect(screen.queryByText(/imagings.requests.new/i)).not.toBeInTheDocument()
     })
 
     it('should render the imagings list link', () => {
-      const wrapper = setup('/imagings')
+      render('/imagings')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.requests.label')
-
-      expect(imagingsIndex).not.toBe(-1)
+      expect(screen.getByText(/imagings.requests.label/i)).toBeInTheDocument()
     })
 
     it('should not render the imagings list link when user does not have the view imagings privileges', () => {
-      const wrapper = setupNoPermissions('/imagings')
+      renderNoPermissions('/imagings')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.requests.label')
-
-      expect(imagingsIndex).toBe(-1)
+      expect(screen.queryByText(/imagings.requests.label/i)).not.toBeInTheDocument()
     })
 
     it('main imagings link should be active when the current path is /imagings', () => {
-      const wrapper = setup('/imagings')
+      const { container } = render('/imagings')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.label')
-
-      expect(listItems.at(imagingsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelector('.active')).toHaveTextContent(/imagings.label/i)
     })
 
     it('should navigate to /imaging when the main imagings link is clicked', () => {
-      const wrapper = setup('/')
+      render('/')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.label')
-
-      act(() => {
-        const onClick = listItems.at(imagingsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/imagings.label/i))
 
       expect(history.location.pathname).toEqual('/imaging')
     })
 
     it('new imaging request link should be active when the current path is /imagings/new', () => {
-      const wrapper = setup('/imagings/new')
+      const { container } = render('/imagings/new')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.requests.new')
-
-      expect(listItems.at(imagingsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/imagings.requests.new/i)
     })
 
     it('should navigate to /imaging/new when the new imaging link is clicked', () => {
-      const wrapper = setup('/imagings')
+      render('/imagings')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.requests.new')
-
-      act(() => {
-        const onClick = listItems.at(imagingsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/imagings.requests.new/i))
 
       expect(history.location.pathname).toEqual('/imaging/new')
     })
 
     it('imagings list link should be active when the current path is /imagings', () => {
-      const wrapper = setup('/imagings')
+      const { container } = render('/imagings')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.label')
-
-      expect(listItems.at(imagingsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/imagings.requests.label/)
     })
 
     it('should navigate to /imaging when the imagings list link is clicked', () => {
-      const wrapper = setup('/imagings/new')
+      render('/imagings/new')
 
-      const listItems = wrapper.find(ListItem)
-      const imagingsIndex = getIndex(listItems, 'imagings.label')
-
-      act(() => {
-        const onClick = listItems.at(imagingsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/imagings.label/i))
 
       expect(history.location.pathname).toEqual('/imaging')
     })
   })
 
+  /*
   describe('medications links', () => {
     it('should render the main medications link', () => {
       const wrapper = setup('/medications')
