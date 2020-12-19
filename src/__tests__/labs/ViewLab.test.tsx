@@ -92,7 +92,7 @@ describe('View Lab', () => {
       })
     })
 
-    it('should display the lab type for type', async () => {
+    it('should display the lab-type', async () => {
       const expectedLab = { ...mockLab, type: 'expected type' } as Lab
       setup(expectedLab, [Permissions.ViewLab])
 
