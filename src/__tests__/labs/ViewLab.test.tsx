@@ -97,7 +97,7 @@ describe('View Lab', () => {
       setup(expectedLab, [Permissions.ViewLab])
 
       await waitFor(() => {
-        expect(screen.getByText('labs.lab.type')).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: /labs.lab.type/i })).toBeInTheDocument()
         expect(screen.getByText(expectedLab.type)).toBeInTheDocument()
       })
     })
@@ -201,35 +201,38 @@ describe('View Lab', () => {
       expect(alert).toContainElement(screen.getByText(/states\.error/i))
       expect(alert).toContainElement(screen.getByText(/some message/i))
 
-      expect(screen.getByLabelText(/labs.lab.result/i)).toHaveClass('is-invalid')
+      expect(screen.getByLabelText(/labs\.lab\.result/i)).toHaveClass('is-invalid')
     })
 
-    describe.skip('requested lab request', () => {
+    describe('requested lab request', () => {
       it('should display a warning badge if the status is requested', async () => {
         const expectedLab = { ...mockLab, status: 'requested' } as Lab
-        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
+        setup(expectedLab, [Permissions.ViewLab])
 
-        const labStatusDiv = wrapper.find('.lab-status')
-        const badge = labStatusDiv.find(Badge)
-        expect(labStatusDiv.find('h4').text().trim()).toEqual('labs.lab.status')
-
-        expect(badge.prop('color')).toEqual('warning')
-        expect(badge.text().trim()).toEqual(expectedLab.status)
+        await waitFor(() => {
+          expect(
+            screen.getByRole('heading', {
+              name: /labs\.lab\.status/i,
+            }),
+          ).toBeInTheDocument()
+          expect(screen.getByText(expectedLab.status)).toBeInTheDocument()
+        })
       })
 
       it('should display a update lab, complete lab, and cancel lab button if the lab is in a requested state', async () => {
-        const { wrapper } = await setup(mockLab, [
-          Permissions.ViewLab,
-          Permissions.CompleteLab,
-          Permissions.CancelLab,
-        ])
+        setup(mockLab, [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
 
-        const buttons = wrapper.find(Button)
-        expect(buttons.at(0).text().trim()).toEqual('actions.update')
-
-        expect(buttons.at(1).text().trim()).toEqual('labs.requests.complete')
-
-        expect(buttons.at(2).text().trim()).toEqual('labs.requests.cancel')
+        await waitFor(() => {
+          screen.getByRole('button', {
+            name: /actions\.update/i,
+          })
+          screen.getByRole('button', {
+            name: /actions\.update/i,
+          })
+          screen.getByRole('button', {
+            name: /actions\.update/i,
+          })
+        })
       })
     })
 
