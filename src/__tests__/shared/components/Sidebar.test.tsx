@@ -512,120 +512,80 @@ describe('Sidebar', () => {
     })
   })
 
-  /*
   describe('medications links', () => {
     it('should render the main medications link', () => {
-      const wrapper = setup('/medications')
+      render('/medications')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.label')
-
-      expect(medicationsIndex).not.toBe(-1)
+      expect(screen.getByText(/medications.label/i)).toBeInTheDocument()
     })
 
     it('should render the new medications request link', () => {
-      const wrapper = setup('/medications')
+      render('/medications')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.requests.new')
-
-      expect(medicationsIndex).not.toBe(-1)
+      expect(screen.getByText(/medications.requests.new/i)).toBeInTheDocument()
     })
 
     it('should not render the new medications request link when user does not have request medications privileges', () => {
-      const wrapper = setupNoPermissions('/medications')
+      renderNoPermissions('/medications')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.requests.new')
-
-      expect(medicationsIndex).toBe(-1)
+      expect(screen.queryByText(/medications.requests.new/i)).not.toBeInTheDocument()
     })
 
     it('should render the medications list link', () => {
-      const wrapper = setup('/medications')
+      render('/medications')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.requests.label')
-
-      expect(medicationsIndex).not.toBe(-1)
+      expect(screen.getByText(/medications.requests.label/i)).toBeInTheDocument()
     })
 
     it('should not render the medications list link when user does not have view medications privileges', () => {
-      const wrapper = setupNoPermissions('/medications')
+      renderNoPermissions('/medications')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.requests.label')
-
-      expect(medicationsIndex).toBe(-1)
+      expect(screen.queryByText(/medications.requests.label/i)).not.toBeInTheDocument()
     })
 
     it('main medications link should be active when the current path is /medications', () => {
-      const wrapper = setup('/medications')
+      const { container } = render('/medications')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.label')
-
-      expect(listItems.at(medicationsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelector('.active')).toHaveTextContent(/medications.label/i)
     })
 
     it('should navigate to /medications when the main lab link is clicked', () => {
-      const wrapper = setup('/')
+      render('/')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.label')
-
-      act(() => {
-        const onClick = listItems.at(medicationsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/medications.label/i))
 
       expect(history.location.pathname).toEqual('/medications')
     })
 
     it('new lab request link should be active when the current path is /medications/new', () => {
-      const wrapper = setup('/medications/new')
+      const { container } = render('/medications/new')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.requests.new')
-
-      expect(listItems.at(medicationsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(
+        /medications.requests.new/i,
+      )
     })
 
     it('should navigate to /medications/new when the new medications link is clicked', () => {
-      const wrapper = setup('/medications')
+      render('/medications')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.requests.new')
-
-      act(() => {
-        const onClick = listItems.at(medicationsIndex).prop('onClick') as any
-        onClick()
-      })
-
+      userEvent.click(screen.getByText(/medications.requests.new/i))
       expect(history.location.pathname).toEqual('/medications/new')
     })
 
     it('medications list link should be active when the current path is /medications', () => {
-      const wrapper = setup('/medications')
+      const { container } = render('/medications')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.requests.label')
-
-      expect(listItems.at(medicationsIndex).prop('active')).toBeTruthy()
+      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(
+        /medications.requests.label/i,
+      )
     })
 
     it('should navigate to /medications when the medications list link is clicked', () => {
-      const wrapper = setup('/medications/new')
+      render('/medications/new')
 
-      const listItems = wrapper.find(ListItem)
-      const medicationsIndex = getIndex(listItems, 'medications.requests.label')
-
-      act(() => {
-        const onClick = listItems.at(medicationsIndex).prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/medications.requests.label/i))
 
       expect(history.location.pathname).toEqual('/medications')
     })
-  }) */
+  })
 })
