@@ -335,26 +335,10 @@ describe('Sidebar', () => {
       expect(screen.getByText(/incidents.reports.new/i)).toBeInTheDocument()
     })
 
-    it.skip('should be the last one in the sidebar', () => {
+    it('should be the last one in the sidebar', () => {
       render('/incidents')
-
-      screen.debug(wrapper)
-      const listItems = wrapper.find(ListItem)
-      const reportsLabel = listItems.length - 2
-
-      expect(listItems.at(reportsLabel).text().trim()).toBe('incidents.reports.label')
-      expect(
-        listItems
-          .at(reportsLabel - 1)
-          .text()
-          .trim(),
-      ).toBe('incidents.reports.new')
-      expect(
-        listItems
-          .at(reportsLabel - 2)
-          .text()
-          .trim(),
-      ).toBe('incidents.label')
+      expect(screen.getAllByText(/label/i)[5]).toHaveTextContent(/imagings.label/i)
+      expect(screen.getAllByText(/label/i)[6]).toHaveTextContent(/incidents.label/i)
     })
 
     it('should not render the new incident report link when user does not have the report incidents privileges', () => {
