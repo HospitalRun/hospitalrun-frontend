@@ -1,4 +1,4 @@
-import { subDays } from 'date-fns'
+import subDays from 'date-fns/subDays'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
