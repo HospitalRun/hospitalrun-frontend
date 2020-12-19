@@ -1,15 +1,12 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render as rtlRender } from '@testing-library/react'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
+import type { ReactElement, ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Incidents from '../../incidents/Incidents'
-import ReportIncident from '../../incidents/report/ReportIncident'
-import ViewIncident from '../../incidents/view/ViewIncident'
-import VisualizeIncidents from '../../incidents/visualize/VisualizeIncidents'
 import * as titleUtil from '../../page-header/title/TitleContext'
 import IncidentRepository from '../../shared/db/IncidentRepository'
 import Incident from '../../shared/model/Incident'
@@ -18,8 +15,13 @@ import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
+type WrapperProps = {
+  // eslint-disable-next-line react/require-default-props
+  children?: ReactNode
+}
+
 describe('Incidents', () => {
-  const setup = async (permissions: Permissions[], path: string) => {
+  function render(permissions: Permissions[], path: string) {
     const expectedIncident = {
       id: '1234',
       code: '1234',
@@ -35,71 +37,66 @@ describe('Incidents', () => {
       components: { sidebarCollapsed: false },
     } as any)
 
-    let wrapper: any
-    await act(async () => {
-      wrapper = await mount(
+    function Wrapper({ children }: WrapperProps): ReactElement {
+      return (
         <Provider store={store}>
           <MemoryRouter initialEntries={[path]}>
-            <titleUtil.TitleProvider>
-              <Incidents />
-            </titleUtil.TitleProvider>
+            <titleUtil.TitleProvider>{children}</titleUtil.TitleProvider>
           </MemoryRouter>
-        </Provider>,
+        </Provider>
       )
-    })
-    wrapper.find(Incidents).props().updateTitle = jest.fn()
-    wrapper.update()
+    }
 
-    return { wrapper: wrapper as ReactWrapper }
+    const results = rtlRender(<Incidents />, { wrapper: Wrapper })
+
+    return results
   }
 
   describe('title', () => {
-    it('should have called the useUpdateTitle hook', async () => {
-      await setup([Permissions.ViewIncidents], '/incidents')
+    it('should have called the useUpdateTitle hook', () => {
+      render([Permissions.ViewIncidents], '/incidents')
       expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('routing', () => {
     describe('/incidents/new', () => {
-      it('should render the new incident screen when /incidents/new is accessed', async () => {
-        const { wrapper } = await setup([Permissions.ReportIncident], '/incidents/new')
+      it('should render the new incident screen when /incidents/new is accessed', () => {
+        const { container } = render([Permissions.ReportIncident], '/incidents/new')
 
-        expect(wrapper.find(ReportIncident)).toHaveLength(1)
+        expect(container).toHaveTextContent('incidents.reports')
       })
 
-      it('should not navigate to /incidents/new if the user does not have ReportIncident permissions', async () => {
-        const { wrapper } = await setup([], '/incidents/new')
+      it('should not navigate to /incidents/new if the user does not have ReportIncident permissions', () => {
+        const { container } = render([], '/incidents/new')
 
-        expect(wrapper.find(ReportIncident)).toHaveLength(0)
+        expect(container).not.toHaveTextContent('incidents.reports')
       })
     })
 
     describe('/incidents/visualize', () => {
-      it('should render the incident visualize screen when /incidents/visualize is accessed', async () => {
-        const { wrapper } = await setup([Permissions.ViewIncidentWidgets], '/incidents/visualize')
+      it('should render the incident visualize screen when /incidents/visualize is accessed', () => {
+        const { container } = render([Permissions.ViewIncidentWidgets], '/incidents/visualize')
 
-        expect(wrapper.find(VisualizeIncidents)).toHaveLength(1)
+        expect(container.querySelector('.chartjs-render-monitor')).toBeInTheDocument()
       })
 
-      it('should not navigate to /incidents/visualize if the user does not have ViewIncidentWidgets permissions', async () => {
-        const { wrapper } = await setup([], '/incidents/visualize')
+      it('should not navigate to /incidents/visualize if the user does not have ViewIncidentWidgets permissions', () => {
+        const { container } = render([], '/incidents/visualize')
 
-        expect(wrapper.find(VisualizeIncidents)).toHaveLength(0)
+        expect(container.querySelector('.chartjs-render-monitor')).not.toBeInTheDocument()
       })
     })
 
     describe('/incidents/:id', () => {
-      it('should render the view incident screen when /incidents/:id is accessed', async () => {
-        const { wrapper } = await setup([Permissions.ViewIncident], '/incidents/1234')
-
-        expect(wrapper.find(ViewIncident)).toHaveLength(1)
+      it('should render the view incident screen when /incidents/:id is accessed', () => {
+        const { container } = render([Permissions.ViewIncident], '/incidents/1234')
+        expect(container.querySelectorAll('div').length).toBe(3)
       })
 
-      it('should not navigate to /incidents/:id if the user does not have ViewIncident permissions', async () => {
-        const { wrapper } = await setup([], '/incidents/1234')
-
-        expect(wrapper.find(ViewIncident)).toHaveLength(0)
+      it('should not navigate to /incidents/:id if the user does not have ViewIncident permissions', () => {
+        const { container } = render([], '/incidents/1234')
+        expect(container.querySelectorAll('div').length).not.toBe(3)
       })
     })
   })
