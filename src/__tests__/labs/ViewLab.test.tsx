@@ -82,7 +82,7 @@ describe('View Lab', () => {
   }
 
   describe('page content', () => {
-    it('should display the patient full name for the for', async () => {
+    it("should display the patients' full name", async () => {
       const expectedLab = { ...mockLab } as Lab
       setup(expectedLab, [Permissions.ViewLab])
 
