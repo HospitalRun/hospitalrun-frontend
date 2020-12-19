@@ -63,6 +63,7 @@
     "@commitlint/config-conventional": "~11.0.0",
     "@commitlint/core": "~11.0.0",
     "@commitlint/prompt": "~11.0.0",
+    "@testing-library/dom": "~7.29.0",
     "@testing-library/jest-dom": "~5.11.6",
     "@testing-library/react": "~11.2.2",
     "@testing-library/react-hooks": "~3.7.0",
