@@ -181,7 +181,6 @@ describe('New Appointment', () => {
           </Router>
         </Provider>,
       )
-      // const  = setup()
 
       const expectedAppointment = {
         patient: testPatient.fullName,
@@ -212,13 +211,20 @@ describe('New Appointment', () => {
       userEvent.type(screen.getByPlaceholderText('-- Choose --'), expectedAppointment.type)
       const textfields = screen.queryAllByRole('textbox')
       userEvent.type(textfields[3], expectedAppointment.reason)
-
+      rerender(
+        <Provider store={store}>
+          <Router>
+            <TitleProvider>
+              <NewAppointment />
+            </TitleProvider>
+          </Router>
+        </Provider>,
+      )
       userEvent.click(
         screen.getByRole('button', {
           name: /actions\.save/i,
         }),
       )
-      rerender(<NewAppointment />)
       screen.debug()
     })
 
