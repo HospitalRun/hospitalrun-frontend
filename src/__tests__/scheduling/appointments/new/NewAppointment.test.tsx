@@ -1,5 +1,4 @@
 import * as components from '@hospitalrun/components'
-import { Button } from '@hospitalrun/components'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
@@ -11,7 +10,6 @@ import createMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as titleUtil from '../../../../page-header/title/TitleContext'
-import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import NewAppointment from '../../../../scheduling/appointments/new/NewAppointment'
 import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
 import PatientRepository from '../../../../shared/db/PatientRepository'
@@ -177,8 +175,7 @@ describe('New Appointment', () => {
       expect(AppointmentRepository.save).toHaveBeenCalledTimes(0)
     })
 
-    /* Test fails, so skipping for now */
-    it.skip('should call AppointmentRepo.save when save button is clicked', async () => {
+    it.only('should call AppointmentRepo.save when save button is clicked', async () => {
       const { container } = setup()
 
       const expectedAppointment = {
@@ -193,7 +190,7 @@ describe('New Appointment', () => {
         type: 'type',
       } as Appointment
 
-      // Fails to set the Patient, as there are no patients to select from. Thus, "patient is required" error
+      // This fails to select the patient correctly
       userEvent.type(
         screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
         expectedAppointment.patient,
@@ -222,8 +219,9 @@ describe('New Appointment', () => {
       jest.spyOn(components, 'Toast')
       setup()
 
+      // This fails to select the patient correctly
       userEvent.type(
-        screen.getAllByRole('combobox')[0],
+        screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
         `${testPatient.fullName}{arrowdown}{enter}`,
       )
 
