@@ -236,17 +236,23 @@ describe('View Lab', () => {
       })
     })
 
-    describe.skip('canceled lab request', () => {
+    describe('canceled lab request', () => {
       it('should display a danger badge if the status is canceled', async () => {
         const expectedLab = { ...mockLab, status: 'canceled' } as Lab
-        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
+        setup(expectedLab, [Permissions.ViewLab])
 
-        const labStatusDiv = wrapper.find('.lab-status')
-        const badge = labStatusDiv.find(Badge)
-        expect(labStatusDiv.find('h4').text().trim()).toEqual('labs.lab.status')
-
-        expect(badge.prop('color')).toEqual('danger')
-        expect(badge.text().trim()).toEqual(expectedLab.status)
+        await waitFor(() => {
+          expect(
+            screen.getByRole('heading', {
+              name: /labs\.lab\.status/i,
+            }),
+          ).toBeInTheDocument()
+          expect(
+            screen.getByRole('heading', {
+              name: /canceled/i,
+            }),
+          ).toBeInTheDocument()
+        })
       })
 
       it('should display the canceled on date if the lab request has been canceled', async () => {
@@ -255,47 +261,39 @@ describe('View Lab', () => {
           status: 'canceled',
           canceledOn: '2020-03-30T04:45:20.102Z',
         } as Lab
-        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
-        const canceledOnDiv = wrapper.find('.canceled-on')
+        setup(expectedLab, [Permissions.ViewLab])
 
-        expect(canceledOnDiv.find('h4').text().trim()).toEqual('labs.lab.canceledOn')
-
-        expect(canceledOnDiv.find('h5').text().trim()).toEqual(
-          format(new Date(expectedLab.canceledOn as string), 'yyyy-MM-dd hh:mm a'),
-        )
+        await waitFor(() => {
+          expect(
+            screen.getByRole('heading', {
+              name: /labs\.lab\.canceledon/i,
+            }),
+          ).toBeInTheDocument()
+          expect(
+            screen.getByRole('heading', {
+              name: format(new Date(expectedLab.canceledOn as string), 'yyyy-MM-dd hh:mm a'),
+            }),
+          ).toBeInTheDocument()
+        })
       })
 
       it('should not display update, complete, and cancel button if the lab is canceled', async () => {
         const expectedLab = { ...mockLab, status: 'canceled' } as Lab
 
-        const { wrapper } = await setup(expectedLab, [
-          Permissions.ViewLab,
-          Permissions.CompleteLab,
-          Permissions.CancelLab,
-        ])
+        setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
 
-        const buttons = wrapper.find(Button)
-        expect(buttons).toHaveLength(0)
-      })
-
-      it('should not display an update button if the lab is canceled', async () => {
-        const expectedLab = { ...mockLab, status: 'canceled' } as Lab
-        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
-
-        const updateButton = wrapper.find(Button)
-        expect(updateButton).toHaveLength(0)
+        await waitFor(() => {
+          expect(screen.queryByRole('button')).not.toBeInTheDocument()
+        })
       })
 
       it('should not display notes text field if the status is canceled', async () => {
         const expectedLab = { ...mockLab, status: 'canceled' } as Lab
 
-        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
+        setup(expectedLab, [Permissions.ViewLab])
 
-        const textsField = wrapper.find(TextFieldWithLabelFormGroup)
-        const notesTextField = wrapper.find('notesTextField')
-
-        expect(textsField.length).toBe(1)
-        expect(notesTextField).toHaveLength(0)
+        expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
+        expect(screen.queryByLabelText('labs.lab.notes')).not.toBeInTheDocument()
       })
     })
 
