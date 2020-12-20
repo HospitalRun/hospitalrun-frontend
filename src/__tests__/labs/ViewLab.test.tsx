@@ -348,38 +348,31 @@ describe('View Lab', () => {
     })
   })
 
-  describe.skip('on update', () => {
+  describe('on update', () => {
     it('should update the lab with the new information', async () => {
-      const { wrapper } = await setup(mockLab, [Permissions.ViewLab])
+      setup(mockLab, [Permissions.ViewLab])
       const expectedResult = 'expected result'
       const newNotes = 'expected notes'
 
-      const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
-      act(() => {
-        const onChange = resultTextField.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedResult } })
-      })
-      wrapper.update()
+      const resultTextField = await screen.findByLabelText('labs.lab.result')
 
-      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup).at(1)
-      act(() => {
-        const onChange = notesTextField.prop('onChange') as any
-        onChange({ currentTarget: { value: newNotes } })
-      })
-      wrapper.update()
-      const updateButton = wrapper.find(Button)
-      await act(async () => {
-        const onClick = updateButton.prop('onClick') as any
-        onClick()
-      })
+      userEvent.type(resultTextField, expectedResult)
+
+      const notesTextField = screen.getByLabelText('labs.lab.notes')
+      userEvent.type(notesTextField, newNotes)
+
+      const updateButton = screen.getByRole('button')
+      userEvent.click(updateButton)
 
       const expectedNotes = mockLab.notes ? [...mockLab.notes, newNotes] : [newNotes]
 
-      expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
-      expect(labRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ ...mockLab, result: expectedResult, notes: expectedNotes }),
-      )
-      expect(history.location.pathname).toEqual('/labs/12456')
+      await waitFor(() => {
+        expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
+        expect(labRepositorySaveSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ ...mockLab, result: expectedResult, notes: expectedNotes }),
+        )
+        expect(history.location.pathname).toEqual('/labs/12456')
+      })
     })
   })
 
