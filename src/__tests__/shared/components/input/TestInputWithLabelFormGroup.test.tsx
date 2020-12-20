@@ -65,7 +65,7 @@ describe('text input with label form group', () => {
         />,
       )
 
-      expect(screen.getByLabelText(expectedLabel)).toHaveAttribute('value', expectedValue)
+      expect(screen.getByLabelText(expectedLabel)).toHaveValue(expectedValue)
     })
   })
 
