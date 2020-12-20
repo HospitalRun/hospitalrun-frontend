@@ -297,17 +297,16 @@ describe('View Lab', () => {
       })
     })
 
-    describe.skip('completed lab request', () => {
+    describe('completed lab request', () => {
       it('should display a primary badge if the status is completed', async () => {
         jest.resetAllMocks()
         const expectedLab = { ...mockLab, status: 'completed' } as Lab
-        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
-        const labStatusDiv = wrapper.find('.lab-status')
-        const badge = labStatusDiv.find(Badge)
-        expect(labStatusDiv.find('h4').text().trim()).toEqual('labs.lab.status')
+        setup(expectedLab, [Permissions.ViewLab])
 
-        expect(badge.prop('color')).toEqual('primary')
-        expect(badge.text().trim()).toEqual(expectedLab.status)
+        await waitFor(() => {
+          expect(screen.getByRole('heading', { name: 'labs.lab.status' })).toBeInTheDocument()
+          expect(screen.getByText(expectedLab.status)).toBeInTheDocument()
+        })
       })
 
       it('should display the completed on date if the lab request has been completed', async () => {
@@ -316,43 +315,35 @@ describe('View Lab', () => {
           status: 'completed',
           completedOn: '2020-03-30T04:44:20.102Z',
         } as Lab
-        const { wrapper } = await setup(expectedLab, [Permissions.ViewLab])
-        const completedOnDiv = wrapper.find('.completed-on')
+        setup(expectedLab, [Permissions.ViewLab])
 
-        expect(completedOnDiv.find('h4').text().trim()).toEqual('labs.lab.completedOn')
-
-        expect(completedOnDiv.find('h5').text().trim()).toEqual(
-          format(new Date(expectedLab.completedOn as string), 'yyyy-MM-dd hh:mm a'),
-        )
+        await waitFor(() => {
+          expect(screen.getByRole('heading', { name: 'labs.lab.completedOn' })).toBeInTheDocument()
+          expect(
+            screen.getByText(
+              format(new Date(expectedLab.completedOn as string), 'yyyy-MM-dd hh:mm a'),
+            ),
+          ).toBeInTheDocument()
+        })
       })
 
       it('should not display update, complete, and cancel buttons if the lab is completed', async () => {
         const expectedLab = { ...mockLab, status: 'completed' } as Lab
 
-        const { wrapper } = await setup(expectedLab, [
-          Permissions.ViewLab,
-          Permissions.CompleteLab,
-          Permissions.CancelLab,
-        ])
+        setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
 
-        const buttons = wrapper.find(Button)
-        expect(buttons).toHaveLength(0)
+        await waitFor(() => {
+          expect(screen.queryByRole('button')).not.toBeInTheDocument()
+        })
       })
 
       it('should not display notes text field if the status is completed', async () => {
         const expectedLab = { ...mockLab, status: 'completed' } as Lab
 
-        const { wrapper } = await setup(expectedLab, [
-          Permissions.ViewLab,
-          Permissions.CompleteLab,
-          Permissions.CancelLab,
-        ])
+        setup(expectedLab, [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
 
-        const textsField = wrapper.find(TextFieldWithLabelFormGroup)
-        const notesTextField = wrapper.find('notesTextField')
-
-        expect(textsField.length).toBe(1)
-        expect(notesTextField).toHaveLength(0)
+        expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
+        expect(screen.queryByLabelText('labs.lab.notes')).not.toBeInTheDocument()
       })
     })
   })
