@@ -1,6 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-
 exports[`Imagings routing /imaging/new should render the new imaging request screen when /imaging/new is accessed 1`] = `
 <div>
   <form>
@@ -274,6 +273,7 @@ exports[`Imagings routing /imaging/new should render the new imaging request scr
         >
           <textarea
             class="form-control"
+            id="ImagingNotesTextField"
             rows="4"
           />
           <div
