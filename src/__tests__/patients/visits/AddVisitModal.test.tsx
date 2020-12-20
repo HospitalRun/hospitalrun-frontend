@@ -66,12 +66,33 @@ describe('Add Visit Modal', () => {
     expect(onCloseSpy).toHaveBeenCalledTimes(1)
   })
 
-  /*   it('should save the visit when the save button is clicked', () => {
-    const { container } = render()
-    const firstPatient = patient.visits[0]
-    userEvent.type(container.querySelector('.react-datepicker-wrapper.form-control ', firstPatient.))
-    screen.debug(undefined, Infinity)
-    // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-    // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
-  }) */
+  it('should save the visit when the save button is clicked', () => {
+    render()
+    const testPatient = patient.visits[0]
+    const modal = screen.getByRole('dialog')
+
+    /* Date Pickers */
+    const modalDatePickerWrappers = modal.querySelectorAll('.react-datepicker__input-container')
+    const startDateInput = modalDatePickerWrappers[0].querySelector('input') as HTMLInputElement
+    const endDateInput = modalDatePickerWrappers[1].querySelector('input') as HTMLInputElement
+
+    userEvent.type(startDateInput, testPatient.startDateTime)
+    userEvent.type(endDateInput, testPatient.endDateTime)
+
+    /* Text */
+    const typeInput = screen.getByPlaceholderText(/patient.visits.type/i)
+    userEvent.type(typeInput, testPatient.type)
+
+    const statusInput = screen.getByRole('combobox')
+    userEvent.type(statusInput, testPatient.status)
+
+    const textareaReason = screen.getAllByRole('textbox')[3]
+    userEvent.type(textareaReason, testPatient.reason)
+
+    const locationInput = screen.getByLabelText(/patient.visits.location/i)
+    userEvent.type(locationInput, testPatient.location)
+
+    // const saveButton = screen.getByRole('button', { name: /patient.visits.new/i })
+    // userEvent.click(saveButton)
+  })
 })
