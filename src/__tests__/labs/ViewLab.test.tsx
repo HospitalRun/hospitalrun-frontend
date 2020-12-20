@@ -361,7 +361,9 @@ describe('View Lab', () => {
       const notesTextField = screen.getByLabelText('labs.lab.notes')
       userEvent.type(notesTextField, newNotes)
 
-      const updateButton = screen.getByRole('button')
+      const updateButton = screen.getByRole('button', {
+        name: 'actions.update',
+      })
       userEvent.click(updateButton)
 
       const expectedNotes = mockLab.notes ? [...mockLab.notes, newNotes] : [newNotes]
@@ -406,39 +408,33 @@ describe('View Lab', () => {
     })
   })
 
-  describe.skip('on cancel', () => {
+  describe('on cancel', () => {
     it('should mark the status as canceled and fill in the cancelled on date with the current time', async () => {
-      const { wrapper } = await setup(mockLab, [
-        Permissions.ViewLab,
-        Permissions.CompleteLab,
-        Permissions.CancelLab,
-      ])
+      setup(mockLab, [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
       const expectedResult = 'expected result'
 
-      const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
-      await act(async () => {
-        const onChange = resultTextField.prop('onChange') as any
-        await onChange({ currentTarget: { value: expectedResult } })
-      })
-      wrapper.update()
+      const resultTextField = await screen.findByLabelText('labs.lab.result')
 
-      const cancelButton = wrapper.find(Button).at(2)
-      await act(async () => {
-        const onClick = cancelButton.prop('onClick') as any
-        await onClick()
-      })
-      wrapper.update()
+      userEvent.type(resultTextField, expectedResult)
 
-      expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
-      expect(labRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          ...mockLab,
-          result: expectedResult,
-          status: 'canceled',
-          canceledOn: expectedDate.toISOString(),
-        }),
-      )
-      expect(history.location.pathname).toEqual('/labs')
+      const completeButton = screen.getByRole('button', {
+        name: 'labs.requests.cancel',
+      })
+
+      userEvent.click(completeButton)
+
+      await waitFor(() => {
+        expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
+        expect(labRepositorySaveSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            ...mockLab,
+            result: expectedResult,
+            status: 'canceled',
+            canceledOn: expectedDate.toISOString(),
+          }),
+        )
+        expect(history.location.pathname).toEqual('/labs')
+      })
     })
   })
 })
