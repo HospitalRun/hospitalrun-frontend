@@ -376,39 +376,33 @@ describe('View Lab', () => {
     })
   })
 
-  describe.skip('on complete', () => {
+  describe('on complete', () => {
     it('should mark the status as completed and fill in the completed date with the current time', async () => {
-      const { wrapper } = await setup(mockLab, [
-        Permissions.ViewLab,
-        Permissions.CompleteLab,
-        Permissions.CancelLab,
-      ])
+      setup(mockLab, [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
       const expectedResult = 'expected result'
 
-      const resultTextField = wrapper.find(TextFieldWithLabelFormGroup).at(0)
-      await act(async () => {
-        const onChange = resultTextField.prop('onChange') as any
-        await onChange({ currentTarget: { value: expectedResult } })
-      })
-      wrapper.update()
+      const resultTextField = await screen.findByLabelText('labs.lab.result')
 
-      const completeButton = wrapper.find(Button).at(1)
-      await act(async () => {
-        const onClick = completeButton.prop('onClick') as any
-        await onClick()
-      })
-      wrapper.update()
+      userEvent.type(resultTextField, expectedResult)
 
-      expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
-      expect(labRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          ...mockLab,
-          result: expectedResult,
-          status: 'completed',
-          completedOn: expectedDate.toISOString(),
-        }),
-      )
-      expect(history.location.pathname).toEqual('/labs/12456')
+      const completeButton = screen.getByRole('button', {
+        name: 'labs.requests.complete',
+      })
+
+      userEvent.click(completeButton)
+
+      await waitFor(() => {
+        expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
+        expect(labRepositorySaveSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            ...mockLab,
+            result: expectedResult,
+            status: 'completed',
+            completedOn: expectedDate.toISOString(),
+          }),
+        )
+        expect(history.location.pathname).toEqual('/labs/12456')
+      })
     })
   })
 
