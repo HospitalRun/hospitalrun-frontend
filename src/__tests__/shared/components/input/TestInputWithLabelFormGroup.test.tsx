@@ -1,5 +1,5 @@
-import { Label, TextInput } from '@hospitalrun/components'
-import { shallow } from 'enzyme'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import TextInputWithLabelFormGroup from '../../../../shared/components/input/TextInputWithLabelFormGroup'
@@ -8,92 +8,86 @@ describe('text input with label form group', () => {
   describe('layout', () => {
     it('should render a label', () => {
       const expectedName = 'test'
-      const wrapper = shallow(
+      const expectedLabel = 'label test'
+      render(
         <TextInputWithLabelFormGroup
           name={expectedName}
-          label="test"
+          label={expectedLabel}
           value=""
           isEditable
           onChange={jest.fn()}
         />,
       )
 
-      const label = wrapper.find(Label)
-      expect(label).toHaveLength(1)
-      expect(label.prop('htmlFor')).toEqual(`${expectedName}TextInput`)
-      expect(label.prop('text')).toEqual(expectedName)
+      expect(screen.getByText(expectedLabel)).toHaveAttribute('for', `${expectedName}TextInput`)
     })
 
     it('should render a text field', () => {
-      const expectedName = 'test'
-      const wrapper = shallow(
+      const expectedLabel = 'test'
+      render(
         <TextInputWithLabelFormGroup
-          name={expectedName}
-          label="test"
+          name="test"
+          label={expectedLabel}
           value=""
           isEditable
           onChange={jest.fn()}
         />,
       )
 
-      const input = wrapper.find(TextInput)
-      expect(input).toHaveLength(1)
+      expect(screen.getByLabelText(expectedLabel)).toBeInTheDocument()
     })
 
     it('should render disabled is isDisable disabled is true', () => {
-      const expectedName = 'test'
-      const wrapper = shallow(
+      const expectedLabel = 'test'
+      render(
         <TextInputWithLabelFormGroup
-          name={expectedName}
-          label="test"
+          name="test"
+          label={expectedLabel}
           value=""
           isEditable={false}
           onChange={jest.fn()}
         />,
       )
 
-      const input = wrapper.find(TextInput)
-      expect(input).toHaveLength(1)
-      expect(input.prop('disabled')).toBeTruthy()
+      expect(screen.getByLabelText(expectedLabel)).toBeDisabled()
     })
 
     it('should render the proper value', () => {
-      const expectedName = 'test'
+      const expectedLabel = 'test'
       const expectedValue = 'expected value'
-      const wrapper = shallow(
+      render(
         <TextInputWithLabelFormGroup
-          name={expectedName}
-          label="test"
+          name="test"
+          label={expectedLabel}
           value={expectedValue}
           isEditable={false}
           onChange={jest.fn()}
         />,
       )
 
-      const input = wrapper.find(TextInput)
-      expect(input).toHaveLength(1)
-      expect(input.prop('value')).toEqual(expectedValue)
+      expect(screen.getByLabelText(expectedLabel)).toHaveValue(expectedValue)
     })
   })
 
   describe('change handler', () => {
     it('should call the change handler on change', () => {
-      const expectedName = 'test'
+      const expectedLabel = 'test'
       const expectedValue = 'expected value'
       const handler = jest.fn()
-      const wrapper = shallow(
+      render(
         <TextInputWithLabelFormGroup
-          name={expectedName}
-          label="test"
-          value={expectedValue}
-          isEditable={false}
+          name="test"
+          label={expectedLabel}
+          value=""
+          isEditable
           onChange={handler}
         />,
       )
 
-      const input = wrapper.find(TextInput)
-      input.simulate('change')
-      expect(handler).toHaveBeenCalledTimes(1)
+      const input = screen.getByLabelText(expectedLabel)
+      userEvent.type(input, expectedValue)
+      expect(input).toHaveValue(expectedValue)
+      expect(handler).toHaveBeenCalledTimes(expectedValue.length)
     })
   })
 })
