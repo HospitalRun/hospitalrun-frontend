@@ -21,38 +21,34 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Appointment', () => {
-  let testPatient: Patient
-
-  beforeAll(async () => {
-    testPatient = await PatientRepository.save({
-      addresses: [],
-      bloodType: 'o',
-      careGoals: [],
-      carePlans: [],
-      code: '', // This gets set when saved anyway
-      createdAt: new Date().toISOString(),
-      dateOfBirth: new Date(0).toISOString(),
-      emails: [],
-      id: '123',
-      index: '',
-      isApproximateDateOfBirth: false,
-      phoneNumbers: [],
-      rev: '',
-      sex: 'female',
-      updatedAt: new Date().toISOString(),
-      visits: [],
-      givenName: 'Popo',
-      prefix: 'Mr',
-      fullName: 'Mr Popo',
-    })
-  })
-  afterAll(() => PatientRepository.delete(testPatient))
+  const testPatient: Patient = {
+    addresses: [],
+    bloodType: 'o',
+    careGoals: [],
+    carePlans: [],
+    code: 'P-qrQc3FkCO',
+    createdAt: new Date().toISOString(),
+    dateOfBirth: new Date(0).toISOString(),
+    emails: [],
+    id: '123',
+    index: '',
+    isApproximateDateOfBirth: false,
+    phoneNumbers: [],
+    rev: '',
+    sex: 'female',
+    updatedAt: new Date().toISOString(),
+    visits: [],
+    givenName: 'Popo',
+    prefix: 'Mr',
+    fullName: 'Mr Popo',
+  }
 
   const setup = () => {
     const expectedAppointment = { id: '123' } as Appointment
 
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'save').mockResolvedValue(expectedAppointment)
+    jest.spyOn(PatientRepository, 'search').mockResolvedValue([testPatient])
 
     const history = createMemoryHistory({ initialEntries: ['/appointments/new'] })
 
@@ -183,27 +179,29 @@ describe('New Appointment', () => {
         screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
         expectedAppointment.patient,
       )
-      userEvent.click(
-        await screen.findByText(`${testPatient.fullName} (${testPatient.code})`, undefined, {
-          timeout: 3000,
-        }),
-      )
+      userEvent.click(await screen.findByText(`${testPatient.fullName} (${testPatient.code})`))
+
       fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[0], {
         target: { value: expectedAppointment.startDateTime },
       })
+
       fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[1], {
         target: { value: expectedAppointment.endDateTime },
       })
+
       userEvent.type(
         screen.getByRole('textbox', { name: /scheduling\.appointment\.location/i }),
         expectedAppointment.location,
       )
+
       userEvent.type(
         screen.getByPlaceholderText('-- Choose --'),
         `${expectedAppointment.type}{arrowdown}{enter}`,
       )
+
       const textfields = screen.queryAllByRole('textbox')
       userEvent.type(textfields[3], expectedAppointment.reason)
+
       userEvent.click(
         screen.getByRole('button', {
           name: /actions\.save/i,
@@ -227,11 +225,7 @@ describe('New Appointment', () => {
         screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
         `${testPatient.fullName}`,
       )
-      userEvent.click(
-        await screen.findByText(`${testPatient.fullName} (${testPatient.code})`, undefined, {
-          timeout: 3000,
-        }),
-      )
+      userEvent.click(await screen.findByText(`${testPatient.fullName} (${testPatient.code})`))
 
       userEvent.click(screen.getByText(/actions\.save/i))
 
