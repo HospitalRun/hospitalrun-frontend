@@ -12,6 +12,7 @@ import ViewIncidentDetails from './ViewIncidentDetails'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
 import NotesTable from './NotesTable'
+import NewNoteModal from '../../shared/notes/NewNoteModal'
 
 const ViewIncident = () => {
   const { id } = useParams() as any
@@ -60,7 +61,7 @@ const ViewIncident = () => {
       </TabsHeader>
       <Panel>
         <div className="col-md-12 d-flex justify-content-end">
-          <Button outlined color="success" icon="add" iconLocation="right" onClick={onNewNoteClick}>
+          <Button outlined color="success" icon="add" iconLocation="right" onClick={onNewNoteClick} >
             {t('patient.notes.new')}
           </Button>
         </div>
@@ -84,12 +85,12 @@ const ViewIncident = () => {
           </div>
         )}
 
-      {/* <NewNoteModal
+      <NewNoteModal
         show={showNewNoteModal}
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
-        patientId={'Random String for now'}
-      /> */}
+        onSave={() => { /* TODO */}}
+      />
     </div>
   )
 }

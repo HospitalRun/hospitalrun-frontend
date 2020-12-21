@@ -5,7 +5,7 @@ import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import React from 'react'
 
-import NewNoteModal from '../../../patients/notes/NewNoteModal'
+import NewNoteModal from '../../../shared/notes/NewNoteModal'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'

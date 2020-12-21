@@ -8,7 +8,8 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
-import NewNoteModal from './NewNoteModal'
+import NewNoteModal from '../../shared/notes/NewNoteModal'
+import useAddPatientNote from '../hooks/useAddPatientNote'
 import NotesList from './NotesList'
 import ViewNote from './ViewNote'
 
@@ -21,6 +22,7 @@ const NoteTab = (props: Props) => {
   const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
+  const [ mutate ] = useAddPatientNote()
 
   const breadcrumbs = [
     {
@@ -69,7 +71,9 @@ const NoteTab = (props: Props) => {
         show={showNewNoteModal}
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
-        patientId={patient.id}
+        onSave={async (note) => {
+          await mutate({ note, patientId: patient.id })
+        }}
       />
     </div>
   )
