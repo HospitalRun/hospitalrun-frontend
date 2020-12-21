@@ -1,18 +1,13 @@
-import { screen, render as rtlRender } from '@testing-library/react'
+import { screen, render as rtlRender, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { Router } from 'react-router-dom'
 
 import AddVisitModal from '../../../patients/visits/AddVisitModal'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import { VisitStatus } from '../../../shared/model/Visit'
-
-type WrapperProps = {
-  // eslint-disable-next-line react/require-default-props
-  children?: ReactNode
-}
 
 describe('Add Visit Modal', () => {
   const patient = {
@@ -36,9 +31,8 @@ describe('Add Visit Modal', () => {
     jest.spyOn(PatientRepository, 'saveOrUpdate')
     const history = createMemoryHistory()
 
-    function Wrapper({ children }: WrapperProps) {
-      return <Router history={history}>{children}</Router>
-    }
+    // eslint-disable-next-line react/prop-types
+    const Wrapper: React.FC = ({ children }) => <Router history={history}>{children}</Router>
 
     const results = rtlRender(
       <AddVisitModal show onCloseButtonClick={onCloseSpy} patientId={patient.id} />,
@@ -66,7 +60,7 @@ describe('Add Visit Modal', () => {
     expect(onCloseSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('should save the visit when the save button is clicked', () => {
+  it('should save the visit when the save button is clicked', async () => {
     render()
     const testPatient = patient.visits[0]
     const modal = screen.getByRole('dialog')
@@ -76,15 +70,15 @@ describe('Add Visit Modal', () => {
     const startDateInput = modalDatePickerWrappers[0].querySelector('input') as HTMLInputElement
     const endDateInput = modalDatePickerWrappers[1].querySelector('input') as HTMLInputElement
 
-    userEvent.type(startDateInput, testPatient.startDateTime)
-    userEvent.type(endDateInput, testPatient.endDateTime)
+    fireEvent.change(startDateInput, { target: { value: testPatient.startDateTime } })
+    fireEvent.change(endDateInput, { target: { value: testPatient.endDateTime } })
 
     /* Text */
     const typeInput = screen.getByPlaceholderText(/patient.visits.type/i)
     userEvent.type(typeInput, testPatient.type)
 
     const statusInput = screen.getByRole('combobox')
-    userEvent.type(statusInput, testPatient.status)
+    userEvent.type(statusInput, `${testPatient.status}{arrowdown}{enter}`)
 
     const textareaReason = screen.getAllByRole('textbox')[3]
     userEvent.type(textareaReason, testPatient.reason)
@@ -92,7 +86,12 @@ describe('Add Visit Modal', () => {
     const locationInput = screen.getByLabelText(/patient.visits.location/i)
     userEvent.type(locationInput, testPatient.location)
 
-    // const saveButton = screen.getByRole('button', { name: /patient.visits.new/i })
-    // userEvent.click(saveButton)
+    const saveButton = screen.getByRole('button', { name: /patient.visits.new/i })
+    userEvent.click(saveButton)
+
+    await waitFor(() => {
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
+    })
+    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
   })
 })
