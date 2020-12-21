@@ -2,12 +2,11 @@ import * as components from '@hospitalrun/components'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { roundToNearestMinutes, addMinutes } from 'date-fns'
-import { createMemoryHistory, MemoryHistory } from 'history'
+import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
-import { Store } from 'redux'
-import createMockStore, { MockStore } from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as titleUtil from '../../../../page-header/title/TitleContext'
@@ -22,12 +21,9 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Appointment', () => {
-  let history: MemoryHistory
-  let store: MockStore
-  const expectedNewAppointment = { id: '123' }
   let testPatient: Patient
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     testPatient = await PatientRepository.save({
       addresses: [],
       bloodType: 'o',
@@ -50,26 +46,29 @@ describe('New Appointment', () => {
       fullName: 'Mr Popo',
     })
   })
-  afterEach(() => PatientRepository.delete(testPatient))
+  afterAll(() => PatientRepository.delete(testPatient))
 
   const setup = () => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest
-      .spyOn(AppointmentRepository, 'save')
-      .mockResolvedValue(expectedNewAppointment as Appointment)
-    store = mockStore({} as any)
+    const expectedAppointment = { id: '123' } as Appointment
 
-    window.history.pushState({}, 'New Appointment | HospitalRun', '/appointments/new')
+    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
+    jest.spyOn(AppointmentRepository, 'save').mockResolvedValue(expectedAppointment)
+
+    const history = createMemoryHistory({ initialEntries: ['/appointments/new'] })
 
     const Wrapper: React.FC = ({ children }: any) => (
-      <Provider store={store}>
-        <Router>
+      <Provider store={mockStore({} as any)}>
+        <Router history={history}>
           <TitleProvider>{children}</TitleProvider>
         </Router>
       </Provider>
     )
 
-    return render(<NewAppointment />, { wrapper: Wrapper })
+    return {
+      expectedAppointment,
+      history,
+      ...render(<NewAppointment />, { wrapper: Wrapper }),
+    }
   }
 
   describe('header', () => {
@@ -165,23 +164,8 @@ describe('New Appointment', () => {
       expect(AppointmentRepository.save).toHaveBeenCalledTimes(0)
     })
 
-    it.only('should call AppointmentRepo.save when save button is clicked', async () => {
-      jest
-        .spyOn(AppointmentRepository, 'save')
-        .mockResolvedValue(expectedNewAppointment as Appointment)
-      const store2 = mockStore({} as any)
-      // window.history.pushState({}, 'New Appointment | HospitalRun', '/appointments/new')
-      const history2 = createMemoryHistory({ initialEntries: ['/appointments/new'] })
-
-      const { container } = render(
-        <Provider store={store2}>
-          <Router history={history2}>
-            <TitleProvider>
-              <NewAppointment />
-            </TitleProvider>
-          </Router>
-        </Provider>,
-      )
+    it('should call AppointmentRepo.save when save button is clicked', async () => {
+      const { container } = setup()
 
       const expectedAppointment = {
         patient: testPatient.fullName,
@@ -231,28 +215,23 @@ describe('New Appointment', () => {
     it('should navigate to /appointments/:id when a new appointment is created', async () => {
       jest.spyOn(components, 'Toast')
 
-      const store2 = mockStore({} as any)
-      window.history.pushState({}, 'New Appointment | HospitalRun', '/appointments/new')
-      render(
-        <Provider store={store2}>
-          <Router>
-            <TitleProvider>
-              <NewAppointment />
-            </TitleProvider>
-          </Router>
-        </Provider>,
-      )
+      const { history, expectedAppointment } = setup()
 
-      // This fails to select the patient correctly
       userEvent.type(
         screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
         `${testPatient.fullName}`,
       )
-      userEvent.click(await screen.findByText(`${testPatient.fullName} (${testPatient.code})`))
+      userEvent.click(
+        await screen.findByText(`${testPatient.fullName} (${testPatient.code})`, undefined, {
+          timeout: 3000,
+        }),
+      )
 
       userEvent.click(screen.getByText(/actions\.save/i))
 
-      expect(window.location.pathname).toEqual(`/appointments/${expectedNewAppointment.id}`)
+      await waitFor(() => {
+        expect(history.location.pathname).toEqual(`/appointments/${expectedAppointment.id}`)
+      })
       await waitFor(() => {
         expect(components.Toast).toHaveBeenCalledWith(
           'success',
@@ -265,7 +244,7 @@ describe('New Appointment', () => {
 
   describe('on cancel click', () => {
     it('should navigate back to /appointments', async () => {
-      setup()
+      const { history } = setup()
 
       userEvent.click(screen.getByText(/actions\.cancel/i))
 

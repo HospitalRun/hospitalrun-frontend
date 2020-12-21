@@ -122,7 +122,7 @@
     "update": "npx npm-check -u",
     "prepublishOnly": "npm run build",
     "test": "npm run translation:check && react-scripts test  --testPathIgnorePatterns=src/__tests__/test-utils --detectOpenHandles --env=jest-environment-jsdom-sixteen",
-    "test:ci": "cross-env CI=true react-scripts test  --testPathIgnorePatterns=src/__tests__/test-utils --passWithNoTests --env=jest-environment-jsdom-sixteen --runInBand",
+    "test:ci": "cross-env CI=true react-scripts test  --testPathIgnorePatterns=src/__tests__/test-utils --passWithNoTests --env=jest-environment-jsdom-sixteen",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/check-translations/**/*.{js,ts}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/check-translations/**/*.{js,ts}\" --fix",
     "lint-staged": "lint-staged",
