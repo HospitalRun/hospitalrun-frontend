@@ -107,7 +107,7 @@ describe('New Appointment', () => {
         ).toISOString(),
         location: 'location',
         reason: 'reason',
-        type: 'type',
+        type: 'routine',
       } as Appointment
 
       userEvent.type(
@@ -138,7 +138,7 @@ describe('New Appointment', () => {
         endDateTime: new Date(1957, 10, 10, 0, 0, 0, 0).toISOString(),
         location: 'location',
         reason: 'reason',
-        type: 'type',
+        type: 'routine',
       } as Appointment
 
       userEvent.type(
@@ -176,7 +176,7 @@ describe('New Appointment', () => {
         ).toISOString(),
         location: 'location',
         reason: 'reason',
-        type: 'type',
+        type: 'routine',
       } as Appointment
 
       userEvent.type(
@@ -198,7 +198,10 @@ describe('New Appointment', () => {
         screen.getByRole('textbox', { name: /scheduling\.appointment\.location/i }),
         expectedAppointment.location,
       )
-      userEvent.type(screen.getByPlaceholderText('-- Choose --'), expectedAppointment.type)
+      userEvent.type(
+        screen.getByPlaceholderText('-- Choose --'),
+        `${expectedAppointment.type}{arrowdown}{enter}`,
+      )
       const textfields = screen.queryAllByRole('textbox')
       userEvent.type(textfields[3], expectedAppointment.reason)
       userEvent.click(
@@ -208,7 +211,10 @@ describe('New Appointment', () => {
       )
 
       await waitFor(() => {
-        expect(AppointmentRepository.save).toHaveBeenCalled()
+        expect(AppointmentRepository.save).toHaveBeenCalledWith({
+          ...expectedAppointment,
+          patient: testPatient.id,
+        })
       })
     }, 20000)
 
