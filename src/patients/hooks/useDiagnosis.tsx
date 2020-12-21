@@ -14,5 +14,5 @@ async function getDiagnosis(_: string, patientId: string, diagnosisId: string): 
 }
 
 export default function useDiagnosis(patientId: string, diagnosisId: string) {
-  return useQuery(['diagnoses', patientId, diagnosisId], getDiagnosis)
+  return useQuery(['diagnoses', patientId, diagnosisId], getDiagnosis, { retry: false })
 }

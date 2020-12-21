@@ -110,7 +110,7 @@ const ViewPatient = () => {
             onClick={() => history.push(`/patients/${patient.id}/allergies`)}
           />
           <Tab
-            active={location.pathname === `/patients/${patient.id}/diagnoses`}
+            active={location.pathname.startsWith(`/patients/${patient.id}/diagnoses`)}
             label={t('patient.diagnoses.label')}
             onClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
           />

@@ -20,15 +20,12 @@ const ViewDiagnosis = () => {
     return <Loading />
   }
 
-  if (diagnosis) {
-    return (
-      <>
-        <h2>{diagnosis.name}</h2>
-        <DiagnosisForm patient={patient} diagnosis={diagnosis} disabled />
-      </>
-    )
-  }
-  return <></>
+  return (
+    <>
+      <h2>{diagnosis.name}</h2>
+      <DiagnosisForm patient={patient} diagnosis={diagnosis} disabled />
+    </>
+  )
 }
 
 export default ViewDiagnosis
