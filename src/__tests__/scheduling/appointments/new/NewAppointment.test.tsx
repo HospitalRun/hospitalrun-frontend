@@ -175,11 +175,18 @@ describe('New Appointment', () => {
         type: 'routine',
       } as Appointment
 
+      console.time('patientTypeahead')
+      console.time('patientTypeahead-typing')
       userEvent.type(
         screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
         expectedAppointment.patient,
       )
-      userEvent.click(await screen.findByText(`${testPatient.fullName} (${testPatient.code})`))
+      console.timeEnd('patientTypeahead-typing')
+      console.time('patientTypeahead-getElementForClicking')
+      const patient = await screen.findByText(`${testPatient.fullName} (${testPatient.code})`)
+      console.timeEnd('patientTypeahead-getElementForClicking')
+      userEvent.click(patient)
+      console.timeEnd('patientTypeahead')
 
       fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[0], {
         target: { value: expectedAppointment.startDateTime },
@@ -189,18 +196,32 @@ describe('New Appointment', () => {
         target: { value: expectedAppointment.endDateTime },
       })
 
+      console.time('location-fireEvent')
+      fireEvent.change(
+        screen.getByRole('textbox', { name: /scheduling\.appointment\.location/i }),
+        { target: { value: expectedAppointment.location } },
+      )
+      console.timeEnd('location-fireEvent')
+      userEvent.clear(screen.getByRole('textbox', { name: /scheduling\.appointment\.location/i }))
+
+      console.time('location')
       userEvent.type(
         screen.getByRole('textbox', { name: /scheduling\.appointment\.location/i }),
         expectedAppointment.location,
       )
+      console.timeEnd('location')
 
+      console.time('type')
       userEvent.type(
         screen.getByPlaceholderText('-- Choose --'),
         `${expectedAppointment.type}{arrowdown}{enter}`,
       )
+      console.timeEnd('type')
 
+      console.time('reason')
       const textfields = screen.queryAllByRole('textbox')
       userEvent.type(textfields[3], expectedAppointment.reason)
+      console.timeEnd('reason')
 
       userEvent.click(
         screen.getByRole('button', {
@@ -214,7 +235,7 @@ describe('New Appointment', () => {
           patient: testPatient.id,
         })
       })
-    }, 20000)
+    }, 25000)
 
     it('should navigate to /appointments/:id when a new appointment is created', async () => {
       jest.spyOn(components, 'Toast')
