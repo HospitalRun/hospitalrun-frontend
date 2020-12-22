@@ -22,7 +22,7 @@ describe('Use Pricing Items Search', () => {
 
   it('should find all if no criteria is provided', async () => {
     const pricingItemsSearchRequest = {
-      name: '',
+      text: '',
       category: 'all',
     } as PricingItemSearchRequests
 
@@ -41,7 +41,7 @@ describe('Use Pricing Items Search', () => {
 
   it('should search for pricing items', async () => {
     const pricingItemsSearchRequest = {
-      name: 'pricing item',
+      text: 'pricing item',
     } as PricingItemSearchRequests
 
     let actualData: any

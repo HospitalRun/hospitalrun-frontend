@@ -20,7 +20,7 @@ export class PricingItemError extends Error {
   }
 }
 
-export function validatePricingItem(pricingItem: Partial<PricingItem>): PricingItemError {
+function validatePricingItem(pricingItem: Partial<PricingItem>): PricingItemError {
   const pricingItemError = {} as PricingItemError
 
   if (!pricingItem.name) {
@@ -35,9 +35,25 @@ export function validatePricingItem(pricingItem: Partial<PricingItem>): PricingI
     pricingItemError.category = 'billing.requests.error.categoryRequired'
   }
 
-  if (!isEmpty(pricingItemError)) {
-    pricingItemError.message = 'billing.requests.error.unableToAdd'
+  return pricingItemError
+}
+
+export function validateNewPricingItem(pricingItem: Partial<PricingItem>): PricingItemError {
+  const newPricingItemError = validatePricingItem(pricingItem)
+
+  if (!isEmpty(newPricingItemError)) {
+    newPricingItemError.message = 'billing.requests.error.unableToAdd'
   }
 
-  return pricingItemError
+  return newPricingItemError
+}
+
+export function validateUpdatePricingItem(pricingItem: Partial<PricingItem>): PricingItemError {
+  const updatePricingItemError = validatePricingItem(pricingItem)
+
+  if (!isEmpty(updatePricingItemError)) {
+    updatePricingItemError.message = 'billing.requests.error.unableToUpdate'
+  }
+
+  return updatePricingItemError
 }

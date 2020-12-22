@@ -3,10 +3,10 @@ import { useMutation, queryCache } from 'react-query'
 
 import PricingItemRepository from '../../shared/db/PricingItemRepository'
 import { PricingItem } from '../../shared/model/PricingItem'
-import { validatePricingItem } from '../utils/validate-pricingItem'
+import { validateNewPricingItem } from '../utils/validate-pricingItem'
 
 function addPricingItem(newPricingItem: PricingItem): Promise<PricingItem> {
-  const addPricingItemErrors = validatePricingItem(newPricingItem)
+  const addPricingItemErrors = validateNewPricingItem(newPricingItem)
 
   if (!isEmpty(addPricingItemErrors)) {
     throw addPricingItemErrors

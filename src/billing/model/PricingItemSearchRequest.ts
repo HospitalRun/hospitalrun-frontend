@@ -1,4 +1,6 @@
+export type PricingItemCategoryFilter = 'imaging' | 'lab' | 'procedure' | 'ward' | 'all'
+
 export default interface PricingItemSearchRequests {
-  name: string
+  text: string
   category: 'imaging' | 'lab' | 'procedure' | 'ward' | 'all'
 }

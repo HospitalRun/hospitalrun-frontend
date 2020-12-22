@@ -7,6 +7,7 @@ import PrivateRoute from '../shared/components/PrivateRoute'
 import Permissions from '../shared/model/Permissions'
 import { RootState } from '../shared/store'
 import AddPricingItem from './new/AddPricingItem'
+import ViewPricingItem from './view/ViewPricingItem'
 import ViewPricingItems from './view/ViewPricingItems'
 
 const Billing = () => {
@@ -32,6 +33,12 @@ const Billing = () => {
         exact
         path="/billing/new"
         component={AddPricingItem}
+      />
+      <PrivateRoute
+        isAuthenticated={permissions.includes(Permissions.ViewPricingItems)}
+        exact
+        path="/billing/:id"
+        component={ViewPricingItem}
       />
     </Switch>
   )

@@ -68,7 +68,7 @@ describe('Use Add Pricing Item', () => {
       category: 'error category',
     } as PricingItemError
 
-    jest.spyOn(validatePricingItem, 'validatePricingItem').mockReturnValue(expectedErrors)
+    jest.spyOn(validatePricingItem, 'validateNewPricingItem').mockReturnValue(expectedErrors)
 
     try {
       await executeMutation(() => useAddPricingItem(), expectedPricingItem)

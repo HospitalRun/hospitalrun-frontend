@@ -123,7 +123,7 @@ describe('Pricing Item Repository', () => {
       } as PricingItem)
 
       const result = await PricingItemRepository.search({
-        name: 'pricing item',
+        text: 'pricing item',
       } as any)
 
       expect(result).toHaveLength(1)

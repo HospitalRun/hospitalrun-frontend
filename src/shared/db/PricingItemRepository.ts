@@ -4,7 +4,7 @@ import Repository from './Repository'
 import SortRequest from './SortRequest'
 
 interface SearchContainer {
-  name: string
+  text: string
   category: 'imaging' | 'lab' | 'procedure' | 'ward' | 'all'
   defaultSortRequest: SortRequest
 }
@@ -23,11 +23,11 @@ class PricingItemRepository extends Repository<PricingItem> {
       $and: [
         {
           'data.name': {
-            $regex: RegExp(container.name, 'i'),
+            $regex: RegExp(container.text, 'i'),
           },
         },
         ...(container.category !== 'all' ? [{ 'data.category': container.category }] : [undefined]),
-      ],
+      ].filter((x) => x !== undefined),
       sorts: container.defaultSortRequest,
     }
 

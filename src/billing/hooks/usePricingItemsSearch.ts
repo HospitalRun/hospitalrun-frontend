@@ -18,7 +18,7 @@ function pricingItemsSearch(
   _: any,
   pricingItemSearchRequest: PricingItemSearchRequests,
 ): Promise<PricingItem[]> {
-  if (pricingItemSearchRequest.name?.trim() === '' && pricingItemSearchRequest.category === 'all') {
+  if (pricingItemSearchRequest.text?.trim() === '' && pricingItemSearchRequest.category === 'all') {
     return PricingItemRepository.findAll(defaultSortRequest)
   }
 
