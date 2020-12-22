@@ -1,15 +1,14 @@
-import * as components from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { render as rtlRender, screen, within, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
-import React from 'react'
-import { act } from 'react-dom/test-utils'
+import React, { ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Allergies from '../../../patients/allergies/Allergies'
-import AllergiesList from '../../../patients/allergies/AllergiesList'
+// import AllergiesList from '../../../patients/allergies/AllergiesList'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
@@ -26,7 +25,14 @@ const expectedPatient = {
   ],
 } as Patient
 
+const newAllergy = 'allergy3'
 let store: any
+
+type WrapperProps = {
+  // eslint-disable-next-line react/require-default-props
+  children?: ReactNode
+}
+// https://discord.com/channels/715220730605731931/785649901782433852/790657406811766784
 
 const setup = async (
   patient = expectedPatient,
@@ -36,18 +42,14 @@ const setup = async (
   store = mockStore({ patient: { patient }, user: { permissions } } as any)
   history.push(route)
 
-  let wrapper: any
-  await act(async () => {
-    wrapper = await mount(
+  function Wrapper({ children }: WrapperProps) {
+    return (
       <Router history={history}>
-        <Provider store={store}>
-          <Allergies patient={patient} />
-        </Provider>
-      </Router>,
+        <Provider store={store}>{children}</Provider>
+      </Router>
     )
-  })
-
-  return wrapper
+  }
+  return rtlRender(<Allergies patient={patient} />, { wrapper: Wrapper })
 }
 
 describe('Allergies', () => {
@@ -58,41 +60,76 @@ describe('Allergies', () => {
   })
 
   describe('add new allergy button', () => {
-    it('should render a button to add new allergies', async () => {
-      const wrapper = await setup()
+    it('should render a button to add new allergies', () => {
+      setup()
 
-      const addAllergyButton = wrapper.find(components.Button)
-      expect(addAllergyButton).toHaveLength(1)
-      expect(addAllergyButton.text().trim()).toEqual('patient.allergies.new')
+      expect(
+        screen.getByRole('button', {
+          name: /patient\.allergies\.new/i,
+        }),
+      ).toBeInTheDocument()
     })
 
-    it('should not render a button to add new allergies if the user does not have permissions', async () => {
-      const wrapper = await setup(expectedPatient, [])
+    it('should not render a button to add new allergies if the user does not have permissions', () => {
+      setup(expectedPatient, [])
 
-      const addAllergyButton = wrapper.find(components.Button)
-      expect(addAllergyButton).toHaveLength(0)
-    })
-
-    it('should open the New Allergy Modal when clicked', async () => {
-      const wrapper = await setup()
-
-      act(() => {
-        const addAllergyButton = wrapper.find(components.Button)
-        const onClick = addAllergyButton.prop('onClick') as any
-        onClick({} as React.MouseEvent<HTMLButtonElement>)
-      })
-
-      wrapper.update()
-
-      expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
+      expect(
+        screen.queryByRole('button', {
+          name: /patient\.allergies\.new/i,
+        }),
+      ).not.toBeInTheDocument()
     })
   })
 
-  describe('allergy list', () => {
-    it('should render allergies', async () => {
-      const wrapper = await setup()
+  describe('add new allergy modal ', () => {
+    it('should open the new allergy modal when clicked', async () => {
+      setup(expectedPatient)
 
-      expect(wrapper.exists(AllergiesList)).toBeTruthy()
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /patient\.allergies\.new/i,
+        }),
+      )
+
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    it('should add new allergy', async () => {
+      setup(expectedPatient)
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /patient\.allergies\.new/i,
+        }),
+      )
+
+      userEvent.type(
+        screen.getByRole('textbox', {
+          name: /this is a required input/i,
+        }),
+        newAllergy,
+      )
+
+      await waitFor(() =>
+        userEvent.click(
+          within(screen.getByRole('dialog')).getByRole('button', {
+            name: /patient\.allergies\.new/i,
+          }),
+        ),
+      )
+
+      expect(
+        screen.getByRole('button', {
+          name: newAllergy,
+        }),
+      ).toBeInTheDocument()
     })
   })
+
+  // describe('allergy list', () => {
+  //   it('should render allergies', async () => {
+  //     const wrapper = await setup()
+
+  //     expect(wrapper.exists(AllergiesList)).toBeTruthy()
+  //   })
+  // })
 })
