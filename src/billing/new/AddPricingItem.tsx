@@ -31,7 +31,7 @@ const AddPricingItem = () => {
 
   useEffect(() => {
     updateTitle(t('billing.requests.new'))
-  }, [])
+  })
 
   const categoryOptions: Option[] = [
     { label: t('billing.category.imaging'), value: 'imaging' },
