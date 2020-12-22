@@ -357,5 +357,5 @@ describe('ViewPatient', () => {
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-goals`)
     expect(careGoalsTab.prop('active')).toBeTruthy()
     expect(careGoalsTab).toHaveLength(1)
-  })
+  }, 20000)
 })
