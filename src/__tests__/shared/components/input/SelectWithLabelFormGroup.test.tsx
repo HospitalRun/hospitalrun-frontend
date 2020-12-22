@@ -1,14 +1,16 @@
-import { Label, Select } from '@hospitalrun/components'
-import { shallow } from 'enzyme'
+import { render, screen } from '@testing-library/react'
+import userEvent, { specialChars } from '@testing-library/user-event'
 import React from 'react'
 
 import SelectWithLabelFormGroup from '../../../../shared/components/input/SelectWithLabelFormGroup'
+
+const { arrowDown, enter } = specialChars
 
 describe('select with label form group', () => {
   describe('layout', () => {
     it('should render a label', () => {
       const expectedName = 'test'
-      const wrapper = shallow(
+      render(
         <SelectWithLabelFormGroup
           options={[{ value: 'value1', label: 'label1' }]}
           name={expectedName}
@@ -18,64 +20,58 @@ describe('select with label form group', () => {
         />,
       )
 
-      const label = wrapper.find(Label)
-      expect(label).toHaveLength(1)
-      expect(label.prop('htmlFor')).toEqual(`${expectedName}Select`)
-      expect(label.prop('text')).toEqual(expectedName)
+      expect(screen.getByText(expectedName)).toHaveAttribute('for', `${expectedName}Select`)
     })
 
     it('should render disabled is isDisable disabled is true', () => {
-      const expectedName = 'test'
-      const wrapper = shallow(
+      render(
         <SelectWithLabelFormGroup
           options={[{ value: 'value1', label: 'label1' }]}
-          name={expectedName}
+          name="test"
           label="test"
           isEditable={false}
           onChange={jest.fn()}
         />,
       )
 
-      const select = wrapper.find(Select)
-      expect(select).toHaveLength(1)
-      expect(select.prop('disabled')).toBeTruthy()
+      expect(screen.getByRole('combobox')).toBeDisabled()
     })
 
     it('should render the proper value', () => {
-      const expectedName = 'test'
-      const expectedDefaultSelected = [{ value: 'value', label: 'label' }]
-      const wrapper = shallow(
+      const expectedLabel = 'label'
+      render(
         <SelectWithLabelFormGroup
-          options={[{ value: 'value', label: 'label' }]}
-          name={expectedName}
+          options={[{ value: 'value', label: expectedLabel }]}
+          name="test"
           label="test"
-          defaultSelected={expectedDefaultSelected}
-          isEditable={false}
+          defaultSelected={[{ value: 'value', label: expectedLabel }]}
+          isEditable
           onChange={jest.fn()}
         />,
       )
 
-      const select = wrapper.find(Select)
-      expect(select).toHaveLength(1)
-      expect(select.prop('defaultSelected')).toEqual(expectedDefaultSelected)
+      expect(screen.getByRole('combobox')).toHaveValue(expectedLabel)
     })
   })
 
   describe('change handler', () => {
     it('should call the change handler on change', () => {
+      const expectedLabel = 'label1'
+      const expectedValue = 'value1'
       const handler = jest.fn()
-      const wrapper = shallow(
+      render(
         <SelectWithLabelFormGroup
-          options={[{ value: 'value1', label: 'label1' }]}
+          options={[{ value: expectedValue, label: expectedLabel }]}
           name="name"
           label="test"
-          isEditable={false}
+          isEditable
           onChange={handler}
         />,
       )
 
-      const select = wrapper.find(Select)
-      select.simulate('change')
+      userEvent.type(screen.getByRole('combobox'), `${expectedLabel}${arrowDown}${enter}`)
+
+      expect(handler).toHaveBeenCalledWith([expectedValue])
       expect(handler).toHaveBeenCalledTimes(1)
     })
   })
