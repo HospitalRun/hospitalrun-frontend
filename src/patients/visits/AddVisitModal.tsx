@@ -1,5 +1,5 @@
 import { Modal } from '@hospitalrun/components'
-import { addMonths } from 'date-fns'
+import addMonths from 'date-fns/addMonths'
 import React, { useState, useEffect } from 'react'
 
 import useTranslator from '../../shared/hooks/useTranslator'

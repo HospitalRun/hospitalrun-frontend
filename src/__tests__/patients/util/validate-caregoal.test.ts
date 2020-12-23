@@ -1,4 +1,4 @@
-import { subDays } from 'date-fns'
+import subDays from 'date-fns/subDays'
 
 import validateCareGoal from '../../../patients/util/validate-caregoal'
 import CareGoal from '../../../shared/model/CareGoal'

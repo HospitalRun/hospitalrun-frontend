@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks'
-import { subDays } from 'date-fns'
+import subDays from 'date-fns/subDays'
 
 import useResolveIncident from '../../../incidents/hooks/useResolveIncident'
 import IncidentRepository from '../../../shared/db/IncidentRepository'

@@ -1,6 +1,7 @@
 import { render, waitFor, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { roundToNearestMinutes, addMinutes } from 'date-fns'
+import addMinutes from 'date-fns/addMinutes'
+import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -107,7 +108,9 @@ describe('Edit Appointment', () => {
       expect(screen.getByRole('button', { name: /actions.save/i })).toBeInTheDocument()
     })
 
-    userEvent.click(await screen.findByRole('button', { name: /actions.save/i }))
+    userEvent.click(
+      await screen.findByRole('button', { name: /scheduling.appointments.updateAppointment/i }),
+    )
 
     await waitFor(() => {
       expect(AppointmentRepository.saveOrUpdate).toHaveBeenCalledWith(expectedAppointment)
