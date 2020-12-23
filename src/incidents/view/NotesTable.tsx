@@ -1,12 +1,25 @@
 import React from 'react'
 
-import { Table } from '@hospitalrun/components'
+import { Alert, Table } from '@hospitalrun/components'
 import Note from '../../shared/model/Note'
+import useTranslator from '../../shared/hooks/useTranslator'
 interface Props {
   notes: Note[]
 }
 
 const NotesTable = ({ notes }: Props) => {
+  const { t } = useTranslator()
+
+  if (notes.length === 0) {
+    return (
+      <Alert
+        color="warning"
+        title={t('patient.notes.warning.noNotes')}
+        message={t('patient.notes.addNoteAbove')}
+      />
+    )
+  }
+
   return (
     <Table
       columns={[

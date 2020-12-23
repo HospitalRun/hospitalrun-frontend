@@ -63,11 +63,11 @@ const ViewIncident = () => {
       </TabsHeader>
       <Panel>
         <div className="col-md-12 d-flex justify-content-end">
-          <Button outlined color="success" icon="add" iconLocation="right" onClick={onNewNoteClick} >
+          <Button outlined color="success" icon="add" iconLocation="right" onClick={onNewNoteClick}>
             {t('patient.notes.new')}
           </Button>
         </div>
-        <NotesTable notes={(data && data.notes) || []}/>
+        <NotesTable notes={(data && data.notes) || []} />
       </Panel>
       {data &&
         data.resolvedOn === undefined &&
@@ -91,7 +91,10 @@ const ViewIncident = () => {
         show={showNewNoteModal}
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
-        onSave={async (note) => { await mutateAddNote({note, incidentId: id })}}
+        onSave={async (note) => {
+          await mutateAddNote({ note, incidentId: id })
+          window.location.reload()
+        }}
       />
     </div>
   )
