@@ -1,4 +1,4 @@
-import { Button, Table } from '@hospitalrun/components'
+import { Button, Table, Container, Row, Column } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
@@ -78,9 +78,9 @@ const ViewLabs = () => {
   ]
 
   return (
-    <>
-      <div className="row">
-        <div className="col-md-3 col-lg-2">
+    <Container>
+      <Row>
+        <Column md={3} lg={2}>
           <SelectWithLabelFormGroup
             name="type"
             label={t('labs.filterTitle')}
@@ -89,8 +89,8 @@ const ViewLabs = () => {
             onChange={(values) => setSearchFilter(values[0] as LabFilter)}
             isEditable
           />
-        </div>
-        <div className="col">
+        </Column>
+        <Column>
           <TextInputWithLabelFormGroup
             name="searchbox"
             label={t('labs.search')}
@@ -99,9 +99,9 @@ const ViewLabs = () => {
             isEditable
             onChange={onSearchBoxChange}
           />
-        </div>
-      </div>
-      <div className="row">
+        </Column>
+      </Row>
+      <Row>
         <Table
           getID={(row) => row.id}
           columns={[
@@ -119,8 +119,8 @@ const ViewLabs = () => {
           actionsHeaderText={t('actions.label')}
           actions={[{ label: t('actions.view'), action: (row) => onViewClick(row as Lab) }]}
         />
-      </div>
-    </>
+      </Row>
+    </Container>
   )
 }
 
