@@ -105,7 +105,9 @@ describe('Edit Appointment', () => {
     setup(expectedAppointment, expectedPatient)
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /actions.save/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /scheduling.appointments.updateAppointment/i }),
+      ).toBeInTheDocument()
     })
 
     userEvent.click(
@@ -120,7 +122,9 @@ describe('Edit Appointment', () => {
   it('should navigate to /appointments/:id when save is successful', async () => {
     setup(expectedAppointment, expectedPatient)
 
-    userEvent.click(await screen.findByRole('button', { name: /actions.save/i }))
+    userEvent.click(
+      await screen.findByRole('button', { name: /scheduling.appointments.updateAppointment/i }),
+    )
 
     await waitFor(() => {
       expect(history.location.pathname).toEqual('/appointments/123')
@@ -145,7 +149,9 @@ describe('Edit Appointment', () => {
     setup(expectedAppointment, expectedPatient)
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /actions.save/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /scheduling.appointments.updateAppointment/i }),
+      ).toBeInTheDocument()
     })
   })
 })
