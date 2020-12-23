@@ -1,4 +1,4 @@
-import { isBefore } from 'date-fns'
+import isBefore from 'date-fns/isBefore'
 
 import Appointment from '../../../shared/model/Appointment'
 

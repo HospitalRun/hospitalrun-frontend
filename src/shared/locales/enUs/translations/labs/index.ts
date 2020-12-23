@@ -21,6 +21,7 @@ export default {
       view: 'View Lab',
       cancel: 'Cancel Lab',
       complete: 'Complete Lab',
+      update: 'Update Lab',
       error: {
         unableToRequest: 'Unable to create new lab request.',
         unableToComplete: 'Unable to complete lab request.',
