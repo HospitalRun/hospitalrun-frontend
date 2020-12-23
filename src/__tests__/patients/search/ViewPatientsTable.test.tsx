@@ -1,54 +1,43 @@
-import { Table } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
-import { createMemoryHistory } from 'history'
+import {
+  render as rtlRender,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
+import format from 'date-fns/format'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
-import { Router } from 'react-router-dom'
 
 import PatientSearchRequest from '../../../patients/models/PatientSearchRequest'
-import NoPatientsExist from '../../../patients/search/NoPatientsExist'
 import ViewPatientsTable from '../../../patients/search/ViewPatientsTable'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 
 describe('View Patients Table', () => {
-  const setup = async (
-    expectedSearchRequest: PatientSearchRequest,
-    expectedPatients: Patient[],
-  ) => {
+  const render = (expectedSearchRequest: PatientSearchRequest, expectedPatients: Patient[]) => {
     jest.spyOn(PatientRepository, 'search').mockResolvedValueOnce(expectedPatients)
     jest.spyOn(PatientRepository, 'count').mockResolvedValueOnce(expectedPatients.length)
 
-    let wrapper: any
-    const history = createMemoryHistory()
+    const results = rtlRender(<ViewPatientsTable searchRequest={expectedSearchRequest} />)
 
-    await act(async () => {
-      wrapper = await mount(
-        <Router history={history}>
-          <ViewPatientsTable searchRequest={expectedSearchRequest} />
-        </Router>,
-      )
-    })
-    wrapper.update()
-    return { wrapper: wrapper as ReactWrapper, history }
+    return results
   }
 
   beforeEach(() => {
     jest.resetAllMocks()
   })
 
-  it('should search for patients given a search request', async () => {
+  it('should search for patients given a search request', () => {
     const expectedSearchRequest = { queryString: 'someQueryString' }
-    await setup(expectedSearchRequest, [])
+    render(expectedSearchRequest, [])
 
     expect(PatientRepository.search).toHaveBeenCalledTimes(1)
     expect(PatientRepository.search).toHaveBeenCalledWith(expectedSearchRequest.queryString)
   })
 
   it('should display no patients exist if total patient count is 0', async () => {
-    const { wrapper } = await setup({ queryString: '' }, [])
-
-    expect(wrapper.exists(NoPatientsExist)).toBeTruthy()
+    const { container } = render({ queryString: '' }, [])
+    await waitForElementToBeRemoved(container.querySelector('.css-0'))
+    expect(screen.getByRole('heading', { name: /patients.noPatients/i })).toBeInTheDocument()
   })
 
   it('should render a table', async () => {
@@ -56,32 +45,35 @@ describe('View Patients Table', () => {
       id: '123',
       givenName: 'givenName',
       familyName: 'familyName',
+      code: 'test code',
       sex: 'sex',
       dateOfBirth: new Date(2010, 1, 1, 1, 1, 1, 1).toISOString(),
     } as Patient
     const expectedPatients = [expectedPatient]
-    const { wrapper } = await setup({ queryString: '' }, expectedPatients)
 
-    const table = wrapper.find(Table)
-    const columns = table.prop('columns')
-    const actions = table.prop('actions') as any
+    render({ queryString: '' }, expectedPatients)
 
-    expect(table).toHaveLength(1)
+    await waitFor(() => screen.getByText('familyName'))
+    screen.debug(undefined, Infinity)
+    const cells = screen.getAllByRole('cell')
 
-    expect(columns[0]).toEqual(expect.objectContaining({ label: 'patient.code', key: 'code' }))
-    expect(columns[1]).toEqual(
-      expect.objectContaining({ label: 'patient.givenName', key: 'givenName' }),
+    expect(screen.getByRole('columnheader', { name: /patient\.code/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient\.givenName/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient\.familyName/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient\.sex/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient\.dateOfBirth/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /actions\.label/i })).toBeInTheDocument()
+
+    Object.keys(expectedPatient)
+      .filter((key) => key !== 'id' && key !== 'dateOfBirth')
+      .forEach((key) => {
+        expect(
+          screen.getByRole('cell', { name: expectedPatient[key as keyof Patient] as string }),
+        ).toBeInTheDocument()
+      })
+
+    expect(cells[4]).toHaveTextContent(
+      format(Date.parse(expectedPatient.dateOfBirth), 'MM/dd/yyyy'),
     )
-    expect(columns[2]).toEqual(
-      expect.objectContaining({ label: 'patient.familyName', key: 'familyName' }),
-    )
-    expect(columns[3]).toEqual(expect.objectContaining({ label: 'patient.sex', key: 'sex' }))
-    expect(columns[4]).toEqual(
-      expect.objectContaining({ label: 'patient.dateOfBirth', key: 'dateOfBirth' }),
-    )
-
-    expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
-    expect(table.prop('data')).toEqual(expectedPatients)
-    expect(table.prop('actionsHeaderText')).toEqual('actions.label')
   })
 })
