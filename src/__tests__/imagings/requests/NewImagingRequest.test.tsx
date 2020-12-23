@@ -131,7 +131,7 @@ describe('New Imaging Request', () => {
       const wrapper = await setup()
       const saveButton = wrapper.find(Button).at(0)
       expect(saveButton).toBeDefined()
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('imagings.requests.create')
     })
 
     it('should render a cancel button', async () => {
@@ -205,7 +205,7 @@ describe('New Imaging Request', () => {
 
       const saveButton = wrapper.find(Button).at(0)
       const onClick = saveButton.prop('onClick') as any
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('imagings.requests.create')
       await act(async () => {
         await onClick()
       })
