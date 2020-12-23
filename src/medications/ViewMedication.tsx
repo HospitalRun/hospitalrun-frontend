@@ -297,7 +297,7 @@ const ViewMedication = () => {
           <Row>
             <Column>
               <TextFieldWithLabelFormGroup
-                id="notes"
+                data-testid="notes"
                 name="notes"
                 label={t('medications.medication.notes')}
                 value={medicationToView.notes}
