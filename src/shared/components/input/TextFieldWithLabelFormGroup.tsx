@@ -20,6 +20,7 @@ const TextFieldWithLabelFormGroup = (props: Props) => {
       {label && <Label text={label} htmlFor={inputId} isRequired={isRequired} />}
       <TextField
         id={inputId}
+        data-testid={inputId}
         rows={4}
         value={value}
         disabled={!isEditable}
