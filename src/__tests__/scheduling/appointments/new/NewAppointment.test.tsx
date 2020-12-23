@@ -161,6 +161,7 @@ describe('New Appointment', () => {
     })
 
     it('should call AppointmentRepo.save when save button is clicked', async () => {
+      jest.setTimeout(10000)
       const { container } = setup()
 
       const expectedAppointment = {
