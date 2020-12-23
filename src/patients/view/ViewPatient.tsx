@@ -43,7 +43,9 @@ const ViewPatient = () => {
   const { data: patient, status } = usePatient(id)
 
   const updateTitle = useUpdateTitle()
-  updateTitle(t('patient.label'))
+  useEffect(() => {
+    updateTitle(t('patient.label'))
+  }, [updateTitle, t])
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
