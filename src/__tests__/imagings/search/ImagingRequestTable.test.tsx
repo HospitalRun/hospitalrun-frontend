@@ -1,7 +1,5 @@
-import { Table } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { render as rtlRender, screen } from '@testing-library/react'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 
 import ImagingSearchRequest from '../../../imagings/model/ImagingSearchRequest'
 import ImagingRequestTable from '../../../imagings/search/ImagingRequestTable'
@@ -31,52 +29,40 @@ describe('Imaging Request Table', () => {
   } as Imaging
   const expectedImagings = [expectedImaging]
 
-  const setup = async (searchRequest: ImagingSearchRequest) => {
+  const render = (searchRequest: ImagingSearchRequest) => {
     jest.resetAllMocks()
     jest.spyOn(ImagingRepository, 'search').mockResolvedValue(expectedImagings)
-    let wrapper: any
 
-    await act(async () => {
-      wrapper = await mount(<ImagingRequestTable searchRequest={searchRequest} />)
-    })
-    wrapper.update()
+    const results = rtlRender(<ImagingRequestTable searchRequest={searchRequest} />)
 
-    return { wrapper: wrapper as ReactWrapper }
+    return results
   }
 
-  it('should search for imaging requests ', async () => {
+  it('should search for imaging requests ', () => {
     const expectedSearch: ImagingSearchRequest = { status: 'all', text: 'text' }
-    await setup(expectedSearch)
+    render(expectedSearch)
 
     expect(ImagingRepository.search).toHaveBeenCalledTimes(1)
     expect(ImagingRepository.search).toHaveBeenCalledWith({ ...expectedSearch, defaultSortRequest })
   })
 
-  it('should render a table of imaging requests', async () => {
+  it('should render a table of imaging requests', () => {
     const expectedSearch: ImagingSearchRequest = { status: 'all', text: 'text' }
-    const { wrapper } = await setup(expectedSearch)
+    render(expectedSearch)
+    const headers = screen.getAllByRole('columnheader')
+    const cells = screen.getAllByRole('cell')
+    expect(headers[0]).toHaveTextContent(/imagings.imaging.code/i)
+    expect(headers[1]).toHaveTextContent(/imagings.imaging.type/i)
+    expect(headers[2]).toHaveTextContent(/imagings.imaging.requestedOn/i)
+    expect(headers[3]).toHaveTextContent(/imagings.imaging.patient/i)
+    expect(headers[4]).toHaveTextContent(/imagings.imaging.requestedBy/i)
+    expect(headers[5]).toHaveTextContent(/imagings.imaging.status/i)
+    screen.debug(undefined, Infinity)
 
-    const table = wrapper.find(Table)
-    const columns = table.prop('columns')
-    expect(columns[0]).toEqual(
-      expect.objectContaining({ label: 'imagings.imaging.code', key: 'code' }),
-    )
-    expect(columns[1]).toEqual(
-      expect.objectContaining({ label: 'imagings.imaging.type', key: 'type' }),
-    )
-    expect(columns[2]).toEqual(
-      expect.objectContaining({ label: 'imagings.imaging.requestedOn', key: 'requestedOn' }),
-    )
-    expect(columns[3]).toEqual(
-      expect.objectContaining({ label: 'imagings.imaging.patient', key: 'fullName' }),
-    )
-    expect(columns[4]).toEqual(
-      expect.objectContaining({ label: 'imagings.imaging.requestedBy', key: 'requestedBy' }),
-    )
-    expect(columns[5]).toEqual(
-      expect.objectContaining({ label: 'imagings.imaging.status', key: 'status' }),
-    )
-
-    expect(table.prop('data')).toEqual([expectedImaging])
+    expect(cells[0]).toHaveTextContent('I-1234')
+    expect(cells[1]).toHaveTextContent('imaging type')
+    expect(cells[3]).toHaveTextContent('full name')
+    expect(cells[4]).toHaveTextContent('some user')
+    expect(cells[5]).toHaveTextContent('requested')
   })
 })
