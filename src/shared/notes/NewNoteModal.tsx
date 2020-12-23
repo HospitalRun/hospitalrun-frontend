@@ -15,7 +15,6 @@ interface Props {
 }
 
 const NewNoteModal = (props: Props) => {
-
   const { show, toggle, onCloseButtonClick, onSave } = props
   const { t } = useTranslator()
 
@@ -31,7 +30,7 @@ const NewNoteModal = (props: Props) => {
       onSave({
         id: uuid(),
         date: new Date().toISOString(),
-        // TODO: Implement givenBy
+        givenBy: 'some user',
         text,
       })
       setText('')

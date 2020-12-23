@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router'
 
 import { Alert, Table } from '@hospitalrun/components'
 import Note from '../../shared/model/Note'
@@ -9,6 +10,7 @@ interface Props {
 
 const NotesTable = ({ notes }: Props) => {
   const { t } = useTranslator()
+  const history = useHistory()
 
   if (notes.length === 0) {
     return (
@@ -38,6 +40,7 @@ const NotesTable = ({ notes }: Props) => {
           label: 'Note',
           formatter: (row) => <>{row.text}</>,
         },
+        /*
         {
           key: 'actions-key',
           label: 'Actions',
@@ -49,6 +52,19 @@ const NotesTable = ({ notes }: Props) => {
               </>
             )
           },
+        },*/
+      ]}
+      actionsHeaderText={t('actions.label')}
+      actions={[
+        {
+          label: t('actions.edit'),
+          action: (row) => history.push(`incidents/${row.id}`), //TODO: fix
+          buttonColor: 'dark',
+        },
+        {
+          label: t('actions.delete'),
+          action: (row) => history.push(`incidents/${row.id}`), //TODO: fix
+          buttonColor: 'danger',
         },
       ]}
       data={notes}
