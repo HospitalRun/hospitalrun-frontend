@@ -8,7 +8,6 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Allergies from '../../../patients/allergies/Allergies'
-// import AllergiesList from '../../../patients/allergies/AllergiesList'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
