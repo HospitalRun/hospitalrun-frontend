@@ -54,7 +54,7 @@ describe('Imagings', () => {
         const permissions: Permissions[] = [Permissions.RequestImaging]
         const { container } = setup(permissions, true)
 
-        expect(container).toMatchSnapshot()
+        expect(container).toBeInTheDocument()
       })
 
       it('should not navigate to /imagings/new if the user does not have RequestImaging permissions', async () => {
