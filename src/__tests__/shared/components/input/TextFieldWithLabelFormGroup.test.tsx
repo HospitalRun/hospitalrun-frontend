@@ -70,7 +70,7 @@ describe('text field with label form group', () => {
 
       render(
         <TextFieldWithLabelFormGroup
-          id="test"
+          data-testid="test"
           name="test"
           label="test"
           value={expectedValue}
