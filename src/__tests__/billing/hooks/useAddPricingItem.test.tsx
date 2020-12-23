@@ -31,34 +31,41 @@ describe('Use Add Pricing Item', () => {
     expect(actualData).toEqual(expectedPricingItem)
   })
 
-  it('should fill type if its not filled when category is imaging or lab', async () => {
-    const expectedPricingItem1 = {
-      ...expectedPricingItem,
-      category: 'lab',
-    } as PricingItem
-
-    const expectedPricingItem2 = {
+  it('should fill type if its not filled when category is imaging', async () => {
+    const expectedPricingItemImaging = {
       ...expectedPricingItem,
       category: 'imaging',
     } as PricingItem
 
     await act(async () => {
-      await executeMutation(() => useAddPricingItem(), expectedPricingItem1)
-      await executeMutation(() => useAddPricingItem(), expectedPricingItem2)
+      await executeMutation(() => useAddPricingItem(), expectedPricingItemImaging)
     })
 
-    expect(PricingItemRepository.save).toHaveBeenCalledTimes(2)
-    expect(PricingItemRepository.save).toHaveBeenNthCalledWith(1, {
-      ...expectedPricingItem1,
-      type: 'Lab Procedure',
-    })
-    expect(PricingItemRepository.save).toHaveBeenNthCalledWith(2, {
-      ...expectedPricingItem2,
+    expect(PricingItemRepository.save).toHaveBeenCalledTimes(1)
+    expect(PricingItemRepository.save).toHaveBeenCalledWith({
+      ...expectedPricingItemImaging,
       type: 'Imaging Procedure',
     })
   })
 
-  it('should return errors', async () => {
+  it('should fill type if its not filled when category is lab', async () => {
+    const expectedPricingItemLab = {
+      ...expectedPricingItem,
+      category: 'lab',
+    } as PricingItem
+
+    await act(async () => {
+      await executeMutation(() => useAddPricingItem(), expectedPricingItemLab)
+    })
+
+    expect(PricingItemRepository.save).toHaveBeenCalledTimes(1)
+    expect(PricingItemRepository.save).toHaveBeenCalledWith({
+      ...expectedPricingItemLab,
+      type: 'Lab Procedure',
+    })
+  })
+
+  it('should throw errors if validation fails', async () => {
     expect.hasAssertions()
 
     const expectedErrors = {

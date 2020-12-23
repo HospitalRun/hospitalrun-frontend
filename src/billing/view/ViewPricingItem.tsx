@@ -7,11 +7,13 @@ import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../../shared/components/input/SelectWithLabelFormGroup'
+import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import { PricingItem } from '../../shared/model/PricingItem'
 import usePricingItem from '../hooks/usePricingItem'
 import useUpdatePricingItem from '../hooks/useUpdatePricingItem'
+import { formatPrice } from '../utils/formatPrice'
 import { PricingItemError } from '../utils/validate-pricingItem'
 
 const ViewPricingItem = () => {
@@ -58,11 +60,13 @@ const ViewPricingItem = () => {
     )
   }
 
-  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value)
+  const onPriceChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    const separator = ','
+    const replacer = new RegExp(separator, 'g')
+    const price = Number(value.replace(replacer, ''))
 
-    if (!Number.isNaN(value)) {
-      onFieldChange('price', value)
+    if (!Number.isNaN(price)) {
+      onFieldChange('price', price)
     }
   }
 
@@ -134,7 +138,7 @@ const ViewPricingItem = () => {
               <TextInputWithLabelFormGroup
                 name="price"
                 label={t('billing.pricingItem.price')}
-                value={(pricingItemToView.price as unknown) as string}
+                value={formatPrice(pricingItemToView.price)}
                 isEditable
                 isRequired
                 isInvalid={!!error?.price}
@@ -154,7 +158,7 @@ const ViewPricingItem = () => {
           </Row>
           <Row>
             <Column>
-              <TextInputWithLabelFormGroup
+              <TextFieldWithLabelFormGroup
                 name="notes"
                 label={t('billing.pricingItem.notes')}
                 value={pricingItemToView.notes}

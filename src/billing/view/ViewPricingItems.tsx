@@ -16,6 +16,7 @@ import { PricingItem } from '../../shared/model/PricingItem'
 import { RootState } from '../../shared/store'
 import usePricingItemsSearch from '../hooks/usePricingItemsSearch'
 import { PricingItemCategoryFilter } from '../model/PricingItemSearchRequest'
+import { formatPrice } from '../utils/formatPrice'
 
 const ViewPricingItems = () => {
   const updateTitle = useUpdateTitle()
@@ -109,7 +110,11 @@ const ViewPricingItems = () => {
           columns={[
             { label: t('billing.pricingItem.category'), key: 'category' },
             { label: t('billing.pricingItem.name'), key: 'name' },
-            { label: t('billing.pricingItem.price'), key: 'price' },
+            {
+              label: t('billing.pricingItem.price'),
+              key: 'price',
+              formatter: (row: PricingItem) => formatPrice(row.price),
+            },
             { label: t('billing.pricingItem.expenseTo'), key: 'expenseTo' },
           ]}
           actionsHeaderText={t('actions.label')}

@@ -29,8 +29,8 @@ enum Permissions {
   RequestImaging = 'write:imaging',
   ViewImagings = 'read:imagings',
   ViewIncidentWidgets = 'read:incident_widgets',
-  ViewPricingItems = 'read:billings',
-  AddPricingItems = 'write:billings',
+  ViewPricingItems = 'read:billing',
+  AddPricingItems = 'write:billing',
 }
 
 export default Permissions

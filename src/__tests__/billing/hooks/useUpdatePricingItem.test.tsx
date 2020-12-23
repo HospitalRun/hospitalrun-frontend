@@ -32,7 +32,7 @@ describe('Use Update Pricing Item', () => {
     expect(actualData).toEqual(expectedPricingItem)
   })
 
-  it('should return errors', async () => {
+  it('should throw error if validation fails', async () => {
     expect.hasAssertions()
 
     const expectedErrors = {

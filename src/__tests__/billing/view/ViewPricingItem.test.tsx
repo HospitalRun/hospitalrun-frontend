@@ -13,6 +13,7 @@ import * as validatePricingItem from '../../../billing/utils/validate-pricingIte
 import ViewPricingItem from '../../../billing/view/ViewPricingItem'
 import * as titleUtil from '../../../page-header/title/TitleContext'
 import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLabelFormGroup'
+import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import PricingItemRepository from '../../../shared/db/PricingItemRepository'
 import { PricingItem } from '../../../shared/model/PricingItem'
@@ -114,10 +115,11 @@ describe('View Pricing Item', () => {
       const { wrapper } = await setup()
 
       const priceInput = wrapper.find(TextInputWithLabelFormGroup).at(2)
+      const value = Number(priceInput.prop('value'))
 
       expect(priceInput.exists()).toBeTruthy()
       expect(priceInput.prop('label')).toEqual('billing.pricingItem.price')
-      expect(priceInput.prop('value')).toEqual(mockPricingItem.price)
+      expect(value).toEqual(mockPricingItem.price)
       expect(priceInput.prop('isEditable')).toBeTruthy()
       expect(priceInput.prop('isRequired')).toBeTruthy()
     })
@@ -136,7 +138,7 @@ describe('View Pricing Item', () => {
     it('should render a notes field', async () => {
       const { wrapper } = await setup()
 
-      const notesInput = wrapper.find(TextInputWithLabelFormGroup).at(4)
+      const notesInput = wrapper.find(TextFieldWithLabelFormGroup).at(0)
 
       expect(notesInput.exists()).toBeTruthy()
       expect(notesInput.prop('label')).toEqual('billing.pricingItem.notes')
@@ -199,7 +201,7 @@ describe('View Pricing Item', () => {
         const onChange = priceInput.prop('onChange') as any
         onChange({
           target: {
-            value: expectedPricingItem.price,
+            value: String(expectedPricingItem.price),
           },
         })
       })
@@ -214,7 +216,7 @@ describe('View Pricing Item', () => {
         })
       })
 
-      const notesInput = wrapper.find(TextInputWithLabelFormGroup).at(4)
+      const notesInput = wrapper.find(TextFieldWithLabelFormGroup).at(0)
       act(() => {
         const onChange = notesInput.prop('onChange') as any
         onChange({

@@ -13,6 +13,7 @@ import { PricingItemError } from '../../../billing/utils/validate-pricingItem'
 import * as validatePricingItem from '../../../billing/utils/validate-pricingItem'
 import * as titleUtil from '../../../page-header/title/TitleContext'
 import SelectWithLabelFormGroup from '../../../shared/components/input/SelectWithLabelFormGroup'
+import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import PricingItemRepository from '../../../shared/db/PricingItemRepository'
 import { PricingItem } from '../../../shared/model/PricingItem'
@@ -30,7 +31,6 @@ describe('Add Pricing item', () => {
       permissions: {},
     },
   } as any)
-
   const history = createMemoryHistory()
   const setup = async () => {
     let wrapper: any
@@ -110,7 +110,7 @@ describe('Add Pricing item', () => {
   it('should render a notes input', async () => {
     const { wrapper } = await setup()
 
-    const notesInput = wrapper.find(TextInputWithLabelFormGroup).at(4)
+    const notesInput = wrapper.find(TextFieldWithLabelFormGroup).at(0)
 
     expect(notesInput.exists()).toBeTruthy()
     expect(notesInput.prop('label')).toEqual('billing.pricingItem.notes')
@@ -188,7 +188,7 @@ describe('Add Pricing item', () => {
         const onChange = priceInput.prop('onChange') as any
         await onChange({
           target: {
-            value: expectedPricingItem.price,
+            value: String(expectedPricingItem.price),
           },
         })
       })
@@ -203,7 +203,7 @@ describe('Add Pricing item', () => {
         })
       })
 
-      const notesInput = wrapper.find(TextInputWithLabelFormGroup).at(4)
+      const notesInput = wrapper.find(TextFieldWithLabelFormGroup).at(0)
       await act(async () => {
         const onChange = notesInput.prop('onChange') as any
         await onChange({

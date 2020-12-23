@@ -7,10 +7,12 @@ import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../../shared/components/input/SelectWithLabelFormGroup'
+import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import { PricingItem } from '../../shared/model/PricingItem'
 import useAddPricingItem from '../hooks/useAddPricingItem'
+import { formatPrice } from '../utils/formatPrice'
 import { PricingItemError } from '../utils/validate-pricingItem'
 
 const AddPricingItem = () => {
@@ -47,11 +49,13 @@ const AddPricingItem = () => {
     }))
   }
 
-  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value)
+  const onPriceChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    const separator = ','
+    const replacer = new RegExp(separator, 'g')
+    const price = Number(value.replace(replacer, ''))
 
-    if (!Number.isNaN(value)) {
-      onFieldChange('price', value)
+    if (!Number.isNaN(price)) {
+      onFieldChange('price', price)
     }
   }
 
@@ -130,7 +134,7 @@ const AddPricingItem = () => {
               <TextInputWithLabelFormGroup
                 name="price"
                 label={t('billing.pricingItem.price')}
-                value={(newPricingItem.price as unknown) as string}
+                value={formatPrice(newPricingItem.price)}
                 onChange={onPriceChange}
                 isEditable
                 isRequired
@@ -154,7 +158,7 @@ const AddPricingItem = () => {
         <Row>
           <Column>
             <div className="form-group">
-              <TextInputWithLabelFormGroup
+              <TextFieldWithLabelFormGroup
                 name="notes"
                 label={t('billing.pricingItem.notes')}
                 value={newPricingItem.notes}

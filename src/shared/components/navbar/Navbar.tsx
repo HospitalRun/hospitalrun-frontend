@@ -25,6 +25,7 @@ const Navbar = () => {
     'incidents.reports.new',
     'imagings.requests.new',
     'settings.label',
+    'billing.requests.new',
   ]
 
   function getDropdownListOfPages(pages: Page[]) {
@@ -52,6 +53,7 @@ const Navbar = () => {
     pageMap.newLab,
     pageMap.newImaging,
     pageMap.newIncident,
+    pageMap.newPricingItem,
   ]
 
   return (

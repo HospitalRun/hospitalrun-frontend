@@ -65,7 +65,7 @@ export const schema = [
   },
   {
     singular: 'pricingItem',
-    plural: 'pricingItens',
+    plural: 'pricingItems',
   },
 ]
 export const relationalDb = localDb.setSchema(schema)

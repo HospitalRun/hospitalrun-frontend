@@ -4,11 +4,11 @@ export default {
     filterCategory: 'Filter by category',
     search: 'Search Pricing Items',
     category: {
-      all: 'all',
-      imaging: 'imaging',
-      lab: 'lab',
-      ward: 'ward',
-      procedure: 'procedure',
+      all: 'All',
+      imaging: 'Imaging',
+      lab: 'Lab',
+      ward: 'Ward',
+      procedure: 'Procedure',
     },
     pricingItem: {
       category: 'Category',

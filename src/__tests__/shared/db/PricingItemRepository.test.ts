@@ -9,7 +9,7 @@ const uuidValidateV4 = (uuid: string) => uuidValidate(uuid) && uuidVersion(uuid)
 
 const removeAllDocs = async () => {
   const docs = await relationalDb.rel.find('pricingItem')
-  docs.pricingItens.forEach(async (d: any) => {
+  docs.pricingItems.forEach(async (d: any) => {
     await relationalDb.rel.del('pricingItem', d)
   })
 }
