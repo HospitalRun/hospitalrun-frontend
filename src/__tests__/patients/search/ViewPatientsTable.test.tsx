@@ -54,7 +54,6 @@ describe('View Patients Table', () => {
     render({ queryString: '' }, expectedPatients)
 
     await waitFor(() => screen.getByText('familyName'))
-    screen.debug(undefined, Infinity)
     const cells = screen.getAllByRole('cell')
 
     expect(screen.getByRole('columnheader', { name: /patient\.code/i })).toBeInTheDocument()
