@@ -11,6 +11,7 @@ import Permissions from '../../shared/model/Permissions'
 import ViewIncidentDetails from './ViewIncidentDetails'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
+import useAddIncidentNote from '../hooks/useAddIncidentNote'
 import NotesTable from './NotesTable'
 import NewNoteModal from '../../shared/notes/NewNoteModal'
 
@@ -19,6 +20,7 @@ const ViewIncident = () => {
   const { permissions } = useSelector((root: RootState) => root.user)
   const { data, isLoading } = useIncident(id)
   const [mutate] = useResolveIncident()
+  const [mutateAddNote] = useAddIncidentNote()
   const location = useLocation()
   const history = useHistory()
   const { t } = useTranslator()
@@ -65,7 +67,7 @@ const ViewIncident = () => {
             {t('patient.notes.new')}
           </Button>
         </div>
-        <NotesTable />
+        <NotesTable notes={(data && data.notes) || []}/>
       </Panel>
       {data &&
         data.resolvedOn === undefined &&
@@ -89,7 +91,7 @@ const ViewIncident = () => {
         show={showNewNoteModal}
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
-        onSave={() => { /* TODO */}}
+        onSave={async (note) => { await mutateAddNote({note, incidentId: id })}}
       />
     </div>
   )

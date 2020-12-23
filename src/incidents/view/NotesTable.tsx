@@ -1,8 +1,12 @@
 import React from 'react'
 
 import { Table } from '@hospitalrun/components'
+import Note from '../../shared/model/Note'
+interface Props {
+  notes: Note[]
+}
 
-const NotesTable = () => {
+const NotesTable = ({ notes }: Props) => {
   return (
     <Table
       columns={[
@@ -34,20 +38,7 @@ const NotesTable = () => {
           },
         },
       ]}
-      data={[
-        {
-          id: 'agupta07',
-          date: '2020-12-18T00:34:51.414Z',
-          text: 'Vaccine Failed',
-          givenBy: 'Dr. Gupta',
-        },
-        {
-          id: 'drewgreg',
-          date: '2020-12-17T00:34:51.414Z',
-          text: 'Vaccine Success!',
-          givenBy: 'Dr. Gregory',
-        },
-      ]}
+      data={notes}
       getID={(r) => r.id}
     />
   )

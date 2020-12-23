@@ -1,26 +1,28 @@
 import { isEmpty } from 'lodash'
 import { queryCache, useMutation } from 'react-query'
 
-import PatientRepository from '../../shared/db/PatientRepository'
+import IncidentRepository from '../../shared/db/IncidentRepository'
 import Note from '../../shared/model/Note'
-import validateNote from '../util/validate-note'
+// import validateNote from '../util/validate-note'
 
 interface AddNoteRequest {
-  patientId: string
+  incidentId: string
   note: Note
 }
 
 async function addNote(request: AddNoteRequest): Promise<Note[]> {
-  const error = validateNote(request.note)
+  const error = [] as any // TODO validateNote(request.note)
 
   if (isEmpty(error)) {
-    const patient = await PatientRepository.find(request.patientId)
-    const notes = patient.notes ? [...patient.notes] : []
+    const incident = await IncidentRepository.find(request.incidentId)
+
+    const notes = incident.notes ? [...incident.notes] : []
+
     notes.push(request.note)
 
-    await PatientRepository.saveOrUpdate({
-      ...patient,
-      notes,
+    await IncidentRepository.saveOrUpdate({
+      ...incident,
+      notes
     })
 
     return notes
@@ -29,10 +31,10 @@ async function addNote(request: AddNoteRequest): Promise<Note[]> {
   throw error
 }
 
-export default function useAddPatientNote() {
+export default function useAddIncidentNote() {
   return useMutation(addNote, {
     onSuccess: async (data, variables) => {
-      await queryCache.setQueryData(['notes', variables.patientId], data)
+      await queryCache.setQueryData(['notes', variables.incidentId], data)
     },
     throwOnError: true,
   })
