@@ -93,7 +93,7 @@ describe('New Patient', () => {
 
     const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
-    expect(saveButton.text().trim()).toEqual('actions.save')
+    expect(saveButton.text().trim()).toEqual('patients.createPatient')
 
     await act(async () => {
       await onClick()
@@ -112,7 +112,7 @@ describe('New Patient', () => {
 
     const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
-    expect(saveButton.text().trim()).toEqual('actions.save')
+    expect(saveButton.text().trim()).toEqual('patients.createPatient')
 
     act(() => {
       onClick()
@@ -139,7 +139,7 @@ describe('New Patient', () => {
 
     const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
-    expect(saveButton.text().trim()).toEqual('actions.save')
+    expect(saveButton.text().trim()).toEqual('patients.createPatient')
 
     await act(async () => {
       await onClick()

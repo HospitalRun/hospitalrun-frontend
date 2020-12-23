@@ -1,6 +1,7 @@
 import { Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { startOfDay, subYears } from 'date-fns'
+import startOfDay from 'date-fns/startOfDay'
+import subYears from 'date-fns/subYears'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import React from 'react'

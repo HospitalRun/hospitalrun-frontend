@@ -1,13 +1,20 @@
 name: GitHub CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - "!master"
+  pull_request:
+    branches:
+      - master
+
 
 jobs:
   npm:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
       - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS

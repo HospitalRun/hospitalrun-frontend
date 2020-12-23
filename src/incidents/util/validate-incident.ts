@@ -1,4 +1,4 @@
-import { isAfter } from 'date-fns'
+import isAfter from 'date-fns/isAfter'
 
 import Incident from '../../shared/model/Incident'
 
