@@ -2,6 +2,7 @@
 
 import { Button } from '@hospitalrun/components'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -60,33 +61,50 @@ describe('Report Incident', () => {
         </Provider>
       </ButtonBarProvider.ButtonBarProvider>,
     )
-
-    // wrapper.find(ReportIncident).props().updateTitle = jest.fn()
-    // wrapper.update()
   }
   test('type into department field', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
-    screen.debug(depInput)
-    // expect(depInput).toBeInTheDocument()
+
+    expect(depInput).toBeEnabled()
+    expect(depInput).toBeInTheDocument()
+
+    userEvent.type(depInput, 'Engineering Bay')
+    expect(depInput).toHaveDisplayValue('Engineering Bay')
   })
 
   test('type into category field', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
+
+    expect(catInput).toBeEnabled()
     expect(catInput).toBeInTheDocument()
+
+    userEvent.type(catInput, 'Warp Engine')
+    expect(catInput).toHaveDisplayValue('Warp Engine')
   })
 
   test('type into category item field', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
+
     expect(catItemInput).toBeInTheDocument()
+    expect(catItemInput).toBeEnabled()
+
+    userEvent.type(catItemInput, 'Warp Coil')
+    expect(catItemInput).toHaveDisplayValue('Warp Coil')
   })
 
   test('type into description field', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const descInput = await screen.findByPlaceholderText(/incidents\.reports\.description/i)
+    const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
+    const descInput = inputArr[inputArr.length - 1]
+
     expect(descInput).toBeInTheDocument()
+    expect(descInput).toBeEnabled()
+
+    userEvent.type(descInput, 'Geordi requested analysis')
+    expect(descInput).toHaveDisplayValue('Geordi requested analysis')
   })
 
   //     it('should display errors if validation fails', async () => {
