@@ -161,7 +161,7 @@ describe('View Medication', () => {
         Permissions.CancelMedication,
       ])
 
-      expect(screen.getByRole('button', { name: /actions\.update/i })).toBeVisible()
+      expect(screen.getByRole('button', { name: /medications\.requests\.update/i })).toBeVisible()
 
       expect(screen.getByRole('button', { name: /medications\.requests\.cancel/ })).toBeVisible()
     })
@@ -231,7 +231,7 @@ describe('View Medication', () => {
         expect(screen.getByRole('textbox', { name: /notes/ })).toHaveValue(`${expectedNotes}`)
       })
 
-      userEvent.click(screen.getByRole('button', { name: /actions\.update/ }))
+      userEvent.click(screen.getByRole('button', { name: /medications\.requests\.update/ }))
 
       await waitFor(() => {
         expect(MedicationRepository.saveOrUpdate).toHaveBeenCalled()
