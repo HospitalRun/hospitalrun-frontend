@@ -1,6 +1,7 @@
 import { render, waitFor, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { roundToNearestMinutes, addMinutes } from 'date-fns'
+import addMinutes from 'date-fns/addMinutes'
+import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -104,10 +105,14 @@ describe('Edit Appointment', () => {
     setup(expectedAppointment, expectedPatient)
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /actions.save/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /scheduling.appointments.updateAppointment/i }),
+      ).toBeInTheDocument()
     })
 
-    userEvent.click(await screen.findByRole('button', { name: /actions.save/i }))
+    userEvent.click(
+      await screen.findByRole('button', { name: /scheduling.appointments.updateAppointment/i }),
+    )
 
     await waitFor(() => {
       expect(AppointmentRepository.saveOrUpdate).toHaveBeenCalledWith(expectedAppointment)
@@ -117,7 +122,9 @@ describe('Edit Appointment', () => {
   it('should navigate to /appointments/:id when save is successful', async () => {
     setup(expectedAppointment, expectedPatient)
 
-    userEvent.click(await screen.findByRole('button', { name: /actions.save/i }))
+    userEvent.click(
+      await screen.findByRole('button', { name: /scheduling.appointments.updateAppointment/i }),
+    )
 
     await waitFor(() => {
       expect(history.location.pathname).toEqual('/appointments/123')
@@ -142,7 +149,9 @@ describe('Edit Appointment', () => {
     setup(expectedAppointment, expectedPatient)
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /actions.save/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /scheduling.appointments.updateAppointment/i }),
+      ).toBeInTheDocument()
     })
   })
 })

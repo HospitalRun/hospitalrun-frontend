@@ -1,7 +1,8 @@
 import * as components from '@hospitalrun/components'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { roundToNearestMinutes, addMinutes } from 'date-fns'
+import addMinutes from 'date-fns/addMinutes'
+import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -111,7 +112,7 @@ describe('New Appointment', () => {
         expectedAppointment.patient,
       )
 
-      userEvent.click(screen.getByText(/actions\.save/i))
+      userEvent.click(screen.getByText(/scheduling.appointments.createAppointment/i))
 
       expect(screen.getByText(expectedError.message)).toBeInTheDocument()
       expect(screen.getByPlaceholderText(/scheduling\.appointment\.patient/i)).toHaveClass(
@@ -147,7 +148,7 @@ describe('New Appointment', () => {
       fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[1], {
         target: { value: expectedAppointment.endDateTime },
       })
-      userEvent.click(screen.getByText(/actions\.save/i))
+      userEvent.click(screen.getByText(/scheduling.appointments.createAppointment/i))
 
       expect(screen.getByText(expectedError.message)).toBeInTheDocument()
       expect(screen.getByPlaceholderText(/scheduling\.appointment\.patient/i)).toHaveClass(
@@ -205,7 +206,7 @@ describe('New Appointment', () => {
 
       userEvent.click(
         screen.getByRole('button', {
-          name: /actions\.save/i,
+          name: /scheduling.appointments.createAppointment/i,
         }),
       )
 
@@ -228,7 +229,7 @@ describe('New Appointment', () => {
       )
       userEvent.click(await screen.findByText(`${testPatient.fullName} (${testPatient.code})`))
 
-      userEvent.click(screen.getByText(/actions\.save/i))
+      userEvent.click(screen.getByText(/scheduling.appointments.createAppointment/i))
 
       await waitFor(() => {
         expect(history.location.pathname).toEqual(`/appointments/${expectedAppointment.id}`)

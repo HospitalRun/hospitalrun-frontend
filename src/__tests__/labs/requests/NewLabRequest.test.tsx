@@ -108,7 +108,7 @@ describe('New Lab Request', () => {
       const { wrapper } = await setup()
       const saveButton = wrapper.find(Button).at(0)
       expect(saveButton).toBeDefined()
-      expect(saveButton.text().trim()).toEqual('labs.requests.save')
+      expect(saveButton.text().trim()).toEqual('labs.requests.new')
     })
 
     it('should render a cancel button', async () => {

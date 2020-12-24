@@ -1,4 +1,5 @@
-import { isAfter, parseISO } from 'date-fns'
+import isAfter from 'date-fns/isAfter'
+import parseISO from 'date-fns/parseISO'
 import validator from 'validator'
 
 import { ContactInfoPiece } from '../../shared/model/ContactInformation'
