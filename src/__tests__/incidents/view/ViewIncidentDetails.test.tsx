@@ -199,3 +199,35 @@ describe('View Incident Details', () => {
     })
   })
 })
+
+// TODO re-implement these tests at this level
+// test('type into department field', () => {
+//   setup()
+//   const depField = screen.getByLabelText(/incidents\.reports\.department/i)
+//   userEvent.type(depField, 'Engineering')
+// })
+
+// test('type into category field', async () => {
+//   setup()
+//   const catField = screen.getByRole('textbox', {
+//     name: /incidents\.reports\.category\b/i,
+//   })
+//   userEvent.type(catField, 'Warp Reactor')
+// })
+
+// test('type into category item field', () => {
+//   setup()
+//   const catItemField = screen.getByRole('textbox', {
+//     name: /incidents\.reports\.categoryitem/i,
+//   })
+//   userEvent.type(catItemField, 'Warp Coil')
+// })
+
+// test('type into description field', () => {
+//   setup()
+//   const descField = screen.getByRole('textbox', {
+//     name: /incidents\.reports\.description/i,
+//   })
+
+//   userEvent.type(descField, 'Geordi La Forge ordered analysis')
+// })
