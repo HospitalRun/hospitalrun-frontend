@@ -54,17 +54,17 @@ describe('Add Care Goal Modal', () => {
     const expectedCreatedDate = new Date()
     Date.now = jest.fn().mockReturnValue(expectedCreatedDate)
 
-    // const expectedCareGoal = {
-    //   id: '123',
-    //   description: 'some description',
-    //   startDate: new Date().toISOString(),
-    //   dueDate: new Date().toISOString(),
-    //   note: '',
-    //   priority: 'medium',
-    //   status: CareGoalStatus.Accepted,
-    //   achievementStatus: CareGoalAchievementStatus.InProgress,
-    //   createdOn: expectedCreatedDate,
-    // }
+    const expectedCareGoal = {
+      id: '123',
+      description: 'some description',
+      startDate: new Date().toISOString(),
+      dueDate: new Date().toISOString(),
+      note: '',
+      priority: 'medium',
+      status: CareGoalStatus.Accepted,
+      achievementStatus: CareGoalAchievementStatus.InProgress,
+      createdOn: expectedCreatedDate,
+    }
 
     setup()
     // screen.logTestingPlaygroundURL()
@@ -80,12 +80,12 @@ describe('Add Care Goal Modal', () => {
     //   const onClick = sucessButton?.onClick as any
     //   await onClick()
     // })
-    await act(async () => {
-      userEvent.type(screen.getAllByRole('textbox')[0], 'test')
-      userEvent.click(screen.getByRole('button', { name: /patient.careGoal.new/i }))
-    })
+    userEvent.type(screen.getAllByRole('textbox')[0], expectedCareGoal.description)
+    userEvent.click(screen.getByRole('button', { name: /patient.careGoal.new/i }))
+    // await act(async () => {
+    // })
 
-    // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
+    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith({
     //   ...patient,
     //   careGoals: [expectedCareGoal],
