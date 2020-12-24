@@ -1,6 +1,4 @@
 /* eslint-disable no-console */
-
-import { Button } from '@hospitalrun/components'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
@@ -15,8 +13,6 @@ import * as validationUtil from '../../../incidents/util/validate-incident'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/title/TitleContext'
-import IncidentRepository from '../../../shared/db/IncidentRepository'
-import Incident from '../../../shared/model/Incident'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
 
@@ -31,7 +27,7 @@ describe('Report Incident', () => {
   })
 
   let setButtonToolBarSpy: any
-  const setup = async (permissions: Permissions[]) => {
+  const setup = (permissions: Permissions[]) => {
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
@@ -106,63 +102,84 @@ describe('Report Incident', () => {
     userEvent.type(descInput, 'Geordi requested analysis')
     expect(descInput).toHaveDisplayValue('Geordi requested analysis')
   })
+  test('action save after all the input fields are filled out', async () => {
+    setup([Permissions.ViewIncident, Permissions.ResolveIncident])
+    const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
+    const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
+    const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
+    const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
+    const descInput = inputArr[inputArr.length - 1]
 
-  //     it('should display errors if validation fails', async () => {
-  //       const error = {
-  //         name: 'incident error',
-  //         message: 'something went wrong',
-  //         date: 'some date error',
-  //         department: 'some department error',
-  //         category: 'some category error',
-  //         categoryItem: 'some category item error',
-  //         description: 'some description error',
-  //       }
-  //       jest.spyOn(validationUtil, 'default').mockReturnValue(error)
+    userEvent.type(depInput, 'Engineering Bay')
+    userEvent.type(catInput, 'Warp Engine')
+    userEvent.type(catItemInput, 'Warp Coil')
+    userEvent.type(descInput, 'Geordi requested analysis')
 
-  //       const wrapper = await setup([Permissions.ReportIncident])
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /incidents\.reports\.new/i,
+      }),
+    )
+  })
 
-  //       const saveButton = wrapper.find(Button).at(0)
-  //       await act(async () => {
-  //         const onClick = saveButton.prop('onClick') as any
-  //         await onClick()
-  //       })
-  //       wrapper.update()
+  it('should display errors if validation fails', async () => {
+    const error = {
+      name: 'incident error',
+      message: 'something went wrong',
+      date: 'some date error',
+      department: 'some department error',
+      category: 'some category error',
+      categoryItem: 'some category item error',
+      description: 'some description error',
+    }
+    jest.spyOn(validationUtil, 'default').mockReturnValue(error)
+    const { container } = setup([Permissions.ReportIncident])
 
-  //       const dateInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfIncident')
-  //       const departmentInput = wrapper.findWhere((w) => w.prop('name') === 'department')
-  //       const categoryInput = wrapper.findWhere((w) => w.prop('name') === 'category')
-  //       const categoryItemInput = wrapper.findWhere((w) => w.prop('name') === 'categoryItem')
-  //       const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /incidents\.reports\.new/i,
+      }),
+    )
 
-  //       expect(dateInput.prop('isInvalid')).toBeTruthy()
-  //       expect(dateInput.prop('feedback')).toEqual(error.date)
+    const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
+    const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
+    const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
+    const inputArr = await screen.findAllByRole('textbox')
+    const descInput = inputArr[inputArr.length - 1]
+    const dateInput = inputArr[0]
 
-  //       expect(departmentInput.prop('isInvalid')).toBeTruthy()
-  //       expect(departmentInput.prop('feedback')).toEqual(error.department)
+    const invalidInputs = container.querySelectorAll('.is-invalid')
+    expect(invalidInputs).toHaveLength(5)
 
-  //       expect(categoryInput.prop('isInvalid')).toBeTruthy()
-  //       expect(categoryInput.prop('feedback')).toEqual(error.category)
+    // ! This will work under aria compliant conditions -- Aria refactor in components?
+    // expect(dateInput).toBeInvalid()
+    expect(dateInput).toHaveClass('is-invalid')
+    // // expect(depInput).toBeInvalid()
+    expect(depInput).toHaveClass('is-invalid')
 
-  //       expect(categoryItemInput.prop('isInvalid')).toBeTruthy()
-  //       expect(categoryItemInput.prop('feedback')).toEqual(error.categoryItem)
+    // // expect(catInput).toBeInvalid()
+    expect(catInput).toHaveClass('is-invalid')
 
-  //       expect(descriptionInput.prop('isInvalid')).toBeTruthy()
-  //       expect(descriptionInput.prop('feedback')).toEqual(error.description)
-  //     })
-  //   })
+    // // expect(catItemInput).toBeInvalid()
+    expect(catItemInput).toHaveClass('is-invalid')
 
-  //   describe('on cancel', () => {
-  //     it('should navigate to /incidents', async () => {
-  //       const wrapper = await setup([Permissions.ReportIncident])
+    // // expect(descInput).toBeInvalid()
+    expect(descInput).toHaveClass('is-invalid')
+  })
 
-  //       const cancelButton = wrapper.find(Button).at(1)
+  describe('on cancel', () => {
+    it('should navigate to /incidents', async () => {
+      setup([Permissions.ReportIncident])
 
-  //       act(() => {
-  //         const onClick = cancelButton.prop('onClick') as any
-  //         onClick()
-  //       })
+      expect(history.location.pathname).toBe('/incidents/new')
 
-  //       expect(history.location.pathname).toEqual('/incidents')
-  //     })
-  //   })
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /actions\.cancel/i,
+        }),
+      )
+
+      expect(history.location.pathname).toBe('/incidents')
+    })
+  })
 })
