@@ -242,30 +242,26 @@ describe('View Medication', () => {
       })
     })
   })
-  /*
-  describe.skip('on cancel', () => {
+
+  describe('on cancel', () => {
     it('should mark the status as canceled and fill in the cancelled on date with the current time', async () => {
-      const { wrapper, expectedMedication, medicationRepositorySaveSpy, history } = await setup(
-        {},
-        [Permissions.ViewMedication, Permissions.CompleteMedication, Permissions.CancelMedication],
-      )
+      const expectedMedication = { ...mockMedication } as Medication
+      setup(expectedMedication, [
+        Permissions.ViewMedication,
+        Permissions.CompleteMedication,
+        Permissions.CancelMedication,
+      ])
 
-      const cancelButton = wrapper.find(Button).at(1)
-      await act(async () => {
-        const onClick = cancelButton.prop('onClick')
-        await onClick()
+      const cancelButton = screen.getByRole('button', { name: /medications\.requests\.cancel/ })
+
+      userEvent.click(cancelButton)
+
+      expect(MedicationRepository.saveOrUpdate).toHaveBeenCalled()
+      expect(MedicationRepository.saveOrUpdate).toHaveBeenCalledWith({
+        ...expectedMedication,
+        status: 'canceled',
+        canceledOn: expectedDate.toISOString(),
       })
-      wrapper.update()
-
-      expect(medicationRepositorySaveSpy).toHaveBeenCalled()
-      expect(medicationRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          ...expectedMedication,
-          status: 'canceled',
-          canceledOn: expectedDate.toISOString(),
-        }),
-      )
-      expect(history.location.pathname).toEqual('/medications')
     })
-  }) */
+  })
 })
