@@ -1,13 +1,12 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router-dom'
 
 import AddCareGoalModal from '../../../patients/care-goals/AddCareGoalModal'
 import PatientRepository from '../../../shared/db/PatientRepository'
-import CareGoal, { CareGoalStatus, CareGoalAchievementStatus } from '../../../shared/model/CareGoal'
+import CareGoal from '../../../shared/model/CareGoal'
 import Patient from '../../../shared/model/Patient'
 
 describe('Add Care Goal Modal', () => {
@@ -17,17 +16,20 @@ describe('Add Care Goal Modal', () => {
     careGoals: [] as CareGoal[],
   } as Patient
 
-  const onCloseSpy = jest.fn()
   const setup = () => {
+    const onCloseSpy = jest.fn()
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
     const history = createMemoryHistory()
 
-    return render(
-      <Router history={history}>
-        <AddCareGoalModal patient={patient} show onCloseButtonClick={onCloseSpy} />
-      </Router>,
-    )
+    return {
+      ...render(
+        <Router history={history}>
+          <AddCareGoalModal patient={patient} show onCloseButtonClick={onCloseSpy} />
+        </Router>,
+      ),
+      onCloseSpy,
+    }
   }
 
   beforeEach(() => {
@@ -55,42 +57,24 @@ describe('Add Care Goal Modal', () => {
     Date.now = jest.fn().mockReturnValue(expectedCreatedDate)
 
     const expectedCareGoal = {
-      id: '123',
       description: 'some description',
-      startDate: new Date().toISOString(),
-      dueDate: new Date().toISOString(),
-      note: '',
-      priority: 'medium',
-      status: CareGoalStatus.Accepted,
-      achievementStatus: CareGoalAchievementStatus.InProgress,
-      createdOn: expectedCreatedDate,
+      createdOn: expectedCreatedDate.toISOString(),
     }
 
-    setup()
-    // screen.logTestingPlaygroundURL()
-    // screen.debug(screen.getAllByRole('textbox'))
-    // screen.debug(screen.getByLabelText('patient.careGoal.description'))
-    // await act(async () => {
-    //   const careGoalForm = screen.getByLabelText('care-goal-form')
-    // })
+    const { onCloseSpy } = setup()
 
-    // await act(async () => {
-    //   const modal = wrapper.find(Modal)
-    //   const sucessButton = modal.prop('successButton')
-    //   const onClick = sucessButton?.onClick as any
-    //   await onClick()
-    // })
     userEvent.type(screen.getAllByRole('textbox')[0], expectedCareGoal.description)
     userEvent.click(screen.getByRole('button', { name: /patient.careGoal.new/i }))
-    // await act(async () => {
-    // })
 
-    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-    // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith({
-    //   ...patient,
-    //   careGoals: [expectedCareGoal],
-    // })
+    await waitFor(() => {
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
+    })
 
-    // expect(onCloseSpy).toHaveBeenCalledTimes(1)
+    const saveOrUpdateMock = PatientRepository.saveOrUpdate as jest.Mock
+    const saveOrUpdateCalls = saveOrUpdateMock.mock.calls
+    const lastCall = saveOrUpdateCalls[saveOrUpdateCalls.length - 1][0] // Only one arg, which should be the patient
+    expect(lastCall.careGoals[0]).toMatchObject(expectedCareGoal)
+
+    expect(onCloseSpy).toHaveBeenCalledTimes(1)
   })
 })
