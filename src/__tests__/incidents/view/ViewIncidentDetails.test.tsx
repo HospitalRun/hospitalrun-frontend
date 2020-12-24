@@ -53,9 +53,13 @@ describe('View Incident Details', () => {
   }
   test('type into department field', async () => {
     setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
+
     expect(
       await screen.findByRole('textbox', { name: /incidents\.reports\.department/i }),
     ).toBeInTheDocument()
+    expect(
+      await screen.findByRole('textbox', { name: /incidents\.reports\.department/i }),
+    ).not.toBeEnabled()
   })
 
   test('type into category field', async () => {
@@ -65,6 +69,11 @@ describe('View Incident Details', () => {
         name: /incidents\.reports\.category\b/i,
       }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('textbox', {
+        name: /incidents\.reports\.category\b/i,
+      }),
+    ).not.toBeEnabled()
   })
 
   test('type into category item field', () => {
@@ -74,6 +83,11 @@ describe('View Incident Details', () => {
         name: /incidents\.reports\.categoryitem/i,
       }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('textbox', {
+        name: /incidents\.reports\.categoryitem/i,
+      }),
+    ).not.toBeEnabled()
   })
 
   test('type into description field', () => {
@@ -83,6 +97,11 @@ describe('View Incident Details', () => {
         name: /incidents\.reports\.description/i,
       }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('textbox', {
+        name: /incidents\.reports\.description/i,
+      }),
+    ).not.toBeEnabled()
   })
 
   describe('on resolve', () => {
