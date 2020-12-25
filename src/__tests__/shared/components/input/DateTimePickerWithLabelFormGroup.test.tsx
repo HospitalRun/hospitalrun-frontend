@@ -1,5 +1,5 @@
-// import { DateTimePicker, Label } from '@hospitalrun/components'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import DateTimePickerWithLabelFormGroup from '../../../../shared/components/input/DateTimePickerWithLabelFormGroup'
@@ -24,61 +24,50 @@ describe('date picker with label form group', () => {
     })
 
     it('should render disabled is isDisable disabled is true', () => {
-      const expectedName = 'stardate333333'
       render(
         <DateTimePickerWithLabelFormGroup
-          name={expectedName}
+          name="stardate333333"
           label="stardate333333"
           value={new Date()}
           isEditable={false}
           onChange={jest.fn()}
         />,
       )
-
-      // const input = wrapper.find(DateTimePicker)
-      // expect(input).toHaveLength(1)
-      // expect(input.prop('disabled')).toBeTruthy()
+      expect(screen.getByRole('textbox')).toBeDisabled()
     })
 
     it('should render the proper value', () => {
-      const expectedName = 'stardate4444444'
-      const expectedValue = new Date()
       render(
         <DateTimePickerWithLabelFormGroup
-          name={expectedName}
+          name="stardate4444444"
           label="stardate4444444"
-          value={expectedValue}
+          value={new Date('12/25/2020 2:56 PM')}
           isEditable={false}
           onChange={jest.fn()}
         />,
       )
-
-      // const input = wrapper.find(DateTimePicker)
-      // expect(input).toHaveLength(1)
-      // expect(input.prop('selected')).toEqual(expectedValue)
+      const datepickerInput = screen.getByRole('textbox')
+      expect(datepickerInput).toBeDisabled()
+      expect(datepickerInput).toHaveDisplayValue(/[12/25/2020 2:56 PM]/i)
     })
   })
 
   describe('change handler', () => {
     it('should call the change handler on change', () => {
-      const expectedName = 'stardate55555555'
-      const expectedValue = new Date()
-      const handler = jest.fn()
       render(
         <DateTimePickerWithLabelFormGroup
-          name={expectedName}
+          name="stardate55555555"
           label="stardate55555555"
-          value={expectedValue}
-          isEditable={false}
-          onChange={handler}
+          value={new Date('1/1/2021 2:56 PM')}
+          isEditable
+          onChange={jest.fn()}
         />,
       )
+      const datepickerInput = screen.getByRole('textbox')
 
-      // const input = wrapper.find(DateTimePicker)
-      // input.prop('onChange')(new Date(), {
-      //   target: { value: new Date().toISOString() },
-      // } as ChangeEvent<HTMLInputElement>)
-      // expect(handler).toHaveBeenCalledTimes(1)
+      expect(datepickerInput).toHaveDisplayValue(/[01/01/2021 2:56 PM]/i)
+      userEvent.type(datepickerInput, '12/25/2020 2:56 PM')
+      expect(datepickerInput).toHaveDisplayValue(/[12/25/2020 2:56 PM]/i)
     })
   })
 })
