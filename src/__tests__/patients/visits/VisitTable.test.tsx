@@ -1,8 +1,8 @@
-import { Table } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { screen, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router-dom'
 
 import VisitTable from '../../../patients/visits/VisitTable'
@@ -19,71 +19,69 @@ describe('Visit Table', () => {
     status: VisitStatus.Arrived,
     reason: 'some reason',
     location: 'main building',
-  }
+  } as Visit
   const patient = {
     id: 'patientId',
     diagnoses: [{ id: '123', name: 'some name', diagnosisDate: new Date().toISOString() }],
     visits: [visit],
   } as Patient
 
-  const setup = async () => {
+  const setup = () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     const history = createMemoryHistory()
     history.push(`/patients/${patient.id}/visits/${patient.visits[0].id}`)
 
-    let wrapper: any
-    await act(async () => {
-      wrapper = await mount(
+    return {
+      history,
+      ...render(
         <Router history={history}>
           <VisitTable patientId={patient.id} />
         </Router>,
-      )
-    })
-
-    wrapper.update()
-
-    return { wrapper: wrapper as ReactWrapper, history }
+      ),
+    }
   }
 
   it('should render a table', async () => {
-    const { wrapper } = await setup()
+    setup()
 
-    const table = wrapper.find(Table)
-    const columns = table.prop('columns')
-    const actions = table.prop('actions') as any
-    expect(columns[0]).toEqual(
-      expect.objectContaining({ label: 'patient.visits.startDateTime', key: 'startDateTime' }),
-    )
-    expect(columns[1]).toEqual(
-      expect.objectContaining({ label: 'patient.visits.endDateTime', key: 'endDateTime' }),
-    )
-    expect(columns[2]).toEqual(
-      expect.objectContaining({ label: 'patient.visits.type', key: 'type' }),
-    )
-    expect(columns[3]).toEqual(
-      expect.objectContaining({ label: 'patient.visits.status', key: 'status' }),
-    )
-    expect(columns[4]).toEqual(
-      expect.objectContaining({ label: 'patient.visits.reason', key: 'reason' }),
-    )
-    expect(columns[5]).toEqual(
-      expect.objectContaining({ label: 'patient.visits.location', key: 'location' }),
-    )
+    await screen.findByRole('table')
 
-    expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
-    expect(table.prop('actionsHeaderText')).toEqual('actions.label')
-    expect(table.prop('data')).toEqual(patient.visits)
+    expect(
+      screen.getByRole('columnheader', { name: /patient.visits.startDateTime/i }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('columnheader', { name: /patient.visits.endDateTime/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.type/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.status/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.reason/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('columnheader', { name: /patient.visits.location/i }),
+    ).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('button', {
+        name: /actions\.view/i,
+      }),
+    ).toBeInTheDocument()
+
+    const formatter = (dt: string) => format(new Date(dt), 'yyyy-MM-dd hh:mm a')
+    expect(screen.getByRole('cell', { name: formatter(visit.startDateTime) })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: formatter(visit.endDateTime) })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: visit.type })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: visit.status })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: visit.reason })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: visit.location })).toBeInTheDocument()
   })
 
   it('should navigate to the visit view when the view details button is clicked', async () => {
-    const { wrapper, history } = await setup()
+    const { history } = setup()
 
-    const tr = wrapper.find('tr').at(1)
-
-    act(() => {
-      const onClick = tr.find('button').prop('onClick') as any
-      onClick({ stopPropagation: jest.fn() })
+    const actionButton = screen.getByRole('button', {
+      name: /actions\.view/i,
     })
+
+    userEvent.click(actionButton)
 
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/visits/${visit.id}`)
   })
