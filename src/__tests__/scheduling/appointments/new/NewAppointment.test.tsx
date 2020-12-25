@@ -1,4 +1,4 @@
-import * as components from '@hospitalrun/components'
+import { Toaster } from '@hospitalrun/components'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import addMinutes from 'date-fns/addMinutes'
@@ -58,6 +58,7 @@ describe('New Appointment', () => {
         <Router history={history}>
           <TitleProvider>{children}</TitleProvider>
         </Router>
+        <Toaster draggable hideProgressBar />
       </Provider>
     )
 
@@ -219,8 +220,6 @@ describe('New Appointment', () => {
     }, 25000)
 
     it('should navigate to /appointments/:id when a new appointment is created', async () => {
-      jest.spyOn(components, 'Toast')
-
       const { history, expectedAppointment } = setup()
 
       userEvent.type(
@@ -235,11 +234,7 @@ describe('New Appointment', () => {
         expect(history.location.pathname).toEqual(`/appointments/${expectedAppointment.id}`)
       })
       await waitFor(() => {
-        expect(components.Toast).toHaveBeenCalledWith(
-          'success',
-          'states.success',
-          `scheduling.appointment.successfullyCreated`,
-        )
+        expect(screen.getByText(`scheduling.appointment.successfullyCreated`)).toBeInTheDocument()
       })
     })
   })
