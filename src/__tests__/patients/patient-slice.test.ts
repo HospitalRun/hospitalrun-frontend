@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns'
+import addDays from 'date-fns/addDays'
 import { AnyAction } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

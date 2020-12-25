@@ -1,5 +1,4 @@
-import { act } from '@testing-library/react'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -9,7 +8,6 @@ import thunk from 'redux-thunk'
 
 import IncidentFilter from '../../../incidents/IncidentFilter'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
-import ViewIncidentsTable from '../../../incidents/list/ViewIncidentsTable'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/title/TitleContext'
@@ -52,29 +50,24 @@ describe('View Incidents', () => {
       },
     } as any)
 
-    let wrapper: any
-    await act(async () => {
-      wrapper = await mount(
-        <ButtonBarProvider.ButtonBarProvider>
-          <Provider store={store}>
-            <Router history={history}>
-              <Route path="/incidents">
-                <titleUtil.TitleProvider>
-                  <ViewIncidents />
-                </titleUtil.TitleProvider>
-              </Route>
-            </Router>
-          </Provider>
-        </ButtonBarProvider.ButtonBarProvider>,
-      )
-    })
-    wrapper.find(ViewIncidents).props().updateTitle = jest.fn()
-    wrapper.update()
-    return { wrapper: wrapper as ReactWrapper }
+    return render(
+      <ButtonBarProvider.ButtonBarProvider>
+        <Provider store={store}>
+          <Router history={history}>
+            <Route path="/incidents">
+              <titleUtil.TitleProvider>
+                <ViewIncidents />
+              </titleUtil.TitleProvider>
+            </Route>
+          </Router>
+        </Provider>
+      </ButtonBarProvider.ButtonBarProvider>,
+    )
   }
 
   it('should have called the useUpdateTitle hook', async () => {
     await setup([Permissions.ViewIncidents])
+
     expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
   })
 
@@ -87,11 +80,11 @@ describe('View Incidents', () => {
 
   describe('layout', () => {
     it('should render a table with the incidents', async () => {
-      const { wrapper } = await setup([Permissions.ViewIncidents])
-      const table = wrapper.find(ViewIncidentsTable)
+      const { container } = await setup([Permissions.ViewIncidents])
+      const table = container.querySelector('table')
 
-      expect(table.exists()).toBeTruthy()
-      expect(table.prop('searchRequest')).toEqual({ status: IncidentFilter.reported })
+      expect(table).toBeTruthy()
+      expect(table).toHaveTextContent(IncidentFilter.reported)
     })
   })
 })

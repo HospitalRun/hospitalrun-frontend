@@ -1,4 +1,5 @@
-import { render as rtlRender, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -13,10 +14,10 @@ const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
 describe('Patients', () => {
-  const render = () => {
+  const setup = () => {
     const store = mockStore({})
 
-    return rtlRender(
+    return render(
       <Provider store={store}>
         <MemoryRouter>
           <TitleProvider>
@@ -32,9 +33,12 @@ describe('Patients', () => {
     jest.spyOn(PatientRepository, 'search').mockResolvedValue([])
   })
 
-  it('should render the search patients component', () => {
-    render()
+  it('should render the search patients component', async () => {
+    setup()
+    userEvent.type(screen.getByRole('textbox'), 'Jean Luc Picard')
+    expect(screen.getByRole('textbox')).toHaveValue('Jean Luc Picard')
 
-    expect(screen.getByRole('textbox')).toBeInTheDocument()
+    userEvent.clear(screen.getByRole('textbox'))
+    expect(screen.queryByRole('textbox')).not.toHaveValue('Jean Luc Picard')
   })
 })

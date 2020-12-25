@@ -38,6 +38,7 @@ export default {
       view: 'View Medication',
       cancel: 'Cancel Medication',
       complete: 'Complete Medication',
+      update: 'Update Medication',
       error: {
         unableToRequest: 'Unable to create Medication request.',
         unableToComplete: 'Unable to complete Medication request.',

@@ -57,7 +57,6 @@ describe('Imaging Request Table', () => {
     expect(headers[3]).toHaveTextContent(/imagings.imaging.patient/i)
     expect(headers[4]).toHaveTextContent(/imagings.imaging.requestedBy/i)
     expect(headers[5]).toHaveTextContent(/imagings.imaging.status/i)
-    screen.debug(undefined, Infinity)
 
     expect(cells[0]).toHaveTextContent('I-1234')
     expect(cells[1]).toHaveTextContent('imaging type')
