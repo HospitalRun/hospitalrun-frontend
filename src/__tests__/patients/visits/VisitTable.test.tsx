@@ -1,4 +1,6 @@
-import { screen, render, within } from '@testing-library/react'
+import { screen, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -42,48 +44,45 @@ describe('Visit Table', () => {
   it('should render a table', async () => {
     setup()
 
-    const visitTable = await screen.findByRole('table')
+    await screen.findByRole('table')
 
     expect(
-      within(visitTable).getByRole('columnheader', { name: /patient.visits.startDateTime/i }),
+      screen.getByRole('columnheader', { name: /patient.visits.startDateTime/i }),
     ).toBeInTheDocument()
-    // const table = wrapper.find(Table)
-    // const columns = table.prop('columns')
-    // const actions = table.prop('actions') as any
-    // expect(columns[0]).toEqual(
-    //   expect.objectContaining({ label: 'patient.visits.startDateTime', key: 'startDateTime' }),
-    // )
-    // expect(columns[1]).toEqual(
-    //   expect.objectContaining({ label: 'patient.visits.endDateTime', key: 'endDateTime' }),
-    // )
-    // expect(columns[2]).toEqual(
-    //   expect.objectContaining({ label: 'patient.visits.type', key: 'type' }),
-    // )
-    // expect(columns[3]).toEqual(
-    //   expect.objectContaining({ label: 'patient.visits.status', key: 'status' }),
-    // )
-    // expect(columns[4]).toEqual(
-    //   expect.objectContaining({ label: 'patient.visits.reason', key: 'reason' }),
-    // )
-    // expect(columns[5]).toEqual(
-    //   expect.objectContaining({ label: 'patient.visits.location', key: 'location' }),
-    // )
+    expect(
+      screen.getByRole('columnheader', { name: /patient.visits.endDateTime/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.type/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.status/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.reason/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('columnheader', { name: /patient.visits.location/i }),
+    ).toBeInTheDocument()
 
-    // expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
-    // expect(table.prop('actionsHeaderText')).toEqual('actions.label')
-    // expect(table.prop('data')).toEqual(patient.visits)
+    expect(
+      screen.getByRole('button', {
+        name: /actions\.view/i,
+      }),
+    ).toBeInTheDocument()
+
+    const formatter = (dt: string) => format(new Date(dt), 'yyyy-MM-dd hh:mm a')
+    expect(screen.getByRole('cell', { name: formatter(visit.startDateTime) })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: formatter(visit.endDateTime) })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: visit.type })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: visit.status })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: visit.reason })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: visit.location })).toBeInTheDocument()
   })
 
   it('should navigate to the visit view when the view details button is clicked', async () => {
-    setup()
+    const { history } = setup()
 
-    // const tr = wrapper.find('tr').at(1)
+    const actionButton = screen.getByRole('button', {
+      name: /actions\.view/i,
+    })
 
-    // act(() => {
-    //   const onClick = tr.find('button').prop('onClick') as any
-    //   onClick({ stopPropagation: jest.fn() })
-    // })
+    userEvent.click(actionButton)
 
-    // expect(history.location.pathname).toEqual(`/patients/${patient.id}/visits/${visit.id}`)
+    expect(history.location.pathname).toEqual(`/patients/${patient.id}/visits/${visit.id}`)
   })
 })
