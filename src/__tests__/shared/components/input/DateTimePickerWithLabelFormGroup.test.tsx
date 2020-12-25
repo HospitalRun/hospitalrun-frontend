@@ -1,5 +1,5 @@
 // import { DateTimePicker, Label } from '@hospitalrun/components'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 
 import DateTimePickerWithLabelFormGroup from '../../../../shared/components/input/DateTimePickerWithLabelFormGroup'
@@ -7,45 +7,28 @@ import DateTimePickerWithLabelFormGroup from '../../../../shared/components/inpu
 describe('date picker with label form group', () => {
   describe('layout', () => {
     it('should render a label', () => {
-      const expectedName = 'test'
+      const expectedName = 'stardate11111'
       render(
         <DateTimePickerWithLabelFormGroup
           name={expectedName}
-          label="test"
+          label="stardate11111"
           value={new Date()}
           isEditable
           onChange={jest.fn()}
         />,
       )
 
-      // const label = wrapper.find(Label)
-      // expect(label).toHaveLength(1)
-      // expect(label.prop('htmlFor')).toEqual(`${expectedName}DateTimePicker`)
-      // expect(label.prop('text')).toEqual(expectedName)
-    })
-
-    it('should render and date time picker', () => {
-      const expectedName = 'test'
-      render(
-        <DateTimePickerWithLabelFormGroup
-          name={expectedName}
-          label="test"
-          value={new Date()}
-          isEditable
-          onChange={jest.fn()}
-        />,
-      )
-
-      // const input = wrapper.find(DateTimePicker)
-      // expect(input).toHaveLength(1)
+      const name = screen.getByText(/stardate/i)
+      expect(name).toHaveAttribute('for', `${expectedName}DateTimePicker`)
+      expect(name).toHaveTextContent(expectedName)
     })
 
     it('should render disabled is isDisable disabled is true', () => {
-      const expectedName = 'test'
+      const expectedName = 'stardate333333'
       render(
         <DateTimePickerWithLabelFormGroup
           name={expectedName}
-          label="test"
+          label="stardate333333"
           value={new Date()}
           isEditable={false}
           onChange={jest.fn()}
@@ -58,12 +41,12 @@ describe('date picker with label form group', () => {
     })
 
     it('should render the proper value', () => {
-      const expectedName = 'test'
+      const expectedName = 'stardate4444444'
       const expectedValue = new Date()
       render(
         <DateTimePickerWithLabelFormGroup
           name={expectedName}
-          label="test"
+          label="stardate4444444"
           value={expectedValue}
           isEditable={false}
           onChange={jest.fn()}
@@ -78,13 +61,13 @@ describe('date picker with label form group', () => {
 
   describe('change handler', () => {
     it('should call the change handler on change', () => {
-      const expectedName = 'test'
+      const expectedName = 'stardate55555555'
       const expectedValue = new Date()
       const handler = jest.fn()
       render(
         <DateTimePickerWithLabelFormGroup
           name={expectedName}
-          label="test"
+          label="stardate55555555"
           value={expectedValue}
           isEditable={false}
           onChange={handler}
