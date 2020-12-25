@@ -1,4 +1,5 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import DatePickerWithLabelFormGroup from '../../../../shared/components/input/DatePickerWithLabelFormGroup'
@@ -6,98 +7,51 @@ import DatePickerWithLabelFormGroup from '../../../../shared/components/input/Da
 describe('date picker with label form group', () => {
   describe('layout', () => {
     it('should render a label', () => {
-      const expectedName = 'test'
+      const expectedName = 'stardate1111'
       render(
         <DatePickerWithLabelFormGroup
           name={expectedName}
-          label="test"
-          value={new Date()}
+          label="stardate11111"
+          value={new Date('12/25/2020 2:56 PM')}
           isEditable
           onChange={jest.fn()}
         />,
       )
 
-      // const label = wrapper.find(Label)
-      // expect(label).toHaveLength(1)
-      // expect(label.prop('htmlFor')).toEqual(`${expectedName}DatePicker`)
-      // expect(label.prop('text')).toEqual(expectedName)
+      const name = screen.getByText(/stardate/i)
+      expect(name).toHaveAttribute('for', `${expectedName}DatePicker`)
+      expect(name).toHaveTextContent(expectedName)
+      expect(screen.getByRole('textbox')).toHaveDisplayValue(/[12/25/2020 2:56 PM]/i)
     })
-
-    it('should render and date time picker', () => {
-      const expectedName = 'test'
-      const expectedDate = new Date()
-      render(
-        <DatePickerWithLabelFormGroup
-          name={expectedName}
-          label="test"
-          value={new Date()}
-          isEditable
-          onChange={jest.fn()}
-          maxDate={expectedDate}
-        />,
-      )
-
-      // const input = wrapper.find(DateTimePicker)
-      // expect(input).toHaveLength(1)
-      // expect(input.prop('maxDate')).toEqual(expectedDate)
-    })
-
     it('should render disabled is isDisable disabled is true', () => {
-      const expectedName = 'test'
       render(
         <DatePickerWithLabelFormGroup
-          name={expectedName}
-          label="test"
+          name="stardate22222"
+          label="stardate22222"
           value={new Date()}
           isEditable={false}
           onChange={jest.fn()}
         />,
       )
-
-      // const input = wrapper.find(DateTimePicker)
-      // expect(input).toHaveLength(1)
-      // expect(input.prop('disabled')).toBeTruthy()
+      expect(screen.getByRole('textbox')).toBeDisabled()
     })
+    describe('change handler', () => {
+      it('should call the change handler on change', () => {
+        render(
+          <DatePickerWithLabelFormGroup
+            name="stardate3333"
+            label="stardate3333"
+            value={new Date('01/01/2021 2:56 PM')}
+            isEditable
+            onChange={jest.fn()}
+          />,
+        )
+        const datepickerInput = screen.getByRole('textbox')
 
-    it('should render the proper value', () => {
-      const expectedName = 'test'
-      const expectedValue = new Date()
-      render(
-        <DatePickerWithLabelFormGroup
-          name={expectedName}
-          label="test"
-          value={expectedValue}
-          isEditable={false}
-          onChange={jest.fn()}
-        />,
-      )
-
-      // const input = wrapper.find(DateTimePicker)
-      // expect(input).toHaveLength(1)
-      // expect(input.prop('selected')).toEqual(expectedValue)
-    })
-  })
-
-  describe('change handler', () => {
-    it('should call the change handler on change', () => {
-      const expectedName = 'test'
-      const expectedValue = new Date()
-      const handler = jest.fn()
-      render(
-        <DatePickerWithLabelFormGroup
-          name={expectedName}
-          label="test"
-          value={expectedValue}
-          isEditable={false}
-          onChange={handler}
-        />,
-      )
-
-      // const input = wrapper.find(DateTimePicker)
-      // input.prop('onChange')(new Date(), {
-      //   target: { value: new Date().toISOString() },
-      // } as ChangeEvent<HTMLInputElement>)
-      // expect(handler).toHaveBeenCalledTimes(1)
+        expect(datepickerInput).toHaveDisplayValue(/[01/01/2021 2:56 PM]/i)
+        userEvent.type(datepickerInput, '12/25/2021 2:56 PM')
+        expect(datepickerInput).toHaveDisplayValue(/[12/25/2021 2:56 PM]/i)
+      })
     })
   })
 })
