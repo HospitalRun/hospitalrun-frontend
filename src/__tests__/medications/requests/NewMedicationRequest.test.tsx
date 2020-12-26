@@ -5,6 +5,7 @@ import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
+import selectEvent from 'react-select-event'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -56,7 +57,7 @@ describe('New Medication Request', () => {
       expect(medInput).toHaveDisplayValue('Bruce Wayne')
     })
 
-    it('should render a medication input box with label', () => {
+    it('should render a medication input box with label', async () => {
       setup()
       expect(screen.getByText(/medications\.medication\.medication/i)).toBeInTheDocument()
       expect(
@@ -64,7 +65,81 @@ describe('New Medication Request', () => {
       ).toBeInTheDocument()
     })
 
-    it('should render a notes text field', () => {
+    it('render medication request status options', async () => {
+      setup()
+      const medStatus = screen.getAllByPlaceholderText('-- Choose --')[0]
+
+      expect(screen.getByText(/medications\.medication\.status/i)).toBeInTheDocument()
+
+      expect(medStatus.getAttribute('aria-expanded')).toBe('false')
+      selectEvent.openMenu(medStatus)
+      expect(medStatus.getAttribute('aria-expanded')).toBe('true')
+      expect(medStatus).toHaveDisplayValue(/medications\.status\.draft/i)
+
+      const statusOptions = screen
+        .getAllByRole('option')
+        .map((option) => option.lastElementChild?.innerHTML)
+
+      expect(
+        statusOptions.includes('medications.status.draft' && 'medications.status.active'),
+      ).toBe(true)
+    })
+
+    it('render medication intent options', async () => {
+      setup()
+      const medicationIntent = screen.getAllByPlaceholderText('-- Choose --')[1]
+
+      expect(screen.getByText(/medications\.medication\.intent/i)).toBeInTheDocument()
+
+      expect(medicationIntent.getAttribute('aria-expanded')).toBe('false')
+      selectEvent.openMenu(medicationIntent)
+      expect(medicationIntent.getAttribute('aria-expanded')).toBe('true')
+      expect(medicationIntent).toHaveDisplayValue(/medications\.intent\.proposal/i)
+
+      const statusOptions = screen
+        .getAllByRole('option')
+        .map((option) => option.lastElementChild?.innerHTML)
+
+      expect(
+        statusOptions.includes(
+          'medications.intent.proposal' &&
+            'medications.intent.plan' &&
+            'medications.intent.order' &&
+            'medications.intent.originalOrder' &&
+            'medications.intent.reflexOrder' &&
+            'medications.intent.fillerOrder' &&
+            'medications.intent.instanceOrder' &&
+            'medications.intent.option',
+        ),
+      ).toBe(true)
+    })
+
+    it('render medication priorty select options', async () => {
+      setup()
+      const medicationPriority = screen.getAllByPlaceholderText('-- Choose --')[2]
+
+      expect(screen.getByText(/medications\.medication\.status/i)).toBeInTheDocument()
+
+      expect(medicationPriority.getAttribute('aria-expanded')).toBe('false')
+      selectEvent.openMenu(medicationPriority)
+      expect(medicationPriority.getAttribute('aria-expanded')).toBe('true')
+      expect(medicationPriority).toHaveDisplayValue('medications.priority.routine')
+
+      const statusOptions = screen
+        .getAllByRole('option')
+        .map((option) => option.lastElementChild?.innerHTML)
+
+      expect(
+        statusOptions.includes(
+          'medications.priority.routine' &&
+            'medications.priority.urgent' &&
+            'medications.priority.asap' &&
+            'medications.priority.stat',
+        ),
+      ).toBe(true)
+    })
+
+    it('should render a notes text field', async () => {
       setup()
 
       const medicationNotes = screen.getByRole('textbox', {
@@ -98,15 +173,15 @@ describe('New Medication Request', () => {
     })
   })
 
-  describe.skip('on cancel', () => {
+  describe('on cancel', () => {
     it('should navigate back to /medications', async () => {
-      const { wrapper } = setup()
-      const cancelButton = wrapper.find(Button).at(1)
-
-      act(() => {
-        const onClick = cancelButton.prop('onClick') as any
-        onClick({} as React.MouseEvent<HTMLButtonElement>)
+      setup()
+      expect(history.location.pathname).toEqual('/medications/new')
+      const cancelButton = screen.getByRole('button', {
+        name: /actions\.cancel/i,
       })
+
+      userEvent.click(cancelButton)
 
       expect(history.location.pathname).toEqual('/medications')
     })
@@ -137,12 +212,12 @@ describe('New Medication Request', () => {
       jest
         .spyOn(PatientRepository, 'search')
         .mockResolvedValue([
-          { id: expectedMedication.patient, fullName: 'some full name' },
+          { id: expectedMedication.patient, fullName: 'Barry Allen' },
         ] as Patient[])
     })
 
-    it('should save the medication request and navigate to "/medications/:id"', async () => {
-      const { wrapper } = setup(store)
+    it.skip('should save the medication request and navigate to "/medications/:id"', async () => {
+      setup(store)
 
       const patientTypeahead = wrapper.find(Typeahead)
       act(async () => {
