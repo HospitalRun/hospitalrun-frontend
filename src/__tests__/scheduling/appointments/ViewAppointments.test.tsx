@@ -1,5 +1,6 @@
 import { render, waitFor, screen } from '@testing-library/react'
 import addMinutes from 'date-fns/addMinutes'
+import format from 'date-fns/format'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -81,16 +82,8 @@ describe('ViewAppointments', () => {
       expect(screen.getByText(expectedPatient.fullName as string)).toBeInTheDocument()
     })
 
-    const expectedAppointmentStartDate = new Date(expectedAppointment.startDateTime)
-    const expectedStart = `${expectedAppointmentStartDate.getHours()}:${expectedAppointmentStartDate
-      .getMinutes()
-      .toString()
-      .padStart(2, '0')}`
-    const expectedAppointmentEndDate = new Date(expectedAppointment.endDateTime)
-    const expectedEnd = `${expectedAppointmentEndDate.getHours()}:${expectedAppointmentEndDate
-      .getMinutes()
-      .toString()
-      .padStart(2, '0')}`
+    const expectedStart = format(new Date(expectedAppointment.startDateTime), 'h:mm')
+    const expectedEnd = format(new Date(expectedAppointment.endDateTime), 'h:mm')
 
     expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
       'data-full',
