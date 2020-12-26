@@ -1,6 +1,6 @@
-import { Calendar } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
+import { render, waitFor, screen } from '@testing-library/react'
+import addMinutes from 'date-fns/addMinutes'
+import format from 'date-fns/format'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -18,77 +18,80 @@ import { RootState } from '../../../shared/store'
 
 const { TitleProvider } = titleUtil
 
-describe('ViewAppointments', () => {
-  const expectedAppointments = [
-    {
-      id: '123',
-      rev: '1',
-      patient: '1234',
-      startDateTime: new Date().toISOString(),
-      endDateTime: new Date().toISOString(),
-      location: 'location',
-      reason: 'reason',
-    },
-  ] as Appointment[]
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
+const setup = () => {
+  const expectedAppointment = {
+    id: '123',
+    rev: '1',
+    patient: '1234',
+    startDateTime: new Date().toISOString(),
+    endDateTime: addMinutes(new Date(), 60).toISOString(),
+    location: 'location',
+    reason: 'reason',
+  } as Appointment
   const expectedPatient = {
     id: '123',
     fullName: 'patient full name',
   } as Patient
+  jest.spyOn(titleUtil, 'useUpdateTitle').mockReturnValue(jest.fn())
+  jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockImplementation(() => jest.fn())
+  jest.spyOn(AppointmentRepository, 'findAll').mockResolvedValue([expectedAppointment])
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
 
-  const setup = async () => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest.spyOn(AppointmentRepository, 'findAll').mockResolvedValue(expectedAppointments)
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
-    const mockStore = createMockStore<RootState, any>([thunk])
-    return mount(
-      <Provider store={mockStore({ appointments: { appointments: expectedAppointments } } as any)}>
+  const mockStore = createMockStore<RootState, any>([thunk])
+
+  return {
+    expectedPatient,
+    expectedAppointment,
+    ...render(
+      <Provider store={mockStore({ appointments: { appointments: [expectedAppointment] } } as any)}>
         <MemoryRouter initialEntries={['/appointments']}>
           <TitleProvider>
             <ViewAppointments />
           </TitleProvider>
         </MemoryRouter>
       </Provider>,
-    )
+    ),
   }
+}
 
+describe('ViewAppointments', () => {
   it('should have called the useUpdateTitle hook', async () => {
-    await act(async () => {
-      await setup()
+    setup()
+
+    await waitFor(() => {
+      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
     })
-    expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
   })
 
   it('should add a "New Appointment" button to the button tool bar', async () => {
-    const setButtonToolBarSpy = jest.fn()
-    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
+    setup()
 
-    await act(async () => {
-      await setup()
+    await waitFor(() => {
+      expect(ButtonBarProvider.useButtonToolbarSetter).toHaveBeenCalled()
     })
-
-    const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
-    expect((actualButtons[0] as any).props.children).toEqual('scheduling.appointments.new')
   })
 
   it('should render a calendar with the proper events', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = await setup()
+    const { container, expectedPatient, expectedAppointment } = setup()
+
+    await waitFor(() => {
+      expect(screen.getByText(expectedPatient.fullName as string)).toBeInTheDocument()
     })
-    wrapper.update()
 
-    const expectedEvents = [
-      {
-        id: expectedAppointments[0].id,
-        start: new Date(expectedAppointments[0].startDateTime),
-        end: new Date(expectedAppointments[0].endDateTime),
-        title: 'patient full name',
-        allDay: false,
-      },
-    ]
+    const expectedStart = format(new Date(expectedAppointment.startDateTime), 'h:mm')
+    const expectedEnd = format(new Date(expectedAppointment.endDateTime), 'h:mm')
 
-    const calendar = wrapper.find(Calendar)
-    expect(calendar).toHaveLength(1)
-    expect(calendar.prop('events')).toEqual(expectedEvents)
+    expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
+      'data-full',
+      expect.stringContaining(expectedStart),
+    )
+    expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
+      'data-full',
+      expect.stringContaining(expectedEnd),
+    )
   })
 })
