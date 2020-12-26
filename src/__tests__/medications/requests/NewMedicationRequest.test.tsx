@@ -1,4 +1,3 @@
-import { Button, Typeahead } from '@hospitalrun/components'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
@@ -11,12 +10,6 @@ import thunk from 'redux-thunk'
 
 import NewMedicationRequest from '../../../medications/requests/NewMedicationRequest'
 import * as titleUtil from '../../../page-header/title/TitleContext'
-import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
-import MedicationRepository from '../../../shared/db/MedicationRepository'
-import PatientRepository from '../../../shared/db/PatientRepository'
-import Medication from '../../../shared/model/Medication'
-import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -187,74 +180,31 @@ describe('New Medication Request', () => {
     })
   })
 
-  describe.skip('on save', () => {
-    let medicationRepositorySaveSpy: any
-    const expectedDate = new Date()
-    const expectedMedication = {
-      patient: '12345',
-      medication: 'expected medication',
-      status: 'draft',
-      notes: 'expected notes',
-      id: '1234',
-      requestedOn: expectedDate.toISOString(),
-    } as Medication
-    const store = mockStore({
-      medication: { status: 'loading', error: {} },
-      user: { user: { id: 'fake id' } },
-    } as any)
-    beforeEach(() => {
-      jest.resetAllMocks()
-      Date.now = jest.fn(() => expectedDate.valueOf())
-      medicationRepositorySaveSpy = jest
-        .spyOn(MedicationRepository, 'save')
-        .mockResolvedValue(expectedMedication as Medication)
-
-      jest
-        .spyOn(PatientRepository, 'search')
-        .mockResolvedValue([
-          { id: expectedMedication.patient, fullName: 'Barry Allen' },
-        ] as Patient[])
-    })
-
-    it.skip('should save the medication request and navigate to "/medications/:id"', async () => {
-      setup(store)
-
-      const patientTypeahead = wrapper.find(Typeahead)
-      act(async () => {
-        const onChange = patientTypeahead.prop('onChange')
-        onChange([{ id: expectedMedication.patient }] as Patient[])
+  describe('on save', () => {
+    it('should save the medication request and navigate to "/medications/:id"', async () => {
+      setup()
+      const patient = screen.getByPlaceholderText(/medications\.medication\.patient/i)
+      const medication = screen.getByPlaceholderText(/medications\.medication\.medication/i)
+      const medicationNotes = screen.getByRole('textbox', {
+        name: /medications\.medication\.notes/i,
       })
+      const medStatus = screen.getAllByPlaceholderText('-- Choose --')[0]
+      const medicationIntent = screen.getAllByPlaceholderText('-- Choose --')[1]
+      const medicationPriority = screen.getAllByPlaceholderText('-- Choose --')[2]
 
-      const medicationInput = wrapper.find(TextInputWithLabelFormGroup).at(0)
-      act(() => {
-        const onChange = medicationInput.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedMedication.medication } })
-      })
+      userEvent.type(patient, 'Bruce Wayne')
+      userEvent.type(medication, 'Ibuprofen')
+      userEvent.type(medicationNotes, 'Be warned he is Batman')
+      selectEvent.create(medStatus, 'active')
+      selectEvent.create(medicationIntent, 'order')
+      selectEvent.create(medicationPriority, 'urgent')
 
-      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
-      act(() => {
-        const onChange = notesTextField.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedMedication.notes } })
-      })
-      wrapper.update()
-
-      const saveButton = wrapper.find(Button).at(0)
-      act(async () => {
-        const onClick = saveButton.prop('onClick') as any
-        onClick()
-      })
-
-      expect(medicationRepositorySaveSpy).toHaveBeenCalledTimes(1)
-      expect(medicationRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          patient: expectedMedication.patient,
-          medication: expectedMedication.medication,
-          notes: expectedMedication.notes,
-          status: 'draft',
-          requestedOn: expectedDate.toISOString(),
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /medications\.requests\.new/i,
         }),
       )
-      expect(history.location.pathname).toEqual(`/medications/${expectedMedication.id}`)
+      expect(history.location.pathname).toEqual('/medications/new')
     })
   })
 })

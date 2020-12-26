@@ -72,6 +72,7 @@ const NewMedicationRequest = () => {
     setNewMedicationRequest((previousNewMedicationRequest) => ({
       ...previousNewMedicationRequest,
       patient: patient.id,
+      fullName: patient.fullName as string,
     }))
   }
 
