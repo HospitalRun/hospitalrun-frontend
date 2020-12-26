@@ -1,4 +1,4 @@
-import { Table } from '@hospitalrun/components'
+import { Select, Table, TextInput } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -137,13 +137,69 @@ describe('View Imagings Search', () => {
     return { wrapper: wrapper as ReactWrapper }
   }
 
-  it('Should render imaging filter field', async () => {
-    const { wrapper } = await setup()
-    expect(wrapper.find(SelectWithLabelFormGroup)).toHaveLength(1)
+  describe('imagings dropdown filter', () => {
+    const searchImagingSpy = jest.spyOn(ImagingRepository, 'search')
+
+    beforeEach(() => {
+      searchImagingSpy.mockClear()
+    })
+
+    it('should render imaging filter field', async () => {
+      const { wrapper } = await setup([Permissions.ViewImagings])
+      expect(wrapper.find(SelectWithLabelFormGroup)).toHaveLength(1)
+    })
+
+    it('should filter and cause correct search results', async () => {
+      const { wrapper } = await setup([Permissions.ViewImagings])
+      const expectedStatus = 'requested'
+
+      await act(async () => {
+        const onChange = wrapper.find(Select).prop('onChange') as any
+        await onChange([expectedStatus])
+      })
+
+      expect(searchImagingSpy).toHaveBeenCalledTimes(2)
+      expect(searchImagingSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ status: expectedStatus }),
+      )
+    })
   })
 
-  it('Should render imaging search text field', async () => {
-    const { wrapper } = await setup()
-    expect(wrapper.find(TextInputWithLabelFormGroup)).toHaveLength(1)
+  describe('imagings search field', () => {
+    const searchImagingSpy = jest.spyOn(ImagingRepository, 'search')
+
+    beforeEach(() => {
+      searchImagingSpy.mockClear()
+    })
+
+    it('should render imaging search text field', async () => {
+      const { wrapper } = await setup([Permissions.ViewImagings])
+      expect(wrapper.find(TextInputWithLabelFormGroup)).toHaveLength(1)
+    })
+
+    it('should search after 500 debounced typing', async () => {
+      const { wrapper } = await setup([Permissions.ViewImagings])
+      const expectedSearchText = '1234'
+
+      jest.useFakeTimers()
+      act(() => {
+        const onChange = wrapper.find(TextInput).prop('onChange') as any
+        onChange({
+          target: {
+            value: expectedSearchText,
+          },
+          preventDefault: jest.fn(),
+        })
+      })
+
+      act(() => {
+        jest.advanceTimersByTime(500)
+      })
+
+      expect(searchImagingSpy).toHaveBeenCalledTimes(2)
+      expect(searchImagingSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ text: expectedSearchText }),
+      )
+    })
   })
 })
