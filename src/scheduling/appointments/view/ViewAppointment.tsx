@@ -18,7 +18,13 @@ import { getAppointmentLabel } from '../util/scheduling-appointment.util'
 const ViewAppointment = () => {
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('scheduling.appointments.viewAppointment'))
+
+  useEffect(() => {
+    if (updateTitle) {
+      updateTitle(t('scheduling.appointments.viewAppointment'))
+    }
+  }, [updateTitle, t])
+
   const { id } = useParams()
   const history = useHistory()
   const [deleteMutate] = useDeleteAppointment()
