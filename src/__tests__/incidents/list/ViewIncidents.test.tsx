@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -18,73 +18,67 @@ import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
-describe('View Incidents', () => {
-  let history: any
-  const expectedDate = new Date(2020, 5, 3, 19, 48)
-  const expectedIncidents = [
-    {
-      id: '123',
-      code: 'some code',
-      status: 'reported',
-      reportedBy: 'some user id',
-      date: expectedDate.toISOString(),
-      reportedOn: expectedDate.toISOString(),
-    },
-  ] as Incident[]
+const expectedDate = new Date(2020, 5, 3, 19, 48)
+const expectedIncidents = [
+  {
+    id: '123',
+    code: 'some code',
+    status: 'reported',
+    reportedBy: 'some user id',
+    date: expectedDate.toISOString(),
+    reportedOn: expectedDate.toISOString(),
+  },
+] as Incident[]
 
-  let setButtonToolBarSpy: any
-  const setup = async (permissions: Permissions[]) => {
-    jest.resetAllMocks()
-    jest.spyOn(breadcrumbUtil, 'default')
-    setButtonToolBarSpy = jest.fn()
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
-    jest.spyOn(IncidentRepository, 'findAll').mockResolvedValue(expectedIncidents)
-    jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
+let setButtonToolBarSpy: any
+const setup = (permissions: Permissions[]) => {
+  jest.resetAllMocks()
+  jest.spyOn(breadcrumbUtil, 'default')
+  setButtonToolBarSpy = jest.fn()
+  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
+  jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
+  jest.spyOn(IncidentRepository, 'findAll').mockResolvedValue(expectedIncidents)
+  jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
 
-    history = createMemoryHistory()
-    history.push(`/incidents`)
-    const store = mockStore({
-      user: {
-        permissions,
-      },
-    } as any)
+  const history = createMemoryHistory({ initialEntries: [`/incidents`] })
+  const store = mockStore({ user: { permissions } } as any)
 
-    return render(
+  return render(
+    <Provider store={store}>
       <ButtonBarProvider.ButtonBarProvider>
-        <Provider store={store}>
-          <Router history={history}>
-            <Route path="/incidents">
-              <titleUtil.TitleProvider>
-                <ViewIncidents />
-              </titleUtil.TitleProvider>
-            </Route>
-          </Router>
-        </Provider>
-      </ButtonBarProvider.ButtonBarProvider>,
-    )
-  }
+        <Router history={history}>
+          <Route path="/incidents">
+            <titleUtil.TitleProvider>
+              <ViewIncidents />
+            </titleUtil.TitleProvider>
+          </Route>
+        </Router>
+      </ButtonBarProvider.ButtonBarProvider>
+    </Provider>,
+  )
+}
 
-  it('should have called the useUpdateTitle hook', async () => {
-    await setup([Permissions.ViewIncidents])
+describe('View Incidents', () => {
+  it('should have called the useUpdateTitle hook', () => {
+    setup([Permissions.ViewIncidents])
 
     expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
   })
 
-  it('should filter incidents by status=reported on first load ', async () => {
-    await setup([Permissions.ViewIncidents])
+  it('should filter incidents by status=reported on first load ', () => {
+    setup([Permissions.ViewIncidents])
 
     expect(IncidentRepository.search).toHaveBeenCalled()
     expect(IncidentRepository.search).toHaveBeenCalledWith({ status: IncidentFilter.reported })
   })
 
   describe('layout', () => {
-    it('should render a table with the incidents', async () => {
-      const { container } = await setup([Permissions.ViewIncidents])
-      const table = container.querySelector('table')
+    it.only('should render a table with the incidents', async () => {
+      const { container } = setup([Permissions.ViewIncidents])
 
-      expect(table).toBeTruthy()
-      expect(table).toHaveTextContent(IncidentFilter.reported)
+      await waitFor(() => {
+        expect(container.querySelector('table')).toHaveTextContent(IncidentFilter.reported)
+      })
     })
   })
 })
