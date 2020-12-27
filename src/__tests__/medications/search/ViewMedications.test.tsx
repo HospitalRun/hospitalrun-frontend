@@ -1,15 +1,13 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import MedicationSearchRequest from '../../../medications/models/MedicationSearchRequest'
-import MedicationRequestSearch from '../../../medications/search/MedicationRequestSearch'
-import MedicationRequestTable from '../../../medications/search/MedicationRequestTable'
 import ViewMedications from '../../../medications/search/ViewMedications'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/title/TitleContext'
@@ -22,8 +20,11 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Medications', () => {
-  const setup = async (medication: Medication, permissions: Permissions[] = []) => {
-    let wrapper: any
+  const setup = async (
+    medication: Medication,
+    permissions: Permissions[] = [],
+    givenMedications: Medication[] = [],
+  ) => {
     const expectedMedication = ({
       id: '1234',
       medication: 'medication',
@@ -39,14 +40,18 @@ describe('View Medications', () => {
       user: { permissions },
       medications: { medications: [{ ...expectedMedication, ...medication }] },
     } as any)
+    jest.resetAllMocks()
     const titleSpy = jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     const setButtonToolBarSpy = jest.fn()
-    jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
+    jest.spyOn(MedicationRepository, 'search').mockResolvedValue(givenMedications)
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
 
-    await act(async () => {
-      wrapper = await mount(
+    return {
+      history,
+      titleSpy,
+      setButtonToolBarSpy,
+      ...render(
         <Provider store={store}>
           <Router history={history}>
             <TitleProvider>
@@ -54,21 +59,13 @@ describe('View Medications', () => {
             </TitleProvider>
           </Router>
         </Provider>,
-      )
-    })
-    wrapper.update()
-    return {
-      wrapper: wrapper as ReactWrapper,
-      history,
-      titleSpy,
-      setButtonToolBarSpy,
+      ),
     }
   }
 
   describe('title', () => {
     it('should have called the useUpdateTitle hook', async () => {
       const { titleSpy } = await setup({} as Medication)
-
       expect(titleSpy).toHaveBeenCalled()
     })
   })
@@ -76,8 +73,7 @@ describe('View Medications', () => {
   describe('button bar', () => {
     it('should display button to add new medication request', async () => {
       const permissions = [Permissions.ViewMedications, Permissions.RequestMedication]
-      const { setButtonToolBarSpy } = await setup({} as Medication, permissions)
-
+      const { setButtonToolBarSpy } = await setup({ medication: 'test' } as Medication, permissions)
       const actualButtons: React.ReactNode[] = setButtonToolBarSpy.mock.calls[0][0]
       expect((actualButtons[0] as any).props.children).toEqual('medications.requests.new')
     })
@@ -92,21 +88,21 @@ describe('View Medications', () => {
 
   describe('table', () => {
     it('should render a table with data with the default search', async () => {
-      const { wrapper } = await setup({} as Medication, [Permissions.ViewMedications])
-
-      const table = wrapper.find(MedicationRequestTable)
-      expect(table).toHaveLength(1)
-      expect(table.prop('searchRequest')).toEqual({ text: '', status: 'all' })
+      const { container } = await setup({} as Medication, [Permissions.ViewMedications])
+      await waitFor(() => {
+        expect(container.querySelector('table')).toBeInTheDocument()
+      })
+      expect(screen.getByLabelText(/medications\.search/i)).toHaveDisplayValue('')
     })
   })
 
   describe('search', () => {
     it('should render a medication request search component', async () => {
-      const { wrapper } = await setup({} as Medication)
+      setup({} as Medication)
 
-      const search = wrapper.find(MedicationRequestSearch)
-      expect(search).toHaveLength(1)
-      expect(search.prop('searchRequest')).toEqual({ text: '', status: 'all' })
+      const search = screen.getByLabelText(/medications\.search/i)
+      expect(search).toBeInTheDocument()
+      expect(search).toHaveDisplayValue('')
     })
 
     it('should update the table when the search changes', async () => {
@@ -114,17 +110,24 @@ describe('View Medications', () => {
         text: 'someNewText',
         status: 'draft',
       }
-      const { wrapper } = await setup({} as Medication)
-
-      await act(async () => {
-        const search = wrapper.find(MedicationRequestSearch)
-        const onChange = search.prop('onChange')
-        await onChange(expectedSearchRequest)
+      const expectedMedicationRequests: Medication[] = [
+        {
+          id: 'someId',
+          medication: expectedSearchRequest.text,
+          status: expectedSearchRequest.status,
+        } as Medication,
+      ]
+      const { container } = await setup(
+        { medication: expectedSearchRequest.text } as Medication,
+        [],
+        expectedMedicationRequests,
+      )
+      userEvent.type(screen.getByLabelText(/medications\.search/i), expectedSearchRequest.text)
+      await waitFor(() => {
+        expect(container.querySelector('table')).toBeInTheDocument()
       })
-      wrapper.update()
 
-      const table = wrapper.find(MedicationRequestTable)
-      expect(table.prop('searchRequest')).toEqual(expectedSearchRequest)
+      expect(screen.getByText(expectedSearchRequest.text)).toBeInTheDocument()
     })
   })
 })
