@@ -61,7 +61,7 @@ describe('Care Plan Tab', () => {
   it('should open the add care plan modal on click', async () => {
     setup('/patients/123/care-plans', [Permissions.AddCarePlan])
 
-    userEvent.click(screen.getByRole('button', { name: /patient\.carePlan\.new/i }))
+    userEvent.click(await screen.findByRole('button', { name: /patient\.carePlan\.new/i }))
 
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument()
@@ -72,8 +72,10 @@ describe('Care Plan Tab', () => {
   it('should close the modal when the close button is clicked', async () => {
     setup('/patients/123/care-plans', [Permissions.AddCarePlan])
 
-    userEvent.click(await screen.getByRole('button', { name: /patient\.carePlan\.new/i }))
+    userEvent.click(await screen.findByRole('button', { name: /patient\.carePlan\.new/i }))
+
     expect(screen.getByRole('dialog')).toBeVisible()
+
     userEvent.click(
       screen.getByRole('button', {
         name: /close/i,
@@ -96,6 +98,7 @@ describe('Care Plan Tab', () => {
 
   it('should render the care plans table when on /patient/:id/care-plans', async () => {
     const { container } = await setup('/patients/123/care-plans', [Permissions.ReadCarePlan])
+
     await waitFor(() => {
       expect(container.querySelector('table')).toBeInTheDocument()
     })

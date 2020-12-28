@@ -37,6 +37,9 @@ const setup = async (
   permissions = [Permissions.AddAllergy],
   route = '/patients/123/allergies',
 ) => {
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
+  jest.spyOn(PatientRepository, 'saveOrUpdate')
+
   store = mockStore({ patient: { patient }, user: { permissions } } as any)
   history.push(route)
 
@@ -53,8 +56,6 @@ const setup = async (
 describe('Allergies', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
-    jest.spyOn(PatientRepository, 'saveOrUpdate')
   })
 
   describe('add new allergy button', () => {
@@ -127,11 +128,13 @@ describe('Allergies', () => {
     it('should render allergies', async () => {
       setup()
 
-      expect(
-        screen.getAllByRole('button', {
-          name: /allergy/i,
-        }),
-      ).toHaveLength(3)
+      await waitFor(() => {
+        expect(
+          screen.getAllByRole('button', {
+            name: /allergy/i,
+          }),
+        ).toHaveLength(2)
+      })
     })
   })
 })

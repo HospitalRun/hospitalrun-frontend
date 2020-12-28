@@ -46,10 +46,11 @@ describe('Imaging Request Table', () => {
     expect(ImagingRepository.search).toHaveBeenCalledWith({ ...expectedSearch, defaultSortRequest })
   })
 
-  it('should render a table of imaging requests', () => {
+  it('should render a table of imaging requests', async () => {
     const expectedSearch: ImagingSearchRequest = { status: 'all', text: 'text' }
     render(expectedSearch)
-    const headers = screen.getAllByRole('columnheader')
+
+    const headers = await screen.findAllByRole('columnheader')
     const cells = screen.getAllByRole('cell')
     expect(headers[0]).toHaveTextContent(/imagings.imaging.code/i)
     expect(headers[1]).toHaveTextContent(/imagings.imaging.type/i)

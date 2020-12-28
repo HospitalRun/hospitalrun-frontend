@@ -282,7 +282,9 @@ describe('View Lab', () => {
       it('should not display notes text field if the status is canceled', async () => {
         setup([Permissions.ViewLab], { status: 'canceled' })
 
-        expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
+        await waitFor(() => {
+          expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
+        })
         expect(screen.queryByLabelText('labs.lab.notes')).not.toBeInTheDocument()
       })
     })
@@ -293,8 +295,8 @@ describe('View Lab', () => {
 
         await waitFor(() => {
           expect(screen.getByRole('heading', { name: 'labs.lab.status' })).toBeInTheDocument()
-          expect(screen.getByText(expectedLab.status)).toBeInTheDocument()
         })
+        expect(screen.getByText(expectedLab.status)).toBeInTheDocument()
       })
 
       it('should display the completed on date if the lab request has been completed', async () => {
@@ -305,12 +307,12 @@ describe('View Lab', () => {
 
         await waitFor(() => {
           expect(screen.getByRole('heading', { name: 'labs.lab.completedOn' })).toBeInTheDocument()
-          expect(
-            screen.getByText(
-              format(new Date(expectedLab.completedOn as string), 'yyyy-MM-dd hh:mm a'),
-            ),
-          ).toBeInTheDocument()
         })
+        expect(
+          screen.getByText(
+            format(new Date(expectedLab.completedOn as string), 'yyyy-MM-dd hh:mm a'),
+          ),
+        ).toBeInTheDocument()
       })
 
       it('should not display update, complete, and cancel buttons if the lab is completed', async () => {
@@ -328,7 +330,9 @@ describe('View Lab', () => {
           status: 'completed',
         })
 
-        expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
+        await waitFor(() => {
+          expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
+        })
         expect(screen.queryByLabelText('labs.lab.notes')).not.toBeInTheDocument()
       })
     })
