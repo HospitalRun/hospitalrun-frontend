@@ -79,7 +79,7 @@ describe('AppointmentsList', () => {
     it('should navigate to appointment profile on appointment click', async () => {
       const { history } = setup()
 
-      userEvent.click(screen.getAllByRole('button', { name: /actions.view/i })[0])
+      userEvent.click((await screen.findAllByRole('button', { name: /actions.view/i }))[0])
 
       await waitFor(() => {
         expect(history.location.pathname).toEqual('/appointments/456')
