@@ -73,7 +73,7 @@ describe('View Incidents', () => {
   })
 
   describe('layout', () => {
-    it.only('should render a table with the incidents', async () => {
+    it('should render a table with the incidents', async () => {
       const { container } = setup([Permissions.ViewIncidents])
 
       await waitFor(() => {
