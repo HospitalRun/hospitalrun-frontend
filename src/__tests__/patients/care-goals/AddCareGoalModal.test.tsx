@@ -70,10 +70,11 @@ describe('Add Care Goal Modal', () => {
       expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     })
 
-    const saveOrUpdateMock = PatientRepository.saveOrUpdate as jest.Mock
-    const saveOrUpdateCalls = saveOrUpdateMock.mock.calls
-    const lastCall = saveOrUpdateCalls[saveOrUpdateCalls.length - 1][0] // Only one arg, which should be the patient
-    expect(lastCall.careGoals[0]).toMatchObject(expectedCareGoal)
+    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        careGoals: expect.arrayContaining([expect.objectContaining(expectedCareGoal)]),
+      }),
+    )
 
     expect(onCloseSpy).toHaveBeenCalledTimes(1)
   })
