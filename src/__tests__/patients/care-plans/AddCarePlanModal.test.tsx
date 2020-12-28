@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -73,7 +73,6 @@ describe('Add Care Plan Modal', () => {
     }
 
     setup()
-
     const diagnosisId = screen.getAllByPlaceholderText('-- Choose --')[0] as HTMLInputElement
     const title = screen.getByPlaceholderText(/patient\.careplan\.title/i)
     const description = screen.getAllByRole('textbox')[1]
@@ -82,7 +81,13 @@ describe('Add Care Plan Modal', () => {
     userEvent.type(title, expectedCarePlan.title)
     userEvent.type(description, expectedCarePlan.description)
 
-    userEvent.click(await screen.getByRole('button', { name: /patient\.carePlan\.new/i }))
+    await waitFor(() =>
+      userEvent.click(
+        within(screen.getByRole('dialog')).getByRole('button', {
+          name: /patient\.carePlan\.new/i,
+        }),
+      ),
+    )
 
     await waitFor(() => {
       expect(PatientRepository.saveOrUpdate).toHaveBeenCalled()
