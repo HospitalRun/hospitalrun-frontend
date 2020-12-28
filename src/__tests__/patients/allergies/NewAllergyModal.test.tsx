@@ -16,6 +16,7 @@ describe('New Allergy Modal', () => {
   } as Patient
 
   const setup = (onCloseSpy = jest.fn()) => {
+    jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(mockPatient)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
 
