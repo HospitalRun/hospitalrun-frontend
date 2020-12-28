@@ -11,6 +11,8 @@ import CarePlan from '../../../shared/model/CarePlan'
 import Patient from '../../../shared/model/Patient'
 
 describe('Add Care Plan Modal', () => {
+  jest.setTimeout(12000)
+
   const patient = {
     id: '0012',
     diagnoses: [
@@ -73,6 +75,7 @@ describe('Add Care Plan Modal', () => {
     }
 
     setup()
+
     const condition = screen.getAllByRole('combobox')[0]
     await selectEvent.select(condition, `too skinny`)
     // const diagnosisId = screen.getAllByPlaceholderText('-- Choose --')[0] as HTMLInputElement
