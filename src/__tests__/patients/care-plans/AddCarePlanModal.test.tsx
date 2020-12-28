@@ -11,7 +11,7 @@ import CarePlan from '../../../shared/model/CarePlan'
 import Patient from '../../../shared/model/Patient'
 
 describe('Add Care Plan Modal', () => {
-  jest.setTimeout(12000)
+  jest.setTimeout(15000)
 
   const patient = {
     id: '0012',
