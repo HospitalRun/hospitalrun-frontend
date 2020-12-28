@@ -134,7 +134,6 @@ describe('View Appointment', () => {
 
     const { container } = setup([Permissions.ReadAppointments], true)
 
-    screen.debug()
     expect(container.querySelector(`[class^='css-']`)).toBeInTheDocument()
   })
 
