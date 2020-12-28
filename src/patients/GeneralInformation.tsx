@@ -1,5 +1,7 @@
 import { Panel, Checkbox, Alert } from '@hospitalrun/components'
-import { startOfDay, subYears, differenceInYears } from 'date-fns'
+import differenceInYears from 'date-fns/differenceInYears'
+import startOfDay from 'date-fns/startOfDay'
+import subYears from 'date-fns/subYears'
 import React, { ReactElement } from 'react'
 
 import DatePickerWithLabelFormGroup from '../shared/components/input/DatePickerWithLabelFormGroup'
