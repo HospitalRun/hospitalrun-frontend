@@ -51,6 +51,7 @@ describe('View Incident Details', () => {
 
     return { ...renderResults, history }
   }
+
   test('type into department field', async () => {
     setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
 
@@ -106,12 +107,12 @@ describe('View Incident Details', () => {
 
   describe('on resolve', () => {
     it('should mark the status as resolved and fill in the resolved date with the current time', async () => {
-      const { history } = await setup(expectedIncident, [
+      const { history } = setup(expectedIncident, [
         Permissions.ViewIncident,
         Permissions.ResolveIncident,
       ])
 
-      const resolveButton = screen.getByRole('button', {
+      const resolveButton = await screen.findByRole('button', {
         name: /incidents\.reports\.resolve/i,
       })
 
