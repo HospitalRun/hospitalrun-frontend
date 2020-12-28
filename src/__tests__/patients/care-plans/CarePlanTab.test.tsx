@@ -66,7 +66,6 @@ describe('Care Plan Tab', () => {
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
-    screen.logTestingPlaygroundURL()
   })
 
   it('should close the modal when the close button is clicked', async () => {

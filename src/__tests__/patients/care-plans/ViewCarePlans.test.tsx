@@ -1,42 +1,45 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
 
-import CarePlanTable from '../../../patients/care-plans/CarePlanTable'
 import ViewCarePlans from '../../../patients/care-plans/ViewCarePlans'
 import PatientRepository from '../../../shared/db/PatientRepository'
-import CarePlan from '../../../shared/model/CarePlan'
+import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../../shared/model/CarePlan'
 import Patient from '../../../shared/model/Patient'
 
 describe('View Care Plans', () => {
-  const patient = { id: '123', carePlans: [] as CarePlan[] } as Patient
+  const carePlan = {
+    id: '123',
+    title: 'Feed Harry Potter',
+    description: 'Get Dobby to feed Harry Food',
+    diagnosisId: '123',
+    startDate: new Date().toISOString(),
+    endDate: new Date().toISOString(),
+    status: CarePlanStatus.Active,
+    intent: CarePlanIntent.Proposal,
+  } as CarePlan
+  const patient = { id: '123', carePlans: [carePlan] as CarePlan[] } as Patient
   const setup = async () => {
+    jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
 
     const history = createMemoryHistory()
     history.push(`/patients/${patient.id}/careplans`)
-    let wrapper: any
 
-    await act(async () => {
-      wrapper = await mount(
-        <Router history={history}>
-          <Route path="/patients/:id/careplans">
-            <ViewCarePlans />
-          </Route>
-        </Router>,
-      )
-    })
-
-    return { wrapper: wrapper as ReactWrapper }
+    return render(
+      <Router history={history}>
+        <Route path="/patients/:id/careplans">
+          <ViewCarePlans />
+        </Route>
+      </Router>,
+    )
   }
 
   it('should render a care plans table with the patient id', async () => {
-    const { wrapper } = await setup()
-
-    expect(wrapper.exists(CarePlanTable)).toBeTruthy()
-    const carePlanTable = wrapper.find(CarePlanTable)
-    expect(carePlanTable.prop('patientId')).toEqual(patient.id)
+    const { container } = await setup()
+    await waitFor(() => {
+      expect(container.querySelector('table')).toBeInTheDocument()
+    })
   })
 })
