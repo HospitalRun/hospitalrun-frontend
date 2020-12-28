@@ -46,7 +46,7 @@ describe('Add Care Plan Modal', () => {
 
   it('should render the care plan form', () => {
     setup()
-    expect(screen.getByRole('form', { name: 'care-plan-form' })).toBeInTheDocument()
+    expect(screen.getByRole('form')).toBeInTheDocument()
   })
 
   it('should call the on close function when the cancel button is clicked', async () => {
