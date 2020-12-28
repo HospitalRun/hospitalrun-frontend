@@ -22,6 +22,7 @@ describe('Add Care Plan Modal', () => {
 
   const onCloseSpy = jest.fn()
   const setup = () => {
+    jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
     const history = createMemoryHistory()
@@ -76,7 +77,7 @@ describe('Add Care Plan Modal', () => {
     userEvent.type(title, newCarePlan.title)
     userEvent.type(description, newCarePlan.description)
 
-    userEvent.click(screen.getByRole('button', { name: /patient\.carePlan\.new/i }))
+    userEvent.click(await screen.getByRole('button', { name: /patient\.carePlan\.new/i }))
 
     await waitFor(() => {
       expect(PatientRepository.saveOrUpdate).toHaveBeenCalled()
