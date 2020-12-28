@@ -1,8 +1,8 @@
-import { Table, Alert } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router-dom'
 
 import CareGoalTable from '../../../patients/care-goals/CareGoalTable'
@@ -11,15 +11,16 @@ import CareGoal, { CareGoalStatus, CareGoalAchievementStatus } from '../../../sh
 import Patient from '../../../shared/model/Patient'
 
 describe('Care Goal Table', () => {
+  const expectedDate = new Date().toISOString()
   const careGoal: CareGoal = {
     id: '123',
     description: 'some description',
     priority: 'medium',
     status: CareGoalStatus.Accepted,
     achievementStatus: CareGoalAchievementStatus.Improving,
-    startDate: new Date().toISOString(),
-    dueDate: new Date().toISOString(),
-    createdOn: new Date().toISOString(),
+    startDate: expectedDate,
+    dueDate: expectedDate,
+    createdOn: expectedDate,
     note: 'some note',
   }
 
@@ -30,67 +31,56 @@ describe('Care Goal Table', () => {
   } as Patient
 
   const setup = async (expectedPatient = patient) => {
+    jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
     const history = createMemoryHistory()
     history.push(`/patients/${patient.id}/care-goals/${patient.careGoals[0].id}`)
 
-    let wrapper: any
-    await act(async () => {
-      wrapper = await mount(
+    return {
+      history,
+      ...render(
         <Router history={history}>
           <CareGoalTable patientId={expectedPatient.id} />
         </Router>,
-      )
-    })
-    wrapper.update()
-    return { wrapper: wrapper as ReactWrapper, history }
+      ),
+    }
   }
 
   it('should render a table', async () => {
-    const { wrapper } = await setup()
+    const { container } = await setup()
+    await waitFor(() => {
+      expect(container.querySelector('table')).toBeInTheDocument()
+    })
+    const columns = container.querySelectorAll('th')
+    expect(columns[0]).toHaveTextContent(/patient.careGoal.description/i)
+    expect(columns[1]).toHaveTextContent(/patient.careGoal.startDate/i)
+    expect(columns[2]).toHaveTextContent(/patient.careGoal.dueDate/i)
+    expect(columns[3]).toHaveTextContent(/patient.careGoal.status/i)
+    expect(columns[4]).toHaveTextContent(/actions.label/i)
+    expect(screen.getByRole('button', { name: /actions.view/i })).toBeInTheDocument()
 
-    const table = wrapper.find(Table)
-    const columns = table.prop('columns')
-
-    expect(columns[0]).toEqual(
-      expect.objectContaining({ label: 'patient.careGoal.description', key: 'description' }),
-    )
-    expect(columns[1]).toEqual(
-      expect.objectContaining({ label: 'patient.careGoal.startDate', key: 'startDate' }),
-    )
-    expect(columns[2]).toEqual(
-      expect.objectContaining({ label: 'patient.careGoal.dueDate', key: 'dueDate' }),
-    )
-    expect(columns[3]).toEqual(
-      expect.objectContaining({ label: 'patient.careGoal.status', key: 'status' }),
-    )
-
-    const actions = table.prop('actions') as any
-    expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
-    expect(table.prop('actionsHeaderText')).toEqual('actions.label')
-    expect(table.prop('data')).toEqual(patient.careGoals)
+    const dates = screen.getAllByText(format(new Date(expectedDate), 'yyyy-MM-dd'))
+    expect(screen.getByText(careGoal.description)).toBeInTheDocument()
+    // startDate and dueDate are both rendered with expectedDate
+    expect(dates).toHaveLength(2)
+    expect(screen.getByText(careGoal.status)).toBeInTheDocument()
   })
 
   it('should navigate to the care goal view when the view details button is clicked', async () => {
-    const { wrapper, history } = await setup()
-
-    const tr = wrapper.find('tr').at(1)
-
-    act(() => {
-      const onClick = tr.find('button').prop('onClick') as any
-      onClick({ stopPropagation: jest.fn() })
+    const { container, history } = await setup()
+    await waitFor(() => {
+      expect(container.querySelector('table')).toBeInTheDocument()
     })
-
+    userEvent.click(screen.getByRole('button', { name: /actions.view/i }))
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-goals/${careGoal.id}`)
   })
 
   it('should display a warning if there are no care goals', async () => {
-    const { wrapper } = await setup({ ...patient, careGoals: [] })
-
-    expect(wrapper.exists(Alert)).toBeTruthy()
-    const alert = wrapper.find(Alert)
-    expect(alert.prop('color')).toEqual('warning')
-    expect(alert.prop('title')).toEqual('patient.careGoals.warning.noCareGoals')
-    expect(alert.prop('message')).toEqual('patient.careGoals.warning.addCareGoalAbove')
+    setup({ ...patient, careGoals: [] })
+    const alert = await screen.findByRole('alert')
+    expect(alert).toBeInTheDocument()
+    expect(alert).toHaveClass('alert-warning')
+    expect(screen.getByText(/patient.careGoals.warning.noCareGoals/i)).toBeInTheDocument()
+    expect(screen.getByText(/patient.careGoals.warning.addCareGoalAbove/i)).toBeInTheDocument()
   })
 })
