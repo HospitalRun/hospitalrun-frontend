@@ -17,6 +17,7 @@ describe('View Care Goals', () => {
   } as CareGoal
   const patient = { id: '123', careGoals: [careGoal] as CareGoal[] } as Patient
   const setup = async () => {
+    jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
 
     const history = createMemoryHistory()
