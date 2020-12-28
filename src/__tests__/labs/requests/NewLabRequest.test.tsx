@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
@@ -245,8 +245,15 @@ describe('New Lab Request', () => {
 
     it('should save the lab request and navigate to "/labs/:id"', async () => {
       setup(store)
+
       userEvent.type(screen.getByPlaceholderText(/labs.lab.patient/i), 'Billy')
-      expect(await screen.findByText(/billy/i)).toBeVisible()
+
+      await waitFor(
+        () => {
+          expect(screen.getByText(/billy/i)).toBeVisible()
+        },
+        { timeout: 3000 },
+      )
       userEvent.click(screen.getByText(/billy/i))
       userEvent.type(screen.getByPlaceholderText(/labs\.lab\.type/i), expectedLab.type)
       userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), expectedNotes)
