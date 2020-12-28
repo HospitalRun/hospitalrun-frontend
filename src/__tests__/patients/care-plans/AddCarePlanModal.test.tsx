@@ -17,12 +17,11 @@ describe('Add Care Plan Modal', () => {
       { id: '123', name: 'too skinny', diagnosisDate: new Date().toISOString() },
       { id: '456', name: 'headaches', diagnosisDate: new Date().toISOString() },
     ],
-    carePlans: [{}] as CarePlan[],
+    carePlans: [] as CarePlan[],
   } as Patient
 
   const onCloseSpy = jest.fn()
   const setup = () => {
-    jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
     const history = createMemoryHistory()
@@ -36,12 +35,18 @@ describe('Add Care Plan Modal', () => {
     return result
   }
 
+  beforeEach(() => {
+    jest.resetAllMocks()
+  })
+
   it('should render a modal', () => {
     setup()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
     const title = screen.getByText(/patient\.carePlan\.new/i, { selector: 'div' })
     expect(title).toBeInTheDocument()
 
     expect(screen.getByRole('button', { name: /patient\.carePlan\.new/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /actions.cancel/i })).toBeInTheDocument()
   })
 
   it('should render the care plan form', () => {
@@ -61,7 +66,7 @@ describe('Add Care Plan Modal', () => {
   })
 
   it('should save care plan when the save button is clicked and close', async () => {
-    const newCarePlan = {
+    const expectedCarePlan = {
       title: 'Feed Harry Potter',
       description: 'Get Dobby to feed Harry Potter',
       diagnosisId: '123', // condition
@@ -74,13 +79,19 @@ describe('Add Care Plan Modal', () => {
     const description = screen.getAllByRole('textbox')[1]
 
     await selectEvent.select(diagnosisId, 'too skinny')
-    userEvent.type(title, newCarePlan.title)
-    userEvent.type(description, newCarePlan.description)
+    userEvent.type(title, expectedCarePlan.title)
+    userEvent.type(description, expectedCarePlan.description)
 
     userEvent.click(await screen.getByRole('button', { name: /patient\.carePlan\.new/i }))
 
     await waitFor(() => {
       expect(PatientRepository.saveOrUpdate).toHaveBeenCalled()
     })
+
+    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        carePlans: expect.arrayContaining([expect.objectContaining(expectedCarePlan)]),
+      }),
+    )
   })
 })
