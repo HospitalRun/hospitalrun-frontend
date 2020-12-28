@@ -132,6 +132,17 @@ function ViewIncidentDetails(props: Props) {
           />
         </Column>
       </Row>
+      {data.patient && (
+        <Row>
+          <Column md={6}>
+            <TextInputWithLabelFormGroup
+              label={t('incidents.reports.patient')}
+              name="patient"
+              value={data.patient}
+            />
+          </Column>
+        </Row>
+      )}
       {data.resolvedOn === undefined && (
         <div className="row float-right">
           <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>

@@ -1,4 +1,4 @@
-import { Button, Row, Column } from '@hospitalrun/components'
+import { Button, Row, Column, Typeahead, Label } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
@@ -7,8 +7,10 @@ import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Incident from '../../shared/model/Incident'
+import Patient from '../../shared/model/Patient'
 import useReportIncident from '../hooks/useReportIncident'
 import { IncidentError } from '../util/validate-incident'
 
@@ -33,7 +35,9 @@ const ReportIncident = () => {
     category: '',
     categoryItem: '',
     description: '',
+    patient: '',
   })
+
   const [error, setError] = useState<IncidentError | undefined>(undefined)
 
   const onDateChange = (newDate: Date) => {
@@ -61,6 +65,20 @@ const ReportIncident = () => {
 
   const onCancel = () => {
     history.push('/incidents')
+  }
+
+  const onPatientChange = (patient: Patient) => {
+    if (patient) {
+      setIncident((prevIncident) => ({
+        ...prevIncident,
+        patient: patient.id,
+      }))
+    } else {
+      setIncident((prevIncident) => ({
+        ...prevIncident,
+        patient: '',
+      }))
+    }
   }
 
   return (
@@ -129,6 +147,21 @@ const ReportIncident = () => {
             isInvalid={!!error?.description}
             feedback={t(error?.description as string)}
           />
+        </Column>
+      </Row>
+      <Row>
+        <Column md={6}>
+          <div className="form-group patient-typeahead">
+            <Label htmlFor="patientTypeahead" text={t('incidents.reports.patient')} />
+            <Typeahead
+              id="patientTypeahead"
+              placeholder={t('incidents.reports.patient')}
+              onChange={(p: Patient[]) => onPatientChange(p[0])}
+              onSearch={async (query: string) => PatientRepository.search(query)}
+              searchAccessor="fullName"
+              renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+            />
+          </div>
         </Column>
       </Row>
 
