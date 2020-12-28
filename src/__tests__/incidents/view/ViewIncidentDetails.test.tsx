@@ -51,6 +51,7 @@ describe('View Incident Details', () => {
 
     return { ...renderResults, history }
   }
+
   test('type into department field', async () => {
     setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
 
@@ -65,7 +66,7 @@ describe('View Incident Details', () => {
   test('type into category field', async () => {
     setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
     expect(
-      screen.getByRole('textbox', {
+      await screen.findByRole('textbox', {
         name: /incidents\.reports\.category\b/i,
       }),
     ).toBeInTheDocument()
@@ -76,10 +77,10 @@ describe('View Incident Details', () => {
     ).not.toBeEnabled()
   })
 
-  test('type into category item field', () => {
+  test('type into category item field', async () => {
     setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
     expect(
-      screen.getByRole('textbox', {
+      await screen.findByRole('textbox', {
         name: /incidents\.reports\.categoryitem/i,
       }),
     ).toBeInTheDocument()
@@ -90,10 +91,10 @@ describe('View Incident Details', () => {
     ).not.toBeEnabled()
   })
 
-  test('type into description field', () => {
+  test('type into description field', async () => {
     setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
     expect(
-      screen.getByRole('textbox', {
+      await screen.findByRole('textbox', {
         name: /incidents\.reports\.description/i,
       }),
     ).toBeInTheDocument()
@@ -106,12 +107,12 @@ describe('View Incident Details', () => {
 
   describe('on resolve', () => {
     it('should mark the status as resolved and fill in the resolved date with the current time', async () => {
-      const { history } = await setup(expectedIncident, [
+      const { history } = setup(expectedIncident, [
         Permissions.ViewIncident,
         Permissions.ResolveIncident,
       ])
 
-      const resolveButton = screen.getByRole('button', {
+      const resolveButton = await screen.findByRole('button', {
         name: /incidents\.reports\.resolve/i,
       })
 

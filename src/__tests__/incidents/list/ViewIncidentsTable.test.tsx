@@ -13,10 +13,7 @@ import Incident from '../../../shared/model/Incident'
 import { extractUsername } from '../../../shared/util/extractUsername'
 
 describe('View Incidents Table', () => {
-  const setup = async (
-    expectedSearchRequest: IncidentSearchRequest,
-    expectedIncidents: Incident[],
-  ) => {
+  const setup = (expectedSearchRequest: IncidentSearchRequest, expectedIncidents: Incident[]) => {
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
     const history = createMemoryHistory()
 
@@ -35,10 +32,10 @@ describe('View Incidents Table', () => {
   })
 
   it('should call the incidents search with the search request', async () => {
-    const expectedSearchRequest: IncidentSearchRequest = {
-      status: IncidentFilter.all,
-    }
-    await setup(expectedSearchRequest, [])
+    const expectedSearchRequest: IncidentSearchRequest = { status: IncidentFilter.all }
+
+    setup(expectedSearchRequest, [])
+
     expect(IncidentRepository.search).toHaveBeenCalledTimes(1)
     expect(IncidentRepository.search).toHaveBeenCalledWith(expectedSearchRequest)
   })
@@ -54,7 +51,7 @@ describe('View Incidents Table', () => {
         status: 'reported',
       } as Incident,
     ]
-    const { container } = await setup({ status: IncidentFilter.all }, expectedIncidents)
+    const { container } = setup({ status: IncidentFilter.all }, expectedIncidents)
 
     await waitFor(() => {
       expect(container.querySelector('table')).toBeTruthy()
@@ -88,8 +85,11 @@ describe('View Incidents Table', () => {
         status: 'reported',
       } as Incident,
     ]
-    await setup({ status: IncidentFilter.all }, expectedIncidents)
-    expect(screen.getByRole('button', { name: /incidents.reports.download/i })).toBeInTheDocument()
+    setup({ status: IncidentFilter.all }, expectedIncidents)
+
+    expect(
+      await screen.findByRole('button', { name: /incidents.reports.download/i }),
+    ).toBeInTheDocument()
   })
 
   it('should populate export data correctly', async () => {
@@ -125,81 +125,6 @@ describe('View Incidents Table', () => {
     populateExportData(exportData, data)
 
     expect(exportData).toEqual(expectedExportData)
-  })
-
-  it('should format the data correctly', async () => {
-    const expectedIncidents: Incident[] = [
-      {
-        id: 'incidentId1',
-        code: 'someCode',
-        date: new Date(2020, 7, 4, 12, 0, 0, 0).toISOString(),
-        reportedOn: new Date(2020, 8, 4, 12, 0, 0, 0).toISOString(),
-        reportedBy: 'com.test:user',
-        status: 'reported',
-      } as Incident,
-    ]
-    const { container } = await setup({ status: IncidentFilter.all }, expectedIncidents)
-
-    const incidentsTable = container.querySelector('table')
-    expect(incidentsTable).toMatchInlineSnapshot(`
-      <table
-        class="table table-hover"
-      >
-        <thead
-          class="thead-light"
-        >
-          <tr>
-            <th>
-              incidents.reports.code
-            </th>
-            <th>
-              incidents.reports.dateOfIncident
-            </th>
-            <th>
-              incidents.reports.reportedBy
-            </th>
-            <th>
-              incidents.reports.reportedOn
-            </th>
-            <th>
-              incidents.reports.status
-            </th>
-            <th>
-              actions.label
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              someCode
-            </td>
-            <td>
-              2020-08-04 12:00 AM
-            </td>
-            <td>
-              user
-            </td>
-            <td>
-              2020-09-04 12:00 AM
-            </td>
-            <td>
-              reported
-            </td>
-            <td>
-              <button
-                class="btn btn-primary"
-                type="button"
-              >
-                 
-                actions.view
-                 
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    `)
   })
 
   it('should navigate to the view incident screen when view button is clicked', async () => {

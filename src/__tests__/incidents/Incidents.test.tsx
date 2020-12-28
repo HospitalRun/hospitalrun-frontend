@@ -1,6 +1,5 @@
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import React from 'react'
-import type { ReactElement, ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -14,11 +13,6 @@ import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
-
-type WrapperProps = {
-  // eslint-disable-next-line react/require-default-props
-  children?: ReactNode
-}
 
 describe('Incidents', () => {
   function setup(permissions: Permissions[], path: string) {
@@ -37,15 +31,14 @@ describe('Incidents', () => {
       components: { sidebarCollapsed: false },
     } as any)
 
-    function Wrapper({ children }: WrapperProps): ReactElement {
-      return (
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[path]}>
-            <titleUtil.TitleProvider>{children}</titleUtil.TitleProvider>
-          </MemoryRouter>
-        </Provider>
-      )
-    }
+    // eslint-disable-next-line react/prop-types
+    const Wrapper: React.FC = ({ children }) => (
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[path]}>
+          <titleUtil.TitleProvider>{children}</titleUtil.TitleProvider>
+        </MemoryRouter>
+      </Provider>
+    )
 
     return render(<Incidents />, { wrapper: Wrapper })
   }
@@ -73,10 +66,12 @@ describe('Incidents', () => {
     })
 
     describe('/incidents/visualize', () => {
-      it('The incident visualize screen when /incidents/visualize is accessed', () => {
+      it('The incident visualize screen when /incidents/visualize is accessed', async () => {
         const { container } = setup([Permissions.ViewIncidentWidgets], '/incidents/visualize')
 
-        expect(container.querySelector('.chartjs-render-monitor')).toBeInTheDocument()
+        await waitFor(() => {
+          expect(container.querySelector('.chartjs-render-monitor')).toBeInTheDocument()
+        })
       })
 
       it('should not navigate to /incidents/visualize if the user does not have ViewIncidentWidgets permissions', () => {

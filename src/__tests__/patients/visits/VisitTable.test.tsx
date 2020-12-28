@@ -10,37 +10,37 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import Visit, { VisitStatus } from '../../../shared/model/Visit'
 
-describe('Visit Table', () => {
-  const visit: Visit = {
-    id: 'id',
-    startDateTime: new Date(2020, 6, 3).toISOString(),
-    endDateTime: new Date(2020, 6, 5).toISOString(),
-    type: 'standard type',
-    status: VisitStatus.Arrived,
-    reason: 'some reason',
-    location: 'main building',
-  } as Visit
-  const patient = {
-    id: 'patientId',
-    diagnoses: [{ id: '123', name: 'some name', diagnosisDate: new Date().toISOString() }],
-    visits: [visit],
-  } as Patient
+const visit: Visit = {
+  id: 'id',
+  startDateTime: new Date(2020, 6, 3).toISOString(),
+  endDateTime: new Date(2020, 6, 5).toISOString(),
+  type: 'standard type',
+  status: VisitStatus.Arrived,
+  reason: 'some reason',
+  location: 'main building',
+} as Visit
+const patient = {
+  id: 'patientId',
+  diagnoses: [{ id: '123', name: 'some name', diagnosisDate: new Date().toISOString() }],
+  visits: [visit],
+} as Patient
 
-  const setup = () => {
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
-    const history = createMemoryHistory()
-    history.push(`/patients/${patient.id}/visits/${patient.visits[0].id}`)
+const setup = () => {
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+  const history = createMemoryHistory()
+  history.push(`/patients/${patient.id}/visits/${patient.visits[0].id}`)
 
-    return {
-      history,
-      ...render(
-        <Router history={history}>
-          <VisitTable patientId={patient.id} />
-        </Router>,
-      ),
-    }
+  return {
+    history,
+    ...render(
+      <Router history={history}>
+        <VisitTable patientId={patient.id} />
+      </Router>,
+    ),
   }
+}
 
+describe('Visit Table', () => {
   it('should render a table', async () => {
     setup()
 
@@ -77,7 +77,7 @@ describe('Visit Table', () => {
   it('should navigate to the visit view when the view details button is clicked', async () => {
     const { history } = setup()
 
-    const actionButton = screen.getByRole('button', {
+    const actionButton = await screen.findByRole('button', {
       name: /actions\.view/i,
     })
 
