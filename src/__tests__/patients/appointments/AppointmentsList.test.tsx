@@ -39,28 +39,30 @@ const expectedAppointments = [
 ] as Appointment[]
 
 const mockStore = createMockStore<RootState, any>([thunk])
-const history = createMemoryHistory()
 
-let store: any
-
-const setup = async (patient = expectedPatient, appointments = expectedAppointments) => {
+const setup = (patient = expectedPatient, appointments = expectedAppointments) => {
   jest.resetAllMocks()
   jest.spyOn(PatientRepository, 'getAppointments').mockResolvedValue(appointments)
-  store = mockStore({ patient, appointments: { appointments } } as any)
+  const store = mockStore({ patient, appointments: { appointments } } as any)
+  const history = createMemoryHistory()
 
-  return render(
-    <Router history={history}>
-      <Provider store={store}>
-        <AppointmentsList patient={patient} />
-      </Provider>
-    </Router>,
-  )
+  return {
+    history,
+    ...render(
+      <Router history={history}>
+        <Provider store={store}>
+          <AppointmentsList patient={patient} />
+        </Provider>
+      </Router>,
+    ),
+  }
 }
 
 describe('AppointmentsList', () => {
   describe('Table', () => {
     it('should render a list of appointments', async () => {
-      const { container } = await setup()
+      const { container } = setup()
+
       await waitFor(() => {
         expect(container.querySelector('table')).toBeInTheDocument()
       })
@@ -75,17 +77,20 @@ describe('AppointmentsList', () => {
     })
 
     it('should navigate to appointment profile on appointment click', async () => {
-      setup()
+      const { history } = setup()
 
       userEvent.click(screen.getAllByRole('button', { name: /actions.view/i })[0])
 
-      expect(history.location.pathname).toEqual('/appointments/456')
+      await waitFor(() => {
+        expect(history.location.pathname).toEqual('/appointments/456')
+      })
     })
   })
 
   describe('Empty list', () => {
     it('should render a warning message if there are no appointments', async () => {
       setup(expectedPatient, [])
+
       const alert = await screen.findByRole('alert')
 
       expect(alert).toBeInTheDocument()
@@ -112,11 +117,13 @@ describe('AppointmentsList', () => {
     })
 
     it('should navigate to new appointment page', async () => {
-      setup()
+      const { history } = setup()
 
       userEvent.click(await screen.findByRole('button', { name: /scheduling.appointments.new/i }))
 
-      expect(history.location.pathname).toEqual('/appointments/new')
+      await waitFor(() => {
+        expect(history.location.pathname).toEqual('/appointments/new')
+      })
     })
   })
 })
