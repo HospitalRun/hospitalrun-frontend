@@ -89,7 +89,10 @@ describe('View Incidents Table', () => {
       } as Incident,
     ]
     await setup({ status: IncidentFilter.all }, expectedIncidents)
-    expect(screen.getByRole('button', { name: /incidents.reports.download/i })).toBeInTheDocument()
+
+    expect(
+      await screen.findByRole('button', { name: /incidents.reports.download/i }),
+    ).toBeInTheDocument()
   })
 
   it('should populate export data correctly', async () => {
