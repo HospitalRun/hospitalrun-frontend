@@ -56,7 +56,7 @@ const CarePlanForm = (props: Props) => {
   const intentOptions: Option[] = Object.values(CarePlanIntent).map((v) => ({ label: v, value: v }))
 
   return (
-    <form>
+    <form aria-label="care-plan-form">
       {carePlanError?.message && <Alert color="danger" message={t(carePlanError.message)} />}
       <Row>
         <Column sm={12}>
