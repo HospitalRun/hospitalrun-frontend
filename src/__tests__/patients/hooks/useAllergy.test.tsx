@@ -1,9 +1,16 @@
+/* eslint-disable no-console */
+
 import useAllergy from '../../../patients/hooks/useAllergy'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import executeQuery from '../../test-utils/use-query.util'
 
 describe('use allergy', () => {
+  beforeEach(() => {
+    jest.resetAllMocks()
+    console.error = jest.fn()
+  })
+
   it('should return an allergy given a patient id and allergy id', async () => {
     const expectedPatientId = '123'
     const expectedAllergy = { id: '456', name: 'some name' }
@@ -22,11 +29,17 @@ describe('use allergy', () => {
   it('should throw an error if patient does not have allergy with id', async () => {
     const expectedPatientId = '123'
     const expectedAllergy = { id: '456', name: 'some name' }
-    const expectedPatient = { id: expectedPatientId, allergies: [expectedAllergy] } as Patient
+    const expectedPatient = {
+      id: 'expectedPatientId',
+      allergies: [{ id: '426', name: 'some name' }],
+    } as Patient
     jest.spyOn(PatientRepository, 'find').mockResolvedValueOnce(expectedPatient)
 
     try {
-      await executeQuery(() => useAllergy(expectedPatientId, expectedAllergy.id))
+      await executeQuery(
+        () => useAllergy(expectedPatientId, expectedAllergy.id),
+        (query) => query.isError,
+      )
     } catch (e) {
       expect(e).toEqual(new Error('Allergy not found'))
     }
