@@ -1,47 +1,79 @@
-import { mount } from 'enzyme'
+import { screen, render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { format } from 'date-fns'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 
-import PatientSearchInput from '../../../patients/search/PatientSearchInput'
 import SearchPatients from '../../../patients/search/SearchPatients'
-import ViewPatientsTable from '../../../patients/search/ViewPatientsTable'
 import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
 
 describe('Search Patients', () => {
-  const setup = () => {
-    const wrapper = mount(<SearchPatients />)
-
-    return { wrapper }
-  }
+  const dateOfBirth = new Date(2010, 1, 1, 1, 1, 1, 1)
+  const expectedPatient = {
+    id: '123',
+    givenName: 'givenName',
+    familyName: 'familyName',
+    code: 'test code',
+    sex: 'sex',
+    dateOfBirth: dateOfBirth.toISOString(),
+  } as Patient
 
   beforeEach(() => {
-    jest.spyOn(PatientRepository, 'search').mockResolvedValueOnce([])
+    jest.resetAllMocks()
   })
 
   it('should render a patient search input', () => {
-    const { wrapper } = setup()
+    jest.spyOn(PatientRepository, 'search').mockResolvedValueOnce([])
+    render(<SearchPatients />)
 
-    expect(wrapper.exists(PatientSearchInput)).toBeTruthy()
+    expect(screen.getByPlaceholderText(/actions\.search/i)).toBeInTheDocument()
   })
 
-  it('should render a view patients table', () => {
-    const { wrapper } = setup()
+  it('should render a view patients table', async () => {
+    jest.spyOn(PatientRepository, 'search').mockResolvedValueOnce([])
+    render(<SearchPatients />)
 
-    expect(wrapper.exists(ViewPatientsTable)).toBeTruthy()
-  })
-
-  it('should update view patients table search request when patient search input changes', () => {
-    const expectedSearch = { queryString: 'someQueryString' }
-    const { wrapper } = setup()
-
-    act(() => {
-      const patientSearch = wrapper.find(PatientSearchInput)
-      const onChange = patientSearch.prop('onChange')
-      onChange(expectedSearch)
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: /patients\.nopatients/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /patients\.newpatient/i })).toBeInTheDocument()
     })
-    wrapper.update()
+  })
 
-    const patientsTable = wrapper.find(ViewPatientsTable)
-    expect(patientsTable.prop('searchRequest')).toEqual(expectedSearch)
+  it('should update view patients table search request when patient search input changes', async () => {
+    const countSpyOn = jest
+      .spyOn(PatientRepository, 'count')
+      .mockResolvedValueOnce(0)
+      .mockResolvedValueOnce(1)
+
+    const searchSpyOn = jest
+      .spyOn(PatientRepository, 'search')
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([expectedPatient])
+
+    const expectedSearch = 'someQueryString'
+    render(<SearchPatients />)
+
+    const patientSearch = screen.getByPlaceholderText(/actions\.search/i)
+    userEvent.type(patientSearch, expectedSearch)
+    expect(patientSearch).toHaveDisplayValue(expectedSearch)
+
+    await waitFor(() => {
+      expect(searchSpyOn).toHaveBeenCalledTimes(2)
+      expect(searchSpyOn).toHaveBeenCalledWith(expectedSearch)
+    })
+
+    expect(screen.getByRole('cell', { name: expectedPatient.code })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: expectedPatient.givenName })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: expectedPatient.familyName })).toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: expectedPatient.sex })).toBeInTheDocument()
+    expect(
+      screen.getByRole('cell', { name: format(dateOfBirth, 'MM/dd/yyyy') }),
+    ).toBeInTheDocument()
+
+    searchSpyOn.mockReset()
+    searchSpyOn.mockRestore()
+
+    countSpyOn.mockReset()
+    countSpyOn.mockRestore()
   })
 })
