@@ -1,5 +1,6 @@
 import { screen, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { format } from 'date-fns'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -36,10 +37,11 @@ describe('Notes list', () => {
     ]
     const { container } = setup(expectedNotes)
 
+    const dateString = new Date(expectedNotes[0].date).toLocaleString()
     await waitFor(() => {
       expect(
         screen.getByRole('button', {
-          name: /9\/9\/1947, 4:48:00 pm some name/i,
+          name: `${dateString} some name`,
         }),
       ).toBeInTheDocument()
     })
@@ -63,8 +65,9 @@ describe('Notes list', () => {
     const expectedNotes = [{ id: '456', text: 'some name', date: '1947-09-09T14:48:00.000Z' }]
     const { history } = setup(expectedNotes)
 
+    const dateString = new Date(expectedNotes[0].date).toLocaleString()
     const item = await screen.findByRole('button', {
-      name: /9\/9\/1947, 4:48:00 pm some name/i,
+      name: `${dateString} some name`,
     })
 
     userEvent.click(item)
