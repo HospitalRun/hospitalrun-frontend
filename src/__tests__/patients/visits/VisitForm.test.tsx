@@ -38,17 +38,14 @@ describe('Visit Form', () => {
     const { container } = setup()
 
     const startDateLabel = screen.getByText(/patient.visits.startdatetime/i)
-    expect(startDateLabel).toBeInTheDocument()
     const requiredIcon = within(startDateLabel).getByRole('img', {
       hidden: true,
     })
-    expect(requiredIcon).toBeInTheDocument()
     expect(requiredIcon.getAttribute('data-icon')).toEqual('asterisk')
 
     const startDateTimePicker = container.querySelectorAll(
       '.react-datepicker__input-container input',
     )[0]
-    expect(startDateTimePicker).toBeInTheDocument()
     expect(startDateTimePicker).toHaveDisplayValue(
       format(new Date(visit.startDateTime), 'MM/dd/yyyy h:mm aa'),
     )
@@ -62,29 +59,29 @@ describe('Visit Form', () => {
       '.react-datepicker__input-container input',
     )[0]
     fireEvent.change(startDateTimePicker, {
-      target: { value: expectedNewStartDateTime },
+      target: { value: format(expectedNewStartDateTime, 'MM/dd/yyyy h:mm aa') },
     })
 
     expect(onVisitChangeSpy).toHaveBeenCalledWith({
       startDateTime: expectedNewStartDateTime.toISOString(),
     })
+    expect(startDateTimePicker).toHaveDisplayValue(
+      format(expectedNewStartDateTime, 'MM/dd/yyyy h:mm aa'),
+    )
   })
 
   it('should render an end date picker', () => {
     const { container } = setup()
 
     const endDateLabel = screen.getByText(/patient.visits.enddatetime/i)
-    expect(endDateLabel).toBeInTheDocument()
     const requiredIcon = within(endDateLabel).getByRole('img', {
       hidden: true,
     })
-    expect(requiredIcon).toBeInTheDocument()
     expect(requiredIcon.getAttribute('data-icon')).toEqual('asterisk')
 
     const endDateTimePicker = container.querySelectorAll(
       '.react-datepicker__input-container input',
     )[1]
-    expect(endDateTimePicker).toBeInTheDocument()
     expect(endDateTimePicker).toHaveDisplayValue(
       format(new Date(visit.endDateTime), 'MM/dd/yyyy h:mm aa'),
     )
@@ -102,22 +99,23 @@ describe('Visit Form', () => {
       format(new Date(expectedNewEndDateTime), 'MM/dd/yyyy h:mm aa'),
     )
     fireEvent.change(endDateTimePicker, {
-      target: { value: expectedNewEndDateTime },
+      target: { value: format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa') },
     })
 
     expect(onVisitChangeSpy).toHaveBeenCalledWith({
       endDateTime: expectedNewEndDateTime.toISOString(),
     })
+    expect(endDateTimePicker).toHaveDisplayValue(
+      format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa'),
+    )
   })
 
   it('should render a type input', () => {
     setup()
 
-    const typeLabel = screen.getByText(/patient.visits.type/i)
-    expect(typeLabel).toBeInTheDocument()
+    expect(screen.getByText(/patient.visits.type/i)).toBeInTheDocument()
 
     const typeInput = screen.getByPlaceholderText(/patient.visits.type/i)
-    expect(typeInput).toBeInTheDocument()
 
     expect(typeInput).toHaveDisplayValue(visit.type)
   })
@@ -138,16 +136,12 @@ describe('Visit Form', () => {
     setup()
 
     const statusLabel = screen.getByText(/patient.visits.status/i)
-    expect(statusLabel).toBeInTheDocument()
-
     const requiredIcon = within(statusLabel).getByRole('img', {
       hidden: true,
     })
-    expect(requiredIcon).toBeInTheDocument()
     expect(requiredIcon.getAttribute('data-icon')).toEqual('asterisk')
 
     const statusSelector = screen.getByPlaceholderText('-- Choose --')
-    expect(statusSelector).toBeInTheDocument()
 
     expect(statusSelector).toHaveDisplayValue(visit.status)
 
@@ -161,26 +155,23 @@ describe('Visit Form', () => {
     const expectedNewStatus = VisitStatus.Finished
     setup(false, false)
 
-    const statusInput = screen.getByPlaceholderText('-- Choose --')
+    const statusSelector = screen.getByPlaceholderText('-- Choose --')
 
-    await selectEvent.select(statusInput, expectedNewStatus)
+    await selectEvent.select(statusSelector, expectedNewStatus)
 
+    expect(statusSelector).toHaveDisplayValue(expectedNewStatus)
     expect(onVisitChangeSpy).toHaveBeenCalledWith({ status: expectedNewStatus })
   })
 
   it('should render a reason input', () => {
     setup()
     const reasonLabel = screen.getByText(/patient.visits.reason/i)
-    expect(reasonLabel).toBeInTheDocument()
-
     const requiredIcon = within(reasonLabel).getByRole('img', {
       hidden: true,
     })
-    expect(requiredIcon).toBeInTheDocument()
     expect(requiredIcon.getAttribute('data-icon')).toEqual('asterisk')
 
     const reasonInput = screen.getAllByRole('textbox')[3]
-    expect(reasonInput).toBeInTheDocument()
 
     expect(reasonInput).toHaveDisplayValue(visit.reason)
   })
@@ -192,8 +183,9 @@ describe('Visit Form', () => {
     const reasonInput = screen.getAllByRole('textbox')[3]
 
     userEvent.clear(reasonInput)
-    userEvent.paste(reasonInput, expectedNewReason)
+    userEvent.type(reasonInput, expectedNewReason)
 
+    expect(reasonInput).toHaveDisplayValue(expectedNewReason)
     expect(onVisitChangeSpy).toHaveBeenCalledWith({ reason: expectedNewReason })
   })
 
@@ -217,6 +209,7 @@ describe('Visit Form', () => {
     const locationInput = screen.getByPlaceholderText(/patient.visits.location/i)
     userEvent.type(locationInput, expectedNewLocation)
 
+    expect(locationInput).toHaveDisplayValue(expectedNewLocation)
     expect(onVisitChangeSpy).toHaveBeenCalledWith({ location: expectedNewLocation })
   })
 
