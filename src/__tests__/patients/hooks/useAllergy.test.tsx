@@ -1,14 +1,18 @@
-/* eslint-disable no-console */
-
 import useAllergy from '../../../patients/hooks/useAllergy'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import executeQuery from '../../test-utils/use-query.util'
 
 describe('use allergy', () => {
+  let errorMock: jest.SpyInstance
+
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
+    errorMock = jest.spyOn(console, 'error').mockImplementation()
+  })
+
+  afterEach(() => {
+    errorMock.mockRestore()
   })
 
   it('should return an allergy given a patient id and allergy id', async () => {

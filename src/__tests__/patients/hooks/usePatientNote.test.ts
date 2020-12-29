@@ -1,14 +1,18 @@
-/* eslint-disable no-console */
-
 import usePatientNote from '../../../patients/hooks/usePatientNote'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import executeQuery from '../../test-utils/use-query.util'
 
 describe('use note', () => {
+  let errorMock: jest.SpyInstance
+
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
+    errorMock = jest.spyOn(console, 'error').mockImplementation()
+  })
+
+  afterEach(() => {
+    errorMock.mockRestore()
   })
 
   it('should return a note given a patient id and note id', async () => {
