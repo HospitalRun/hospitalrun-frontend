@@ -31,12 +31,15 @@ describe('use note', () => {
       id: expectedPatientId,
       notes: [{ id: '426', text: 'eome name', date: '1947-09-09T14:48:00.000Z' }],
     } as Patient
-    jest.spyOn(PatientRepository, 'find').mockResolvedValueOnce(expectedPatient)
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
 
     try {
-      await executeQuery(() => usePatientNote(expectedPatientId, expectedNote.id))
+      await executeQuery(
+        () => usePatientNote(expectedPatientId, expectedNote.id),
+        (query) => query.isError,
+      )
     } catch (e) {
-      expect(e).toEqual(new Error('Timed out in waitFor after 1000ms.'))
+      expect(e).toEqual(new Error('Note not found'))
     }
   })
 })
