@@ -5,7 +5,6 @@ import React from 'react'
 import { Route, Router } from 'react-router-dom'
 
 import ViewVisit from '../../../patients/visits/ViewVisit'
-import VisitForm from '../../../patients/visits/VisitForm'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import Visit, { VisitStatus } from '../../../shared/model/Visit'
