@@ -53,22 +53,24 @@ describe('Search Patients', () => {
     const expectedSearch = 'someQueryString'
     render(<SearchPatients />)
 
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: /patients\.nopatients/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /patients\.newpatient/i })).toBeInTheDocument()
+    })
+
     const patientSearch = screen.getByPlaceholderText(/actions\.search/i)
     userEvent.type(patientSearch, expectedSearch)
     expect(patientSearch).toHaveDisplayValue(expectedSearch)
 
     await waitFor(() => {
-      expect(searchSpyOn).toHaveBeenCalledTimes(2)
-      expect(searchSpyOn).toHaveBeenCalledWith(expectedSearch)
+      expect(screen.getByRole('cell', { name: expectedPatient.code })).toBeInTheDocument()
+      expect(screen.getByRole('cell', { name: expectedPatient.givenName })).toBeInTheDocument()
+      expect(screen.getByRole('cell', { name: expectedPatient.familyName })).toBeInTheDocument()
+      expect(screen.getByRole('cell', { name: expectedPatient.sex })).toBeInTheDocument()
+      expect(
+        screen.getByRole('cell', { name: format(dateOfBirth, 'MM/dd/yyyy') }),
+      ).toBeInTheDocument()
     })
-
-    expect(screen.getByRole('cell', { name: expectedPatient.code })).toBeInTheDocument()
-    expect(screen.getByRole('cell', { name: expectedPatient.givenName })).toBeInTheDocument()
-    expect(screen.getByRole('cell', { name: expectedPatient.familyName })).toBeInTheDocument()
-    expect(screen.getByRole('cell', { name: expectedPatient.sex })).toBeInTheDocument()
-    expect(
-      screen.getByRole('cell', { name: format(dateOfBirth, 'MM/dd/yyyy') }),
-    ).toBeInTheDocument()
 
     searchSpyOn.mockReset()
     searchSpyOn.mockRestore()
