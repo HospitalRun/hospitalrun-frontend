@@ -19,7 +19,7 @@ import { RootState } from '../../../shared/store'
 const expectedPatient = {
   id: '123',
   diagnoses: [
-    { id: '123', name: 'diagnosis1', diagnosisDate: new Date().toISOString() } as Diagnosis,
+    { id: '123', name: 'Hayfever', diagnosisDate: new Date().toISOString() } as Diagnosis,
   ],
 } as Patient
 
