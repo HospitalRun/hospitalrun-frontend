@@ -49,7 +49,7 @@ describe('date picker with label form group', () => {
         const datepickerInput = screen.getByRole('textbox')
 
         expect(datepickerInput).toHaveDisplayValue(['01/01/2019'])
-        userEvent.type(datepickerInput, '12/25/2021')
+        userEvent.type(datepickerInput, '{selectall}12/25/2021')
         expect(datepickerInput).toHaveDisplayValue(['12/25/2021'])
       })
     })
