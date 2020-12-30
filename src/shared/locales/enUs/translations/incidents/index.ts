@@ -6,9 +6,9 @@ export default {
       report: 'Report',
     },
     status: {
-      reported: 'reported',
-      resolved: 'resolved',
-      all: 'all',
+      reported: 'Reported',
+      resolved: 'Resolved',
+      all: 'All',
     },
     reports: {
       label: 'Reported Incidents',
