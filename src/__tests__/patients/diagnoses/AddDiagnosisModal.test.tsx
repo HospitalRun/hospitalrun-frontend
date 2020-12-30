@@ -1,11 +1,9 @@
 /* eslint-disable no-console */
-import { Modal } from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 
 import AddDiagnosisModal from '../../../patients/diagnoses/AddDiagnosisModal'
-import DiagnosisForm from '../../../patients/diagnoses/DiagnosisForm'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import { CarePlanIntent, CarePlanStatus } from '../../../shared/model/CarePlan'
 import Diagnosis, { DiagnosisStatus } from '../../../shared/model/Diagnosis'
@@ -43,75 +41,66 @@ describe('Add Diagnosis Modal', () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
 
-    const wrapper = mount(
-      <AddDiagnosisModal patient={patient} show onCloseButtonClick={onCloseSpy} />,
-    )
-
-    wrapper.update()
-    return { wrapper }
+    return render(<AddDiagnosisModal patient={patient} show onCloseButtonClick={onCloseSpy} />)
   }
   beforeEach(() => {
     console.error = jest.fn()
   })
   it('should render a modal', () => {
-    const { wrapper } = setup()
+    setup()
 
-    const modal = wrapper.find(Modal)
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
 
-    expect(modal).toHaveLength(1)
-
-    const successButton = modal.prop('successButton')
-    const cancelButton = modal.prop('closeButton')
-    expect(modal.prop('title')).toEqual('patient.diagnoses.new')
-    expect(successButton?.children).toEqual('patient.diagnoses.new')
-    expect(successButton?.icon).toEqual('add')
-    expect(cancelButton?.children).toEqual('actions.cancel')
+    expect(screen.getByRole('button', { name: /patient\.diagnoses\.new/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /actions\.cancel/i })).toBeInTheDocument()
   })
 
   it('should render the diagnosis form', () => {
-    const { wrapper } = setup()
+    setup()
 
-    const diagnosisForm = wrapper.find(DiagnosisForm)
-    expect(diagnosisForm).toHaveLength(1)
+    expect(screen.getByRole('form')).toBeInTheDocument()
   })
 
   it('should dispatch add diagnosis when the save button is clicked', async () => {
     const patient = mockPatient
     patient.diagnoses = []
-    const { wrapper } = setup(patient)
+    await setup(patient)
 
     const newDiagnosis = mockDiagnosis
-    newDiagnosis.name = 'New Diagnosis Name'
+    newDiagnosis.name = 'yellow polka dot spots'
 
-    act(() => {
-      const diagnosisForm = wrapper.find(DiagnosisForm)
-      const onChange = diagnosisForm.prop('onChange') as any
-      onChange(newDiagnosis)
-    })
-    wrapper.update()
+    userEvent.type(
+      screen.getByPlaceholderText(/patient\.diagnoses\.diagnosisName/i),
+      newDiagnosis.name,
+    )
 
-    await act(async () => {
-      const modal = wrapper.find(Modal)
-      const onSave = (modal.prop('successButton') as any).onClick
-      await onSave({} as React.MouseEvent<HTMLButtonElement>)
-    })
+    await waitFor(() =>
+      userEvent.click(
+        within(screen.getByRole('dialog')).getByRole('button', {
+          name: /patient\.diagnoses\.new/i,
+        }),
+      ),
+    )
+
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
-        diagnoses: [expect.objectContaining({ name: 'New Diagnosis Name' })],
+        diagnoses: [expect.objectContaining({ name: 'yellow polka dot spots' })],
       }),
     )
   })
 
   it('should call the on close function when the cancel button is clicked', async () => {
     const onCloseButtonClickSpy = jest.fn()
-    const { wrapper } = setup(mockPatient, onCloseButtonClickSpy)
-    const modal = wrapper.find(Modal)
-    act(() => {
-      const { onClick } = modal.prop('closeButton') as any
-      onClick()
-    })
-    expect(modal).toHaveLength(1)
+    setup(mockPatient, onCloseButtonClickSpy)
+
+    await waitFor(() =>
+      userEvent.click(
+        within(screen.getByRole('dialog')).getByRole('button', {
+          name: /actions\.cancel/i,
+        }),
+      ),
+    )
     expect(onCloseButtonClickSpy).toHaveBeenCalledTimes(1)
   })
 })

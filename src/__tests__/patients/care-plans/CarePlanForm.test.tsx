@@ -1,8 +1,7 @@
-import { Alert } from '@hospitalrun/components'
-import addDays from 'date-fns/addDays'
-import { mount } from 'enzyme'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { format } from 'date-fns'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 
 import CarePlanForm from '../../../patients/care-plans/CarePlanForm'
 import CarePlan, { CarePlanIntent, CarePlanStatus } from '../../../shared/model/CarePlan'
@@ -19,6 +18,7 @@ describe('Care Plan Form', () => {
     abatementDate: new Date().toISOString(),
     status: DiagnosisStatus.Active,
     note: 'some note',
+    visit: 'some visit',
   }
   const carePlan: CarePlan = {
     id: 'id',
@@ -35,7 +35,8 @@ describe('Care Plan Form', () => {
   const setup = (disabled = false, initializeCarePlan = true, error?: any) => {
     onCarePlanChangeSpy = jest.fn()
     const mockPatient = { id: '123', diagnoses: [diagnosis] } as Patient
-    const wrapper = mount(
+
+    return render(
       <CarePlanForm
         patient={mockPatient}
         onChange={onCarePlanChangeSpy}
@@ -44,226 +45,177 @@ describe('Care Plan Form', () => {
         carePlanError={error}
       />,
     )
-    return { wrapper }
   }
 
-  it('should render a title input', () => {
-    const { wrapper } = setup()
-
-    const titleInput = wrapper.findWhere((w) => w.prop('name') === 'title')
-
-    expect(titleInput).toHaveLength(1)
-    expect(titleInput.prop('patient.carePlan.title'))
-    expect(titleInput.prop('isRequired')).toBeTruthy()
-    expect(titleInput.prop('value')).toEqual(carePlan.title)
+  beforeEach(() => {
+    jest.resetAllMocks()
   })
 
-  it('should call the on change handler when condition changes', () => {
-    const expectedNewTitle = 'some new title'
-    const { wrapper } = setup(false, false)
-    act(() => {
-      const titleInput = wrapper.findWhere((w) => w.prop('name') === 'title')
-      const onChange = titleInput.prop('onChange') as any
-      onChange({ currentTarget: { value: expectedNewTitle } })
-    })
+  it('should render a title input', () => {
+    setup()
+    expect(screen.getByLabelText(/patient.carePlan.title/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/patient.carePlan.title/i)).toHaveValue(carePlan.title)
+    expect(screen.getByText(/patient.carePlan.title/i).title).toBe('This is a required input')
+  })
 
+  it('should call the on change handler when title changes', () => {
+    const expectedNewTitle = 'some new title'
+    setup(false, false)
+    userEvent.type(screen.getByLabelText(/patient.carePlan.title/i), expectedNewTitle)
     expect(onCarePlanChangeSpy).toHaveBeenCalledWith({ title: expectedNewTitle })
   })
 
   it('should render a description input', () => {
-    const { wrapper } = setup()
-
-    const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
-
-    expect(descriptionInput).toHaveLength(1)
-    expect(descriptionInput.prop('patient.carePlan.description'))
-    expect(descriptionInput.prop('isRequired')).toBeTruthy()
-    expect(descriptionInput.prop('value')).toEqual(carePlan.description)
+    setup()
+    expect(screen.getByLabelText(/patient.carePlan.description/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/patient.carePlan.description/i)).toHaveValue(carePlan.description)
+    expect(screen.getByText(/patient.carePlan.description/i).title).toBe('This is a required input')
   })
 
-  it('should call the on change handler when condition changes', () => {
+  it('should call the on change handler when description changes', () => {
     const expectedNewDescription = 'some new description'
-    const { wrapper } = setup(false, false)
-    act(() => {
-      const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
-      const onChange = descriptionInput.prop('onChange') as any
-      onChange({ currentTarget: { value: expectedNewDescription } })
-    })
-
+    setup(false, false)
+    userEvent.paste(screen.getByLabelText(/patient.carePlan.description/i), expectedNewDescription)
     expect(onCarePlanChangeSpy).toHaveBeenCalledWith({ description: expectedNewDescription })
   })
 
-  it('should render a condition selector with the diagnoses from the patient', () => {
-    const { wrapper } = setup()
-
-    const conditionSelector = wrapper.findWhere((w) => w.prop('name') === 'condition')
-
-    expect(conditionSelector).toHaveLength(1)
-    expect(conditionSelector.prop('patient.carePlan.condition'))
-    expect(conditionSelector.prop('isRequired')).toBeTruthy()
-    expect(conditionSelector.prop('defaultSelected')[0].value).toEqual(carePlan.diagnosisId)
-    expect(conditionSelector.prop('options')).toEqual([
-      { value: diagnosis.id, label: diagnosis.name },
-    ])
+  it('should render a condition selector with the diagnoses from the patient', async () => {
+    setup()
+    const conditionSelector = screen.getByDisplayValue(diagnosis.name)
+    const conditionSelectorLabel = screen.getByText(/patient.carePlan.condition/i)
+    expect(conditionSelector).toBeInTheDocument()
+    expect(conditionSelector).toHaveValue(diagnosis.name)
+    expect(conditionSelectorLabel).toBeInTheDocument()
+    expect(conditionSelectorLabel.title).toBe('This is a required input')
   })
 
-  it('should call the on change handler when condition changes', () => {
-    const expectedNewCondition = 'some new condition'
-    const { wrapper } = setup(false, false)
-    act(() => {
-      const conditionSelector = wrapper.findWhere((w) => w.prop('name') === 'condition')
-      const onChange = conditionSelector.prop('onChange') as any
-      onChange([expectedNewCondition])
-    })
-
-    expect(onCarePlanChangeSpy).toHaveBeenCalledWith({ diagnosisId: expectedNewCondition })
+  it('should call the on change handler when condition changes', async () => {
+    setup(false, false)
+    const conditionSelector = screen.getAllByRole('combobox')[0]
+    userEvent.type(conditionSelector, `${diagnosis.name}{arrowdown}{enter}`)
+    expect(onCarePlanChangeSpy).toHaveBeenCalledWith({ diagnosisId: diagnosis.id })
   })
 
   it('should render a status selector', () => {
-    const { wrapper } = setup()
-
-    const statusSelector = wrapper.findWhere((w) => w.prop('name') === 'status')
-
-    expect(statusSelector).toHaveLength(1)
-    expect(statusSelector.prop('patient.carePlan.status'))
-    expect(statusSelector.prop('isRequired')).toBeTruthy()
-    expect(statusSelector.prop('defaultSelected')[0].value).toEqual(carePlan.status)
-    expect(statusSelector.prop('options')).toEqual(
-      Object.values(CarePlanStatus).map((v) => ({ label: v, value: v })),
-    )
+    setup()
+    const statusSelector = screen.getByDisplayValue(carePlan.status)
+    const statusSelectorLabel = screen.getByText(/patient.carePlan.status/i)
+    expect(statusSelector).toBeInTheDocument()
+    expect(statusSelector).toHaveValue(carePlan.status)
+    expect(statusSelectorLabel).toBeInTheDocument()
+    expect(statusSelectorLabel.title).toBe('This is a required input')
+    userEvent.click(statusSelector)
+    const optionsList = screen
+      .getAllByRole('listbox')
+      .filter((item) => item.id === 'statusSelect')[0]
+    const options = Array.prototype.map.call(optionsList.children, (li) => li.textContent)
+    expect(options).toEqual(Object.values(CarePlanStatus).map((v) => v))
   })
 
   it('should call the on change handler when status changes', () => {
     const expectedNewStatus = CarePlanStatus.Revoked
-    const { wrapper } = setup(false, false)
-    act(() => {
-      const statusSelector = wrapper.findWhere((w) => w.prop('name') === 'status')
-      const onChange = statusSelector.prop('onChange') as any
-      onChange([expectedNewStatus])
-    })
-
-    expect(onCarePlanChangeSpy).toHaveBeenCalledWith({ status: expectedNewStatus })
+    setup()
+    const statusSelector = screen.getByDisplayValue(carePlan.status)
+    userEvent.click(statusSelector)
+    userEvent.click(screen.getByText(expectedNewStatus))
+    expect(onCarePlanChangeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ status: expectedNewStatus }),
+    )
   })
 
   it('should render an intent selector', () => {
-    const { wrapper } = setup()
-
-    const intentSelector = wrapper.findWhere((w) => w.prop('name') === 'intent')
-
-    expect(intentSelector).toHaveLength(1)
-    expect(intentSelector.prop('patient.carePlan.intent'))
-    expect(intentSelector.prop('isRequired')).toBeTruthy()
-    expect(intentSelector.prop('defaultSelected')[0].value).toEqual(carePlan.intent)
-    expect(intentSelector.prop('options')).toEqual(
-      Object.values(CarePlanIntent).map((v) => ({ label: v, value: v })),
-    )
+    setup()
+    const intentSelector = screen.getByDisplayValue(carePlan.intent)
+    const intentSelectorLabel = screen.getByText(/patient.carePlan.intent/i)
+    expect(intentSelector).toBeInTheDocument()
+    expect(intentSelector).toHaveValue(carePlan.intent)
+    expect(intentSelectorLabel).toBeInTheDocument()
+    expect(intentSelectorLabel.title).toBe('This is a required input')
+    userEvent.click(intentSelector)
+    const optionsList = screen
+      .getAllByRole('listbox')
+      .filter((item) => item.id === 'intentSelect')[0]
+    const options = Array.prototype.map.call(optionsList.children, (li) => li.textContent)
+    expect(options).toEqual(Object.values(CarePlanIntent).map((v) => v))
   })
 
   it('should call the on change handler when intent changes', () => {
     const newIntent = CarePlanIntent.Proposal
-    const { wrapper } = setup(false, false)
-    act(() => {
-      const intentSelector = wrapper.findWhere((w) => w.prop('name') === 'intent')
-      const onChange = intentSelector.prop('onChange') as any
-      onChange([newIntent])
-    })
-
-    expect(onCarePlanChangeSpy).toHaveBeenCalledWith({ intent: newIntent })
+    setup()
+    const intentSelector = screen.getByDisplayValue(carePlan.intent)
+    userEvent.click(intentSelector)
+    userEvent.click(screen.getByText(newIntent))
+    expect(onCarePlanChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ intent: newIntent }))
   })
 
   it('should render a start date picker', () => {
-    const { wrapper } = setup()
-
-    const startDatePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
-
-    expect(startDatePicker).toHaveLength(1)
-    expect(startDatePicker.prop('patient.carePlan.startDate'))
-    expect(startDatePicker.prop('isRequired')).toBeTruthy()
-    expect(startDatePicker.prop('value')).toEqual(new Date(carePlan.startDate))
+    setup()
+    const date = format(new Date(carePlan.startDate), 'MM/dd/yyyy')
+    const startDatePicker = screen.getAllByDisplayValue(date)[0]
+    const startDatePickerLabel = screen.getByText(/patient.carePlan.startDate/i)
+    expect(startDatePicker).toBeInTheDocument()
+    expect(startDatePicker).toHaveValue(date)
+    expect(startDatePickerLabel).toBeInTheDocument()
+    expect(startDatePickerLabel.title).toBe('This is a required input')
   })
 
   it('should call the on change handler when start date changes', () => {
-    const expectedNewStartDate = addDays(1, new Date().getDate())
-    const { wrapper } = setup(false, false)
-
-    const startDatePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
-    act(() => {
-      const onChange = startDatePicker.prop('onChange') as any
-      onChange(expectedNewStartDate)
-    })
-
-    expect(onCarePlanChangeSpy).toHaveBeenCalledWith({
-      startDate: expectedNewStartDate.toISOString(),
-    })
+    setup()
+    const startDatePicker = screen.getAllByDisplayValue(
+      format(new Date(carePlan.startDate), 'MM/dd/yyyy'),
+    )[0]
+    userEvent.type(startDatePicker, '{arrowdown}{arrowleft}{enter}')
+    expect(onCarePlanChangeSpy).toHaveBeenCalledTimes(1)
   })
 
   it('should render an end date picker', () => {
-    const { wrapper } = setup()
-
-    const endDatePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
-
-    expect(endDatePicker).toHaveLength(1)
-    expect(endDatePicker.prop('patient.carePlan.endDate'))
-    expect(endDatePicker.prop('isRequired')).toBeTruthy()
-    expect(endDatePicker.prop('value')).toEqual(new Date(carePlan.endDate))
+    setup()
+    const date = format(new Date(carePlan.endDate), 'MM/dd/yyyy')
+    const endDatePicker = screen.getAllByDisplayValue(date)[0]
+    const endDatePickerLabel = screen.getByText(/patient.carePlan.endDate/i)
+    expect(endDatePicker).toBeInTheDocument()
+    expect(endDatePicker).toHaveValue(date)
+    expect(endDatePickerLabel).toBeInTheDocument()
+    expect(endDatePickerLabel.title).toBe('This is a required input')
   })
 
   it('should call the on change handler when end date changes', () => {
-    const expectedNewEndDate = addDays(1, new Date().getDate())
-    const { wrapper } = setup(false, false)
-
-    const endDatePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
-    act(() => {
-      const onChange = endDatePicker.prop('onChange') as any
-      onChange(expectedNewEndDate)
-    })
-
-    expect(onCarePlanChangeSpy).toHaveBeenCalledWith({
-      endDate: expectedNewEndDate.toISOString(),
-    })
+    setup()
+    const endDatePicker = screen.getAllByDisplayValue(
+      format(new Date(carePlan.endDate), 'MM/dd/yyyy'),
+    )[0]
+    userEvent.type(endDatePicker, '{arrowdown}{arrowleft}{enter}')
+    expect(onCarePlanChangeSpy).toHaveBeenCalledTimes(1)
   })
 
   it('should render a note input', () => {
-    const { wrapper } = setup()
-
-    const noteInput = wrapper.findWhere((w) => w.prop('name') === 'note')
-    expect(noteInput).toHaveLength(1)
-    expect(noteInput.prop('patient.carePlan.note'))
-    expect(noteInput.prop('value')).toEqual(carePlan.note)
+    setup()
+    const noteInput = screen.getByLabelText(/patient.carePlan.note/i)
+    expect(noteInput).toBeInTheDocument()
+    expect(noteInput).toHaveTextContent(carePlan.note)
   })
 
   it('should call the on change handler when note changes', () => {
     const expectedNewNote = 'some new note'
-    const { wrapper } = setup(false, false)
-
-    const noteInput = wrapper.findWhere((w) => w.prop('name') === 'note')
-    act(() => {
-      const onChange = noteInput.prop('onChange') as any
-      onChange({ currentTarget: { value: expectedNewNote } })
-    })
-
+    setup(false, false)
+    const noteInput = screen.getByLabelText(/patient.carePlan.note/i)
+    userEvent.paste(noteInput, expectedNewNote)
     expect(onCarePlanChangeSpy).toHaveBeenCalledWith({ note: expectedNewNote })
   })
 
   it('should render all of the fields as disabled if the form is disabled', () => {
-    const { wrapper } = setup(true)
-    const titleInput = wrapper.findWhere((w) => w.prop('name') === 'title')
-    const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
-    const conditionSelector = wrapper.findWhere((w) => w.prop('name') === 'condition')
-    const statusSelector = wrapper.findWhere((w) => w.prop('name') === 'status')
-    const intentSelector = wrapper.findWhere((w) => w.prop('name') === 'intent')
-    const startDatePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
-    const endDatePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
-    const noteInput = wrapper.findWhere((w) => w.prop('name') === 'note')
-
-    expect(titleInput.prop('isEditable')).toBeFalsy()
-    expect(descriptionInput.prop('isEditable')).toBeFalsy()
-    expect(conditionSelector.prop('isEditable')).toBeFalsy()
-    expect(statusSelector.prop('isEditable')).toBeFalsy()
-    expect(intentSelector.prop('isEditable')).toBeFalsy()
-    expect(startDatePicker.prop('isEditable')).toBeFalsy()
-    expect(endDatePicker.prop('isEditable')).toBeFalsy()
-    expect(noteInput.prop('isEditable')).toBeFalsy()
+    setup(true)
+    expect(screen.getByLabelText(/patient.carePlan.title/i)).toBeDisabled()
+    expect(screen.getByLabelText(/patient.carePlan.description/i)).toBeDisabled()
+    // condition
+    expect(screen.getByDisplayValue(diagnosis.name)).toBeDisabled()
+    expect(screen.getByDisplayValue(carePlan.status)).toBeDisabled()
+    expect(screen.getByDisplayValue(carePlan.intent)).toBeDisabled()
+    const startDate = format(new Date(carePlan.startDate), 'MM/dd/yyyy')
+    expect(screen.getAllByDisplayValue(startDate)[0]).toBeDisabled()
+    const endDate = format(new Date(carePlan.endDate), 'MM/dd/yyyy')
+    expect(screen.getAllByDisplayValue(endDate)[0]).toBeDisabled()
+    expect(screen.getByLabelText(/patient.carePlan.note/i)).toBeDisabled()
   })
 
   it('should render the form fields in an error state', () => {
@@ -278,44 +230,41 @@ describe('Care Plan Form', () => {
       note: 'some note error',
       condition: 'some condition error',
     }
-
-    const { wrapper } = setup(false, false, expectedError)
-
-    const alert = wrapper.find(Alert)
-    const titleInput = wrapper.findWhere((w) => w.prop('name') === 'title')
-    const descriptionInput = wrapper.findWhere((w) => w.prop('name') === 'description')
-    const conditionSelector = wrapper.findWhere((w) => w.prop('name') === 'condition')
-    const statusSelector = wrapper.findWhere((w) => w.prop('name') === 'status')
-    const intentSelector = wrapper.findWhere((w) => w.prop('name') === 'intent')
-    const startDatePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
-    const endDatePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
-    const noteInput = wrapper.findWhere((w) => w.prop('name') === 'note')
-
-    expect(alert).toHaveLength(1)
-    expect(alert.prop('message')).toEqual(expectedError.message)
-
-    expect(titleInput.prop('isInvalid')).toBeTruthy()
-    expect(titleInput.prop('feedback')).toEqual(expectedError.title)
-
-    expect(descriptionInput.prop('isInvalid')).toBeTruthy()
-    expect(descriptionInput.prop('feedback')).toEqual(expectedError.description)
-
-    expect(conditionSelector.prop('isInvalid')).toBeTruthy()
-    // expect(conditionSelector.prop('feedback')).toEqual(expectedError.condition)
-
-    expect(statusSelector.prop('isInvalid')).toBeTruthy()
-    // expect(statusSelector.prop('feedback')).toEqual(expectedError.status)
-
-    expect(intentSelector.prop('isInvalid')).toBeTruthy()
-    // expect(intentSelector.prop('feedback')).toEqual(expectedError.intent)
-
-    expect(startDatePicker.prop('isInvalid')).toBeTruthy()
-    expect(startDatePicker.prop('feedback')).toEqual(expectedError.startDate)
-
-    expect(endDatePicker.prop('isInvalid')).toBeTruthy()
-    expect(endDatePicker.prop('feedback')).toEqual(expectedError.endDate)
-
-    expect(noteInput.prop('isInvalid')).toBeTruthy()
-    expect(noteInput.prop('feedback')).toEqual(expectedError.note)
+    setup(false, false, expectedError)
+    const alert = screen.getByRole('alert')
+    const titleInput = screen.getByLabelText(/patient.carePlan.title/i)
+    const descriptionInput = screen.getByLabelText(/patient.carePlan.description/i)
+    const conditionInput = screen.getAllByRole('combobox')[0]
+    const statusInput = screen.getAllByRole('combobox')[1]
+    const intentInput = screen.getAllByRole('combobox')[2]
+    const startDate = format(new Date(carePlan.startDate), 'MM/dd/yyyy')
+    const startDateInput = screen.getAllByDisplayValue(startDate)[0]
+    const endDate = format(new Date(carePlan.endDate), 'MM/dd/yyyy')
+    const endDateInput = screen.getAllByDisplayValue(endDate)[0]
+    const noteInput = screen.getByLabelText(/patient.carePlan.note/i)
+    expect(alert).toBeInTheDocument()
+    expect(alert).toHaveTextContent(expectedError.message)
+    expect(titleInput).toHaveClass('is-invalid')
+    expect(titleInput.nextSibling).toHaveTextContent(expectedError.title)
+    expect(descriptionInput).toHaveClass('is-invalid')
+    expect(descriptionInput.nextSibling).toHaveTextContent(expectedError.description)
+    expect(conditionInput).toHaveClass('is-invalid')
+    // expect(conditionInput.nextSibling).toHaveTextContent(
+    //   expectedError.condition,
+    // )
+    expect(statusInput).toHaveClass('is-invalid')
+    // expect(statusInput.nextSibling).toHaveTextContent(
+    //   expectedError.status,
+    // )
+    expect(intentInput).toHaveClass('is-invalid')
+    // expect(intentInput.nextSibling).toHaveTextContent(
+    //   expectedError.intent,
+    // )
+    expect(startDateInput).toHaveClass('is-invalid')
+    expect(screen.getByText(expectedError.startDate)).toBeInTheDocument()
+    expect(endDateInput).toHaveClass('is-invalid')
+    expect(screen.getByText(expectedError.endDate)).toBeInTheDocument()
+    expect(noteInput).toHaveClass('is-invalid')
+    expect(noteInput.nextSibling).toHaveTextContent(expectedError.note)
   })
 })

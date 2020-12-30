@@ -60,7 +60,7 @@ const DiagnosisForm = (props: Props) => {
   }))
 
   return (
-    <form>
+    <form aria-label="form">
       {diagnosisError && (
         <Alert
           color="danger"
