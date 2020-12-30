@@ -5,6 +5,7 @@ import addMinutes from 'date-fns/addMinutes'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import { createMemoryHistory } from 'history'
 import React from 'react'
+import { ReactQueryConfigProvider } from 'react-query'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import createMockStore from 'redux-mock-store'
@@ -44,6 +45,12 @@ describe('New Appointment', () => {
     fullName: 'Mr Popo',
   }
 
+  const noRetryConfig = {
+    queries: {
+      retry: false,
+    },
+  }
+
   const setup = () => {
     const expectedAppointment = { id: '123' } as Appointment
 
@@ -54,12 +61,14 @@ describe('New Appointment', () => {
     const history = createMemoryHistory({ initialEntries: ['/appointments/new'] })
 
     const Wrapper: React.FC = ({ children }: any) => (
-      <Provider store={mockStore({} as any)}>
-        <Router history={history}>
-          <TitleProvider>{children}</TitleProvider>
-        </Router>
-        <Toaster draggable hideProgressBar />
-      </Provider>
+      <ReactQueryConfigProvider config={noRetryConfig}>
+        <Provider store={mockStore({} as any)}>
+          <Router history={history}>
+            <TitleProvider>{children}</TitleProvider>
+          </Router>
+          <Toaster draggable hideProgressBar />
+        </Provider>
+      </ReactQueryConfigProvider>
     )
 
     return {
@@ -165,7 +174,6 @@ describe('New Appointment', () => {
     })
 
     it('should call AppointmentRepo.save when save button is clicked', async () => {
-      jest.setTimeout(15000)
       const { container } = setup()
 
       const expectedAppointment = {
@@ -219,7 +227,7 @@ describe('New Appointment', () => {
           patient: testPatient.id,
         })
       })
-    }, 25000)
+    }, 30000)
 
     it('should navigate to /appointments/:id when a new appointment is created', async () => {
       const { history, expectedAppointment } = setup()
