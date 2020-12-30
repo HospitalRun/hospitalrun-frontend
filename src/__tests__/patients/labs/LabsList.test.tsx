@@ -1,9 +1,7 @@
-import * as components from '@hospitalrun/components'
-import { Table } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -25,16 +23,16 @@ const expectedLabs = [
     rev: '1',
     patient: '1234',
     requestedOn: new Date(2020, 1, 1, 9, 0, 0, 0).toISOString(),
-    requestedBy: 'someone',
-    type: 'lab type',
+    requestedBy: 'Dr Strange',
+    type: 'Blood type',
   },
   {
     id: '123',
     rev: '1',
     patient: '1234',
     requestedOn: new Date(2020, 1, 1, 9, 0, 0, 0).toISOString(),
-    requestedBy: 'someone',
-    type: 'lab type',
+    requestedBy: 'Dr Meredith Gray',
+    type: 'another type ',
   },
 ] as Lab[]
 
@@ -48,71 +46,81 @@ const setup = async (patient = expectedPatient, labs = expectedLabs) => {
   jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue(labs)
   store = mockStore({ patient, labs: { labs } } as any)
 
-  let wrapper: any
-
-  await act(async () => {
-    wrapper = await mount(
-      <Router history={history}>
-        <Provider store={store}>
-          <LabsList patient={patient} />
-        </Provider>
-      </Router>,
-    )
-  })
-
-  wrapper.update()
-
-  return { wrapper: wrapper as ReactWrapper }
+  return render(
+    <Router history={history}>
+      <Provider store={store}>
+        <LabsList patient={patient} />
+      </Provider>
+    </Router>,
+  )
 }
 
-describe('LabsList', () => {
-  describe('Table', () => {
-    it('should render a list of labs', async () => {
-      const { wrapper } = await setup()
-
-      const table = wrapper.find(Table)
-
-      const columns = table.prop('columns')
-      const actions = table.prop('actions') as any
-
-      expect(table).toHaveLength(1)
-
-      expect(columns[0]).toEqual(expect.objectContaining({ label: 'labs.lab.type', key: 'type' }))
-      expect(columns[1]).toEqual(
-        expect.objectContaining({ label: 'labs.lab.requestedOn', key: 'requestedOn' }),
-      )
-      expect(columns[2]).toEqual(
-        expect.objectContaining({
-          label: 'labs.lab.status',
-          key: 'status',
-        }),
-      )
-      expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
-      expect(table.prop('actionsHeaderText')).toEqual('actions.label')
-      expect(table.prop('data')).toEqual(expectedLabs)
+describe('Table', () => {
+  it('should render a list of labs', async () => {
+    await setup()
+    await waitFor(() => {
+      expect(screen.getByRole('table')).toBeInTheDocument()
     })
+    expect(screen.getAllByRole('columnheader')).toHaveLength(4)
 
-    it('should navigate to lab view on lab click', async () => {
-      const { wrapper } = await setup()
-      const tr = wrapper.find('tr').at(1)
+    expect(
+      screen.getByRole('columnheader', {
+        name: /labs\.lab\.type/i,
+      }),
+    ).toBeInTheDocument()
 
-      act(() => {
-        const onClick = tr.find('button').at(0).prop('onClick') as any
-        onClick({ stopPropagation: jest.fn() })
-      })
+    expect(
+      screen.getByRole('columnheader', {
+        name: /labs\.lab\.requestedon/i,
+      }),
+    ).toBeInTheDocument()
 
-      expect(history.location.pathname).toEqual('/labs/456')
-    })
+    expect(
+      screen.getByRole('columnheader', {
+        name: /labs\.lab\.status/i,
+      }),
+    ).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('columnheader', {
+        name: /actions\.label/i,
+      }),
+    ).toBeInTheDocument()
+
+    screen.logTestingPlaygroundURL()
   })
+  it('should navigate to lab view on lab click', async () => {
+    let row: any
+    await setup()
 
-  describe('no patient labs', () => {
-    it('should render a warning message if there are no labs', async () => {
-      const { wrapper } = await setup(expectedPatient, [])
-      const alert = wrapper.find(components.Alert)
+    await waitFor(() => {
+      row = screen.getByRole('row', {
+        name: /blood type 2020-02-01 09:00 am actions\.view/i,
+      })
+    })
 
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('title')).toEqual('patient.labs.warning.noLabs')
-      expect(alert.prop('message')).toEqual('patient.labs.noLabsMessage')
+    await waitFor(() =>
+      userEvent.click(
+        within(row).getByRole('button', {
+          name: /actions\.view/i,
+        }),
+      ),
+    )
+
+    expect(history.location.pathname).toEqual('/labs/456')
+  })
+})
+
+describe('no patient labs', () => {
+  it('should render a warning message if there are no labs', async () => {
+    await setup(expectedPatient, [])
+
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.labs\.warning\.noLabs/i)).toBeInTheDocument()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.labs\.noLabsMessage/i))
     })
   })
 })
