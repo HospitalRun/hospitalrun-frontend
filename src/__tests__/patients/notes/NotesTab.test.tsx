@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import assign from 'lodash/assign'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -63,17 +62,12 @@ describe('Notes Tab', () => {
       setup()
 
       expect(screen.getByRole('button', { name: /patient\.notes\.new/i })).toBeInTheDocument()
-      // const addNoteButton = wrapper.find(components.Button)
-      // expect(addNoteButton).toHaveLength(1)
-      // expect(addNoteButton.text().trim()).toEqual('patient.notes.new')
     })
 
     it('should not render a add notes button if the user does not have permissions', () => {
       setup({ permissions: [] })
 
       expect(screen.queryByRole('button', { name: /patient\.notes\.new/i })).not.toBeInTheDocument()
-      // const addNotesButton = wrapper.find(components.Button)
-      // expect(addNotesButton).toHaveLength(0)
     })
 
     it('should open the Add Notes Modal', () => {
@@ -85,26 +79,15 @@ describe('Notes Tab', () => {
       userEvent.click(addButton)
 
       expect(screen.getByRole('dialog')).toBeInTheDocument()
-      // screen.logTestingPlaygroundURL()
-      // act(() => {
-      //   const onClick = wrapper.find(components.Button).prop('onClick') as any
-      //   onClick()
-      // })
-      // wrapper.update()
-
-      // expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
     })
   })
   describe('/patients/:id/notes', () => {
-    it('should render the view notes screen when /patients/:id/notes is accessed', async () => {
+    it('should render the view notes screen when /patients/:id/notes is accessed', () => {
       const route = '/patients/123/notes'
       const permissions = [Permissions.WritePatients]
       setup({ route, permissions })
 
-      // await screen.findByText('asd')
-      // act(() => {
-      //   expect(wrapper.exists(NoteTab)).toBeTruthy()
-      // })
+      expect(screen.getByText(/patient\.notes\.new/i)).toBeInTheDocument()
     })
   })
 })
