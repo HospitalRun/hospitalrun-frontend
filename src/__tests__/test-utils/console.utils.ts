@@ -1,4 +1,4 @@
-export function expectOneConsoleError(expected: Error) {
+export function expectOneConsoleError(expected: any) {
   jest.spyOn(console, 'error').mockImplementationOnce((actual) => {
     expect(actual).toEqual(expected)
   })

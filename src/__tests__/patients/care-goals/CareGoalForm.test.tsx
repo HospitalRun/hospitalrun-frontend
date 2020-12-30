@@ -96,7 +96,7 @@ describe('Care Goal Form', () => {
     const priority = screen.getAllByRole('combobox')[0]
     userEvent.type(priority, `${expectedPriority}${arrowDown}${enter}`)
 
-    expect(priority).toHaveDisplayValue(expectedPriority)
+    expect(priority).toHaveDisplayValue([`patient.careGoal.priority.${expectedPriority}`])
     expect(onCareGoalChangeSpy).toHaveBeenCalledTimes(1)
     expect(onCareGoalChangeSpy).toHaveBeenCalledWith({ priority: expectedPriority })
   })
@@ -152,7 +152,7 @@ describe('Care Goal Form', () => {
     setup()
 
     expect(screen.getByText(/patient.careGoal.startDate/i)).toBeInTheDocument()
-    const startDatePicker = screen.getAllByRole('textbox')[1]
+    const startDatePicker = screen.getAllByRole('textbox')[4]
     expect(startDatePicker).toBeInTheDocument()
     expect(startDatePicker).toHaveValue(format(startDate, 'MM/d/y'))
   })
@@ -161,29 +161,27 @@ describe('Care Goal Form', () => {
     const expectedStartDate = new Date()
     setup()
 
-    const startDatePicker = screen.getAllByRole('textbox')[1]
-    // TODO Getting below warnings
-    // Warning: `NaN` is an invalid value for the `left` css style property.
-    userEvent.type(startDatePicker, expectedStartDate.toISOString())
-    expect(startDatePicker).toHaveDisplayValue(expectedStartDate.toISOString())
+    const startDatePicker = screen.getAllByRole('textbox')[4]
+    userEvent.type(startDatePicker, `{selectall}${expectedStartDate.toISOString()}`)
+    expect(startDatePicker).toHaveDisplayValue([expectedStartDate.toISOString()])
   })
 
   it('should render a due date picker', () => {
     setup()
 
     expect(screen.getByText(/patient.careGoal.dueDate/i)).toBeInTheDocument()
-    const dueDatePicker = screen.getAllByRole('textbox')[2]
+    const dueDatePicker = screen.getAllByRole('textbox')[5]
     expect(dueDatePicker).toBeInTheDocument()
     expect(dueDatePicker).toHaveValue(format(dueDate, 'MM/d/y'))
   })
 
-  it('should call onChange handler when due date change', () => {
-    const expectedDueDate = addDays(31, new Date().getDate())
+  it('should call onChange handler when due date changes', () => {
+    const expectedDueDate = addDays(new Date(), 31)
     setup(false, false)
 
-    const dueDatePicker = screen.getAllByRole('textbox')[2]
-    userEvent.type(dueDatePicker, expectedDueDate.toISOString())
-    expect(dueDatePicker).toHaveDisplayValue(expectedDueDate.toISOString())
+    const dueDatePicker = screen.getAllByRole('textbox')[5]
+    userEvent.type(dueDatePicker, `{selectall}${expectedDueDate.toISOString()}`)
+    expect(dueDatePicker).toHaveDisplayValue([expectedDueDate.toISOString()])
   })
 
   it('should render a note input', () => {
@@ -216,8 +214,8 @@ describe('Care Goal Form', () => {
     const priority = screen.getByDisplayValue(/patient.careGoal.priority.medium/i)
     const status = screen.getAllByRole('combobox')[2]
     const achievementStatus = screen.getByDisplayValue(careGoal.achievementStatus)
-    const startDatePicker = screen.getAllByRole('textbox')[1]
-    const dueDatePicker = screen.getAllByRole('textbox')[2]
+    const startDatePicker = screen.getAllByRole('textbox')[4]
+    const dueDatePicker = screen.getAllByRole('textbox')[5]
     const noteInput = screen.getByRole('textbox', {
       name: /patient\.caregoal\.note/i,
     })

@@ -80,7 +80,7 @@ describe('Add Visit Modal', () => {
     const statusInput = screen.getByRole('combobox')
     userEvent.type(statusInput, `${testPatient.status}{arrowdown}{enter}`)
 
-    const textareaReason = screen.getAllByRole('textbox')[3]
+    const textareaReason = screen.getAllByRole('textbox')[4]
     userEvent.type(textareaReason, testPatient.reason)
 
     const locationInput = screen.getByLabelText(/patient.visits.location/i)

@@ -79,7 +79,7 @@ describe('ViewAppointments', () => {
     const { container, expectedPatient, expectedAppointment } = setup()
 
     await waitFor(() => {
-      expect(screen.getByText(expectedPatient.fullName as string)).toBeInTheDocument()
+      expect(screen.getAllByText(expectedPatient.fullName as string)[0]).toBeInTheDocument()
     })
 
     const expectedStart = format(new Date(expectedAppointment.startDateTime), 'h:mm')

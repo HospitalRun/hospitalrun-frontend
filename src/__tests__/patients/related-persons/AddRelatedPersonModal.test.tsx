@@ -7,6 +7,7 @@ import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedP
 import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 describe('Add Related Person Modal', () => {
   const patient = {
@@ -86,11 +87,12 @@ describe('Add Related Person Modal', () => {
 
     it('should render the error when there is an error saving', async () => {
       const wrapper = setup()
+      const expectedErrorMessage = 'patient.relatedPersons.error.unableToAddRelatedPerson'
       const expectedError = {
-        message: 'patient.relatedPersons.error.unableToAddRelatedPerson',
         relatedPersonError: 'patient.relatedPersons.error.relatedPersonRequired',
         relationshipTypeError: 'patient.relatedPersons.error.relationshipTypeRequired',
       }
+      expectOneConsoleError(expectedError)
 
       await act(async () => {
         const modal = wrapper.find(Modal)
@@ -103,7 +105,7 @@ describe('Add Related Person Modal', () => {
       const typeahead = wrapper.find(Typeahead)
       const relationshipTypeInput = wrapper.find(TextInputWithLabelFormGroup)
 
-      expect(alert.prop('message')).toEqual(expectedError.message)
+      expect(alert.prop('message')).toEqual(expectedErrorMessage)
       expect(alert.prop('title')).toEqual('states.error')
       expect(typeahead.prop('isInvalid')).toBeTruthy()
       expect(relationshipTypeInput.prop('isInvalid')).toBeTruthy()

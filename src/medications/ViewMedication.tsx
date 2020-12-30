@@ -33,7 +33,9 @@ const ViewMedication = () => {
   const [isEditable, setIsEditable] = useState<boolean>(true)
 
   const updateTitle = useUpdateTitle()
-  updateTitle(getTitle(patient, medicationToView))
+  useEffect(() => {
+    updateTitle(getTitle(patient, medicationToView))
+  })
 
   const breadcrumbs = [
     {

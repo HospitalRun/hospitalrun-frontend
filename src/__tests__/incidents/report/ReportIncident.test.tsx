@@ -15,6 +15,7 @@ import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBa
 import * as titleUtil from '../../../page-header/title/TitleContext'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -23,7 +24,6 @@ describe('Report Incident', () => {
 
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
   })
 
   let setButtonToolBarSpy: any
@@ -132,6 +132,7 @@ describe('Report Incident', () => {
       categoryItem: 'some category item error',
       description: 'some description error',
     }
+    expectOneConsoleError(error)
     jest.spyOn(validationUtil, 'default').mockReturnValue(error)
     const { container } = setup([Permissions.ReportIncident])
 

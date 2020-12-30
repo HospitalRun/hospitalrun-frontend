@@ -12,7 +12,7 @@ describe('date picker with label form group', () => {
         <DatePickerWithLabelFormGroup
           name={expectedName}
           label="stardate11111"
-          value={new Date('12/25/2020 2:56 PM')}
+          value={new Date('12/25/2020')}
           isEditable
           onChange={jest.fn()}
         />,
@@ -21,7 +21,7 @@ describe('date picker with label form group', () => {
       const name = screen.getByText(/stardate/i)
       expect(name).toHaveAttribute('for', `${expectedName}DatePicker`)
       expect(name).toHaveTextContent(expectedName)
-      expect(screen.getByRole('textbox')).toHaveDisplayValue(/[12/25/2020 2:56 PM]/i)
+      expect(screen.getByRole('textbox')).toHaveDisplayValue(['12/25/2020'])
     })
     it('should render disabled is isDisable disabled is true', () => {
       render(
@@ -41,16 +41,16 @@ describe('date picker with label form group', () => {
           <DatePickerWithLabelFormGroup
             name="stardate3333"
             label="stardate3333"
-            value={new Date('01/01/2021 2:56 PM')}
+            value={new Date('01/01/2019')}
             isEditable
             onChange={jest.fn()}
           />,
         )
         const datepickerInput = screen.getByRole('textbox')
 
-        expect(datepickerInput).toHaveDisplayValue(/[01/01/2021 2:56 PM]/i)
-        userEvent.type(datepickerInput, '12/25/2021 2:56 PM')
-        expect(datepickerInput).toHaveDisplayValue(/[12/25/2021 2:56 PM]/i)
+        expect(datepickerInput).toHaveDisplayValue(['01/01/2019'])
+        userEvent.type(datepickerInput, '{selectall}12/25/2021')
+        expect(datepickerInput).toHaveDisplayValue(['12/25/2021'])
       })
     })
   })

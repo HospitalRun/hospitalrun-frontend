@@ -16,19 +16,30 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const init = async () => {
-      try {
-        const session = await remoteDb.getSession()
-        if (session.userCtx.name) {
-          await dispatch(getCurrentSession(session.userCtx.name))
-        }
-      } catch (e) {
-        console.log(e)
-      }
-      setLoading(false)
-    }
+    let cancelled = false
 
-    init()
+    remoteDb
+      .getSession()
+      .then((session) => {
+        if (cancelled) {
+          return
+        }
+        if (session.userCtx.name) {
+          dispatch(getCurrentSession(session.userCtx.name))
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
   }, [dispatch])
 
   if (loading) {

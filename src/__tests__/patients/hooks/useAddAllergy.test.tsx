@@ -6,16 +6,17 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Allergy from '../../../shared/model/Allergy'
 import Patient from '../../../shared/model/Patient'
 import * as uuid from '../../../shared/util/uuid'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add allergy', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
   })
 
   it('should throw an error if allergy validation fails', async () => {
     const expectedError = { nameError: 'some error' }
+    expectOneConsoleError(expectedError)
     jest.spyOn(validateAllergy, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 

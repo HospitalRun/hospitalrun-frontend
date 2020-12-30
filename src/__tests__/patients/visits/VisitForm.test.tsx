@@ -94,10 +94,13 @@ describe('Visit Form', () => {
     const endDateTimePicker = container.querySelectorAll(
       '.react-datepicker__input-container input',
     )[1]
-    userEvent.type(endDateTimePicker, format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa'))
-    expect(endDateTimePicker).toHaveDisplayValue(
-      format(new Date(expectedNewEndDateTime), 'MM/dd/yyyy h:mm aa'),
+    userEvent.type(
+      endDateTimePicker,
+      `{selectall}${format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa')}`,
     )
+    expect(endDateTimePicker).toHaveDisplayValue([
+      format(new Date(expectedNewEndDateTime), 'MM/dd/yyyy h:mm aa'),
+    ])
     fireEvent.change(endDateTimePicker, {
       target: { value: format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa') },
     })
@@ -105,9 +108,9 @@ describe('Visit Form', () => {
     expect(onVisitChangeSpy).toHaveBeenCalledWith({
       endDateTime: expectedNewEndDateTime.toISOString(),
     })
-    expect(endDateTimePicker).toHaveDisplayValue(
+    expect(endDateTimePicker).toHaveDisplayValue([
       format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa'),
-    )
+    ])
   })
 
   it('should render a type input', () => {
@@ -171,7 +174,7 @@ describe('Visit Form', () => {
     })
     expect(requiredIcon.getAttribute('data-icon')).toEqual('asterisk')
 
-    const reasonInput = screen.getAllByRole('textbox')[3]
+    const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]
 
     expect(reasonInput).toHaveDisplayValue(visit.reason)
   })
@@ -180,7 +183,7 @@ describe('Visit Form', () => {
     const expectedNewReason = 'some new reason'
     setup(false, false)
 
-    const reasonInput = screen.getAllByRole('textbox')[3]
+    const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]
 
     userEvent.paste(reasonInput, expectedNewReason)
 
@@ -222,7 +225,7 @@ describe('Visit Form', () => {
     )[1]
     const typeInput = screen.getByPlaceholderText(/patient.visits.type/i)
     const statusSelector = screen.getByPlaceholderText('-- Choose --')
-    const reasonInput = screen.getAllByRole('textbox')[3]
+    const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]
     const locationInput = screen.getByPlaceholderText(/patient.visits.location/i)
 
     expect(startDateTimePicker.hasAttribute('disabled')).toBeTruthy()

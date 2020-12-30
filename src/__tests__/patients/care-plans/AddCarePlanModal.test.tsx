@@ -11,8 +11,6 @@ import CarePlan from '../../../shared/model/CarePlan'
 import Patient from '../../../shared/model/Patient'
 
 describe('Add Care Plan Modal', () => {
-  jest.setTimeout(15000)
-
   const patient = {
     id: '0012',
     diagnoses: [
@@ -78,21 +76,17 @@ describe('Add Care Plan Modal', () => {
 
     const condition = screen.getAllByRole('combobox')[0]
     await selectEvent.select(condition, `too skinny`)
-    // const diagnosisId = screen.getAllByPlaceholderText('-- Choose --')[0] as HTMLInputElement
+
     const title = screen.getByPlaceholderText(/patient\.careplan\.title/i)
     const description = screen.getAllByRole('textbox')[1]
 
-    userEvent.type(await title, expectedCarePlan.title)
-    userEvent.type(await description, expectedCarePlan.description)
+    userEvent.type(title, expectedCarePlan.title)
+    userEvent.type(description, expectedCarePlan.description)
 
-    // selectEvent.select(screen.getByText(/patient\.carePlan\.condition/i), 'too skinny')
-
-    await waitFor(() =>
-      userEvent.click(
-        within(screen.getByRole('dialog')).getByRole('button', {
-          name: /patient\.carePlan\.new/i,
-        }),
-      ),
+    userEvent.click(
+      within(screen.getByRole('dialog')).getByRole('button', {
+        name: /patient\.carePlan\.new/i,
+      }),
     )
 
     await waitFor(() => {
@@ -104,5 +98,5 @@ describe('Add Care Plan Modal', () => {
         carePlans: expect.arrayContaining([expect.objectContaining(expectedCarePlan)]),
       }),
     )
-  })
+  }, 30000)
 })
