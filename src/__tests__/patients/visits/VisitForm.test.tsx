@@ -94,10 +94,13 @@ describe('Visit Form', () => {
     const endDateTimePicker = container.querySelectorAll(
       '.react-datepicker__input-container input',
     )[1]
-    userEvent.type(endDateTimePicker, format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa'))
-    expect(endDateTimePicker).toHaveDisplayValue(
-      format(new Date(expectedNewEndDateTime), 'MM/dd/yyyy h:mm aa'),
+    userEvent.type(
+      endDateTimePicker,
+      `{selectall}${format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa')}`,
     )
+    expect(endDateTimePicker).toHaveDisplayValue([
+      format(new Date(expectedNewEndDateTime), 'MM/dd/yyyy h:mm aa'),
+    ])
     fireEvent.change(endDateTimePicker, {
       target: { value: format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa') },
     })
@@ -105,9 +108,9 @@ describe('Visit Form', () => {
     expect(onVisitChangeSpy).toHaveBeenCalledWith({
       endDateTime: expectedNewEndDateTime.toISOString(),
     })
-    expect(endDateTimePicker).toHaveDisplayValue(
+    expect(endDateTimePicker).toHaveDisplayValue([
       format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa'),
-    )
+    ])
   })
 
   it('should render a type input', () => {

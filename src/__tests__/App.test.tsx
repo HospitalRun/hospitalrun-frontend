@@ -38,7 +38,7 @@ it('renders without crashing', async () => {
     () => {
       expect(screen.getByRole('heading', { name: /dashboard\.label/i })).toBeInTheDocument()
     },
-    { timeout: 3000 },
+    { timeout: 5000 },
   )
 
   // eslint-disable-next-line no-console
