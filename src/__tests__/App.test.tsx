@@ -11,6 +11,7 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 it('renders without crashing', async () => {
   // Supress the console.log in the test ouput
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   jest.spyOn(console, 'log').mockImplementation(() => {})
 
   const store = mockStore({
