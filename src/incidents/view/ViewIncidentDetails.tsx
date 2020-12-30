@@ -3,6 +3,7 @@ import format from 'date-fns/format'
 import React from 'react'
 import { useHistory } from 'react-router'
 
+import usePatient from '../../patients/hooks/usePatient'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
@@ -21,6 +22,7 @@ function ViewIncidentDetails(props: Props) {
   const history = useHistory()
   const { t } = useTranslator()
   const { data, isLoading } = useIncident(incidentId)
+  const { data: patient } = usePatient(data?.patient)
   const [mutate] = useResolveIncident()
 
   if (data === undefined || isLoading) {
@@ -138,7 +140,7 @@ function ViewIncidentDetails(props: Props) {
             <TextInputWithLabelFormGroup
               label={t('incidents.reports.patient')}
               name="patient"
-              value={data.patient}
+              value={patient?.fullName}
             />
           </Column>
         </Row>
