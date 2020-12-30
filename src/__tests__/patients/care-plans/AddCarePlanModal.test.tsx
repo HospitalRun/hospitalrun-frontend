@@ -11,8 +11,6 @@ import CarePlan from '../../../shared/model/CarePlan'
 import Patient from '../../../shared/model/Patient'
 
 describe('Add Care Plan Modal', () => {
-  jest.setTimeout(15000)
-
   const patient = {
     id: '0012',
     diagnoses: [
@@ -104,5 +102,5 @@ describe('Add Care Plan Modal', () => {
         carePlans: expect.arrayContaining([expect.objectContaining(expectedCarePlan)]),
       }),
     )
-  })
+  }, 20000)
 })

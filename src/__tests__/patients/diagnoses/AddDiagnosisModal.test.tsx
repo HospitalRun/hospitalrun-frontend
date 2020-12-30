@@ -43,9 +43,7 @@ describe('Add Diagnosis Modal', () => {
 
     return render(<AddDiagnosisModal patient={patient} show onCloseButtonClick={onCloseSpy} />)
   }
-  beforeEach(() => {
-    console.error = jest.fn()
-  })
+
   it('should render a modal', () => {
     setup()
 
@@ -64,7 +62,7 @@ describe('Add Diagnosis Modal', () => {
   it('should dispatch add diagnosis when the save button is clicked', async () => {
     const patient = mockPatient
     patient.diagnoses = []
-    await setup(patient)
+    setup(patient)
 
     const newDiagnosis = mockDiagnosis
     newDiagnosis.name = 'yellow polka dot spots'

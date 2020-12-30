@@ -171,7 +171,7 @@ describe('Visit Form', () => {
     })
     expect(requiredIcon.getAttribute('data-icon')).toEqual('asterisk')
 
-    const reasonInput = screen.getAllByRole('textbox')[3]
+    const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]
 
     expect(reasonInput).toHaveDisplayValue(visit.reason)
   })
@@ -180,7 +180,7 @@ describe('Visit Form', () => {
     const expectedNewReason = 'some new reason'
     setup(false, false)
 
-    const reasonInput = screen.getAllByRole('textbox')[3]
+    const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]
 
     userEvent.paste(reasonInput, expectedNewReason)
 
@@ -222,7 +222,7 @@ describe('Visit Form', () => {
     )[1]
     const typeInput = screen.getByPlaceholderText(/patient.visits.type/i)
     const statusSelector = screen.getByPlaceholderText('-- Choose --')
-    const reasonInput = screen.getAllByRole('textbox')[3]
+    const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]
     const locationInput = screen.getByPlaceholderText(/patient.visits.location/i)
 
     expect(startDateTimePicker.hasAttribute('disabled')).toBeTruthy()

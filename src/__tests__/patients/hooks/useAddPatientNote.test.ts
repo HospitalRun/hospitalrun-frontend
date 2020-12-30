@@ -6,16 +6,17 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Note from '../../../shared/model/Note'
 import Patient from '../../../shared/model/Patient'
 import * as uuid from '../../../shared/util/uuid'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add note', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
   })
 
   it('should throw an error if note validation fails', async () => {
     const expectedError = { nameError: 'some error' }
+    expectOneConsoleError(expectedError)
     jest.spyOn(validateNote, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 

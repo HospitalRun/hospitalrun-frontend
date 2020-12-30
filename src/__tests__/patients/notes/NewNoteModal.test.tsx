@@ -5,6 +5,7 @@ import React from 'react'
 import NewNoteModal from '../../../patients/notes/NewNoteModal'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 describe('New Note Modal', () => {
   const mockPatient = {
@@ -27,11 +28,13 @@ describe('New Note Modal', () => {
     return results
   }
 
-  it('should render a modal with the correct labels', () => {
+  it('should render a modal with the correct labels', async () => {
     render()
 
-    expect(screen.getByRole('dialog')).toBeInTheDocument()
-    waitFor(() => expect(screen.getByText(/patient\.notes\.new/i)).toBeInTheDocument())
+    expect(await screen.findByRole('dialog')).toBeInTheDocument()
+    expect(
+      screen.getByText(/patient\.notes\.new/i, { selector: 'script, style, button' }),
+    ).toBeInTheDocument()
 
     const successButton = screen.getByRole('button', {
       name: /patient\.notes\.new/i,
@@ -45,7 +48,7 @@ describe('New Note Modal', () => {
     expect(successButton.querySelector('svg')).toHaveAttribute('data-icon', 'plus')
   })
 
-  it('should render a notes rich text editor', async () => {
+  it('should render a notes rich text editor', () => {
     render()
 
     expect(screen.getByRole('textbox')).toBeInTheDocument()
@@ -56,10 +59,12 @@ describe('New Note Modal', () => {
   })
 
   it('should render note error', async () => {
+    const expectedErrorMessage = 'patient.notes.error.unableToAdd'
     const expectedError = {
-      message: 'patient.notes.error.unableToAdd',
-      note: 'patient.notes.error.noteRequired',
+      noteError: 'patient.notes.error.noteRequired',
     }
+    expectOneConsoleError(expectedError)
+
     render()
 
     userEvent.click(
@@ -70,13 +75,13 @@ describe('New Note Modal', () => {
 
     expect(await screen.findByRole('alert')).toBeInTheDocument()
     expect(screen.getByText(/states.error/i)).toBeInTheDocument()
-    expect(screen.getByText(expectedError.message)).toBeInTheDocument()
-    expect(screen.getByText(expectedError.note)).toBeInTheDocument()
+    expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument()
+    expect(screen.getByText(expectedError.noteError)).toBeInTheDocument()
     expect(screen.getByRole('textbox')).toHaveClass('is-invalid')
   })
 
   describe('on cancel', () => {
-    it('should call the onCloseButtonCLick function when the cancel button is clicked', () => {
+    it('should call the onCloseButtonCLick function when the cancel button is clicked', async () => {
       render()
 
       userEvent.click(
@@ -84,7 +89,7 @@ describe('New Note Modal', () => {
           name: /actions\.cancel/i,
         }),
       )
-      waitFor(() => expect(onCloseSpy).toHaveBeenCalledTimes(1))
+      await waitFor(() => expect(onCloseSpy).toHaveBeenCalledTimes(1))
     })
   })
 
@@ -101,16 +106,16 @@ describe('New Note Modal', () => {
           name: /patient\.notes\.new/i,
         }),
       )
-      waitFor(() => {
+      await waitFor(() => {
         expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-        expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
-          expect.objectContaining({
-            notes: [expect.objectContaining({ text: expectedNote })],
-          }),
-        )
-        // Does the form reset value back to blank?
-        expect(noteTextField).toHaveValue('')
       })
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          notes: [expect.objectContaining({ text: expectedNote })],
+        }),
+      )
+      // Does the form reset value back to blank?
+      expect(noteTextField).toHaveValue('')
     })
   })
 })

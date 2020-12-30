@@ -8,6 +8,7 @@ import { act } from 'react-dom/test-utils'
 import NewAllergyModal from '../../../patients/allergies/NewAllergyModal'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 describe('New Allergy Modal', () => {
   const mockPatient = {
@@ -25,10 +26,6 @@ describe('New Allergy Modal', () => {
     )
   }
 
-  beforeEach(() => {
-    console.error = jest.fn()
-  })
-
   it('should render a modal with the correct labels', () => {
     setup()
     const modal = screen.getByRole('dialog')
@@ -45,10 +42,11 @@ describe('New Allergy Modal', () => {
   })
 
   it('should display errors when there is an error saving', async () => {
+    const expectedErrorMessage = 'patient.allergies.error.unableToAdd'
     const expectedError = {
-      message: 'patient.allergies.error.unableToAdd',
       nameError: 'patient.allergies.error.nameRequired',
     }
+    expectOneConsoleError(expectedError)
     setup()
     const successButton = screen.getByRole('button', { name: /patient.allergies.new/i })
     const nameField = screen.getByLabelText(/patient.allergies.allergyName/i)
@@ -58,7 +56,7 @@ describe('New Allergy Modal', () => {
 
     expect(alert).toBeInTheDocument()
     expect(screen.getByText(/states.error/i)).toBeInTheDocument()
-    expect(screen.getByText(expectedError.message)).toBeInTheDocument()
+    expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument()
     expect(nameField).toHaveClass('is-invalid')
     expect(nameField.nextSibling).toHaveTextContent(expectedError.nameError)
   })
