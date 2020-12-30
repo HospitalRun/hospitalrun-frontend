@@ -1,22 +1,45 @@
-import { render } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import App from '../App'
+import { RootState } from '../shared/store'
 
-// TODO: Causing Cannot log after tests are done. "Did you forget to wait for something async in your test? Attempted to log "Error: connect ECONNREFUSED 127.0.0.1:80 at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1133:16)"
-// ? MSW integration with tests
+const mockStore = createMockStore<RootState, any>([thunk])
+
 it('renders without crashing', async () => {
-  const mockStore = configureStore()({})
+  // Supress the console.log in the test ouput
+  jest.spyOn(console, 'log').mockImplementation(() => {})
+
+  const store = mockStore({
+    components: {
+      sidebarCollapsed: false,
+    },
+    breadcrumbs: {
+      breadcrumbs: [],
+    },
+    user: {
+      permissions: [],
+    },
+  } as any)
 
   const AppWithStore = () => (
-    <Provider store={mockStore}>
+    <Provider store={store}>
       <App />
     </Provider>
   )
 
-  const { container } = render(<AppWithStore />)
-  // ! until the Error mention in above TODO is resolved smoke testing the container is a placeholder
-  expect(container).toBeInTheDocument()
+  render(<AppWithStore />)
+
+  await waitFor(
+    () => {
+      expect(screen.getByRole('heading', { name: /dashboard\.label/i })).toBeInTheDocument()
+    },
+    { timeout: 3000 },
+  )
+
+  // eslint-disable-next-line no-console
+  ;(console.log as jest.Mock).mockRestore()
 })

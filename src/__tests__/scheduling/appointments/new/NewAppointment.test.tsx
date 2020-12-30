@@ -83,7 +83,9 @@ describe('New Appointment', () => {
     it('should render an Appointment Detail Component', async () => {
       const { container } = setup()
 
-      expect(container.querySelector('form')).toBeInTheDocument()
+      await waitFor(() => {
+        expect(container.querySelector('form')).toBeInTheDocument()
+      })
     })
   })
 
@@ -202,8 +204,8 @@ describe('New Appointment', () => {
         `${expectedAppointment.type}{arrowdown}{enter}`,
       )
 
-      const textfields = screen.queryAllByRole('textbox')
-      userEvent.type(textfields[3], expectedAppointment.reason)
+      const reasonInput = screen.queryAllByRole('textbox', { hidden: false })[3]
+      userEvent.type(reasonInput, expectedAppointment.reason)
 
       userEvent.click(
         screen.getByRole('button', {

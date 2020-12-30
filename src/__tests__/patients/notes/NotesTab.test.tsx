@@ -62,7 +62,6 @@ describe('Notes Tab', () => {
     beforeEach(() => {
       jest.resetAllMocks()
       jest.spyOn(PatientRepository, 'saveOrUpdate')
-      console.error = jest.fn()
     })
 
     it('should render a add notes button', () => {

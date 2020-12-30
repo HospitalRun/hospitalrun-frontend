@@ -38,7 +38,6 @@ describe('View Care Plan', () => {
     const { container } = await setup()
 
     await waitFor(() => {
-      screen.logTestingPlaygroundURL()
       expect(container.querySelectorAll('div').length).toBe(4)
     })
   })

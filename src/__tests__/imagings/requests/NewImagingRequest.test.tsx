@@ -13,6 +13,7 @@ import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcru
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/title/TitleContext'
 import { RootState } from '../../../shared/store'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -132,6 +133,7 @@ describe('New Imaging Request', () => {
 
   describe('on save', () => {
     it('Save the imaging request and navigate to "/imaging"', async () => {
+      expectOneConsoleError({ patient: 'imagings.requests.error.patientRequired' })
       setup()
       const patient = screen.getByPlaceholderText(/imagings\.imaging\.patient/i)
       const imgTypeInput = screen.getByPlaceholderText(/imagings.imaging.type/i)

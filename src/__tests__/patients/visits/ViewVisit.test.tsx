@@ -61,7 +61,7 @@ describe('View Visit', () => {
     )[1]
     const typeInput = screen.getByPlaceholderText(/patient.visits.type/i)
     const statusSelector = screen.getByPlaceholderText('-- Choose --')
-    const reasonInput = screen.getAllByRole('textbox')[3]
+    const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]
     const locationInput = screen.getByPlaceholderText(/patient.visits.location/i)
 
     expect(startDateTimePicker).toHaveDisplayValue(

@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -114,12 +113,12 @@ describe('New Lab Request', () => {
       expect(selectLabel).not.toHaveAttribute('title', 'This is a required input')
     })
 
-    it('should render a save button', async () => {
+    it('should render a save button', () => {
       setup()
       expect(screen.getByRole('button', { name: /labs\.requests\.new/i })).toBeInTheDocument()
     })
 
-    it('should render a cancel button', async () => {
+    it('should render a cancel button', () => {
       setup()
       expect(screen.getByRole('button', { name: /actions\.cancel/i })).toBeInTheDocument()
     })
@@ -178,9 +177,9 @@ describe('New Lab Request', () => {
     it('should display errors', async () => {
       setup()
       const saveButton = screen.getByRole('button', { name: /labs\.requests\.new/i })
-      await act(async () => {
-        userEvent.click(saveButton)
-      })
+
+      userEvent.click(saveButton)
+
       const alert = screen.findByRole('alert')
       const { getByText: getByTextInAlert } = within(await alert)
       const patientInput = screen.getByPlaceholderText(/labs\.lab\.patient/i)
@@ -191,27 +190,23 @@ describe('New Lab Request', () => {
       expect(await alert).toHaveClass('alert-danger')
       expect(patientInput).toHaveClass('is-invalid')
       expect(typeInput).toHaveClass('is-invalid')
-      if (error.type) {
-        expect(typeInput.nextSibling).toHaveTextContent(error.type)
-      }
+      expect(typeInput.nextSibling).toHaveTextContent(error.type as string)
     })
   })
 
   describe('on cancel', () => {
-    it('should navigate back to /labs', async () => {
+    it('should navigate back to /labs', () => {
       setup()
+
       const cancelButton = screen.getByRole('button', { name: /actions\.cancel/i })
 
-      await act(async () => {
-        userEvent.click(cancelButton)
-      })
+      userEvent.click(cancelButton)
 
       expect(history.location.pathname).toEqual('/labs')
     })
   })
 
   describe('on save', () => {
-    let labRepositorySaveSpy: any
     const store = mockStore({
       lab: { status: 'loading', error: {} },
       user: { user: { id: 'fake id' } },
@@ -240,7 +235,7 @@ describe('New Lab Request', () => {
     beforeAll(() => {
       jest.resetAllMocks()
       jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
-      labRepositorySaveSpy = jest.spyOn(LabRepository, 'save').mockResolvedValue(expectedLab as Lab)
+      jest.spyOn(LabRepository, 'save').mockResolvedValue(expectedLab as Lab)
     })
 
     it('should save the lab request and navigate to "/labs/:id"', async () => {
@@ -258,12 +253,12 @@ describe('New Lab Request', () => {
       userEvent.type(screen.getByPlaceholderText(/labs\.lab\.type/i), expectedLab.type)
       userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), expectedNotes)
 
-      await act(async () => {
-        userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
-      })
+      userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
 
-      expect(labRepositorySaveSpy).toHaveBeenCalledTimes(1)
-      expect(labRepositorySaveSpy).toHaveBeenCalledWith(
+      await waitFor(() => {
+        expect(LabRepository.save).toHaveBeenCalledTimes(1)
+      })
+      expect(LabRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
           patient: expectedLab.patient,
           type: expectedLab.type,
@@ -272,6 +267,6 @@ describe('New Lab Request', () => {
         }),
       )
       expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
-    })
+    }, 15000)
   })
 })

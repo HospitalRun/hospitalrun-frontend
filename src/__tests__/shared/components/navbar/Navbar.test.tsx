@@ -16,22 +16,23 @@ import { RootState } from '../../../../shared/store'
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Navbar', () => {
-  const history = createMemoryHistory()
-
   const setup = (permissions: Permissions[], user?: User) => {
+    const history = createMemoryHistory()
     const store = mockStore({
       title: '',
       user: { permissions, user },
     } as any)
 
-    const wrapper = render(
-      <Router history={history}>
+    return {
+      history,
+      ...render(
         <Provider store={store}>
-          <Navbar />
-        </Provider>
-      </Router>,
-    )
-    return wrapper
+          <Router history={history}>
+            <Navbar />
+          </Router>
+        </Provider>,
+      ),
+    }
   }
 
   const userName = {
@@ -70,7 +71,7 @@ describe('Navbar', () => {
     it('should render a hamberger link list', () => {
       setup(allPermissions)
 
-      const navButton = screen.getByRole('button')
+      const navButton = screen.getByRole('button', { hidden: false })
       userEvent.click(navButton)
       const labels = [
         'dashboard.label',
@@ -92,7 +93,7 @@ describe('Navbar', () => {
     it('should not show an item if user does not have a permission', () => {
       // exclude labs, incidents, and imagings permissions
       setup(cloneDeep(allPermissions).slice(0, 6))
-      const navButton = screen.getByRole('button')
+      const navButton = screen.getByRole('button', { hidden: false })
       userEvent.click(navButton)
 
       const labels = [
@@ -115,11 +116,11 @@ describe('Navbar', () => {
         setup(allPermissions)
 
         expect(screen.getByText(/hospitalrun/i)).toBeInTheDocument()
-        expect(screen.getByRole('button')).toBeInTheDocument()
+        expect(screen.getByRole('button', { hidden: false })).toBeInTheDocument()
       })
 
       it('should navigate to / when the header is clicked', () => {
-        setup(allPermissions)
+        const { history } = setup(allPermissions)
 
         history.location.pathname = '/enterprise-1701'
         expect(history.location.pathname).not.toEqual('/')
@@ -133,7 +134,7 @@ describe('Navbar', () => {
       it('should show a shortcut if user has a permission', () => {
         setup(allPermissions)
 
-        const navButton = screen.getByRole('button')
+        const navButton = screen.getByRole('button', { hidden: false })
         userEvent.click(navButton)
         expect(
           screen.getByRole('button', {
@@ -169,7 +170,7 @@ describe('Navbar', () => {
 
       it('should navigate to /settings when the list option is selected', () => {
         setup(allPermissions)
-        const { container } = setup(allPermissions, userName)
+        const { history, container } = setup(allPermissions, userName)
 
         const navButton = container.querySelector('.nav-account')?.firstElementChild as Element
         userEvent.click(navButton)

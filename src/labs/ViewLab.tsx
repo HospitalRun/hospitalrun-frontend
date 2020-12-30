@@ -41,7 +41,9 @@ const ViewLab = () => {
   const [error, setError] = useState<LabError | undefined>(undefined)
 
   const updateTitle = useUpdateTitle()
-  updateTitle(getTitle(patient, labToView))
+  useEffect(() => {
+    updateTitle(getTitle(patient, labToView))
+  })
 
   const breadcrumbs = [
     {

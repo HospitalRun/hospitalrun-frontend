@@ -12,7 +12,6 @@ import executeMutation from '../../test-utils/use-mutation.util'
 describe('use add diagnosis', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
   })
 
   it('should throw an error if diagnosis validation fails', async () => {

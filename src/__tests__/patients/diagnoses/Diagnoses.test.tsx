@@ -42,17 +42,10 @@ const setup = (patient = expectedPatient, permissions = [Permissions.AddDiagnosi
 }
 
 describe('Diagnoses', () => {
-  let errorMock: jest.SpyInstance
-
   describe('add diagnoses button', () => {
     beforeEach(() => {
       jest.resetAllMocks()
       jest.spyOn(PatientRepository, 'saveOrUpdate')
-      errorMock = jest.spyOn(console, 'error').mockImplementation()
-    })
-
-    afterEach(() => {
-      errorMock.mockRestore()
     })
 
     it('should render a add diagnoses button', () => {
