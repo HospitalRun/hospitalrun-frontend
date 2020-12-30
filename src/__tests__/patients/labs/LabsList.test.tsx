@@ -87,7 +87,7 @@ describe('Table', () => {
       }),
     ).toBeInTheDocument()
 
-    screen.logTestingPlaygroundURL()
+    
   })
   it('should navigate to lab view on lab click', async () => {
     let row: any
