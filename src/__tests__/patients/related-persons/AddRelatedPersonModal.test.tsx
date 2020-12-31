@@ -8,17 +8,6 @@ import Patient from '../../../shared/model/Patient'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 describe('Add Related Person Modal', () => {
-  // const patient = {
-  //   id: '123',
-  //   fullName: 'fullName',
-  //   code: 'code1',
-  // } as Patient
-  // const patient2 = {
-  //   id: '456',
-  //   fullName: 'patient2',
-  //   code: 'code2',
-  // } as Patient
-
   const patients = [
     {
       id: '123',
@@ -52,16 +41,19 @@ describe('Add Related Person Modal', () => {
   describe('layout', () => {
     it('should render a modal', () => {
       setup()
+
       expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
 
     it('should render a patient search typeahead', () => {
       setup()
+
       expect(screen.getByPlaceholderText(/^patient.relatedPerson$/i)).toBeInTheDocument()
     })
 
     it('should render a relationship type text input', () => {
       setup()
+
       const relationshipTypeInput = screen.getByLabelText(
         /^patient.relatedPersons.relationshipType$/i,
       )
@@ -71,11 +63,13 @@ describe('Add Related Person Modal', () => {
 
     it('should render a cancel button', () => {
       setup()
+
       expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument()
     })
 
     it('should render an add new related person button button', () => {
       setup()
+
       expect(
         screen.getByRole('button', { name: /patient.relatedPersons.add/i }),
       ).toBeInTheDocument()
@@ -83,6 +77,7 @@ describe('Add Related Person Modal', () => {
 
     it('should render the error when there is an error saving', async () => {
       setup()
+
       const expectedErrorMessage = 'patient.relatedPersons.error.unableToAddRelatedPerson'
       const expectedError = {
         relatedPersonError: 'patient.relatedPersons.error.relatedPersonRequired',
@@ -106,6 +101,7 @@ describe('Add Related Person Modal', () => {
   describe('save', () => {
     it('should call the save function with the correct data', async () => {
       setup()
+
       userEvent.type(
         screen.getByPlaceholderText(/^patient.relatedPerson$/i),
         patients[1].fullName as string,
@@ -131,6 +127,6 @@ describe('Add Related Person Modal', () => {
           ],
         }),
       )
-    })
+    }, 20000)
   })
 })
