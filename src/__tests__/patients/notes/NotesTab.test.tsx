@@ -1,11 +1,10 @@
 /* eslint-disable no-console */
 
-import * as components from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { screen, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import assign from 'lodash/assign'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -43,18 +42,13 @@ const setup = (props: any = {}) => {
   user = { permissions }
   store = mockStore({ patient, user } as any)
   history.push(route)
-  let wrapper: any
-  act(() => {
-    wrapper = mount(
-      <Router history={history}>
-        <Provider store={store}>
-          <NoteTab patient={patient} />
-        </Provider>
-      </Router>,
-    )
-  })
-
-  return wrapper
+  return render(
+    <Router history={history}>
+      <Provider store={store}>
+        <NoteTab patient={patient} />
+      </Provider>
+    </Router>,
+  )
 }
 
 describe('Notes Tab', () => {
@@ -65,39 +59,35 @@ describe('Notes Tab', () => {
     })
 
     it('should render a add notes button', () => {
-      const wrapper = setup()
+      setup()
 
-      const addNoteButton = wrapper.find(components.Button)
-      expect(addNoteButton).toHaveLength(1)
-      expect(addNoteButton.text().trim()).toEqual('patient.notes.new')
+      expect(screen.getByRole('button', { name: /patient\.notes\.new/i })).toBeInTheDocument()
     })
 
     it('should not render a add notes button if the user does not have permissions', () => {
-      const wrapper = setup({ permissions: [] })
+      setup({ permissions: [] })
 
-      const addNotesButton = wrapper.find(components.Button)
-      expect(addNotesButton).toHaveLength(0)
+      expect(screen.queryByRole('button', { name: /patient\.notes\.new/i })).not.toBeInTheDocument()
     })
 
     it('should open the Add Notes Modal', () => {
-      const wrapper = setup()
-      act(() => {
-        const onClick = wrapper.find(components.Button).prop('onClick') as any
-        onClick()
-      })
-      wrapper.update()
+      setup()
 
-      expect(wrapper.find(components.Modal).prop('show')).toBeTruthy()
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+      const addButton = screen.getByRole('button', { name: /patient\.notes\.new/i })
+      userEvent.click(addButton)
+
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
   })
   describe('/patients/:id/notes', () => {
     it('should render the view notes screen when /patients/:id/notes is accessed', () => {
       const route = '/patients/123/notes'
       const permissions = [Permissions.WritePatients]
-      const wrapper = setup({ route, permissions })
-      act(() => {
-        expect(wrapper.exists(NoteTab)).toBeTruthy()
-      })
+      setup({ route, permissions })
+
+      expect(screen.getByText(/patient\.notes\.new/i)).toBeInTheDocument()
     })
   })
 })
