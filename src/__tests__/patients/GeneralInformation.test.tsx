@@ -21,8 +21,8 @@ const patient = {
   occupation: 'MockOccupationValue',
   preferredLanguage: 'MockPreferredLanguage',
   phoneNumbers: [
-    { value: '123456', type: undefined, id: '123' },
-    { value: '789012', type: undefined, id: '456' },
+    { value: '123456789', type: undefined, id: '123' },
+    { value: '789012999', type: undefined, id: '456' },
   ],
   emails: [
     { value: 'abc@email.com', type: undefined, id: '789' },
@@ -75,99 +75,76 @@ it('should display errors', () => {
 })
 
 describe('General Information, without isEditable', () => {
+  function typeReadonlyAssertion(inputElement: HTMLElement, mockValue: any) {
+    expect(inputElement).toHaveDisplayValue(mockValue)
+    userEvent.type(inputElement, 'wontexist')
+    expect(inputElement).not.toHaveDisplayValue(/wontexist/i)
+  }
+
   it('should render the prefix', () => {
     setup(patient, false)
-    const prefixInput = screen.getByRole('textbox', {
-      name: /patient\.prefix/i,
-    })
-    expect(prefixInput).toHaveDisplayValue(patient.prefix as string)
-    userEvent.type(prefixInput, 'wontexist')
-    expect(prefixInput).not.toHaveDisplayValue(/wontexist/i)
+
+    typeReadonlyAssertion(screen.getByRole('textbox', { name: /patient\.prefix/i }), patient.prefix)
   })
 
   it('should render the given name', () => {
     setup(patient, false)
-    const givenNameInput = screen.getByPlaceholderText(/patient\.givenName/i)
-    expect(givenNameInput).toHaveDisplayValue(patient.givenName as string)
-    userEvent.type(givenNameInput, 'wontexist')
-    expect(givenNameInput).not.toHaveDisplayValue(/wontexist/i)
+    typeReadonlyAssertion(screen.getByPlaceholderText(/patient\.givenName/i), patient.givenName)
   })
 
   it('should render the family name', () => {
     setup(patient, false)
-    const familyNameInput = screen.getByPlaceholderText(/patient\.familyName/i)
-    expect(familyNameInput).toHaveDisplayValue(patient.familyName as string)
-    userEvent.type(familyNameInput, 'wontexist')
-    expect(familyNameInput).not.toHaveDisplayValue(/wontexist/i)
+    typeReadonlyAssertion(screen.getByPlaceholderText(/patient\.familyName/i), patient.familyName)
   })
 
   it('should render the suffix', () => {
     setup(patient, false)
-    const suffixInput = screen.getByPlaceholderText(/patient\.suffix/i)
-    expect(suffixInput).toHaveDisplayValue(patient.suffix as string)
-    userEvent.type(suffixInput, 'wontexist')
-    expect(suffixInput).not.toHaveDisplayValue(/wontexist/i)
+    typeReadonlyAssertion(screen.getByPlaceholderText(/patient\.suffix/i), patient.suffix)
   })
 
   it('should render the date of the birth of the patient', () => {
     setup(patient, false)
-    const dateOfBirthInput = screen.getByDisplayValue('12/31/1990')
-    expect(dateOfBirthInput).toHaveDisplayValue(patient.dateOfBirth as string)
-    userEvent.type(dateOfBirthInput, 'wontexist')
-    expect(dateOfBirthInput).not.toHaveDisplayValue(/wontexist/i)
+    typeReadonlyAssertion(screen.getByDisplayValue('12/31/1990'), patient.dateOfBirth)
   })
 
   it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
     patient.isApproximateDateOfBirth = true
     setup(patient, false)
-    const approximateAgeField = screen.getByPlaceholderText(/patient.approximateAge/i)
-    expect(approximateAgeField).toHaveDisplayValue('30')
-    userEvent.type(approximateAgeField, 'wontexist')
-    expect(approximateAgeField).not.toHaveDisplayValue(/wontexist/i)
+    typeReadonlyAssertion(screen.getByPlaceholderText(/patient.approximateAge/i), '30')
   })
 
   it('should render the occupation of the patient', () => {
     setup(patient, false)
-    const occupationAgeField = screen.getByPlaceholderText(/patient.occupation/i)
-    expect(occupationAgeField).toHaveDisplayValue(patient.occupation as string)
-    userEvent.type(occupationAgeField, 'wontexist')
-    expect(occupationAgeField).not.toHaveDisplayValue(/wontexist/i)
+    typeReadonlyAssertion(screen.getByPlaceholderText(/patient.occupation/i), patient.occupation)
   })
 
   it('should render the preferred language of the patient', () => {
     setup(patient, false)
-    const preferredLanguageAgeField = screen.getByPlaceholderText(/patient.preferredLanguage/i)
-    expect(preferredLanguageAgeField).toHaveDisplayValue(patient.preferredLanguage as string)
-    userEvent.type(preferredLanguageAgeField, 'wontexist')
-    expect(preferredLanguageAgeField).not.toHaveDisplayValue(/wontexist/i)
+    typeReadonlyAssertion(
+      screen.getByPlaceholderText(/patient.preferredLanguage/i),
+      patient.preferredLanguage,
+    )
   })
 
   it('should render the phone numbers of the patient', () => {
     setup(patient, false)
-    // patient.phoneNumbers.forEach((phoneNumber, i) => {
-    //   const phoneNumberInput = wrapper.findWhere((w: any) => w.prop('name') === `phoneNumber${i}`)
-    //   expect(phoneNumberInput.prop('value')).toEqual(phoneNumber.value)
-    //   expect(phoneNumberInput.prop('isEditable')).toBeFalsy()
-    // })
+    const phoneNumberField = screen.getByDisplayValue(/123456789/i)
+    expect(phoneNumberField).toHaveProperty('id', 'phoneNumber0TextInput')
+    typeReadonlyAssertion(phoneNumberField, patient.phoneNumbers[0].value)
   })
 
   it('should render the emails of the patient', () => {
     setup(patient, false)
-    // patient.emails.forEach((email, i) => {
-    //   const emailInput = wrapper.findWhere((w: any) => w.prop('name') === `email${i}`)
-    //   expect(emailInput.prop('value')).toEqual(email.value)
-    //   expect(emailInput.prop('isEditable')).toBeFalsy()
-    // })
+    const emailsField = screen.getByDisplayValue(/abc@email.com/i)
+    expect(emailsField).toHaveProperty('id', 'email0TextInput')
+    typeReadonlyAssertion(emailsField, patient.emails[0].value)
   })
 
   it('should render the addresses of the patient', () => {
     setup(patient, false)
-    //   patient.addresses.forEach((address, i) => {
-    //     const addressInput = wrapper.findWhere((w: any) => w.prop('name') === `address${i}`)
-    //     expect(addressInput.prop('value')).toEqual(address.value)
-    //     expect(addressInput.prop('isEditable')).toBeFalsy()
-    //   })
-    // })
+    const phoneNumberField = screen.getByDisplayValue(/address A/i)
+    expect(phoneNumberField).toHaveProperty('id', 'address0TextField')
+    typeReadonlyAssertion(phoneNumberField, patient.addresses[0])
   })
   it('should render the sex select options', () => {
     setup(patient, false)
