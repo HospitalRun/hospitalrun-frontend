@@ -13,13 +13,9 @@ describe('Use Labs Search', () => {
     },
   ] as Lab[]
 
-  const labRepositoryFindAllSpy = jest
-    .spyOn(LabRepository, 'findAll')
-    .mockResolvedValue(expectedLabs)
-  const labRepositorySearchSpy = jest.spyOn(LabRepository, 'search').mockResolvedValue(expectedLabs)
-
   beforeEach(() => {
-    labRepositoryFindAllSpy.mockClear()
+    jest.spyOn(LabRepository, 'findAll').mockResolvedValue(expectedLabs)
+    jest.spyOn(LabRepository, 'search').mockResolvedValue(expectedLabs)
   })
 
   it('should return all labs', async () => {
@@ -36,8 +32,8 @@ describe('Use Labs Search', () => {
       actualData = result.current.data
     })
 
-    expect(labRepositoryFindAllSpy).toHaveBeenCalledTimes(1)
-    expect(labRepositorySearchSpy).not.toHaveBeenCalled()
+    expect(LabRepository.findAll).toHaveBeenCalledTimes(1)
+    expect(LabRepository.search).not.toHaveBeenCalled()
     expect(actualData).toEqual(expectedLabs)
   })
 
@@ -55,9 +51,9 @@ describe('Use Labs Search', () => {
       actualData = result.current.data
     })
 
-    expect(labRepositoryFindAllSpy).not.toHaveBeenCalled()
-    expect(labRepositorySearchSpy).toHaveBeenCalledTimes(1)
-    expect(labRepositorySearchSpy).toHaveBeenCalledWith(
+    expect(LabRepository.findAll).not.toHaveBeenCalled()
+    expect(LabRepository.search).toHaveBeenCalledTimes(1)
+    expect(LabRepository.search).toHaveBeenCalledWith(
       expect.objectContaining(expectedLabsSearchRequest),
     )
     expect(actualData).toEqual(expectedLabs)

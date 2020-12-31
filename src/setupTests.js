@@ -18,8 +18,7 @@ configure({ defaultHidden: true })
 jest.setTimeout(10000)
 
 afterEach(() => {
-  // This is probably needed, but stuff REALLY blows up
-  // jest.restoreAllMocks()
+  jest.restoreAllMocks()
   queryCache.clear()
 })
 

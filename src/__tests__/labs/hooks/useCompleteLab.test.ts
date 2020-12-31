@@ -21,10 +21,9 @@ describe('Use Complete lab', () => {
   } as Lab
 
   Date.now = jest.fn(() => expectedCompletedOnDate.valueOf())
-  jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedCompletedLab)
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedCompletedLab)
   })
 
   it('should save lab as complete', async () => {

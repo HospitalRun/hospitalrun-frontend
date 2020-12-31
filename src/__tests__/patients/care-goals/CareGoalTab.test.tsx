@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory, MemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
@@ -16,8 +16,28 @@ import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
-describe('Care Goals Tab', () => {
-  const careGoal = {
+type CareGoalTabWrapper = (store: any, history: MemoryHistory) => React.FC
+
+// eslint-disable-next-line react/prop-types
+const TabWrapper: CareGoalTabWrapper = (store, history) => ({ children }) => (
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="/patients/:id">{children}</Route>
+    </Router>
+  </Provider>
+)
+
+// eslint-disable-next-line react/prop-types
+const ViewWrapper: CareGoalTabWrapper = (store: any, history: MemoryHistory) => ({ children }) => (
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="/patients/:id/care-goals/:careGoalId">{children}</Route>
+    </Router>
+  </Provider>
+)
+
+const setup = (route: string, permissions: Permissions[], wrapper = TabWrapper) => {
+  const expectedCareGoal = {
     id: '456',
     status: 'accepted',
     startDate: new Date().toISOString(),
@@ -28,59 +48,53 @@ describe('Care Goals Tab', () => {
     createdOn: new Date().toISOString(),
     note: '',
   } as CareGoal
-  const patient = { id: '123', careGoals: [careGoal] as CareGoal[] } as Patient
+  const expectedPatient = { id: '123', careGoals: [expectedCareGoal] } as Patient
 
-  const setup = async (route: string, permissions: Permissions[]) => {
-    jest.resetAllMocks()
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
-    const store = mockStore({ user: { permissions } } as any)
-    const history = createMemoryHistory()
-    history.push(route)
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
+  const history = createMemoryHistory({ initialEntries: [route] })
+  const store = mockStore({ user: { permissions } } as any)
 
-    return render(
-      <Provider store={store}>
-        <Router history={history}>
-          <Route path="/patients/:id/care-goals">
-            <CareGoalTab />
-          </Route>
-        </Router>
-      </Provider>,
-    )
-  }
+  return render(<CareGoalTab />, { wrapper: wrapper(store, history) })
+}
 
+describe('Care Goals Tab', () => {
   it('should render add care goal button if user has correct permissions', async () => {
-    setup('patients/123/care-goals', [Permissions.AddCareGoal])
+    setup('/patients/123/care-goals', [Permissions.AddCareGoal])
+
     expect(await screen.findByRole('button', { name: /patient.careGoal.new/i })).toBeInTheDocument()
   })
 
   it('should not render add care goal button if user does not have permissions', async () => {
-    setup('patients/123/care-goals', [])
+    const { container } = setup('/patients/123/care-goals', [])
+
+    await waitForElementToBeRemoved(container.querySelector('.css-0'))
+
     expect(screen.queryByRole('button', { name: /patient.careGoal.new/i })).not.toBeInTheDocument()
   })
 
-  it('should open the add care goal modal on click', async () => {
-    setup('patients/123/care-goals', [Permissions.AddCareGoal])
-    userEvent.click(await screen.findByRole('button', { name: /patient.careGoal.new/i }))
-    expect(screen.getByRole('dialog')).toBeVisible()
-  })
+  it('should open and close the modal when the add care goal and close buttons are clicked', async () => {
+    setup('/patients/123/care-goals', [Permissions.AddCareGoal])
 
-  it('should close the modal when the close button is clicked', async () => {
-    setup('patients/123/care-goals', [Permissions.AddCareGoal])
     userEvent.click(await screen.findByRole('button', { name: /patient.careGoal.new/i }))
+
     expect(screen.getByRole('dialog')).toBeVisible()
+
     userEvent.click(screen.getByRole('button', { name: /close/i }))
+
     expect(screen.getByRole('dialog')).not.toBeVisible()
   })
 
-  it('should render care goal table when on patients/123/care-goals', async () => {
-    const { container } = await setup('patients/123/care-goals', [Permissions.ReadCareGoal])
+  it('should render care goal table when on patients/:id/care-goals', async () => {
+    const { container } = setup('/patients/123/care-goals', [Permissions.ReadCareGoal])
+
     await waitFor(() => {
       expect(container.querySelector('table')).toBeInTheDocument()
     })
   })
 
-  it('should render care goal view when on patients/123/care-goals/456', async () => {
-    setup('patients/123/care-goals/456', [Permissions.ReadCareGoal])
+  it('should render care goal view when on patients/:id/care-goals/:careGoalId', async () => {
+    setup('/patients/123/care-goals/456', [Permissions.ReadCareGoal], ViewWrapper)
+
     expect(await screen.findByRole('form')).toBeInTheDocument()
   })
 })

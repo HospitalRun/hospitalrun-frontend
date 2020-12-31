@@ -21,19 +21,51 @@ import { RootState } from '../../../shared/store'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
-describe('New Lab Request', () => {
-  let history: any
-  const setup = (
-    store = mockStore({
-      title: '',
-      user: { user: { id: 'userId' } },
-    } as any),
-  ) => {
-    history = createMemoryHistory()
-    history.push(`/labs/new`)
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
 
-    return render(
+const setup = (
+  store = mockStore({
+    title: '',
+    user: { user: { id: 'userId' } },
+  } as any),
+) => {
+  const expectedDate = new Date()
+  const expectedNotes = 'expected notes'
+  const expectedLab = {
+    patient: '1234567',
+    type: 'expected type',
+    status: 'requested',
+    notes: [expectedNotes],
+    id: '1234',
+    requestedOn: expectedDate.toISOString(),
+  } as Lab
+
+  const expectedVisits = [
+    {
+      startDateTime: new Date().toISOString(),
+      id: 'visit_id',
+      type: 'visit_type',
+    },
+  ] as Visit[]
+  const expectedPatient = {
+    id: expectedLab.patient,
+    givenName: 'Jim',
+    familyName: 'Bob',
+    fullName: 'Jim Bob',
+    visits: expectedVisits,
+  } as Patient
+
+  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
+  jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
+  jest.spyOn(LabRepository, 'save').mockResolvedValue(expectedLab)
+
+  const history = createMemoryHistory({ initialEntries: ['/labs/new'] })
+
+  return {
+    history,
+    expectedLab,
+    expectedPatient,
+    expectedVisits,
+    ...render(
       <Provider store={store}>
         <Router history={history}>
           <titleUtil.TitleProvider>
@@ -41,41 +73,21 @@ describe('New Lab Request', () => {
           </titleUtil.TitleProvider>
         </Router>
       </Provider>,
-    )
+    ),
   }
+}
 
+describe('New Lab Request', () => {
   describe('form layout', () => {
-    const expectedDate = new Date()
-    const expectedNotes = 'expected notes'
-    const expectedLab = {
-      patient: '1234567',
-      type: 'expected type',
-      status: 'requested',
-      notes: [expectedNotes],
-      id: '1234',
-      requestedOn: expectedDate.toISOString(),
-    } as Lab
-
-    const visits = [
-      {
-        startDateTime: new Date().toISOString(),
-        id: 'visit_id',
-        type: 'visit_type',
-      },
-    ] as Visit[]
-    const expectedPatient = { id: expectedLab.patient, fullName: 'Jim Bob', visits } as Patient
-
-    beforeAll(() => {
-      jest.resetAllMocks()
-      jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
-    })
     it('should have called the useUpdateTitle hook', async () => {
       setup()
+
       expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
     })
 
     it('should render a patient typeahead', async () => {
       setup()
+
       const typeaheadInput = screen.getByPlaceholderText(/labs.lab.patient/i)
 
       expect(screen.getByText(/labs\.lab\.patient/i)).toBeInTheDocument()
@@ -85,6 +97,7 @@ describe('New Lab Request', () => {
 
     it('should render a type input box', async () => {
       setup()
+
       expect(screen.getByText(/labs\.lab\.type/i)).toHaveAttribute(
         'title',
         'This is a required input',
@@ -95,6 +108,7 @@ describe('New Lab Request', () => {
 
     it('should render a notes text field', async () => {
       setup()
+
       expect(screen.getByLabelText(/labs\.lab\.notes/i)).not.toBeDisabled()
       expect(screen.getByText(/labs\.lab\.notes/i)).not.toHaveAttribute(
         'title',
@@ -104,6 +118,7 @@ describe('New Lab Request', () => {
 
     it('should render a visit select', async () => {
       setup()
+
       const selectLabel = screen.getByText(/patient\.visit/i)
       const selectInput = screen.getByPlaceholderText('-- Choose --')
 
@@ -115,45 +130,52 @@ describe('New Lab Request', () => {
 
     it('should render a save button', () => {
       setup()
+
       expect(screen.getByRole('button', { name: /labs\.requests\.new/i })).toBeInTheDocument()
     })
 
     it('should render a cancel button', () => {
       setup()
+
       expect(screen.getByRole('button', { name: /actions\.cancel/i })).toBeInTheDocument()
     })
 
     it('should clear visit when patient is changed', async () => {
-      setup()
-      const typeaheadInput = screen.getByPlaceholderText(/labs.lab.patient/i)
+      const { expectedVisits } = setup()
+
+      const patientTypeahead = screen.getByPlaceholderText(/labs.lab.patient/i)
       const visitsInput = screen.getByPlaceholderText('-- Choose --')
 
-      userEvent.type(typeaheadInput, 'Jim Bob')
-      expect(await screen.findByText(/Jim Bob/i)).toBeVisible()
-      userEvent.click(screen.getByText(/Jim Bob/i))
-      expect(typeaheadInput).toHaveDisplayValue(/Jim Bob/i)
-      userEvent.click(visitsInput)
+      userEvent.type(patientTypeahead, 'Jim Bob')
+      userEvent.click(await screen.findByText(/Jim Bob/i))
+      expect(patientTypeahead).toHaveDisplayValue(/Jim Bob/i)
 
+      userEvent.click(visitsInput)
       // The visits dropdown should be populated with the patient's visits.
       userEvent.click(
         await screen.findByRole('link', {
-          name: `${visits[0].type} at ${format(
-            new Date(visits[0].startDateTime),
+          name: `${expectedVisits[0].type} at ${format(
+            new Date(expectedVisits[0].startDateTime),
             'yyyy-MM-dd hh:mm a',
           )}`,
         }),
       )
       expect(visitsInput).toHaveDisplayValue(
-        `${visits[0].type} at ${format(new Date(visits[0].startDateTime), 'yyyy-MM-dd hh:mm a')}`,
+        `${expectedVisits[0].type} at ${format(
+          new Date(expectedVisits[0].startDateTime),
+          'yyyy-MM-dd hh:mm a',
+        )}`,
       )
 
-      userEvent.clear(typeaheadInput)
-      // The visits dropdown option should be reset when the patient is changed.
-      expect(visitsInput).toHaveDisplayValue('')
+      userEvent.clear(patientTypeahead)
+      await waitFor(() => {
+        // The visits dropdown option should be reset when the patient is changed.
+        expect(visitsInput).toHaveDisplayValue('')
+      })
       expect(
         screen.queryByRole('link', {
-          name: `${visits[0].type} at ${format(
-            new Date(visits[0].startDateTime),
+          name: `${expectedVisits[0].type} at ${format(
+            new Date(expectedVisits[0].startDateTime),
             'yyyy-MM-dd hh:mm a',
           )}`,
         }),
@@ -169,7 +191,6 @@ describe('New Lab Request', () => {
     } as LabError
 
     beforeAll(() => {
-      jest.resetAllMocks()
       jest.spyOn(validationUtil, 'validateLabRequest').mockReturnValue(error)
       expectOneConsoleError(error)
     })
@@ -195,12 +216,10 @@ describe('New Lab Request', () => {
   })
 
   describe('on cancel', () => {
-    it('should navigate back to /labs', () => {
-      setup()
+    it('should navigate back to /labs', async () => {
+      const { history } = setup()
 
-      const cancelButton = screen.getByRole('button', { name: /actions\.cancel/i })
-
-      userEvent.click(cancelButton)
+      userEvent.click(await screen.findByRole('button', { name: /actions\.cancel/i }))
 
       expect(history.location.pathname).toEqual('/labs')
     })
@@ -212,46 +231,20 @@ describe('New Lab Request', () => {
       user: { user: { id: 'fake id' } },
     } as any)
 
-    const expectedDate = new Date()
-    const expectedNotes = 'expected notes'
-    const expectedLab = {
-      patient: '1234567',
-      type: 'expected type',
-      status: 'requested',
-      notes: [expectedNotes],
-      id: '1234',
-      requestedOn: expectedDate.toISOString(),
-    } as Lab
-
-    const visits = [
-      {
-        startDateTime: new Date().toISOString(),
-        id: 'visit_id',
-        type: 'visit_type',
-      },
-    ] as Visit[]
-    const expectedPatient = { id: expectedLab.patient, fullName: 'Billy', visits } as Patient
-
-    beforeAll(() => {
-      jest.resetAllMocks()
-      jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
-      jest.spyOn(LabRepository, 'save').mockResolvedValue(expectedLab as Lab)
-    })
-
     it('should save the lab request and navigate to "/labs/:id"', async () => {
-      setup(store)
+      const { expectedLab, history } = setup(store)
 
-      userEvent.type(screen.getByPlaceholderText(/labs.lab.patient/i), 'Billy')
+      userEvent.type(screen.getByPlaceholderText(/labs.lab.patient/i), 'Jim Bob')
 
       await waitFor(
         () => {
-          expect(screen.getByText(/billy/i)).toBeVisible()
+          expect(screen.getByText(/jim bob/i)).toBeVisible()
         },
         { timeout: 3000 },
       )
-      userEvent.click(screen.getByText(/billy/i))
+      userEvent.click(screen.getByText(/jim bob/i))
       userEvent.type(screen.getByPlaceholderText(/labs\.lab\.type/i), expectedLab.type)
-      userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), expectedNotes)
+      userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), (expectedLab.notes as string[])[0])
 
       userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
 
@@ -266,7 +259,10 @@ describe('New Lab Request', () => {
           status: 'requested',
         }),
       )
-      expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
+
+      await waitFor(() => {
+        expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
+      })
     }, 15000)
   })
 })
