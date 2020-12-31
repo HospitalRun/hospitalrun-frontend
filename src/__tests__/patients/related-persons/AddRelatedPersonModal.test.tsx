@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
@@ -8,27 +8,41 @@ import Patient from '../../../shared/model/Patient'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 describe('Add Related Person Modal', () => {
-  const patient = {
-    id: '123',
-    fullName: 'fullName',
-    code: 'code1',
-  } as Patient
-  const patient2 = {
-    id: '456',
-    fullName: 'patient2',
-    code: 'code2',
-  } as Patient
+  // const patient = {
+  //   id: '123',
+  //   fullName: 'fullName',
+  //   code: 'code1',
+  // } as Patient
+  // const patient2 = {
+  //   id: '456',
+  //   fullName: 'patient2',
+  //   code: 'code2',
+  // } as Patient
+
+  const patients = [
+    {
+      id: '123',
+      fullName: 'fullName',
+      code: 'code1',
+    },
+    {
+      id: '456',
+      fullName: 'fullName2',
+      code: 'code2',
+    },
+  ] as Patient[]
 
   const setup = () => {
     jest.resetAllMocks()
-    // jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
-    jest.spyOn(PatientRepository, 'search').mockResolvedValue([patient, patient2])
-    jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patients[0])
+    jest.spyOn(PatientRepository, 'search').mockResolvedValue(patients)
+    jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patients[1])
+    jest.spyOn(PatientRepository, 'count').mockResolvedValue(2)
 
     return render(
       <AddRelatedPersonModal
         show
-        patientId={patient.id}
+        patientId={patients[0].id}
         onCloseButtonClick={jest.fn()}
         toggle={jest.fn()}
       />,
@@ -92,21 +106,26 @@ describe('Add Related Person Modal', () => {
   describe('save', () => {
     it('should call the save function with the correct data', async () => {
       setup()
-      userEvent.type(screen.getByPlaceholderText(/^patient.relatedPerson$/i), patient2.fullName)
-      userEvent.click(await screen.findByText(`${patient.fullName} (${patient.code})`))
+      userEvent.type(
+        screen.getByPlaceholderText(/^patient.relatedPerson$/i),
+        patients[1].fullName as string,
+      )
+      userEvent.click(await screen.findByText(/fullName2/i))
 
       userEvent.type(
         screen.getByLabelText(/^patient.relatedPersons.relationshipType$/i),
         'relationship',
       )
-      userEvent.click(screen.getByRole('button', { name: /patient.relatedPersons.add/i }))
+      await act(async () => {
+        userEvent.click(screen.getByRole('button', { name: /patient.relatedPersons.add/i }))
+      })
 
       expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
       expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
         expect.objectContaining({
           relatedPersons: [
             expect.objectContaining({
-              patientId: '123',
+              patientId: '456',
               type: 'relationship',
             }),
           ],
