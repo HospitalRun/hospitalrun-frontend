@@ -20,10 +20,9 @@ describe('Use Request lab', () => {
   } as Lab
 
   Date.now = jest.fn(() => expectedRequestedOnDate.valueOf())
-  jest.spyOn(LabRepository, 'save').mockResolvedValue(expectedRequestedLab)
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    jest.spyOn(LabRepository, 'save').mockResolvedValue(expectedRequestedLab)
   })
 
   it('should save new request lab', async () => {

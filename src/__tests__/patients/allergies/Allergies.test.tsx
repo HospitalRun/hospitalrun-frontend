@@ -95,6 +95,7 @@ describe('Allergies', () => {
 
     it('should add new allergy', async () => {
       setup(expectedPatient)
+
       userEvent.click(
         screen.getByRole('button', {
           name: /patient\.allergies\.new/i,
@@ -108,19 +109,13 @@ describe('Allergies', () => {
         newAllergy,
       )
 
-      await waitFor(() =>
-        userEvent.click(
-          within(screen.getByRole('dialog')).getByRole('button', {
-            name: /patient\.allergies\.new/i,
-          }),
-        ),
+      userEvent.click(
+        within(screen.getByRole('dialog')).getByRole('button', {
+          name: /patient\.allergies\.new/i,
+        }),
       )
 
-      expect(
-        screen.getByRole('button', {
-          name: newAllergy,
-        }),
-      ).toBeInTheDocument()
+      expect(await screen.findByText(newAllergy)).toBeInTheDocument()
     })
   })
 

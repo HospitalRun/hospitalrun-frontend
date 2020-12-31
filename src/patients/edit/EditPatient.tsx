@@ -26,11 +26,13 @@ const EditPatient = () => {
 
   const updateTitle = useUpdateTitle()
 
-  updateTitle(
-    `${t('patients.editPatient')}: ${getPatientFullName(givenPatient)} (${getPatientCode(
-      givenPatient,
-    )})`,
-  )
+  useEffect(() => {
+    updateTitle(
+      `${t('patients.editPatient')}: ${getPatientFullName(givenPatient)} (${getPatientCode(
+        givenPatient,
+      )})`,
+    )
+  })
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },

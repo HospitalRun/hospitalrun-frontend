@@ -1,217 +1,157 @@
-import * as components from '@hospitalrun/components'
-import { Table } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
-import { mount } from 'enzyme'
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
+import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
 import RelatedPersonTab from '../../../patients/related-persons/RelatedPersonTab'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
+import RelatedPerson from '../../../shared/model/RelatedPerson'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
+const setup = ({
+  permissions = [Permissions.WritePatients, Permissions.ReadPatients],
+  patientOverrides = {},
+}: {
+  permissions?: Permissions[]
+  patientOverrides?: Partial<Patient>
+} = {}) => {
+  const expectedPatient = {
+    id: '123',
+    rev: '123',
+    ...patientOverrides,
+  } as Patient
+  const expectedRelatedPerson = {
+    givenName: 'Related',
+    familyName: 'Patient',
+    id: '123001',
+  } as Patient
+
+  jest
+    .spyOn(PatientRepository, 'find')
+    .mockImplementation((id: string) =>
+      id === expectedRelatedPerson.id
+        ? Promise.resolve(expectedRelatedPerson)
+        : Promise.resolve(expectedPatient),
+    )
+  jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedPatient)
+  jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
+
+  const history = createMemoryHistory({ initialEntries: ['/patients/123/relatedpersons'] })
+  const store = mockStore({
+    user: {
+      permissions,
+    },
+    patient: {},
+  } as any)
+
+  return {
+    expectedPatient,
+    expectedRelatedPerson,
+    history,
+    ...render(
+      <Provider store={store}>
+        <Router history={history}>
+          <Route path="/patients/:id">
+            <RelatedPersonTab patient={expectedPatient} />
+          </Route>
+        </Router>
+      </Provider>,
+    ),
+  }
+}
+
 describe('Related Persons Tab', () => {
-  let wrapper: any
-  let history = createMemoryHistory()
-
   describe('Add New Related Person', () => {
-    let patient: any
-    let user: any
-    jest.spyOn(components, 'Toast')
+    it('should render a New Related Person button', async () => {
+      setup()
 
-    beforeEach(() => {
-      jest.resetAllMocks()
-      history = createMemoryHistory()
-
-      patient = {
-        id: '123',
-        rev: '123',
-      } as Patient
-
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
-      jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
-      jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
-
-      user = {
-        permissions: [Permissions.WritePatients, Permissions.ReadPatients],
-      }
-      act(() => {
-        wrapper = mount(
-          <Router history={history}>
-            <Provider store={mockStore({ patient, user } as any)}>
-              <RelatedPersonTab patient={patient} />
-            </Provider>
-          </Router>,
-        )
-      })
+      expect(await screen.findByRole('button', { name: /patient\.relatedPersons\.add/i }))
     })
 
-    it('should render a New Related Person button', () => {
-      const newRelatedPersonButton = wrapper.find(components.Button)
+    it('should not render a New Related Person button if the user does not have write privileges for a patient', async () => {
+      const { container } = setup({ permissions: [Permissions.ReadPatients] })
 
-      expect(newRelatedPersonButton).toHaveLength(1)
-      expect(newRelatedPersonButton.text().trim()).toEqual('patient.relatedPersons.add')
+      await waitForElementToBeRemoved(container.querySelector(`[class^='css']`))
+
+      expect(
+        screen.queryByRole('button', { name: /patient\.relatedPersons\.add/i }),
+      ).not.toBeInTheDocument()
     })
 
-    it('should not render a New Related Person button if the user does not have write privileges for a patient', () => {
-      user = { permissions: [Permissions.ReadPatients] }
-      act(() => {
-        wrapper = mount(
-          <Router history={history}>
-            <Provider store={mockStore({ patient, user } as any)}>
-              <RelatedPersonTab patient={patient} />
-            </Provider>
-          </Router>,
-        )
-      })
-      const newRelatedPersonButton = wrapper.find(components.Button)
-      expect(newRelatedPersonButton).toHaveLength(0)
-    })
+    it('should show the New Related Person modal when the New Related Person button is clicked', async () => {
+      setup()
 
-    it('should render a New Related Person modal', () => {
-      const newRelatedPersonModal = wrapper.find(AddRelatedPersonModal)
+      userEvent.click(await screen.findByRole('button', { name: /patient\.relatedPersons\.add/i }))
 
-      expect(newRelatedPersonModal.prop('show')).toBeFalsy()
-      expect(newRelatedPersonModal).toHaveLength(1)
-    })
-
-    it('should show the New Related Person modal when the New Related Person button is clicked', () => {
-      const newRelatedPersonButton = wrapper.find(components.Button)
-
-      act(() => {
-        const onClick = newRelatedPersonButton.prop('onClick') as any
-        onClick()
-      })
-
-      wrapper.update()
-
-      const newRelatedPersonModal = wrapper.find(AddRelatedPersonModal)
-      expect(newRelatedPersonModal.prop('show')).toBeTruthy()
+      expect(await screen.findByRole('dialog')).toBeInTheDocument()
     })
   })
 
   describe('Table', () => {
-    const patient = {
-      id: '123',
-      rev: '123',
-      relatedPersons: [{ patientId: '123001', type: 'type' }],
-    } as Patient
-    const expectedRelatedPerson = {
-      givenName: 'test',
-      familyName: 'test',
-      fullName: 'test test',
-      id: '123001',
-      type: 'type',
-    } as Patient
-
-    const user = {
-      permissions: [Permissions.WritePatients, Permissions.ReadPatients],
+    const relationShipType = 'Sibling'
+    const patientOverrides = {
+      relatedPersons: [{ patientId: '123001', type: relationShipType } as RelatedPerson],
     }
 
-    beforeEach(async () => {
-      jest.spyOn(PatientRepository, 'saveOrUpdate')
-      jest
-        .spyOn(PatientRepository, 'find')
-        .mockResolvedValueOnce(patient)
-        .mockResolvedValueOnce(expectedRelatedPerson)
+    it('should render a list of related persons with their full name being displayed', async () => {
+      const { expectedRelatedPerson } = setup({ patientOverrides })
 
-      await act(async () => {
-        wrapper = await mount(
-          <Router history={history}>
-            <Provider store={mockStore({ patient, user } as any)}>
-              <RelatedPersonTab patient={patient} />
-            </Provider>
-          </Router>,
-        )
-      })
-      wrapper.update()
-    })
+      expect(await screen.findByRole('table')).toBeInTheDocument()
 
-    it('should render a list of related persons with their full name being displayed', () => {
-      const table = wrapper.find(Table)
-      const columns = table.prop('columns')
-      const actions = table.prop('actions') as any
-      expect(columns[0]).toEqual(
-        expect.objectContaining({ label: 'patient.givenName', key: 'givenName' }),
-      )
-      expect(columns[1]).toEqual(
-        expect.objectContaining({ label: 'patient.familyName', key: 'familyName' }),
-      )
-      expect(columns[2]).toEqual(
-        expect.objectContaining({
-          label: 'patient.relatedPersons.relationshipType',
-          key: 'type',
-        }),
-      )
+      expect(screen.getByRole('columnheader', { name: /patient\.givenName/i })).toBeInTheDocument()
+      expect(screen.getByRole('columnheader', { name: /patient\.familyName/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('columnheader', { name: /patient\.relatedPersons\.relationshipType/i }),
+      ).toBeInTheDocument()
+      expect(screen.getByRole('columnheader', { name: /actions\.label/i })).toBeInTheDocument()
 
-      expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
-      expect(actions[1]).toEqual(expect.objectContaining({ label: 'actions.delete' }))
-      expect(table.prop('actionsHeaderText')).toEqual('actions.label')
-      expect(table.prop('data')).toEqual([expectedRelatedPerson])
+      expect(
+        screen.getByRole('cell', { name: expectedRelatedPerson.givenName as string }),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('cell', { name: expectedRelatedPerson.familyName as string }),
+      ).toBeInTheDocument()
+      expect(screen.getByRole('cell', { name: relationShipType })).toBeInTheDocument()
+
+      expect(screen.getByRole('button', { name: /actions\.view/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /actions\.delete/i })).toBeInTheDocument()
     })
 
     it('should remove the related person when the delete button is clicked', async () => {
-      const removeRelatedPersonSpy = jest.spyOn(PatientRepository, 'saveOrUpdate')
-      const tr = wrapper.find('tr').at(1)
+      setup({ patientOverrides })
 
-      await act(async () => {
-        const onClick = tr.find('button').at(1).prop('onClick') as any
-        await onClick({ stopPropagation: jest.fn() })
-      })
-      expect(removeRelatedPersonSpy).toHaveBeenCalledWith({ ...patient, relatedPersons: [] })
+      userEvent.click(await screen.findByRole('button', { name: /actions\.delete/i }))
+
+      expect(
+        await screen.findByText(/patient\.relatedPersons\.warning\.noRelatedPersons/i),
+      ).toBeInTheDocument()
     })
 
     it('should navigate to related person patient profile on related person click', async () => {
-      const tr = wrapper.find('tr').at(1)
+      const { history } = setup({ patientOverrides })
 
-      act(() => {
-        const onClick = tr.find('button').at(0).prop('onClick') as any
-        onClick({ stopPropagation: jest.fn() })
-      })
+      userEvent.click(await screen.findByRole('button', { name: /actions\.view/i }))
 
       expect(history.location.pathname).toEqual('/patients/123001')
     })
   })
 
-  describe('EmptyList', () => {
-    const patient = {
-      id: '123',
-      rev: '123',
-    } as Patient
+  it('should display a warning if patient has no related persons', async () => {
+    setup()
 
-    const user = {
-      permissions: [Permissions.WritePatients, Permissions.ReadPatients],
-    }
-
-    beforeEach(async () => {
-      jest.spyOn(PatientRepository, 'find').mockResolvedValue({
-        fullName: 'test test',
-        id: '123001',
-      } as Patient)
-
-      await act(async () => {
-        wrapper = await mount(
-          <Router history={history}>
-            <Provider store={mockStore({ patient, user } as any)}>
-              <RelatedPersonTab patient={patient} />
-            </Provider>
-          </Router>,
-        )
-      })
-      wrapper.update()
-    })
-
-    it('should display a warning if patient has no related persons', () => {
-      const warning = wrapper.find(components.Alert)
-      expect(warning).toBeDefined()
-    })
+    expect(
+      await screen.findByText(/patient\.relatedPersons\.warning\.noRelatedPersons/i),
+    ).toBeInTheDocument()
+    expect(
+      await screen.findByText(/patient\.relatedPersons\.addRelatedPersonAbove/i),
+    ).toBeInTheDocument()
   })
 })

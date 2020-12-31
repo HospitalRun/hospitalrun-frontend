@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
@@ -26,20 +26,15 @@ it('renders without crashing', async () => {
     },
   } as any)
 
-  const AppWithStore = () => (
+  render(
     <Provider store={store}>
       <App />
-    </Provider>
+    </Provider>,
   )
 
-  render(<AppWithStore />)
-
-  await waitFor(
-    () => {
-      expect(screen.getByRole('heading', { name: /dashboard\.label/i })).toBeInTheDocument()
-    },
-    { timeout: 5000 },
-  )
+  expect(
+    await screen.findByRole('heading', { name: /dashboard\.label/i }, { timeout: 8000 }),
+  ).toBeInTheDocument()
 
   // eslint-disable-next-line no-console
   ;(console.log as jest.Mock).mockRestore()

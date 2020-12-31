@@ -23,7 +23,7 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Appointment', () => {
-  const testPatient: Patient = {
+  const expectedPatient: Patient = {
     addresses: [],
     bloodType: 'o',
     careGoals: [],
@@ -56,7 +56,7 @@ describe('New Appointment', () => {
 
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'save').mockResolvedValue(expectedAppointment)
-    jest.spyOn(PatientRepository, 'search').mockResolvedValue([testPatient])
+    jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
 
     const history = createMemoryHistory({ initialEntries: ['/appointments/new'] })
 
@@ -142,7 +142,7 @@ describe('New Appointment', () => {
       }
 
       const expectedAppointment = {
-        patient: testPatient.fullName,
+        patient: expectedPatient.fullName,
         startDateTime: new Date(2020, 10, 10, 0, 0, 0, 0).toISOString(),
         endDateTime: new Date(1957, 10, 10, 0, 0, 0, 0).toISOString(),
         location: 'location',
@@ -177,7 +177,7 @@ describe('New Appointment', () => {
       const { container } = setup()
 
       const expectedAppointment = {
-        patient: testPatient.fullName,
+        patient: expectedPatient.fullName,
         startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
         endDateTime: addMinutes(
           roundToNearestMinutes(new Date(), { nearestTo: 15 }),
@@ -192,7 +192,9 @@ describe('New Appointment', () => {
         screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
         expectedAppointment.patient,
       )
-      userEvent.click(await screen.findByText(`${testPatient.fullName} (${testPatient.code})`))
+      userEvent.click(
+        await screen.findByText(`${expectedPatient.fullName} (${expectedPatient.code})`),
+      )
 
       fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[0], {
         target: { value: expectedAppointment.startDateTime },
@@ -224,7 +226,7 @@ describe('New Appointment', () => {
       await waitFor(() => {
         expect(AppointmentRepository.save).toHaveBeenCalledWith({
           ...expectedAppointment,
-          patient: testPatient.id,
+          patient: expectedPatient.id,
         })
       })
     }, 30000)
@@ -234,9 +236,11 @@ describe('New Appointment', () => {
 
       userEvent.type(
         screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
-        `${testPatient.fullName}`,
+        `${expectedPatient.fullName}`,
       )
-      userEvent.click(await screen.findByText(`${testPatient.fullName} (${testPatient.code})`))
+      userEvent.click(
+        await screen.findByText(`${expectedPatient.fullName} (${expectedPatient.code})`),
+      )
 
       userEvent.click(screen.getByText(/scheduling.appointments.createAppointment/i))
 
