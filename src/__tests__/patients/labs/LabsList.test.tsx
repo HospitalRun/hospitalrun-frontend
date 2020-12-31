@@ -86,8 +86,6 @@ describe('Table', () => {
         name: /actions\.label/i,
       }),
     ).toBeInTheDocument()
-
-    
   })
   it('should navigate to lab view on lab click', async () => {
     let row: any
