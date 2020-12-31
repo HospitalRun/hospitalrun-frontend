@@ -1,11 +1,18 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { ReactQueryConfigProvider } from 'react-query'
 
 import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
+
+const noRetryConfig = {
+  queries: {
+    retry: false,
+  },
+}
 
 describe('Add Related Person Modal', () => {
   const patients = [
@@ -22,19 +29,20 @@ describe('Add Related Person Modal', () => {
   ] as Patient[]
 
   const setup = () => {
-    jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patients[0])
     jest.spyOn(PatientRepository, 'search').mockResolvedValue(patients)
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patients[1])
     jest.spyOn(PatientRepository, 'count').mockResolvedValue(2)
 
     return render(
-      <AddRelatedPersonModal
-        show
-        patientId={patients[0].id}
-        onCloseButtonClick={jest.fn()}
-        toggle={jest.fn()}
-      />,
+      <ReactQueryConfigProvider config={noRetryConfig}>
+        <AddRelatedPersonModal
+          show
+          patientId={patients[0].id}
+          onCloseButtonClick={jest.fn()}
+          toggle={jest.fn()}
+        />
+      </ReactQueryConfigProvider>,
     )
   }
 
@@ -102,11 +110,12 @@ describe('Add Related Person Modal', () => {
     it('should call the save function with the correct data', async () => {
       setup()
 
-      userEvent.type(
+      await userEvent.type(
         screen.getByPlaceholderText(/^patient.relatedPerson$/i),
         patients[1].fullName as string,
+        { delay: 50 },
       )
-      userEvent.click(await screen.findByText(/fullName2/i))
+      userEvent.click(await screen.findByText(/^fullname2/i))
 
       userEvent.type(
         screen.getByLabelText(/^patient.relatedPersons.relationshipType$/i),
@@ -127,6 +136,6 @@ describe('Add Related Person Modal', () => {
           ],
         }),
       )
-    }, 20000)
+    }, 40000)
   })
 })
