@@ -18,17 +18,15 @@ import { RootState } from '../../../shared/store'
 
 const { TitleProvider } = titleUtil
 
-beforeEach(() => {
-  jest.clearAllMocks()
-})
+const now = new Date()
 
-const setup = () => {
+const setup = (start = new Date(now.setHours(14, 30))) => {
   const expectedAppointment = {
     id: '123',
     rev: '1',
     patient: '1234',
-    startDateTime: new Date().toISOString(),
-    endDateTime: addMinutes(new Date(), 60).toISOString(),
+    startDateTime: start.toISOString(),
+    endDateTime: addMinutes(start, 60).toISOString(),
     location: 'location',
     reason: 'reason',
   } as Appointment
@@ -36,6 +34,7 @@ const setup = () => {
     id: '123',
     fullName: 'patient full name',
   } as Patient
+
   jest.spyOn(titleUtil, 'useUpdateTitle').mockReturnValue(jest.fn())
   jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockImplementation(() => jest.fn())
   jest.spyOn(AppointmentRepository, 'findAll').mockResolvedValue([expectedAppointment])
@@ -92,6 +91,25 @@ describe('ViewAppointments', () => {
     expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
       'data-full',
       expect.stringContaining(expectedEnd),
+    )
+  })
+
+  it('should hard cap end appointment time', async () => {
+    const { container, expectedAppointment } = setup(new Date(now.setHours(23, 45)))
+
+    await waitFor(() => {
+      expect(container.querySelector('.fc-content-col .fc-time')).toBeInTheDocument()
+    })
+
+    const expectedStart = format(new Date(expectedAppointment.startDateTime), 'h:mm')
+
+    expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
+      'data-full',
+      expect.stringContaining(expectedStart),
+    )
+    expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
+      'data-full',
+      expect.stringContaining('12:00'),
     )
   })
 })
