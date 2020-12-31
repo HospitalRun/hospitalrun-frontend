@@ -96,7 +96,7 @@ describe('Care Goal Form', () => {
     const priority = screen.getAllByRole('combobox')[0]
     userEvent.type(priority, `${expectedPriority}${arrowDown}${enter}`)
 
-    expect(priority).toHaveDisplayValue(expectedPriority)
+    expect(priority).toHaveDisplayValue([`patient.careGoal.priority.${expectedPriority}`])
     expect(onCareGoalChangeSpy).toHaveBeenCalledTimes(1)
     expect(onCareGoalChangeSpy).toHaveBeenCalledWith({ priority: expectedPriority })
   })
@@ -162,10 +162,8 @@ describe('Care Goal Form', () => {
     setup()
 
     const startDatePicker = screen.getAllByRole('textbox')[4]
-    // TODO Getting below warnings
-    // Warning: `NaN` is an invalid value for the `left` css style property.
-    userEvent.type(startDatePicker, expectedStartDate.toISOString())
-    expect(startDatePicker).toHaveDisplayValue(expectedStartDate.toISOString())
+    userEvent.type(startDatePicker, `{selectall}${expectedStartDate.toISOString()}`)
+    expect(startDatePicker).toHaveDisplayValue([expectedStartDate.toISOString()])
   })
 
   it('should render a due date picker', () => {
@@ -177,13 +175,13 @@ describe('Care Goal Form', () => {
     expect(dueDatePicker).toHaveValue(format(dueDate, 'MM/d/y'))
   })
 
-  it('should call onChange handler when due date change', () => {
-    const expectedDueDate = addDays(31, new Date().getDate())
+  it('should call onChange handler when due date changes', () => {
+    const expectedDueDate = addDays(new Date(), 31)
     setup(false, false)
 
     const dueDatePicker = screen.getAllByRole('textbox')[5]
-    userEvent.type(dueDatePicker, expectedDueDate.toISOString())
-    expect(dueDatePicker).toHaveDisplayValue(expectedDueDate.toISOString())
+    userEvent.type(dueDatePicker, `{selectall}${expectedDueDate.toISOString()}`)
+    expect(dueDatePicker).toHaveDisplayValue([expectedDueDate.toISOString()])
   })
 
   it('should render a note input', () => {
