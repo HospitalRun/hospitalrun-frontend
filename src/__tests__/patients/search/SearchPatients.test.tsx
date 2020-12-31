@@ -35,6 +35,8 @@ describe('Search Patients', () => {
 
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: /patients\.nopatients/i })).toBeInTheDocument()
+    })
+    await waitFor(() => {
       expect(screen.getByRole('button', { name: /patients\.newpatient/i })).toBeInTheDocument()
     })
   })
@@ -55,18 +57,33 @@ describe('Search Patients', () => {
 
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: /patients\.nopatients/i })).toBeInTheDocument()
+    })
+
+    await waitFor(() => {
       expect(screen.getByRole('button', { name: /patients\.newpatient/i })).toBeInTheDocument()
     })
 
     const patientSearch = screen.getByPlaceholderText(/actions\.search/i)
     userEvent.type(patientSearch, expectedSearch)
-    expect(patientSearch).toHaveDisplayValue(expectedSearch)
+
+    await waitFor(() => {
+      expect(patientSearch).toHaveDisplayValue(expectedSearch)
+    })
 
     await waitFor(() => {
       expect(screen.getByRole('cell', { name: expectedPatient.code })).toBeInTheDocument()
+    })
+
+    await waitFor(() => {
       expect(screen.getByRole('cell', { name: expectedPatient.givenName })).toBeInTheDocument()
+    })
+    await waitFor(() => {
       expect(screen.getByRole('cell', { name: expectedPatient.familyName })).toBeInTheDocument()
+    })
+    await waitFor(() => {
       expect(screen.getByRole('cell', { name: expectedPatient.sex })).toBeInTheDocument()
+    })
+    await waitFor(() => {
       expect(
         screen.getByRole('cell', { name: format(dateOfBirth, 'MM/dd/yyyy') }),
       ).toBeInTheDocument()
