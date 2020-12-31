@@ -1,18 +1,11 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import { ReactQueryConfigProvider } from 'react-query'
 
 import AddRelatedPersonModal from '../../../patients/related-persons/AddRelatedPersonModal'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
-
-const noRetryConfig = {
-  queries: {
-    retry: false,
-  },
-}
 
 describe('Add Related Person Modal', () => {
   const patients = [
@@ -35,14 +28,12 @@ describe('Add Related Person Modal', () => {
     jest.spyOn(PatientRepository, 'count').mockResolvedValue(2)
 
     return render(
-      <ReactQueryConfigProvider config={noRetryConfig}>
-        <AddRelatedPersonModal
-          show
-          patientId={patients[0].id}
-          onCloseButtonClick={jest.fn()}
-          toggle={jest.fn()}
-        />
-      </ReactQueryConfigProvider>,
+      <AddRelatedPersonModal
+        show
+        patientId={patients[0].id}
+        onCloseButtonClick={jest.fn()}
+        toggle={jest.fn()}
+      />,
     )
   }
 
@@ -136,6 +127,6 @@ describe('Add Related Person Modal', () => {
           ],
         }),
       )
-    }, 40000)
+    }, 60000)
   })
 })
