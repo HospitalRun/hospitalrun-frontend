@@ -1,10 +1,8 @@
-import { act, renderHook } from '@testing-library/react-hooks'
-
 import useLabsSearch from '../../../labs/hooks/useLabsSearch'
 import LabSearchRequest from '../../../labs/model/LabSearchRequest'
 import LabRepository from '../../../shared/db/LabRepository'
 import Lab from '../../../shared/model/Lab'
-import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
+import executeQuery from '../../test-utils/use-query.util'
 
 describe('Use Labs Search', () => {
   const expectedLabs = [
@@ -28,13 +26,7 @@ describe('Use Labs Search', () => {
       status: 'all',
     } as LabSearchRequest
 
-    let actualData: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useLabsSearch(expectedLabsSearchRequest))
-      const { result } = renderHookResult
-      await waitUntilQueryIsSuccessful(renderHookResult)
-      actualData = result.current.data
-    })
+    const actualData = await executeQuery(() => useLabsSearch(expectedLabsSearchRequest))
 
     expect(labRepositoryFindAllSpy).toHaveBeenCalledTimes(1)
     expect(labRepositorySearchSpy).not.toHaveBeenCalled()
@@ -47,13 +39,7 @@ describe('Use Labs Search', () => {
       status: 'all',
     } as LabSearchRequest
 
-    let actualData: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useLabsSearch(expectedLabsSearchRequest))
-      const { result } = renderHookResult
-      await waitUntilQueryIsSuccessful(renderHookResult)
-      actualData = result.current.data
-    })
+    const actualData = await executeQuery(() => useLabsSearch(expectedLabsSearchRequest))
 
     expect(labRepositoryFindAllSpy).not.toHaveBeenCalled()
     expect(labRepositorySearchSpy).toHaveBeenCalledTimes(1)
