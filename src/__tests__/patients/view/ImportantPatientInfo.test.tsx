@@ -1,18 +1,14 @@
-import * as components from '@hospitalrun/components'
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
-import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import NewAllergyModal from '../../../patients/allergies/NewAllergyModal'
-import AddDiagnosisModal from '../../../patients/diagnoses/AddDiagnosisModal'
 import ImportantPatientInfo from '../../../patients/view/ImportantPatientInfo'
-import AddVisitModal from '../../../patients/visits/AddVisitModal'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import CarePlan from '../../../shared/model/CarePlan'
 import Diagnosis from '../../../shared/model/Diagnosis'
@@ -63,194 +59,127 @@ describe('Important Patient Info Panel', () => {
     user = { permissions }
     store = mockStore({ patient, user } as any)
 
-    let wrapper: any
-
-    await act(async () => {
-      wrapper = await mount(
-        <Provider store={store}>
-          <Router history={history}>
-            <ImportantPatientInfo patient={patient} />
-          </Router>
-        </Provider>,
-      )
-    })
-    wrapper.update()
-    return wrapper
+    return render(
+      <Provider store={store}>
+        <Router history={history}>
+          <ImportantPatientInfo patient={patient} />
+        </Router>
+      </Provider>,
+    )
   }
 
   describe("patient's full name, patient's code, sex, and date of birth", () => {
     it("should render patient's full name", async () => {
-      const wrapper = await setup(expectedPatient, [])
-      const code = wrapper.find('.col-2')
-      expect(code.at(0).text()).toEqual(expectedPatient.fullName)
+      setup(expectedPatient, [])
+      if (typeof expectedPatient.fullName !== 'undefined') {
+        expect(screen.getByText(expectedPatient.fullName)).toBeInTheDocument()
+      }
     })
 
     it("should render patient's code", async () => {
-      const wrapper = await setup(expectedPatient, [])
-      const code = wrapper.find('.col-2')
-      expect(code.at(1).text()).toEqual(`patient.code${expectedPatient.code}`)
+      setup(expectedPatient, [])
+      expect(screen.getByText(expectedPatient.code)).toBeInTheDocument()
     })
 
     it("should render patient's sex", async () => {
-      const wrapper = await setup(expectedPatient, [])
-      const sex = wrapper.find('.patient-sex')
-      expect(sex.text()).toEqual(`patient.sex${expectedPatient.sex}`)
+      setup(expectedPatient, [])
+      expect(screen.getByText(expectedPatient.sex)).toBeInTheDocument()
     })
 
     it("should render patient's dateOfDate", async () => {
-      const wrapper = await setup(expectedPatient, [])
-      const dateOfBirth = wrapper.find('.patient-dateOfBirth')
-      expect(dateOfBirth.text()).toEqual(`patient.dateOfBirth${expectedPatient.dateOfBirth}`)
+      setup(expectedPatient, [])
+      expect(screen.getAllByText(expectedPatient.dateOfBirth)[0]).toBeInTheDocument()
     })
   })
 
   describe('add new visit button', () => {
     it('should render an add visit button if user has correct permissions', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddVisit])
-
-      const addNewButton = wrapper.find(components.Button)
-      expect(addNewButton).toHaveLength(1)
-      expect(addNewButton.text().trim()).toEqual('patient.visits.new')
+      setup(expectedPatient, [Permissions.AddVisit])
+      expect(screen.getByRole('button', { name: /patient.visits.new/i })).toBeInTheDocument()
     })
 
     it('should open the add visit modal on click', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddVisit])
-
-      act(() => {
-        const addNewButton = wrapper.find(components.Button)
-        const onClick = addNewButton.prop('onClick') as any
-        onClick()
-      })
-      wrapper.update()
-
-      const modal = wrapper.find(AddVisitModal)
-      expect(modal.prop('show')).toBeTruthy()
+      setup(expectedPatient, [Permissions.AddVisit])
+      userEvent.click(screen.getByText(/patient.visits.new/i))
+      expect(await screen.findByRole('dialog')).toBeInTheDocument()
+      const { getByText: getByTextModal } = within(screen.getByRole('dialog'))
+      expect(getByTextModal(/patient.visits.new/i, { selector: 'div' })).toBeInTheDocument()
     })
 
     it('should close the modal when the close button is clicked', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddVisit])
-
-      act(() => {
-        const addNewButton = wrapper.find(components.Button)
-        const onClick = addNewButton.prop('onClick') as any
-        onClick()
-      })
-      wrapper.update()
-
-      act(() => {
-        const modal = wrapper.find(AddVisitModal)
-        const onClose = modal.prop('onCloseButtonClick') as any
-        onClose()
-      })
-      wrapper.update()
-
-      expect(wrapper.find(AddVisitModal).prop('show')).toBeFalsy()
+      setup(expectedPatient, [Permissions.AddVisit])
+      userEvent.click(screen.getByText(/patient.visits.new/i))
+      expect(await screen.findByRole('dialog')).toBeInTheDocument()
+      const { getAllByRole: getAllByRoleModal } = within(screen.getByRole('dialog'))
+      userEvent.click(getAllByRoleModal('button')[0])
+      expect(await screen.findByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('should not render new visit button if user does not have permissions', async () => {
-      const wrapper = await setup(expectedPatient, [])
-
-      expect(wrapper.find(components.Button)).toHaveLength(0)
+      setup(expectedPatient, [])
+      expect(screen.queryByRole('button', { name: /patient.visits.new/i })).not.toBeInTheDocument()
     })
   })
 
   describe('add new allergy button', () => {
     it('should render an add allergy button if user has correct permissions', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddAllergy])
-
-      const addNewButton = wrapper.find(components.Button)
-      expect(addNewButton).toHaveLength(1)
-      expect(addNewButton.text().trim()).toEqual('patient.allergies.new')
+      setup(expectedPatient, [Permissions.AddAllergy])
+      expect(screen.getByRole('button', { name: /patient.allergies.new/i })).toBeInTheDocument()
     })
 
     it('should open the add allergy modal on click', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddAllergy])
-
-      act(() => {
-        const addNewButton = wrapper.find(components.Button)
-        const onClick = addNewButton.prop('onClick') as any
-        onClick()
-      })
-      wrapper.update()
-
-      const modal = wrapper.find(NewAllergyModal)
-      expect(modal.prop('show')).toBeTruthy()
+      setup(expectedPatient, [Permissions.AddAllergy])
+      userEvent.click(screen.getByRole('button', { name: /patient.allergies.new/i }))
+      expect(await screen.findByRole('dialog')).toBeInTheDocument()
+      const { getByLabelText: getByLabelTextModal } = within(screen.getByRole('dialog'))
+      expect(getByLabelTextModal(/patient.allergies.allergyName/i)).toBeInTheDocument()
     })
 
     it('should close the modal when the close button is clicked', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddAllergy])
-
-      act(() => {
-        const addNewButton = wrapper.find(components.Button)
-        const onClick = addNewButton.prop('onClick') as any
-        onClick()
-      })
-      wrapper.update()
-
-      act(() => {
-        const modal = wrapper.find(NewAllergyModal)
-        const onClose = modal.prop('onCloseButtonClick') as any
-        onClose()
-      })
-      wrapper.update()
-
-      expect(wrapper.find(NewAllergyModal).prop('show')).toBeFalsy()
+      setup(expectedPatient, [Permissions.AddAllergy])
+      userEvent.click(screen.getByRole('button', { name: /patient.allergies.new/i }))
+      expect(await screen.findByRole('dialog')).toBeInTheDocument()
+      const { getAllByRole: getAllByRoleModal } = within(screen.getByRole('dialog'))
+      userEvent.click(getAllByRoleModal('button')[0])
+      expect(await screen.findByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('should not render new allergy button if user does not have permissions', async () => {
-      const wrapper = await setup(expectedPatient, [])
-
-      expect(wrapper.find(components.Button)).toHaveLength(0)
+      setup(expectedPatient, [])
+      expect(
+        screen.queryByRole('button', { name: /patient.allergies.new/i }),
+      ).not.toBeInTheDocument()
     })
   })
 
   describe('add diagnoses button', () => {
     it('should render an add diagnosis button if user has correct permissions', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddDiagnosis])
-
-      const addNewButton = wrapper.find(components.Button)
-      expect(addNewButton).toHaveLength(1)
-      expect(addNewButton.text().trim()).toEqual('patient.diagnoses.new')
+      setup(expectedPatient, [Permissions.AddDiagnosis])
+      expect(screen.getByRole('button', { name: /patient.diagnoses.new/i })).toBeInTheDocument()
     })
 
     it('should open the add diagnosis modal on click', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddDiagnosis])
-
-      act(() => {
-        const addNewButton = wrapper.find(components.Button)
-        const onClick = addNewButton.prop('onClick') as any
-        onClick()
-      })
-      wrapper.update()
-
-      const modal = wrapper.find(AddDiagnosisModal)
-      expect(modal.prop('show')).toBeTruthy()
+      setup(expectedPatient, [Permissions.AddDiagnosis])
+      userEvent.click(screen.getByRole('button', { name: /patient.diagnoses.new/i }))
+      expect(await screen.findByRole('dialog')).toBeInTheDocument()
+      const { getByLabelText: getByLabelTextModal } = within(screen.getByRole('dialog'))
+      expect(getByLabelTextModal(/patient.diagnoses.diagnosisName/i)).toBeInTheDocument()
     })
 
     it('should close the modal when the close button is clicked', async () => {
-      const wrapper = await setup(expectedPatient, [Permissions.AddDiagnosis])
-
-      act(() => {
-        const addNewButton = wrapper.find(components.Button)
-        const onClick = addNewButton.prop('onClick') as any
-        onClick()
-      })
-      wrapper.update()
-
-      act(() => {
-        const modal = wrapper.find(AddDiagnosisModal)
-        const onClose = modal.prop('onCloseButtonClick') as any
-        onClose()
-      })
-      wrapper.update()
-
-      expect(wrapper.find(AddDiagnosisModal).prop('show')).toBeFalsy()
+      setup(expectedPatient, [Permissions.AddDiagnosis])
+      userEvent.click(screen.getByRole('button', { name: /patient.diagnoses.new/i }))
+      expect(await screen.findByRole('dialog')).toBeInTheDocument()
+      const { getAllByRole: getAllByRoleModal } = within(screen.getByRole('dialog'))
+      userEvent.click(getAllByRoleModal('button')[0])
+      expect(await screen.findByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('should not render new diagnosis button if user does not have permissions', async () => {
-      const wrapper = await setup(expectedPatient, [])
-
-      expect(wrapper.find(components.Button)).toHaveLength(0)
+      setup(expectedPatient, [])
+      expect(
+        screen.queryByRole('button', { name: /patient.diagnoses.new/i }),
+      ).not.toBeInTheDocument()
     })
   })
 })
