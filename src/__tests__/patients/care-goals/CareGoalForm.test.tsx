@@ -154,7 +154,7 @@ describe('Care Goal Form', () => {
     expect(screen.getByText(/patient.careGoal.startDate/i)).toBeInTheDocument()
     const startDatePicker = screen.getAllByRole('textbox')[4]
     expect(startDatePicker).toBeInTheDocument()
-    expect(startDatePicker).toHaveValue(format(startDate, 'MM/d/y'))
+    expect(startDatePicker).toHaveValue(format(startDate, 'MM/dd/y'))
   })
 
   it('should call onChange handler when start date change', () => {
@@ -172,7 +172,7 @@ describe('Care Goal Form', () => {
     expect(screen.getByText(/patient.careGoal.dueDate/i)).toBeInTheDocument()
     const dueDatePicker = screen.getAllByRole('textbox')[5]
     expect(dueDatePicker).toBeInTheDocument()
-    expect(dueDatePicker).toHaveValue(format(dueDate, 'MM/d/y'))
+    expect(dueDatePicker).toHaveValue(format(dueDate, 'MM/dd/y'))
   })
 
   it('should call onChange handler when due date changes', () => {
