@@ -18,8 +18,8 @@ const patient = {
   bloodType: 'A-',
   dateOfBirth: '12/31/1990',
   isApproximateDateOfBirth: false,
-  occupation: 'occupation',
-  preferredLanguage: 'preferredLanguage',
+  occupation: 'MockOccupationValue',
+  preferredLanguage: 'MockPreferredLanguage',
   phoneNumbers: [
     { value: '123456', type: undefined, id: '123' },
     { value: '789012', type: undefined, id: '456' },
@@ -128,20 +128,18 @@ describe('General Information, without isEditable', () => {
 
   it('should render the occupation of the patient', () => {
     setup(patient, false)
-    // const occupationInput = wrapper.findWhere((w: any) => w.prop('name') === 'occupation')
-    // expect(occupationInput.prop('value')).toEqual(patient.occupation)
-    // expect(occupationInput.prop('label')).toEqual('patient.occupation')
-    // expect(occupationInput.prop('isEditable')).toBeFalsy()
+    const occupationAgeField = screen.getByPlaceholderText(/patient.occupation/i)
+    expect(occupationAgeField).toHaveDisplayValue(patient.occupation as string)
+    userEvent.type(occupationAgeField, 'wontexist')
+    expect(occupationAgeField).not.toHaveDisplayValue(/wontexist/i)
   })
 
   it('should render the preferred language of the patient', () => {
     setup(patient, false)
-    // const preferredLanguageInput = wrapper.findWhere(
-    //   (w: any) => w.prop('name') === 'preferredLanguage',
-    // )
-    // expect(preferredLanguageInput.prop('value')).toEqual(patient.preferredLanguage)
-    // expect(preferredLanguageInput.prop('label')).toEqual('patient.preferredLanguage')
-    // expect(preferredLanguageInput.prop('isEditable')).toBeFalsy()
+    const preferredLanguageAgeField = screen.getByPlaceholderText(/patient.preferredLanguage/i)
+    expect(preferredLanguageAgeField).toHaveDisplayValue(patient.preferredLanguage as string)
+    userEvent.type(preferredLanguageAgeField, 'wontexist')
+    expect(preferredLanguageAgeField).not.toHaveDisplayValue(/wontexist/i)
   })
 
   it('should render the phone numbers of the patient', () => {
