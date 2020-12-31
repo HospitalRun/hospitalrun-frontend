@@ -36,63 +36,43 @@ const patient = {
   code: 'P00001',
 } as Patient
 
-const setup = (patientArg: Patient, isEditable = true, router? = true, error?: {}) => {
+const setup = (patientArg: Patient, isEditable = true, error?: Record<string, unknown>) => {
   Date.now = jest.fn().mockReturnValue(new Date().valueOf())
 
   return render(
-    router ? (
-      <Router history={createMemoryHistory()}>
-        <GeneralInformation patient={patientArg} isEditable={isEditable} error={error} />
-      </Router>
-    ) : (
+    <Router history={createMemoryHistory()}>
       <GeneralInformation patient={patientArg} isEditable={isEditable} error={error} />
-    ),
+    </Router>,
   )
 }
 
-describe('Error handling', () => {
-  it('should display errors', () => {
-    const error = {
-      message: 'some message',
-      givenName: 'given name message',
-      dateOfBirth: 'date of birth message',
-      phoneNumbers: ['phone number message'],
-      emails: ['email message'],
-    }
+it('should display errors', () => {
+  const error = {
+    message: 'red alert Error Message',
+    givenName: 'given name Error Message',
+    dateOfBirth: 'date of birth Error Message',
+    phoneNumbers: ['phone number Error Message'],
+    emails: ['email Error Message'],
+  }
+  setup(
+    {
+      phoneNumbers: [{ value: 'not a phone number', id: '123' }],
+      emails: [{ value: 'not an email', id: '456' }],
+    } as Patient,
+    true,
+    error,
+  )
 
-    setup(
-      {
-        phoneNumbers: [{ value: 'not a phone number', id: '123' }],
-        emails: [{ value: 'not an email', id: '456' }],
-      } as Patient,
-      true,
-      false,
-      error,
-    )
+  expect(screen.getByRole(/alert/i)).toHaveTextContent(error.message)
+  expect(screen.getByPlaceholderText(/givenName/i)).toHaveClass('is-invalid')
 
-    // wrapper.update()
+  expect(screen.getByText(/given name Error Message/i)).toHaveClass('invalid-feedback')
+  expect(screen.getByText(/date of birth Error Message/i)).toHaveClass('text-danger')
+  expect(screen.getByText(/phone number Error Message/i)).toHaveClass('invalid-feedback')
+  expect(screen.getByText(/email Error Message/i)).toHaveClass('invalid-feedback')
 
-    // const errorMessage = wrapper.find(Alert)
-    // const givenNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
-    // const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
-    // const phoneNumberInput = wrapper.findWhere((w: any) => w.prop('name') === 'phoneNumber0')
-    // const emailInput = wrapper.findWhere((w: any) => w.prop('name') === 'email0')
-
-    // expect(errorMessage).toBeTruthy()
-    // expect(errorMessage.prop('message')).toMatch(error.message)
-
-    // expect(givenNameInput.prop('isInvalid')).toBeTruthy()
-    // expect(givenNameInput.prop('feedback')).toEqual(error.givenName)
-
-    // expect(dateOfBirthInput.prop('isInvalid')).toBeTruthy()
-    // expect(dateOfBirthInput.prop('feedback')).toEqual(error.dateOfBirth)
-
-    // expect(phoneNumberInput.prop('isInvalid')).toBeTruthy()
-    // expect(phoneNumberInput.prop('feedback')).toEqual(error.phoneNumbers[0])
-
-    // expect(emailInput.prop('isInvalid')).toBeTruthy()
-    // expect(emailInput.prop('feedback')).toEqual(error.emails[0])
-  })
+  expect(screen.getByDisplayValue(/not an email/i)).toHaveClass('is-invalid')
+  expect(screen.getByDisplayValue(/not a phone number/i)).toHaveClass('is-invalid')
 })
 
 describe('General Information, without isEditable', () => {
