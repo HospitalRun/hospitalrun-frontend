@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import startOfDay from 'date-fns/startOfDay'
-import subYears from 'date-fns/subYears'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -9,15 +8,15 @@ import GeneralInformation from '../../patients/GeneralInformation'
 import Patient from '../../shared/model/Patient'
 
 const patient = {
-  id: '123',
-  prefix: 'prefix',
+  id: '1234321',
+  prefix: 'MockPrefix',
   givenName: 'givenName',
   familyName: 'familyName',
-  suffix: 'suffix',
+  suffix: 'MockSuffix',
   sex: 'male',
   type: 'charity',
   bloodType: 'A-',
-  dateOfBirth: startOfDay(subYears(new Date(), 30)).toISOString(),
+  dateOfBirth: '12/31/1990',
   isApproximateDateOfBirth: false,
   occupation: 'occupation',
   preferredLanguage: 'preferredLanguage',
@@ -78,111 +77,53 @@ it('should display errors', () => {
 describe('General Information, without isEditable', () => {
   it('should render the prefix', () => {
     setup(patient, false)
-    // const prefixInput = wrapper.findWhere((w: any) => w.prop('name') === 'prefix')
-    // expect(prefixInput.prop('value')).toEqual(patient.prefix)
-    // expect(prefixInput.prop('label')).toEqual('patient.prefix')
-    // expect(prefixInput.prop('isEditable')).toBeFalsy()
+    const prefixInput = screen.getByRole('textbox', {
+      name: /patient\.prefix/i,
+    })
+    expect(prefixInput).toHaveDisplayValue(patient.prefix as string)
+    userEvent.type(prefixInput, 'wontexist')
+    expect(prefixInput).not.toHaveDisplayValue(/wontexist/i)
   })
 
   it('should render the given name', () => {
     setup(patient, false)
-    // const givenNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'givenName')
-    // expect(givenNameInput.prop('value')).toEqual(patient.givenName)
-    // expect(givenNameInput.prop('label')).toEqual('patient.givenName')
-    // expect(givenNameInput.prop('isEditable')).toBeFalsy()
+    const givenNameInput = screen.getByPlaceholderText(/patient\.givenName/i)
+    expect(givenNameInput).toHaveDisplayValue(patient.givenName as string)
+    userEvent.type(givenNameInput, 'wontexist')
+    expect(givenNameInput).not.toHaveDisplayValue(/wontexist/i)
   })
 
   it('should render the family name', () => {
     setup(patient, false)
-    // const familyNameInput = wrapper.findWhere((w: any) => w.prop('name') === 'familyName')
-    // expect(familyNameInput.prop('value')).toEqual(patient.familyName)
-    // expect(familyNameInput.prop('label')).toEqual('patient.familyName')
-    // expect(familyNameInput.prop('isEditable')).toBeFalsy()
+    const familyNameInput = screen.getByPlaceholderText(/patient\.familyName/i)
+    expect(familyNameInput).toHaveDisplayValue(patient.familyName as string)
+    userEvent.type(familyNameInput, 'wontexist')
+    expect(familyNameInput).not.toHaveDisplayValue(/wontexist/i)
   })
 
   it('should render the suffix', () => {
     setup(patient, false)
-    // const suffixInput = wrapper.findWhere((w: any) => w.prop('name') === 'suffix')
-    // expect(suffixInput.prop('value')).toEqual(patient.suffix)
-    // expect(suffixInput.prop('label')).toEqual('patient.suffix')
-    // expect(suffixInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the sex select', () => {
-    setup(patient, false)
-    // const sexSelect = wrapper.findWhere((w: any) => w.prop('name') === 'sex')
-    // expect(sexSelect.prop('defaultSelected')[0].value).toEqual(patient.sex)
-    // expect(sexSelect.prop('label')).toEqual('patient.sex')
-    // expect(sexSelect.prop('isEditable')).toBeFalsy()
-    // expect(sexSelect.prop('options')).toHaveLength(4)
-    // expect(sexSelect.prop('options')[0].label).toEqual('sex.male')
-    // expect(sexSelect.prop('options')[0].value).toEqual('male')
-    // expect(sexSelect.prop('options')[1].label).toEqual('sex.female')
-    // expect(sexSelect.prop('options')[1].value).toEqual('female')
-    // expect(sexSelect.prop('options')[2].label).toEqual('sex.other')
-    // expect(sexSelect.prop('options')[2].value).toEqual('other')
-    // expect(sexSelect.prop('options')[3].label).toEqual('sex.unknown')
-    // expect(sexSelect.prop('options')[3].value).toEqual('unknown')
-  })
-
-  it('should render the blood type', () => {
-    setup(patient, false)
-    // const bloodTypeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'bloodType')
-    // expect(bloodTypeSelect.prop('defaultSelected')[0].value).toEqual(patient.bloodType)
-    // expect(bloodTypeSelect.prop('label')).toEqual('patient.bloodType')
-    // expect(bloodTypeSelect.prop('isEditable')).toBeFalsy()
-    // expect(bloodTypeSelect.prop('options')).toHaveLength(9)
-    // expect(bloodTypeSelect.prop('options')[0].label).toEqual('bloodType.apositive')
-    // expect(bloodTypeSelect.prop('options')[0].value).toEqual('A+')
-    // expect(bloodTypeSelect.prop('options')[1].label).toEqual('bloodType.anegative')
-    // expect(bloodTypeSelect.prop('options')[1].value).toEqual('A-')
-    // expect(bloodTypeSelect.prop('options')[2].label).toEqual('bloodType.abpositive')
-    // expect(bloodTypeSelect.prop('options')[2].value).toEqual('AB+')
-    // expect(bloodTypeSelect.prop('options')[3].label).toEqual('bloodType.abnegative')
-    // expect(bloodTypeSelect.prop('options')[3].value).toEqual('AB-')
-    // expect(bloodTypeSelect.prop('options')[4].label).toEqual('bloodType.bpositive')
-    // expect(bloodTypeSelect.prop('options')[4].value).toEqual('B+')
-    // expect(bloodTypeSelect.prop('options')[5].label).toEqual('bloodType.bnegative')
-    // expect(bloodTypeSelect.prop('options')[5].value).toEqual('B-')
-    // expect(bloodTypeSelect.prop('options')[6].label).toEqual('bloodType.opositive')
-    // expect(bloodTypeSelect.prop('options')[6].value).toEqual('O+')
-    // expect(bloodTypeSelect.prop('options')[7].label).toEqual('bloodType.onegative')
-    // expect(bloodTypeSelect.prop('options')[7].value).toEqual('O-')
-    // expect(bloodTypeSelect.prop('options')[8].label).toEqual('bloodType.unknown')
-    // expect(bloodTypeSelect.prop('options')[8].value).toEqual('unknown')
-  })
-
-  it('should render the patient type select', () => {
-    setup(patient, false)
-    // const typeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'type')
-    // expect(typeSelect.prop('defaultSelected')[0].value).toEqual(patient.type)
-    // expect(typeSelect.prop('label')).toEqual('patient.type')
-    // expect(typeSelect.prop('isEditable')).toBeFalsy()
-    // expect(typeSelect.prop('options')).toHaveLength(2)
-    // expect(typeSelect.prop('options')[0].label).toEqual('patient.types.charity')
-    // expect(typeSelect.prop('options')[0].value).toEqual('charity')
-    // expect(typeSelect.prop('options')[1].label).toEqual('patient.types.private')
-    // expect(typeSelect.prop('options')[1].value).toEqual('private')
+    const suffixInput = screen.getByPlaceholderText(/patient\.suffix/i)
+    expect(suffixInput).toHaveDisplayValue(patient.suffix as string)
+    userEvent.type(suffixInput, 'wontexist')
+    expect(suffixInput).not.toHaveDisplayValue(/wontexist/i)
   })
 
   it('should render the date of the birth of the patient', () => {
     setup(patient, false)
-    // const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
-    // expect(dateOfBirthInput.prop('value')).toEqual(new Date(patient.dateOfBirth))
-    // expect(dateOfBirthInput.prop('label')).toEqual('patient.dateOfBirth')
-    // expect(dateOfBirthInput.prop('maxDate')).toEqual(new Date(Date.now()))
-    // expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
+    const dateOfBirthInput = screen.getByDisplayValue('12/31/1990')
+    expect(dateOfBirthInput).toHaveDisplayValue(patient.dateOfBirth as string)
+    userEvent.type(dateOfBirthInput, 'wontexist')
+    expect(dateOfBirthInput).not.toHaveDisplayValue(/wontexist/i)
   })
 
   it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
     patient.isApproximateDateOfBirth = true
     setup(patient, false)
-
-    // const approximateAgeInput = wrapper.findWhere((w: any) => w.prop('name') === 'approximateAge')
-
-    // expect(approximateAgeInput.prop('value')).toEqual('30')
-    // expect(approximateAgeInput.prop('label')).toEqual('patient.approximateAge')
-    // expect(approximateAgeInput.prop('isEditable')).toBeFalsy()
+    const approximateAgeField = screen.getByPlaceholderText(/patient.approximateAge/i)
+    expect(approximateAgeField).toHaveDisplayValue('30')
+    userEvent.type(approximateAgeField, 'wontexist')
+    expect(approximateAgeField).not.toHaveDisplayValue(/wontexist/i)
   })
 
   it('should render the occupation of the patient', () => {
@@ -229,6 +170,62 @@ describe('General Information, without isEditable', () => {
     //     expect(addressInput.prop('isEditable')).toBeFalsy()
     //   })
     // })
+  })
+  it('should render the sex select options', () => {
+    setup(patient, false)
+    // const sexSelect = wrapper.findWhere((w: any) => w.prop('name') === 'sex')
+    // expect(sexSelect.prop('defaultSelected')[0].value).toEqual(patient.sex)
+    // expect(sexSelect.prop('label')).toEqual('patient.sex')
+    // expect(sexSelect.prop('isEditable')).toBeFalsy()
+    // expect(sexSelect.prop('options')).toHaveLength(4)
+    // expect(sexSelect.prop('options')[0].label).toEqual('sex.male')
+    // expect(sexSelect.prop('options')[0].value).toEqual('male')
+    // expect(sexSelect.prop('options')[1].label).toEqual('sex.female')
+    // expect(sexSelect.prop('options')[1].value).toEqual('female')
+    // expect(sexSelect.prop('options')[2].label).toEqual('sex.other')
+    // expect(sexSelect.prop('options')[2].value).toEqual('other')
+    // expect(sexSelect.prop('options')[3].label).toEqual('sex.unknown')
+    // expect(sexSelect.prop('options')[3].value).toEqual('unknown')
+  })
+
+  it('should render the blood type select options', () => {
+    setup(patient, false)
+    // const bloodTypeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'bloodType')
+    // expect(bloodTypeSelect.prop('defaultSelected')[0].value).toEqual(patient.bloodType)
+    // expect(bloodTypeSelect.prop('label')).toEqual('patient.bloodType')
+    // expect(bloodTypeSelect.prop('isEditable')).toBeFalsy()
+    // expect(bloodTypeSelect.prop('options')).toHaveLength(9)
+    // expect(bloodTypeSelect.prop('options')[0].label).toEqual('bloodType.apositive')
+    // expect(bloodTypeSelect.prop('options')[0].value).toEqual('A+')
+    // expect(bloodTypeSelect.prop('options')[1].label).toEqual('bloodType.anegative')
+    // expect(bloodTypeSelect.prop('options')[1].value).toEqual('A-')
+    // expect(bloodTypeSelect.prop('options')[2].label).toEqual('bloodType.abpositive')
+    // expect(bloodTypeSelect.prop('options')[2].value).toEqual('AB+')
+    // expect(bloodTypeSelect.prop('options')[3].label).toEqual('bloodType.abnegative')
+    // expect(bloodTypeSelect.prop('options')[3].value).toEqual('AB-')
+    // expect(bloodTypeSelect.prop('options')[4].label).toEqual('bloodType.bpositive')
+    // expect(bloodTypeSelect.prop('options')[4].value).toEqual('B+')
+    // expect(bloodTypeSelect.prop('options')[5].label).toEqual('bloodType.bnegative')
+    // expect(bloodTypeSelect.prop('options')[5].value).toEqual('B-')
+    // expect(bloodTypeSelect.prop('options')[6].label).toEqual('bloodType.opositive')
+    // expect(bloodTypeSelect.prop('options')[6].value).toEqual('O+')
+    // expect(bloodTypeSelect.prop('options')[7].label).toEqual('bloodType.onegative')
+    // expect(bloodTypeSelect.prop('options')[7].value).toEqual('O-')
+    // expect(bloodTypeSelect.prop('options')[8].label).toEqual('bloodType.unknown')
+    // expect(bloodTypeSelect.prop('options')[8].value).toEqual('unknown')
+  })
+
+  it('should render the patient type select options', () => {
+    setup(patient, false)
+    // const typeSelect = wrapper.findWhere((w: any) => w.prop('name') === 'type')
+    // expect(typeSelect.prop('defaultSelected')[0].value).toEqual(patient.type)
+    // expect(typeSelect.prop('label')).toEqual('patient.type')
+    // expect(typeSelect.prop('isEditable')).toBeFalsy()
+    // expect(typeSelect.prop('options')).toHaveLength(2)
+    // expect(typeSelect.prop('options')[0].label).toEqual('patient.types.charity')
+    // expect(typeSelect.prop('options')[0].value).toEqual('charity')
+    // expect(typeSelect.prop('options')[1].label).toEqual('patient.types.private')
+    // expect(typeSelect.prop('options')[1].value).toEqual('private')
   })
 
   describe('General Information, isEditable', () => {
