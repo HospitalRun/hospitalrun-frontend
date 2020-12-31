@@ -1,11 +1,9 @@
-import { act, renderHook } from '@testing-library/react-hooks'
-
 import useMedicationSearch from '../../../medications/hooks/useMedicationSearch'
 import MedicationSearchRequest from '../../../medications/models/MedicationSearchRequest'
 import MedicationRepository from '../../../shared/db/MedicationRepository'
 import SortRequest from '../../../shared/db/SortRequest'
 import Medication from '../../../shared/model/Medication'
-import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
+import executeQuery from '../../test-utils/use-query.util'
 
 const defaultSortRequest: SortRequest = {
   sorts: [
@@ -25,13 +23,7 @@ describe('useMedicationSearch', () => {
     const expectedMedicationRequests = [{ id: 'some id' }] as Medication[]
     jest.spyOn(MedicationRepository, 'search').mockResolvedValue(expectedMedicationRequests)
 
-    let actualData: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useMedicationSearch(expectedSearchRequest))
-      const { result } = renderHookResult
-      await waitUntilQueryIsSuccessful(renderHookResult)
-      actualData = result.current.data
-    })
+    const actualData = await executeQuery(() => useMedicationSearch(expectedSearchRequest))
 
     expect(MedicationRepository.search).toHaveBeenCalledTimes(1)
     expect(MedicationRepository.search).toBeCalledWith({
