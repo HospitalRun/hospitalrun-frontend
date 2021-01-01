@@ -6,9 +6,8 @@ import thunk from 'redux-thunk'
 
 import * as breadcrumbsSlice from '../../../page-header/breadcrumbs/breadcrumbs-slice'
 import useAddBreadcrumbs from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
-import { RootState } from '../../../shared/store'
 
-const mockStore = createMockStore<RootState, any>([thunk])
+const mockStore = createMockStore<any, any>([thunk])
 
 describe('useAddBreadcrumbs', () => {
   beforeEach(() => jest.clearAllMocks())
@@ -20,7 +19,9 @@ describe('useAddBreadcrumbs', () => {
         location: '/patients',
       },
     ]
-    const wrapper = ({ children }: any) => <Provider store={mockStore({})}>{children}</Provider>
+    const wrapper: React.FC = ({ children }) => (
+      <Provider store={mockStore({})}>{children}</Provider>
+    )
 
     return { breadcrumbs, wrapper }
   }
@@ -38,7 +39,7 @@ describe('useAddBreadcrumbs', () => {
     jest.spyOn(breadcrumbsSlice, 'addBreadcrumbs')
     const { breadcrumbs, wrapper } = setup()
 
-    renderHook(() => useAddBreadcrumbs(breadcrumbs, true), { wrapper } as any)
+    renderHook(() => useAddBreadcrumbs(breadcrumbs, true), { wrapper })
     expect(breadcrumbsSlice.addBreadcrumbs).toHaveBeenCalledTimes(1)
     expect(breadcrumbsSlice.addBreadcrumbs).toHaveBeenCalledWith([
       ...breadcrumbs,
@@ -50,7 +51,7 @@ describe('useAddBreadcrumbs', () => {
     jest.spyOn(breadcrumbsSlice, 'removeBreadcrumbs')
     const { breadcrumbs, wrapper } = setup()
 
-    const { unmount } = renderHook(() => useAddBreadcrumbs(breadcrumbs), { wrapper } as any)
+    const { unmount } = renderHook(() => useAddBreadcrumbs(breadcrumbs), { wrapper })
     unmount()
     expect(breadcrumbsSlice.removeBreadcrumbs).toHaveBeenCalledTimes(1)
     expect(breadcrumbsSlice.removeBreadcrumbs).toHaveBeenCalledWith(breadcrumbs)
