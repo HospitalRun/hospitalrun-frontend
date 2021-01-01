@@ -156,7 +156,7 @@ describe('General Information, readonly', () => {
     setup(patient, false)
     const patientSex = screen.getByDisplayValue(/sex/)
     expect(patientSex).toBeDisabled()
-    expect(patientSex).toHaveDisplayValue('male')
+    expect(patientSex).toHaveDisplayValue([/sex.male/i])
   })
 
   it('should render the blood type select options', async () => {
@@ -169,7 +169,7 @@ describe('General Information, readonly', () => {
     setup(patient, false)
     const patientType = screen.getByDisplayValue(/patient.type/)
     expect(patientType).toBeDisabled()
-    expect(patientType).toHaveDisplayValue('charity')
+    expect(patientType).toHaveDisplayValue([/patient.types.charity/i])
   })
 
   describe('General Information, isEditable', () => {
