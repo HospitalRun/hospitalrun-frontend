@@ -112,7 +112,7 @@ describe('General Information, readonly', () => {
     setup(patient, false)
     typeReadonlyAssertion(
       await screen.findByDisplayValue('12/31/1990', undefined, {
-        timeout: 5000
+        timeout: 5000,
       }),
       ['12/31/1990'],
     )
@@ -205,7 +205,7 @@ describe('General Information, readonly', () => {
       setup(patient)
       typeWritableAssertion(
         await screen.findByDisplayValue('12/31/1990', undefined, {
-          timeout: 5000
+          timeout: 5000,
         }),
         ['12/31/1990'],
       )
