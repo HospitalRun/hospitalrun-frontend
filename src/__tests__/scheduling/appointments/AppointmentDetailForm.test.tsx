@@ -1,48 +1,21 @@
-import { Typeahead, Alert } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import addMinutes from 'date-fns/addMinutes'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
-import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 
 import AppointmentDetailForm from '../../../scheduling/appointments/AppointmentDetailForm'
-import PatientRepository from '../../../shared/db/PatientRepository'
 import Appointment from '../../../shared/model/Appointment'
 import Patient from '../../../shared/model/Patient'
 
+const setup = (appointment: Appointment, patient?: Patient, error = {}) => ({
+  ...render(
+    <AppointmentDetailForm appointment={appointment} patient={patient} isEditable error={error} />,
+  ),
+})
+
 describe('AppointmentDetailForm', () => {
-  describe('Error handling', () => {
-    it('should display errors', () => {
-      const error = {
-        message: 'some message',
-        patient: 'patient message',
-        startDateTime: 'start date time message',
-      }
-
-      const wrapper = mount(
-        <AppointmentDetailForm
-          appointment={{} as Appointment}
-          patient={{} as Patient}
-          isEditable
-          error={error}
-        />,
-      )
-      wrapper.update()
-
-      const errorMessage = wrapper.find(Alert)
-      const patientTypeahead = wrapper.find(Typeahead)
-      const startDateInput = wrapper.findWhere((w: any) => w.prop('name') === 'startDate')
-      expect(errorMessage).toBeTruthy()
-      expect(errorMessage.prop('message')).toMatch(error.message)
-      expect(patientTypeahead.prop('isInvalid')).toBeTruthy()
-      expect(patientTypeahead.prop('feedback')).toEqual(error.patient)
-      expect(startDateInput.prop('isInvalid')).toBeTruthy()
-      expect(startDateInput.prop('feedback')).toEqual(error.startDateTime)
-    })
-  })
-
-  describe('layout - editable', () => {
-    let wrapper: ReactWrapper
+  it('should render a type select box', () => {
     const expectedAppointment = {
       startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
       endDateTime: addMinutes(
@@ -54,256 +27,35 @@ describe('AppointmentDetailForm', () => {
       type: 'emergency',
     } as Appointment
 
-    beforeEach(() => {
-      wrapper = mount(
-        <AppointmentDetailForm appointment={expectedAppointment} onFieldChange={jest.fn()} />,
-      )
-    })
+    setup(expectedAppointment)
 
-    it('should render a typeahead for patients', () => {
-      const patientTypeahead = wrapper.find(Typeahead)
+    const types = ['checkup', 'emergency', 'followUp', 'routine', 'walkIn']
 
-      expect(patientTypeahead).toHaveLength(1)
-      expect(patientTypeahead.prop('placeholder')).toEqual('scheduling.appointment.patient')
-      expect(patientTypeahead.prop('value')).toEqual(expectedAppointment.patient)
-    })
+    userEvent.click(screen.getByPlaceholderText('-- Choose --'))
 
-    it('should render as start date date time picker', () => {
-      const startDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
-
-      expect(startDateTimePicker).toHaveLength(1)
-      expect(startDateTimePicker.prop('label')).toEqual('scheduling.appointment.startDate')
-      expect(startDateTimePicker.prop('value')).toEqual(
-        roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-      )
-    })
-
-    it('should render an end date time picker', () => {
-      const endDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
-
-      expect(endDateTimePicker).toHaveLength(1)
-      expect(endDateTimePicker.prop('label')).toEqual('scheduling.appointment.endDate')
-      expect(endDateTimePicker.prop('value')).toEqual(
-        addMinutes(roundToNearestMinutes(new Date(), { nearestTo: 15 }), 60),
-      )
-    })
-
-    it('should render a location text input box', () => {
-      const locationTextInputBox = wrapper.findWhere((w) => w.prop('name') === 'location')
-
-      expect(locationTextInputBox).toHaveLength(1)
-      expect(locationTextInputBox.prop('label')).toEqual('scheduling.appointment.location')
-      expect(locationTextInputBox.prop('value')).toEqual(expectedAppointment.location)
-    })
-
-    it('should render a type select box', () => {
-      const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
-
-      expect(typeSelect).toHaveLength(1)
-      expect(typeSelect.prop('label')).toEqual('scheduling.appointment.type')
-      expect(typeSelect.prop('options')[0].label).toEqual('scheduling.appointment.types.checkup')
-      expect(typeSelect.prop('options')[0].value).toEqual('checkup')
-      expect(typeSelect.prop('options')[1].label).toEqual('scheduling.appointment.types.emergency')
-      expect(typeSelect.prop('options')[1].value).toEqual('emergency')
-      expect(typeSelect.prop('options')[2].label).toEqual('scheduling.appointment.types.followUp')
-      expect(typeSelect.prop('options')[2].value).toEqual('follow up')
-      expect(typeSelect.prop('options')[3].label).toEqual('scheduling.appointment.types.routine')
-      expect(typeSelect.prop('options')[3].value).toEqual('routine')
-      expect(typeSelect.prop('options')[4].label).toEqual('scheduling.appointment.types.walkIn')
-      expect(typeSelect.prop('options')[4].value).toEqual('walk in')
-      expect(typeSelect.prop('defaultSelected')[0].value).toEqual(expectedAppointment.type)
-    })
-
-    it('should render a reason text field input', () => {
-      const reasonTextField = wrapper.findWhere((w) => w.prop('name') === 'reason')
-
-      expect(reasonTextField).toHaveLength(1)
-      expect(reasonTextField.prop('label')).toEqual('scheduling.appointment.reason')
+    types.forEach((type) => {
+      const typeOption = screen.getByRole('option', {
+        name: `scheduling.appointment.types.${type}`,
+      })
+      expect(typeOption).toBeInTheDocument()
+      userEvent.click(typeOption)
     })
   })
 
-  describe('layout - editable but patient prop passed (Edit Appointment functionality)', () => {
-    it('should disable patient typeahead if patient prop passed', () => {
-      const expectedAppointment = {
-        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-        endDateTime: addMinutes(
-          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-          60,
-        ).toISOString(),
-      } as Appointment
-
-      const wrapper = mount(
-        <AppointmentDetailForm
-          isEditable
-          appointment={expectedAppointment}
-          patient={{} as Patient}
-          onFieldChange={jest.fn()}
-        />,
-      )
-      const patientTypeahead = wrapper.find(Typeahead)
-      expect(patientTypeahead.prop('disabled')).toBeTruthy()
-    })
-  })
-
-  describe('layout - not editable', () => {
-    let wrapper: ReactWrapper
+  it('should disable patient typeahead if patient prop passed', () => {
     const expectedAppointment = {
-      patient: 'patientId',
       startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
       endDateTime: addMinutes(
         roundToNearestMinutes(new Date(), { nearestTo: 15 }),
         60,
       ).toISOString(),
     } as Appointment
-
     const expectedPatient = {
-      id: '123',
-      fullName: 'full name',
+      fullName: 'Mr Popo',
     } as Patient
 
-    beforeEach(() => {
-      wrapper = mount(
-        <AppointmentDetailForm
-          isEditable={false}
-          appointment={expectedAppointment}
-          patient={expectedPatient}
-          onFieldChange={jest.fn()}
-        />,
-      )
-    })
-    it('should disable fields', () => {
-      const patientTypeahead = wrapper.find(Typeahead)
-      const startDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
-      const endDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
-      const locationTextInputBox = wrapper.findWhere((w) => w.prop('name') === 'location')
-      const reasonTextField = wrapper.findWhere((w) => w.prop('name') === 'reason')
-      const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
+    setup(expectedAppointment, expectedPatient)
 
-      expect(patientTypeahead).toHaveLength(1)
-      expect(patientTypeahead.prop('disabled')).toBeTruthy()
-      expect(patientTypeahead.prop('value')).toEqual(expectedPatient.fullName)
-      expect(startDateTimePicker.prop('isEditable')).toBeFalsy()
-      expect(endDateTimePicker.prop('isEditable')).toBeFalsy()
-      expect(locationTextInputBox.prop('isEditable')).toBeFalsy()
-      expect(reasonTextField.prop('isEditable')).toBeFalsy()
-      expect(typeSelect.prop('isEditable')).toBeFalsy()
-    })
-  })
-
-  describe('change handlers', () => {
-    let wrapper: ReactWrapper
-    const appointment = {
-      startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-      endDateTime: addMinutes(
-        roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-        30,
-      ).toISOString(),
-    } as Appointment
-    const onFieldChange = jest.fn()
-
-    beforeEach(() => {
-      wrapper = mount(
-        <AppointmentDetailForm appointment={appointment} onFieldChange={onFieldChange} />,
-      )
-    })
-
-    it('should call onFieldChange when patient input changes', () => {
-      const expectedPatientId = '123'
-
-      act(() => {
-        const patientTypeahead = wrapper.find(Typeahead)
-        patientTypeahead.prop('onChange')([{ id: expectedPatientId }] as Patient[])
-      })
-      wrapper.update()
-
-      expect(onFieldChange).toHaveBeenLastCalledWith('patient', expectedPatientId)
-    })
-
-    it('should call onFieldChange when start date time changes', () => {
-      const expectedStartDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
-
-      act(() => {
-        const startDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'startDate')
-        startDateTimePicker.prop('onChange')(expectedStartDateTime)
-      })
-      wrapper.update()
-
-      expect(onFieldChange).toHaveBeenLastCalledWith(
-        'startDateTime',
-        expectedStartDateTime.toISOString(),
-      )
-    })
-
-    it('should call onFieldChange when end date time changes', () => {
-      const expectedStartDateTime = roundToNearestMinutes(new Date(), { nearestTo: 15 })
-      const expectedEndDateTime = addMinutes(expectedStartDateTime, 30)
-
-      act(() => {
-        const endDateTimePicker = wrapper.findWhere((w) => w.prop('name') === 'endDate')
-        endDateTimePicker.prop('onChange')(expectedEndDateTime)
-      })
-      wrapper.update()
-
-      expect(onFieldChange).toHaveBeenLastCalledWith(
-        'endDateTime',
-        expectedEndDateTime.toISOString(),
-      )
-    })
-
-    it('should call onFieldChange when location changes', () => {
-      const expectedLocation = 'location'
-
-      act(() => {
-        const locationTextInputBox = wrapper.findWhere((w) => w.prop('name') === 'location')
-        locationTextInputBox.prop('onChange')({ target: { value: expectedLocation } })
-      })
-      wrapper.update()
-
-      expect(onFieldChange).toHaveBeenLastCalledWith('location', expectedLocation)
-    })
-
-    it('should call onFieldChange when reason changes', () => {
-      const expectedReason = 'reason'
-
-      act(() => {
-        const reasonTextField = wrapper.findWhere((w) => w.prop('name') === 'reason')
-        reasonTextField.prop('onChange')({ currentTarget: { value: expectedReason } })
-      })
-      wrapper.update()
-
-      expect(onFieldChange).toHaveBeenLastCalledWith('reason', expectedReason)
-    })
-  })
-
-  describe('typeahead search', () => {
-    let wrapper: ReactWrapper
-    beforeEach(() => {
-      wrapper = mount(
-        <AppointmentDetailForm
-          appointment={
-            {
-              startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-              endDateTime: addMinutes(
-                roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-                60,
-              ).toISOString(),
-            } as Appointment
-          }
-          onFieldChange={jest.fn()}
-        />,
-      )
-    })
-
-    it('should call the PatientRepository search when typeahead changes', () => {
-      const patientTypeahead = wrapper.find(Typeahead)
-      const patientRepositorySearch = jest.spyOn(PatientRepository, 'search')
-      const expectedSearchString = 'search'
-
-      act(() => {
-        patientTypeahead.prop('onSearch')(expectedSearchString)
-      })
-
-      expect(patientRepositorySearch).toHaveBeenCalledWith(expectedSearchString)
-    })
+    expect(screen.getByDisplayValue(expectedPatient.fullName as string)).toBeDisabled()
   })
 })
