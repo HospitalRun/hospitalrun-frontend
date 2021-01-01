@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import format from 'date-fns/format'
 import startOfDay from 'date-fns/startOfDay'
 import subYears from 'date-fns/subYears'
 import { createMemoryHistory } from 'history'
@@ -110,12 +111,10 @@ describe('General Information, readonly', () => {
 
   it('should render the date of the birth of the patient', async () => {
     setup(patient, false)
-    typeReadonlyAssertion(
-      await screen.findByDisplayValue('12/31/1990', undefined, {
-        timeout: 5000,
-      }),
-      ['12/31/1990'],
-    )
+
+    const expectedDate = format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
+
+    typeReadonlyAssertion(await screen.findByDisplayValue(expectedDate), [expectedDate])
   })
 
   it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
@@ -203,12 +202,10 @@ describe('General Information, readonly', () => {
 
     it('should render the date of the birth of the patient', async () => {
       setup(patient)
-      typeWritableAssertion(
-        await screen.findByDisplayValue('12/31/1990', undefined, {
-          timeout: 5000,
-        }),
-        ['12/31/1990'],
-      )
+
+      const expectedDate = format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
+
+      typeWritableAssertion(await screen.findByDisplayValue(expectedDate), [expectedDate])
     })
 
     it('should render the occupation of the patient', () => {
