@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import useAddAllergy from '../../../patients/hooks/useAddAllergy'
 import * as validateAllergy from '../../../patients/util/validate-allergy'
 import PatientRepository from '../../../shared/db/PatientRepository'
@@ -21,7 +19,7 @@ describe('use add allergy', () => {
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
-      await executeMutation(() => useAddAllergy(), { patientId: '123', allergy: {} })
+      await executeMutation(() => useAddAllergy(), { patientId: '123', allergy: {} as Allergy })
     } catch (e) {
       expect(e).toEqual(expectedError)
     }

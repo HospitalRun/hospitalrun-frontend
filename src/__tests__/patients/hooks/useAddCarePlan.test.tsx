@@ -55,7 +55,7 @@ describe('use add care plan', () => {
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
-      await executeMutation(() => useAddCarePlan(), { patientId: '123', carePlan: {} })
+      await executeMutation(() => useAddCarePlan(), { patientId: '123', carePlan: {} as CarePlan })
     } catch (e) {
       expect(e).toEqual(expectedError)
     }

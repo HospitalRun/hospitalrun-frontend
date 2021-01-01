@@ -1,5 +1,3 @@
-import { act } from '@testing-library/react-hooks'
-
 import useCancelLab from '../../../labs/hooks/useCancelLab'
 import LabRepository from '../../../shared/db/LabRepository'
 import Lab from '../../../shared/model/Lab'
@@ -21,10 +19,7 @@ describe('Use Cancel Lab', () => {
   jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedCanceledLab)
 
   it('should cancel a lab', async () => {
-    let actualData: any
-    await act(async () => {
-      actualData = await executeMutation(() => useCancelLab(), lab)
-    })
+    const actualData = await executeMutation(() => useCancelLab(), lab)
 
     expect(LabRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     expect(LabRepository.saveOrUpdate).toHaveBeenCalledWith(lab)

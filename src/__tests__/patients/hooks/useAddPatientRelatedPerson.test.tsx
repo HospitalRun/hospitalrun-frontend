@@ -21,7 +21,7 @@ describe('use add patient related person', () => {
     try {
       await executeMutation(() => useAddPatientRelatedPerson(), {
         patientId: '123',
-        relatedPerson: {},
+        relatedPerson: {} as RelatedPerson,
       })
     } catch (e) {
       expect(e).toEqual(expectedError)
@@ -39,7 +39,7 @@ describe('use add patient related person', () => {
     try {
       await executeMutation(() => useAddPatientRelatedPerson(), {
         patientId: '123',
-        relatedPerson: { patientId: '456' },
+        relatedPerson: { patientId: '456' } as RelatedPerson,
       })
     } catch (e) {
       expect(e).toEqual(expectedError)

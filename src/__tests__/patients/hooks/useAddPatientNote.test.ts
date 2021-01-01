@@ -21,7 +21,7 @@ describe('use add note', () => {
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
-      await executeMutation(() => useAddPatientNote(), { patientId: '123', note: {} })
+      await executeMutation(() => useAddPatientNote(), { patientId: '123', note: {} as Note })
     } catch (e) {
       expect(e).toEqual(expectedError)
     }
