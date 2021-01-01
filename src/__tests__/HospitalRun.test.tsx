@@ -1,5 +1,5 @@
-import { render as rtlRender, screen, within } from '@testing-library/react'
-import React, { FC, ReactElement } from 'react'
+import { render, screen, within } from '@testing-library/react'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -19,7 +19,7 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('HospitalRun', () => {
-  const render = (route: string, permissions: Permissions[] = []) => {
+  const setup = (route: string, permissions: Permissions[] = []) => {
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     const store = mockStore({
       user: { user: { id: '123' }, permissions },
@@ -31,24 +31,24 @@ describe('HospitalRun', () => {
       components: { sidebarCollapsed: false },
     } as any)
 
-    const Wrapper = ({ children }: { children: ReactElement }) => (
+    const results = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>
-          <TitleProvider>{children}</TitleProvider>
+          <TitleProvider>
+            <HospitalRun />
+          </TitleProvider>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
     )
 
-    const results = rtlRender(<HospitalRun />, { wrapper: Wrapper as FC })
-
-    return { results, store: store as any }
+    return { ...results, store: store as any }
   }
 
   describe('routing', () => {
     describe('/appointments', () => {
       it('should render the appointments screen when /appointments is accessed', () => {
         const permissions: Permissions[] = [Permissions.ReadAppointments]
-        const { store } = render('/appointments', permissions)
+        const { store } = setup('/appointments', permissions)
 
         expect(
           screen.getByRole('button', { name: /scheduling.appointments.new/i }),
@@ -63,7 +63,7 @@ describe('HospitalRun', () => {
       })
 
       it('should render the Dashboard when the user does not have read appointment privileges', () => {
-        render('/appointments')
+        setup('/appointments')
         const main = screen.getByRole('main')
         expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
       })
@@ -73,7 +73,7 @@ describe('HospitalRun', () => {
       it('should render the Labs component when /labs is accessed', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewLabs]
-        render('/labs', permissions)
+        setup('/labs', permissions)
 
         const table = screen.getByRole('table')
         expect(within(table).getByText(/labs.lab.code/i)).toBeInTheDocument()
@@ -85,7 +85,7 @@ describe('HospitalRun', () => {
 
       it('should render the dashboard if the user does not have permissions to view labs', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-        render('/labs')
+        setup('/labs')
         const main = screen.getByRole('main')
         expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
       })
@@ -95,7 +95,7 @@ describe('HospitalRun', () => {
       it('should render the Medications component when /medications is accessed', () => {
         jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewMedications]
-        render('/medications', permissions)
+        setup('/medications', permissions)
 
         const medicationInput = screen.getByRole(/combobox/i) as HTMLInputElement
         expect(medicationInput.value).toBe('medications.filter.all')
@@ -104,7 +104,7 @@ describe('HospitalRun', () => {
 
       it('should render the dashboard if the user does not have permissions to view medications', () => {
         jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
-        render('/medications')
+        setup('/medications')
 
         const main = screen.getByRole('main')
         expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
@@ -117,7 +117,7 @@ describe('HospitalRun', () => {
       it('should render the Incidents component when /incidents is accessed', () => {
         jest.spyOn(IncidentRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewIncidents]
-        render('/incidents', permissions)
+        setup('/incidents', permissions)
 
         const incidentInput = screen.getByRole(/combobox/i) as HTMLInputElement
         expect(incidentInput.value).toBe('incidents.status.reported')
@@ -126,7 +126,7 @@ describe('HospitalRun', () => {
 
       it('should render the dashboard if the user does not have permissions to view incidents', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-        render('/incidents')
+        setup('/incidents')
 
         const main = screen.getByRole('main')
         expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
@@ -141,7 +141,7 @@ describe('HospitalRun', () => {
       it('should render the Imagings component when /imaging is accessed', () => {
         jest.spyOn(ImagingRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewImagings]
-        render('/imaging', permissions)
+        setup('/imaging', permissions)
 
         expect(screen.getByRole('main')).toBeInTheDocument()
         expect(screen.queryByRole('heading', { name: /example/i })).not.toBeInTheDocument()
@@ -149,7 +149,7 @@ describe('HospitalRun', () => {
 
       it('should render the dashboard if the user does not have permissions to view imagings', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-        render('/imaging')
+        setup('/imaging')
 
         const main = screen.getByRole('main')
         expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
@@ -158,7 +158,7 @@ describe('HospitalRun', () => {
 
     describe('/settings', () => {
       it('should render the Settings component when /settings is accessed', () => {
-        render('/settings')
+        setup('/settings')
 
         expect(screen.getByText(/settings.language.label/i)).toBeInTheDocument()
       })
@@ -168,7 +168,7 @@ describe('HospitalRun', () => {
   describe('layout', () => {
     it('should render a Toaster', () => {
       const permissions: Permissions[] = [Permissions.WritePatients]
-      render('/', permissions)
+      setup('/', permissions)
 
       const main = screen.getByRole('main')
       expect(main.lastChild).toHaveClass('Toastify')
