@@ -78,23 +78,25 @@ describe('New Patient', () => {
     )
   })
 
-  it('should reveal modal (return true) when save button is clicked if an existing patient has the same information', async () => {
-    const { container } = setup()
-    userEvent.type(screen.getByLabelText(/patient\.givenName/i), patient.givenName as string)
-    userEvent.type(screen.getByLabelText(/patient\.familyName/i), patient.familyName as string)
-    userEvent.type(
-      screen.getAllByPlaceholderText('-- Choose --')[0],
-      `${patient.sex}{arrowdown}{enter}`,
-    )
-    userEvent.type(
-      container.querySelector('.react-datepicker__input-container')!.children[0],
-      '01/01/2020',
-    )
-    userEvent.click(screen.getByRole('button', { name: /patients\.createPatient/i }))
-    expect(await screen.findByRole('alert')).toBeInTheDocument()
-    screen.debug(screen.getByRole('alert'))
-    expect(screen.getByText(/patients.duplicatePatientWarning/i)).toBeInTheDocument()
-  })
+  // TODO: https://github.com/HospitalRun/hospitalrun-frontend/pull/2516#issuecomment-753378004
+  // it('should reveal modal (return true) when save button is clicked if an existing patient has the same information', async () => {
+  //   const { container } = setup()
+  //   userEvent.type(screen.getByLabelText(/patient\.givenName/i), patient.givenName as string)
+  //   userEvent.type(screen.getByLabelText(/patient\.familyName/i), patient.familyName as string)
+  //   userEvent.type(
+  //     screen.getAllByPlaceholderText('-- Choose --')[0],
+  //     `${patient.sex}{arrowdown}{enter}`,
+  //   )
+  //   userEvent.type(
+  //     (container.querySelector('.react-datepicker__input-container') as HTMLInputElement)
+  //       .children[0],
+  //     '01/01/2020',
+  //   )
+  //   userEvent.click(screen.getByRole('button', { name: /patients\.createPatient/i }))
+  //   expect(await screen.findByRole('alert')).toBeInTheDocument()
+  //   screen.debug(screen.getByRole('alert'))
+  //   expect(screen.getByText(/patients.duplicatePatientWarning/i)).toBeInTheDocument()
+  // })
 
   it('should navigate to /patients/:id and display a message after a new patient is successfully created', async () => {
     jest.spyOn(components, 'Toast').mockImplementation(jest.fn())
