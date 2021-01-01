@@ -18,7 +18,9 @@ const EditAppointment = () => {
   const { id } = useParams()
 
   const updateTitle = useUpdateTitle()
-  updateTitle(t('scheduling.appointments.editAppointment'))
+  useEffect(() => {
+    updateTitle(t('scheduling.appointments.editAppointment'))
+  }, [updateTitle, t])
   const history = useHistory()
 
   const [newAppointment, setAppointment] = useState({} as Appointment)
