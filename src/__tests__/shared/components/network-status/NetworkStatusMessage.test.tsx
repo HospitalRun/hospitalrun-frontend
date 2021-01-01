@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react'
-import { renderHook } from '@testing-library/react-hooks'
 import React from 'react'
 
 import { useTranslation } from '../../../../__mocks__/react-i18next'
@@ -7,21 +6,25 @@ import { NetworkStatusMessage } from '../../../../shared/components/network-stat
 import { useNetworkStatus } from '../../../../shared/components/network-status/useNetworkStatus'
 
 jest.mock('../../../../shared/components/network-status/useNetworkStatus')
-const useNetworkStatusMock = (useNetworkStatus as unknown) as jest.MockInstance<
-  ReturnType<typeof useNetworkStatus>,
-  any
->
-
-const englishTranslationsMock = {
-  'networkStatus.offline': 'you are working in offline mode',
-  'networkStatus.online': 'you are back online',
-}
-
-const { result } = renderHook(() => useTranslation() as any)
-result.current.t = (key: keyof typeof englishTranslationsMock) => englishTranslationsMock[key]
-const { t } = result.current
 
 describe('NetworkStatusMessage', () => {
+  const useNetworkStatusMock = (useNetworkStatus as unknown) as jest.MockInstance<
+    ReturnType<typeof useNetworkStatus>,
+    any
+  >
+
+  const englishTranslationsMock = {
+    'networkStatus.offline': 'you are working in offline mode',
+    'networkStatus.online': 'you are back online',
+  }
+
+  const t = (key: keyof typeof englishTranslationsMock) => englishTranslationsMock[key]
+
+  beforeEach(() => {
+    const mockTranslation = useTranslation() as any
+    mockTranslation.t = t
+  })
+
   it('returns null if the app has always been online', () => {
     useNetworkStatusMock.mockReturnValue({
       isOnline: true,

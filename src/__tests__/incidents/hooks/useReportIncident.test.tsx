@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import subDays from 'date-fns/subDays'
 import shortid from 'shortid'
 
@@ -57,7 +55,7 @@ describe('useReportIncident', () => {
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue({} as Incident)
 
     try {
-      await executeMutation(() => useReportIncident(), {})
+      await executeMutation(() => useReportIncident(), {} as Incident)
     } catch (e) {
       expect(e).toEqual(expectedIncidentError)
       expect(IncidentRepository.save).not.toHaveBeenCalled()

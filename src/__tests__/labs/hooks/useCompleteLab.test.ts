@@ -1,5 +1,3 @@
-import { act } from '@testing-library/react-hooks'
-
 import useCompleteLab from '../../../labs/hooks/useCompleteLab'
 import { LabError } from '../../../labs/utils/validate-lab'
 import * as validateLabUtils from '../../../labs/utils/validate-lab'
@@ -27,10 +25,7 @@ describe('Use Complete lab', () => {
   })
 
   it('should save lab as complete', async () => {
-    let actualData: any
-    await act(async () => {
-      actualData = await executeMutation(() => useCompleteLab(), lab)
-    })
+    const actualData = await executeMutation(() => useCompleteLab(), lab)
 
     expect(LabRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     expect(LabRepository.saveOrUpdate).toHaveBeenCalledWith(expectedCompletedLab)
@@ -47,13 +42,11 @@ describe('Use Complete lab', () => {
     expectOneConsoleError(expectedLabError)
     jest.spyOn(validateLabUtils, 'validateLabComplete').mockReturnValue(expectedLabError)
 
-    await act(async () => {
-      try {
-        await executeMutation(() => useCompleteLab(), lab)
-      } catch (e) {
-        expect(e).toEqual(expectedLabError)
-        expect(LabRepository.saveOrUpdate).not.toHaveBeenCalled()
-      }
-    })
+    try {
+      await executeMutation(() => useCompleteLab(), lab)
+    } catch (e) {
+      expect(e).toEqual(expectedLabError)
+      expect(LabRepository.saveOrUpdate).not.toHaveBeenCalled()
+    }
   })
 })

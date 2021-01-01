@@ -1,5 +1,3 @@
-import { act } from '@testing-library/react-hooks'
-
 import useRequestLab from '../../../labs/hooks/useRequestLab'
 import * as validateLabRequest from '../../../labs/utils/validate-lab'
 import { LabError } from '../../../labs/utils/validate-lab'
@@ -26,10 +24,7 @@ describe('Use Request lab', () => {
   })
 
   it('should save new request lab', async () => {
-    let actualData: any
-    await act(async () => {
-      actualData = await executeMutation(() => useRequestLab(), lab)
-    })
+    const actualData = await executeMutation(() => useRequestLab(), lab)
 
     expect(LabRepository.save).toHaveBeenCalledTimes(1)
     expect(LabRepository.save).toHaveBeenCalledWith(lab)
@@ -48,13 +43,11 @@ describe('Use Request lab', () => {
     expectOneConsoleError(expectedError)
     jest.spyOn(validateLabRequest, 'validateLabRequest').mockReturnValue(expectedError)
 
-    await act(async () => {
-      try {
-        await executeMutation(() => useRequestLab(), lab)
-      } catch (e) {
-        expect(e).toEqual(expectedError)
-        expect(LabRepository.save).not.toHaveBeenCalled()
-      }
-    })
+    try {
+      await executeMutation(() => useRequestLab(), lab)
+    } catch (e) {
+      expect(e).toEqual(expectedError)
+      expect(LabRepository.save).not.toHaveBeenCalled()
+    }
   })
 })

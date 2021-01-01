@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import useAddPatientDiagnosis from '../../../patients/hooks/useAddPatientDiagnosis'
 import * as validateDiagnosis from '../../../patients/util/validate-diagnosis'
 import PatientRepository from '../../../shared/db/PatientRepository'
@@ -21,7 +19,10 @@ describe('use add diagnosis', () => {
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
-      await executeMutation(() => useAddPatientDiagnosis(), { patientId: '123', note: {} })
+      await executeMutation(() => useAddPatientDiagnosis(), {
+        patientId: '123',
+        diagnosis: {} as Diagnosis,
+      })
     } catch (e) {
       expect(e).toEqual(expectedError)
     }

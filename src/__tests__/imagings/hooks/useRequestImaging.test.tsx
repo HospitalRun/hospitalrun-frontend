@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import useRequestImaging from '../../../imagings/hooks/useRequestImaging'
 import { ImagingRequestError } from '../../../imagings/util/validate-imaging-request'
 import * as imagingRequestValidator from '../../../imagings/util/validate-imaging-request'
@@ -47,7 +45,7 @@ describe('useReportIncident', () => {
     jest.spyOn(ImagingRepository, 'save').mockResolvedValue({} as Imaging)
 
     try {
-      await executeMutation(() => useRequestImaging(), {})
+      await executeMutation(() => useRequestImaging(), {} as Imaging)
     } catch (e) {
       expect(e).toEqual(expectedImagingRequestError)
       expect(ImagingRepository.save).not.toHaveBeenCalled()
