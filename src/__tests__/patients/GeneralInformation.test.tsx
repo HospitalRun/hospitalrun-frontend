@@ -110,7 +110,12 @@ describe('General Information, readonly', () => {
 
   it('should render the date of the birth of the patient', async () => {
     setup(patient, false)
-    typeReadonlyAssertion(await screen.findByDisplayValue('12/31/1990'), ['12/31/1990'])
+    typeReadonlyAssertion(
+      await screen.findByDisplayValue('12/31/1990', undefined, {
+        timeout: 5000
+      }),
+      ['12/31/1990'],
+    )
   })
 
   it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
@@ -198,7 +203,12 @@ describe('General Information, readonly', () => {
 
     it('should render the date of the birth of the patient', async () => {
       setup(patient)
-      typeWritableAssertion(await screen.findByDisplayValue('12/31/1990'), ['12/31/1990'])
+      typeWritableAssertion(
+        await screen.findByDisplayValue('12/31/1990', undefined, {
+          timeout: 5000
+        }),
+        ['12/31/1990'],
+      )
     })
 
     it('should render the occupation of the patient', () => {
