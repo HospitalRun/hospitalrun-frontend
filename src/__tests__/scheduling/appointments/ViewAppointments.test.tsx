@@ -93,23 +93,4 @@ describe('ViewAppointments', () => {
       expect.stringContaining(expectedEnd),
     )
   })
-
-  it('should hard cap end appointment time', async () => {
-    const { container, expectedAppointment } = setup(new Date(now.setHours(23, 45)))
-
-    await waitFor(() => {
-      expect(container.querySelector('.fc-content-col .fc-time')).toBeInTheDocument()
-    })
-
-    const expectedStart = format(new Date(expectedAppointment.startDateTime), 'h:mm')
-
-    expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
-      'data-full',
-      expect.stringContaining(expectedStart),
-    )
-    expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
-      'data-full',
-      expect.stringContaining('12:00'),
-    )
-  })
 })

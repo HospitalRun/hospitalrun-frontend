@@ -94,7 +94,6 @@ describe('New Patient', () => {
   //   )
   //   userEvent.click(screen.getByRole('button', { name: /patients\.createPatient/i }))
   //   expect(await screen.findByRole('alert')).toBeInTheDocument()
-  //   screen.debug(screen.getByRole('alert'))
   //   expect(screen.getByText(/patients.duplicatePatientWarning/i)).toBeInTheDocument()
   // })
 
