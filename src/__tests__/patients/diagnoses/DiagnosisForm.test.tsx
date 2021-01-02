@@ -91,7 +91,6 @@ describe('Diagnosis Form', () => {
   //   const { container } = setup()
   //   const visitSelector = screen.getAllByRole('combobox')[0]
   //   userEvent.click(visitSelector)
-  //   screen.debug(container, 20000)
   //   act(() => {
   //     const visitSelector = wrapper.findWhere((w) => w.prop('name') === 'visit')
   //     const onChange = visitSelector.prop('onChange') as any

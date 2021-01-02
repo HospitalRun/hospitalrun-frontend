@@ -156,7 +156,6 @@ describe('Contact Info in its non-Editable mode', () => {
 
   it('should render an empty element if no data is present', () => {
     const { container } = setup()
-    screen.logTestingPlaygroundURL()
 
     expect(container.querySelectorAll('div').length).toBe(1)
   })
