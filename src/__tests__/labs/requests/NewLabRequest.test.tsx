@@ -54,7 +54,6 @@ const setup = (
     visits: expectedVisits,
   } as Patient
 
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
   jest.spyOn(LabRepository, 'save').mockResolvedValue(expectedLab)
 
@@ -79,12 +78,6 @@ const setup = (
 
 describe('New Lab Request', () => {
   describe('form layout', () => {
-    it('should have called the useUpdateTitle hook', async () => {
-      setup()
-
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
-    })
-
     it('should render a patient typeahead', async () => {
       setup()
 

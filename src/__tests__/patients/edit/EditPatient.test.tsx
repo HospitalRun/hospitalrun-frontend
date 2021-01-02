@@ -36,7 +36,6 @@ const patient = {
 } as Patient
 
 const setup = () => {
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(patient)
   jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
 
@@ -63,14 +62,6 @@ const setup = () => {
 describe('Edit Patient', () => {
   beforeEach(() => {
     jest.restoreAllMocks()
-  })
-
-  it('should have called the useUpdateTitle hook', async () => {
-    setup()
-
-    await waitFor(() => {
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
-    })
   })
 
   it('should render an edit patient form', async () => {

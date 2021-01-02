@@ -41,7 +41,6 @@ describe('View Medications', () => {
       medications: { medications: [{ ...expectedMedication, ...medication }] },
     } as any)
     jest.resetAllMocks()
-    const titleSpy = jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     const setButtonToolBarSpy = jest.fn()
     jest.spyOn(MedicationRepository, 'search').mockResolvedValue(givenMedications)
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
@@ -49,7 +48,6 @@ describe('View Medications', () => {
 
     return {
       history,
-      titleSpy,
       setButtonToolBarSpy,
       ...render(
         <Provider store={store}>
@@ -62,13 +60,6 @@ describe('View Medications', () => {
       ),
     }
   }
-
-  describe('title', () => {
-    it('should have called the useUpdateTitle hook', async () => {
-      const { titleSpy } = await setup({} as Medication)
-      expect(titleSpy).toHaveBeenCalled()
-    })
-  })
 
   describe('button bar', () => {
     it('should display button to add new medication request', async () => {

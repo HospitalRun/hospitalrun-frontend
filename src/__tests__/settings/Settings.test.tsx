@@ -15,13 +15,9 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Settings', () => {
   const setup = () => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-
     const store = mockStore({ title: 'test' } as any)
-
     const history = createMemoryHistory()
     history.push('/settings')
-
     // eslint-disable-next-line react/prop-types
     const Wrapper: React.FC = ({ children }) => (
       <Provider store={store}>
@@ -30,14 +26,9 @@ describe('Settings', () => {
         </Router>
       </Provider>
     )
-
     return render(<Settings />, { wrapper: Wrapper })
   }
-
-  describe('layout', () => {
-    it('should call the useUpdateTitle hook', () => {
-      setup()
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
-    })
+  test('should ', () => {
+    setup()
   })
 })

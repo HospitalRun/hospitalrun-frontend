@@ -54,7 +54,6 @@ describe('Edit Appointment', () => {
 
   const setup = async (mockAppointment: Appointment, mockPatient: Patient) => {
     jest.resetAllMocks()
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'saveOrUpdate').mockResolvedValue(mockAppointment)
     jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(mockAppointment)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
@@ -90,14 +89,6 @@ describe('Edit Appointment', () => {
     })
     await waitFor(() => {
       expect(PatientRepository.find).toHaveBeenCalledWith(expectedAppointment.patient)
-    })
-  })
-
-  it('should have called useUpdateTitle hook', async () => {
-    setup(expectedAppointment, expectedPatient)
-
-    await waitFor(() => {
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
     })
   })
 

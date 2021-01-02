@@ -41,7 +41,6 @@ const setup = (permissions = [Permissions.ReadAppointments], skipSpies = false) 
   } as Patient
 
   if (!skipSpies) {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'find').mockResolvedValue(expectedAppointment)
     jest.spyOn(AppointmentRepository, 'delete').mockResolvedValue(expectedAppointment)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
@@ -83,14 +82,6 @@ describe('View Appointment', () => {
   beforeEach(() => {
     queryCache.clear()
     jest.resetAllMocks()
-  })
-
-  it('should have called the useUpdateTitle hook', async () => {
-    setup()
-
-    await waitFor(() => {
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
-    })
   })
 
   it('should add a "Edit Appointment" button to the button tool bar if has WriteAppointment permissions', async () => {

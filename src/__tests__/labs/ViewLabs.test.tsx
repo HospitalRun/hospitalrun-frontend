@@ -29,7 +29,6 @@ const setup = (permissions: Permissions[] = []) => {
     requestedOn: '2020-03-30T04:43:20.102Z',
   } as Lab
 
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
   jest.spyOn(LabRepository, 'search')
 
@@ -64,14 +63,6 @@ const setup = (permissions: Permissions[] = []) => {
 describe('View Labs', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-  })
-
-  describe('title', () => {
-    it('should have called the useUpdateTitle hook', async () => {
-      setup()
-
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
-    })
   })
 
   describe('button bar', () => {
