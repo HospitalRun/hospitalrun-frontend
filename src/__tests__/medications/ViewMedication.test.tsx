@@ -41,7 +41,6 @@ describe('View Medication', () => {
     jest.resetAllMocks()
     Date.now = jest.fn(() => expectedDate.valueOf())
     const setButtonToolBarSpy = jest.fn()
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
     jest.spyOn(MedicationRepository, 'find').mockResolvedValue(medication)
     jest.spyOn(MedicationRepository, 'saveOrUpdate').mockResolvedValue(mockMedication)

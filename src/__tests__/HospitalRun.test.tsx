@@ -20,7 +20,6 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('HospitalRun', () => {
   const setup = (route: string, permissions: Permissions[] = []) => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     const store = mockStore({
       user: { user: { id: '123' }, permissions },
       appointments: { appointments: [] },

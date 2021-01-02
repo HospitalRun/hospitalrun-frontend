@@ -35,7 +35,6 @@ const setup = (start = new Date(now.setHours(14, 30))) => {
     fullName: 'patient full name',
   } as Patient
 
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockReturnValue(jest.fn())
   jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockImplementation(() => jest.fn())
   jest.spyOn(AppointmentRepository, 'findAll').mockResolvedValue([expectedAppointment])
   jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
@@ -58,14 +57,6 @@ const setup = (start = new Date(now.setHours(14, 30))) => {
 }
 
 describe('ViewAppointments', () => {
-  it('should have called the useUpdateTitle hook', async () => {
-    setup()
-
-    await waitFor(() => {
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
-    })
-  })
-
   it('should add a "New Appointment" button to the button tool bar', async () => {
     setup()
 

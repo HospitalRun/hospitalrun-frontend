@@ -32,7 +32,6 @@ describe('New Patient', () => {
   let store: MockStore
 
   const setup = (error?: any) => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(PatientRepository, 'save').mockResolvedValue(patient)
 
     history = createMemoryHistory()

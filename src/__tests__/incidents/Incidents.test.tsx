@@ -22,7 +22,6 @@ describe('Incidents', () => {
       date: new Date().toISOString(),
       reportedOn: new Date().toISOString(),
     } as Incident
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue([])
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(expectedIncident)
     const store = mockStore({
@@ -42,13 +41,6 @@ describe('Incidents', () => {
 
     return render(<Incidents />, { wrapper: Wrapper })
   }
-
-  describe('title', () => {
-    it('should have called the useUpdateTitle hook', () => {
-      setup([Permissions.ViewIncidents], '/incidents')
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
-    })
-  })
 
   describe('routing', () => {
     describe('/incidents/new', () => {

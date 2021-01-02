@@ -19,7 +19,6 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Imagings', () => {
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(ImagingRepository, 'findAll').mockResolvedValue([])
   jest
     .spyOn(ImagingRepository, 'find')

@@ -20,7 +20,6 @@ describe('New Medication Request', () => {
   const setup = (store = mockStore({ medication: { status: 'loading', error: {} } } as any)) => {
     history = createMemoryHistory()
     history.push(`/medications/new`)
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
 
     const Wrapper: React.FC = ({ children }: any) => (
       <Provider store={store}>
@@ -33,11 +32,6 @@ describe('New Medication Request', () => {
   }
 
   describe('form layout', () => {
-    it('should have called the useUpdateTitle hook', () => {
-      setup()
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
-    })
-
     it('should render a patient typeahead', () => {
       setup()
 

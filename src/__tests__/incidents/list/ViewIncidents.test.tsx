@@ -35,7 +35,6 @@ const setup = (permissions: Permissions[]) => {
   jest.resetAllMocks()
   jest.spyOn(breadcrumbUtil, 'default')
   setButtonToolBarSpy = jest.fn()
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
   jest.spyOn(IncidentRepository, 'findAll').mockResolvedValue(expectedIncidents)
   jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
@@ -58,27 +57,19 @@ const setup = (permissions: Permissions[]) => {
   )
 }
 
-describe('View Incidents', () => {
-  it('should have called the useUpdateTitle hook', () => {
-    setup([Permissions.ViewIncidents])
+it('should filter incidents by status=reported on first load ', () => {
+  setup([Permissions.ViewIncidents])
 
-    expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
-  })
+  expect(IncidentRepository.search).toHaveBeenCalled()
+  expect(IncidentRepository.search).toHaveBeenCalledWith({ status: IncidentFilter.reported })
+})
 
-  it('should filter incidents by status=reported on first load ', () => {
-    setup([Permissions.ViewIncidents])
+describe('layout', () => {
+  it('should render a table with the incidents', async () => {
+    const { container } = setup([Permissions.ViewIncidents])
 
-    expect(IncidentRepository.search).toHaveBeenCalled()
-    expect(IncidentRepository.search).toHaveBeenCalledWith({ status: IncidentFilter.reported })
-  })
-
-  describe('layout', () => {
-    it('should render a table with the incidents', async () => {
-      const { container } = setup([Permissions.ViewIncidents])
-
-      await waitFor(() => {
-        expect(container.querySelector('table')).toHaveTextContent(IncidentFilter.reported)
-      })
+    await waitFor(() => {
+      expect(container.querySelector('table')).toHaveTextContent(IncidentFilter.reported)
     })
   })
 })

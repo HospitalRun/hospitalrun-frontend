@@ -25,7 +25,6 @@ describe('New Imaging Request', () => {
     jest.resetAllMocks()
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
 
     history = createMemoryHistory()
@@ -46,14 +45,6 @@ describe('New Imaging Request', () => {
       </ButtonBarProvider.ButtonBarProvider>,
     )
   }
-
-  // ? Does the TitleComponent/Provider and Breadcrumb have its own tests
-  // describe('title and breadcrumbs', () => {
-  //   it(' have called the useUpdateTitle hook', async () => {
-  //     await setup()
-  //     expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
-  //   })
-  // })
 
   describe('form layout', () => {
     it('Patient input field w/ label', () => {

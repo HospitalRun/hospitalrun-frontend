@@ -41,7 +41,6 @@ const setup = (permissions: Permissions[], lab?: Partial<Lab>, error = {}) => {
 
   jest.resetAllMocks()
   Date.now = jest.fn(() => expectedDate.valueOf())
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient as Patient)
   jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(mockLab)
   jest.spyOn(LabRepository, 'find').mockResolvedValue(mockLab)

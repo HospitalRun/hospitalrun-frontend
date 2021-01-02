@@ -45,7 +45,6 @@ describe('ViewPatient', () => {
     permissions = [],
     startPath = `/patients/${testPatient.id}`,
   }: SetupProps = {}) => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(testPatient)
     jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
     jest.spyOn(PatientRepository, 'getMedications').mockResolvedValue([])
@@ -81,14 +80,6 @@ describe('ViewPatient', () => {
 
     await waitFor(() => {
       expect(PatientRepository.find).toHaveBeenCalledWith(testPatient.id)
-    })
-  })
-
-  it('should have called useUpdateTitle hook', async () => {
-    setup()
-
-    await waitFor(() => {
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
     })
   })
 

@@ -20,7 +20,6 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 const setup = (permissions: any[] | undefined, id: string | undefined) => {
   jest.resetAllMocks()
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
   jest.spyOn(breadcrumbUtil, 'default')
   jest.spyOn(IncidentRepository, 'find').mockResolvedValue({
     id,

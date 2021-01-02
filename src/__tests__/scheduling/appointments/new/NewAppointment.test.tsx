@@ -53,8 +53,6 @@ describe('New Appointment', () => {
 
   const setup = () => {
     const expectedAppointment = { id: '123' } as Appointment
-
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(AppointmentRepository, 'save').mockResolvedValue(expectedAppointment)
     jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
 
@@ -77,16 +75,6 @@ describe('New Appointment', () => {
       ...render(<NewAppointment />, { wrapper: Wrapper }),
     }
   }
-
-  describe('header', () => {
-    it('should have called useUpdateTitle hook', async () => {
-      setup()
-
-      await waitFor(() => {
-        expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
-      })
-    })
-  })
 
   describe('layout', () => {
     it('should render an Appointment Detail Component', async () => {
