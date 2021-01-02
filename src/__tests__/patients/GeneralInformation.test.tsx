@@ -127,15 +127,14 @@ describe('General Information, readonly', () => {
     typeReadonlyAssertion(screen.getByPlaceholderText(/patient\.suffix/i), patient.suffix)
   })
 
-  it('should render the date of the birth of the patient', async () => {
+  it('should render the date of the birth of the patient', () => {
     setup(patient, false)
 
     const expectedDate = format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
-
-    typeReadonlyAssertion(await screen.findByDisplayValue(expectedDate), [expectedDate])
+    typeReadonlyAssertion(screen.getByDisplayValue(expectedDate), [expectedDate])
   })
 
-  it('should render the approximate age if patient.isApproximateDateOfBirth is true', async () => {
+  it('should render the approximate age if patient.isApproximateDateOfBirth is true', () => {
     const newPatient = { ...patient, isApproximateDateOfBirth: true }
     setup(newPatient, false)
     typeReadonlyAssertion(screen.getByPlaceholderText(/patient.approximateAge/i), '30')
@@ -181,7 +180,7 @@ describe('General Information, readonly', () => {
     expect(patientSex).toHaveDisplayValue([/sex.male/i])
   })
 
-  it('should render the blood type select options', async () => {
+  it('should render the blood type select options', () => {
     setup(patient, false)
     const bloodType = screen.getByDisplayValue(/bloodType/)
     expect(bloodType).toBeDisabled()
@@ -223,12 +222,15 @@ describe('General Information, isEditable', () => {
     typeWritableAssertion(screen.getByPlaceholderText(/patient\.suffix/i), patient.suffix)
   })
 
-  it('should render the date of the birth of the patient', async () => {
+  it('should render the date of the birth of the patient', () => {
     setup(patient)
 
     const expectedDate = format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
+    const field = screen.getByDisplayValue(expectedDate)
+    typeWritableAssertion(field, [expectedDate])
 
-    typeWritableAssertion(await screen.findByDisplayValue(expectedDate), [expectedDate])
+    // workaround for Warning: `NaN` is an invalid value for the `left` css style property.
+    userEvent.type(field, '{enter}')
   })
 
   it('should render the occupation of the patient', () => {
