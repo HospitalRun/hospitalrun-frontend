@@ -5,12 +5,9 @@ import React from 'react'
 import selectEvent from 'react-select-event'
 
 import VisitForm from '../../../patients/visits/VisitForm'
-import Patient from '../../../shared/model/Patient'
 import Visit, { VisitStatus } from '../../../shared/model/Visit'
 
 describe('Visit Form', () => {
-  let onVisitChangeSpy: any
-
   const visit: Visit = {
     startDateTime: new Date().toISOString(),
     endDateTime: new Date().toISOString(),
@@ -21,17 +18,20 @@ describe('Visit Form', () => {
   } as Visit
 
   const setup = (disabled = false, initializeVisit = true, error?: any) => {
-    onVisitChangeSpy = jest.fn()
-    const mockPatient = { id: '123' } as Patient
-    return render(
-      <VisitForm
-        patient={mockPatient}
-        onChange={onVisitChangeSpy}
-        visit={initializeVisit ? visit : {}}
-        disabled={disabled}
-        visitError={error}
-      />,
-    )
+    const onVisitChangeSpy = jest.fn()
+    const TestComponent = () => {
+      const [visit2, setVisit] = React.useState(initializeVisit ? visit : ({} as Visit))
+      onVisitChangeSpy.mockImplementation(setVisit)
+      return (
+        <VisitForm
+          onChange={onVisitChangeSpy}
+          visit={visit2}
+          disabled={disabled}
+          visitError={error}
+        />
+      )
+    }
+    return { ...render(<TestComponent />), onVisitChangeSpy }
   }
 
   it('should render a start date picker', () => {
@@ -60,7 +60,7 @@ describe('Visit Form', () => {
     )[0]
     userEvent.type(
       startDateTimePicker,
-      `{selectall}${format(expectedNewStartDateTime, 'MM/dd/yyyy h:mm aa')}`,
+      `{selectall}${format(expectedNewStartDateTime, 'MM/dd/yyyy h:mm aa')}{enter}`,
     )
 
     expect(startDateTimePicker).toHaveDisplayValue(
@@ -94,7 +94,7 @@ describe('Visit Form', () => {
     )[1]
     userEvent.type(
       endDateTimePicker,
-      `{selectall}${format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa')}`,
+      `{selectall}${format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa')}{enter}`,
     )
     expect(endDateTimePicker).toHaveDisplayValue([
       format(expectedNewEndDateTime, 'MM/dd/yyyy h:mm aa'),
@@ -166,7 +166,7 @@ describe('Visit Form', () => {
 
   it('should call the on change handler when reason changes', () => {
     const expectedNewReason = 'some new reason'
-    setup(false, false)
+    const { onVisitChangeSpy } = setup(false, false)
 
     const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]
 
