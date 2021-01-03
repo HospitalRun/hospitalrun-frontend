@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
@@ -13,7 +13,19 @@ import Incident from '../../../shared/model/Incident'
 import { extractUsername } from '../../../shared/util/extractUsername'
 
 describe('View Incidents Table', () => {
-  const setup = (expectedSearchRequest: IncidentSearchRequest, expectedIncidents: Incident[]) => {
+  const expectedIncident = {
+    id: 'incidentId1',
+    code: 'someCode',
+    date: new Date(2020, 7, 4, 0, 0, 0, 0).toISOString(),
+    reportedOn: new Date(2020, 8, 4, 0, 0, 0, 0).toISOString(),
+    reportedBy: 'com.test:user',
+    status: 'reported',
+  } as Incident
+
+  const setup = (
+    expectedSearchRequest: IncidentSearchRequest,
+    expectedIncidents = [expectedIncident],
+  ) => {
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
     const history = createMemoryHistory()
 
@@ -31,62 +43,32 @@ describe('View Incidents Table', () => {
     jest.resetAllMocks()
   })
 
-  it('should call the incidents search with the search request', async () => {
-    const expectedSearchRequest: IncidentSearchRequest = { status: IncidentFilter.all }
-
-    setup(expectedSearchRequest, [])
-
-    expect(IncidentRepository.search).toHaveBeenCalledTimes(1)
-    expect(IncidentRepository.search).toHaveBeenCalledWith(expectedSearchRequest)
-  })
-
   it('should display a table of incidents', async () => {
-    const expectedIncidents: Incident[] = [
-      {
-        id: 'incidentId1',
-        code: 'someCode',
-        date: new Date(2020, 7, 4, 0, 0, 0, 0).toISOString(),
-        reportedOn: new Date(2020, 8, 4, 0, 0, 0, 0).toISOString(),
-        reportedBy: 'com.test:user',
-        status: 'reported',
-      } as Incident,
-    ]
-    const { container } = setup({ status: IncidentFilter.all }, expectedIncidents)
+    setup({ status: IncidentFilter.all })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
 
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeTruthy()
-    })
-    expect(screen.getByText(expectedIncidents[0].code)).toBeInTheDocument()
-    expect(
-      screen.getByText(format(new Date(expectedIncidents[0].date), 'yyyy-MM-dd hh:mm a')),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(format(new Date(expectedIncidents[0].reportedOn), 'yyyy-MM-dd hh:mm a')),
-    ).toBeInTheDocument()
-    expect(screen.getByText(extractUsername(expectedIncidents[0].reportedBy))).toBeInTheDocument()
-    expect(screen.getByText(expectedIncidents[0].status)).toBeInTheDocument()
-
-    expect(screen.getByText(/incidents.reports.code/i)).toBeInTheDocument()
-    expect(screen.getByText(/incidents.reports.dateOfIncident/i)).toBeInTheDocument()
-    expect(screen.getByText(/incidents.reports.reportedBy/i)).toBeInTheDocument()
-    expect(screen.getByText(/incidents.reports.reportedOn/i)).toBeInTheDocument()
-    expect(screen.getByText(/incidents.reports.status/i)).toBeInTheDocument()
-    expect(screen.getByText(/actions.label/i)).toBeInTheDocument()
+    const headers = screen.getAllByRole('columnheader')
+    const cells = screen.getAllByRole('cell')
+    expect(headers[0]).toHaveTextContent(/incidents.reports.code/i)
+    expect(headers[1]).toHaveTextContent(/incidents.reports.dateOfIncident/i)
+    expect(headers[2]).toHaveTextContent(/incidents.reports.reportedBy/i)
+    expect(headers[3]).toHaveTextContent(/incidents.reports.reportedOn/i)
+    expect(headers[4]).toHaveTextContent(/incidents.reports.status/i)
+    expect(headers[5]).toHaveTextContent(/actions.label/i)
+    expect(cells[0]).toHaveTextContent(expectedIncident.code)
+    expect(cells[1]).toHaveTextContent(
+      format(new Date(expectedIncident.date), 'yyyy-MM-dd hh:mm a'),
+    )
+    expect(cells[2]).toHaveTextContent(extractUsername(expectedIncident.reportedBy))
+    expect(cells[3]).toHaveTextContent(
+      format(new Date(expectedIncident.reportedOn), 'yyyy-MM-dd hh:mm a'),
+    )
+    expect(cells[4]).toHaveTextContent(expectedIncident.status)
+    expect(screen.getByRole('button', { name: /actions.view/i })).toBeInTheDocument()
   })
 
   it('should display a download button', async () => {
-    const expectedIncidents: Incident[] = [
-      {
-        id: 'incidentId1',
-        code: 'someCode',
-        date: new Date(2020, 7, 4, 0, 0, 0, 0).toISOString(),
-        reportedOn: new Date(2020, 8, 4, 0, 0, 0, 0).toISOString(),
-        reportedBy: 'com.test:user',
-        status: 'reported',
-      } as Incident,
-    ]
-    setup({ status: IncidentFilter.all }, expectedIncidents)
-
+    setup({ status: IncidentFilter.all })
     expect(
       await screen.findByRole('button', { name: /incidents.reports.download/i }),
     ).toBeInTheDocument()
@@ -128,21 +110,9 @@ describe('View Incidents Table', () => {
   })
 
   it('should navigate to the view incident screen when view button is clicked', async () => {
-    const expectedIncidents: Incident[] = [
-      {
-        id: 'incidentId1',
-        code: 'someCode',
-        date: new Date(2020, 7, 4, 12, 0, 0, 0).toISOString(),
-        reportedOn: new Date(2020, 8, 4, 12, 0, 0, 0).toISOString(),
-        reportedBy: 'com.test:user',
-        status: 'reported',
-      } as Incident,
-    ]
-    const { container, history } = await setup({ status: IncidentFilter.all }, expectedIncidents)
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
+    const { history } = setup({ status: IncidentFilter.all })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
     userEvent.click(screen.getByRole('button', { name: /actions.view/i }))
-    expect(history.location.pathname).toEqual(`/incidents/${expectedIncidents[0].id}`)
+    expect(history.location.pathname).toEqual(`/incidents/${expectedIncident.id}`)
   })
 })
