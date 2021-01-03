@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -59,17 +59,12 @@ const setup = (permissions: Permissions[]) => {
 
 it('should filter incidents by status=reported on first load ', () => {
   setup([Permissions.ViewIncidents])
-
-  expect(IncidentRepository.search).toHaveBeenCalled()
-  expect(IncidentRepository.search).toHaveBeenCalledWith({ status: IncidentFilter.reported })
+  expect(screen.getByRole('combobox')).toHaveValue('incidents.status.reported')
 })
 
 describe('layout', () => {
   it('should render a table with the incidents', async () => {
-    const { container } = setup([Permissions.ViewIncidents])
-
-    await waitFor(() => {
-      expect(container.querySelector('table')).toHaveTextContent(IncidentFilter.reported)
-    })
+    setup([Permissions.ViewIncidents])
+    expect(await screen.findByRole('table')).toHaveTextContent(IncidentFilter.reported)
   })
 })
