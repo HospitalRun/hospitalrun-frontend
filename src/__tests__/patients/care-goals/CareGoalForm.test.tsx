@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent, { specialChars } from '@testing-library/user-event'
-import { format } from 'date-fns'
-import addDays from 'date-fns/addDays'
 import addMonths from 'date-fns/addMonths'
+import format from 'date-fns/format'
 import React from 'react'
 
 import CareGoalForm from '../../../patients/care-goals/CareGoalForm'
@@ -10,33 +9,38 @@ import CareGoal, { CareGoalStatus, CareGoalAchievementStatus } from '../../../sh
 
 const { arrowDown, enter } = specialChars
 
-describe('Care Goal Form', () => {
-  const startDate = new Date()
-  const dueDate = addMonths(new Date(), 1)
-  const careGoal = {
-    description: 'some description',
-    startDate: startDate.toISOString(),
-    dueDate: dueDate.toISOString(),
-    note: '',
-    priority: 'medium',
-    status: CareGoalStatus.Accepted,
-    achievementStatus: CareGoalAchievementStatus.InProgress,
-  } as CareGoal
+const startDate = new Date()
+const dueDate = addMonths(new Date(), 1)
+const careGoal = {
+  description: 'some description',
+  startDate: startDate.toISOString(),
+  dueDate: dueDate.toISOString(),
+  note: '',
+  priority: 'medium',
+  status: CareGoalStatus.Accepted,
+  achievementStatus: CareGoalAchievementStatus.InProgress,
+} as CareGoal
 
-  const setup = (disabled = false, initializeCareGoal = true, error?: any) => {
-    const onCareGoalChangeSpy = jest.fn()
-    const wrapper = render(
+const setup = (disabled = false, initializeCareGoal = true, error?: any) => {
+  const onCareGoalChangeSpy = jest.fn()
+  const TestComponent = () => {
+    const [careGoal2, setCareGoal] = React.useState(initializeCareGoal ? careGoal : {})
+    onCareGoalChangeSpy.mockImplementation(setCareGoal)
+    return (
       <CareGoalForm
-        careGoal={initializeCareGoal ? careGoal : {}}
+        careGoal={careGoal2}
         disabled={disabled}
         careGoalError={error}
         onChange={onCareGoalChangeSpy}
-      />,
+      />
     )
-
-    return { ...wrapper, onCareGoalChangeSpy }
   }
+  const wrapper = render(<TestComponent />)
 
+  return { ...wrapper, onCareGoalChangeSpy }
+}
+
+describe('Care Goal Form', () => {
   it('should render a description input', () => {
     setup()
 
@@ -45,8 +49,8 @@ describe('Care Goal Form', () => {
     expect(descriptionInput).toBeInTheDocument()
     expect(descriptionInput).toHaveValue(careGoal.description)
 
-    // TODO didn't find a way to check
-    // expect(descriptionInput.prop('isRequired')).toBeTruthy()
+    // TODO: not using built-in form accessibility features yet: required attribute
+    // expect((descriptionInput as HTMLInputElement).required).toBeTruthy()
   })
 
   it('should call onChange handler when description changes', async () => {
@@ -60,9 +64,7 @@ describe('Care Goal Form', () => {
     expect(descriptionInput).toBeEnabled()
     expect(descriptionInput).toBeInTheDocument()
     expect(onCareGoalChangeSpy).toHaveBeenCalledTimes(expectedDescription.length)
-
-    // TODO display value is appearing as empty
-    // expect(descriptionInput).toHaveDisplayValue(expectedDescription)
+    expect(descriptionInput).toHaveDisplayValue(expectedDescription)
   })
 
   it('should render a priority selector', () => {
@@ -72,21 +74,14 @@ describe('Care Goal Form', () => {
     const priority = screen.getByDisplayValue(/patient.careGoal.priority.medium/i)
     expect(priority).toBeInTheDocument()
 
-    // TODO not sure how to get the list of options
-    // expect(priority.prop('options')).toEqual([
-    //   {
-    //     label: 'patient.careGoal.priority.low',
-    //     value: 'low',
-    //   },
-    //   {
-    //     label: 'patient.careGoal.priority.medium',
-    //     value: 'medium',
-    //   },
-    //   {
-    //     label: 'patient.careGoal.priority.high',
-    //     value: 'high',
-    //   },
-    // ])
+    userEvent.click(priority) // display popup with the options
+    expect(screen.getByText(/patient.careGoal.priority.low/i)).toBeInTheDocument()
+    expect(screen.getByText(/patient.careGoal.priority.medium/i)).toBeInTheDocument()
+    expect(screen.getByText(/patient.careGoal.priority.high/i)).toBeInTheDocument()
+
+    userEvent.click(screen.getByText(/patient.careGoal.priority.low/i))
+    expect(priority).toHaveValue('patient.careGoal.priority.low')
+    expect(screen.queryByText(/patient.careGoal.priority.medium/i)).not.toBeInTheDocument()
   })
 
   it('should call onChange handler when priority changes', () => {
@@ -110,10 +105,14 @@ describe('Care Goal Form', () => {
     expect(status).toBeInTheDocument()
     expect(status).toHaveValue(careGoal.status)
 
-    // TODO not sure how to get the list of options
-    // expect(status.prop('options')).toEqual(
-    //   Object.values(CareGoalStatus).map((v) => ({ label: v, value: v })),
-    // )
+    userEvent.click(status) // display popup with the options
+    Object.values(CareGoalStatus).forEach((value) =>
+      expect(screen.getByText(value)).toBeInTheDocument(),
+    )
+
+    userEvent.click(screen.getByText(CareGoalStatus.Proposed))
+    expect(status).toHaveValue(CareGoalStatus.Proposed)
+    expect(screen.queryByText(CareGoalStatus.Accepted)).not.toBeInTheDocument()
   })
 
   it('should call onChange handler when status changes', () => {
@@ -158,12 +157,13 @@ describe('Care Goal Form', () => {
   })
 
   it('should call onChange handler when start date change', () => {
-    const expectedStartDate = new Date()
-    setup()
+    const { onCareGoalChangeSpy } = setup()
+    const expectedDate = '12/31/2050'
 
-    const startDatePicker = screen.getAllByRole('textbox')[4]
-    userEvent.type(startDatePicker, `{selectall}${expectedStartDate.toISOString()}`)
-    expect(startDatePicker).toHaveDisplayValue([expectedStartDate.toISOString()])
+    const dueDatePicker = screen.getAllByRole('textbox')[4]
+    userEvent.type(dueDatePicker, `{selectall}${expectedDate}{enter}`)
+    expect(onCareGoalChangeSpy).toHaveBeenCalled()
+    expect(dueDatePicker).toHaveDisplayValue(expectedDate)
   })
 
   it('should render a due date picker', () => {
@@ -176,12 +176,13 @@ describe('Care Goal Form', () => {
   })
 
   it('should call onChange handler when due date changes', () => {
-    const expectedDueDate = addDays(new Date(), 31)
-    setup(false, false)
+    const { onCareGoalChangeSpy } = setup()
+    const expectedDate = '12/31/2050'
 
     const dueDatePicker = screen.getAllByRole('textbox')[5]
-    userEvent.type(dueDatePicker, `{selectall}${expectedDueDate.toISOString()}`)
-    expect(dueDatePicker).toHaveDisplayValue([expectedDueDate.toISOString()])
+    userEvent.type(dueDatePicker, `{selectall}${expectedDate}{enter}`)
+    expect(onCareGoalChangeSpy).toHaveBeenCalled()
+    expect(dueDatePicker).toHaveDisplayValue(expectedDate)
   })
 
   it('should render a note input', () => {
@@ -201,8 +202,7 @@ describe('Care Goal Form', () => {
       name: /patient\.caregoal\.note/i,
     })
     userEvent.type(noteInput, expectedNote)
-    // TODO value is coming as empty. This test needs to be looked
-    // expect(noteInput).toHaveDisplayValue(expectedNote)
+    expect(noteInput).toHaveDisplayValue(expectedNote)
 
     expect(onCareGoalChangeSpy).toHaveBeenCalledTimes(expectedNote.length)
   })
@@ -269,10 +269,11 @@ describe('Care Goal Form', () => {
     expect(dueDatePicker).toBeInTheDocument()
     expect(noteInput).toBeInTheDocument()
 
-    // TODO Not able to figure out how to verify isInvalid
-    // expect(descriptionInput.prop('isInvalid')).toBeTruthy()
-    // expect(prioritySelector.prop('isInvalid')).toBeTruthy()
-    // expect(statusSelector.prop('isInvalid')).toBeTruthy()
-    // expect(achievementStatusSelector.prop('isInvalid')).toBeTruthy()
+    // TODO: not using built-in form accessibility features yet: HTMLInputElement.setCustomValidity()
+    // expect((descriptionInput as HTMLInputElement).validity.valid).toBe(false)
+    expect(descriptionInput).toHaveClass('is-invalid')
+    expect(priority).toHaveClass('is-invalid')
+    expect(status).toHaveClass('is-invalid')
+    expect(achievementStatus).toHaveClass('is-invalid')
   })
 })
