@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -13,7 +13,9 @@ const ViewIncident = () => {
   const { permissions } = useSelector((root: RootState) => root.user)
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
-  updateTitle(t('incidents.reports.view'))
+  useEffect(() => {
+    updateTitle(t('incidents.reports.view'))
+  })
   useAddBreadcrumbs([
     {
       i18nKey: 'incidents.reports.view',
