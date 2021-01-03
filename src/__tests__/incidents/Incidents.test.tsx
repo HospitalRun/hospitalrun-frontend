@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -15,13 +15,14 @@ import { RootState } from '../../shared/store'
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Incidents', () => {
+  const expectedIncident = {
+    id: '1234',
+    code: '1234',
+    date: new Date().toISOString(),
+    reportedOn: new Date().toISOString(),
+    reportedBy: 'some user',
+  } as Incident
   function setup(permissions: Permissions[], path: string) {
-    const expectedIncident = {
-      id: '1234',
-      code: '1234',
-      date: new Date().toISOString(),
-      reportedOn: new Date().toISOString(),
-    } as Incident
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue([])
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(expectedIncident)
     const store = mockStore({
@@ -45,22 +46,19 @@ describe('Incidents', () => {
   describe('routing', () => {
     describe('/incidents/new', () => {
       it('The new incident screen when /incidents/new is accessed', () => {
-        const { container } = setup([Permissions.ReportIncident], '/incidents/new')
-
-        expect(container).toHaveTextContent('incidents.reports')
+        setup([Permissions.ReportIncident], '/incidents/new')
+        expect(screen.getAllByText(/incidents.reports/i)[0]).toBeInTheDocument()
       })
 
       it('should not navigate to /incidents/new if the user does not have ReportIncident permissions', () => {
-        const { container } = setup([], '/incidents/new')
-
-        expect(container).not.toHaveTextContent('incidents.reports')
+        setup([], '/incidents/new')
+        expect(screen.queryByText(/incidents.reports/i)).not.toBeInTheDocument()
       })
     })
 
     describe('/incidents/visualize', () => {
       it('The incident visualize screen when /incidents/visualize is accessed', async () => {
         const { container } = setup([Permissions.ViewIncidentWidgets], '/incidents/visualize')
-
         await waitFor(() => {
           expect(container.querySelector('.chartjs-render-monitor')).toBeInTheDocument()
         })
@@ -68,20 +66,19 @@ describe('Incidents', () => {
 
       it('should not navigate to /incidents/visualize if the user does not have ViewIncidentWidgets permissions', () => {
         const { container } = setup([], '/incidents/visualize')
-
-        expect(container.querySelector('.chartjs-render-monitor')).not.toBeInTheDocument()
+        expect(container).toMatchInlineSnapshot(`<div />`)
       })
     })
 
     describe('/incidents/:id', () => {
-      it('The view incident screen when /incidents/:id is accessed', () => {
-        const { container } = setup([Permissions.ViewIncident], '/incidents/1234')
-        expect(container.querySelectorAll('div').length).toBe(3)
+      it('The view incident screen when /incidents/:id is accessed', async () => {
+        setup([Permissions.ViewIncident], `/incidents/${expectedIncident.id}`)
+        expect(await screen.findByText(expectedIncident.reportedBy)).toBeInTheDocument()
       })
 
-      it('should not navigate to /incidents/:id if the user does not have ViewIncident permissions', () => {
-        const { container } = setup([], '/incidents/1234')
-        expect(container.querySelectorAll('div').length).not.toBe(3)
+      it('should not navigate to /incidents/:id if the user does not have ViewIncident permissions', async () => {
+        const { container } = setup([], `/incidents/${expectedIncident.id}`)
+        expect(container).toMatchInlineSnapshot(`<div />`)
       })
     })
   })
