@@ -16,7 +16,7 @@ async function addNote(request: AddNoteRequest): Promise<Note[]> {
   if (isEmpty(error)) {
     const incident = await IncidentRepository.find(request.incidentId)
 
-    const notes = incident.notes ? [...incident.notes] : []
+    const notes = (incident.notes && incident.notes.filter((note) => note.id !== request.note.id)) || []
 
     notes.push(request.note)
 

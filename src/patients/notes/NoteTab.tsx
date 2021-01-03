@@ -5,10 +5,12 @@ import { Route, Switch } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import useTranslator from '../../shared/hooks/useTranslator'
+import Note from '../../shared/model/Note'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 import NewNoteModal from '../../shared/notes/NewNoteModal'
+import { uuid } from '../../shared/util/uuid'
 import useAddPatientNote from '../hooks/useAddPatientNote'
 import NotesList from './NotesList'
 import ViewNote from './ViewNote'
@@ -22,6 +24,13 @@ const NoteTab = (props: Props) => {
   const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
+  const defaultNoteValue = {
+    id: uuid(),
+    givenBy: "some user", // TODO
+    text: '',
+    date: '',
+  }
+  const [newNote, setNewNote] = useState<Note>(defaultNoteValue)
   const [ mutate ] = useAddPatientNote()
 
   const breadcrumbs = [
@@ -38,6 +47,7 @@ const NoteTab = (props: Props) => {
 
   const closeNewNoteModal = () => {
     setShowNoteModal(false)
+    setNewNote(defaultNoteValue)
   }
 
   return (
@@ -71,9 +81,11 @@ const NoteTab = (props: Props) => {
         show={showNewNoteModal}
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
-        onSave={async (note) => {
+        onSave={async (note: Note) => {
           await mutate({ note, patientId: patient.id })
         }}
+        note={newNote}
+        setNote={setNewNote}
       />
     </div>
   )

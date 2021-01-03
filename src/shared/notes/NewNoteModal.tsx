@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 
 import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
 import useTranslator from '../hooks/useTranslator'
-import { uuid } from '../util/uuid'
 import Note from '../model/Note'
 import { NoteError } from '../../patients/util/validate-note'
 
@@ -12,28 +11,32 @@ interface Props {
   toggle: () => void
   onCloseButtonClick: () => void
   onSave: (note: Note) => void
+  setNote: (note: Note) => void
+  note: Note
 }
 
-const NewNoteModal = (props: Props) => {
-  const { show, toggle, onCloseButtonClick, onSave } = props
+const NewNoteModal = (
+  { note, onCloseButtonClick, onSave, setNote, show, toggle}: Props
+  ) => {
   const { t } = useTranslator()
 
   const [noteError, setNoteError] = useState<NoteError | undefined>(undefined)
-  const [text, setText] = useState('')
 
   const onNoteTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.currentTarget.value)
+    setNote({
+      ...note,
+      text: event.currentTarget.value,
+    })
   }
 
   const onSaveButtonClick = async () => {
     try {
-      onSave({
-        id: uuid(),
+      const updatedNote = {
+        ...note,
         date: new Date().toISOString(),
-        givenBy: 'some user',
-        text,
-      })
-      setText('')
+      }
+      setNote(updatedNote)
+      onSave(updatedNote)
       onCloseButtonClick()
     } catch (e) {
       setNoteError(e)
@@ -57,7 +60,7 @@ const NewNoteModal = (props: Props) => {
               isRequired
               name="noteTextField"
               label={t('patient.note')}
-              value={text}
+              value={note.text}
               isInvalid={!!noteError?.noteError}
               feedback={t(noteError?.noteError || '')}
               onChange={onNoteTextChange}

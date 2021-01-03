@@ -5,10 +5,11 @@ import { Alert, Table } from '@hospitalrun/components'
 import Note from '../../shared/model/Note'
 import useTranslator from '../../shared/hooks/useTranslator'
 interface Props {
+  onEditNote: (note: Note) => void
   notes: Note[]
 }
 
-const NotesTable = ({ notes }: Props) => {
+const NotesTable = ({ onEditNote, notes }: Props) => {
   const { t } = useTranslator()
   const history = useHistory()
 
@@ -40,25 +41,12 @@ const NotesTable = ({ notes }: Props) => {
           label: 'Note',
           formatter: (row) => <>{row.text}</>,
         },
-        /*
-        {
-          key: 'actions-key',
-          label: 'Actions',
-          formatter: () => {
-            return (
-              <>
-                <button type="button">Edit</button>
-                <button type="button">Delete</button>
-              </>
-            )
-          },
-        },*/
       ]}
       actionsHeaderText={t('actions.label')}
       actions={[
         {
           label: t('actions.edit'),
-          action: (row) => history.push(`incidents/${row.id}`), //TODO: fix
+          action: onEditNote,
           buttonColor: 'dark',
         },
         {
@@ -70,6 +58,7 @@ const NotesTable = ({ notes }: Props) => {
       data={notes}
       getID={(r) => r.id}
     />
+    
   )
 }
 

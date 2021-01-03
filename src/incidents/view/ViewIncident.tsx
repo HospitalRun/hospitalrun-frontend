@@ -3,11 +3,14 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 
+
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
 import Permissions from '../../shared/model/Permissions'
+import Note from '../../shared/model/Note'
+import { uuid } from '../../shared/util/uuid'
 import ViewIncidentDetails from './ViewIncidentDetails'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
@@ -35,6 +38,12 @@ const ViewIncident = () => {
 
   //New Note Modal
   const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
+  const [editedNote, setEditedNote] = useState<Note>({
+    id: uuid(),
+    givenBy: "some user", // TODO
+    text: '',
+    date: '',
+  })
   const onNewNoteClick = () => {
     setShowNoteModal(true)
   }
@@ -67,7 +76,13 @@ const ViewIncident = () => {
             {t('patient.notes.new')}
           </Button>
         </div>
-        <NotesTable notes={(data && data.notes) || []} />
+        <NotesTable 
+          onEditNote={(note: Note) => {
+            setEditedNote(note)
+            setShowNoteModal(true)
+          }}
+          notes={(data && data.notes) || []} 
+        />
       </Panel>
       {data &&
         data.resolvedOn === undefined &&
@@ -91,10 +106,15 @@ const ViewIncident = () => {
         show={showNewNoteModal}
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
-        onSave={async (note) => {
-          await mutateAddNote({ note, incidentId: id })
+        setNote={setEditedNote}
+        onSave={async () => {
+          await mutateAddNote({ 
+            note: editedNote, 
+            incidentId: id 
+          })
           window.location.reload()
         }}
+        note={editedNote}
       />
     </div>
   )
