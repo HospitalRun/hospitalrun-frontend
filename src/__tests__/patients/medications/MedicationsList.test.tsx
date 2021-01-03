@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -19,20 +19,20 @@ const expectedPatient = {
 
 const expectedMedications = [
   {
-    id: '123456',
-    rev: '1',
-    patient: '1234',
-    requestedOn: new Date(2020, 1, 1, 9, 0, 0, 0).toISOString(),
-    requestedBy: 'someone',
+    id: '1234',
+    medication: 'Ibuprofen',
+    status: 'active',
+    intent: 'order',
     priority: 'routine',
+    requestedOn: new Date().toISOString(),
   },
   {
-    id: '456789',
-    rev: '1',
-    patient: '1234',
-    requestedOn: new Date(2020, 1, 1, 9, 0, 0, 0).toISOString(),
-    requestedBy: 'someone',
-    priority: 'routine',
+    id: '2',
+    medication: 'Hydrocortisone',
+    status: 'active',
+    intent: 'reflex order',
+    priority: 'asap',
+    requestedOn: new Date().toISOString(),
   },
 ] as Medication[]
 
@@ -55,44 +55,59 @@ const setup = async (patient = expectedPatient, medications = expectedMedication
   )
 }
 
-describe('MedicationsList', () => {
-  describe('Table', () => {
-    it('should render a list of medications', async () => {
-      setup()
-      expect(await screen.findByRole('table')).toBeInTheDocument()
-      expect(
-        screen.getByRole('columnheader', { name: /medications.medication.medication/i }),
-      ).toBeInTheDocument()
-      expect(
-        screen.getByRole('columnheader', { name: /medications.medication.priority/i }),
-      ).toBeInTheDocument()
-      expect(
-        screen.getByRole('columnheader', { name: /medications.medication.intent/i }),
-      ).toBeInTheDocument()
-      expect(
-        screen.getByRole('columnheader', { name: /medications.medication.requestedOn/i }),
-      ).toBeInTheDocument()
-      expect(
-        screen.getByRole('columnheader', { name: /medications.medication.status/i }),
-      ).toBeInTheDocument()
-      expect(screen.getByRole('columnheader', { name: /actions.label/i })).toBeInTheDocument()
-      expect(screen.getAllByRole('button', { name: /actions.view/i })[0]).toBeInTheDocument()
-    })
+describe('Medications table', () => {
+  it('should render patient medications table headers', async () => {
+    setup()
 
-    it('should navigate to medication view on medication click', async () => {
-      setup()
-      expect(await screen.findByRole('table')).toBeInTheDocument()
-      userEvent.click(screen.getAllByRole('button', { name: /actions.view/i })[0])
-      expect(history.location.pathname).toEqual('/medications/123456')
+    expect(await screen.findByRole('table')).toBeInTheDocument()
+    const headers = screen.getAllByRole('columnheader')
+
+    expect(headers[0]).toHaveTextContent(/medications\.medication\.medication/i)
+    expect(headers[1]).toHaveTextContent(/medications\.medication\.priority/i)
+    expect(headers[2]).toHaveTextContent(/medications\.medication\.intent/i)
+    expect(headers[3]).toHaveTextContent(/medications\.medication\.requestedOn/i)
+    expect(headers[4]).toHaveTextContent(/medications\.medication\.status/i)
+    expect(headers[5]).toHaveTextContent(/actions\.label/i)
+  })
+
+  it('should render patient medication list', async () => {
+    setup()
+
+    await screen.findByRole('table')
+
+    const cells = screen.getAllByRole('cell')
+    expect(cells[0]).toHaveTextContent('Ibuprofen')
+    expect(cells[1]).toHaveTextContent('routine')
+    expect(cells[2]).toHaveTextContent('order')
+  })
+
+  it('render an action button', async () => {
+    setup()
+
+    await waitFor(() => {
+      const row = screen.getAllByRole('row')
+
+      expect(
+        within(row[1]).getByRole('button', {
+          name: /actions\.view/i,
+        }),
+      ).toBeInTheDocument()
     })
   })
 
-  describe('no patient medications', () => {
-    it('should render a warning message if there are no medications', async () => {
-      setup(expectedPatient, [])
-      expect(await screen.findByRole('alert')).toBeInTheDocument()
-      expect(screen.getByText(/patient.medications.warning.noMedications/i)).toBeInTheDocument()
-      expect(screen.getByText(/patient.medications.noMedicationsMessage/i)).toBeInTheDocument()
-    })
+  it('should navigate to medication view on medication click', async () => {
+    setup()
+    expect(await screen.findByRole('table')).toBeInTheDocument()
+    userEvent.click(screen.getAllByRole('button', { name: /actions.view/i })[0])
+    expect(history.location.pathname).toEqual('/medications/1234')
+  })
+})
+
+describe('no patient medications', () => {
+  it('should render a warning message if there are no medications', async () => {
+    setup(expectedPatient, [])
+    expect(await screen.findByRole('alert')).toBeInTheDocument()
+    expect(screen.getByText(/patient.medications.warning.noMedications/i)).toBeInTheDocument()
+    expect(screen.getByText(/patient.medications.noMedicationsMessage/i)).toBeInTheDocument()
   })
 })
