@@ -31,28 +31,27 @@ describe('Incidents', () => {
       components: { sidebarCollapsed: false },
     } as any)
 
-    // eslint-disable-next-line react/prop-types
-    const Wrapper: React.FC = ({ children }) => (
+    return render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[path]}>
-          <titleUtil.TitleProvider>{children}</titleUtil.TitleProvider>
+          <titleUtil.TitleProvider>
+            <Incidents />
+          </titleUtil.TitleProvider>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
     )
-
-    return render(<Incidents />, { wrapper: Wrapper })
   }
 
   describe('routing', () => {
     describe('/incidents/new', () => {
       it('The new incident screen when /incidents/new is accessed', () => {
         setup([Permissions.ReportIncident], '/incidents/new')
-        expect(screen.getAllByText(/incidents.reports/i)[0]).toBeInTheDocument()
+        expect(screen.getByRole('form')).toBeInTheDocument()
       })
 
       it('should not navigate to /incidents/new if the user does not have ReportIncident permissions', () => {
-        setup([], '/incidents/new')
-        expect(screen.queryByText(/incidents.reports/i)).not.toBeInTheDocument()
+        const { container } = setup([], '/incidents/new')
+        expect(container).toMatchInlineSnapshot(`<div />`)
       })
     })
 
