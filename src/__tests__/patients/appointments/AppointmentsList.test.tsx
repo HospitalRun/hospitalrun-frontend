@@ -61,18 +61,17 @@ const setup = (patient = expectedPatient, appointments = expectedAppointments) =
 describe('AppointmentsList', () => {
   describe('Table', () => {
     it('should render a list of appointments', async () => {
-      const { container } = setup()
-
+      setup()
       await waitFor(() => {
-        expect(container.querySelector('table')).toBeInTheDocument()
+        expect(screen.getByRole('table')).toBeInTheDocument()
       })
-      const columns = container.querySelectorAll('th')
+      const header = screen.getAllByRole('columnheader')
 
-      expect(columns[0]).toHaveTextContent(/scheduling.appointment.startDate/i)
-      expect(columns[1]).toHaveTextContent(/scheduling.appointment.endDate/i)
-      expect(columns[2]).toHaveTextContent(/scheduling.appointment.location/i)
-      expect(columns[3]).toHaveTextContent(/scheduling.appointment.type/i)
-      expect(columns[4]).toHaveTextContent(/actions.label/i)
+      expect(header[0]).toHaveTextContent(/scheduling.appointment.startDate/i)
+      expect(header[1]).toHaveTextContent(/scheduling.appointment.endDate/i)
+      expect(header[2]).toHaveTextContent(/scheduling.appointment.location/i)
+      expect(header[3]).toHaveTextContent(/scheduling.appointment.type/i)
+      expect(header[4]).toHaveTextContent(/actions.label/i)
       expect(screen.getAllByRole('button', { name: /actions.view/i })[0]).toBeInTheDocument()
     })
 
