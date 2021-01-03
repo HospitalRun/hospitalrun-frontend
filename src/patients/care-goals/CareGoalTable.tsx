@@ -1,5 +1,5 @@
 import { Alert, Table } from '@hospitalrun/components'
-import { format } from 'date-fns'
+import format from 'date-fns/format'
 import React from 'react'
 import { useHistory } from 'react-router'
 
@@ -55,7 +55,7 @@ const CareGoalTable = (props: Props) => {
       actionsHeaderText={t('actions.label')}
       actions={[
         {
-          label: 'actions.view',
+          label: t('actions.view'),
           action: (row) => history.push(`/patients/${patientId}/care-goals/${row.id}`),
         },
       ]}
