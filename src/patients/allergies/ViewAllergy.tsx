@@ -18,7 +18,7 @@ const ViewAllergy = () => {
   return (
     <>
       <TextInputWithLabelFormGroup
-        name="name"
+        name="allergy"
         label={t('patient.allergies.allergyName')}
         isEditable={false}
         placeholder={t('patient.allergies.allergyName')}
