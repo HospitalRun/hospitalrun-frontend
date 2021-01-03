@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -6,7 +6,6 @@ import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import IncidentFilter from '../../../incidents/IncidentFilter'
 import ViewIncidents from '../../../incidents/list/ViewIncidents'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
@@ -65,6 +64,6 @@ it('should filter incidents by status=reported on first load ', () => {
 describe('layout', () => {
   it('should render a table with the incidents', async () => {
     setup([Permissions.ViewIncidents])
-    expect(await screen.findByRole('table')).toHaveTextContent(IncidentFilter.reported)
+    expect(within(await screen.findByRole('table')).getByText('some code')).toBeInTheDocument()
   })
 })
