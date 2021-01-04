@@ -67,12 +67,18 @@ describe('View Visit', () => {
     expect(startDateTimePicker).toHaveDisplayValue(
       format(new Date(visit.startDateTime), 'MM/dd/yyyy h:mm aa'),
     )
+    expect(startDateTimePicker).toBeDisabled()
     expect(endDateTimePicker).toHaveDisplayValue(
       format(new Date(visit.endDateTime), 'MM/dd/yyyy h:mm aa'),
     )
+    expect(endDateTimePicker).toBeDisabled()
     expect(typeInput).toHaveDisplayValue(visit.type)
+    expect(typeInput).toBeDisabled()
     expect(statusSelector).toHaveDisplayValue(visit.status)
+    expect(statusSelector).toBeDisabled()
     expect(reasonInput).toHaveDisplayValue(visit.reason)
+    expect(reasonInput).toBeDisabled()
     expect(locationInput).toHaveDisplayValue(visit.location)
+    expect(locationInput).toBeDisabled()
   })
 })
