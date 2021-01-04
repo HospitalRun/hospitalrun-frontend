@@ -5,6 +5,7 @@ import { Route, Router } from 'react-router-dom'
 
 import ViewAllergy from '../../../patients/allergies/ViewAllergy'
 import PatientRepository from '../../../shared/db/PatientRepository'
+import Allergy from '../../../shared/model/Allergy'
 import Patient from '../../../shared/model/Patient'
 
 describe('ViewAllergy', () => {
@@ -16,7 +17,7 @@ describe('ViewAllergy', () => {
   const setup = async () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     const history = createMemoryHistory()
-    history.push(`/patients/${patient.id}/allergies/${patient.allergies![0].id}`)
+    history.push(`/patients/${patient.id}/allergies/${(patient.allergies as Allergy[])[0].id}`)
 
     return render(
       <Router history={history}>
@@ -27,7 +28,7 @@ describe('ViewAllergy', () => {
     )
   }
 
-  it('should render a allergy input with the correct data', async () => {
+  it('should render an allergy input with the correct data', async () => {
     setup()
 
     await waitFor(() => {
