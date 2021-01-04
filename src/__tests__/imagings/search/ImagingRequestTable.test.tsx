@@ -1,4 +1,4 @@
-import { render as rtlRender, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import format from 'date-fns/format'
 import React from 'react'
 
@@ -19,16 +19,16 @@ describe('Imaging Request Table', () => {
     requestedBy: 'some user',
   } as Imaging
 
-  const render = (searchRequest: ImagingSearchRequest) => {
+  const setup = (searchRequest: ImagingSearchRequest) => {
     jest.resetAllMocks()
     jest.spyOn(ImagingRepository, 'search').mockResolvedValue([expectedImaging])
 
-    return rtlRender(<ImagingRequestTable searchRequest={searchRequest} />)
+    return render(<ImagingRequestTable searchRequest={searchRequest} />)
   }
 
   it('should render a table of imaging requests', async () => {
     const expectedSearch: ImagingSearchRequest = { status: 'all', text: 'text' }
-    render(expectedSearch)
+    setup(expectedSearch)
     const headers = await screen.findAllByRole('columnheader')
     const cells = screen.getAllByRole('cell')
 
