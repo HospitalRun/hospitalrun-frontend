@@ -1,4 +1,4 @@
-import { render, screen, within, waitFor } from '@testing-library/react'
+import { render, screen, within, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
@@ -137,8 +137,7 @@ describe('New Lab Request', () => {
       const { expectedVisits } = setup()
 
       const patientTypeahead = screen.getByPlaceholderText(/labs.lab.patient/i)
-      const visitsInput = screen.getByPlaceholderText('-- Choose --')
-
+      const visitsInput = within(screen.getByTestId('visit-field')).getByRole('combobox')
       userEvent.type(patientTypeahead, 'Jim Bob')
       userEvent.click(await screen.findByText(/Jim Bob/i))
       expect(patientTypeahead).toHaveDisplayValue(/Jim Bob/i)
@@ -194,14 +193,13 @@ describe('New Lab Request', () => {
 
       userEvent.click(saveButton)
 
-      const alert = screen.findByRole('alert')
-      const { getByText: getByTextInAlert } = within(await alert)
+      const alert = await screen.findByRole('alert')
       const patientInput = screen.getByPlaceholderText(/labs\.lab\.patient/i)
       const typeInput = screen.getByPlaceholderText(/labs\.lab\.type/i)
 
-      expect(getByTextInAlert(error.message)).toBeInTheDocument()
-      expect(getByTextInAlert(/states\.error/i)).toBeInTheDocument()
-      expect(await alert).toHaveClass('alert-danger')
+      expect(within(alert).getByText(error.message)).toBeInTheDocument()
+      expect(within(alert).getByText(/states\.error/i)).toBeInTheDocument()
+      expect(alert).toHaveClass('alert-danger')
       expect(patientInput).toHaveClass('is-invalid')
       expect(typeInput).toHaveClass('is-invalid')
       expect(typeInput.nextSibling).toHaveTextContent(error.type as string)
@@ -229,29 +227,14 @@ describe('New Lab Request', () => {
 
       userEvent.type(screen.getByPlaceholderText(/labs.lab.patient/i), 'Jim Bob')
 
-      await waitFor(
-        () => {
-          expect(screen.getByText(/jim bob/i)).toBeVisible()
-        },
-        { timeout: 3000 },
-      )
+      expect(await screen.findByText(/jim bob/i)).toBeVisible()
       userEvent.click(screen.getByText(/jim bob/i))
       userEvent.type(screen.getByPlaceholderText(/labs\.lab\.type/i), expectedLab.type)
       userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), (expectedLab.notes as string[])[0])
 
-      userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
-
-      await waitFor(() => {
-        expect(LabRepository.save).toHaveBeenCalledTimes(1)
+      await act(async () => {
+        userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
       })
-      expect(LabRepository.save).toHaveBeenCalledWith(
-        expect.objectContaining({
-          patient: expectedLab.patient,
-          type: expectedLab.type,
-          notes: expectedLab.notes,
-          status: 'requested',
-        }),
-      )
 
       await waitFor(() => {
         expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
