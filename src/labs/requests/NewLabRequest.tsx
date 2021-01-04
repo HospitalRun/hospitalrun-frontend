@@ -145,7 +145,7 @@ const NewLabRequest = () => {
             </div>
           </Column>
           <Column>
-            <div className="form-group">
+            <div className="form-group" data-testid="visit-field">
               <SelectWithLabelFormGroup
                 name="visit"
                 label={t('patient.visit')}
