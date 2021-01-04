@@ -26,12 +26,12 @@ const NoteTab = (props: Props) => {
   const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
   const defaultNoteValue = {
     id: uuid(),
-    givenBy: "some user", // TODO
+    givenBy: 'some user', // TODO
     text: '',
     date: '',
   }
   const [newNote, setNewNote] = useState<Note>(defaultNoteValue)
-  const [ mutate ] = useAddPatientNote()
+  const [mutate] = useAddPatientNote()
 
   const breadcrumbs = [
     {
@@ -42,6 +42,7 @@ const NoteTab = (props: Props) => {
   useAddBreadcrumbs(breadcrumbs)
 
   const onNewNoteClick = () => {
+    setNewNote(defaultNoteValue)
     setShowNoteModal(true)
   }
 

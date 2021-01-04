@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 
-
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
@@ -15,6 +14,7 @@ import ViewIncidentDetails from './ViewIncidentDetails'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
 import useAddIncidentNote from '../hooks/useAddIncidentNote'
+import useDeleteIncidentNote from '../hooks/useDeleteIncidentNote'
 import NotesTable from './NotesTable'
 import NewNoteModal from '../../shared/notes/NewNoteModal'
 
@@ -24,6 +24,7 @@ const ViewIncident = () => {
   const { data, isLoading } = useIncident(id)
   const [mutate] = useResolveIncident()
   const [mutateAddNote] = useAddIncidentNote()
+  const [deleteNote] = useDeleteIncidentNote()
   const location = useLocation()
   const history = useHistory()
   const { t } = useTranslator()
@@ -37,14 +38,16 @@ const ViewIncident = () => {
   ])
 
   //New Note Modal
-  const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
-  const [editedNote, setEditedNote] = useState<Note>({
+  const newNoteState = {
     id: uuid(),
-    givenBy: "some user", // TODO
+    givenBy: '', // TODO
     text: '',
     date: '',
-  })
+  }
+  const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
+  const [editedNote, setEditedNote] = useState<Note>(newNoteState)
   const onNewNoteClick = () => {
+    setEditedNote(newNoteState)
     setShowNoteModal(true)
   }
   const closeNewNoteModal = () => {
@@ -76,12 +79,19 @@ const ViewIncident = () => {
             {t('patient.notes.new')}
           </Button>
         </div>
-        <NotesTable 
+        <NotesTable
           onEditNote={(note: Note) => {
             setEditedNote(note)
             setShowNoteModal(true)
           }}
-          notes={(data && data.notes) || []} 
+          onDeleteNote={async (note: Note) => {
+            await deleteNote({
+              note: note,
+              incidentId: id,
+            })
+            window.location.reload()
+          }}
+          notes={(data && data.notes) || []}
         />
       </Panel>
       {data &&
@@ -107,11 +117,12 @@ const ViewIncident = () => {
         toggle={closeNewNoteModal}
         onCloseButtonClick={closeNewNoteModal}
         setNote={setEditedNote}
-        onSave={async () => {
-          await mutateAddNote({ 
-            note: editedNote, 
-            incidentId: id 
+        onSave={async (note: Note) => {
+          await mutateAddNote({
+            note: note,
+            incidentId: id,
           })
+          setEditedNote(newNoteState)
           window.location.reload()
         }}
         note={editedNote}

@@ -1,17 +1,18 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+//import { useHistory } from 'react-router'
 
 import { Alert, Table } from '@hospitalrun/components'
 import Note from '../../shared/model/Note'
 import useTranslator from '../../shared/hooks/useTranslator'
 interface Props {
   onEditNote: (note: Note) => void
+  onDeleteNote: (note: Note) => void
   notes: Note[]
 }
 
-const NotesTable = ({ onEditNote, notes }: Props) => {
+const NotesTable = ({ onEditNote, onDeleteNote, notes }: Props) => {
   const { t } = useTranslator()
-  const history = useHistory()
+  //const history = useHistory()
 
   if (notes.length === 0) {
     return (
@@ -51,14 +52,13 @@ const NotesTable = ({ onEditNote, notes }: Props) => {
         },
         {
           label: t('actions.delete'),
-          action: (row) => history.push(`incidents/${row.id}`), //TODO: fix
+          action: onDeleteNote,
           buttonColor: 'danger',
         },
       ]}
       data={notes}
       getID={(r) => r.id}
     />
-    
   )
 }
 

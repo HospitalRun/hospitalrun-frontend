@@ -103,6 +103,7 @@ export default {
     notes: {
       label: 'Notes',
       new: 'Add New Note',
+      edit: 'Edit Note',
       warning: {
         noNotes: 'No Notes',
       },

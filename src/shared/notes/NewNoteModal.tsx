@@ -12,12 +12,10 @@ interface Props {
   onCloseButtonClick: () => void
   onSave: (note: Note) => void
   setNote: (note: Note) => void
-  note: Note
+  note: Note // New if note.date === ''
 }
 
-const NewNoteModal = (
-  { note, onCloseButtonClick, onSave, setNote, show, toggle}: Props
-  ) => {
+const NewNoteModal = ({ note, onCloseButtonClick, onSave, setNote, show, toggle }: Props) => {
   const { t } = useTranslator()
 
   const [noteError, setNoteError] = useState<NoteError | undefined>(undefined)
@@ -70,12 +68,12 @@ const NewNoteModal = (
       </div>
     </form>
   )
-
+  const actionString = note.date ? t('patient.notes.edit') : t('patient.notes.new')
   return (
     <Modal
       show={show}
       toggle={toggle}
-      title={t('patient.notes.new')}
+      title={actionString}
       body={body}
       closeButton={{
         children: t('actions.cancel'),
@@ -83,7 +81,7 @@ const NewNoteModal = (
         onClick: onCloseButtonClick,
       }}
       successButton={{
-        children: t('patient.notes.new'),
+        children: actionString,
         color: 'success',
         icon: 'add',
         iconLocation: 'left',
