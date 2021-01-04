@@ -89,18 +89,6 @@ const pageMap: {
     path: '/incidents/visualize',
     icon: 'incident',
   },
-  newVisit: {
-    permission: Permissions.AddVisit,
-    label: 'visits.visit.new',
-    path: '/visits',
-    icon: 'add',
-  },
-  viewVisits: {
-    permission: Permissions.ReadVisits,
-    label: 'visits.visit.label',
-    path: '/visits',
-    icon: 'visit',
-  },
   newPricingItem: {
     permission: Permissions.AddPricingItems,
     label: 'billing.requests.new',
