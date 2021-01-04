@@ -66,7 +66,7 @@ describe('ViewAppointments', () => {
   })
 
   it('should render a calendar with the proper events', async () => {
-    const { container, expectedPatient, expectedAppointment } = setup()
+    const { expectedPatient, expectedAppointment } = setup()
 
     await waitFor(() => {
       expect(screen.getAllByText(expectedPatient.fullName as string)[0]).toBeInTheDocument()
@@ -75,13 +75,6 @@ describe('ViewAppointments', () => {
     const expectedStart = format(new Date(expectedAppointment.startDateTime), 'h:mm')
     const expectedEnd = format(new Date(expectedAppointment.endDateTime), 'h:mm')
 
-    expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
-      'data-full',
-      expect.stringContaining(expectedStart),
-    )
-    expect(container.querySelector('.fc-content-col .fc-time')).toHaveAttribute(
-      'data-full',
-      expect.stringContaining(expectedEnd),
-    )
+    expect(screen.getByText(`${expectedStart} - ${expectedEnd}`)).toBeInTheDocument()
   })
 })
