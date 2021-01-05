@@ -20,7 +20,7 @@ import NewNoteModal from '../../shared/notes/NewNoteModal'
 
 const ViewIncident = () => {
   const { id } = useParams() as any
-  const { permissions } = useSelector((root: RootState) => root.user)
+  const { permissions, user } = useSelector((root: RootState) => root.user)
   const { data, isLoading } = useIncident(id)
   const [mutate] = useResolveIncident()
   const [mutateAddNote] = useAddIncidentNote()
@@ -40,7 +40,7 @@ const ViewIncident = () => {
   //New Note Modal
   const newNoteState = {
     id: uuid(),
-    givenBy: '', // TODO
+    givenBy: user?.id,
     text: '',
     date: '',
   }
@@ -74,7 +74,7 @@ const ViewIncident = () => {
         />
       </TabsHeader>
       <Panel>
-        <div className="col-md-12 d-flex justify-content-end">
+        <div className="col-md-12 d-flex mb-3 justify-content-end">
           <Button outlined color="success" icon="add" iconLocation="right" onClick={onNewNoteClick}>
             {t('patient.notes.new')}
           </Button>

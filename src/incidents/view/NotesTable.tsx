@@ -4,6 +4,7 @@ import React from 'react'
 import { Alert, Table } from '@hospitalrun/components'
 import Note from '../../shared/model/Note'
 import useTranslator from '../../shared/hooks/useTranslator'
+import { extractUsername } from '../../shared/util/extractUsername'
 interface Props {
   onEditNote: (note: Note) => void
   onDeleteNote: (note: Note) => void
@@ -35,7 +36,7 @@ const NotesTable = ({ onEditNote, onDeleteNote, notes }: Props) => {
         {
           key: 'given-by-key',
           label: 'Given By',
-          formatter: (row) => <>{row.givenBy}</>,
+          formatter: (row) => <>{extractUsername(row.givenBy || '')}</>,
         },
         {
           key: 'note-key',
