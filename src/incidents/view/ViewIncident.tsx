@@ -28,8 +28,18 @@ const ViewIncident = () => {
   const location = useLocation()
   const history = useHistory()
   const { t } = useTranslator()
+
+  const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
+  const newNoteState = {
+    id: uuid(),
+    givenBy: user?.id,
+    text: '',
+    date: '',
+  }
+  const [editedNote, setEditedNote] = useState<Note>(newNoteState)
+
   const updateTitle = useUpdateTitle()
-  updateTitle(t('incidents.reports.view'))
+
   useAddBreadcrumbs([
     {
       i18nKey: 'incidents.reports.view',
@@ -37,15 +47,8 @@ const ViewIncident = () => {
     },
   ])
 
-  //New Note Modal
-  const newNoteState = {
-    id: uuid(),
-    givenBy: user?.id,
-    text: '',
-    date: '',
-  }
-  const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
-  const [editedNote, setEditedNote] = useState<Note>(newNoteState)
+  updateTitle(t('incidents.reports.view'))
+
   const onNewNoteClick = () => {
     setEditedNote(newNoteState)
     setShowNoteModal(true)
