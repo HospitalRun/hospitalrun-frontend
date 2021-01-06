@@ -56,13 +56,7 @@ describe('View Incident Details', () => {
   }
 
   describe('view details', () => {
-    it('should call find incident by id', async () => {
-      await setup(expectedIncident, [Permissions.ViewIncident])
-
-      expect(IncidentRepository.find).toHaveBeenCalledTimes(1)
-      expect(IncidentRepository.find).toHaveBeenCalledWith(expectedIncidentId)
-    })
-
+    
     it('should render the date of incident', async () => {
       const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
 

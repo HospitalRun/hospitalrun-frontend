@@ -82,6 +82,12 @@ describe('View Incident', () => {
     expect(viewIncidentDetails.prop('incident')).toEqual(mockedIncident)
   })
 
+  it('should call find incident by id', async () => {
+    await setup([Permissions.ViewIncident])
+
+    expect(IncidentRepository.find).toHaveBeenCalledTimes(1)
+    expect(IncidentRepository.find).toHaveBeenCalledWith(mockedIncident.id)
+  })
 
   it('should set the breadcrumbs properly', async () => {
     await setup([Permissions.ViewIncident])
