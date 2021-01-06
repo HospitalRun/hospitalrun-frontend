@@ -20,16 +20,24 @@ import NewNoteModal from '../../shared/notes/NewNoteModal'
 
 const ViewIncident = () => {
   const { id } = useParams() as any
-  const { permissions, user } = useSelector((root: RootState) => root.user)
-  const { data, isLoading } = useIncident(id)
-  const [mutate] = useResolveIncident()
-  const [mutateAddNote] = useAddIncidentNote()
-  const [deleteNote] = useDeleteIncidentNote()
   const location = useLocation()
   const history = useHistory()
   const { t } = useTranslator()
-  const updateTitle = useUpdateTitle()
-  updateTitle(t('incidents.reports.view'))
+  const { permissions, user } = useSelector((root: RootState) => root.user)
+  const { data, isLoading } = useIncident(id)
+  // // const [mutate] = useResolveIncident()
+  // const [mutateAddNote] = useAddIncidentNote()
+  // const [deleteNote] = useDeleteIncidentNote()
+  
+  // const updateTitle = useUpdateTitle()
+  // const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false) 
+  // const newNoteState = {
+  //   id: uuid(),
+  //   givenBy: user?.id,
+  //   text: '',
+  //   date: '',
+  // }
+  // const [editedNote, setEditedNote] = useState<Note>(newNoteState)
   useAddBreadcrumbs([
     {
       i18nKey: 'incidents.reports.view',
@@ -37,35 +45,31 @@ const ViewIncident = () => {
     },
   ])
 
-  //New Note Modal
-  const newNoteState = {
-    id: uuid(),
-    givenBy: user?.id,
-    text: '',
-    date: '',
-  }
-  const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
-  const [editedNote, setEditedNote] = useState<Note>(newNoteState)
-  const onNewNoteClick = () => {
-    setEditedNote(newNoteState)
-    setShowNoteModal(true)
-  }
-  const closeNewNoteModal = () => {
-    setShowNoteModal(false)
-  }
+  // updateTitle(t('incidents.reports.view'))
+  
+
+  // const onNewNoteClick = () => {
+  //   setEditedNote(newNoteState)
+  //   setShowNoteModal(true)
+  // }
+  // const closeNewNoteModal = () => {
+  //   setShowNoteModal(false)
+  // }
+  
+  // const onResolve = async () => {
+  //   await mutate(data)
+  //   history.push('/incidents')
+  // }
 
   if (id === undefined || permissions === undefined) {
     return <></>
   }
 
-  const onResolve = async () => {
-    await mutate(data)
-    history.push('/incidents')
-  }
+  
 
   return (
     <div>
-      <ViewIncidentDetails isLoading={isLoading} incident={data} />
+      {/* <ViewIncidentDetails isLoading={isLoading} incident={data} />
       <TabsHeader>
         <Tab
           active={location.pathname === `/incidents/${id}/notes`}
@@ -126,7 +130,7 @@ const ViewIncident = () => {
           window.location.reload()
         }}
         note={editedNote}
-      />
+      /> */}
     </div>
   )
 }
