@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { Button } from '@hospitalrun/components'
+import { Button, Typeahead, Label } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -138,6 +138,22 @@ describe('Report Incident', () => {
       expect(descriptionInput.prop('label')).toEqual('incidents.reports.description')
       expect(descriptionInput.prop('isEditable')).toBeTruthy()
       expect(descriptionInput.prop('isRequired')).toBeTruthy()
+    })
+
+    it('should render a patient typeahead', async () => {
+      const wrapper = await setup([Permissions.ReportIncident])
+      const typeaheadDiv = wrapper.find('.patient-typeahead')
+
+      expect(typeaheadDiv).toBeDefined()
+
+      const label = typeaheadDiv.find(Label)
+      const typeahead = typeaheadDiv.find(Typeahead)
+
+      expect(label).toBeDefined()
+      expect(label.prop('text')).toEqual('incidents.reports.patient')
+      expect(typeahead).toBeDefined()
+      expect(typeahead.prop('placeholder')).toEqual('incidents.reports.patient')
+      expect(typeahead.prop('searchAccessor')).toEqual('fullName')
     })
   })
 
