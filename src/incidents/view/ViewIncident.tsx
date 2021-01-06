@@ -25,19 +25,19 @@ const ViewIncident = () => {
   const { t } = useTranslator()
   const { permissions, user } = useSelector((root: RootState) => root.user)
   const { data, isLoading } = useIncident(id)
-  // // const [mutate] = useResolveIncident()
-  // const [mutateAddNote] = useAddIncidentNote()
-  // const [deleteNote] = useDeleteIncidentNote()
+  const [mutate] = useResolveIncident()
+  const [mutateAddNote] = useAddIncidentNote()
+  const [deleteNote] = useDeleteIncidentNote()
   
-  // const updateTitle = useUpdateTitle()
-  // const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false) 
-  // const newNoteState = {
-  //   id: uuid(),
-  //   givenBy: user?.id,
-  //   text: '',
-  //   date: '',
-  // }
-  // const [editedNote, setEditedNote] = useState<Note>(newNoteState)
+  const updateTitle = useUpdateTitle()
+  const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false) 
+  const newNoteState = {
+    id: uuid(),
+    givenBy: user?.id,
+    text: '',
+    date: '',
+  }
+  const [editedNote, setEditedNote] = useState<Note>(newNoteState)
   useAddBreadcrumbs([
     {
       i18nKey: 'incidents.reports.view',
@@ -45,21 +45,21 @@ const ViewIncident = () => {
     },
   ])
 
-  // updateTitle(t('incidents.reports.view'))
+  updateTitle(t('incidents.reports.view'))
   
 
-  // const onNewNoteClick = () => {
-  //   setEditedNote(newNoteState)
-  //   setShowNoteModal(true)
-  // }
-  // const closeNewNoteModal = () => {
-  //   setShowNoteModal(false)
-  // }
+  const onNewNoteClick = () => {
+    setEditedNote(newNoteState)
+    setShowNoteModal(true)
+  }
+  const closeNewNoteModal = () => {
+    setShowNoteModal(false)
+  }
   
-  // const onResolve = async () => {
-  //   await mutate(data)
-  //   history.push('/incidents')
-  // }
+  const onResolve = async () => {
+    await mutate(data)
+    history.push('/incidents')
+  }
 
   if (id === undefined || permissions === undefined) {
     return <></>
@@ -69,7 +69,7 @@ const ViewIncident = () => {
 
   return (
     <div>
-      {/* <ViewIncidentDetails isLoading={isLoading} incident={data} />
+      <ViewIncidentDetails isLoading={isLoading} incident={data} />
       <TabsHeader>
         <Tab
           active={location.pathname === `/incidents/${id}/notes`}
@@ -130,7 +130,7 @@ const ViewIncident = () => {
           window.location.reload()
         }}
         note={editedNote}
-      /> */}
+      />
     </div>
   )
 }
