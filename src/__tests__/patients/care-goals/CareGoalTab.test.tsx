@@ -106,7 +106,9 @@ describe('Care Goals Tab', () => {
 
     userEvent.click(within(modal).getByRole('button', { name: /patient.careGoal.new/i }))
 
-    await waitForElementToBeRemoved(modal)
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
 
     expect(
       await screen.findByRole('cell', { name: expectedCareGoal.description }),
