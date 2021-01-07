@@ -21,6 +21,7 @@ export default {
       category: 'Category',
       categoryItem: 'Category Item',
       description: 'Description of Incident',
+      patient: 'Patient',
       code: 'Code',
       reportedBy: 'Reported By',
       reportedOn: 'Reported On',

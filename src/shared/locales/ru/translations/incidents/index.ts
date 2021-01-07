@@ -18,6 +18,7 @@ export default {
       category: 'Категория',
       categoryItem: 'Подкатегория',
       description: 'Описание инцидента',
+      patient: 'пациент',
       code: 'Код',
       reportedBy: 'Кем сообщено',
       reportedOn: 'Когда сообщено',

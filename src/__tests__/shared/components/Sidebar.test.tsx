@@ -15,33 +15,7 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Sidebar', () => {
   let history = createMemoryHistory()
-  const allPermissions = [
-    Permissions.ReadPatients,
-    Permissions.WritePatients,
-    Permissions.ReadAppointments,
-    Permissions.WriteAppointments,
-    Permissions.DeleteAppointment,
-    Permissions.AddAllergy,
-    Permissions.AddDiagnosis,
-    Permissions.RequestLab,
-    Permissions.CancelLab,
-    Permissions.CompleteLab,
-    Permissions.ViewLab,
-    Permissions.ViewLabs,
-    Permissions.RequestMedication,
-    Permissions.CompleteMedication,
-    Permissions.CancelMedication,
-    Permissions.ViewMedications,
-    Permissions.ViewMedication,
-    Permissions.ViewIncidents,
-    Permissions.ViewIncident,
-    Permissions.ViewIncidentWidgets,
-    Permissions.ReportIncident,
-    Permissions.ReadVisits,
-    Permissions.AddVisit,
-    Permissions.RequestImaging,
-    Permissions.ViewImagings,
-  ]
+  const allPermissions = Object.values(Permissions)
   const store = mockStore({
     components: { sidebarCollapsed: false },
     user: { permissions: allPermissions },
