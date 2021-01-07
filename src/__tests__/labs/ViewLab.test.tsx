@@ -1,8 +1,13 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import {
+  render as rtlRender,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -23,7 +28,12 @@ import { expectOneConsoleError } from '../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
-const setup = (permissions: Permissions[], lab?: Partial<Lab>, error = {}) => {
+type WrapperProps = {
+  // eslint-disable-next-line react/require-default-props
+  children?: ReactNode
+}
+
+const render = (permissions: Permissions[], lab?: Partial<Lab>, error = {}) => {
   const expectedDate = new Date()
   const mockPatient = { fullName: 'test' }
   const mockLab = {
@@ -58,8 +68,7 @@ const setup = (permissions: Permissions[], lab?: Partial<Lab>, error = {}) => {
     },
   } as any)
 
-  // eslint-disable-next-line react/prop-types
-  const Wrapper: React.FC = ({ children }) => (
+  const Wrapper = ({ children }: WrapperProps) => (
     <ButtonBarProvider>
       <Provider store={store}>
         <Router history={history}>
@@ -71,20 +80,22 @@ const setup = (permissions: Permissions[], lab?: Partial<Lab>, error = {}) => {
     </ButtonBarProvider>
   )
 
+  const utils = rtlRender(<ViewLab />, { wrapper: Wrapper })
+
   return {
     history,
     store,
     expectedDate,
     expectedLab: mockLab,
     expectedPatient: mockPatient,
-    ...render(<ViewLab />, { wrapper: Wrapper }),
+    ...utils,
   }
 }
 
 describe('View Lab', () => {
   describe('page content', () => {
     it("should display the patients' full name", async () => {
-      const { expectedPatient } = setup([Permissions.ViewLab])
+      const { expectedPatient } = render([Permissions.ViewLab])
 
       await waitFor(() => {
         expect(screen.getByText('labs.lab.for')).toBeInTheDocument()
@@ -93,7 +104,7 @@ describe('View Lab', () => {
     })
 
     it('should display the lab-type', async () => {
-      const { expectedLab } = setup([Permissions.ViewLab], { type: 'expected type' })
+      const { expectedLab } = render([Permissions.ViewLab], { type: 'expected type' })
 
       await waitFor(() => {
         expect(screen.getByRole('heading', { name: /labs.lab.type/i })).toBeInTheDocument()
@@ -102,7 +113,7 @@ describe('View Lab', () => {
     })
 
     it('should display the requested on date', async () => {
-      const { expectedLab } = setup([Permissions.ViewLab], {
+      const { expectedLab } = render([Permissions.ViewLab], {
         requestedOn: '2020-03-30T04:43:20.102Z',
       })
 
@@ -116,11 +127,9 @@ describe('View Lab', () => {
 
     it('should not display the completed date if the lab is not completed', async () => {
       const completedDate = new Date('2020-10-10T10:10:10.100') // We want a different date than the mocked date
-      setup([Permissions.ViewLab], { completedOn: completedDate.toISOString() })
+      render([Permissions.ViewLab], { completedOn: completedDate.toISOString() })
 
-      await waitFor(() => {
-        expect(screen.queryByText(/loading/i)).not.toBeInTheDocument()
-      })
+      await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
 
       expect(
         screen.queryByText(format(completedDate, 'yyyy-MM-dd HH:mm a')),
@@ -129,11 +138,9 @@ describe('View Lab', () => {
 
     it('should not display the canceled date if the lab is not canceled', async () => {
       const cancelledDate = new Date('2020-10-10T10:10:10.100') // We want a different date than the mocked date
-      setup([Permissions.ViewLab], { canceledOn: cancelledDate.toISOString() })
+      render([Permissions.ViewLab], { canceledOn: cancelledDate.toISOString() })
 
-      await waitFor(() => {
-        expect(screen.queryByText(/loading/i)).not.toBeInTheDocument()
-      })
+      await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
 
       expect(
         screen.queryByText(format(cancelledDate, 'yyyy-MM-dd HH:mm a')),
@@ -141,7 +148,7 @@ describe('View Lab', () => {
     })
 
     it('should render a result text field', async () => {
-      const { expectedLab } = setup([Permissions.ViewLab], { result: 'expected results' })
+      const { expectedLab } = render([Permissions.ViewLab], { result: 'expected results' })
 
       await waitFor(() => {
         expect(
@@ -152,15 +159,15 @@ describe('View Lab', () => {
       })
     })
 
-    it('should not display past notes if there is not', async () => {
-      const { container } = setup([Permissions.ViewLab], { notes: [] })
+    it('should not display past notes if there is not', () => {
+      const { container } = render([Permissions.ViewLab], { notes: [] })
 
       expect(container.querySelector('.callout')).not.toBeInTheDocument()
     })
 
     it('should display the past notes', async () => {
       const expectedNotes = 'expected notes'
-      const { container } = setup([Permissions.ViewLab], { notes: [expectedNotes] })
+      const { container } = render([Permissions.ViewLab], { notes: [expectedNotes] })
 
       await waitFor(() => {
         expect(screen.getByText(expectedNotes)).toBeInTheDocument()
@@ -169,7 +176,7 @@ describe('View Lab', () => {
     })
 
     it('should display the notes text field empty', async () => {
-      setup([Permissions.ViewLab])
+      render([Permissions.ViewLab])
 
       await waitFor(() => {
         expect(screen.getByLabelText('labs.lab.notes')).toHaveValue('')
@@ -177,7 +184,7 @@ describe('View Lab', () => {
     })
 
     it('should display errors', async () => {
-      setup([Permissions.ViewLab, Permissions.CompleteLab], { status: 'requested' })
+      render([Permissions.ViewLab, Permissions.CompleteLab], { status: 'requested' })
 
       const expectedError = { message: 'some message', result: 'some result feedback' } as LabError
       expectOneConsoleError(expectedError)
@@ -201,7 +208,7 @@ describe('View Lab', () => {
 
     describe('requested lab request', () => {
       it('should display a warning badge if the status is requested', async () => {
-        const { expectedLab } = setup([Permissions.ViewLab], { status: 'requested' })
+        const { expectedLab } = render([Permissions.ViewLab], { status: 'requested' })
 
         await waitFor(() => {
           expect(
@@ -214,7 +221,7 @@ describe('View Lab', () => {
       })
 
       it('should display a update lab, complete lab, and cancel lab button if the lab is in a requested state', async () => {
-        setup([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
+        render([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
 
         await waitFor(() => {
           screen.getByRole('button', {
@@ -232,7 +239,7 @@ describe('View Lab', () => {
 
     describe('canceled lab request', () => {
       it('should display a danger badge if the status is canceled', async () => {
-        setup([Permissions.ViewLab], { status: 'canceled' })
+        render([Permissions.ViewLab], { status: 'canceled' })
 
         await waitFor(() => {
           expect(
@@ -249,7 +256,7 @@ describe('View Lab', () => {
       })
 
       it('should display the canceled on date if the lab request has been canceled', async () => {
-        const { expectedLab } = setup([Permissions.ViewLab], {
+        const { expectedLab } = render([Permissions.ViewLab], {
           status: 'canceled',
           canceledOn: '2020-03-30T04:45:20.102Z',
         })
@@ -269,7 +276,7 @@ describe('View Lab', () => {
       })
 
       it('should not display update, complete, and cancel button if the lab is canceled', async () => {
-        setup([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
+        render([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
           status: 'canceled',
         })
 
@@ -279,7 +286,7 @@ describe('View Lab', () => {
       })
 
       it('should not display notes text field if the status is canceled', async () => {
-        setup([Permissions.ViewLab], { status: 'canceled' })
+        render([Permissions.ViewLab], { status: 'canceled' })
 
         await waitFor(() => {
           expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
@@ -290,7 +297,7 @@ describe('View Lab', () => {
 
     describe('completed lab request', () => {
       it('should display a primary badge if the status is completed', async () => {
-        const { expectedLab } = setup([Permissions.ViewLab], { status: 'completed' })
+        const { expectedLab } = render([Permissions.ViewLab], { status: 'completed' })
 
         await waitFor(() => {
           expect(screen.getByRole('heading', { name: 'labs.lab.status' })).toBeInTheDocument()
@@ -299,7 +306,7 @@ describe('View Lab', () => {
       })
 
       it('should display the completed on date if the lab request has been completed', async () => {
-        const { expectedLab } = setup([Permissions.ViewLab], {
+        const { expectedLab } = render([Permissions.ViewLab], {
           status: 'completed',
           completedOn: '2020-03-30T04:44:20.102Z',
         })
@@ -315,7 +322,7 @@ describe('View Lab', () => {
       })
 
       it('should not display update, complete, and cancel buttons if the lab is completed', async () => {
-        setup([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
+        render([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
           status: 'completed',
         })
 
@@ -325,7 +332,7 @@ describe('View Lab', () => {
       })
 
       it('should not display notes text field if the status is completed', async () => {
-        setup([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
+        render([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
           status: 'completed',
         })
 
@@ -339,7 +346,7 @@ describe('View Lab', () => {
 
   describe('on update', () => {
     it('should update the lab with the new information', async () => {
-      const { history, expectedLab } = setup([Permissions.ViewLab])
+      const { history, expectedLab } = render([Permissions.ViewLab])
       const expectedResult = 'expected result'
       const newNotes = 'expected notes'
 
@@ -369,7 +376,7 @@ describe('View Lab', () => {
 
   describe('on complete', () => {
     it('should mark the status as completed and fill in the completed date with the current time', async () => {
-      const { history, expectedLab, expectedDate } = setup([
+      const { history, expectedLab, expectedDate } = render([
         Permissions.ViewLab,
         Permissions.CompleteLab,
         Permissions.CancelLab,
@@ -403,7 +410,7 @@ describe('View Lab', () => {
 
   describe('on cancel', () => {
     it('should mark the status as canceled and fill in the cancelled on date with the current time', async () => {
-      const { history, expectedLab, expectedDate } = setup([
+      const { history, expectedLab, expectedDate } = render([
         Permissions.ViewLab,
         Permissions.CompleteLab,
         Permissions.CancelLab,
