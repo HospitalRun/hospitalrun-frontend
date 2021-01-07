@@ -1,5 +1,6 @@
 import { Alert, List, ListItem } from '@hospitalrun/components'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 
 import Loading from '../../shared/components/Loading'
 import useTranslator from '../../shared/hooks/useTranslator'
@@ -12,6 +13,7 @@ interface Props {
 
 const NotesList = (props: Props) => {
   const { patientId } = props
+  const history = useHistory()
   const { t } = useTranslator()
   const { data, status } = usePatientNotes(patientId)
 
@@ -35,6 +37,7 @@ const NotesList = (props: Props) => {
         <ListItem
           action
           key={note.id}
+          onClick={() => history.push(`/patients/${patientId}/notes/${note.id}`)}
         >
           <p className="ref__note-item-date">{new Date(note.date).toLocaleString()}</p>
           <p className="ref__note-item-text">{note.text}</p>

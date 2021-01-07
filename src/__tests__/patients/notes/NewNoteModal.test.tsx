@@ -8,6 +8,7 @@ import React from 'react'
 import NewNoteModal from '../../../shared/notes/NewNoteModal'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import PatientRepository from '../../../shared/db/PatientRepository'
+import Note from '../../../shared/model/Note'
 import Patient from '../../../shared/model/Patient'
 
 describe('New Note Modal', () => {
@@ -16,7 +17,16 @@ describe('New Note Modal', () => {
     givenName: 'someName',
   } as Patient
 
-  const setup = (onCloseSpy = jest.fn()) => {
+
+  const mockNote : Note = {
+    id: "note id",
+    date: "note date",
+    text: "note text",
+    givenBy: "given by person"
+    
+  }
+
+  const setup = (onCloseSpy = jest.fn(), onSaveSpy = jest.fn()) => {
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(mockPatient)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
     const wrapper = mount(
@@ -24,7 +34,9 @@ describe('New Note Modal', () => {
         show
         onCloseButtonClick={onCloseSpy}
         toggle={jest.fn()}
-        patientId={mockPatient.id}
+        onSave={onSaveSpy}
+        setNote={jest.fn()}
+        note={mockNote}
       />,
     )
     return { wrapper }
@@ -96,7 +108,8 @@ describe('New Note Modal', () => {
   describe('on save', () => {
     it('should dispatch add note', async () => {
       const expectedNote = 'some note'
-      const { wrapper } = setup()
+      const onSaveSpy  = jest.fn()
+      const { wrapper } = setup(jest.fn(), onSaveSpy)
       const noteTextField = wrapper.find(TextFieldWithLabelFormGroup)
 
       await act(async () => {
@@ -113,12 +126,8 @@ describe('New Note Modal', () => {
         wrapper.update()
       })
 
-      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
-        expect.objectContaining({
-          notes: [expect.objectContaining({ text: expectedNote })],
-        }),
-      )
+      expect(onSaveSpy).toHaveBeenCalledTimes(1)
+      expect(onSaveSpy).toHaveBeenCalledWith(mockNote) 
 
       // Does the form reset value back to blank?
       expect(noteTextField.prop('value')).toEqual('')
