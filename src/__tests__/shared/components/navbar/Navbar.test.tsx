@@ -50,10 +50,13 @@ describe('Navbar', () => {
       userEvent.click(navButton)
 
       // We want all the labels from the page mapping to be rendered when we have all permissions
-      const expectedLabels = Object.values(pageMap).map(pm => pm.label)
+      const expectedLabels = Object.values(pageMap).map((pm) => pm.label)
 
       // Checks both order, and length - excluding buttons with no label
-      const renderedLabels = screen.getAllByRole('button').map(b => b.textContent).filter(s => s)
+      const renderedLabels = screen
+        .getAllByRole('button')
+        .map((b) => b.textContent)
+        .filter((s) => s)
       expect(renderedLabels).toStrictEqual(expectedLabels)
     })
 
@@ -74,11 +77,13 @@ describe('Navbar', () => {
         Permissions.ViewImagings,
         Permissions.RequestImaging,
       ]
-      setup(allPermissions.filter(p => !excludedPermissions.includes(p) ))
+      setup(allPermissions.filter((p) => !excludedPermissions.includes(p)))
       const navButton = screen.getByRole('button', { hidden: false })
       userEvent.click(navButton)
 
-      const unexpectedLabels = Object.values(pageMap).filter(pm => excludedPermissions.includes(pm.permission as Permissions)).map(pm => pm.label)
+      const unexpectedLabels = Object.values(pageMap)
+        .filter((pm) => excludedPermissions.includes(pm.permission as Permissions))
+        .map((pm) => pm.label)
 
       unexpectedLabels.forEach((label) => expect(screen.queryByText(label)).not.toBeInTheDocument())
     })
