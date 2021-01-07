@@ -151,8 +151,6 @@ describe('Report Incident', () => {
     const invalidInputs = container.querySelectorAll('.is-invalid')
     expect(invalidInputs).toHaveLength(5)
 
-    // ! This will work under aria compliant conditions -- Aria refactor in components?
-    // expect(dateInput).toBeInvalid()
     expect(dateInput).toHaveClass('is-invalid')
     // // expect(depInput).toBeInvalid()
     expect(depInput).toHaveClass('is-invalid')
