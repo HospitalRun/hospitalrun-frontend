@@ -118,7 +118,7 @@ describe('Care Goals Tab', () => {
     expect(
       await screen.findByRole('cell', { name: format(expectedCareGoal.dueDate, 'yyyy-MM-dd') }),
     ).toBeInTheDocument()
-  }, 20000)
+  }, 30000)
 
   it('should open and close the modal when the add care goal and close buttons are clicked', async () => {
     setup('/patients/123/care-goals', [Permissions.AddCareGoal])
