@@ -145,23 +145,25 @@ describe('Report Incident', () => {
     const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
     const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
     const inputArr = await screen.findAllByRole('textbox')
-    const descInput = inputArr[inputArr.length - 1]
+    const descInput = inputArr[inputArr.length - 2]
     const dateInput = inputArr[0]
 
     const invalidInputs = container.querySelectorAll('.is-invalid')
     expect(invalidInputs).toHaveLength(5)
 
+    // expect(dateInput).toBeInvalid()
     expect(dateInput).toHaveClass('is-invalid')
-    // // expect(depInput).toBeInvalid()
+
+    // expect(depInput).toBeInvalid()
     expect(depInput).toHaveClass('is-invalid')
 
-    // // expect(catInput).toBeInvalid()
+    // expect(catInput).toBeInvalid()
     expect(catInput).toHaveClass('is-invalid')
 
-    // // expect(catItemInput).toBeInvalid()
+    // expect(catItemInput).toBeInvalid()
     expect(catItemInput).toHaveClass('is-invalid')
 
-    // // expect(descInput).toBeInvalid()
+    // expect(descInput).toBeInvalid()
     expect(descInput).toHaveClass('is-invalid')
   })
 
