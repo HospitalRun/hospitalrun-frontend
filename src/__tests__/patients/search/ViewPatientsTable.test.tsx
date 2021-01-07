@@ -1,9 +1,4 @@
-import {
-  render as rtlRender,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { screen, render, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import format from 'date-fns/format'
 import React from 'react'
 
@@ -13,13 +8,11 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 
 describe('View Patients Table', () => {
-  const render = (expectedSearchRequest: PatientSearchRequest, expectedPatients: Patient[]) => {
+  const setup = (expectedSearchRequest: PatientSearchRequest, expectedPatients: Patient[]) => {
     jest.spyOn(PatientRepository, 'search').mockResolvedValueOnce(expectedPatients)
     jest.spyOn(PatientRepository, 'count').mockResolvedValueOnce(expectedPatients.length)
 
-    const results = rtlRender(<ViewPatientsTable searchRequest={expectedSearchRequest} />)
-
-    return results
+    return render(<ViewPatientsTable searchRequest={expectedSearchRequest} />)
   }
 
   beforeEach(() => {
@@ -28,14 +21,14 @@ describe('View Patients Table', () => {
 
   it('should search for patients given a search request', () => {
     const expectedSearchRequest = { queryString: 'someQueryString' }
-    render(expectedSearchRequest, [])
+    setup(expectedSearchRequest, [])
 
     expect(PatientRepository.search).toHaveBeenCalledTimes(1)
     expect(PatientRepository.search).toHaveBeenCalledWith(expectedSearchRequest.queryString)
   })
 
   it('should display no patients exist if total patient count is 0', async () => {
-    const { container } = render({ queryString: '' }, [])
+    const { container } = setup({ queryString: '' }, [])
     await waitForElementToBeRemoved(container.querySelector('.css-0'))
     expect(screen.getByRole('heading', { name: /patients.noPatients/i })).toBeInTheDocument()
   })
@@ -51,7 +44,7 @@ describe('View Patients Table', () => {
     } as Patient
     const expectedPatients = [expectedPatient]
 
-    render({ queryString: '' }, expectedPatients)
+    setup({ queryString: '' }, expectedPatients)
 
     await waitFor(() => screen.getByText('familyName'))
     const cells = screen.getAllByRole('cell')
