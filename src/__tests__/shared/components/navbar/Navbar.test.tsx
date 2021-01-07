@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
-import cloneDeep from 'lodash/cloneDeep'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
@@ -9,6 +8,7 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Navbar from '../../../../shared/components/navbar/Navbar'
+import pageMap from '../../../../shared/components/navbar/pageMap'
 import Permissions from '../../../../shared/model/Permissions'
 import User from '../../../../shared/model/User'
 import { RootState } from '../../../../shared/store'
@@ -40,32 +40,7 @@ describe('Navbar', () => {
     familyName: 'familyName',
   } as User
 
-  const allPermissions = [
-    Permissions.ReadPatients,
-    Permissions.WritePatients,
-    Permissions.ReadAppointments,
-    Permissions.WriteAppointments,
-    Permissions.DeleteAppointment,
-    Permissions.AddAllergy,
-    Permissions.AddDiagnosis,
-    Permissions.RequestLab,
-    Permissions.CancelLab,
-    Permissions.CompleteLab,
-    Permissions.ViewLab,
-    Permissions.ViewLabs,
-    Permissions.RequestMedication,
-    Permissions.CancelMedication,
-    Permissions.CompleteMedication,
-    Permissions.ViewMedication,
-    Permissions.ViewMedications,
-    Permissions.ViewIncidents,
-    Permissions.ViewIncident,
-    Permissions.ReportIncident,
-    Permissions.AddVisit,
-    Permissions.ReadVisits,
-    Permissions.RequestImaging,
-    Permissions.ViewImagings,
-  ]
+  const allPermissions = Object.values(Permissions)
 
   describe('hamberger', () => {
     it('should render a hamberger link list', () => {
@@ -73,42 +48,39 @@ describe('Navbar', () => {
 
       const navButton = screen.getByRole('button', { hidden: false })
       userEvent.click(navButton)
-      const labels = [
-        'dashboard.label',
-        'patients.newPatient',
-        'labs.requests.label',
-        'incidents.reports.new',
-        'incidents.reports.label',
-        'medications.requests.new',
-        'medications.requests.label',
-        'imagings.requests.new',
-        'imagings.requests.label',
-        'visits.visit.new',
-        'settings.label',
-      ]
 
-      labels.forEach((label) => expect(screen.getByText(label)).toBeInTheDocument())
+      // We want all the labels from the page mapping to be rendered when we have all permissions
+      const expectedLabels = Object.values(pageMap).map(pm => pm.label)
+
+      // Checks both order, and length - excluding buttons with no label
+      const renderedLabels = screen.getAllByRole('button').map(b => b.textContent).filter(s => s)
+      expect(renderedLabels).toStrictEqual(expectedLabels)
     })
 
     it('should not show an item if user does not have a permission', () => {
       // exclude labs, incidents, and imagings permissions
-      setup(cloneDeep(allPermissions).slice(0, 6))
+      // NOTE: "View Imagings" is based on the ReadPatients permission - not an Imagings permission
+      const excludedPermissions = [
+        Permissions.ViewLab,
+        Permissions.ViewLabs,
+        Permissions.CancelLab,
+        Permissions.RequestLab,
+        Permissions.CompleteLab,
+        Permissions.ViewIncident,
+        Permissions.ViewIncidents,
+        Permissions.ViewIncidentWidgets,
+        Permissions.ReportIncident,
+        Permissions.ResolveIncident,
+        Permissions.ViewImagings,
+        Permissions.RequestImaging,
+      ]
+      setup(allPermissions.filter(p => !excludedPermissions.includes(p) ))
       const navButton = screen.getByRole('button', { hidden: false })
       userEvent.click(navButton)
 
-      const labels = [
-        'labs.requests.new',
-        'labs.requests.label',
-        'incidents.reports.new',
-        'incidents.reports.label',
-        'medications.requests.new',
-        'medications.requests.label',
-        'imagings.requests.new',
-        // TODO: Mention to Jack this was not passing, was previously rendering
-        // 'imagings.requests.label',
-      ]
+      const unexpectedLabels = Object.values(pageMap).filter(pm => excludedPermissions.includes(pm.permission as Permissions)).map(pm => pm.label)
 
-      labels.forEach((label) => expect(screen.queryByText(label)).not.toBeInTheDocument())
+      unexpectedLabels.forEach((label) => expect(screen.queryByText(label)).not.toBeInTheDocument())
     })
 
     describe('header', () => {
