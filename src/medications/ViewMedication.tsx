@@ -1,4 +1,4 @@
-import { Row, Column, Badge, Button, Alert } from '@hospitalrun/components'
+import { Container, Row, Column, Badge, Button, Alert } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -164,7 +164,7 @@ const ViewMedication = () => {
     }
 
     return (
-      <>
+      <Container>
         {status === 'error' && (
           <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
         )}
@@ -311,7 +311,7 @@ const ViewMedication = () => {
             </div>
           )}
         </form>
-      </>
+      </Container>
     )
   }
   return <h1>Loading...</h1>
