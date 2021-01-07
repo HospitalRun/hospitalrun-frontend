@@ -1,7 +1,7 @@
-import { render as rtlRender, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { Router } from 'react-router-dom'
 
 import MedicationSearchRequest from '../../../medications/models/MedicationSearchRequest'
@@ -9,13 +9,8 @@ import MedicationRequestTable from '../../../medications/search/MedicationReques
 import MedicationRepository from '../../../shared/db/MedicationRepository'
 import Medication from '../../../shared/model/Medication'
 
-type WrapperProps = {
-  // eslint-disable-next-line react/require-default-props
-  children?: ReactNode
-}
-
 describe('Medication Request Table', () => {
-  const render = (
+  const setup = (
     givenSearchRequest: MedicationSearchRequest = { text: '', status: 'all' },
     givenMedications: Medication[] = [],
   ) => {
@@ -23,22 +18,18 @@ describe('Medication Request Table', () => {
     jest.spyOn(MedicationRepository, 'search').mockResolvedValue(givenMedications)
     const history = createMemoryHistory()
 
-    function Wrapper({ children }: WrapperProps) {
-      return <Router history={history}>{children}</Router>
-    }
-
-    const utils = rtlRender(<MedicationRequestTable searchRequest={givenSearchRequest} />, {
-      wrapper: Wrapper,
-    })
-
     return {
       history,
-      ...utils,
+      ...render(
+        <Router history={history}>
+          <MedicationRequestTable searchRequest={givenSearchRequest} />
+        </Router>,
+      ),
     }
   }
 
   it('should render a table with the correct columns', async () => {
-    const { container } = render()
+    const { container } = setup()
 
     await waitFor(() => {
       expect(container.querySelector('table')).toBeInTheDocument()
@@ -63,7 +54,7 @@ describe('Medication Request Table', () => {
         status: expectedSearchRequest.status,
       } as Medication,
     ]
-    const { container } = render(expectedSearchRequest, expectedMedicationRequests)
+    const { container } = setup(expectedSearchRequest, expectedMedicationRequests)
 
     await waitFor(() => {
       expect(container.querySelector('table')).toBeInTheDocument()
@@ -75,7 +66,7 @@ describe('Medication Request Table', () => {
   it('should navigate to the medication when the view button is clicked', async () => {
     const expectedSearchRequest: MedicationSearchRequest = { text: 'someText', status: 'draft' }
     const expectedMedicationRequests: Medication[] = [{ id: 'someId' } as Medication]
-    const { container, history } = render(expectedSearchRequest, expectedMedicationRequests)
+    const { container, history } = setup(expectedSearchRequest, expectedMedicationRequests)
 
     await waitFor(() => {
       expect(container.querySelector('table')).toBeInTheDocument()
