@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
-import { render, screen } from '@testing-library/react'
+import { render as rtlRender, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -19,6 +18,11 @@ import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
+type WrapperProps = {
+  // eslint-disable-next-line react/require-default-props
+  children?: ReactNode
+}
+
 describe('Report Incident', () => {
   let history: any
 
@@ -27,7 +31,7 @@ describe('Report Incident', () => {
   })
 
   let setButtonToolBarSpy: any
-  const setup = (permissions: Permissions[]) => {
+  const render = (permissions: Permissions[]) => {
     jest.spyOn(breadcrumbUtil, 'default')
     setButtonToolBarSpy = jest.fn()
     jest.spyOn(ButtonBarProvider, 'useButtonToolbarSetter').mockReturnValue(setButtonToolBarSpy)
@@ -43,22 +47,24 @@ describe('Report Incident', () => {
       },
     } as any)
 
-    return render(
-      <ButtonBarProvider.ButtonBarProvider>
-        <Provider store={store}>
-          <Router history={history}>
-            <Route path="/incidents/new">
-              <titleUtil.TitleProvider>
-                <ReportIncident />
-              </titleUtil.TitleProvider>
-            </Route>
-          </Router>
-        </Provider>
-      </ButtonBarProvider.ButtonBarProvider>,
-    )
+    function Wrapper({ children }: WrapperProps) {
+      return (
+        <ButtonBarProvider.ButtonBarProvider>
+          <Provider store={store}>
+            <Router history={history}>
+              <Route path="/incidents/new">
+                <titleUtil.TitleProvider> {children} </titleUtil.TitleProvider>
+              </Route>
+            </Router>
+          </Provider>
+        </ButtonBarProvider.ButtonBarProvider>
+      )
+    }
+
+    return rtlRender(<ReportIncident />, { wrapper: Wrapper })
   }
   test('type into department field', async () => {
-    setup([Permissions.ViewIncident, Permissions.ResolveIncident])
+    render([Permissions.ViewIncident, Permissions.ResolveIncident])
     const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
 
     expect(depInput).toBeEnabled()
@@ -69,7 +75,7 @@ describe('Report Incident', () => {
   })
 
   test('type into category field', async () => {
-    setup([Permissions.ViewIncident, Permissions.ResolveIncident])
+    render([Permissions.ViewIncident, Permissions.ResolveIncident])
     const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
 
     expect(catInput).toBeEnabled()
@@ -80,7 +86,7 @@ describe('Report Incident', () => {
   })
 
   test('type into category item field', async () => {
-    setup([Permissions.ViewIncident, Permissions.ResolveIncident])
+    render([Permissions.ViewIncident, Permissions.ResolveIncident])
     const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
 
     expect(catItemInput).toBeInTheDocument()
@@ -91,7 +97,7 @@ describe('Report Incident', () => {
   })
 
   test('type into description field', async () => {
-    setup([Permissions.ViewIncident, Permissions.ResolveIncident])
+    render([Permissions.ViewIncident, Permissions.ResolveIncident])
     const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
     const descInput = inputArr[inputArr.length - 1]
 
@@ -102,7 +108,7 @@ describe('Report Incident', () => {
     expect(descInput).toHaveDisplayValue('Geordi requested analysis')
   })
   test('action save after all the input fields are filled out', async () => {
-    setup([Permissions.ViewIncident, Permissions.ResolveIncident])
+    render([Permissions.ViewIncident, Permissions.ResolveIncident])
     const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
     const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
     const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
@@ -133,7 +139,7 @@ describe('Report Incident', () => {
     }
     expectOneConsoleError(error)
     jest.spyOn(validationUtil, 'default').mockReturnValue(error)
-    const { container } = setup([Permissions.ReportIncident])
+    render([Permissions.ReportIncident])
 
     userEvent.click(
       screen.getByRole('button', {
@@ -148,28 +154,22 @@ describe('Report Incident', () => {
     const descInput = inputArr[inputArr.length - 2]
     const dateInput = inputArr[0]
 
-    const invalidInputs = container.querySelectorAll('.is-invalid')
-    expect(invalidInputs).toHaveLength(5)
+    screen.debug(undefined, Infinity)
 
-    // expect(dateInput).toBeInvalid()
     expect(dateInput).toHaveClass('is-invalid')
 
-    // expect(depInput).toBeInvalid()
     expect(depInput).toHaveClass('is-invalid')
 
-    // expect(catInput).toBeInvalid()
     expect(catInput).toHaveClass('is-invalid')
 
-    // expect(catItemInput).toBeInvalid()
     expect(catItemInput).toHaveClass('is-invalid')
 
-    // expect(descInput).toBeInvalid()
     expect(descInput).toHaveClass('is-invalid')
   })
 
   describe('on cancel', () => {
-    it('should navigate to /incidents', async () => {
-      setup([Permissions.ReportIncident])
+    it('should navigate to /incidents', () => {
+      render([Permissions.ReportIncident])
 
       expect(history.location.pathname).toBe('/incidents/new')
 
