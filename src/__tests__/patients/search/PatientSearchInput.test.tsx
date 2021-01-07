@@ -1,19 +1,12 @@
-import { render as rtlRender, screen, act } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import PatientSearchRequest from '../../../patients/models/PatientSearchRequest'
 import PatientSearchInput from '../../../patients/search/PatientSearchInput'
 
 describe('Patient Search Input', () => {
-  const render = (onChange: (s: PatientSearchRequest) => void) => {
-    const results = rtlRender(<PatientSearchInput onChange={onChange} />)
-
-    return results
-  }
-
   it('should render a text box', () => {
-    render(jest.fn())
+    render(<PatientSearchInput onChange={jest.fn()} />)
     expect(screen.getByRole('textbox')).toBeInTheDocument()
   })
 
@@ -21,9 +14,10 @@ describe('Patient Search Input', () => {
     jest.useFakeTimers()
     const expectedNewQueryString = 'some new query string'
     const onChangeSpy = jest.fn()
-    render(onChangeSpy)
-    const textbox = screen.getByRole('textbox')
 
+    render(<PatientSearchInput onChange={onChangeSpy} />)
+
+    const textbox = screen.getByRole('textbox')
     userEvent.type(textbox, expectedNewQueryString)
 
     onChangeSpy.mockReset()
