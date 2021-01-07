@@ -52,7 +52,7 @@ describe('Important Patient Info Panel', () => {
     ],
   } as Patient
 
-  const setup = async (patient = expectedPatient, permissions: Permissions[]) => {
+  const setup = (patient = expectedPatient, permissions: Permissions[]) => {
     jest.resetAllMocks()
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     history = createMemoryHistory()
@@ -76,24 +76,24 @@ describe('Important Patient Info Panel', () => {
       }
     })
 
-    it("should render patient's code", async () => {
+    it("should render patient's code", () => {
       setup(expectedPatient, [])
       expect(screen.getByText(expectedPatient.code)).toBeInTheDocument()
     })
 
-    it("should render patient's sex", async () => {
+    it("should render patient's sex", () => {
       setup(expectedPatient, [])
       expect(screen.getByText(expectedPatient.sex)).toBeInTheDocument()
     })
 
-    it("should render patient's dateOfDate", async () => {
+    it("should render patient's dateOfDate", () => {
       setup(expectedPatient, [])
       expect(screen.getAllByText(expectedPatient.dateOfBirth)[0]).toBeInTheDocument()
     })
   })
 
   describe('add new visit button', () => {
-    it('should render an add visit button if user has correct permissions', async () => {
+    it('should render an add visit button if user has correct permissions', () => {
       setup(expectedPatient, [Permissions.AddVisit])
       expect(screen.getByRole('button', { name: /patient.visits.new/i })).toBeInTheDocument()
     })
@@ -115,14 +115,14 @@ describe('Important Patient Info Panel', () => {
       expect(await screen.findByRole('dialog')).not.toBeInTheDocument()
     })
 
-    it('should not render new visit button if user does not have permissions', async () => {
+    it('should not render new visit button if user does not have permissions', () => {
       setup(expectedPatient, [])
       expect(screen.queryByRole('button', { name: /patient.visits.new/i })).not.toBeInTheDocument()
     })
   })
 
   describe('add new allergy button', () => {
-    it('should render an add allergy button if user has correct permissions', async () => {
+    it('should render an add allergy button if user has correct permissions', () => {
       setup(expectedPatient, [Permissions.AddAllergy])
       expect(screen.getByRole('button', { name: /patient.allergies.new/i })).toBeInTheDocument()
     })
@@ -144,7 +144,7 @@ describe('Important Patient Info Panel', () => {
       expect(await screen.findByRole('dialog')).not.toBeInTheDocument()
     })
 
-    it('should not render new allergy button if user does not have permissions', async () => {
+    it('should not render new allergy button if user does not have permissions', () => {
       setup(expectedPatient, [])
       expect(
         screen.queryByRole('button', { name: /patient.allergies.new/i }),
@@ -153,7 +153,7 @@ describe('Important Patient Info Panel', () => {
   })
 
   describe('add diagnoses button', () => {
-    it('should render an add diagnosis button if user has correct permissions', async () => {
+    it('should render an add diagnosis button if user has correct permissions', () => {
       setup(expectedPatient, [Permissions.AddDiagnosis])
       expect(screen.getByRole('button', { name: /patient.diagnoses.new/i })).toBeInTheDocument()
     })
@@ -175,7 +175,7 @@ describe('Important Patient Info Panel', () => {
       expect(await screen.findByRole('dialog')).not.toBeInTheDocument()
     })
 
-    it('should not render new diagnosis button if user does not have permissions', async () => {
+    it('should not render new diagnosis button if user does not have permissions', () => {
       setup(expectedPatient, [])
       expect(
         screen.queryByRole('button', { name: /patient.diagnoses.new/i }),

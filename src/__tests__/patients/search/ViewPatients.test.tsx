@@ -33,7 +33,7 @@ describe('Patients', () => {
     jest.spyOn(PatientRepository, 'search').mockResolvedValue([])
   })
 
-  it('should render the search patients component', async () => {
+  it('should render the search patients component', () => {
     setup()
     userEvent.type(screen.getByRole('textbox'), 'Jean Luc Picard')
     expect(screen.getByRole('textbox')).toHaveValue('Jean Luc Picard')
