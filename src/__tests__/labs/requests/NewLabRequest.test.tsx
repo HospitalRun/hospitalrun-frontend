@@ -1,3 +1,4 @@
+import { Toaster } from '@hospitalrun/components'
 import { render, screen, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
@@ -54,7 +55,9 @@ const setup = (
     visits: expectedVisits,
   } as Patient
 
+  jest.resetAllMocks()
   jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
   jest.spyOn(LabRepository, 'save').mockResolvedValue(expectedLab)
 
   const history = createMemoryHistory({ initialEntries: ['/labs/new'] })
@@ -71,6 +74,7 @@ const setup = (
             <NewLabRequest />
           </titleUtil.TitleProvider>
         </Router>
+        <Toaster draggable hideProgressBar />
       </Provider>,
     ),
   }
@@ -137,8 +141,7 @@ describe('New Lab Request', () => {
       const { expectedVisits } = setup()
 
       const patientTypeahead = screen.getByPlaceholderText(/labs.lab.patient/i)
-      const visitsInput = screen.getByPlaceholderText('-- Choose --')
-
+      const visitsInput = within(screen.getByTestId('visit-field')).getByRole('combobox')
       userEvent.type(patientTypeahead, 'Jim Bob')
       userEvent.click(await screen.findByText(/Jim Bob/i))
       expect(patientTypeahead).toHaveDisplayValue(/Jim Bob/i)
@@ -183,25 +186,21 @@ describe('New Lab Request', () => {
       type: 'some type error',
     } as LabError
 
-    beforeAll(() => {
-      jest.spyOn(validationUtil, 'validateLabRequest').mockReturnValue(error)
-      expectOneConsoleError(error)
-    })
-
     it('should display errors', async () => {
       setup()
+      jest.spyOn(validationUtil, 'validateLabRequest').mockReturnValue(error)
+      expectOneConsoleError(error)
       const saveButton = screen.getByRole('button', { name: /labs\.requests\.new/i })
 
       userEvent.click(saveButton)
 
-      const alert = screen.findByRole('alert')
-      const { getByText: getByTextInAlert } = within(await alert)
+      const alert = await screen.findByRole('alert')
       const patientInput = screen.getByPlaceholderText(/labs\.lab\.patient/i)
       const typeInput = screen.getByPlaceholderText(/labs\.lab\.type/i)
 
-      expect(getByTextInAlert(error.message)).toBeInTheDocument()
-      expect(getByTextInAlert(/states\.error/i)).toBeInTheDocument()
-      expect(await alert).toHaveClass('alert-danger')
+      expect(within(alert).getByText(error.message)).toBeInTheDocument()
+      expect(within(alert).getByText(/states\.error/i)).toBeInTheDocument()
+      expect(alert).toHaveClass('alert-danger')
       expect(patientInput).toHaveClass('is-invalid')
       expect(typeInput).toHaveClass('is-invalid')
       expect(typeInput.nextSibling).toHaveTextContent(error.type as string)
@@ -219,43 +218,21 @@ describe('New Lab Request', () => {
   })
 
   describe('on save', () => {
-    const store = mockStore({
-      lab: { status: 'loading', error: {} },
-      user: { user: { id: 'fake id' } },
-    } as any)
-
     it('should save the lab request and navigate to "/labs/:id"', async () => {
-      const { expectedLab, history } = setup(store)
+      const { expectedLab, history } = setup()
 
       userEvent.type(screen.getByPlaceholderText(/labs.lab.patient/i), 'Jim Bob')
-
-      await waitFor(
-        () => {
-          expect(screen.getByText(/jim bob/i)).toBeVisible()
-        },
-        { timeout: 3000 },
-      )
+      expect(await screen.findByText(/jim bob/i)).toBeVisible()
       userEvent.click(screen.getByText(/jim bob/i))
       userEvent.type(screen.getByPlaceholderText(/labs\.lab\.type/i), expectedLab.type)
       userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), (expectedLab.notes as string[])[0])
-
       userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
 
-      await waitFor(() => {
-        expect(LabRepository.save).toHaveBeenCalledTimes(1)
-      })
-      expect(LabRepository.save).toHaveBeenCalledWith(
-        expect.objectContaining({
-          patient: expectedLab.patient,
-          type: expectedLab.type,
-          notes: expectedLab.notes,
-          status: 'requested',
-        }),
-      )
-
-      await waitFor(() => {
-        expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
-      })
+      expect(await screen.findByRole('alert')).toBeInTheDocument()
+      expect(
+        within(screen.getByRole('alert')).getByText(/labs\.successfullyCreated/i),
+      ).toBeInTheDocument()
+      expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
     }, 15000)
   })
 })
