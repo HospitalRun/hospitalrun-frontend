@@ -1,4 +1,4 @@
-import { subDays } from 'date-fns'
+import subDays from 'date-fns/subDays'
 import { mount } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -106,7 +106,7 @@ describe('Edit Patient', () => {
 
     const saveButton = wrapper.find('.btn-save').at(0)
     const onClick = saveButton.prop('onClick') as any
-    expect(saveButton.text().trim()).toEqual('actions.save')
+    expect(saveButton.text().trim()).toEqual('patients.updatePatient')
 
     await act(async () => {
       await onClick()

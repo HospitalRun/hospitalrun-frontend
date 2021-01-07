@@ -88,7 +88,7 @@ describe('New Medication Request', () => {
       const { wrapper } = await setup()
       const saveButton = wrapper.find(Button).at(0)
       expect(saveButton).toBeDefined()
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('medications.requests.new')
     })
 
     it('should render a cancel button', async () => {

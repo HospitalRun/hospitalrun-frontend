@@ -1,6 +1,7 @@
 import { Typeahead, Alert } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { roundToNearestMinutes, addMinutes } from 'date-fns'
+import addMinutes from 'date-fns/addMinutes'
+import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 

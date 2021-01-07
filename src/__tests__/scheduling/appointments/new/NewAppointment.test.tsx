@@ -1,7 +1,8 @@
 import * as components from '@hospitalrun/components'
 import { Alert, Button, Typeahead } from '@hospitalrun/components'
 import { act } from '@testing-library/react'
-import { roundToNearestMinutes, addMinutes } from 'date-fns'
+import addMinutes from 'date-fns/addMinutes'
+import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
 import { mount } from 'enzyme'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import React from 'react'
@@ -109,7 +110,7 @@ describe('New Appointment', () => {
       wrapper.update()
 
       const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
       const onClick = saveButton.prop('onClick') as any
 
       await act(async () => {
@@ -153,7 +154,7 @@ describe('New Appointment', () => {
       wrapper.update()
 
       const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
       const onClick = saveButton.prop('onClick') as any
 
       await act(async () => {
@@ -238,7 +239,7 @@ describe('New Appointment', () => {
       wrapper.update()
 
       const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
       const onClick = saveButton.prop('onClick') as any
 
       await act(async () => {
@@ -274,7 +275,7 @@ describe('New Appointment', () => {
       })
       wrapper.update()
       const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('actions.save')
+      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
       const onClick = saveButton.prop('onClick') as any
 
       await act(async () => {

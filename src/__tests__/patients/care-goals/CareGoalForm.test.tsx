@@ -1,5 +1,6 @@
 import { Alert } from '@hospitalrun/components'
-import { addMonths, addDays } from 'date-fns'
+import addDays from 'date-fns/addDays'
+import addMonths from 'date-fns/addMonths'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'

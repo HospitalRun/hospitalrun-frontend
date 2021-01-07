@@ -234,7 +234,7 @@ describe('View Lab', () => {
         ])
 
         const buttons = wrapper.find(Button)
-        expect(buttons.at(0).text().trim()).toEqual('actions.update')
+        expect(buttons.at(0).text().trim()).toEqual('labs.requests.update')
 
         expect(buttons.at(1).text().trim()).toEqual('labs.requests.complete')
 

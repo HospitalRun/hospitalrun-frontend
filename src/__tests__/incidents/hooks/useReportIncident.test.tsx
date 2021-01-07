@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { subDays } from 'date-fns'
+import subDays from 'date-fns/subDays'
 import shortid from 'shortid'
 
 import useReportIncident from '../../../incidents/hooks/useReportIncident'

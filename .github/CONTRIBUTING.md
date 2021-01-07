@@ -25,7 +25,7 @@ This should launch a new CouchDB instance on `http://localhost:5984`, create sys
 Go to `http://localhost:5984/_utils` in your browser to view Fauxton and perform administrative tasks.
 
 **_Cleanup_**
-To delete the development database, go to the root of the project and run `./couchdb/couchdb-init.bat` on Windows or `./couchdb/couchdb-init.sh` on UNIX like systems.
+To delete the development database, go to the root of the project and run `./couchdb/couchdb-cleanup.bat` on Windows or `./couchdb/couchdb-cleanup.sh` on UNIX like systems.
 
 ### Install dependencies & start the application
 
