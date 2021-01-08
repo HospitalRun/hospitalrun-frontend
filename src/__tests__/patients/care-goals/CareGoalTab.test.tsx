@@ -106,11 +106,14 @@ describe('Care Goals Tab', () => {
 
     userEvent.click(within(modal).getByRole('button', { name: /patient.careGoal.new/i }))
 
-    await waitFor(() => {
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-    }, {
-      timeout: 3000,
-    })
+    await waitFor(
+      () => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      },
+      {
+        timeout: 3000,
+      },
+    )
 
     expect(
       await screen.findByRole('cell', { name: expectedCareGoal.description }),
