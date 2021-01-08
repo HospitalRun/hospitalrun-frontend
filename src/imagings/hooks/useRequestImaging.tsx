@@ -14,22 +14,24 @@ export interface ImagingRequest {
   type: string
 }
 
-async function requestImaging(request: ImagingRequest): Promise<void> {
-  const error = validateImagingRequest(request)
+function requestImagingWrapper(user: any) {
+  return async function requestImaging(request: ImagingRequest): Promise<void> {
+    const error = validateImagingRequest(request)
 
-  if (!isEmpty(error)) {
-    throw error
+    if (!isEmpty(error)) {
+      throw error
+    }
+
+    await ImagingRepository.save({
+      ...request,
+      requestedBy: user?.fullName || '',
+      requestedOn: new Date(Date.now()).toISOString(),
+    } as Imaging)
   }
-
-  await ImagingRepository.save({
-    ...request,
-    requestedBy: 'test',
-    requestedOn: new Date(Date.now()).toISOString(),
-  } as Imaging)
 }
 
-export default function useRequestImaging() {
-  return useMutation(requestImaging, {
+export default function useRequestImaging(user: any) {
+  return useMutation(requestImagingWrapper(user), {
     onSuccess: async () => {
       await queryCache.invalidateQueries('imagings')
     },
