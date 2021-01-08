@@ -134,25 +134,21 @@ describe('View Labs', () => {
         status: 'requested',
         requestedOn: '2020-03-30T04:43:20.102Z',
       } as Lab
+      const expectedSearchText = 'another'
       const { expectedLab } = setup([Permissions.ViewLabs, Permissions.RequestLab])
-      jest.spyOn(LabRepository, 'findAll').mockReset()
-      jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab, expectedLab2])
+
+      jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab2])
 
       expect(await screen.findByRole('cell', { name: expectedLab.code })).toBeInTheDocument()
       jest.useFakeTimers()
 
-      const expectedSearchText = 'another'
       userEvent.type(screen.getByRole('textbox', { name: /labs.search/i }), expectedSearchText)
+
       act(() => {
         jest.advanceTimersByTime(500)
       })
 
-      // expect(LabRepository.search).toHaveBeenCalledTimes(1)
-      // expect(LabRepository.search).toHaveBeenCalledWith(
-      //   expect.objectContaining({ text: expectedSearchText }),
-      // )
-
-      expect(await screen.findByRole('cell', { name: /another/i })).toBeInTheDocument()
+      expect(await screen.findByText(/another/i)).toBeInTheDocument()
       expect(screen.queryByRole('cell', { name: expectedLab.code })).not.toBeInTheDocument()
     })
   })
