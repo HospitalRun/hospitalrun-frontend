@@ -40,14 +40,13 @@ describe('HospitalRun', () => {
       </Provider>,
     )
 
-    return { ...results, store: store as any }
+    return { ...results, store }
   }
 
   describe('routing', () => {
     describe('/appointments', () => {
       it('should render the appointments screen when /appointments is accessed', () => {
-        const permissions: Permissions[] = [Permissions.ReadAppointments]
-        const { store } = setup('/appointments', permissions)
+        const { store } = setup('/appointments', [Permissions.ReadAppointments])
 
         expect(
           screen.getByRole('button', { name: /scheduling.appointments.new/i }),
@@ -63,16 +62,16 @@ describe('HospitalRun', () => {
 
       it('should render the Dashboard when the user does not have read appointment privileges', () => {
         setup('/appointments')
-        const main = screen.getByRole('main')
-        expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
+
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
     describe('/labs', () => {
       it('should render the Labs component when /labs is accessed', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-        const permissions: Permissions[] = [Permissions.ViewLabs]
-        setup('/labs', permissions)
+        setup('/labs', [Permissions.ViewLabs])
 
         const table = screen.getByRole('table')
         expect(within(table).getByText(/labs.lab.code/i)).toBeInTheDocument()
@@ -85,16 +84,16 @@ describe('HospitalRun', () => {
       it('should render the dashboard if the user does not have permissions to view labs', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         setup('/labs')
-        const main = screen.getByRole('main')
-        expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
+
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
     describe('/medications', () => {
       it('should render the Medications component when /medications is accessed', () => {
         jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
-        const permissions: Permissions[] = [Permissions.ViewMedications]
-        setup('/medications', permissions)
+        setup('/medications', [Permissions.ViewMedications])
 
         const medicationInput = screen.getByRole(/combobox/i) as HTMLInputElement
         expect(medicationInput.value).toBe('medications.filter.all')
@@ -105,10 +104,8 @@ describe('HospitalRun', () => {
         jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
         setup('/medications')
 
-        const main = screen.getByRole('main')
-        expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
-        expect(screen.queryByLabelText(/medications.search/i)).not.toBeInTheDocument()
-        expect(screen.queryByRole(/combobox/i)).not.toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
@@ -127,12 +124,8 @@ describe('HospitalRun', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         setup('/incidents')
 
-        const main = screen.getByRole('main')
-        expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
-        expect(screen.queryByRole(/combobox/i)).not.toBeInTheDocument()
-        expect(
-          screen.queryByRole('button', { name: /incidents.reports.new/i }),
-        ).not.toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
@@ -142,16 +135,15 @@ describe('HospitalRun', () => {
         const permissions: Permissions[] = [Permissions.ViewImagings]
         setup('/imaging', permissions)
 
-        expect(screen.getByRole('main')).toBeInTheDocument()
-        expect(screen.queryByRole('heading', { name: /example/i })).not.toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: /imagings.label/i })).toBeInTheDocument()
       })
 
       it('should render the dashboard if the user does not have permissions to view imagings', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
         setup('/imaging')
 
-        const main = screen.getByRole('main')
-        expect(within(main).getByRole('heading', { name: /example/i })).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
