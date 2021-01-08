@@ -23,9 +23,12 @@ const careGoal = {
 
 const setup = (disabled = false, initializeCareGoal = true, error?: any) => {
   const onCareGoalChangeSpy = jest.fn()
+
   const TestComponent = () => {
     const [careGoal2, setCareGoal] = React.useState(initializeCareGoal ? careGoal : {})
+
     onCareGoalChangeSpy.mockImplementation(setCareGoal)
+
     return (
       <CareGoalForm
         careGoal={careGoal2}
@@ -35,9 +38,8 @@ const setup = (disabled = false, initializeCareGoal = true, error?: any) => {
       />
     )
   }
-  const wrapper = render(<TestComponent />)
 
-  return { ...wrapper, onCareGoalChangeSpy }
+  return { ...render(<TestComponent />), onCareGoalChangeSpy }
 }
 
 describe('Care Goal Form', () => {
