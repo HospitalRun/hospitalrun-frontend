@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
@@ -57,7 +56,7 @@ describe('Report Incident', () => {
       </ButtonBarProvider.ButtonBarProvider>,
     )
   }
-  test('type into department field', async () => {
+  it('type into department field', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
 
@@ -68,7 +67,7 @@ describe('Report Incident', () => {
     expect(depInput).toHaveDisplayValue('Engineering Bay')
   })
 
-  test('type into category field', async () => {
+  it('type into category field', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
 
@@ -79,7 +78,7 @@ describe('Report Incident', () => {
     expect(catInput).toHaveDisplayValue('Warp Engine')
   })
 
-  test('type into category item field', async () => {
+  it('type into category item field', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
 
@@ -90,7 +89,7 @@ describe('Report Incident', () => {
     expect(catItemInput).toHaveDisplayValue('Warp Coil')
   })
 
-  test('type into description field', async () => {
+  it('type into description field', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
     const descInput = inputArr[inputArr.length - 1]
@@ -101,7 +100,8 @@ describe('Report Incident', () => {
     userEvent.type(descInput, 'Geordi requested analysis')
     expect(descInput).toHaveDisplayValue('Geordi requested analysis')
   })
-  test('action save after all the input fields are filled out', async () => {
+
+  it('action save after all the input fields are filled out', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
     const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
@@ -151,19 +151,14 @@ describe('Report Incident', () => {
     const invalidInputs = container.querySelectorAll('.is-invalid')
     expect(invalidInputs).toHaveLength(5)
 
-    // expect(dateInput).toBeInvalid()
     expect(dateInput).toHaveClass('is-invalid')
 
-    // expect(depInput).toBeInvalid()
     expect(depInput).toHaveClass('is-invalid')
 
-    // expect(catInput).toBeInvalid()
     expect(catInput).toHaveClass('is-invalid')
 
-    // expect(catItemInput).toBeInvalid()
     expect(catItemInput).toHaveClass('is-invalid')
 
-    // expect(descInput).toBeInvalid()
     expect(descInput).toHaveClass('is-invalid')
   })
 
