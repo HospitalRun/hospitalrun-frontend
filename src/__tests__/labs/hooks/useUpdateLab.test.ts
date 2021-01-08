@@ -9,9 +9,8 @@ describe('Use update lab', () => {
     notes: ['some note'],
   } as Lab
 
-  jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedLab)
-
   it('should update lab', async () => {
+    jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedLab)
     const actualData = await executeMutation(() => useUpdateLab(), expectedLab)
 
     expect(LabRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
