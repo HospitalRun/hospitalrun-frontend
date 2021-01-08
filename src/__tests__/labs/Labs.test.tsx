@@ -1,8 +1,7 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router, Route } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -24,27 +23,35 @@ const Title = () => {
   return <h1>{title}</h1>
 }
 
-const LabsWithTitle = () => (
-  <TitleProvider>
-    <Title />
-    <Labs />
-  </TitleProvider>
-)
+const expectedLab = {
+  code: 'L-code',
+  id: '1234',
+  patient: '1234',
+  type: 'Type',
+  requestedOn: new Date().toISOString(),
+} as Lab
+const expectedPatient = {
+  fullName: 'fullName',
+  id: '1234',
+} as Patient
 
-const setup = (ui: React.ReactElement, intialPath: string, permissions: Permissions[]) => {
+const setup = (initialPath: string, permissions: Permissions[]) => {
+  jest.resetAllMocks()
+  jest.spyOn(LabRepository, 'find').mockResolvedValue(expectedLab)
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
   const store = mockStore({ user: { permissions } } as any)
-  const history = createMemoryHistory({ initialEntries: [intialPath] })
-
-  // eslint-disable-next-line react/prop-types
-  const Wrapper: React.FC = ({ children }) => (
-    <Provider store={store}>
-      <Router history={history}>{children}</Router>
-    </Provider>
-  )
 
   return {
-    history,
-    ...render(ui, { wrapper: Wrapper }),
+    ...render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[initialPath]}>
+          <TitleProvider>
+            <Title />
+            <Labs />
+          </TitleProvider>
+        </MemoryRouter>
+      </Provider>,
+    ),
   }
 }
 
@@ -52,95 +59,47 @@ describe('Labs', () => {
   describe('routing', () => {
     describe('/labs', () => {
       it('should render the view labs screen when /labs is accessed', async () => {
-        const { history } = setup(<LabsWithTitle />, '/labs', [Permissions.ViewLabs])
-
-        await waitFor(() => {
-          expect(history.location.pathname).toBe('/labs')
-        })
-        await waitFor(() => {
-          expect(screen.getByRole('heading', { name: /labs\.label/i })).toBeInTheDocument()
-        })
+        setup('/labs', [Permissions.ViewLabs])
+        expect(screen.getByRole('heading', { name: /labs\.label/i })).toBeInTheDocument()
       })
 
       it('should not navigate to /labs if the user does not have ViewLabs permissions', async () => {
-        const { history } = setup(<LabsWithTitle />, '/labs', [])
-
-        await waitFor(() => {
-          expect(history.location.pathname).toBe('/')
-        })
+        setup('/labs', [])
+        expect(screen.queryByRole('heading', { name: /labs\.label/i })).not.toBeInTheDocument()
       })
     })
 
     describe('/labs/new', () => {
       it('should render the new lab request screen when /labs/new is accessed', async () => {
-        const { history } = setup(<LabsWithTitle />, '/labs/new', [Permissions.RequestLab])
-
-        await waitFor(() => {
-          expect(history.location.pathname).toBe('/labs/new')
-        })
-        await waitFor(() => {
-          expect(screen.getByRole('heading', { name: /labs\.requests\.new/i })).toBeInTheDocument()
-        })
+        setup('/labs/new', [Permissions.RequestLab])
+        expect(screen.getByRole('heading', { name: /labs\.requests\.new/i })).toBeInTheDocument()
       })
 
       it('should not navigate to /labs/new if the user does not have RequestLab permissions', async () => {
-        const { history } = setup(<LabsWithTitle />, '/labs/new', [])
-
-        await waitFor(() => {
-          expect(history.location.pathname).toBe('/')
-        })
+        setup('/labs/new', [])
+        expect(
+          screen.queryByRole('heading', { name: /labs\.requests\.new/i }),
+        ).not.toBeInTheDocument()
       })
     })
 
     describe('/labs/:id', () => {
       it('should render the view lab screen when /labs/:id is accessed', async () => {
-        const expectedLab = {
-          code: 'L-code',
-          id: '1234',
-          patient: '1234',
-          type: 'Type',
-          requestedOn: new Date().toISOString(),
-        } as Lab
-        const expectedPatient = {
-          fullName: 'fullName',
-          id: '1234',
-        } as Patient
-
-        jest.spyOn(LabRepository, 'find').mockResolvedValue(expectedLab)
-        jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
-
-        const { history } = setup(
-          <Route path="/labs/:id">
-            <LabsWithTitle />
-          </Route>,
-          '/labs/1234',
-          [Permissions.ViewLab],
-        )
-
-        await waitFor(() => {
-          expect(history.location.pathname).toBe('/labs/1234')
-        })
-        await waitFor(() => {
-          expect(
-            screen.getByRole('heading', {
-              name: `${expectedLab.type} for ${expectedPatient.fullName}(${expectedLab.code})`,
-            }),
-          ).toBeInTheDocument()
-        })
+        setup('/labs/1234', [Permissions.ViewLab])
+        expect(
+          await screen.findByRole('heading', {
+            name: `${expectedLab.type} for ${expectedPatient.fullName}(${expectedLab.code})`,
+          }),
+        ).toBeInTheDocument()
       })
 
       it('should not navigate to /labs/:id if the user does not have ViewLab permissions', async () => {
-        const { history } = setup(
-          <Route path="/labs/:id">
-            <LabsWithTitle />
-          </Route>,
-          '/labs/1234',
-          [],
-        )
-
-        await waitFor(() => {
-          expect(history.location.pathname).toBe('/')
-        })
+        setup('/labs/1234', [])
+        expect(
+          screen.queryByRole('heading', {
+            name: `${expectedLab.type} for ${expectedPatient.fullName}(${expectedLab.code})`,
+          }),
+        ).not.toBeInTheDocument()
       })
     })
   })
