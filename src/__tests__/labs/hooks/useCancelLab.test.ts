@@ -15,10 +15,9 @@ describe('Use Cancel Lab', () => {
     canceledOn: expectedCanceledOnDate.toISOString(),
   } as Lab
 
-  Date.now = jest.fn(() => expectedCanceledOnDate.valueOf())
-  jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedCanceledLab)
-
   it('should cancel a lab', async () => {
+    Date.now = jest.fn(() => expectedCanceledOnDate.valueOf())
+    jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedCanceledLab)
     const actualData = await executeMutation(() => useCancelLab(), lab)
 
     expect(LabRepository.saveOrUpdate).toHaveBeenCalledTimes(1)

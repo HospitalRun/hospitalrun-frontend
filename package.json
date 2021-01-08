@@ -161,5 +161,8 @@
       "npm run test:ci",
       "git add ."
     ]
+  },
+  "jest": {
+    "restoreMocks": true
   }
 }
