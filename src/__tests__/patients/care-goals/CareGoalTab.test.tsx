@@ -108,6 +108,8 @@ describe('Care Goals Tab', () => {
 
     await waitFor(() => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    }, {
+      timeout: 3000,
     })
 
     expect(
