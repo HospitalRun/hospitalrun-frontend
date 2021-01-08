@@ -1,13 +1,9 @@
-import {
-  render as rtlRender,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { Toaster } from '@hospitalrun/components'
+import { render, screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -28,14 +24,10 @@ import { expectOneConsoleError } from '../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
-type WrapperProps = {
-  // eslint-disable-next-line react/require-default-props
-  children?: ReactNode
-}
+const mockPatient = { fullName: 'Full Name' }
 
-const render = (permissions: Permissions[], lab?: Partial<Lab>, error = {}) => {
+const setup = (lab?: Partial<Lab>, permissions = [Permissions.ViewLab], error = {}) => {
   const expectedDate = new Date()
-  const mockPatient = { fullName: 'test' }
   const mockLab = {
     ...{
       code: 'L-1234',
@@ -68,375 +60,303 @@ const render = (permissions: Permissions[], lab?: Partial<Lab>, error = {}) => {
     },
   } as any)
 
-  const Wrapper = ({ children }: WrapperProps) => (
-    <ButtonBarProvider>
-      <Provider store={store}>
-        <Router history={history}>
-          <Route path="/labs/:id">
-            <titleUtil.TitleProvider>{children}</titleUtil.TitleProvider>
-          </Route>
-        </Router>
-      </Provider>
-    </ButtonBarProvider>
-  )
-
-  const utils = rtlRender(<ViewLab />, { wrapper: Wrapper })
-
   return {
     history,
-    store,
+    mockLab,
     expectedDate,
-    expectedLab: mockLab,
-    expectedPatient: mockPatient,
-    ...utils,
+    ...render(
+      <ButtonBarProvider>
+        <Provider store={store}>
+          <Router history={history}>
+            <Route path="/labs/:id">
+              <titleUtil.TitleProvider>
+                <ViewLab />
+              </titleUtil.TitleProvider>
+            </Route>
+          </Router>
+          <Toaster draggable hideProgressBar />
+        </Provider>
+      </ButtonBarProvider>,
+    ),
   }
 }
 
 describe('View Lab', () => {
   describe('page content', () => {
     it("should display the patients' full name", async () => {
-      const { expectedPatient } = render([Permissions.ViewLab])
+      setup()
 
-      await waitFor(() => {
-        expect(screen.getByText('labs.lab.for')).toBeInTheDocument()
-        expect(screen.getByText(expectedPatient.fullName)).toBeInTheDocument()
-      })
+      expect(await screen.findByRole('heading', { name: mockPatient.fullName })).toBeInTheDocument()
     })
 
     it('should display the lab-type', async () => {
-      const { expectedLab } = render([Permissions.ViewLab], { type: 'expected type' })
+      const { mockLab } = setup({ type: 'expected type' })
 
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { name: /labs.lab.type/i })).toBeInTheDocument()
-        expect(screen.getByText(expectedLab.type)).toBeInTheDocument()
-      })
+      expect(await screen.findByRole('heading', { name: mockLab.type })).toBeInTheDocument()
     })
 
     it('should display the requested on date', async () => {
-      const { expectedLab } = render([Permissions.ViewLab], {
-        requestedOn: '2020-03-30T04:43:20.102Z',
-      })
+      const { mockLab } = setup({ requestedOn: '2020-03-30T04:43:20.102Z' })
 
-      await waitFor(() => {
-        expect(screen.getByText('labs.lab.requestedOn')).toBeInTheDocument()
-      })
       expect(
-        screen.getByText(format(new Date(expectedLab.requestedOn), 'yyyy-MM-dd hh:mm a')),
+        await screen.findByRole('heading', {
+          name: format(new Date(mockLab.requestedOn), 'yyyy-MM-dd hh:mm a'),
+        }),
       ).toBeInTheDocument()
     })
 
     it('should not display the completed date if the lab is not completed', async () => {
       const completedDate = new Date('2020-10-10T10:10:10.100') // We want a different date than the mocked date
-      render([Permissions.ViewLab], { completedOn: completedDate.toISOString() })
+      setup({ completedOn: completedDate.toISOString() })
 
       await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
-
       expect(
         screen.queryByText(format(completedDate, 'yyyy-MM-dd HH:mm a')),
       ).not.toBeInTheDocument()
     })
 
-    it('should not display the canceled date if the lab is not canceled', async () => {
+    it('should not display the cancelled date if the lab is not cancelled', async () => {
       const cancelledDate = new Date('2020-10-10T10:10:10.100') // We want a different date than the mocked date
-      render([Permissions.ViewLab], { canceledOn: cancelledDate.toISOString() })
+      setup({ canceledOn: cancelledDate.toISOString() })
 
       await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
-
       expect(
         screen.queryByText(format(cancelledDate, 'yyyy-MM-dd HH:mm a')),
       ).not.toBeInTheDocument()
     })
 
     it('should render a result text field', async () => {
-      const { expectedLab } = render([Permissions.ViewLab], { result: 'expected results' })
+      const { mockLab } = setup({ result: 'expected results' })
 
-      await waitFor(() => {
-        expect(
-          screen.getByRole('textbox', {
-            name: /labs\.lab\.result/i,
-          }),
-        ).toHaveValue(expectedLab.result)
-      })
+      expect(
+        await screen.findByRole('textbox', {
+          name: /labs\.lab\.result/i,
+        }),
+      ).toHaveValue(mockLab.result)
     })
 
-    it('should not display past notes if there is not', () => {
-      const { container } = render([Permissions.ViewLab], { notes: [] })
+    it('should not display past notes if there is not', async () => {
+      setup({ notes: [] })
 
-      expect(container.querySelector('.callout')).not.toBeInTheDocument()
+      await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
+      expect(screen.queryAllByTestId('note')).toHaveLength(0)
     })
 
     it('should display the past notes', async () => {
       const expectedNotes = 'expected notes'
-      const { container } = render([Permissions.ViewLab], { notes: [expectedNotes] })
+      setup({ notes: [expectedNotes] })
 
-      await waitFor(() => {
-        expect(screen.getByText(expectedNotes)).toBeInTheDocument()
-      })
-      expect(container.querySelector('.callout')).toBeInTheDocument()
+      expect(await screen.findByTestId('note')).toHaveTextContent(expectedNotes)
     })
 
     it('should display the notes text field empty', async () => {
-      render([Permissions.ViewLab])
+      setup()
 
-      await waitFor(() => {
-        expect(screen.getByLabelText('labs.lab.notes')).toHaveValue('')
-      })
+      expect(await screen.findByLabelText('labs.lab.notes')).toHaveValue('')
     })
 
     it('should display errors', async () => {
-      render([Permissions.ViewLab, Permissions.CompleteLab], { status: 'requested' })
-
       const expectedError = { message: 'some message', result: 'some result feedback' } as LabError
+      setup({ status: 'requested' }, [Permissions.ViewLab, Permissions.CompleteLab])
+
       expectOneConsoleError(expectedError)
       jest.spyOn(validateUtil, 'validateLabComplete').mockReturnValue(expectedError)
 
-      await waitFor(() => {
-        userEvent.click(
-          screen.getByRole('button', {
-            name: /labs\.requests\.complete/i,
-          }),
-        )
-      })
+      userEvent.click(
+        await screen.findByRole('button', {
+          name: /labs\.requests\.complete/i,
+        }),
+      )
 
       const alert = await screen.findByRole('alert')
 
       expect(alert).toContainElement(screen.getByText(/states\.error/i))
       expect(alert).toContainElement(screen.getByText(/some message/i))
-
       expect(screen.getByLabelText(/labs\.lab\.result/i)).toHaveClass('is-invalid')
     })
 
     describe('requested lab request', () => {
       it('should display a warning badge if the status is requested', async () => {
-        const { expectedLab } = render([Permissions.ViewLab], { status: 'requested' })
+        const { mockLab } = setup()
 
-        await waitFor(() => {
-          expect(
-            screen.getByRole('heading', {
-              name: /labs\.lab\.status/i,
-            }),
-          ).toBeInTheDocument()
-          expect(screen.getByText(expectedLab.status)).toBeInTheDocument()
-        })
+        const status = await screen.findByText(mockLab.status)
+        expect(status.closest('span')).toHaveClass('badge-warning')
       })
 
       it('should display a update lab, complete lab, and cancel lab button if the lab is in a requested state', async () => {
-        render([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
+        setup({}, [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab])
 
-        await waitFor(() => {
-          screen.getByRole('button', {
-            name: /labs\.requests\.update/i,
-          })
-          screen.getByRole('button', {
-            name: /labs\.requests\.complete/i,
-          })
-          screen.getByRole('button', {
-            name: /labs\.requests\.cancel/i,
-          })
-        })
+        expect(await screen.findAllByRole('button')).toEqual(
+          expect.arrayContaining([
+            screen.getByText(/labs\.requests\.update/i),
+            screen.getByText(/labs\.requests\.complete/i),
+            screen.getByText(/labs\.requests\.cancel/i),
+          ]),
+        )
       })
     })
 
     describe('canceled lab request', () => {
       it('should display a danger badge if the status is canceled', async () => {
-        render([Permissions.ViewLab], { status: 'canceled' })
+        const { mockLab } = setup({ status: 'canceled' })
 
-        await waitFor(() => {
-          expect(
-            screen.getByRole('heading', {
-              name: /labs\.lab\.status/i,
-            }),
-          ).toBeInTheDocument()
-          expect(
-            screen.getByRole('heading', {
-              name: /canceled/i,
-            }),
-          ).toBeInTheDocument()
-        })
+        const status = await screen.findByText(mockLab.status)
+        expect(status.closest('span')).toHaveClass('badge-danger')
       })
 
-      it('should display the canceled on date if the lab request has been canceled', async () => {
-        const { expectedLab } = render([Permissions.ViewLab], {
+      it('should display the cancelled on date if the lab request has been cancelled', async () => {
+        const { mockLab } = setup({
           status: 'canceled',
           canceledOn: '2020-03-30T04:45:20.102Z',
         })
 
-        await waitFor(() => {
-          expect(
-            screen.getByRole('heading', {
-              name: /labs\.lab\.canceledon/i,
-            }),
-          ).toBeInTheDocument()
-          expect(
-            screen.getByRole('heading', {
-              name: format(new Date(expectedLab.canceledOn as string), 'yyyy-MM-dd hh:mm a'),
-            }),
-          ).toBeInTheDocument()
-        })
+        expect(
+          await screen.findByRole('heading', {
+            name: format(new Date(mockLab.canceledOn as string), 'yyyy-MM-dd hh:mm a'),
+          }),
+        ).toBeInTheDocument()
       })
 
       it('should not display update, complete, and cancel button if the lab is canceled', async () => {
-        render([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
-          status: 'canceled',
-        })
+        setup(
+          {
+            status: 'canceled',
+          },
+          [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab],
+        )
 
-        await waitFor(() => {
-          expect(screen.queryByRole('button')).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
+        expect(screen.queryByRole('button')).not.toBeInTheDocument()
       })
 
       it('should not display notes text field if the status is canceled', async () => {
-        render([Permissions.ViewLab], { status: 'canceled' })
+        setup({ status: 'canceled' })
 
-        await waitFor(() => {
-          expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
-        })
-        expect(screen.queryByLabelText('labs.lab.notes')).not.toBeInTheDocument()
+        expect(await screen.findByText(/labs\.lab\.notes/i)).toBeInTheDocument()
+        expect(screen.queryByLabelText(/labs\.lab\.notes/i)).not.toBeInTheDocument()
       })
     })
 
     describe('completed lab request', () => {
       it('should display a primary badge if the status is completed', async () => {
-        const { expectedLab } = render([Permissions.ViewLab], { status: 'completed' })
+        const { mockLab } = setup({ status: 'completed' })
 
-        await waitFor(() => {
-          expect(screen.getByRole('heading', { name: 'labs.lab.status' })).toBeInTheDocument()
-        })
-        expect(screen.getByText(expectedLab.status)).toBeInTheDocument()
+        const status = await screen.findByText(mockLab.status)
+        expect(status.closest('span')).toHaveClass('badge-primary')
       })
 
       it('should display the completed on date if the lab request has been completed', async () => {
-        const { expectedLab } = render([Permissions.ViewLab], {
+        const { mockLab } = setup({
           status: 'completed',
           completedOn: '2020-03-30T04:44:20.102Z',
         })
 
-        await waitFor(() => {
-          expect(screen.getByRole('heading', { name: 'labs.lab.completedOn' })).toBeInTheDocument()
-        })
         expect(
-          screen.getByText(
-            format(new Date(expectedLab.completedOn as string), 'yyyy-MM-dd hh:mm a'),
+          await screen.findByText(
+            format(new Date(mockLab.completedOn as string), 'yyyy-MM-dd hh:mm a'),
           ),
         ).toBeInTheDocument()
       })
 
       it('should not display update, complete, and cancel buttons if the lab is completed', async () => {
-        render([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
-          status: 'completed',
-        })
+        setup(
+          {
+            status: 'completed',
+          },
+          [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab],
+        )
 
-        await waitFor(() => {
-          expect(screen.queryByRole('button')).not.toBeInTheDocument()
-        })
+        await waitForElementToBeRemoved(() => screen.queryByText(/loading/i))
+        expect(screen.queryByRole('button')).not.toBeInTheDocument()
       })
 
       it('should not display notes text field if the status is completed', async () => {
-        render([Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab], {
-          status: 'completed',
-        })
+        setup(
+          {
+            status: 'completed',
+          },
+          [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab],
+        )
 
-        await waitFor(() => {
-          expect(screen.getByText('labs.lab.notes')).toBeInTheDocument()
-        })
-        expect(screen.queryByLabelText('labs.lab.notes')).not.toBeInTheDocument()
+        expect(await screen.findByText(/labs\.lab\.notes/i)).toBeInTheDocument()
+        expect(screen.queryByLabelText(/labs\.lab\.notes/i)).not.toBeInTheDocument()
       })
     })
   })
 
   describe('on update', () => {
     it('should update the lab with the new information', async () => {
-      const { history, expectedLab } = render([Permissions.ViewLab])
+      const { history } = setup()
       const expectedResult = 'expected result'
       const newNotes = 'expected notes'
 
-      const resultTextField = await screen.findByLabelText('labs.lab.result')
-
+      const resultTextField = await screen.findByLabelText(/labs\.lab\.result/i)
       userEvent.type(resultTextField, expectedResult)
 
       const notesTextField = screen.getByLabelText('labs.lab.notes')
       userEvent.type(notesTextField, newNotes)
 
-      const updateButton = screen.getByRole('button', {
-        name: /labs\.requests\.update/i,
-      })
-      userEvent.click(updateButton)
-
-      const expectedNotes = expectedLab.notes ? [...expectedLab.notes, newNotes] : [newNotes]
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /labs\.requests\.update/i,
+        }),
+      )
 
       await waitFor(() => {
-        expect(LabRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-        expect(LabRepository.saveOrUpdate).toHaveBeenCalledWith(
-          expect.objectContaining({ ...expectedLab, result: expectedResult, notes: expectedNotes }),
-        )
         expect(history.location.pathname).toEqual('/labs/12456')
       })
+      expect(screen.getByLabelText(/labs\.lab\.result/i)).toHaveTextContent(expectedResult)
+      expect(screen.getByTestId('note')).toHaveTextContent(newNotes)
     })
   })
 
   describe('on complete', () => {
     it('should mark the status as completed and fill in the completed date with the current time', async () => {
-      const { history, expectedLab, expectedDate } = render([
+      const { history } = setup({}, [
         Permissions.ViewLab,
         Permissions.CompleteLab,
         Permissions.CancelLab,
       ])
       const expectedResult = 'expected result'
 
-      const resultTextField = await screen.findByLabelText('labs.lab.result')
+      userEvent.type(await screen.findByLabelText(/labs\.lab\.result/i), expectedResult)
 
-      userEvent.type(resultTextField, expectedResult)
-
-      const completeButton = screen.getByRole('button', {
-        name: 'labs.requests.complete',
-      })
-
-      userEvent.click(completeButton)
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /labs\.requests\.complete/i,
+        }),
+      )
 
       await waitFor(() => {
-        expect(LabRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-        expect(LabRepository.saveOrUpdate).toHaveBeenCalledWith(
-          expect.objectContaining({
-            ...expectedLab,
-            result: expectedResult,
-            status: 'completed',
-            completedOn: expectedDate.toISOString(),
-          }),
-        )
         expect(history.location.pathname).toEqual('/labs/12456')
       })
+      expect(await screen.findByRole('alert')).toBeInTheDocument()
+      expect(
+        within(screen.getByRole('alert')).getByText(/labs\.successfullyCompleted/i),
+      ).toBeInTheDocument()
     })
   })
 
   describe('on cancel', () => {
-    it('should mark the status as canceled and fill in the cancelled on date with the current time', async () => {
-      const { history, expectedLab, expectedDate } = render([
+    // integration test candidate; after 'cancelled' route goes to <Labs />
+    // 'should mark the status as canceled and fill in the cancelled on date with the current time'
+    it('should mark the status as canceled and redirect to /labs', async () => {
+      const { history } = setup({}, [
         Permissions.ViewLab,
         Permissions.CompleteLab,
         Permissions.CancelLab,
       ])
       const expectedResult = 'expected result'
 
-      const resultTextField = await screen.findByLabelText('labs.lab.result')
+      userEvent.type(await screen.findByLabelText(/labs\.lab\.result/i), expectedResult)
 
-      userEvent.type(resultTextField, expectedResult)
-
-      const completeButton = screen.getByRole('button', {
-        name: 'labs.requests.cancel',
-      })
-
-      userEvent.click(completeButton)
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /labs\.requests\.cancel/i,
+        }),
+      )
 
       await waitFor(() => {
-        expect(LabRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-        expect(LabRepository.saveOrUpdate).toHaveBeenCalledWith(
-          expect.objectContaining({
-            ...expectedLab,
-            result: expectedResult,
-            status: 'canceled',
-            canceledOn: expectedDate.toISOString(),
-          }),
-        )
         expect(history.location.pathname).toEqual('/labs')
       })
     })
