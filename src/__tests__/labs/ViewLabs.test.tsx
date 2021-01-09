@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
@@ -138,13 +138,13 @@ describe('View Labs', () => {
       const { expectedLab } = setup([Permissions.ViewLabs, Permissions.RequestLab])
 
       jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab2])
+      jest.useFakeTimers()
 
       expect(await screen.findByRole('cell', { name: expectedLab.code })).toBeInTheDocument()
-      jest.useFakeTimers()
 
       userEvent.type(screen.getByRole('textbox', { name: /labs.search/i }), expectedSearchText)
 
-      act(() => {
+      await waitFor(() => {
         jest.advanceTimersByTime(500)
       })
 
