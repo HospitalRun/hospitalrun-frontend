@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -14,38 +14,39 @@ import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 const { TitleProvider } = titleUtil
-describe('New Medication Request', () => {
-  let history: any
 
-  const setup = (store = mockStore({ medication: { status: 'loading', error: {} } } as any)) => {
-    history = createMemoryHistory()
-    history.push(`/medications/new`)
+const setup = (store = mockStore({ medication: { status: 'loading', error: {} } } as any)) => {
+  jest.resetAllMocks()
 
-    const Wrapper: React.FC = ({ children }: any) => (
+  const history = createMemoryHistory()
+  history.push(`/medications/new`)
+
+  return {
+    history,
+    ...render(
       <Provider store={store}>
         <Router history={history}>
-          <TitleProvider>{children}</TitleProvider>
+          <TitleProvider>
+            <NewMedicationRequest />
+          </TitleProvider>
         </Router>
-      </Provider>
-    )
-    return render(<NewMedicationRequest />, { wrapper: Wrapper })
+      </Provider>,
+    ),
   }
+}
 
+describe('New Medication Request', () => {
   describe('form layout', () => {
     it('should render a patient typeahead', () => {
       setup()
 
-      // find label for Typeahead component
-      expect(screen.getAllByText(/medications\.medication\.patient/i)[0]).toBeInTheDocument()
-
-      const medInput = screen.getByPlaceholderText(/medications\.medication\.patient/i)
-
-      userEvent.type(medInput, 'Bruce Wayne')
-      expect(medInput).toHaveDisplayValue('Bruce Wayne')
+      expect(screen.getByText(/medications\.medication\.patient/i)).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(/medications\.medication\.patient/i)).toBeInTheDocument()
     })
 
     it('should render a medication input box with label', async () => {
       setup()
+
       expect(screen.getByText(/medications\.medication\.medication/i)).toBeInTheDocument()
       expect(
         screen.getByPlaceholderText(/medications\.medication\.medication/i),
@@ -54,16 +55,16 @@ describe('New Medication Request', () => {
 
     it('render medication request status options', async () => {
       setup()
-      const medStatus = screen.getAllByPlaceholderText('-- Choose --')[0]
+
+      const medStatus = within(screen.getByTestId('status-field')).getByRole('combobox')
 
       expect(screen.getByText(/medications\.medication\.status/i)).toBeInTheDocument()
-
       expect(medStatus.getAttribute('aria-expanded')).toBe('false')
       selectEvent.openMenu(medStatus)
       expect(medStatus.getAttribute('aria-expanded')).toBe('true')
       expect(medStatus).toHaveDisplayValue(/medications\.status\.draft/i)
 
-      const statusOptions = screen
+      const statusOptions = within(screen.getByTestId('status-field'))
         .getAllByRole('option')
         .map((option) => option.lastElementChild?.innerHTML)
 
@@ -74,21 +75,21 @@ describe('New Medication Request', () => {
 
     it('render medication intent options', async () => {
       setup()
-      const medicationIntent = screen.getAllByPlaceholderText('-- Choose --')[1]
+
+      const medicationIntent = within(screen.getByTestId('intent-field')).getByRole('combobox')
 
       expect(screen.getByText(/medications\.medication\.intent/i)).toBeInTheDocument()
-
       expect(medicationIntent.getAttribute('aria-expanded')).toBe('false')
       selectEvent.openMenu(medicationIntent)
       expect(medicationIntent.getAttribute('aria-expanded')).toBe('true')
       expect(medicationIntent).toHaveDisplayValue(/medications\.intent\.proposal/i)
 
-      const statusOptions = screen
+      const intentOptions = within(screen.getByTestId('intent-field'))
         .getAllByRole('option')
         .map((option) => option.lastElementChild?.innerHTML)
 
       expect(
-        statusOptions.includes(
+        intentOptions.includes(
           'medications.intent.proposal' &&
             'medications.intent.plan' &&
             'medications.intent.order' &&
@@ -103,21 +104,21 @@ describe('New Medication Request', () => {
 
     it('render medication priorty select options', async () => {
       setup()
-      const medicationPriority = screen.getAllByPlaceholderText('-- Choose --')[2]
+
+      const medicationPriority = within(screen.getByTestId('priority-field')).getByRole('combobox')
 
       expect(screen.getByText(/medications\.medication\.status/i)).toBeInTheDocument()
-
       expect(medicationPriority.getAttribute('aria-expanded')).toBe('false')
       selectEvent.openMenu(medicationPriority)
       expect(medicationPriority.getAttribute('aria-expanded')).toBe('true')
       expect(medicationPriority).toHaveDisplayValue('medications.priority.routine')
 
-      const statusOptions = screen
+      const priorityOptions = within(screen.getByTestId('priority-field'))
         .getAllByRole('option')
         .map((option) => option.lastElementChild?.innerHTML)
 
       expect(
-        statusOptions.includes(
+        priorityOptions.includes(
           'medications.priority.routine' &&
             'medications.priority.urgent' &&
             'medications.priority.asap' &&
@@ -132,10 +133,9 @@ describe('New Medication Request', () => {
       const medicationNotes = screen.getByRole('textbox', {
         name: /medications\.medication\.notes/i,
       })
+
       expect(screen.getByLabelText(/medications\.medication\.notes/i)).toBeInTheDocument()
-
       expect(medicationNotes).toBeInTheDocument()
-
       userEvent.type(medicationNotes, 'Bruce Wayne is batman')
       expect(medicationNotes).toHaveValue('Bruce Wayne is batman')
     })
@@ -152,6 +152,7 @@ describe('New Medication Request', () => {
 
     it('should render a cancel button', () => {
       setup()
+
       expect(
         screen.getByRole('button', {
           name: /actions\.cancel/i,
@@ -162,21 +163,21 @@ describe('New Medication Request', () => {
 
   describe('on cancel', () => {
     it('should navigate back to /medications', async () => {
-      setup()
-      expect(history.location.pathname).toEqual('/medications/new')
+      const { history } = setup()
+
       const cancelButton = screen.getByRole('button', {
         name: /actions\.cancel/i,
       })
 
+      expect(history.location.pathname).toEqual('/medications/new')
       userEvent.click(cancelButton)
-
       expect(history.location.pathname).toEqual('/medications')
     })
   })
 
   describe('on save', () => {
     it('should save the medication request and navigate to "/medications/:id"', async () => {
-      setup()
+      const { history } = setup()
       const patient = screen.getByPlaceholderText(/medications\.medication\.patient/i)
       const medication = screen.getByPlaceholderText(/medications\.medication\.medication/i)
       const medicationNotes = screen.getByRole('textbox', {
