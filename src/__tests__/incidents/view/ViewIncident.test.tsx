@@ -53,7 +53,7 @@ const setup = (permissions: any[] | undefined, id: string | undefined) => {
   return { ...renderResults, history }
 }
 
-it('smoke test ViewIncidentDetails no Permissions', async () => {
+it('should not render ViewIncidentDetails if there are no Permissions', async () => {
   setup(undefined, '1234')
 
   expect(
@@ -63,7 +63,7 @@ it('smoke test ViewIncidentDetails no Permissions', async () => {
   ).not.toBeInTheDocument()
 })
 
-it('smoke test ViewIncidentDetails no ID', async () => {
+it('should not  ViewIncidentDetails no there is no ID', async () => {
   setup([Permissions.ReportIncident, Permissions.ResolveIncident], undefined)
 
   expect(

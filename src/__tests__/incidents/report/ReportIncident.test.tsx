@@ -57,18 +57,18 @@ describe('Report Incident', () => {
       </ButtonBarProvider.ButtonBarProvider>,
     )
   }
-  test('type into department field', async () => {
+  it('renders a department form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
+    const departmentInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
 
-    expect(depInput).toBeEnabled()
-    expect(depInput).toBeInTheDocument()
+    expect(departmentInput).toBeEnabled()
+    expect(departmentInput).toBeInTheDocument()
 
-    userEvent.type(depInput, 'Engineering Bay')
-    expect(depInput).toHaveDisplayValue('Engineering Bay')
+    userEvent.type(departmentInput, 'Engineering Bay')
+    expect(departmentInput).toHaveDisplayValue('Engineering Bay')
   })
 
-  test('type into category field', async () => {
+  test('renders a category form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
 
@@ -79,7 +79,7 @@ describe('Report Incident', () => {
     expect(catInput).toHaveDisplayValue('Warp Engine')
   })
 
-  test('type into category item field', async () => {
+  test('renders a category item form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
 
@@ -90,7 +90,7 @@ describe('Report Incident', () => {
     expect(catItemInput).toHaveDisplayValue('Warp Coil')
   })
 
-  test('type into description field', async () => {
+  test('renders a description formField element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
     const descInput = inputArr[inputArr.length - 1]
@@ -101,7 +101,7 @@ describe('Report Incident', () => {
     userEvent.type(descInput, 'Geordi requested analysis')
     expect(descInput).toHaveDisplayValue('Geordi requested analysis')
   })
-  test('action save after all the input fields are filled out', async () => {
+  test(' renders action save button after all the input fields are filled out', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
     const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
