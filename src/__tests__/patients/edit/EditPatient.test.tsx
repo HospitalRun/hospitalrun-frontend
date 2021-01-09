@@ -18,21 +18,21 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 const patient = {
   id: '123',
-  prefix: 'prefix',
-  givenName: 'givenName',
-  familyName: 'familyName',
-  suffix: 'suffix',
-  fullName: 'givenName familyName suffix',
+  prefix: 'Dr',
+  givenName: 'Bruce',
+  familyName: 'Banner',
+  suffix: 'MD',
+  fullName: 'Bruce Banner MD',
   sex: 'male',
   type: 'charity',
-  occupation: 'occupation',
-  preferredLanguage: 'preferredLanguage',
+  occupation: 'The Hulk',
+  preferredLanguage: 'Hulk lingo',
   phoneNumbers: [{ value: '123456789', id: '789' }],
-  emails: [{ value: 'email@email.com', id: '456' }],
+  emails: [{ value: 'theHulk@theAvengers.com', id: '456' }],
   addresses: [{ value: 'address', id: '123' }],
   code: 'P00001',
   dateOfBirth: subDays(new Date(), 2).toISOString(),
-  index: 'givenName familyName suffixP00001',
+  index: 'Bruce Banner MDP00001',
 } as Patient
 
 const setup = () => {
@@ -76,6 +76,8 @@ describe('Edit Patient', () => {
     await waitFor(() => {
       expect(PatientRepository.find).toHaveBeenCalledWith(patient.id)
     })
+
+    expect(screen.getByPlaceholderText(/patient.givenName/i)).toHaveValue(patient.givenName)
   })
 
   it('should dispatch updatePatient when save button is clicked', async () => {

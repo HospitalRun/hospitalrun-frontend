@@ -86,6 +86,7 @@ describe('Add Diagnosis Modal', () => {
         diagnoses: [expect.objectContaining({ name: 'yellow polka dot spots' })],
       }),
     )
+    expect(await screen.queryByRole('dialogue')).not.toBeInTheDocument()
   })
 
   it('should call the on close function when the cancel button is clicked', async () => {
