@@ -14,9 +14,8 @@ describe('Use update appointment', () => {
     type: 'type',
   } as Appointment
 
-  jest.spyOn(AppointmentRepository, 'saveOrUpdate').mockResolvedValue(expectedAppointment)
-
   it('should update appointment', async () => {
+    jest.spyOn(AppointmentRepository, 'saveOrUpdate').mockResolvedValue(expectedAppointment)
     const actualData = await executeMutation(() => {
       const result = useUpdateAppointment(expectedAppointment)
       return [result.mutate]

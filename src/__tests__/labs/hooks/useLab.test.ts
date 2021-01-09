@@ -9,9 +9,8 @@ describe('Use lab', () => {
     id: expectedLabId,
   } as Lab
 
-  jest.spyOn(LabRepository, 'find').mockResolvedValue(expectedLab)
-
   it('should get a lab by id', async () => {
+    jest.spyOn(LabRepository, 'find').mockResolvedValue(expectedLab)
     const actualData = await executeQuery(() => useLab(expectedLabId))
 
     expect(LabRepository.find).toHaveBeenCalledTimes(1)

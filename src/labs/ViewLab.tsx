@@ -185,7 +185,7 @@ const ViewLab = () => {
       if (labToView.notes && labToView.notes[0] !== '') {
         return labToView.notes.map((note: string) => (
           <Callout key={uuid()} data-test="note" color="info">
-            <p>{note}</p>
+            <p data-testid="note">{note}</p>
           </Callout>
         ))
       }

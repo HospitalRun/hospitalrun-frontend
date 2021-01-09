@@ -1,5 +1,6 @@
-import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
+import userEvent, { specialChars } from '@testing-library/user-event'
+import format from 'date-fns/format'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -9,12 +10,13 @@ import thunk from 'redux-thunk'
 
 import CareGoalTab from '../../../patients/care-goals/CareGoalTab'
 import PatientRepository from '../../../shared/db/PatientRepository'
-import CareGoal from '../../../shared/model/CareGoal'
+import CareGoal, { CareGoalStatus } from '../../../shared/model/CareGoal'
 import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
+const { selectAll, arrowDown, enter } = specialChars
 
 type CareGoalTabWrapper = (store: any, history: MemoryHistory) => React.FC
 
@@ -36,7 +38,12 @@ const ViewWrapper: CareGoalTabWrapper = (store: any, history: MemoryHistory) => 
   </Provider>
 )
 
-const setup = (route: string, permissions: Permissions[], wrapper = TabWrapper) => {
+const setup = (
+  route: string,
+  permissions: Permissions[],
+  wrapper = TabWrapper,
+  includeCareGoal = true,
+) => {
   const expectedCareGoal = {
     id: '456',
     status: 'accepted',
@@ -48,7 +55,10 @@ const setup = (route: string, permissions: Permissions[], wrapper = TabWrapper) 
     createdOn: new Date().toISOString(),
     note: '',
   } as CareGoal
-  const expectedPatient = { id: '123', careGoals: [expectedCareGoal] } as Patient
+  const expectedPatient = {
+    id: '123',
+    careGoals: includeCareGoal ? [expectedCareGoal] : [],
+  } as Patient
 
   jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
   const history = createMemoryHistory({ initialEntries: [route] })
@@ -58,12 +68,6 @@ const setup = (route: string, permissions: Permissions[], wrapper = TabWrapper) 
 }
 
 describe('Care Goals Tab', () => {
-  it('should render add care goal button if user has correct permissions', async () => {
-    setup('/patients/123/care-goals', [Permissions.AddCareGoal])
-
-    expect(await screen.findByRole('button', { name: /patient.careGoal.new/i })).toBeInTheDocument()
-  })
-
   it('should not render add care goal button if user does not have permissions', async () => {
     const { container } = setup('/patients/123/care-goals', [])
 
@@ -71,6 +75,57 @@ describe('Care Goals Tab', () => {
 
     expect(screen.queryByRole('button', { name: /patient.careGoal.new/i })).not.toBeInTheDocument()
   })
+
+  it('should be able to create a new care goal if user has permissions', async () => {
+    const expectedCareGoal = {
+      description: 'some description',
+      status: CareGoalStatus.Accepted,
+      startDate: new Date('2020-01-01'),
+      dueDate: new Date('2020-02-01'),
+    }
+
+    setup('/patients/123/care-goals', [Permissions.AddCareGoal], TabWrapper, false)
+
+    userEvent.click(await screen.findByRole('button', { name: /patient.careGoal.new/i }))
+
+    const modal = await screen.findByRole('dialog')
+
+    userEvent.type(within(modal).getAllByRole('textbox')[0], expectedCareGoal.description)
+    userEvent.type(
+      within(modal).getAllByRole('combobox')[1],
+      `${selectAll}${expectedCareGoal.status}${arrowDown}${enter}`,
+    )
+    userEvent.type(
+      within(modal).getAllByRole('textbox')[4],
+      `${selectAll}${format(expectedCareGoal.startDate, 'MM/dd/yyyy')}${enter}`,
+    )
+    userEvent.type(
+      within(modal).getAllByRole('textbox')[5],
+      `${selectAll}${format(expectedCareGoal.dueDate, 'MM/dd/yyyy')}${enter}`,
+    )
+
+    userEvent.click(within(modal).getByRole('button', { name: /patient.careGoal.new/i }))
+
+    await waitFor(
+      () => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      },
+      {
+        timeout: 3000,
+      },
+    )
+
+    expect(
+      await screen.findByRole('cell', { name: expectedCareGoal.description }),
+    ).toBeInTheDocument()
+    expect(await screen.findByRole('cell', { name: expectedCareGoal.status })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('cell', { name: format(expectedCareGoal.startDate, 'yyyy-MM-dd') }),
+    ).toBeInTheDocument()
+    expect(
+      await screen.findByRole('cell', { name: format(expectedCareGoal.dueDate, 'yyyy-MM-dd') }),
+    ).toBeInTheDocument()
+  }, 30000)
 
   it('should open and close the modal when the add care goal and close buttons are clicked', async () => {
     setup('/patients/123/care-goals', [Permissions.AddCareGoal])
