@@ -147,7 +147,7 @@ const NewMedicationRequest = () => {
           value={newMedicationRequest.medication}
           onChange={onMedicationChange}
         />
-        <div className="form-group">
+        <div className="form-group" data-testid="status-field">
           <SelectWithLabelFormGroup
             name="status"
             label={t('medications.medication.status')}
@@ -160,7 +160,7 @@ const NewMedicationRequest = () => {
             isEditable
           />
         </div>
-        <div className="form-group">
+        <div className="form-group" data-testid="intent-field">
           <SelectWithLabelFormGroup
             name="intent"
             label={t('medications.medication.intent')}
@@ -173,7 +173,7 @@ const NewMedicationRequest = () => {
             isEditable
           />
         </div>
-        <div className="form-group">
+        <div className="form-group" data-testid="priority-field">
           <SelectWithLabelFormGroup
             name="priority"
             label={t('medications.medication.priority')}
