@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import useAddPatientNote from '../../../patients/hooks/useAddPatientNote'
 import * as validateNote from '../../../patients/util/validate-note'
 import PatientRepository from '../../../shared/db/PatientRepository'
