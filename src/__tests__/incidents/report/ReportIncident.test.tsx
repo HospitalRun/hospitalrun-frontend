@@ -69,49 +69,53 @@ describe('Report Incident', () => {
 
   test('renders a category form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
+    const categoryInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
 
-    expect(catInput).toBeEnabled()
-    expect(catInput).toBeInTheDocument()
+    expect(categoryInput).toBeEnabled()
+    expect(categoryInput).toBeInTheDocument()
 
-    userEvent.type(catInput, 'Warp Engine')
-    expect(catInput).toHaveDisplayValue('Warp Engine')
+    userEvent.type(categoryInput, 'Warp Engine')
+    expect(categoryInput).toHaveDisplayValue('Warp Engine')
   })
 
   test('renders a category item form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
+    const categoryItemInput = await screen.findByPlaceholderText(
+      /incidents\.reports\.categoryitem/i,
+    )
 
-    expect(catItemInput).toBeInTheDocument()
-    expect(catItemInput).toBeEnabled()
+    expect(categoryItemInput).toBeInTheDocument()
+    expect(categoryItemInput).toBeEnabled()
 
-    userEvent.type(catItemInput, 'Warp Coil')
-    expect(catItemInput).toHaveDisplayValue('Warp Coil')
+    userEvent.type(categoryItemInput, 'Warp Coil')
+    expect(categoryItemInput).toHaveDisplayValue('Warp Coil')
   })
 
   test('renders a description formField element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
     const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
-    const descInput = inputArr[inputArr.length - 1]
+    const descriptionInput = inputArr[inputArr.length - 1]
 
-    expect(descInput).toBeInTheDocument()
-    expect(descInput).toBeEnabled()
+    expect(descriptionInput).toBeInTheDocument()
+    expect(descriptionInput).toBeEnabled()
 
-    userEvent.type(descInput, 'Geordi requested analysis')
-    expect(descInput).toHaveDisplayValue('Geordi requested analysis')
+    userEvent.type(descriptionInput, 'Geordi requested analysis')
+    expect(descriptionInput).toHaveDisplayValue('Geordi requested analysis')
   })
   test(' renders action save button after all the input fields are filled out', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
-    const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
-    const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
+    const departmentInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
+    const categoryInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
+    const categoryItemInput = await screen.findByPlaceholderText(
+      /incidents\.reports\.categoryitem/i,
+    )
     const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
-    const descInput = inputArr[inputArr.length - 1]
+    const descriptionInput = inputArr[inputArr.length - 1]
 
-    userEvent.type(depInput, 'Engineering Bay')
-    userEvent.type(catInput, 'Warp Engine')
-    userEvent.type(catItemInput, 'Warp Coil')
-    userEvent.type(descInput, 'Geordi requested analysis')
+    userEvent.type(departmentInput, 'Engineering Bay')
+    userEvent.type(categoryInput, 'Warp Engine')
+    userEvent.type(categoryItemInput, 'Warp Coil')
+    userEvent.type(descriptionInput, 'Geordi requested analysis')
 
     userEvent.click(
       screen.getByRole('button', {
@@ -140,30 +144,27 @@ describe('Report Incident', () => {
       }),
     )
 
-    const depInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
-    const catInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
-    const catItemInput = await screen.findByPlaceholderText(/incidents\.reports\.categoryitem/i)
+    const departmentInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
+    const categoryInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
+    const categoryItemInput = await screen.findByPlaceholderText(
+      /incidents\.reports\.categoryitem/i,
+    )
     const inputArr = await screen.findAllByRole('textbox')
-    const descInput = inputArr[inputArr.length - 2]
+    const descriptionInput = inputArr[inputArr.length - 2]
     const dateInput = inputArr[0]
 
     const invalidInputs = container.querySelectorAll('.is-invalid')
     expect(invalidInputs).toHaveLength(5)
 
-    // expect(dateInput).toBeInvalid()
     expect(dateInput).toHaveClass('is-invalid')
 
-    // expect(depInput).toBeInvalid()
-    expect(depInput).toHaveClass('is-invalid')
+    expect(departmentInput).toHaveClass('is-invalid')
 
-    // expect(catInput).toBeInvalid()
-    expect(catInput).toHaveClass('is-invalid')
+    expect(categoryInput).toHaveClass('is-invalid')
 
-    // expect(catItemInput).toBeInvalid()
-    expect(catItemInput).toHaveClass('is-invalid')
+    expect(categoryItemInput).toHaveClass('is-invalid')
 
-    // expect(descInput).toBeInvalid()
-    expect(descInput).toHaveClass('is-invalid')
+    expect(descriptionInput).toHaveClass('is-invalid')
   })
 
   describe('on cancel', () => {
