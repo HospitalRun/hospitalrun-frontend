@@ -1,7 +1,7 @@
-import { render as rtlRender, screen, within, waitFor } from '@testing-library/react'
+import { render, screen, within, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -27,11 +27,6 @@ const expectedPatient = {
 const newAllergy = 'allergy3'
 let store: any
 
-type WrapperProps = {
-  // eslint-disable-next-line react/require-default-props
-  children?: ReactNode
-}
-
 const setup = async (
   patient = expectedPatient,
   permissions = [Permissions.AddAllergy],
@@ -43,14 +38,13 @@ const setup = async (
   store = mockStore({ patient: { patient }, user: { permissions } } as any)
   history.push(route)
 
-  function Wrapper({ children }: WrapperProps) {
-    return (
-      <Router history={history}>
-        <Provider store={store}>{children}</Provider>
-      </Router>
-    )
-  }
-  return rtlRender(<Allergies patient={patient} />, { wrapper: Wrapper })
+  return render(
+    <Router history={history}>
+      <Provider store={store}>
+        <Allergies patient={patient} />
+      </Provider>
+    </Router>,
+  )
 }
 
 describe('Allergies', () => {
@@ -81,7 +75,7 @@ describe('Allergies', () => {
   })
 
   describe('add new allergy modal ', () => {
-    it('should open the new allergy modal when clicked', async () => {
+    it('should open when allergy clicked, close when cancel clicked', async () => {
       setup(expectedPatient)
 
       userEvent.click(
@@ -89,8 +83,11 @@ describe('Allergies', () => {
           name: /patient\.allergies\.new/i,
         }),
       )
-
       expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+      userEvent.click(screen.getByRole('button', { name: /actions\.cancel/i }))
+      await waitForElementToBeRemoved(() => screen.queryByRole('dialog'))
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('should add new allergy', async () => {
@@ -101,21 +98,20 @@ describe('Allergies', () => {
           name: /patient\.allergies\.new/i,
         }),
       )
-
       userEvent.type(
         screen.getByRole('textbox', {
           name: /this is a required input/i,
         }),
         newAllergy,
       )
-
       userEvent.click(
         within(screen.getByRole('dialog')).getByRole('button', {
           name: /patient\.allergies\.new/i,
         }),
       )
 
-      expect(await screen.findByText(newAllergy)).toBeInTheDocument()
+      await waitForElementToBeRemoved(() => screen.queryByRole('dialog'))
+      expect(screen.getByRole('button', { name: newAllergy })).toBeInTheDocument()
     })
   })
 
