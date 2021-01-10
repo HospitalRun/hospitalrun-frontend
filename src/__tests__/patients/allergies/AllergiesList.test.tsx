@@ -36,8 +36,8 @@ describe('Allergies list', () => {
   it('should display a warning when no allergies are present', async () => {
     const expectedAllergies: Allergy[] = []
     await setup(expectedAllergies)
-    expect(screen.getByText('patient.allergies.warning.noAllergies')).toBeInTheDocument()
-    expect(screen.getByText('patient.allergies.addAllergyAbove')).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/patient\.allergies\.warning.noAllergies/i)
+    expect(screen.getByRole('alert')).toHaveTextContent(/patient\.allergies\.addAllergyAbove/i)
   })
 
   it('should navigate to the allergy when the allergy is clicked', async () => {
