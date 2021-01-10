@@ -98,21 +98,20 @@ describe('Allergies', () => {
           name: /patient\.allergies\.new/i,
         }),
       )
-
       userEvent.type(
         screen.getByRole('textbox', {
           name: /this is a required input/i,
         }),
         newAllergy,
       )
-
       userEvent.click(
         within(screen.getByRole('dialog')).getByRole('button', {
           name: /patient\.allergies\.new/i,
         }),
       )
 
-      expect(await screen.findByRole('button', { name: newAllergy })).toBeInTheDocument()
+      await waitForElementToBeRemoved(() => screen.queryByRole('dialog'))
+      expect(screen.getByRole('button', { name: newAllergy })).toBeInTheDocument()
     })
   })
 
