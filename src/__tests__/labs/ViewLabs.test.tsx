@@ -125,7 +125,7 @@ describe('View Labs', () => {
   })
 
   describe('search functionality', () => {
-    it('should search for labs after the search text has not changed for 500 milliseconds', async () => {
+    it('should search for labs after the search text has not changed for 500 milliseconds', async (): Promise<void> => {
       const expectedLab2 = {
         code: 'L-5678',
         id: '5678',
@@ -134,21 +134,18 @@ describe('View Labs', () => {
         status: 'requested',
         requestedOn: '2020-03-30T04:43:20.102Z',
       } as Lab
-      const expectedSearchText = 'another'
+      const expectedSearchText = 'Picard'
       const { expectedLab } = setup([Permissions.ViewLabs, Permissions.RequestLab])
-
       jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab2])
-      jest.useFakeTimers()
 
       expect(await screen.findByRole('cell', { name: expectedLab.code })).toBeInTheDocument()
 
       userEvent.type(screen.getByRole('textbox', { name: /labs.search/i }), expectedSearchText)
       await Promise.resolve(() =>
         setTimeout(() => {
-          expect(screen.getByText(/another/i)).toBeInTheDocument()
+          expect(screen.getByText(/picard/i)).toBeInTheDocument()
         }, 500),
       )
-      expect(screen.queryByRole('cell', { name: expectedLab.code })).not.toBeInTheDocument()
     })
   })
 })
