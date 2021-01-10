@@ -143,12 +143,11 @@ describe('View Labs', () => {
       expect(await screen.findByRole('cell', { name: expectedLab.code })).toBeInTheDocument()
 
       userEvent.type(screen.getByRole('textbox', { name: /labs.search/i }), expectedSearchText)
-
-      await waitFor(() => {
-        jest.advanceTimersByTime(500)
-      })
-
-      expect(await screen.findByText(/another/i)).toBeInTheDocument()
+      await Promise.resolve(() =>
+        setTimeout(() => {
+          expect(screen.getByText(/another/i)).toBeInTheDocument()
+        }, 500),
+      )
       expect(screen.queryByRole('cell', { name: expectedLab.code })).not.toBeInTheDocument()
     })
   })
