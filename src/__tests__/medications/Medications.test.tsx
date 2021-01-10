@@ -7,7 +7,10 @@ import thunk from 'redux-thunk'
 
 import Medications from '../../medications/Medications'
 import { TitleProvider } from '../../page-header/title/TitleContext'
+import MedicationRepository from '../../shared/db/MedicationRepository'
+import PatientRepository from '../../shared/db/PatientRepository'
 import Medication from '../../shared/model/Medication'
+import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
@@ -27,6 +30,15 @@ const expectedMedication = ({
 
 describe('Medications', () => {
   const setup = (route: string, permissions: Permissions[] = []) => {
+    jest.resetAllMocks()
+    jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
+    jest
+      .spyOn(MedicationRepository, 'find')
+      .mockResolvedValue({ id: '1234', requestedOn: new Date().toISOString() } as Medication)
+    jest
+      .spyOn(PatientRepository, 'find')
+      .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
+
     const store = mockStore({
       title: 'test',
       user: { permissions },
