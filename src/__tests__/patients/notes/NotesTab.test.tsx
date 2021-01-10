@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'

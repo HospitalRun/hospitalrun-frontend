@@ -1,12 +1,8 @@
-/* eslint-disable no-console */
-
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 
 import NewAllergyModal from '../../../patients/allergies/NewAllergyModal'
-import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
 
@@ -16,15 +12,8 @@ describe('New Allergy Modal', () => {
     givenName: 'someName',
   } as Patient
 
-  const setup = (onCloseSpy = jest.fn()) => {
-    jest.resetAllMocks()
-    jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(mockPatient)
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
-
-    return render(
-      <NewAllergyModal patientId={mockPatient.id} show onCloseButtonClick={onCloseSpy} />,
-    )
-  }
+  const setup = () =>
+    render(<NewAllergyModal patientId={mockPatient.id} show onCloseButtonClick={jest.fn()} />)
 
   it('should render a modal with the correct labels', () => {
     setup()
@@ -59,34 +48,5 @@ describe('New Allergy Modal', () => {
     expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument()
     expect(nameField).toHaveClass('is-invalid')
     expect(nameField.nextSibling).toHaveTextContent(expectedError.nameError)
-  })
-
-  describe('cancel', () => {
-    it('should call the onCloseButtonClick function when the close button is clicked', () => {
-      const onCloseButtonClickSpy = jest.fn()
-      setup(onCloseButtonClickSpy)
-
-      userEvent.click(screen.getByRole('button', { name: /actions.cancel/i }))
-      expect(onCloseButtonClickSpy).toHaveBeenCalledTimes(1)
-    })
-  })
-
-  describe('save', () => {
-    it('should save the allergy for the given patient', async () => {
-      const expectedName = 'expected name'
-      setup()
-
-      userEvent.type(screen.getByLabelText(/patient.allergies.allergyName/i), expectedName)
-      await act(async () => {
-        userEvent.click(screen.getByRole('button', { name: /patient.allergies.new/i }))
-      })
-
-      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
-        expect.objectContaining({
-          allergies: [expect.objectContaining({ name: expectedName })],
-        }),
-      )
-    })
   })
 })
