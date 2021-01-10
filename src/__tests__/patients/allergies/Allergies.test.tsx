@@ -1,4 +1,4 @@
-import { render, screen, within, waitFor } from '@testing-library/react'
+import { render, screen, within, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -75,7 +75,7 @@ describe('Allergies', () => {
   })
 
   describe('add new allergy modal ', () => {
-    it('should open the new allergy modal when clicked', async () => {
+    it('should open when allergy clicked, close when cancel clicked', async () => {
       setup(expectedPatient)
 
       userEvent.click(
@@ -83,8 +83,11 @@ describe('Allergies', () => {
           name: /patient\.allergies\.new/i,
         }),
       )
-
       expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+      userEvent.click(screen.getByRole('button', { name: /actions\.cancel/i }))
+      await waitForElementToBeRemoved(() => screen.queryByRole('dialog'))
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('should add new allergy', async () => {
