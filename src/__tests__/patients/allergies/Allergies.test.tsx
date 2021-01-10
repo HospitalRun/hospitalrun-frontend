@@ -1,7 +1,7 @@
-import { render as rtlRender, screen, within, waitFor } from '@testing-library/react'
+import { render, screen, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -27,11 +27,6 @@ const expectedPatient = {
 const newAllergy = 'allergy3'
 let store: any
 
-type WrapperProps = {
-  // eslint-disable-next-line react/require-default-props
-  children?: ReactNode
-}
-
 const setup = async (
   patient = expectedPatient,
   permissions = [Permissions.AddAllergy],
@@ -43,14 +38,13 @@ const setup = async (
   store = mockStore({ patient: { patient }, user: { permissions } } as any)
   history.push(route)
 
-  function Wrapper({ children }: WrapperProps) {
-    return (
-      <Router history={history}>
-        <Provider store={store}>{children}</Provider>
-      </Router>
-    )
-  }
-  return rtlRender(<Allergies patient={patient} />, { wrapper: Wrapper })
+  return render(
+    <Router history={history}>
+      <Provider store={store}>
+        <Allergies patient={patient} />
+      </Provider>
+    </Router>,
+  )
 }
 
 describe('Allergies', () => {
@@ -115,7 +109,7 @@ describe('Allergies', () => {
         }),
       )
 
-      expect(await screen.findByText(newAllergy)).toBeInTheDocument()
+      expect(await screen.findByRole('button', { name: newAllergy })).toBeInTheDocument()
     })
   })
 
