@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -15,6 +15,18 @@ import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
+
+const expectedMedication = ({
+  id: 'medicationId',
+  patientId: 'patientId',
+  requestedOn: new Date().toISOString(),
+  medication: 'medication',
+  status: 'draft',
+  intent: 'order',
+  priority: 'routine',
+  quantity: { value: 1, unit: 'unit' },
+  notes: 'medication notes',
+} as unknown) as Medication
 
 describe('Medications', () => {
   const setup = (route: string, permissions: Permissions[] = []) => {
@@ -33,17 +45,7 @@ describe('Medications', () => {
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
       medication: {
-        medication: ({
-          id: 'medicationId',
-          patientId: 'patientId',
-          requestedOn: new Date().toISOString(),
-          medication: 'medication',
-          status: 'draft',
-          intent: 'order',
-          priority: 'routine',
-          quantity: { value: 1, unit: 'unit' },
-          notes: 'medication notes',
-        } as unknown) as Medication,
+        medication: expectedMedication,
         patient: { id: 'patientId', fullName: 'some name' },
         error: {},
       },
@@ -63,29 +65,33 @@ describe('Medications', () => {
   describe('routing', () => {
     describe('/medications/new', () => {
       it('should render the new medication request screen when /medications/new is accessed', () => {
-        const { container } = setup('/medications/new', [Permissions.RequestMedication])
+        setup('/medications/new', [Permissions.RequestMedication])
 
-        expect(container.querySelector('form')).toBeInTheDocument()
+        expect(screen.getByRole('form', { name: /medication request form/i })).toBeInTheDocument()
       })
 
       it('should not navigate to /medications/new if the user does not have RequestMedication permissions', () => {
-        const { container } = setup('/medications/new')
+        setup('/medications/new')
 
-        expect(container.querySelector('form')).not.toBeInTheDocument()
+        expect(
+          screen.queryByRole('form', { name: /medication request form/i }),
+        ).not.toBeInTheDocument()
       })
     })
 
     describe('/medications/:id', () => {
       it('should render the view medication screen when /medications/:id is accessed', async () => {
-        const { container } = setup('/medications/1234', [Permissions.ViewMedication])
+        setup('/medications/1234', [Permissions.ViewMedication])
 
-        expect(container).toHaveTextContent(/medications.medication.status/i)
+        expect(screen.getByRole('heading', { name: expectedMedication.status })).toBeInTheDocument()
       })
 
       it('should not navigate to /medications/:id if the user does not have ViewMedication permissions', async () => {
-        const { container } = setup('/medications/1234')
+        setup('/medications/1234')
 
-        expect(container).not.toHaveTextContent(/medications.medication.status/i)
+        expect(
+          screen.queryByRole('heading', { name: expectedMedication.status }),
+        ).not.toBeInTheDocument()
       })
     })
   })
