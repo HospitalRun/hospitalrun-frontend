@@ -124,7 +124,7 @@ const NewMedicationRequest = () => {
       {status === 'error' && (
         <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
       )}
-      <form>
+      <form aria-label="Medication Request form">
         <div className="form-group patient-typeahead">
           <Label htmlFor="patientTypeahead" isRequired text={t('medications.medication.patient')} />
           <Typeahead
