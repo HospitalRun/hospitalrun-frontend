@@ -141,7 +141,7 @@ describe('New Lab Request', () => {
       const { expectedVisits } = setup()
 
       const patientTypeahead = screen.getByPlaceholderText(/labs.lab.patient/i)
-      const visitsInput = within(screen.getByTestId('visit-field')).getByRole('combobox')
+      const visitsInput = within(screen.getByTestId('visitSelect')).getByRole('combobox')
       userEvent.type(patientTypeahead, 'Jim Bob')
       userEvent.click(await screen.findByText(/Jim Bob/i))
       expect(patientTypeahead).toHaveDisplayValue(/Jim Bob/i)
