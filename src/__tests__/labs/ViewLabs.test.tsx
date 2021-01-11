@@ -30,7 +30,7 @@ const setup = (permissions: Permissions[] = []) => {
   } as Lab
 
   jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
-  jest.spyOn(LabRepository, 'search')
+  // jest.spyOn(LabRepository, 'search')
 
   const history = createMemoryHistory()
 
@@ -125,31 +125,25 @@ describe('View Labs', () => {
   })
 
   describe('search functionality', () => {
-    it.only('should search for labs after the search text has not changed for 500 milliseconds', async (): Promise<void> => {
+    it('should search for labs after the search text has not changed for 500 milliseconds', async (): Promise<void> => {
       const expectedLab2 = {
         code: 'L-5678',
         id: '5678',
-        type: 'another type',
+        type: 'another type 2 phaser',
         patient: 'patientIdB',
         status: 'requested',
         requestedOn: '2020-03-30T04:43:20.102Z',
       } as Lab
-      const expectedSearchText = 'Picard'
       const { expectedLab } = setup([Permissions.ViewLabs, Permissions.RequestLab])
-      jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab2])
+      jest.spyOn(LabRepository, 'search').mockResolvedValue([expectedLab2])
 
       expect(await screen.findByRole('cell', { name: expectedLab.code })).toBeInTheDocument()
 
-      await userEvent.type(
-        screen.getByRole('textbox', { name: /labs.search/i }),
-        expectedSearchText,
-        {
-          delay: 100,
-        },
-      )
+      await userEvent.type(screen.getByRole('textbox', { name: /labs.search/i }), 'Picard', {
+        delay: 100,
+      })
       expect(screen.getByRole('textbox', { name: /labs.search/i })).toHaveDisplayValue(/picard/i)
-
-      expect(screen.getByText(/another/i)).toBeInTheDocument()
+      expect(await screen.findByText(/phaser/i)).toBeInTheDocument()
       expect(screen.queryByRole('cell', { name: expectedLab.code })).not.toBeInTheDocument()
     })
   })
