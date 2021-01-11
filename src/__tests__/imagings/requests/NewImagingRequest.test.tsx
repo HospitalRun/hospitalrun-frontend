@@ -47,7 +47,7 @@ describe('New Imaging Request', () => {
   }
 
   describe('form layout', () => {
-    it('Patient input field w/ label', () => {
+    it('Renders a patient input field with correct label', () => {
       setup()
       const imgPatientInput = screen.getByPlaceholderText(/imagings\.imaging\.patient/i)
 
@@ -57,7 +57,7 @@ describe('New Imaging Request', () => {
       expect(imgPatientInput).toHaveDisplayValue('Cmdr. Data')
     })
 
-    it('Render a dropdown list of visits', async () => {
+    it('Renders a dropdown list of visits', async () => {
       setup()
       const dropdownVisits = screen.getAllByPlaceholderText('-- Choose --')[0]
       expect(screen.getByText(/patient\.visits\.label/i)).toBeInTheDocument()
@@ -68,7 +68,7 @@ describe('New Imaging Request', () => {
       expect(dropdownVisits.getAttribute('aria-expanded')).toBe('true')
     })
 
-    it('Render a image type input box', async () => {
+    it('Renders an image type input box', async () => {
       setup()
       const imgTypeInput = screen.getByPlaceholderText(/imagings\.imaging\.type/i)
       expect(screen.getByLabelText(/imagings\.imaging\.type/i)).toBeInTheDocument()
@@ -77,7 +77,7 @@ describe('New Imaging Request', () => {
       expect(imgTypeInput).toHaveDisplayValue('tricorder imaging')
     })
 
-    it('Render a status types select', async () => {
+    it('Renders a status types select input field', async () => {
       setup()
       const dropdownStatusTypes = screen.getAllByPlaceholderText('-- Choose --')[1]
       expect(screen.getByText(/patient\.visits\.label/i)).toBeInTheDocument()
@@ -97,7 +97,7 @@ describe('New Imaging Request', () => {
       ).toBe(true)
     })
 
-    it('Render a notes text field', async () => {
+    it('Renders a notes text field', async () => {
       setup()
       const notesInputField = screen.getByRole('textbox', {
         name: /imagings\.imaging\.notes/i,
