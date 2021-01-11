@@ -49,7 +49,7 @@ describe('HospitalRun', () => {
         const { store } = setup('/appointments', [Permissions.ReadAppointments])
 
         expect(
-          screen.getByRole('button', { name: /scheduling.appointments.new/i }),
+          screen.getByRole('heading', { name: /scheduling\.appointments\.label/i }),
         ).toBeInTheDocument()
 
         expect(store.getActions()).toContainEqual(
