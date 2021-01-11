@@ -34,7 +34,7 @@ describe('ViewAllergy', () => {
     await waitFor(() => {
       expect(
         screen.getByRole('textbox', { name: /patient.allergies.allergyName/i }),
-      ).toBeInTheDocument()
+      ).toHaveDisplayValue('cats')
     })
   })
 })
