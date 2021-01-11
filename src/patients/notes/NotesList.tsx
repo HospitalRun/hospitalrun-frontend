@@ -40,7 +40,9 @@ const NotesList = (props: Props) => {
           onClick={() => history.push(`/patients/${patientId}/notes/${note.id}`)}
         >
           <p className="ref__note-item-date">{new Date(note.date).toLocaleString()}</p>
-          <p className="ref__note-item-text">{note.text}</p>
+          <p role="listitem" className="ref__note-item-text">
+            {note.text}
+          </p>
         </ListItem>
       ))}
     </List>
