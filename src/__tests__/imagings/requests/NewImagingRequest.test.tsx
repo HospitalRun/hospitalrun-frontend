@@ -19,6 +19,7 @@ import ImagingRepository from '../../../shared/db/ImagingRepository'
 import Imaging from '../../../shared/model/Imaging'
 import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
+import { UserState, LoginError } from '../../../user/user-slice'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
@@ -35,7 +36,13 @@ describe('New Imaging Request', () => {
 
     history = createMemoryHistory()
     history.push(`/imaging/new`)
-    const store = mockStore({} as any)
+    const store = mockStore({
+      user: {
+        fullName: 'test',
+        permissions: [],
+        loginError: {} as LoginError,
+      } as UserState,
+    } as any)
 
     let wrapper: any
     await act(async () => {
