@@ -90,17 +90,20 @@ describe('Care Goals Tab', () => {
 
     const modal = await screen.findByRole('dialog')
 
-    userEvent.type(within(modal).getAllByRole('textbox')[0], expectedCareGoal.description)
     userEvent.type(
-      within(modal).getAllByRole('combobox')[1],
+      screen.getByLabelText(/patient\.careGoal\.description/i),
+      expectedCareGoal.description,
+    )
+    userEvent.type(
+      within(screen.getByTestId('statusSelect')).getByRole('combobox'),
       `${selectAll}${expectedCareGoal.status}${arrowDown}${enter}`,
     )
     userEvent.type(
-      within(modal).getAllByRole('textbox')[4],
+      within(screen.getByTestId('startDateDatePicker')).getByRole('textbox'),
       `${selectAll}${format(expectedCareGoal.startDate, 'MM/dd/yyyy')}${enter}`,
     )
     userEvent.type(
-      within(modal).getAllByRole('textbox')[5],
+      within(screen.getByTestId('dueDateDatePicker')).getByRole('textbox'),
       `${selectAll}${format(expectedCareGoal.dueDate, 'MM/dd/yyyy')}${enter}`,
     )
 
@@ -115,16 +118,11 @@ describe('Care Goals Tab', () => {
       },
     )
 
-    expect(
-      await screen.findByRole('cell', { name: expectedCareGoal.description }),
-    ).toBeInTheDocument()
-    expect(await screen.findByRole('cell', { name: expectedCareGoal.status })).toBeInTheDocument()
-    expect(
-      await screen.findByRole('cell', { name: format(expectedCareGoal.startDate, 'yyyy-MM-dd') }),
-    ).toBeInTheDocument()
-    expect(
-      await screen.findByRole('cell', { name: format(expectedCareGoal.dueDate, 'yyyy-MM-dd') }),
-    ).toBeInTheDocument()
+    const cells = await screen.findAllByRole('cell')
+    expect(cells[0]).toHaveTextContent(expectedCareGoal.description)
+    expect(cells[1]).toHaveTextContent(format(expectedCareGoal.startDate, 'yyyy-MM-dd'))
+    expect(cells[2]).toHaveTextContent(format(expectedCareGoal.dueDate, 'yyyy-MM-dd'))
+    expect(cells[3]).toHaveTextContent(expectedCareGoal.status)
   }, 30000)
 
   it('should open and close the modal when the add care goal and close buttons are clicked', async () => {
@@ -140,16 +138,14 @@ describe('Care Goals Tab', () => {
   })
 
   it('should render care goal table when on patients/:id/care-goals', async () => {
-    const { container } = setup('/patients/123/care-goals', [Permissions.ReadCareGoal])
+    setup('/patients/123/care-goals', [Permissions.ReadCareGoal])
 
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
   })
 
   it('should render care goal view when on patients/:id/care-goals/:careGoalId', async () => {
     setup('/patients/123/care-goals/456', [Permissions.ReadCareGoal], ViewWrapper)
 
-    expect(await screen.findByRole('form')).toBeInTheDocument()
+    expect(await screen.findByLabelText('care-goal-form')).toBeInTheDocument()
   })
 })

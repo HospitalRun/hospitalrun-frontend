@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent, { specialChars } from '@testing-library/user-event'
 import addMonths from 'date-fns/addMonths'
 import format from 'date-fns/format'
@@ -73,7 +73,7 @@ describe('Care Goal Form', () => {
     setup()
 
     expect(screen.getByText(/patient.careGoal.priority.label/i)).toBeInTheDocument()
-    const priority = screen.getByDisplayValue(/patient.careGoal.priority.medium/i)
+    const priority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
     expect(priority).toBeInTheDocument()
 
     userEvent.click(priority) // display popup with the options
@@ -90,7 +90,7 @@ describe('Care Goal Form', () => {
     const expectedPriority = 'high'
     const { onCareGoalChangeSpy } = setup(false, false)
 
-    const priority = screen.getAllByRole('combobox')[0]
+    const priority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
     userEvent.type(priority, `${expectedPriority}${arrowDown}${enter}`)
 
     expect(priority).toHaveDisplayValue([`patient.careGoal.priority.${expectedPriority}`])
@@ -103,7 +103,7 @@ describe('Care Goal Form', () => {
 
     expect(screen.getByText(/patient.careGoal.status/i)).toBeInTheDocument()
 
-    const status = screen.getByDisplayValue(careGoal.status)
+    const status = within(screen.getByTestId('statusSelect')).getByRole('combobox')
     expect(status).toBeInTheDocument()
     expect(status).toHaveValue(careGoal.status)
 
@@ -121,7 +121,7 @@ describe('Care Goal Form', () => {
     const expectedStatus = CareGoalStatus.OnHold
     const { onCareGoalChangeSpy } = setup(false, false)
 
-    const status = screen.getAllByRole('combobox')[1]
+    const status = within(screen.getByTestId('statusSelect')).getByRole('combobox')
     userEvent.type(status, `${expectedStatus}${arrowDown}${enter}`)
 
     expect(onCareGoalChangeSpy).toHaveBeenCalledWith({ status: expectedStatus })
@@ -132,7 +132,9 @@ describe('Care Goal Form', () => {
 
     expect(screen.getByText(/patient.careGoal.achievementStatus/i)).toBeInTheDocument()
 
-    const achievementStatus = screen.getByDisplayValue(careGoal.achievementStatus)
+    const achievementStatus = within(screen.getByTestId('achievementStatusSelect')).getByRole(
+      'combobox',
+    )
     expect(achievementStatus).toBeInTheDocument()
     expect(achievementStatus).toHaveValue(careGoal.achievementStatus)
   })
@@ -141,7 +143,7 @@ describe('Care Goal Form', () => {
     const expectedAchievementStatus = CareGoalAchievementStatus.Improving
     const { onCareGoalChangeSpy } = setup(false, false)
 
-    const status = screen.getAllByRole('combobox')[2]
+    const status = within(screen.getByTestId('achievementStatusSelect')).getByRole('combobox')
     userEvent.type(status, `${expectedAchievementStatus}${arrowDown}${enter}`)
 
     expect(onCareGoalChangeSpy).toHaveBeenCalledWith({
@@ -153,7 +155,7 @@ describe('Care Goal Form', () => {
     setup()
 
     expect(screen.getByText(/patient.careGoal.startDate/i)).toBeInTheDocument()
-    const startDatePicker = screen.getAllByRole('textbox')[4]
+    const startDatePicker = within(screen.getByTestId('startDateDatePicker')).getByRole('textbox')
     expect(startDatePicker).toBeInTheDocument()
     expect(startDatePicker).toHaveValue(format(startDate, 'MM/dd/y'))
   })
@@ -162,17 +164,17 @@ describe('Care Goal Form', () => {
     const { onCareGoalChangeSpy } = setup()
     const expectedDate = '12/31/2050'
 
-    const dueDatePicker = screen.getAllByRole('textbox')[4]
-    userEvent.type(dueDatePicker, `{selectall}${expectedDate}{enter}`)
+    const startDatePicker = within(screen.getByTestId('startDateDatePicker')).getByRole('textbox')
+    userEvent.type(startDatePicker, `{selectall}${expectedDate}{enter}`)
     expect(onCareGoalChangeSpy).toHaveBeenCalled()
-    expect(dueDatePicker).toHaveDisplayValue(expectedDate)
+    expect(startDatePicker).toHaveDisplayValue(expectedDate)
   })
 
   it('should render a due date picker', () => {
     setup()
 
     expect(screen.getByText(/patient.careGoal.dueDate/i)).toBeInTheDocument()
-    const dueDatePicker = screen.getAllByRole('textbox')[5]
+    const dueDatePicker = within(screen.getByTestId('dueDateDatePicker')).getByRole('textbox')
     expect(dueDatePicker).toBeInTheDocument()
     expect(dueDatePicker).toHaveValue(format(dueDate, 'MM/dd/y'))
   })
@@ -181,7 +183,7 @@ describe('Care Goal Form', () => {
     const { onCareGoalChangeSpy } = setup()
     const expectedDate = '12/31/2050'
 
-    const dueDatePicker = screen.getAllByRole('textbox')[5]
+    const dueDatePicker = within(screen.getByTestId('dueDateDatePicker')).getByRole('textbox')
     userEvent.type(dueDatePicker, `{selectall}${expectedDate}{enter}`)
     expect(onCareGoalChangeSpy).toHaveBeenCalled()
     expect(dueDatePicker).toHaveDisplayValue(expectedDate)
@@ -213,11 +215,13 @@ describe('Care Goal Form', () => {
     setup(true)
 
     const descriptionInput = screen.getByLabelText(/patient\.careGoal\.description/i)
-    const priority = screen.getByDisplayValue(/patient.careGoal.priority.medium/i)
-    const status = screen.getAllByRole('combobox')[2]
-    const achievementStatus = screen.getByDisplayValue(careGoal.achievementStatus)
-    const startDatePicker = screen.getAllByRole('textbox')[4]
-    const dueDatePicker = screen.getAllByRole('textbox')[5]
+    const priority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
+    const status = within(screen.getByTestId('statusSelect')).getByRole('combobox')
+    const achievementStatus = within(screen.getByTestId('achievementStatusSelect')).getByRole(
+      'combobox',
+    )
+    const startDatePicker = within(screen.getByTestId('startDateDatePicker')).getByRole('textbox')
+    const dueDatePicker = within(screen.getByTestId('dueDateDatePicker')).getByRole('textbox')
     const noteInput = screen.getByRole('textbox', {
       name: /patient\.caregoal\.note/i,
     })
@@ -249,11 +253,13 @@ describe('Care Goal Form', () => {
     const descriptionInput = screen.getByRole('textbox', {
       name: /this is a required input/i,
     })
-    const priority = screen.getAllByRole('combobox')[0]
-    const status = screen.getAllByRole('combobox')[1]
-    const achievementStatus = screen.getAllByRole('combobox')[2]
-    const startDatePicker = screen.getAllByRole('textbox')[1]
-    const dueDatePicker = screen.getAllByRole('textbox')[2]
+    const priority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
+    const status = within(screen.getByTestId('statusSelect')).getByRole('combobox')
+    const achievementStatus = within(screen.getByTestId('achievementStatusSelect')).getByRole(
+      'combobox',
+    )
+    const startDatePicker = within(screen.getByTestId('startDateDatePicker')).getByRole('textbox')
+    const dueDatePicker = within(screen.getByTestId('dueDateDatePicker')).getByRole('textbox')
     const noteInput = screen.getByRole('textbox', {
       name: /patient\.caregoal\.note/i,
     })

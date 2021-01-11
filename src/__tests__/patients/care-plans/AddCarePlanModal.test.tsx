@@ -74,11 +74,11 @@ describe('Add Care Plan Modal', () => {
 
     setup()
 
-    const condition = screen.getAllByRole('combobox')[0]
+    const condition = within(screen.getByTestId('conditionSelect')).getByRole('combobox')
     await selectEvent.select(condition, `too skinny`)
 
-    const title = screen.getByPlaceholderText(/patient\.careplan\.title/i)
-    const description = screen.getAllByRole('textbox')[1]
+    const title = screen.getByLabelText(/patient\.careplan\.title/i)
+    const description = screen.getByLabelText(/patient\.careplan\.description/i)
 
     userEvent.type(title, expectedCarePlan.title)
     userEvent.type(description, expectedCarePlan.description)
