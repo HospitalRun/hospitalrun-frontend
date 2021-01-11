@@ -125,7 +125,7 @@ describe('View Labs', () => {
   })
 
   describe('search functionality', () => {
-    it('should search for labs after the search text has not changed for 500 milliseconds', async (): Promise<void> => {
+    it.only('should search for labs after the search text has not changed for 500 milliseconds', async (): Promise<void> => {
       const expectedLab2 = {
         code: 'L-5678',
         id: '5678',
@@ -140,12 +140,17 @@ describe('View Labs', () => {
 
       expect(await screen.findByRole('cell', { name: expectedLab.code })).toBeInTheDocument()
 
-      userEvent.type(screen.getByRole('textbox', { name: /labs.search/i }), expectedSearchText)
-      await Promise.resolve(() =>
-        setTimeout(() => {
-          expect(screen.getByText(/picard/i)).toBeInTheDocument()
-        }, 500),
+      await userEvent.type(
+        screen.getByRole('textbox', { name: /labs.search/i }),
+        expectedSearchText,
+        {
+          delay: 100,
+        },
       )
+      expect(screen.getByRole('textbox', { name: /labs.search/i })).toHaveDisplayValue(/picard/i)
+
+      expect(screen.getByText(/another/i)).toBeInTheDocument()
+      expect(screen.queryByRole('cell', { name: expectedLab.code })).not.toBeInTheDocument()
     })
   })
 })
