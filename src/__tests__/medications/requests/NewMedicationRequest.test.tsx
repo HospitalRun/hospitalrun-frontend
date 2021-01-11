@@ -48,9 +48,7 @@ describe('New Medication Request', () => {
       setup()
 
       expect(screen.getByText(/medications\.medication\.medication/i)).toBeInTheDocument()
-      expect(
-        screen.getByPlaceholderText(/medications\.medication\.medication/i),
-      ).toBeInTheDocument()
+      expect(screen.getByLabelText(/medications\.medication\.medication/i)).toBeInTheDocument()
     })
 
     it('render medication request status options', async () => {
@@ -179,13 +177,13 @@ describe('New Medication Request', () => {
     it('should save the medication request and navigate to "/medications/:id"', async () => {
       const { history } = setup()
       const patient = screen.getByPlaceholderText(/medications\.medication\.patient/i)
-      const medication = screen.getByPlaceholderText(/medications\.medication\.medication/i)
+      const medication = screen.getByLabelText(/medications\.medication\.medication/i)
       const medicationNotes = screen.getByRole('textbox', {
         name: /medications\.medication\.notes/i,
       })
-      const medStatus = screen.getAllByPlaceholderText('-- Choose --')[0]
-      const medicationIntent = screen.getAllByPlaceholderText('-- Choose --')[1]
-      const medicationPriority = screen.getAllByPlaceholderText('-- Choose --')[2]
+      const medStatus = within(screen.getByTestId('statusSelect')).getByRole('combobox')
+      const medicationIntent = within(screen.getByTestId('intentSelect')).getByRole('combobox')
+      const medicationPriority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
 
       userEvent.type(patient, 'Bruce Wayne')
       userEvent.type(medication, 'Ibuprofen')
