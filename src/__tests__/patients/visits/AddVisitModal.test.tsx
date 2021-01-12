@@ -1,4 +1,4 @@
-import { screen, render as rtlRender, fireEvent, waitFor } from '@testing-library/react'
+import { screen, render, fireEvent, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -26,32 +26,26 @@ describe('Add Visit Modal', () => {
   } as Patient
 
   const onCloseSpy = jest.fn()
-  const render = () => {
+  const setup = () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
     const history = createMemoryHistory()
 
-    // eslint-disable-next-line react/prop-types
-    const Wrapper: React.FC = ({ children }) => <Router history={history}>{children}</Router>
-
-    const results = rtlRender(
-      <AddVisitModal show onCloseButtonClick={onCloseSpy} patientId={patient.id} />,
-      {
-        wrapper: Wrapper,
-      },
+    return render(
+      <Router history={history}>
+        <AddVisitModal show onCloseButtonClick={onCloseSpy} patientId={patient.id} />
+      </Router>,
     )
-
-    return results
   }
 
   it('should render a modal and within a form', () => {
-    render()
+    setup()
 
     expect(screen.getByRole('dialog').querySelector('form')).toBeInTheDocument()
   })
 
   it('should call the on close function when the cancel button is clicked', () => {
-    render()
+    setup()
     userEvent.click(
       screen.getByRole('button', {
         name: /close/i,
@@ -61,14 +55,16 @@ describe('Add Visit Modal', () => {
   })
 
   it('should save the visit when the save button is clicked', async () => {
-    render()
+    setup()
     const testPatient = patient.visits[0]
-    const modal = screen.getByRole('dialog')
 
     /* Date Pickers */
-    const modalDatePickerWrappers = modal.querySelectorAll('.react-datepicker__input-container')
-    const startDateInput = modalDatePickerWrappers[0].querySelector('input') as HTMLInputElement
-    const endDateInput = modalDatePickerWrappers[1].querySelector('input') as HTMLInputElement
+    const startDateInput = within(screen.getByTestId('startDateTimeDateTimePicker')).getByRole(
+      'textbox',
+    )
+    const endDateInput = within(screen.getByTestId('endDateTimeDateTimePicker')).getByRole(
+      'textbox',
+    )
 
     fireEvent.change(startDateInput, { target: { value: testPatient.startDateTime } })
     fireEvent.change(endDateInput, { target: { value: testPatient.endDateTime } })
@@ -80,7 +76,7 @@ describe('Add Visit Modal', () => {
     const statusInput = screen.getByRole('combobox')
     userEvent.type(statusInput, `${testPatient.status}{arrowdown}{enter}`)
 
-    const textareaReason = screen.getAllByRole('textbox')[4]
+    const textareaReason = screen.getByLabelText(/patient\.visits\.reason/i)
     userEvent.type(textareaReason, testPatient.reason)
 
     const locationInput = screen.getByLabelText(/patient.visits.location/i)
