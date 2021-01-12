@@ -6,29 +6,30 @@ import { useParams, useHistory, useLocation } from 'react-router-dom'
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
-import { RootState } from '../../shared/store'
-import Permissions from '../../shared/model/Permissions'
 import Note from '../../shared/model/Note'
+import Permissions from '../../shared/model/Permissions'
+import NewNoteModal from '../../shared/notes/NewNoteModal'
+import { RootState } from '../../shared/store'
 import { uuid } from '../../shared/util/uuid'
-import ViewIncidentDetails from './ViewIncidentDetails'
-import useIncident from '../hooks/useIncident'
-import useResolveIncident from '../hooks/useResolveIncident'
 import useAddIncidentNote from '../hooks/useAddIncidentNote'
 import useDeleteIncidentNote from '../hooks/useDeleteIncidentNote'
+import useIncident from '../hooks/useIncident'
+import useResolveIncident from '../hooks/useResolveIncident'
 import NotesTable from './NotesTable'
-import NewNoteModal from '../../shared/notes/NewNoteModal'
+import ViewIncidentDetails from './ViewIncidentDetails'
 
 const ViewIncident = () => {
   const { id } = useParams() as any
+  const location = useLocation()
+  const history = useHistory()
+  const { t } = useTranslator()
   const { permissions, user } = useSelector((root: RootState) => root.user)
   const { data, isLoading } = useIncident(id)
   const [mutate] = useResolveIncident()
   const [mutateAddNote] = useAddIncidentNote()
   const [deleteNote] = useDeleteIncidentNote()
-  const location = useLocation()
-  const history = useHistory()
-  const { t } = useTranslator()
 
+  const updateTitle = useUpdateTitle()
   const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
   const newNoteState = {
     id: uuid(),
@@ -37,9 +38,6 @@ const ViewIncident = () => {
     date: '',
   }
   const [editedNote, setEditedNote] = useState<Note>(newNoteState)
-
-  const updateTitle = useUpdateTitle()
-
   useAddBreadcrumbs([
     {
       i18nKey: 'incidents.reports.view',
@@ -57,13 +55,13 @@ const ViewIncident = () => {
     setShowNoteModal(false)
   }
 
-  if (id === undefined || permissions === undefined) {
-    return <></>
-  }
-
   const onResolve = async () => {
     await mutate(data)
     history.push('/incidents')
+  }
+
+  if (id === undefined || permissions === undefined) {
+    return <></>
   }
 
   return (
@@ -89,7 +87,7 @@ const ViewIncident = () => {
           }}
           onDeleteNote={async (note: Note) => {
             await deleteNote({
-              note: note,
+              note,
               incidentId: id,
             })
             window.location.reload()
@@ -122,7 +120,7 @@ const ViewIncident = () => {
         setNote={setEditedNote}
         onSave={async (note: Note) => {
           await mutateAddNote({
-            note: note,
+            note,
             incidentId: id,
           })
           setEditedNote(newNoteState)
