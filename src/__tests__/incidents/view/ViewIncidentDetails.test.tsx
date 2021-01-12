@@ -10,7 +10,6 @@ import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcru
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
-import Permissions from '../../../shared/model/Permissions'
 
 describe('View Incident Details', () => {
   const expectedDate = new Date(2020, 5, 1, 19, 48)
@@ -30,7 +29,7 @@ describe('View Incident Details', () => {
     date: expectedDate.toISOString(),
   } as Incident
 
-  const setup = async (mockIncident: Incident, permissions: Permissions[]) => {
+  const setup = async (mockIncident: Incident) => {
     jest.resetAllMocks()
     Date.now = jest.fn(() => expectedResolveDate.valueOf())
     jest.spyOn(breadcrumbUtil, 'default')
@@ -46,7 +45,7 @@ describe('View Incident Details', () => {
       wrapper = await mount(
         <ButtonBarProvider.ButtonBarProvider>
           <Router history={history}>
-            <ViewIncidentDetails incidentId="1234" permissions={permissions} />
+            <ViewIncidentDetails incident={mockIncident} isLoading={false} />
           </Router>
         </ButtonBarProvider.ButtonBarProvider>,
       )
@@ -56,9 +55,8 @@ describe('View Incident Details', () => {
   }
 
   describe('view details', () => {
-    
     it('should render the date of incident', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const dateOfIncidentFormGroup = wrapper.find('.incident-date')
       expect(dateOfIncidentFormGroup.find('h4').text()).toEqual('incidents.reports.dateOfIncident')
@@ -66,7 +64,7 @@ describe('View Incident Details', () => {
     })
 
     it('should render the status', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const dateOfIncidentFormGroup = wrapper.find('.incident-status')
       expect(dateOfIncidentFormGroup.find('h4').text()).toEqual('incidents.reports.status')
@@ -74,7 +72,7 @@ describe('View Incident Details', () => {
     })
 
     it('should render the reported by', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const dateOfIncidentFormGroup = wrapper.find('.incident-reported-by')
       expect(dateOfIncidentFormGroup.find('h4').text()).toEqual('incidents.reports.reportedBy')
@@ -82,7 +80,7 @@ describe('View Incident Details', () => {
     })
 
     it('should render the reported on', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const dateOfIncidentFormGroup = wrapper.find('.incident-reported-on')
       expect(dateOfIncidentFormGroup.find('h4').text()).toEqual('incidents.reports.reportedOn')
@@ -95,7 +93,7 @@ describe('View Incident Details', () => {
         status: 'resolved',
         resolvedOn: '2020-07-10 06:33 PM',
       } as Incident
-      const { wrapper } = await setup(mockIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(mockIncident)
 
       const dateOfResolutionFormGroup = wrapper.find('.incident-resolved-on')
       expect(dateOfResolutionFormGroup.find('h4').text()).toEqual('incidents.reports.resolvedOn')
@@ -103,14 +101,14 @@ describe('View Incident Details', () => {
     })
 
     it('should not render the resolved on if incident status is not resolved', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const completedOn = wrapper.find('.incident-resolved-on')
       expect(completedOn).toHaveLength(0)
     })
 
     it('should render the department', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const departmentInput = wrapper.findWhere((w: any) => w.prop('name') === 'department')
       expect(departmentInput.prop('label')).toEqual('incidents.reports.department')
@@ -118,7 +116,7 @@ describe('View Incident Details', () => {
     })
 
     it('should render the category', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const categoryInput = wrapper.findWhere((w: any) => w.prop('name') === 'category')
       expect(categoryInput.prop('label')).toEqual('incidents.reports.category')
@@ -126,7 +124,7 @@ describe('View Incident Details', () => {
     })
 
     it('should render the category item', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const categoryItemInput = wrapper.findWhere((w: any) => w.prop('name') === 'categoryItem')
       expect(categoryItemInput.prop('label')).toEqual('incidents.reports.categoryItem')
@@ -134,25 +132,15 @@ describe('View Incident Details', () => {
     })
 
     it('should render the description', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const descriptionTextInput = wrapper.findWhere((w: any) => w.prop('name') === 'description')
       expect(descriptionTextInput.prop('label')).toEqual('incidents.reports.description')
       expect(descriptionTextInput.prop('value')).toEqual(expectedIncident.description)
     })
 
-    it('should display a resolve incident button if the incident is in a reported state', async () => {
-      const { wrapper } = await setup(expectedIncident, [
-        Permissions.ViewIncident,
-        Permissions.ResolveIncident,
-      ])
-
-      const buttons = wrapper.find(Button)
-      expect(buttons.at(0).text().trim()).toEqual('incidents.reports.resolve')
-    })
-
     it('should not display a resolve incident button if the user has no access ResolveIncident access', async () => {
-      const { wrapper } = await setup(expectedIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(expectedIncident)
 
       const resolveButton = wrapper.find(Button)
       expect(resolveButton).toHaveLength(0)
@@ -160,7 +148,7 @@ describe('View Incident Details', () => {
 
     it('should not display a resolve incident button if the incident is resolved', async () => {
       const mockIncident = { ...expectedIncident, status: 'resolved' } as Incident
-      const { wrapper } = await setup(mockIncident, [Permissions.ViewIncident])
+      const { wrapper } = await setup(mockIncident)
 
       const resolveButton = wrapper.find(Button)
       expect(resolveButton).toHaveLength(0)
@@ -169,10 +157,7 @@ describe('View Incident Details', () => {
 
   describe('on resolve', () => {
     it('should mark the status as resolved and fill in the resolved date with the current time', async () => {
-      const { wrapper, history } = await setup(expectedIncident, [
-        Permissions.ViewIncident,
-        Permissions.ResolveIncident,
-      ])
+      const { wrapper, history } = await setup(expectedIncident)
 
       const resolveButton = wrapper.find(Button).at(0)
       await act(async () => {

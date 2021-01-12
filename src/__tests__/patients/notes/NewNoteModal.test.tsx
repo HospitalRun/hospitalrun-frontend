@@ -5,11 +5,11 @@ import { act } from '@testing-library/react'
 import { mount } from 'enzyme'
 import React from 'react'
 
-import NewNoteModal from '../../../shared/notes/NewNoteModal'
 import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Note from '../../../shared/model/Note'
 import Patient from '../../../shared/model/Patient'
+import NewNoteModal from '../../../shared/notes/NewNoteModal'
 
 describe('New Note Modal', () => {
   const mockPatient = {
@@ -17,13 +17,11 @@ describe('New Note Modal', () => {
     givenName: 'someName',
   } as Patient
 
-
-  const mockNote : Note = {
-    id: "note id",
-    date: "note date",
-    text: "note text",
-    givenBy: "given by person"
-    
+  const mockNote: Note = {
+    id: 'note id',
+    date: 'note date',
+    text: 'note text',
+    givenBy: 'given by person',
   }
 
   const setup = (onCloseSpy = jest.fn(), onSaveSpy = jest.fn()) => {
@@ -108,7 +106,7 @@ describe('New Note Modal', () => {
   describe('on save', () => {
     it('should dispatch add note', async () => {
       const expectedNote = 'some note'
-      const onSaveSpy  = jest.fn()
+      const onSaveSpy = jest.fn()
       const { wrapper } = setup(jest.fn(), onSaveSpy)
       const noteTextField = wrapper.find(TextFieldWithLabelFormGroup)
 
@@ -127,7 +125,7 @@ describe('New Note Modal', () => {
       })
 
       expect(onSaveSpy).toHaveBeenCalledTimes(1)
-      expect(onSaveSpy).toHaveBeenCalledWith(mockNote) 
+      expect(onSaveSpy).toHaveBeenCalledWith(mockNote)
 
       // Does the form reset value back to blank?
       expect(noteTextField.prop('value')).toEqual('')
