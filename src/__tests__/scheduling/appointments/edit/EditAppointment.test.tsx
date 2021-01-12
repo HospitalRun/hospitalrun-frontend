@@ -63,18 +63,17 @@ describe('Edit Appointment', () => {
 
     history.push('/appointments/edit/123')
 
-    // eslint-disable-next-line react/prop-types
-    const Wrapper: React.FC = ({ children }) => (
+    return render(
       <Provider store={store}>
         <Router history={history}>
           <Route path="/appointments/edit/:id">
-            <TitleProvider>{children}</TitleProvider>
+            <TitleProvider>
+              <EditAppointment />
+            </TitleProvider>
           </Route>
         </Router>
-      </Provider>
+      </Provider>,
     )
-
-    return render(<EditAppointment />, { wrapper: Wrapper })
   }
 
   beforeEach(() => {

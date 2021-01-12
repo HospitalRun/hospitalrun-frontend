@@ -42,20 +42,19 @@ const setup = () => {
   const history = createMemoryHistory({ initialEntries: ['/patients/edit/123'] })
   const store = mockStore({ patient: { patient } } as any)
 
-  // eslint-disable-next-line react/prop-types
-  const Wrapper: React.FC = ({ children }) => (
-    <Provider store={store}>
-      <Router history={history}>
-        <Route path="/patients/edit/:id">
-          <titleUtil.TitleProvider>{children}</titleUtil.TitleProvider>
-        </Route>
-      </Router>
-    </Provider>
-  )
-
   return {
     history,
-    ...render(<EditPatient />, { wrapper: Wrapper }),
+    ...render(
+      <Provider store={store}>
+        <Router history={history}>
+          <Route path="/patients/edit/:id">
+            <titleUtil.TitleProvider>
+              <EditPatient />
+            </titleUtil.TitleProvider>
+          </Route>
+        </Router>
+      </Provider>,
+    ),
   }
 }
 

@@ -25,14 +25,12 @@ describe('Add Care Plan Modal', () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
     const history = createMemoryHistory()
-    // eslint-disable-next-line react/prop-types
-    const Wrapper: React.FC = ({ children }) => <Router history={history}>{children}</Router>
 
-    const result = render(
-      <AddCarePlanModal patient={patient} show onCloseButtonClick={onCloseSpy} />,
-      { wrapper: Wrapper },
+    return render(
+      <Router history={history}>
+        <AddCarePlanModal patient={patient} show onCloseButtonClick={onCloseSpy} />
+      </Router>,
     )
-    return result
   }
 
   beforeEach(() => {

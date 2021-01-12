@@ -54,24 +54,23 @@ describe('ViewPatient', () => {
       user: { permissions: [Permissions.ReadPatients, ...permissions] },
     } as any)
 
-    // eslint-disable-next-line react/prop-types
-    const Wrapper: React.FC = ({ children }) => (
-      <Provider store={store}>
-        <ButtonBarProvider>
-          <ButtonToolbar />
-          <Router history={history}>
-            <Route path="/patients/:id">
-              <TitleProvider>{children}</TitleProvider>
-            </Route>
-          </Router>
-        </ButtonBarProvider>
-      </Provider>
-    )
-
     return {
       history,
       store,
-      ...render(<ViewPatient />, { wrapper: Wrapper }),
+      ...render(
+        <Provider store={store}>
+          <ButtonBarProvider>
+            <ButtonToolbar />
+            <Router history={history}>
+              <Route path="/patients/:id">
+                <TitleProvider>
+                  <ViewPatient />
+                </TitleProvider>
+              </Route>
+            </Router>
+          </ButtonBarProvider>
+        </Provider>,
+      ),
     }
   }
 
@@ -89,7 +88,6 @@ describe('ViewPatient', () => {
     await waitFor(() => {
       expect(screen.getByText(/actions\.edit/i)).toBeInTheDocument()
     })
-    screen.logTestingPlaygroundURL()
   })
 
   it('should render an empty button toolbar if the user has only ReadPatients permissions', async () => {

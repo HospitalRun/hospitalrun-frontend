@@ -58,21 +58,21 @@ describe('New Appointment', () => {
 
     const history = createMemoryHistory({ initialEntries: ['/appointments/new'] })
 
-    const Wrapper: React.FC = ({ children }: any) => (
-      <ReactQueryConfigProvider config={noRetryConfig}>
-        <Provider store={mockStore({} as any)}>
-          <Router history={history}>
-            <TitleProvider>{children}</TitleProvider>
-          </Router>
-          <Toaster draggable hideProgressBar />
-        </Provider>
-      </ReactQueryConfigProvider>
-    )
-
     return {
       expectedAppointment,
       history,
-      ...render(<NewAppointment />, { wrapper: Wrapper }),
+      ...render(
+        <ReactQueryConfigProvider config={noRetryConfig}>
+          <Provider store={mockStore({} as any)}>
+            <Router history={history}>
+              <TitleProvider>
+                <NewAppointment />
+              </TitleProvider>
+            </Router>
+            <Toaster draggable hideProgressBar />
+          </Provider>
+        </ReactQueryConfigProvider>,
+      ),
     }
   }
 

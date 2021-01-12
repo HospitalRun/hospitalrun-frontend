@@ -55,26 +55,25 @@ const setup = (permissions = [Permissions.ReadAppointments], skipSpies = false) 
     },
   } as any)
 
-  // eslint-disable-next-line react/prop-types
-  const Wrapper: React.FC = ({ children }) => (
-    <Provider store={store}>
-      <Router history={history}>
-        <ButtonBarProvider>
-          <ButtonToolbar />
-          <Route path="/appointments/:id">
-            <TitleProvider>{children}</TitleProvider>
-          </Route>
-        </ButtonBarProvider>
-        <Toaster draggable hideProgressBar />
-      </Router>
-    </Provider>
-  )
-
   return {
     history,
     expectedAppointment,
     expectedPatient,
-    ...render(<ViewAppointment />, { wrapper: Wrapper }),
+    ...render(
+      <Provider store={store}>
+        <Router history={history}>
+          <ButtonBarProvider>
+            <ButtonToolbar />
+            <Route path="/appointments/:id">
+              <TitleProvider>
+                <ViewAppointment />
+              </TitleProvider>
+            </Route>
+          </ButtonBarProvider>
+          <Toaster draggable hideProgressBar />
+        </Router>
+      </Provider>,
+    ),
   }
 }
 
