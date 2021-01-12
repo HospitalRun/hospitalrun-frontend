@@ -1,4 +1,4 @@
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react'
+import { render, screen, within, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -13,8 +13,23 @@ import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
 import RelatedPerson from '../../../shared/model/RelatedPerson'
 import { RootState } from '../../../shared/store'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
+const patients = [
+  {
+    id: 'patient1',
+    fullName: 'fullName',
+    code: 'code1',
+  },
+  {
+    id: 'patient2',
+    fullName: 'fullName2',
+    givenName: 'Patient',
+    familyName: 'PatientFamily',
+    code: 'code2',
+  },
+] as Patient[]
 
 const setup = ({
   permissions = [Permissions.WritePatients, Permissions.ReadPatients],
@@ -34,15 +49,19 @@ const setup = ({
     id: '123001',
   } as Patient
 
-  jest
-    .spyOn(PatientRepository, 'find')
-    .mockImplementation((id: string) =>
-      id === expectedRelatedPerson.id
-        ? Promise.resolve(expectedRelatedPerson)
-        : Promise.resolve(expectedPatient),
-    )
+  jest.spyOn(PatientRepository, 'find').mockImplementation(async (id: string) => {
+    if (id === expectedRelatedPerson.id) {
+      return expectedRelatedPerson
+    }
+    if (id === expectedPatient.id) {
+      return expectedPatient
+    }
+    return patients[1]
+  })
   jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedPatient)
   jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
+  jest.spyOn(PatientRepository, 'search').mockResolvedValue(patients)
+  jest.spyOn(PatientRepository, 'count').mockResolvedValue(2)
 
   const history = createMemoryHistory({ initialEntries: ['/patients/123/relatedpersons'] })
   const store = mockStore({
@@ -93,6 +112,87 @@ describe('Related Persons Tab', () => {
 
       expect(await screen.findByRole('dialog')).toBeInTheDocument()
     })
+
+    it('should render a modal', async () => {
+      setup()
+
+      userEvent.click(await screen.findByRole('button', { name: /patient\.relatedPersons\.add/i }))
+      const modal = await screen.findByRole('dialog')
+
+      expect(modal).toBeInTheDocument()
+      expect(within(modal).getByPlaceholderText(/^patient.relatedPerson$/i)).toBeInTheDocument()
+
+      const relationshipTypeInput = within(modal).getByLabelText(
+        /^patient.relatedPersons.relationshipType$/i,
+      )
+      expect(relationshipTypeInput).toBeInTheDocument()
+      expect(relationshipTypeInput).not.toBeDisabled()
+      expect(within(modal).getByRole('button', { name: /close/i })).toBeInTheDocument()
+      expect(
+        within(modal).getByRole('button', { name: /patient.relatedPersons.add/i }),
+      ).toBeInTheDocument()
+    })
+
+    it('should render the error when there is an error saving', async () => {
+      setup()
+
+      userEvent.click(await screen.findByRole('button', { name: /patient\.relatedPersons\.add/i }))
+      const modal = await screen.findByRole('dialog')
+      const expectedErrorMessage = 'patient.relatedPersons.error.unableToAddRelatedPerson'
+      const expectedError = {
+        relatedPersonError: 'patient.relatedPersons.error.relatedPersonRequired',
+        relationshipTypeError: 'patient.relatedPersons.error.relationshipTypeRequired',
+      }
+      expectOneConsoleError(expectedError)
+
+      userEvent.click(within(modal).getByRole('button', { name: /patient.relatedPersons.add/i }))
+      expect(await screen.findByRole('alert')).toBeInTheDocument()
+      expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument()
+      expect(screen.getByText(/states.error/i)).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(/^patient.relatedPerson$/i)).toHaveClass('is-invalid')
+      expect(screen.getByLabelText(/^patient.relatedPersons.relationshipType$/i)).toHaveClass(
+        'is-invalid',
+      )
+      expect(screen.getByText(expectedError.relatedPersonError)).toBeInTheDocument()
+      expect(screen.getByText(expectedError.relationshipTypeError)).toBeInTheDocument()
+    })
+
+    it('should call the save function with the correct data', async () => {
+      setup()
+
+      userEvent.click(await screen.findByRole('button', { name: /patient\.relatedPersons\.add/i }))
+      const modal = await screen.findByRole('dialog')
+
+      await userEvent.type(
+        within(modal).getByPlaceholderText(/^patient.relatedPerson$/i),
+        patients[1].fullName as string,
+        { delay: 50 },
+      )
+      userEvent.click(await within(modal).findByText(/^fullname2/i))
+
+      userEvent.type(
+        within(modal).getByLabelText(/^patient.relatedPersons.relationshipType$/i),
+        'relationship',
+      )
+
+      userEvent.click(within(modal).getByRole('button', { name: /patient.relatedPersons.add/i }))
+
+      expect(await screen.findByRole('cell', { name: patients[1].givenName })).toBeInTheDocument()
+      expect(await screen.findByRole('cell', { name: patients[1].familyName })).toBeInTheDocument()
+      expect(await screen.findByRole('cell', { name: /relationship/i })).toBeInTheDocument()
+
+      // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
+      // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
+      //   expect.objectContaining({
+      //     relatedPersons: [
+      //       expect.objectContaining({
+      //         patientId: '456',
+      //         type: 'relationship',
+      //       }),
+      //     ],
+      //   }),
+      // )
+    }, 60000)
   })
 
   describe('Table', () => {
