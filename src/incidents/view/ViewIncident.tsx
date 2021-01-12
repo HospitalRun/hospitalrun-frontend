@@ -102,7 +102,7 @@ const ViewIncident = () => {
           <div className="row float-right">
             <div className="btn-group btn-group-lg mt-3">
               <Button
-                className="mr-2"
+                className="mr-2 report-incident-button"
                 onClick={onResolve}
                 color="primary"
                 key="incidents.reports.resolve"

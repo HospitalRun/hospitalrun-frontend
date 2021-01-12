@@ -138,43 +138,5 @@ describe('View Incident Details', () => {
       expect(descriptionTextInput.prop('label')).toEqual('incidents.reports.description')
       expect(descriptionTextInput.prop('value')).toEqual(expectedIncident.description)
     })
-
-    it('should not display a resolve incident button if the user has no access ResolveIncident access', async () => {
-      const { wrapper } = await setup(expectedIncident)
-
-      const resolveButton = wrapper.find(Button)
-      expect(resolveButton).toHaveLength(0)
-    })
-
-    it('should not display a resolve incident button if the incident is resolved', async () => {
-      const mockIncident = { ...expectedIncident, status: 'resolved' } as Incident
-      const { wrapper } = await setup(mockIncident)
-
-      const resolveButton = wrapper.find(Button)
-      expect(resolveButton).toHaveLength(0)
-    })
-  })
-
-  describe('on resolve', () => {
-    it('should mark the status as resolved and fill in the resolved date with the current time', async () => {
-      const { wrapper, history } = await setup(expectedIncident)
-
-      const resolveButton = wrapper.find(Button).at(0)
-      await act(async () => {
-        const onClick = resolveButton.prop('onClick') as any
-        await onClick()
-      })
-      wrapper.update()
-
-      expect(incidentRepositorySaveSpy).toHaveBeenCalledTimes(1)
-      expect(incidentRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          ...expectedIncident,
-          status: 'resolved',
-          resolvedOn: expectedResolveDate.toISOString(),
-        }),
-      )
-      expect(history.location.pathname).toEqual('/incidents')
-    })
   })
 })

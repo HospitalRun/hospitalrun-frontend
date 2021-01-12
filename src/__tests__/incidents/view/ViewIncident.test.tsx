@@ -23,6 +23,7 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('View Incident', () => {
+  let incidentRepositorySaveSpy: any
   const queryCache = new QueryCache()
   const mockedIncident: Incident = {
     id: '1234',
@@ -43,6 +44,9 @@ describe('View Incident', () => {
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(incident)
     const history = createMemoryHistory()
     history.push(`/incidents/1234`)
+    incidentRepositorySaveSpy = jest
+      .spyOn(IncidentRepository, 'saveOrUpdate')
+      .mockResolvedValue(mockedIncident)
 
     const store = mockStore({
       user: {
@@ -78,10 +82,33 @@ describe('View Incident', () => {
     queryCache.clear()
   })
 
-  it('should display a resolve incident button if the incident is in a reported state', async () => {
-    const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
+  it('should not display a resolve incident button if the user has no access ResolveIncident access', async () => {
+    const { wrapper } = await setup(
+      [Permissions.ViewIncident, Permissions.ResolveIncident],
+      mockedIncident,
+    )
 
-    const buttons = wrapper.find(Button)
+    const resolveButton = wrapper.find(Button)
+    expect(resolveButton).toHaveLength(0)
+  })
+
+  it('should not display a resolve incident button if the incident is resolved', async () => {
+    const mockIncident = { ...mockedIncident, status: 'resolved' } as Incident
+    const { wrapper } = await setup(
+      [Permissions.ViewIncident, Permissions.ResolveIncident],
+      mockIncident,
+    )
+
+    const resolveButton = wrapper.find(Button)
+    expect(resolveButton).toHaveLength(0)
+  })
+
+  it('should display a resolve incident button if the incident is in a reported state', async () => {
+    const { wrapper } = await setup(
+      [Permissions.ViewIncident, Permissions.ResolveIncident],
+      mockedIncident,
+    )
+    const buttons = wrapper.find('Button[color="primary"]')
     expect(buttons.at(0).text().trim()).toEqual('incidents.reports.resolve')
   })
 
@@ -107,5 +134,29 @@ describe('View Incident', () => {
     expect(breadcrumbUtil.default).toHaveBeenCalledWith([
       { i18nKey: 'incidents.reports.view', location: '/incidents/1234' },
     ])
+  })
+
+  it('should mark the status as resolved and fill in the resolved date with the current time', async () => {
+    const { wrapper, history } = await setup(
+      [Permissions.ViewIncident, Permissions.ResolveIncident],
+      mockedIncident,
+    )
+
+    const resolveButton = wrapper.find(Button).at(0)
+    await act(async () => {
+      const onClick = resolveButton.prop('onClick') as any
+      await onClick()
+    })
+    wrapper.update()
+
+    expect(incidentRepositorySaveSpy).toHaveBeenCalledTimes(1)
+    expect(incidentRepositorySaveSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ...mockedIncident,
+        status: 'resolved',
+        resolvedOn: expectedResolveDate.toISOString(),
+      }),
+    )
+    expect(history.location.pathname).toEqual('/incidents')
   })
 })
