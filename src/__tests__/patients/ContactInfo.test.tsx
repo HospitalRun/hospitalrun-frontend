@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react'
+import { screen, render, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -64,7 +64,7 @@ describe('Contact Info in its Editable mode', () => {
 
     expect(screen.getAllByRole('textbox')[1]).toHaveValue(`${data[0].value}`)
 
-    const selectInput = screen.getAllByPlaceholderText('-- Choose --')[0]
+    const selectInput = within(screen.getByTestId('NumberType0Select')).getByRole('combobox')
 
     expect(selectInput).toHaveValue('patient.contactInfoType.options.home')
   })
@@ -157,7 +157,11 @@ describe('Contact Info in its non-Editable mode', () => {
   it('should render an empty element if no data is present', () => {
     const { container } = setup()
 
-    expect(container.querySelectorAll('div').length).toBe(1)
+    expect(container).toMatchInlineSnapshot(`
+      <div>
+        <div />
+      </div>
+    `)
   })
 
   it('should render the labels if data is provided', () => {
@@ -170,15 +174,15 @@ describe('Contact Info in its non-Editable mode', () => {
     setup(data)
 
     const inputElement = screen.getAllByRole('textbox')[1]
-    const selectInput = screen.getAllByPlaceholderText('-- Choose --')[0]
+    const selectInput = within(screen.getByTestId('NumberType0Select')).getByRole('combobox')
     expect(selectInput).toHaveDisplayValue('patient.contactInfoType.options.home')
     expect(inputElement).toHaveDisplayValue(`${data[0].value}`)
   })
 
   it('should show inputs that are not editable', () => {
     setup(data)
-    const selectInput = screen.getAllByPlaceholderText('-- Choose --')[0]
     const inputElement = screen.getAllByRole('textbox')[1]
+    const selectInput = within(screen.getByTestId('NumberType0Select')).getByRole('combobox')
 
     expect(selectInput).not.toHaveFocus()
     expect(inputElement).not.toHaveFocus()
