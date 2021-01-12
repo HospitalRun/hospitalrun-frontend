@@ -33,8 +33,13 @@ describe('Notes list', () => {
         text: 'some name',
         date: '1947-09-09T14:48:00.000Z',
       },
+      {
+        id: '457',
+        text: 'some name',
+        date: '1947-09-10T14:48:00.000Z',
+      },
     ]
-    const { container } = setup(expectedNotes)
+    setup(expectedNotes)
 
     const dateString = new Date(expectedNotes[0].date).toLocaleString()
     await waitFor(() => {
@@ -45,7 +50,7 @@ describe('Notes list', () => {
       ).toBeInTheDocument()
     })
 
-    expect(container.querySelector('.list-group')?.children).toHaveLength(1)
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
   })
 
   it('should display a warning when no notes are present', async () => {

@@ -83,20 +83,17 @@ describe('ViewPatient', () => {
     })
   })
 
-  it('should add a "Edit Patient" button to the button tool bar if has WritePatients permissions', async () => {
+  it('should render an "Edit Patient" button to the button tool bar if user has WritePatients permissions', async () => {
     setup({ permissions: [Permissions.WritePatients] })
 
     await waitFor(() => {
       expect(screen.getByText(/actions\.edit/i)).toBeInTheDocument()
     })
+    screen.logTestingPlaygroundURL()
   })
 
-  it('button toolbar empty if only has ReadPatients permission', async () => {
-    const { container } = setup()
-
-    await waitFor(() => {
-      expect(container.querySelector('.css-0')).not.toBeInTheDocument()
-    })
+  it('should render an empty button toolbar if the user has only ReadPatients permissions', async () => {
+    setup()
 
     expect(screen.queryByText(/actions\.edit/i)).not.toBeInTheDocument()
   })
