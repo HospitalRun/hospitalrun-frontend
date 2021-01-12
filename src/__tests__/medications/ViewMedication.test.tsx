@@ -60,18 +60,19 @@ describe('View Medication', () => {
       },
     } as any)
 
-    const Wrapper: React.FC = ({ children }: any) => (
+    return render(
       <ButtonBarProvider.ButtonBarProvider>
         <Provider store={store}>
           <Router history={history}>
             <Route path="/medications/:id">
-              <titleUtil.TitleProvider>{children}</titleUtil.TitleProvider>
+              <titleUtil.TitleProvider>
+                <ViewMedication />
+              </titleUtil.TitleProvider>
             </Route>
           </Router>
         </Provider>
-      </ButtonBarProvider.ButtonBarProvider>
+      </ButtonBarProvider.ButtonBarProvider>,
     )
-    return render(<ViewMedication />, { wrapper: Wrapper })
   }
 
   describe('page content', () => {

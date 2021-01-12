@@ -1,4 +1,4 @@
-import { screen, render as rtlRender, waitFor } from '@testing-library/react'
+import { screen, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
@@ -14,10 +14,10 @@ describe('New Note Modal', () => {
   } as Patient
 
   const onCloseSpy = jest.fn()
-  const render = () => {
+  const setup = () => {
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(mockPatient)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
-    const results = rtlRender(
+    return render(
       <NewNoteModal
         show
         onCloseButtonClick={onCloseSpy}
@@ -25,11 +25,10 @@ describe('New Note Modal', () => {
         patientId={mockPatient.id}
       />,
     )
-    return results
   }
 
   it('should render a modal with the correct labels', async () => {
-    render()
+    setup()
 
     expect(await screen.findByRole('dialog')).toBeInTheDocument()
     expect(
@@ -49,7 +48,7 @@ describe('New Note Modal', () => {
   })
 
   it('should render a notes rich text editor', () => {
-    render()
+    setup()
 
     expect(screen.getByRole('textbox')).toBeInTheDocument()
     expect(screen.getByText('patient.note').querySelector('svg')).toHaveAttribute(
@@ -65,7 +64,7 @@ describe('New Note Modal', () => {
     }
     expectOneConsoleError(expectedError)
 
-    render()
+    setup()
 
     userEvent.click(
       screen.getByRole('button', {
@@ -82,7 +81,7 @@ describe('New Note Modal', () => {
 
   describe('on cancel', () => {
     it('should call the onCloseButtonCLick function when the cancel button is clicked', async () => {
-      render()
+      setup()
 
       userEvent.click(
         screen.getByRole('button', {
@@ -96,7 +95,7 @@ describe('New Note Modal', () => {
   describe('on save', () => {
     it('should dispatch add note', async () => {
       const expectedNote = 'some note'
-      render()
+      setup()
 
       const noteTextField = screen.getByRole('textbox')
       userEvent.type(noteTextField, expectedNote)

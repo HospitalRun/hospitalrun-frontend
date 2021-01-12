@@ -1,7 +1,7 @@
 import { render, screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
 import userEvent, { specialChars } from '@testing-library/user-event'
 import format from 'date-fns/format'
-import { createMemoryHistory, MemoryHistory } from 'history'
+import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route } from 'react-router-dom'
@@ -18,30 +18,10 @@ import { RootState } from '../../../shared/store'
 const mockStore = createMockStore<RootState, any>([thunk])
 const { selectAll, arrowDown, enter } = specialChars
 
-type CareGoalTabWrapper = (store: any, history: MemoryHistory) => React.FC
-
-// eslint-disable-next-line react/prop-types
-const TabWrapper: CareGoalTabWrapper = (store, history) => ({ children }) => (
-  <Provider store={store}>
-    <Router history={history}>
-      <Route path="/patients/:id">{children}</Route>
-    </Router>
-  </Provider>
-)
-
-// eslint-disable-next-line react/prop-types
-const ViewWrapper: CareGoalTabWrapper = (store: any, history: MemoryHistory) => ({ children }) => (
-  <Provider store={store}>
-    <Router history={history}>
-      <Route path="/patients/:id/care-goals/:careGoalId">{children}</Route>
-    </Router>
-  </Provider>
-)
-
 const setup = (
   route: string,
   permissions: Permissions[],
-  wrapper = TabWrapper,
+  wrapper = 'tab',
   includeCareGoal = true,
 ) => {
   const expectedCareGoal = {
@@ -63,8 +43,22 @@ const setup = (
   jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
   const history = createMemoryHistory({ initialEntries: [route] })
   const store = mockStore({ user: { permissions } } as any)
+  const path =
+    wrapper === 'tab'
+      ? '/patients/:id'
+      : wrapper === 'view'
+      ? '/patients/:id/care-goals/:careGoalId'
+      : ''
 
-  return render(<CareGoalTab />, { wrapper: wrapper(store, history) })
+  return render(
+    <Provider store={store}>
+      <Router history={history}>
+        <Route path={path}>
+          <CareGoalTab />
+        </Route>
+      </Router>
+    </Provider>,
+  )
 }
 
 describe('Care Goals Tab', () => {
@@ -84,7 +78,7 @@ describe('Care Goals Tab', () => {
       dueDate: new Date('2020-02-01'),
     }
 
-    setup('/patients/123/care-goals', [Permissions.AddCareGoal], TabWrapper, false)
+    setup('/patients/123/care-goals', [Permissions.AddCareGoal], 'tab', false)
 
     userEvent.click(await screen.findByRole('button', { name: /patient.careGoal.new/i }))
 
@@ -148,7 +142,7 @@ describe('Care Goals Tab', () => {
   })
 
   it('should render care goal view when on patients/:id/care-goals/:careGoalId', async () => {
-    setup('/patients/123/care-goals/456', [Permissions.ReadCareGoal], ViewWrapper)
+    setup('/patients/123/care-goals/456', [Permissions.ReadCareGoal], 'view')
 
     expect(await screen.findByRole('form')).toBeInTheDocument()
   })
