@@ -67,7 +67,7 @@ const setup = ({
   return {
     expectedPatient,
     expectedRelatedPerson,
-    newRelatedPatient: newRelatedPerson,
+    newRelatedPerson,
     history,
     ...render(
       <Provider store={store}>
@@ -152,14 +152,14 @@ describe('Related Persons Tab', () => {
     })
 
     it('should add a related person to the table with the correct data', async () => {
-      const { newRelatedPatient } = setup()
+      const { newRelatedPerson } = setup()
 
       userEvent.click(screen.getByRole('button', { name: /patient\.relatedPersons\.add/i }))
       const modal = await screen.findByRole('dialog')
 
       userEvent.type(
         within(modal).getByPlaceholderText(/^patient.relatedPerson$/i),
-        newRelatedPatient.fullName as string,
+        newRelatedPerson.fullName as string,
       )
 
       userEvent.click(await within(modal).findByText(/^fullname2/i))
@@ -172,8 +172,8 @@ describe('Related Persons Tab', () => {
       userEvent.click(within(modal).getByRole('button', { name: /patient.relatedPersons.add/i }))
 
       await waitFor(() => {
-        expect(screen.getByRole('cell', { name: newRelatedPatient.familyName })).toBeInTheDocument()
-        expect(screen.getByRole('cell', { name: newRelatedPatient.givenName })).toBeInTheDocument()
+        expect(screen.getByRole('cell', { name: newRelatedPerson.familyName })).toBeInTheDocument()
+        expect(screen.getByRole('cell', { name: newRelatedPerson.givenName })).toBeInTheDocument()
         expect(screen.getByRole('cell', { name: /new relationship/i })).toBeInTheDocument()
       })
     })
