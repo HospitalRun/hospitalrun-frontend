@@ -1,6 +1,7 @@
 import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
@@ -13,17 +14,20 @@ import TextInputWithLabelFormGroup from '../../shared/components/input/TextInput
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
+import { RootState } from '../../shared/store'
 import useRequestImaging, { ImagingRequest } from '../hooks/useRequestImaging'
 import { ImagingRequestError } from '../util/validate-imaging-request'
 
 const NewImagingRequest = () => {
   const { t } = useTranslator()
   const history = useHistory()
+  const { user } = useSelector((state: RootState) => state.user)
+
   const updateTitle = useUpdateTitle()
   useEffect(() => {
     updateTitle(t('imagings.requests.new'))
   })
-  const [mutate] = useRequestImaging()
+  const [mutate] = useRequestImaging(user)
   const [error, setError] = useState<ImagingRequestError>()
   const [visitOption, setVisitOption] = useState([] as Option[])
 

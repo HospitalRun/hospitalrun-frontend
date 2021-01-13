@@ -5,6 +5,7 @@ import { ImagingRequestError } from '../../../imagings/util/validate-imaging-req
 import * as imagingRequestValidator from '../../../imagings/util/validate-imaging-request'
 import ImagingRepository from '../../../shared/db/ImagingRepository'
 import Imaging from '../../../shared/model/Imaging'
+import { UserState, LoginError } from '../../../user/user-slice'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('useReportIncident', () => {
@@ -12,6 +13,13 @@ describe('useReportIncident', () => {
     jest.restoreAllMocks()
     console.error = jest.fn()
   })
+
+  const user = {
+    fullName: 'test',
+    id: 'test-hospitalrun',
+    permissions: [],
+    loginError: {} as LoginError,
+  } as UserState
 
   it('should save the imaging request with correct data', async () => {
     const expectedDate = new Date(Date.now())
@@ -28,11 +36,12 @@ describe('useReportIncident', () => {
     const expectedImagingRequest = {
       ...givenImagingRequest,
       requestedOn: expectedDate.toISOString(),
-      requestedBy: 'test',
+      requestedBy: 'test-hospitalrun',
+      requestedByFullName: 'test',
     } as Imaging
     jest.spyOn(ImagingRepository, 'save').mockResolvedValue(expectedImagingRequest)
 
-    await executeMutation(() => useRequestImaging(), givenImagingRequest)
+    await executeMutation(() => useRequestImaging(user), givenImagingRequest)
     expect(ImagingRepository.save).toHaveBeenCalledTimes(1)
     expect(ImagingRepository.save).toBeCalledWith(expectedImagingRequest)
   })
@@ -46,7 +55,7 @@ describe('useReportIncident', () => {
     jest.spyOn(ImagingRepository, 'save').mockResolvedValue({} as Imaging)
 
     try {
-      await executeMutation(() => useRequestImaging(), {})
+      await executeMutation(() => useRequestImaging(user), {})
     } catch (e) {
       expect(e).toEqual(expectedImagingRequestError)
       expect(ImagingRepository.save).not.toHaveBeenCalled()
