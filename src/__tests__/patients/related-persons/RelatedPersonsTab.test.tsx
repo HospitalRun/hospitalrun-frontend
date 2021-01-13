@@ -176,7 +176,7 @@ describe('Related Persons Tab', () => {
         expect(screen.getByRole('cell', { name: newRelatedPerson.givenName })).toBeInTheDocument()
         expect(screen.getByRole('cell', { name: /new relationship/i })).toBeInTheDocument()
       })
-    })
+    }, 15000)
   })
 
   describe('Table', () => {
