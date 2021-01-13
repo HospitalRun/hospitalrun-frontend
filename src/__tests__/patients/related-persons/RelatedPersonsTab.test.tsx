@@ -1,4 +1,4 @@
-import { render, screen, within, waitForElementToBeRemoved } from '@testing-library/react'
+import { render, screen, within, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -16,20 +16,6 @@ import { RootState } from '../../../shared/store'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
-const patients = [
-  {
-    id: 'patient1',
-    fullName: 'fullName',
-    code: 'code1',
-  },
-  {
-    id: 'patient2',
-    fullName: 'fullName2',
-    givenName: 'Patient',
-    familyName: 'PatientFamily',
-    code: 'code2',
-  },
-] as Patient[]
 
 const setup = ({
   permissions = [Permissions.WritePatients, Permissions.ReadPatients],
@@ -48,20 +34,27 @@ const setup = ({
     familyName: 'Patient',
     id: '123001',
   } as Patient
+  const newRelatedPerson = {
+    id: 'patient2',
+    fullName: 'fullName2',
+    givenName: 'Patient',
+    familyName: 'PatientFamily',
+    code: 'code2',
+  } as Patient
 
   jest.spyOn(PatientRepository, 'find').mockImplementation(async (id: string) => {
     if (id === expectedRelatedPerson.id) {
       return expectedRelatedPerson
     }
-    if (id === expectedPatient.id) {
-      return expectedPatient
+    if (id === newRelatedPerson.id) {
+      return newRelatedPerson
     }
-    return patients[1]
+    return expectedPatient
   })
   jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(expectedPatient)
   jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
-  jest.spyOn(PatientRepository, 'search').mockResolvedValue(patients)
-  jest.spyOn(PatientRepository, 'count').mockResolvedValue(2)
+  jest.spyOn(PatientRepository, 'search').mockResolvedValue([newRelatedPerson])
+  jest.spyOn(PatientRepository, 'count').mockResolvedValue(1)
 
   const history = createMemoryHistory({ initialEntries: ['/patients/123/relatedpersons'] })
   const store = mockStore({
@@ -74,6 +67,7 @@ const setup = ({
   return {
     expectedPatient,
     expectedRelatedPerson,
+    newRelatedPatient: newRelatedPerson,
     history,
     ...render(
       <Provider store={store}>
@@ -113,7 +107,7 @@ describe('Related Persons Tab', () => {
       expect(await screen.findByRole('dialog')).toBeInTheDocument()
     })
 
-    it('should render a modal', async () => {
+    it('should render a modal with expected input fields', async () => {
       setup()
 
       userEvent.click(await screen.findByRole('button', { name: /patient\.relatedPersons\.add/i }))
@@ -157,42 +151,32 @@ describe('Related Persons Tab', () => {
       expect(screen.getByText(expectedError.relationshipTypeError)).toBeInTheDocument()
     })
 
-    it('should call the save function with the correct data', async () => {
-      setup()
+    it('should add a related person to the table with the correct data', async () => {
+      const { newRelatedPatient } = setup()
 
-      userEvent.click(await screen.findByRole('button', { name: /patient\.relatedPersons\.add/i }))
+      userEvent.click(screen.getByRole('button', { name: /patient\.relatedPersons\.add/i }))
       const modal = await screen.findByRole('dialog')
 
-      await userEvent.type(
+      userEvent.type(
         within(modal).getByPlaceholderText(/^patient.relatedPerson$/i),
-        patients[1].fullName as string,
-        { delay: 50 },
+        newRelatedPatient.fullName as string,
       )
+
       userEvent.click(await within(modal).findByText(/^fullname2/i))
 
       userEvent.type(
         within(modal).getByLabelText(/^patient.relatedPersons.relationshipType$/i),
-        'relationship',
+        'new relationship',
       )
 
       userEvent.click(within(modal).getByRole('button', { name: /patient.relatedPersons.add/i }))
 
-      expect(await screen.findByRole('cell', { name: patients[1].givenName })).toBeInTheDocument()
-      expect(await screen.findByRole('cell', { name: patients[1].familyName })).toBeInTheDocument()
-      expect(await screen.findByRole('cell', { name: /relationship/i })).toBeInTheDocument()
-
-      // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
-      // expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
-      //   expect.objectContaining({
-      //     relatedPersons: [
-      //       expect.objectContaining({
-      //         patientId: '456',
-      //         type: 'relationship',
-      //       }),
-      //     ],
-      //   }),
-      // )
-    }, 60000)
+      await waitFor(() => {
+        expect(screen.getByRole('cell', { name: newRelatedPatient.familyName })).toBeInTheDocument()
+        expect(screen.getByRole('cell', { name: newRelatedPatient.givenName })).toBeInTheDocument()
+        expect(screen.getByRole('cell', { name: /new relationship/i })).toBeInTheDocument()
+      })
+    })
   })
 
   describe('Table', () => {
