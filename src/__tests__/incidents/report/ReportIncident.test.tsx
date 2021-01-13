@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -58,7 +58,7 @@ describe('Report Incident', () => {
   }
   it('renders a department form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const departmentInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
+    const departmentInput = screen.getByLabelText(/incidents\.reports\.department/i)
 
     expect(departmentInput).toBeEnabled()
     expect(departmentInput).toBeInTheDocument()
@@ -67,9 +67,9 @@ describe('Report Incident', () => {
     expect(departmentInput).toHaveDisplayValue('Engineering Bay')
   })
 
-  test('renders a category form element that allows user input', async () => {
+  it('renders a category form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const categoryInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
+    const categoryInput = screen.getByLabelText(/incidents\.reports\.category\b/i)
 
     expect(categoryInput).toBeEnabled()
     expect(categoryInput).toBeInTheDocument()
@@ -78,11 +78,9 @@ describe('Report Incident', () => {
     expect(categoryInput).toHaveDisplayValue('Warp Engine')
   })
 
-  test('renders a category item form element that allows user input', async () => {
+  it('renders a category item form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const categoryItemInput = await screen.findByPlaceholderText(
-      /incidents\.reports\.categoryitem/i,
-    )
+    const categoryItemInput = screen.getByLabelText(/incidents\.reports\.categoryitem/i)
 
     expect(categoryItemInput).toBeInTheDocument()
     expect(categoryItemInput).toBeEnabled()
@@ -91,10 +89,9 @@ describe('Report Incident', () => {
     expect(categoryItemInput).toHaveDisplayValue('Warp Coil')
   })
 
-  test('renders a description formField element that allows user input', async () => {
+  it('renders a description formField element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
-    const descriptionInput = inputArr[inputArr.length - 1]
+    const descriptionInput = screen.getByLabelText(/incidents\.reports\.description/i)
 
     expect(descriptionInput).toBeInTheDocument()
     expect(descriptionInput).toBeEnabled()
@@ -102,27 +99,28 @@ describe('Report Incident', () => {
     userEvent.type(descriptionInput, 'Geordi requested analysis')
     expect(descriptionInput).toHaveDisplayValue('Geordi requested analysis')
   })
-  test(' renders action save button after all the input fields are filled out', async () => {
-    setup([Permissions.ViewIncident, Permissions.ResolveIncident])
-    const departmentInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
-    const categoryInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
-    const categoryItemInput = await screen.findByPlaceholderText(
-      /incidents\.reports\.categoryitem/i,
-    )
-    const inputArr = await screen.findAllByRole('textbox', { name: /required/i })
-    const descriptionInput = inputArr[inputArr.length - 1]
 
-    userEvent.type(departmentInput, 'Engineering Bay')
-    userEvent.type(categoryInput, 'Warp Engine')
-    userEvent.type(categoryItemInput, 'Warp Coil')
-    userEvent.type(descriptionInput, 'Geordi requested analysis')
+  // ! Remove test? Save button is always rendered regardless of input values
+  // it(' renders action save button after all the input fields are filled out', async () => {
+  //   setup([Permissions.ViewIncident, Permissions.ResolveIncident])
 
-    userEvent.click(
-      screen.getByRole('button', {
-        name: /incidents\.reports\.new/i,
-      }),
-    )
-  })
+  //   expect(screen.queryByRole('button', { name: /incidents\.reports\.new/i })).not.toBeInTheDocument()
+  //   const departmentInput = screen.getByLabelText(/incidents\.reports\.department/i)
+  //   const categoryInput = screen.getByLabelText(/incidents\.reports\.category\b/i)
+  //   const categoryItemInput = screen.getByLabelText(/incidents\.reports\.categoryitem/i)
+  //   const descriptionInput = screen.getByLabelText(/incidents\.reports\.description/i)
+
+  //   userEvent.type(departmentInput, 'Engineering Bay')
+  //   userEvent.type(categoryInput, 'Warp Engine')
+  //   userEvent.type(categoryItemInput, 'Warp Coil')
+  //   userEvent.type(descriptionInput, 'Geordi requested analysis')
+
+  //   userEvent.click(
+  //     screen.getByRole('button', {
+  //       name: /incidents\.reports\.new/i,
+  //     }),
+  //   )
+  // })
 
   it('should display errors if validation fails', async () => {
     const error = {
@@ -144,14 +142,13 @@ describe('Report Incident', () => {
       }),
     )
 
-    const departmentInput = await screen.findByPlaceholderText(/incidents\.reports\.department/i)
-    const categoryInput = await screen.findByPlaceholderText(/incidents\.reports\.category\b/i)
-    const categoryItemInput = await screen.findByPlaceholderText(
-      /incidents\.reports\.categoryitem/i,
+    const departmentInput = screen.getByLabelText(/incidents\.reports\.department/i)
+    const categoryInput = screen.getByLabelText(/incidents\.reports\.category\b/i)
+    const categoryItemInput = screen.getByLabelText(/incidents\.reports\.categoryitem/i)
+    const descriptionInput = screen.getByLabelText(/incidents\.reports\.description/i)
+    const dateInput = within(await screen.findByTestId('dateOfIncidentDateTimePicker')).getByRole(
+      'textbox',
     )
-    const inputArr = await screen.findAllByRole('textbox')
-    const descriptionInput = inputArr[inputArr.length - 2]
-    const dateInput = inputArr[0]
 
     const invalidInputs = container.querySelectorAll('.is-invalid')
     expect(invalidInputs).toHaveLength(5)

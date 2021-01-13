@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -59,7 +59,7 @@ describe('New Imaging Request', () => {
 
     it('Renders a dropdown list of visits', async () => {
       setup()
-      const dropdownVisits = screen.getAllByPlaceholderText('-- Choose --')[0]
+      const dropdownVisits = within(screen.getByTestId('visitSelect')).getByRole('combobox')
       expect(screen.getByText(/patient\.visits\.label/i)).toBeInTheDocument()
       expect(dropdownVisits.getAttribute('aria-expanded')).toBe('false')
 
@@ -70,8 +70,8 @@ describe('New Imaging Request', () => {
 
     it('Renders an image type input box', async () => {
       setup()
-      const imgTypeInput = screen.getByPlaceholderText(/imagings\.imaging\.type/i)
-      expect(screen.getByLabelText(/imagings\.imaging\.type/i)).toBeInTheDocument()
+      const imgTypeInput = screen.getByLabelText(/imagings\.imaging\.type/i)
+      expect(screen.getByText(/imagings\.imaging\.type/i)).toBeInTheDocument()
 
       userEvent.type(imgTypeInput, 'tricorder imaging')
       expect(imgTypeInput).toHaveDisplayValue('tricorder imaging')
@@ -79,7 +79,7 @@ describe('New Imaging Request', () => {
 
     it('Renders a status types select input field', async () => {
       setup()
-      const dropdownStatusTypes = screen.getAllByPlaceholderText('-- Choose --')[1]
+      const dropdownStatusTypes = within(screen.getByTestId('statusSelect')).getByRole('combobox')
       expect(screen.getByText(/patient\.visits\.label/i)).toBeInTheDocument()
 
       expect(dropdownStatusTypes.getAttribute('aria-expanded')).toBe('false')
@@ -127,12 +127,12 @@ describe('New Imaging Request', () => {
       expectOneConsoleError({ patient: 'imagings.requests.error.patientRequired' })
       setup()
       const patient = screen.getByPlaceholderText(/imagings\.imaging\.patient/i)
-      const imgTypeInput = screen.getByPlaceholderText(/imagings.imaging.type/i)
+      const imgTypeInput = screen.getByLabelText(/imagings\.imaging\.type/i)
       const notesInputField = screen.getByRole('textbox', {
         name: /imagings\.imaging\.notes/i,
       })
-      const dropdownStatusTypes = screen.getAllByPlaceholderText('-- Choose --')[1]
-      const dropdownVisits = screen.getAllByPlaceholderText('-- Choose --')[0]
+      const dropdownStatusTypes = within(screen.getByTestId('statusSelect')).getByRole('combobox')
+      const dropdownVisits = within(screen.getByTestId('visitSelect')).getByRole('combobox')
       userEvent.type(patient, 'Worf')
       userEvent.type(imgTypeInput, 'Medical Tricorder')
       userEvent.type(notesInputField, 'Batliff')

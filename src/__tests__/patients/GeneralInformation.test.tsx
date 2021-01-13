@@ -14,7 +14,7 @@ Date.now = jest.fn().mockReturnValue(new Date().valueOf())
 
 // most fields use TextInputWithLabelFormGroup, an uncontrolled <input /> => tests are faster without onChange
 function setup(patientArg: Patient, isEditable = true, error?: Record<string, unknown>) {
-  render(
+  return render(
     <Router history={createMemoryHistory()}>
       <GeneralInformation patient={patientArg} isEditable={isEditable} error={error} />
     </Router>,
@@ -87,7 +87,7 @@ it('should display errors', () => {
   )
 
   expect(screen.getByRole(/alert/i)).toHaveTextContent(error.message)
-  expect(screen.getByPlaceholderText(/givenName/i)).toHaveClass('is-invalid')
+  expect(screen.getByLabelText(/patient\.givenName/i)).toHaveClass('is-invalid')
 
   expect(screen.getByText(/given name Error Message/i)).toHaveClass('invalid-feedback')
   expect(screen.getByText(/date of birth Error Message/i)).toHaveClass('text-danger')
@@ -114,22 +114,21 @@ describe('General Information, readonly', () => {
 
   it('should render the given name', () => {
     setup(patient, false)
-    typeReadonlyAssertion(screen.getByPlaceholderText(/patient\.givenName/i), patient.givenName)
+    typeReadonlyAssertion(screen.getByLabelText(/patient\.givenName/i), patient.givenName)
   })
 
   it('should render the family name', () => {
     setup(patient, false)
-    typeReadonlyAssertion(screen.getByPlaceholderText(/patient\.familyName/i), patient.familyName)
+    typeReadonlyAssertion(screen.getByLabelText(/patient\.familyName/i), patient.familyName)
   })
 
   it('should render the suffix', () => {
     setup(patient, false)
-    typeReadonlyAssertion(screen.getByPlaceholderText(/patient\.suffix/i), patient.suffix)
+    typeReadonlyAssertion(screen.getByLabelText(/patient\.suffix/i), patient.suffix)
   })
 
   it('should render the date of the birth of the patient', () => {
     setup(patient, false)
-
     const expectedDate = format(new Date(patient.dateOfBirth), 'MM/dd/yyyy')
     typeReadonlyAssertion(screen.getByDisplayValue(expectedDate), [expectedDate])
   })
@@ -137,18 +136,18 @@ describe('General Information, readonly', () => {
   it('should render the approximate age if patient.isApproximateDateOfBirth is true', () => {
     const newPatient = { ...patient, isApproximateDateOfBirth: true }
     setup(newPatient, false)
-    typeReadonlyAssertion(screen.getByPlaceholderText(/patient.approximateAge/i), '30')
+    typeReadonlyAssertion(screen.getByLabelText(/patient.approximateAge/i), '30')
   })
 
   it('should render the occupation of the patient', () => {
     setup(patient, false)
-    typeReadonlyAssertion(screen.getByPlaceholderText(/patient.occupation/i), patient.occupation)
+    typeReadonlyAssertion(screen.getByLabelText(/patient.occupation/i), patient.occupation)
   })
 
   it('should render the preferred language of the patient', () => {
     setup(patient, false)
     typeReadonlyAssertion(
-      screen.getByPlaceholderText(/patient.preferredLanguage/i),
+      screen.getByLabelText(/patient.preferredLanguage/i),
       patient.preferredLanguage,
     )
   })
@@ -235,13 +234,13 @@ describe('General Information, isEditable', () => {
 
   it('should render the occupation of the patient', () => {
     setup(patient)
-    typeWritableAssertion(screen.getByPlaceholderText(/patient.occupation/i), [patient.occupation])
+    typeWritableAssertion(screen.getByLabelText(/patient.occupation/i), [patient.occupation])
   })
 
   it('should render the preferred language of the patient', () => {
     setup(patient)
     typeWritableAssertion(
-      screen.getByPlaceholderText(/patient.preferredLanguage/i),
+      screen.getByLabelText(/patient.preferredLanguage/i),
       patient.preferredLanguage,
     )
   })

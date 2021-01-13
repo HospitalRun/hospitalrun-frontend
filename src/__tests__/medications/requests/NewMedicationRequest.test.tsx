@@ -48,15 +48,13 @@ describe('New Medication Request', () => {
       setup()
 
       expect(screen.getByText(/medications\.medication\.medication/i)).toBeInTheDocument()
-      expect(
-        screen.getByPlaceholderText(/medications\.medication\.medication/i),
-      ).toBeInTheDocument()
+      expect(screen.getByLabelText(/medications\.medication\.medication/i)).toBeInTheDocument()
     })
 
     it('render medication request status options', async () => {
       setup()
 
-      const medStatus = within(screen.getByTestId('status-field')).getByRole('combobox')
+      const medStatus = within(screen.getByTestId('statusSelect')).getByRole('combobox')
 
       expect(screen.getByText(/medications\.medication\.status/i)).toBeInTheDocument()
       expect(medStatus.getAttribute('aria-expanded')).toBe('false')
@@ -64,7 +62,7 @@ describe('New Medication Request', () => {
       expect(medStatus.getAttribute('aria-expanded')).toBe('true')
       expect(medStatus).toHaveDisplayValue(/medications\.status\.draft/i)
 
-      const statusOptions = within(screen.getByTestId('status-field'))
+      const statusOptions = within(screen.getByTestId('statusSelect'))
         .getAllByRole('option')
         .map((option) => option.lastElementChild?.innerHTML)
 
@@ -76,7 +74,7 @@ describe('New Medication Request', () => {
     it('render medication intent options', async () => {
       setup()
 
-      const medicationIntent = within(screen.getByTestId('intent-field')).getByRole('combobox')
+      const medicationIntent = within(screen.getByTestId('intentSelect')).getByRole('combobox')
 
       expect(screen.getByText(/medications\.medication\.intent/i)).toBeInTheDocument()
       expect(medicationIntent.getAttribute('aria-expanded')).toBe('false')
@@ -84,7 +82,7 @@ describe('New Medication Request', () => {
       expect(medicationIntent.getAttribute('aria-expanded')).toBe('true')
       expect(medicationIntent).toHaveDisplayValue(/medications\.intent\.proposal/i)
 
-      const intentOptions = within(screen.getByTestId('intent-field'))
+      const intentOptions = within(screen.getByTestId('intentSelect'))
         .getAllByRole('option')
         .map((option) => option.lastElementChild?.innerHTML)
 
@@ -105,7 +103,7 @@ describe('New Medication Request', () => {
     it('render medication priorty select options', async () => {
       setup()
 
-      const medicationPriority = within(screen.getByTestId('priority-field')).getByRole('combobox')
+      const medicationPriority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
 
       expect(screen.getByText(/medications\.medication\.status/i)).toBeInTheDocument()
       expect(medicationPriority.getAttribute('aria-expanded')).toBe('false')
@@ -113,7 +111,7 @@ describe('New Medication Request', () => {
       expect(medicationPriority.getAttribute('aria-expanded')).toBe('true')
       expect(medicationPriority).toHaveDisplayValue('medications.priority.routine')
 
-      const priorityOptions = within(screen.getByTestId('priority-field'))
+      const priorityOptions = within(screen.getByTestId('prioritySelect'))
         .getAllByRole('option')
         .map((option) => option.lastElementChild?.innerHTML)
 
@@ -179,13 +177,13 @@ describe('New Medication Request', () => {
     it('should save the medication request and navigate to "/medications/:id"', async () => {
       const { history } = setup()
       const patient = screen.getByPlaceholderText(/medications\.medication\.patient/i)
-      const medication = screen.getByPlaceholderText(/medications\.medication\.medication/i)
+      const medication = screen.getByLabelText(/medications\.medication\.medication/i)
       const medicationNotes = screen.getByRole('textbox', {
         name: /medications\.medication\.notes/i,
       })
-      const medStatus = screen.getAllByPlaceholderText('-- Choose --')[0]
-      const medicationIntent = screen.getAllByPlaceholderText('-- Choose --')[1]
-      const medicationPriority = screen.getAllByPlaceholderText('-- Choose --')[2]
+      const medStatus = within(screen.getByTestId('statusSelect')).getByRole('combobox')
+      const medicationIntent = within(screen.getByTestId('intentSelect')).getByRole('combobox')
+      const medicationPriority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
 
       userEvent.type(patient, 'Bruce Wayne')
       userEvent.type(medication, 'Ibuprofen')

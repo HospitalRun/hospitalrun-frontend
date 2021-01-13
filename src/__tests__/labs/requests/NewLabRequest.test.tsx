@@ -117,7 +117,7 @@ describe('New Lab Request', () => {
       setup()
 
       const selectLabel = screen.getByText(/patient\.visit/i)
-      const selectInput = screen.getByPlaceholderText('-- Choose --')
+      const selectInput = within(screen.getByTestId('visitSelect')).getByRole('combobox')
 
       expect(selectInput).toBeInTheDocument()
       expect(selectInput).toHaveDisplayValue([''])
@@ -141,7 +141,7 @@ describe('New Lab Request', () => {
       const { expectedVisits } = setup()
 
       const patientTypeahead = screen.getByPlaceholderText(/labs.lab.patient/i)
-      const visitsInput = within(screen.getByTestId('visit-field')).getByRole('combobox')
+      const visitsInput = within(screen.getByTestId('visitSelect')).getByRole('combobox')
       userEvent.type(patientTypeahead, 'Jim Bob')
       userEvent.click(await screen.findByText(/Jim Bob/i))
       expect(patientTypeahead).toHaveDisplayValue(/Jim Bob/i)
@@ -196,7 +196,7 @@ describe('New Lab Request', () => {
 
       const alert = await screen.findByRole('alert')
       const patientInput = screen.getByPlaceholderText(/labs\.lab\.patient/i)
-      const typeInput = screen.getByPlaceholderText(/labs\.lab\.type/i)
+      const typeInput = screen.getByLabelText(/labs\.lab\.type/i)
 
       expect(within(alert).getByText(error.message)).toBeInTheDocument()
       expect(within(alert).getByText(/states\.error/i)).toBeInTheDocument()
@@ -224,7 +224,7 @@ describe('New Lab Request', () => {
       userEvent.type(screen.getByPlaceholderText(/labs.lab.patient/i), 'Jim Bob')
       expect(await screen.findByText(/jim bob/i)).toBeVisible()
       userEvent.click(screen.getByText(/jim bob/i))
-      userEvent.type(screen.getByPlaceholderText(/labs\.lab\.type/i), expectedLab.type)
+      userEvent.type(screen.getByLabelText(/labs\.lab\.type/i), expectedLab.type)
       userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), (expectedLab.notes as string[])[0])
       userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
 

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import React from 'react'
@@ -91,7 +91,7 @@ describe('Care Plan Form', () => {
 
   it('should call the on change handler when condition changes', async () => {
     setup(false, false)
-    const conditionSelector = screen.getAllByRole('combobox')[0]
+    const conditionSelector = within(screen.getByTestId('conditionSelect')).getByRole('combobox')
     userEvent.type(conditionSelector, `${diagnosis.name}{arrowdown}{enter}`)
     expect(onCarePlanChangeSpy).toHaveBeenCalledWith({ diagnosisId: diagnosis.id })
   })
@@ -151,7 +151,7 @@ describe('Care Plan Form', () => {
   it('should render a start date picker', () => {
     setup()
     const date = format(new Date(carePlan.startDate), 'MM/dd/yyyy')
-    const startDatePicker = screen.getAllByDisplayValue(date)[0]
+    const startDatePicker = within(screen.getByTestId('startDateDatePicker')).getByRole('textbox')
     const startDatePickerLabel = screen.getByText(/patient.carePlan.startDate/i)
     expect(startDatePicker).toBeInTheDocument()
     expect(startDatePicker).toHaveValue(date)
@@ -161,9 +161,7 @@ describe('Care Plan Form', () => {
 
   it('should call the on change handler when start date changes', () => {
     setup()
-    const startDatePicker = screen.getAllByDisplayValue(
-      format(new Date(carePlan.startDate), 'MM/dd/yyyy'),
-    )[0]
+    const startDatePicker = within(screen.getByTestId('startDateDatePicker')).getByRole('textbox')
     userEvent.type(startDatePicker, '{arrowdown}{arrowleft}{enter}')
     expect(onCarePlanChangeSpy).toHaveBeenCalledTimes(1)
   })
@@ -171,7 +169,7 @@ describe('Care Plan Form', () => {
   it('should render an end date picker', () => {
     setup()
     const date = format(new Date(carePlan.endDate), 'MM/dd/yyyy')
-    const endDatePicker = screen.getAllByDisplayValue(date)[0]
+    const endDatePicker = within(screen.getByTestId('endDateDatePicker')).getByRole('textbox')
     const endDatePickerLabel = screen.getByText(/patient.carePlan.endDate/i)
     expect(endDatePicker).toBeInTheDocument()
     expect(endDatePicker).toHaveValue(date)
@@ -181,9 +179,7 @@ describe('Care Plan Form', () => {
 
   it('should call the on change handler when end date changes', () => {
     setup()
-    const endDatePicker = screen.getAllByDisplayValue(
-      format(new Date(carePlan.endDate), 'MM/dd/yyyy'),
-    )[0]
+    const endDatePicker = within(screen.getByTestId('endDateDatePicker')).getByRole('textbox')
     userEvent.type(endDatePicker, '{arrowdown}{arrowleft}{enter}')
     expect(onCarePlanChangeSpy).toHaveBeenCalledTimes(1)
   })
@@ -211,10 +207,8 @@ describe('Care Plan Form', () => {
     expect(screen.getByDisplayValue(diagnosis.name)).toBeDisabled()
     expect(screen.getByDisplayValue(carePlan.status)).toBeDisabled()
     expect(screen.getByDisplayValue(carePlan.intent)).toBeDisabled()
-    const startDate = format(new Date(carePlan.startDate), 'MM/dd/yyyy')
-    expect(screen.getAllByDisplayValue(startDate)[0]).toBeDisabled()
-    const endDate = format(new Date(carePlan.endDate), 'MM/dd/yyyy')
-    expect(screen.getAllByDisplayValue(endDate)[0]).toBeDisabled()
+    expect(within(screen.getByTestId('startDateDatePicker')).getByRole('textbox')).toBeDisabled()
+    expect(within(screen.getByTestId('endDateDatePicker')).getByRole('textbox')).toBeDisabled()
     expect(screen.getByLabelText(/patient.carePlan.note/i)).toBeDisabled()
   })
 
@@ -234,13 +228,11 @@ describe('Care Plan Form', () => {
     const alert = screen.getByRole('alert')
     const titleInput = screen.getByLabelText(/patient.carePlan.title/i)
     const descriptionInput = screen.getByLabelText(/patient.carePlan.description/i)
-    const conditionInput = screen.getAllByRole('combobox')[0]
-    const statusInput = screen.getAllByRole('combobox')[1]
-    const intentInput = screen.getAllByRole('combobox')[2]
-    const startDate = format(new Date(carePlan.startDate), 'MM/dd/yyyy')
-    const startDateInput = screen.getAllByDisplayValue(startDate)[0]
-    const endDate = format(new Date(carePlan.endDate), 'MM/dd/yyyy')
-    const endDateInput = screen.getAllByDisplayValue(endDate)[0]
+    const conditionInput = within(screen.getByTestId('conditionSelect')).getByRole('combobox')
+    const statusInput = within(screen.getByTestId('statusSelect')).getByRole('combobox')
+    const intentInput = within(screen.getByTestId('intentSelect')).getByRole('combobox')
+    const startDateInput = within(screen.getByTestId('startDateDatePicker')).getByRole('textbox')
+    const endDateInput = within(screen.getByTestId('endDateDatePicker')).getByRole('textbox')
     const noteInput = screen.getByLabelText(/patient.carePlan.note/i)
     expect(alert).toBeInTheDocument()
     expect(alert).toHaveTextContent(expectedError.message)

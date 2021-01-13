@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import React from 'react'
@@ -78,7 +78,7 @@ describe('Diagnosis Form', () => {
 
   it('should render a visit selector', () => {
     setup()
-    const visitSelector = screen.getAllByRole('combobox')[0]
+    const visitSelector = within(screen.getByTestId('visitSelect')).getByRole('combobox')
     const visitSelectorLabel = screen.getByText(/patient.diagnoses.visit/i)
     expect(visitSelector).toBeInTheDocument()
     expect(visitSelector).toHaveDisplayValue('')
@@ -102,7 +102,7 @@ describe('Diagnosis Form', () => {
 
   it('should render a status selector', () => {
     setup()
-    const statusSelector = screen.getAllByRole('combobox')[1]
+    const statusSelector = within(screen.getByTestId('statusSelect')).getByRole('combobox')
     const statusSelectorLabel = screen.getByText(/patient.diagnoses.status/i)
     expect(statusSelector).toBeInTheDocument()
     expect(statusSelector).toHaveValue(diagnosis.status)
@@ -119,7 +119,7 @@ describe('Diagnosis Form', () => {
   it('should call the on change handler when status changes', () => {
     const expectedNewStatus = DiagnosisStatus.Active
     setup(false, false)
-    const statusSelector = screen.getAllByRole('combobox')[1]
+    const statusSelector = within(screen.getByTestId('statusSelect')).getByRole('combobox')
     userEvent.click(statusSelector)
     userEvent.click(screen.getByText(expectedNewStatus))
     expect(onDiagnosisChangeSpy).toHaveBeenCalledWith({ status: expectedNewStatus })
@@ -127,7 +127,9 @@ describe('Diagnosis Form', () => {
 
   it('should render a diagnosis date picker', () => {
     setup()
-    const diagnosisDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[0]
+    const diagnosisDatePicker = within(screen.getByTestId('diagnosisDateDatePicker')).getByRole(
+      'textbox',
+    )
     const diagnosisDatePickerLabel = screen.getByText(/patient.diagnoses.diagnosisDate/i)
     expect(diagnosisDatePicker).toBeInTheDocument()
     expect(diagnosisDatePickerLabel).toBeInTheDocument()
@@ -136,7 +138,9 @@ describe('Diagnosis Form', () => {
 
   it('should call the on change handler when diagnosis date changes', () => {
     setup(false, false)
-    const diagnosisDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[0]
+    const diagnosisDatePicker = within(screen.getByTestId('diagnosisDateDatePicker')).getByRole(
+      'textbox',
+    )
     userEvent.click(diagnosisDatePicker)
     userEvent.type(diagnosisDatePicker, '{backspace}1{enter}')
     expect(onDiagnosisChangeSpy).toHaveBeenCalled()
@@ -144,7 +148,7 @@ describe('Diagnosis Form', () => {
 
   it('should render a onset date picker', () => {
     setup()
-    const onsetDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[1]
+    const onsetDatePicker = within(screen.getByTestId('onsetDateDatePicker')).getByRole('textbox')
     const onsetDatePickerLabel = screen.getByText(/patient.diagnoses.onsetDate/i)
     expect(onsetDatePicker).toBeInTheDocument()
     expect(onsetDatePickerLabel).toBeInTheDocument()
@@ -153,7 +157,7 @@ describe('Diagnosis Form', () => {
 
   it('should call the on change handler when onset date changes', () => {
     setup(false, false)
-    const onsetDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[1]
+    const onsetDatePicker = within(screen.getByTestId('onsetDateDatePicker')).getByRole('textbox')
     userEvent.click(onsetDatePicker)
     userEvent.type(onsetDatePicker, '{backspace}1{enter}')
     expect(onDiagnosisChangeSpy).toHaveBeenCalled()
@@ -161,7 +165,9 @@ describe('Diagnosis Form', () => {
 
   it('should render a abatement date picker', () => {
     setup()
-    const abatementDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[2]
+    const abatementDatePicker = within(screen.getByTestId('abatementDateDatePicker')).getByRole(
+      'textbox',
+    )
     const abatementDatePickerLabel = screen.getByText(/patient.diagnoses.abatementDate/i)
     expect(abatementDatePicker).toBeInTheDocument()
     expect(abatementDatePickerLabel).toBeInTheDocument()
@@ -170,7 +176,9 @@ describe('Diagnosis Form', () => {
 
   it('should call the on change handler when abatementDate date changes', () => {
     setup(false, false)
-    const abatementDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[2]
+    const abatementDatePicker = within(screen.getByTestId('abatementDateDatePicker')).getByRole(
+      'textbox',
+    )
     userEvent.click(abatementDatePicker)
     userEvent.type(abatementDatePicker, '{backspace}1{enter}')
     expect(onDiagnosisChangeSpy).toHaveBeenCalled()
@@ -197,7 +205,9 @@ describe('Diagnosis Form', () => {
     const statusSelector = screen.getAllByRole('combobox')[1]
     const diagnosisDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[0]
     const onsetDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[1]
-    const abatementDatePicker = screen.getAllByDisplayValue(format(new Date(), 'MM/dd/yyyy'))[2]
+    const abatementDatePicker = within(screen.getByTestId('abatementDateDatePicker')).getByRole(
+      'textbox',
+    )
     const noteInput = screen.getByLabelText(/patient.diagnoses.note/i)
     expect(nameInput).toBeDisabled()
     expect(statusSelector).toBeDisabled()
