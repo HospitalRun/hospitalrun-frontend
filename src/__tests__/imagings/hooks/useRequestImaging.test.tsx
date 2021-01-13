@@ -16,6 +16,7 @@ describe('useReportIncident', () => {
 
   const user = {
     fullName: 'test',
+    id: 'test-hospitalrun',
     permissions: [],
     loginError: {} as LoginError,
   } as UserState
@@ -35,7 +36,8 @@ describe('useReportIncident', () => {
     const expectedImagingRequest = {
       ...givenImagingRequest,
       requestedOn: expectedDate.toISOString(),
-      requestedBy: 'test',
+      requestedBy: 'test-hospitalrun',
+      requestedByFullName: 'test',
     } as Imaging
     jest.spyOn(ImagingRepository, 'save').mockResolvedValue(expectedImagingRequest)
 

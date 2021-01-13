@@ -24,7 +24,8 @@ function requestImagingWrapper(user: any) {
 
     await ImagingRepository.save({
       ...request,
-      requestedBy: user?.fullName || '',
+      requestedBy: user?.id || '',
+      requestedByFullName: user?.fullName || '',
       requestedOn: new Date(Date.now()).toISOString(),
     } as Imaging)
   }
