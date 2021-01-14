@@ -50,10 +50,8 @@ describe('Sidebar', () => {
     })
 
     it('should be active when the current path is /', () => {
-      const { container } = setup('/')
-      const activeElement = container.querySelector('.active')
-
-      expect(activeElement).toBeInTheDocument()
+      setup('/')
+      expect(screen.getByText(/dashboard\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to / when the dashboard link is clicked', () => {
@@ -97,9 +95,9 @@ describe('Sidebar', () => {
     })
 
     it('main patients link should be active when the current path is /patients', () => {
-      const { container } = setup('/patients')
+      setup('/patients')
 
-      expect(container.querySelector('.active')).toHaveTextContent(/patients.label/i)
+      expect(screen.getByText(/patients\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /patients when the patients main link is clicked', () => {
@@ -111,9 +109,9 @@ describe('Sidebar', () => {
     })
 
     it('new patient should be active when the current path is /patients/new', () => {
-      const { container } = setup('/patients/new')
+      setup('/patients/new')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/patients.newPatient/i)
+      expect(screen.getByText(/patients\.newPatient/i)).toHaveClass('active')
     })
 
     it('should navigate to /patients/new when the patients new link is clicked', () => {
@@ -124,9 +122,9 @@ describe('Sidebar', () => {
     })
 
     it('patients list link should be active when the current path is /patients', () => {
-      const { container } = setup('/patients')
+      setup('/patients')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/patients.patientsList/i)
+      expect(screen.getByText(/patients\.patientsList/i)).toHaveClass('active')
     })
 
     it('should navigate to /patients when the patients list link is clicked', () => {
@@ -169,9 +167,9 @@ describe('Sidebar', () => {
     })
 
     it('main scheduling link should be active when the current path is /appointments', () => {
-      const { container } = setup('/appointments')
+      setup('/appointments')
 
-      expect(container.querySelector('.active')).toHaveTextContent(/scheduling.label/i)
+      expect(screen.getByText(/scheduling\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /appointments when the main scheduling link is clicked', () => {
@@ -183,9 +181,9 @@ describe('Sidebar', () => {
     })
 
     it('new appointment link should be active when the current path is /appointments/new', () => {
-      const { container } = setup('/appointments/new')
+      setup('/appointments/new')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/appointments.new/i)
+      expect(screen.getByText(/appointments\.new/i)).toHaveClass('active')
     })
 
     it('should navigate to /appointments/new when the new appointment link is clicked', () => {
@@ -196,11 +194,9 @@ describe('Sidebar', () => {
     })
 
     it('appointments schedule link should be active when the current path is /appointments', () => {
-      const { container } = setup('/appointments')
+      setup('/appointments')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(
-        /scheduling.appointments.schedule/i,
-      )
+      expect(screen.getByText(/scheduling\.appointments\.schedule/i)).toHaveClass('active')
     })
 
     it('should navigate to /appointments when the appointments schedule link is clicked', () => {
@@ -244,9 +240,9 @@ describe('Sidebar', () => {
     })
 
     it('main labs link should be active when the current path is /labs', () => {
-      const { container } = setup('/labs')
+      setup('/labs')
 
-      expect(container.querySelector('.active')).toHaveTextContent(/labs.label/i)
+      expect(screen.getByText(/labs\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /labs when the main lab link is clicked', () => {
@@ -258,9 +254,9 @@ describe('Sidebar', () => {
     })
 
     it('new lab request link should be active when the current path is /labs/new', () => {
-      const { container } = setup('/labs/new')
+      setup('/labs/new')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/labs.requests.new/i)
+      expect(screen.getByText(/labs\.requests\.new/i)).toHaveClass('active')
     })
 
     it('should navigate to /labs/new when the new labs link is clicked', () => {
@@ -272,9 +268,9 @@ describe('Sidebar', () => {
     })
 
     it('labs list link should be active when the current path is /labs', () => {
-      const { container } = setup('/labs')
+      setup('/labs')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/labs.requests.label/i)
+      expect(screen.getByText(/labs\.requests\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /labs when the labs list link is clicked', () => {
@@ -336,9 +332,9 @@ describe('Sidebar', () => {
     })
 
     it('main incidents link should be active when the current path is /incidents', () => {
-      const { container } = setup('/incidents')
+      setup('/incidents')
 
-      expect(container.querySelector('.active')).toHaveTextContent(/incidents.labe/i)
+      expect(screen.getByText(/incidents\.labe/i)).toHaveClass('active')
     })
 
     it('should navigate to /incidents when the main incident link is clicked', () => {
@@ -350,9 +346,9 @@ describe('Sidebar', () => {
     })
 
     it('new incident report link should be active when the current path is /incidents/new', () => {
-      const { container } = setup('/incidents/new')
+      setup('/incidents/new')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/incidents.reports.new/i)
+      expect(screen.getByText(/incidents\.reports\.new/i)).toHaveClass('active')
     })
 
     it('should navigate to /incidents/new when the new incidents link is clicked', () => {
@@ -372,9 +368,9 @@ describe('Sidebar', () => {
     })
 
     it('incidents list link should be active when the current path is /incidents', () => {
-      const { container } = setup('/incidents')
+      setup('/incidents')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/incidents.reports.label/i)
+      expect(screen.getByText(/incidents\.reports\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /incidents/new when the incidents list link is clicked', () => {
@@ -418,9 +414,9 @@ describe('Sidebar', () => {
     })
 
     it('main imagings link should be active when the current path is /imagings', () => {
-      const { container } = setup('/imagings')
+      setup('/imagings')
 
-      expect(container.querySelector('.active')).toHaveTextContent(/imagings.label/i)
+      expect(screen.getByText(/imagings\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /imaging when the main imagings link is clicked', () => {
@@ -432,9 +428,9 @@ describe('Sidebar', () => {
     })
 
     it('new imaging request link should be active when the current path is /imagings/new', () => {
-      const { container } = setup('/imagings/new')
+      setup('/imagings/new')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/imagings.requests.new/i)
+      expect(screen.getByText(/imagings\.requests\.new/i)).toHaveClass('active')
     })
 
     it('should navigate to /imaging/new when the new imaging link is clicked', () => {
@@ -446,9 +442,9 @@ describe('Sidebar', () => {
     })
 
     it('imagings list link should be active when the current path is /imagings', () => {
-      const { container } = setup('/imagings')
+      setup('/imagings')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(/imagings.requests.label/)
+      expect(screen.getByText(/imagings\.requests\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /imaging when the imagings list link is clicked', () => {
@@ -492,9 +488,9 @@ describe('Sidebar', () => {
     })
 
     it('main medications link should be active when the current path is /medications', () => {
-      const { container } = setup('/medications')
+      setup('/medications')
 
-      expect(container.querySelector('.active')).toHaveTextContent(/medications.label/i)
+      expect(screen.getByText(/medications\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /medications when the main lab link is clicked', () => {
@@ -506,11 +502,9 @@ describe('Sidebar', () => {
     })
 
     it('new lab request link should be active when the current path is /medications/new', () => {
-      const { container } = setup('/medications/new')
+      setup('/medications/new')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(
-        /medications.requests.new/i,
-      )
+      expect(screen.getByText(/medications\.requests\.new/i)).toHaveClass('active')
     })
 
     it('should navigate to /medications/new when the new medications link is clicked', () => {
@@ -521,11 +515,9 @@ describe('Sidebar', () => {
     })
 
     it('medications list link should be active when the current path is /medications', () => {
-      const { container } = setup('/medications')
+      setup('/medications')
 
-      expect(container.querySelectorAll('.active')[1]).toHaveTextContent(
-        /medications.requests.label/i,
-      )
+      expect(screen.getByText(/medications\.requests\.label/i)).toHaveClass('active')
     })
 
     it('should navigate to /medications when the medications list link is clicked', () => {
