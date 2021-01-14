@@ -13,10 +13,12 @@ describe('Imaging Request Table', () => {
     id: '1234',
     type: 'imaging type',
     patient: 'patient',
-    fullName: 'full name',
-    status: 'requested',
+    fullName: 'Jean Luc Picard',
     requestedOn: new Date().toISOString(),
+    status: 'requested',
     requestedBy: 'some user',
+    // requestedByFullName gets passed into the custom hook that spreads it into the save function
+    requestedByFullName: 'Full Name Mock',
   } as Imaging
 
   const setup = (searchRequest: ImagingSearchRequest) => {
@@ -45,7 +47,7 @@ describe('Imaging Request Table', () => {
       format(new Date(expectedImaging.requestedOn), 'yyyy-MM-dd hh:mm a'),
     )
     expect(cells[3]).toHaveTextContent(expectedImaging.fullName)
-    expect(cells[4]).toHaveTextContent(expectedImaging.requestedBy)
+    expect(cells[4]).toHaveTextContent(expectedImaging.requestedByFullName as string)
     expect(cells[5]).toHaveTextContent(expectedImaging.status)
   })
 })
