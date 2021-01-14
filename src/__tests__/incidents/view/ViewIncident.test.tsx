@@ -25,6 +25,7 @@ const mockStore = createMockStore<RootState, any>([thunk])
 describe('View Incident', () => {
   let incidentRepositorySaveSpy: any
   const queryCache = new QueryCache()
+  const expectedResolveDate = new Date()
   const mockedIncident: Incident = {
     id: '1234',
     code: 'some code',
@@ -39,6 +40,7 @@ describe('View Incident', () => {
   } as Incident
   const setup = async (permissions: Permissions[], incident: Incident) => {
     jest.resetAllMocks()
+    Date.now = jest.fn(() => expectedResolveDate.valueOf())
     jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
     jest.spyOn(breadcrumbUtil, 'default')
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(incident)
@@ -82,13 +84,10 @@ describe('View Incident', () => {
     queryCache.clear()
   })
 
-  it('should not display a resolve incident button if the user has no access ResolveIncident access', async () => {
-    const { wrapper } = await setup(
-      [Permissions.ViewIncident, Permissions.ResolveIncident],
-      mockedIncident,
-    )
+  it('should not display a resolve incident button if the user has no ResolveIncident access', async () => {
+    const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
 
-    const resolveButton = wrapper.find(Button)
+    const resolveButton = wrapper.find('Button[color="primary"]')
     expect(resolveButton).toHaveLength(0)
   })
 
@@ -99,7 +98,7 @@ describe('View Incident', () => {
       mockIncident,
     )
 
-    const resolveButton = wrapper.find(Button)
+    const resolveButton = wrapper.find('Button[color="primary"]')
     expect(resolveButton).toHaveLength(0)
   })
 
@@ -142,7 +141,7 @@ describe('View Incident', () => {
       mockedIncident,
     )
 
-    const resolveButton = wrapper.find(Button).at(0)
+    const resolveButton = wrapper.find('Button[color="primary"]').at(0)
     await act(async () => {
       const onClick = resolveButton.prop('onClick') as any
       await onClick()

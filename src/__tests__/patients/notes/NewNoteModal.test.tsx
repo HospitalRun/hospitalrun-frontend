@@ -12,6 +12,7 @@ import Patient from '../../../shared/model/Patient'
 import NewNoteModal from '../../../shared/notes/NewNoteModal'
 
 describe('New Note Modal', () => {
+  const expectedSaveDate = new Date()
   const mockPatient = {
     id: '123',
     givenName: 'someName',
@@ -19,12 +20,12 @@ describe('New Note Modal', () => {
 
   const mockNote: Note = {
     id: 'note id',
-    date: 'note date',
     text: 'note text',
     givenBy: 'given by person',
-  }
+  } as Note
 
   const setup = (onCloseSpy = jest.fn(), onSaveSpy = jest.fn()) => {
+    Date.now = jest.fn(() => expectedSaveDate.valueOf())
     jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(mockPatient)
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
     const wrapper = mount(
@@ -49,12 +50,18 @@ describe('New Note Modal', () => {
 
     const modal = wrapper.find(Modal)
     expect(modal).toHaveLength(1)
-    expect(modal.prop('title')).toEqual('patient.notes.new')
+    expect(modal.prop('title')).toEqual('patient.notes.edit')
     expect(modal.prop('closeButton')?.children).toEqual('actions.cancel')
     expect(modal.prop('closeButton')?.color).toEqual('danger')
-    expect(modal.prop('successButton')?.children).toEqual('patient.notes.new')
+    expect(modal.prop('successButton')?.children).toEqual('patient.notes.edit')
     expect(modal.prop('successButton')?.color).toEqual('success')
     expect(modal.prop('successButton')?.icon).toEqual('add')
+  })
+
+  it("should render 'Edit Note' strings if date object is specfiied", () => {
+    const { wrapper } = setup()
+
+    // TODO
   })
 
   it('should render a notes rich text editor', () => {
@@ -125,7 +132,11 @@ describe('New Note Modal', () => {
       })
 
       expect(onSaveSpy).toHaveBeenCalledTimes(1)
-      expect(onSaveSpy).toHaveBeenCalledWith(mockNote)
+      expect(onSaveSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          resolvedOn: expectedSaveDate.toISOString(),
+        }),
+      )
 
       // Does the form reset value back to blank?
       expect(noteTextField.prop('value')).toEqual('')
