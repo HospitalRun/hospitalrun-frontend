@@ -79,6 +79,7 @@ describe('Related Persons Tab', () => {
     it('should not render a New Related Person button if the user does not have write privileges for a patient', async () => {
       const { container } = setup({ permissions: [Permissions.ReadPatients] })
 
+      // wait for spinner to disappear
       await waitForElementToBeRemoved(container.querySelector(`[class^='css']`))
 
       expect(

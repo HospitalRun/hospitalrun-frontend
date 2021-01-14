@@ -44,18 +44,15 @@ describe('Care Plan Table', () => {
   }
 
   it('should render a table', async () => {
-    const { container } = await setup()
+    setup()
 
     await screen.findByRole('table')
 
-    const columns = container.querySelectorAll('th') as any
+    const columns = screen.getAllByRole('columnheader')
 
     expect(columns[0]).toHaveTextContent(/patient\.carePlan\.title/i)
-
     expect(columns[1]).toHaveTextContent(/patient\.carePlan\.startDate/i)
-
     expect(columns[2]).toHaveTextContent(/patient\.carePlan\.endDate/i)
-
     expect(columns[3]).toHaveTextContent(/patient\.carePlan\.status/i)
 
     await waitFor(() => {

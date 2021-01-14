@@ -116,11 +116,11 @@ describe('View Medication', () => {
   })
 
   it('should not display the canceled date if the medication is not canceled', async () => {
-    const { container } = setup({} as Medication, [Permissions.ViewMedication])
+    setup({} as Medication, [Permissions.ViewMedication])
 
-    await waitFor(() => {
-      expect(container.querySelector('.canceled-on')).not.toBeInTheDocument()
-    })
+    expect(
+      screen.queryByRole('heading', { name: /medications\.medication\.canceledOn/i }),
+    ).not.toBeInTheDocument()
   })
 
   it('should display the notes in the notes text field', async () => {

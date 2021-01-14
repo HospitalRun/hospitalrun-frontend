@@ -1,4 +1,4 @@
-import { screen, render, waitFor } from '@testing-library/react'
+import { screen, render, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
@@ -44,14 +44,14 @@ describe('New Note Modal', () => {
 
     expect(cancelButton).toHaveClass('btn-danger')
     expect(successButton).toHaveClass('btn-success')
-    expect(successButton.querySelector('svg')).toHaveAttribute('data-icon', 'plus')
+    expect(within(successButton).getByRole('img')).toHaveAttribute('data-icon', 'plus')
   })
 
   it('should render a notes rich text editor', () => {
     setup()
 
     expect(screen.getByRole('textbox')).toBeInTheDocument()
-    expect(screen.getByText('patient.note').querySelector('svg')).toHaveAttribute(
+    expect(within(screen.getByText('patient.note')).getByRole('img')).toHaveAttribute(
       'data-icon',
       'asterisk',
     )

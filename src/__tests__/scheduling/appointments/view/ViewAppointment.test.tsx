@@ -102,11 +102,11 @@ describe('View Appointment', () => {
   })
 
   it('button toolbar empty if has only ReadAppointments permission', async () => {
-    const { container } = setup()
+    setup()
 
-    await waitFor(() => {
-      expect(container.querySelector(`[class^='css-']`)).not.toBeInTheDocument()
-    })
+    expect(
+      await screen.findByPlaceholderText(/scheduling\.appointment\.patient/i),
+    ).toBeInTheDocument()
 
     expect(screen.queryAllByRole('button')).toHaveLength(0)
   })

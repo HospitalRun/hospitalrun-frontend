@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -67,10 +67,8 @@ describe('Labs', () => {
 
   describe('patient labs list', () => {
     it('should render patient labs', async () => {
-      const { container } = await setup()
-      await waitFor(() => {
-        expect(container.querySelector('table')).toBeInTheDocument()
-      })
+      setup()
+      expect(await screen.findByRole('table')).toBeInTheDocument()
     })
   })
 })

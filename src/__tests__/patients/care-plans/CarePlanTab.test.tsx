@@ -96,11 +96,9 @@ describe('Care Plan Tab', () => {
   })
 
   it('should render the care plans table when on /patient/:id/care-plans', async () => {
-    const { container } = await setup('/patients/123/care-plans', [Permissions.ReadCarePlan])
+    setup('/patients/123/care-plans', [Permissions.ReadCarePlan])
 
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
   })
 
   it('should render the care plan view when on /patient/:id/care-plans/:carePlanId', async () => {

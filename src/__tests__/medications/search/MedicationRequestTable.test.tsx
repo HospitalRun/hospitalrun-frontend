@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -29,13 +29,11 @@ describe('Medication Request Table', () => {
   }
 
   it('should render a table with the correct columns', async () => {
-    const { container } = setup()
+    setup()
 
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
 
-    const columns = container.querySelectorAll('th')
+    const columns = screen.getAllByRole('columnheader')
 
     expect(columns[0]).toHaveTextContent(/medications.medication.medication/i)
     expect(columns[1]).toHaveTextContent(/medications.medication.priority/i)
@@ -54,11 +52,9 @@ describe('Medication Request Table', () => {
         status: expectedSearchRequest.status,
       } as Medication,
     ]
-    const { container } = setup(expectedSearchRequest, expectedMedicationRequests)
+    setup(expectedSearchRequest, expectedMedicationRequests)
 
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
     expect(screen.getByText(expectedSearchRequest.text)).toBeInTheDocument()
     expect(screen.getByText(expectedSearchRequest.status)).toBeInTheDocument()
   })
@@ -66,11 +62,10 @@ describe('Medication Request Table', () => {
   it('should navigate to the medication when the view button is clicked', async () => {
     const expectedSearchRequest: MedicationSearchRequest = { text: 'someText', status: 'draft' }
     const expectedMedicationRequests: Medication[] = [{ id: 'someId' } as Medication]
-    const { container, history } = setup(expectedSearchRequest, expectedMedicationRequests)
+    const { history } = setup(expectedSearchRequest, expectedMedicationRequests)
 
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
+
     userEvent.click(screen.getByRole('button', { name: /actions.view/i }))
 
     expect(history.location.pathname).toBe(`/medications/${expectedMedicationRequests[0].id}`)

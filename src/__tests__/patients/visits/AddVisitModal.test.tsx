@@ -41,7 +41,7 @@ describe('Add Visit Modal', () => {
   it('should render a modal and within a form', () => {
     setup()
 
-    expect(screen.getByRole('dialog').querySelector('form')).toBeInTheDocument()
+    expect(within(screen.getByRole('dialog')).getByLabelText('visit form')).toBeInTheDocument()
   })
 
   it('should call the on close function when the cancel button is clicked', () => {
