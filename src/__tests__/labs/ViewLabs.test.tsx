@@ -30,7 +30,6 @@ const setup = (permissions: Permissions[] = []) => {
   } as Lab
 
   jest.spyOn(LabRepository, 'findAll').mockResolvedValue([expectedLab])
-  // jest.spyOn(LabRepository, 'search')
 
   const history = createMemoryHistory()
 
