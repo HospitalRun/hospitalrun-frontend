@@ -1,4 +1,4 @@
-import { screen, render, waitFor } from '@testing-library/react'
+import { screen, render, waitFor, within } from '@testing-library/react'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -47,18 +47,16 @@ describe('View Visit', () => {
   })
 
   it('should render a visit form with the correct data', async () => {
-    const { container } = setup()
+    setup()
 
-    await waitFor(() => {
-      expect(container.querySelector('form')).toBeInTheDocument()
-    })
+    expect(await screen.findByLabelText('visit form')).toBeInTheDocument()
 
-    const startDateTimePicker = container.querySelectorAll(
-      '.react-datepicker__input-container input',
-    )[0]
-    const endDateTimePicker = container.querySelectorAll(
-      '.react-datepicker__input-container input',
-    )[1]
+    const startDateTimePicker = within(screen.getByTestId('startDateTimeDateTimePicker')).getByRole(
+      'textbox',
+    )
+    const endDateTimePicker = within(screen.getByTestId('endDateTimeDateTimePicker')).getByRole(
+      'textbox',
+    )
     const typeInput = screen.getByPlaceholderText(/patient.visits.type/i)
     const statusSelector = screen.getByPlaceholderText('-- Choose --')
     const reasonInput = screen.getAllByRole('textbox', { hidden: false })[3]

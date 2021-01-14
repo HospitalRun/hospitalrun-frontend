@@ -1,5 +1,5 @@
 import { Toaster } from '@hospitalrun/components'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import addMinutes from 'date-fns/addMinutes'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
@@ -78,11 +78,9 @@ describe('New Appointment', () => {
 
   describe('layout', () => {
     it('should render an Appointment Detail Component', async () => {
-      const { container } = setup()
+      setup()
 
-      await waitFor(() => {
-        expect(container.querySelector('form')).toBeInTheDocument()
-      })
+      expect(await screen.findByLabelText('new appointment form')).toBeInTheDocument()
     })
   })
 
@@ -122,7 +120,7 @@ describe('New Appointment', () => {
     })
 
     it('should have error when error saving with end time earlier than start time', async () => {
-      const { container } = setup()
+      setup()
 
       const expectedError = {
         message: 'scheduling.appointment.errors.createAppointmentError',
@@ -142,10 +140,10 @@ describe('New Appointment', () => {
         screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
         expectedAppointment.patient,
       )
-      fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[0], {
+      fireEvent.change(within(screen.getByTestId('startDateDateTimePicker')).getByRole('textbox'), {
         target: { value: expectedAppointment.startDateTime },
       })
-      fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[1], {
+      fireEvent.change(within(screen.getByTestId('endDateDateTimePicker')).getByRole('textbox'), {
         target: { value: expectedAppointment.endDateTime },
       })
       userEvent.click(screen.getByText(/scheduling.appointments.createAppointment/i))
@@ -154,15 +152,15 @@ describe('New Appointment', () => {
       expect(screen.getByPlaceholderText(/scheduling\.appointment\.patient/i)).toHaveClass(
         'is-invalid',
       )
-      expect(container.querySelectorAll('.react-datepicker__input-container input')[0]).toHaveClass(
-        'is-invalid',
-      )
+      expect(
+        within(screen.getByTestId('startDateDateTimePicker')).getByRole('textbox'),
+      ).toHaveClass('is-invalid')
       expect(screen.getByText(expectedError.startDateTime)).toBeInTheDocument()
       expect(AppointmentRepository.save).toHaveBeenCalledTimes(0)
     })
 
     it('should call AppointmentRepo.save when save button is clicked', async () => {
-      const { container } = setup()
+      setup()
 
       const expectedAppointment = {
         patient: expectedPatient.fullName,
@@ -184,11 +182,11 @@ describe('New Appointment', () => {
         await screen.findByText(`${expectedPatient.fullName} (${expectedPatient.code})`),
       )
 
-      fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[0], {
+      fireEvent.change(within(screen.getByTestId('startDateDateTimePicker')).getByRole('textbox'), {
         target: { value: expectedAppointment.startDateTime },
       })
 
-      fireEvent.change(container.querySelectorAll('.react-datepicker__input-container input')[1], {
+      fireEvent.change(within(screen.getByTestId('endDateDateTimePicker')).getByRole('textbox'), {
         target: { value: expectedAppointment.endDateTime },
       })
 

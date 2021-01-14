@@ -47,7 +47,7 @@ const VisitForm = (props: Props) => {
     Object.values(VisitStatus).map((v) => ({ label: v, value: v })) || []
 
   return (
-    <form>
+    <form aria-label="visit form">
       {visitError?.message && <Alert color="danger" message={t(visitError.message)} />}
       <Row>
         <Column sm={6}>
