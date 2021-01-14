@@ -1,4 +1,4 @@
-import { screen, render, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
+import { screen, render, waitFor } from '@testing-library/react'
 import format from 'date-fns/format'
 import React from 'react'
 

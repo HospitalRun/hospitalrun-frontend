@@ -1,4 +1,4 @@
-import { render, screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent, { specialChars } from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
