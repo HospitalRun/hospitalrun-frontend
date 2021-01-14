@@ -28,9 +28,8 @@ describe('View Patients Table', () => {
   })
 
   it('should display no patients exist if total patient count is 0', async () => {
-    const { container } = setup({ queryString: '' }, [])
-    await waitForElementToBeRemoved(container.querySelector('.css-0'))
-    expect(screen.getByRole('heading', { name: /patients.noPatients/i })).toBeInTheDocument()
+    setup({ queryString: '' }, [])
+    expect(await screen.findByRole('heading', { name: /patients.noPatients/i })).toBeInTheDocument()
   })
 
   it('should render a table', async () => {

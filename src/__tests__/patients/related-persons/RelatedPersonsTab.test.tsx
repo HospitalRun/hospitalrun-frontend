@@ -77,10 +77,9 @@ describe('Related Persons Tab', () => {
     })
 
     it('should not render a New Related Person button if the user does not have write privileges for a patient', async () => {
-      const { container } = setup({ permissions: [Permissions.ReadPatients] })
+      setup({ permissions: [Permissions.ReadPatients] })
 
-      await waitForElementToBeRemoved(container.querySelector(`[class^='css']`))
-
+      expect(await screen.findByRole('alert')).toBeInTheDocument()
       expect(
         screen.queryByRole('button', { name: /patient\.relatedPersons\.add/i }),
       ).not.toBeInTheDocument()

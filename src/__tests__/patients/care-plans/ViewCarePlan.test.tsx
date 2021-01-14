@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Route, Router } from 'react-router-dom'
@@ -35,10 +35,8 @@ describe('View Care Plan', () => {
   }
 
   it('should render the care plan title', async () => {
-    const { container } = await setup()
+    setup()
 
-    await waitFor(() => {
-      expect(container.querySelectorAll('div').length).toBe(4)
-    })
+    expect(await screen.findByRole('heading', { name: carePlan.title })).toBeInTheDocument()
   })
 })

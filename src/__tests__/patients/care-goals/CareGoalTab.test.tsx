@@ -63,10 +63,9 @@ const setup = (
 
 describe('Care Goals Tab', () => {
   it('should not render add care goal button if user does not have permissions', async () => {
-    const { container } = setup('/patients/123/care-goals', [])
+    setup('/patients/123/care-goals', [])
 
-    await waitForElementToBeRemoved(container.querySelector('.css-0'))
-
+    expect(await screen.findByRole('table')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /patient.careGoal.new/i })).not.toBeInTheDocument()
   })
 

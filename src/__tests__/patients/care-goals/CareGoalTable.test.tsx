@@ -47,11 +47,11 @@ describe('Care Goal Table', () => {
   }
 
   it('should render a table', async () => {
-    const { container } = await setup()
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
-    const columns = container.querySelectorAll('th')
+    setup()
+
+    expect(await screen.findByRole('table')).toBeInTheDocument()
+
+    const columns = screen.getAllByRole('columnheader')
     expect(columns[0]).toHaveTextContent(/patient.careGoal.description/i)
     expect(columns[1]).toHaveTextContent(/patient.careGoal.startDate/i)
     expect(columns[2]).toHaveTextContent(/patient.careGoal.dueDate/i)
@@ -67,10 +67,10 @@ describe('Care Goal Table', () => {
   })
 
   it('should navigate to the care goal view when the view details button is clicked', async () => {
-    const { container, history } = await setup()
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
+    const { history } = await setup()
+
+    expect(await screen.findByRole('table')).toBeInTheDocument()
+
     userEvent.click(screen.getByRole('button', { name: /actions.view/i }))
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/care-goals/${careGoal.id}`)
   })

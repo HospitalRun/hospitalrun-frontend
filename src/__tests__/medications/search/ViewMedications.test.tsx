@@ -79,10 +79,9 @@ describe('View Medications', () => {
 
   describe('table', () => {
     it('should render a table with data with the default search', async () => {
-      const { container } = await setup({} as Medication, [Permissions.ViewMedications])
-      await waitFor(() => {
-        expect(container.querySelector('table')).toBeInTheDocument()
-      })
+      setup({} as Medication, [Permissions.ViewMedications])
+
+      expect(await screen.findByRole('table')).toBeInTheDocument()
       expect(screen.getByLabelText(/medications\.search/i)).toHaveDisplayValue('')
     })
   })
@@ -108,15 +107,13 @@ describe('View Medications', () => {
           status: expectedSearchRequest.status,
         } as Medication,
       ]
-      const { container } = await setup(
+      setup(
         { medication: expectedSearchRequest.text } as Medication,
         [],
         expectedMedicationRequests,
       )
       userEvent.type(screen.getByLabelText(/medications\.search/i), expectedSearchRequest.text)
-      await waitFor(() => {
-        expect(container.querySelector('table')).toBeInTheDocument()
-      })
+      expect(await screen.findByRole('table')).toBeInTheDocument()
 
       expect(screen.getByText(expectedSearchRequest.text)).toBeInTheDocument()
     })

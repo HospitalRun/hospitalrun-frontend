@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Route, Router } from 'react-router-dom'
@@ -33,9 +33,8 @@ describe('View Care Goals', () => {
   }
 
   it('should render a care goals table', async () => {
-    const { container } = await setup()
-    await waitFor(() => {
-      expect(container.querySelector('table')).toBeInTheDocument()
-    })
+    setup()
+
+    expect(await screen.findByRole('table')).toBeInTheDocument()
   })
 })
