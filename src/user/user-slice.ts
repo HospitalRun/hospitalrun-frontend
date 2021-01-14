@@ -6,13 +6,13 @@ import Permissions from '../shared/model/Permissions'
 import User from '../shared/model/User'
 import { AppThunk } from '../shared/store'
 
-interface LoginError {
+export interface LoginError {
   message?: string
   username?: string
   password?: string
 }
 
-interface UserState {
+export interface UserState {
   permissions: (Permissions | null)[]
   user?: User
   loginError?: LoginError

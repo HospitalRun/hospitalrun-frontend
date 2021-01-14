@@ -3,6 +3,7 @@ import { ImagingRequestError } from '../../../imagings/util/validate-imaging-req
 import * as imagingRequestValidator from '../../../imagings/util/validate-imaging-request'
 import ImagingRepository from '../../../shared/db/ImagingRepository'
 import Imaging from '../../../shared/model/Imaging'
+import { UserState, LoginError } from '../../../user/user-slice'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
@@ -10,6 +11,13 @@ describe('useReportIncident', () => {
   beforeEach(() => {
     jest.restoreAllMocks()
   })
+
+  const user = {
+    fullName: 'test',
+    id: 'test-hospitalrun',
+    permissions: [],
+    loginError: {} as LoginError,
+  } as UserState
 
   it('should save the imaging request with correct data', async () => {
     const expectedDate = new Date(Date.now())
@@ -26,11 +34,12 @@ describe('useReportIncident', () => {
     const expectedImagingRequest = {
       ...givenImagingRequest,
       requestedOn: expectedDate.toISOString(),
-      requestedBy: 'test',
+      requestedBy: 'test-hospitalrun',
+      requestedByFullName: 'test',
     } as Imaging
     jest.spyOn(ImagingRepository, 'save').mockResolvedValue(expectedImagingRequest)
 
-    await executeMutation(() => useRequestImaging(), givenImagingRequest)
+    await executeMutation(() => useRequestImaging(user), givenImagingRequest)
     expect(ImagingRepository.save).toHaveBeenCalledTimes(1)
     expect(ImagingRepository.save).toBeCalledWith(expectedImagingRequest)
   })
@@ -45,6 +54,8 @@ describe('useReportIncident', () => {
     jest.spyOn(ImagingRepository, 'save').mockResolvedValue({} as Imaging)
 
     try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore testing function failure
       await executeMutation(() => useRequestImaging(), {} as Imaging)
     } catch (e) {
       expect(e).toEqual(expectedImagingRequestError)

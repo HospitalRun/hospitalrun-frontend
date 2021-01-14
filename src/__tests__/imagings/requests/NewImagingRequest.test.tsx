@@ -13,6 +13,7 @@ import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcru
 import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
 import * as titleUtil from '../../../page-header/title/TitleContext'
 import { RootState } from '../../../shared/store'
+import { UserState, LoginError } from '../../../user/user-slice'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -29,7 +30,13 @@ describe('New Imaging Request', () => {
 
     history = createMemoryHistory()
     history.push(`/imaging/new`)
-    const store = mockStore({} as any)
+    const store = mockStore({
+      user: {
+        fullName: 'test',
+        permissions: [],
+        loginError: {} as LoginError,
+      } as UserState,
+    } as any)
 
     return render(
       <ButtonBarProvider.ButtonBarProvider>
