@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -77,9 +77,11 @@ describe('Related Persons Tab', () => {
     })
 
     it('should not render a New Related Person button if the user does not have write privileges for a patient', async () => {
-      setup({ permissions: [Permissions.ReadPatients] })
+      const { container } = setup({ permissions: [Permissions.ReadPatients] })
 
-      expect(await screen.findByRole('alert')).toBeInTheDocument()
+      // wait for spinner to disappear
+      await waitForElementToBeRemoved(container.querySelector(`[class^='css']`))
+
       expect(
         screen.queryByRole('button', { name: /patient\.relatedPersons\.add/i }),
       ).not.toBeInTheDocument()

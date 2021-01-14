@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { render, screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
 import userEvent, { specialChars } from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
@@ -63,9 +63,10 @@ const setup = (
 
 describe('Care Goals Tab', () => {
   it('should not render add care goal button if user does not have permissions', async () => {
-    setup('/patients/123/care-goals', [])
+    const { container } = setup('/patients/123/care-goals', [])
 
-    expect(await screen.findByRole('table')).toBeInTheDocument()
+    // wait for spinner to disappear
+    await waitForElementToBeRemoved(container.querySelector('.css-0'))
     expect(screen.queryByRole('button', { name: /patient.careGoal.new/i })).not.toBeInTheDocument()
   })
 
