@@ -1,4 +1,4 @@
-import { sortBy } from 'lodash'
+import sortBy from 'lodash/sortBy'
 import React, { useState } from 'react'
 
 import i18n, { resources } from '../../config/i18n'

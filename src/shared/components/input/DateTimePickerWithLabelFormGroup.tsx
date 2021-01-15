@@ -16,7 +16,7 @@ const DateTimePickerWithLabelFormGroup = (props: Props) => {
   const { onChange, label, name, isEditable, value, isRequired, feedback, isInvalid } = props
   const id = `${name}DateTimePicker`
   return (
-    <div className="form-group">
+    <div className="form-group" data-testid={id}>
       <Label text={label} isRequired={isRequired} htmlFor={id} />
       <DateTimePicker
         dateFormat="MM/dd/yyyy h:mm aa"

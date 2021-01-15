@@ -11,12 +11,11 @@ describe('useTranslator', () => {
   })
 
   it('should return useTranslation hook result if input value is NOT undefined', () => {
-    const { result: useTranslatorResult } = renderHook(() => useTranslator())
-    const { result: useTranslationResult } = renderHook(() => useTranslation())
+    const mockTranslation = useTranslation() as any
+    const expected = mockTranslation.t('patient.firstName')
 
-    const result = useTranslatorResult.current.t('patient.firstName')
-    const expected = useTranslationResult.current.t('patient.firstName')
+    const { result } = renderHook(() => useTranslator())
 
-    expect(result).toBe(expected)
+    expect(result.current.t('patient.firstName')).toBe(expected)
   })
 })

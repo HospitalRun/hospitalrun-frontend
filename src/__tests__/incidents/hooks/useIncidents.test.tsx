@@ -1,11 +1,9 @@
-import { act, renderHook } from '@testing-library/react-hooks'
-
 import useIncidents from '../../../incidents/hooks/useIncidents'
 import IncidentFilter from '../../../incidents/IncidentFilter'
 import IncidentSearchRequest from '../../../incidents/model/IncidentSearchRequest'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
-import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
+import executeQuery from '../../test-utils/use-query.util'
 
 describe('useIncidents', () => {
   it('it should search incidents', async () => {
@@ -19,13 +17,7 @@ describe('useIncidents', () => {
     ] as Incident[]
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
 
-    let actualData: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useIncidents(expectedSearchRequest))
-      const { result } = renderHookResult
-      await waitUntilQueryIsSuccessful(renderHookResult)
-      actualData = result.current.data
-    })
+    const actualData = await executeQuery(() => useIncidents(expectedSearchRequest))
 
     expect(IncidentRepository.search).toHaveBeenCalledTimes(1)
     expect(IncidentRepository.search).toBeCalledWith(expectedSearchRequest)

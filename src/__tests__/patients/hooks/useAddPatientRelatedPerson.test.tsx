@@ -4,6 +4,7 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import RelatedPerson from '../../../shared/model/RelatedPerson'
 import * as uuid from '../../../shared/util/uuid'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add patient related person', () => {
@@ -13,13 +14,14 @@ describe('use add patient related person', () => {
 
   it('should throw an error if related person not specified', async () => {
     const expectedError = { relatedPersonError: 'some error' }
+    expectOneConsoleError(expectedError)
     jest.spyOn(validateRelatedPerson, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
       await executeMutation(() => useAddPatientRelatedPerson(), {
         patientId: '123',
-        relatedPerson: {},
+        relatedPerson: {} as RelatedPerson,
       })
     } catch (e) {
       expect(e).toEqual(expectedError)
@@ -30,13 +32,14 @@ describe('use add patient related person', () => {
 
   it('should throw an error if the relation type is not specified', async () => {
     const expectedError = { relationshipTypeError: 'some error' }
+    expectOneConsoleError(expectedError)
     jest.spyOn(validateRelatedPerson, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
       await executeMutation(() => useAddPatientRelatedPerson(), {
         patientId: '123',
-        relatedPerson: { patientId: '456' },
+        relatedPerson: { patientId: '456' } as RelatedPerson,
       })
     } catch (e) {
       expect(e).toEqual(expectedError)

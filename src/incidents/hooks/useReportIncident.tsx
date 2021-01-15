@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import { queryCache, useMutation } from 'react-query'
 import shortid from 'shortid'
 

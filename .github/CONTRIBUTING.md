@@ -58,7 +58,7 @@ _Note: We no longer support the use of yarn._
 
 ## 4. Before pushing your changes, check locally that your branch passes CI checks
 
-### We use Jest + Enzyme for Behavior-Driven Development Tests
+### We use Jest + React Testing Library for Behavior-Driven Development Tests
 
 `npm run test:ci` will run the entire test suite
 
@@ -94,6 +94,6 @@ _Note: We no longer support the use of yarn._
 
 - [Getting started with PouchDB and CouchDB (tutorial) by Nolan Lawson](https://youtu.be/-Z7UF2TuSp0)
 
-### Enzyme
+### React Testing Library
 
-- [Enzyme Cheatsheet by @rstacruz](https://devhints.io/enzyme)
+- [React Testing Library Cheatsheet](https://testing-library.com/docs/react-testing-library/cheatsheet/)

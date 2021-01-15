@@ -128,7 +128,16 @@ const ContactInfo = (props: Props): ReactElement => {
   )
 
   if (isEditable && data.length === 0) {
-    return <Spinner color="blue" loading size={20} type="SyncLoader" />
+    return (
+      <Spinner
+        aria-hidden="false"
+        aria-label="Loading"
+        color="blue"
+        loading
+        size={20}
+        type="SyncLoader"
+      />
+    )
   }
 
   return (

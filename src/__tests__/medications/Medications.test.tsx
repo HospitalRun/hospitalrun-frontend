@@ -1,5 +1,4 @@
-import { act } from '@testing-library/react'
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -7,8 +6,6 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Medications from '../../medications/Medications'
-import NewMedicationRequest from '../../medications/requests/NewMedicationRequest'
-import ViewMedication from '../../medications/ViewMedication'
 import { TitleProvider } from '../../page-header/title/TitleContext'
 import MedicationRepository from '../../shared/db/MedicationRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -19,8 +16,20 @@ import { RootState } from '../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
+const expectedMedication = ({
+  id: 'medicationId',
+  patientId: 'patientId',
+  requestedOn: new Date().toISOString(),
+  medication: 'medication',
+  status: 'draft',
+  intent: 'order',
+  priority: 'routine',
+  quantity: { value: 1, unit: 'unit' },
+  notes: 'medication notes',
+} as unknown) as Medication
+
 describe('Medications', () => {
-  const setup = (route: string, permissions: Array<string>) => {
+  const setup = (route: string, permissions: Permissions[] = []) => {
     jest.resetAllMocks()
     jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
     jest
@@ -36,23 +45,13 @@ describe('Medications', () => {
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
       medication: {
-        medication: ({
-          id: 'medicationId',
-          patientId: 'patientId',
-          requestedOn: new Date().toISOString(),
-          medication: 'medication',
-          status: 'draft',
-          intent: 'order',
-          priority: 'routine',
-          quantity: { value: 1, unit: 'unit' },
-          notes: 'medication notes',
-        } as unknown) as Medication,
+        medication: expectedMedication,
         patient: { id: 'patientId', fullName: 'some name' },
         error: {},
       },
     } as any)
 
-    const wrapper = mount(
+    return render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>
           <TitleProvider>
@@ -61,44 +60,38 @@ describe('Medications', () => {
         </MemoryRouter>
       </Provider>,
     )
-    return wrapper as ReactWrapper
   }
 
   describe('routing', () => {
     describe('/medications/new', () => {
       it('should render the new medication request screen when /medications/new is accessed', () => {
-        const route = '/medications/new'
-        const permissions = [Permissions.RequestMedication]
-        const wrapper = setup(route, permissions)
-        expect(wrapper.find(NewMedicationRequest)).toHaveLength(1)
+        setup('/medications/new', [Permissions.RequestMedication])
+
+        expect(screen.getByRole('form', { name: /medication request form/i })).toBeInTheDocument()
       })
 
       it('should not navigate to /medications/new if the user does not have RequestMedication permissions', () => {
-        const route = '/medications/new'
-        const permissions: never[] = []
-        const wrapper = setup(route, permissions)
-        expect(wrapper.find(NewMedicationRequest)).toHaveLength(0)
+        setup('/medications/new')
+
+        expect(
+          screen.queryByRole('form', { name: /medication request form/i }),
+        ).not.toBeInTheDocument()
       })
     })
 
     describe('/medications/:id', () => {
       it('should render the view medication screen when /medications/:id is accessed', async () => {
-        const route = '/medications/1234'
-        const permissions = [Permissions.ViewMedication]
-        let wrapper: any
-        await act(async () => {
-          wrapper = setup(route, permissions)
+        setup('/medications/1234', [Permissions.ViewMedication])
 
-          expect(wrapper.find(ViewMedication)).toHaveLength(1)
-        })
+        expect(screen.getByRole('heading', { name: expectedMedication.status })).toBeInTheDocument()
       })
 
       it('should not navigate to /medications/:id if the user does not have ViewMedication permissions', async () => {
-        const route = '/medications/1234'
-        const permissions: never[] = []
-        const wrapper = setup(route, permissions)
+        setup('/medications/1234')
 
-        expect(wrapper.find(ViewMedication)).toHaveLength(0)
+        expect(
+          screen.queryByRole('heading', { name: expectedMedication.status }),
+        ).not.toBeInTheDocument()
       })
     })
   })

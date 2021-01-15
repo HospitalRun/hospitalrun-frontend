@@ -1,9 +1,7 @@
-import * as components from '@hospitalrun/components'
-import { Table } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -41,114 +39,90 @@ const expectedAppointments = [
 ] as Appointment[]
 
 const mockStore = createMockStore<RootState, any>([thunk])
-const history = createMemoryHistory()
 
-let store: any
-
-const setup = async (patient = expectedPatient, appointments = expectedAppointments) => {
+const setup = (patient = expectedPatient, appointments = expectedAppointments) => {
   jest.resetAllMocks()
   jest.spyOn(PatientRepository, 'getAppointments').mockResolvedValue(appointments)
-  store = mockStore({ patient, appointments: { appointments } } as any)
+  const store = mockStore({ patient, appointments: { appointments } } as any)
+  const history = createMemoryHistory()
 
-  let wrapper: any
-
-  await act(async () => {
-    wrapper = await mount(
+  return {
+    history,
+    ...render(
       <Router history={history}>
         <Provider store={store}>
           <AppointmentsList patient={patient} />
         </Provider>
       </Router>,
-    )
-  })
-
-  wrapper.update()
-
-  return { wrapper: wrapper as ReactWrapper }
+    ),
+  }
 }
 
 describe('AppointmentsList', () => {
   describe('Table', () => {
     it('should render a list of appointments', async () => {
-      const { wrapper } = await setup()
+      setup()
+      await waitFor(() => {
+        expect(screen.getByRole('table')).toBeInTheDocument()
+      })
+      const header = screen.getAllByRole('columnheader')
 
-      const table = wrapper.find(Table)
-
-      const columns = table.prop('columns')
-      const actions = table.prop('actions') as any
-
-      expect(table).toHaveLength(1)
-
-      expect(columns[0]).toEqual(
-        expect.objectContaining({
-          label: 'scheduling.appointment.startDate',
-          key: 'startDateTime',
-        }),
-      )
-      expect(columns[1]).toEqual(
-        expect.objectContaining({ label: 'scheduling.appointment.endDate', key: 'endDateTime' }),
-      )
-      expect(columns[2]).toEqual(
-        expect.objectContaining({ label: 'scheduling.appointment.location', key: 'location' }),
-      )
-      expect(columns[3]).toEqual(
-        expect.objectContaining({ label: 'scheduling.appointment.type', key: 'type' }),
-      )
-
-      expect(actions[0]).toEqual(expect.objectContaining({ label: 'actions.view' }))
-      expect(table.prop('actionsHeaderText')).toEqual('actions.label')
+      expect(header[0]).toHaveTextContent(/scheduling.appointment.startDate/i)
+      expect(header[1]).toHaveTextContent(/scheduling.appointment.endDate/i)
+      expect(header[2]).toHaveTextContent(/scheduling.appointment.location/i)
+      expect(header[3]).toHaveTextContent(/scheduling.appointment.type/i)
+      expect(header[4]).toHaveTextContent(/actions.label/i)
+      expect(screen.getAllByRole('button', { name: /actions.view/i })[0]).toBeInTheDocument()
     })
 
     it('should navigate to appointment profile on appointment click', async () => {
-      const { wrapper } = await setup()
-      const tr = wrapper.find('tr').at(1)
+      const { history } = setup()
 
-      act(() => {
-        const onClick = tr.find('button').at(0).prop('onClick') as any
-        onClick({ stopPropagation: jest.fn() })
+      userEvent.click((await screen.findAllByRole('button', { name: /actions.view/i }))[0])
+
+      await waitFor(() => {
+        expect(history.location.pathname).toEqual('/appointments/456')
       })
-
-      expect(history.location.pathname).toEqual('/appointments/456')
     })
   })
 
   describe('Empty list', () => {
     it('should render a warning message if there are no appointments', async () => {
-      const { wrapper } = await setup(expectedPatient, [])
-      const alert = wrapper.find(components.Alert)
+      setup(expectedPatient, [])
 
-      expect(alert).toHaveLength(1)
-      expect(alert.prop('title')).toEqual('patient.appointments.warning.noAppointments')
-      expect(alert.prop('message')).toEqual('patient.appointments.addAppointmentAbove')
+      const alert = await screen.findByRole('alert')
+
+      expect(alert).toBeInTheDocument()
+      expect(screen.getByText(/patient.appointments.warning.noAppointments/i)).toBeInTheDocument()
+      expect(screen.getByText(/patient.appointments.addAppointmentAbove/i)).toBeInTheDocument()
     })
   })
 
   describe('New appointment button', () => {
     it('should render a new appointment button if there is an appointment', async () => {
-      const { wrapper } = await setup()
+      setup()
 
-      const addNewAppointmentButton = wrapper.find(components.Button).at(0)
-      expect(addNewAppointmentButton).toHaveLength(1)
-      expect(addNewAppointmentButton.text().trim()).toEqual('scheduling.appointments.new')
+      expect(
+        await screen.findByRole('button', { name: /scheduling.appointments.new/i }),
+      ).toBeInTheDocument()
     })
 
     it('should render a new appointment button if there are no appointments', async () => {
-      const { wrapper } = await setup(expectedPatient, [])
+      setup(expectedPatient, [])
 
-      const addNewAppointmentButton = wrapper.find(components.Button).at(0)
-      expect(addNewAppointmentButton).toHaveLength(1)
-      expect(addNewAppointmentButton.text().trim()).toEqual('scheduling.appointments.new')
+      expect(
+        await screen.findByRole('button', { name: /scheduling.appointments.new/i }),
+      ).toBeInTheDocument()
     })
 
     it('should navigate to new appointment page', async () => {
-      const { wrapper } = await setup()
+      const { history } = setup()
 
-      await act(async () => {
-        await wrapper.find(components.Button).at(0).simulate('click')
+      userEvent.click(await screen.findByRole('button', { name: /scheduling.appointments.new/i }))
+
+      await waitFor(() => {
+        expect(history.location.pathname).toEqual('/appointments/new')
       })
-      wrapper.update()
-
-      expect(history.location.pathname).toEqual('/appointments/new')
     })
   })
 })
