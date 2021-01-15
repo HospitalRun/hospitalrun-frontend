@@ -248,7 +248,6 @@ describe('ViewPatient', () => {
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/diagnoses`)
     expect(tabs.at(4).prop('active')).toBeTruthy()
     expect(diagnosesTab).toHaveLength(1)
-    expect(diagnosesTab.prop('patient')).toEqual(patient)
   })
 
   it('should mark the notes tab as active when it is clicked and render the note component when route is /patients/:id/notes', async () => {

@@ -5,12 +5,13 @@ import { createMemoryHistory } from 'history'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import NewAllergyModal from '../../../patients/allergies/NewAllergyModal'
 import AddDiagnosisModal from '../../../patients/diagnoses/AddDiagnosisModal'
+import ViewDiagnosis from '../../../patients/diagnoses/ViewDiagnosis'
 import ImportantPatientInfo from '../../../patients/view/ImportantPatientInfo'
 import AddVisitModal from '../../../patients/visits/AddVisitModal'
 import PatientRepository from '../../../shared/db/PatientRepository'
@@ -27,15 +28,19 @@ describe('Important Patient Info Panel', () => {
   let user: any
   let store: any
 
+  const diagnosis = {
+    id: 'diagnosisId',
+    name: 'diagnosis1',
+    diagnosisDate: new Date().toISOString(),
+  } as Diagnosis
+
   const expectedPatient = {
     id: '123',
     sex: 'male',
     fullName: 'full Name',
     code: 'P-123',
     dateOfBirth: format(new Date(), 'MM/dd/yyyy'),
-    diagnoses: [
-      { id: '123', name: 'diagnosis1', diagnosisDate: new Date().toISOString() } as Diagnosis,
-    ],
+    diagnoses: [diagnosis],
     allergies: [
       { id: '1', name: 'allergy1' },
       { id: '2', name: 'allergy2' },
@@ -70,6 +75,11 @@ describe('Important Patient Info Panel', () => {
         <Provider store={store}>
           <Router history={history}>
             <ImportantPatientInfo patient={patient} />
+            <Switch>
+              <Route exact path="/patients/:id/diagnoses/:diagnosisId">
+                <ViewDiagnosis />
+              </Route>
+            </Switch>
           </Router>
         </Provider>,
       )
@@ -251,6 +261,25 @@ describe('Important Patient Info Panel', () => {
       const wrapper = await setup(expectedPatient, [])
 
       expect(wrapper.find(components.Button)).toHaveLength(0)
+    })
+  })
+
+  describe('patient diagnosis routing', () => {
+    it('should render the diagnosis form when the table row is clicked', async () => {
+      const wrapper = await setup(expectedPatient, [])
+
+      await act(async () => {
+        const diagnosisTable = wrapper.find(components.Table).at(1)
+        const onRowClick = diagnosisTable.prop('onRowClick') as any
+        onRowClick(diagnosis)
+      })
+      wrapper.update()
+
+      expect(history.location.pathname).toEqual(
+        `/patients/${expectedPatient.id}/diagnoses/${diagnosis.id}`,
+      )
+      expect(wrapper.find(ViewDiagnosis)).toHaveLength(1)
+      expect(wrapper.find('h2').text()).toEqual(diagnosis.name)
     })
   })
 })

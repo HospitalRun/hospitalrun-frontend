@@ -107,7 +107,7 @@ const ViewPatient = () => {
             onClick={() => history.push(`/patients/${patient.id}/allergies`)}
           />
           <Tab
-            active={location.pathname === `/patients/${patient.id}/diagnoses`}
+            active={location.pathname.startsWith(`/patients/${patient.id}/diagnoses`)}
             label={t('patient.diagnoses.label')}
             onClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
           />
@@ -127,7 +127,7 @@ const ViewPatient = () => {
             onClick={() => history.push(`/patients/${patient.id}/labs`)}
           />
           <Tab
-            active={location.pathname === `/patients/${patient.id}/care-plans`}
+            active={location.pathname.startsWith(`/patients/${patient.id}/care-plans`)}
             label={t('patient.carePlan.label')}
             onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
           />
@@ -155,8 +155,8 @@ const ViewPatient = () => {
           <Route path={`${path}/allergies`}>
             <Allergies patient={patient} />
           </Route>
-          <Route exact path={`${path}/diagnoses`}>
-            <Diagnoses patient={patient} />
+          <Route path={`${path}/diagnoses`}>
+            <Diagnoses />
           </Route>
           <Route exact path={`${path}/notes`}>
             <Note patient={patient} />

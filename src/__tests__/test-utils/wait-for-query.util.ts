@@ -4,4 +4,10 @@ const waitUntilQueryIsSuccessful = (renderHookResult: any) =>
     timeout: 1000,
   })
 
+const isQueryUnsuccessful = (queryResult: any) => queryResult && queryResult.status === 'error'
+export const waitUntilQueryFails = (renderHookResult: any) =>
+  renderHookResult.waitFor(() => isQueryUnsuccessful(renderHookResult.result.current), {
+    timeout: 1000,
+  })
+
 export default waitUntilQueryIsSuccessful

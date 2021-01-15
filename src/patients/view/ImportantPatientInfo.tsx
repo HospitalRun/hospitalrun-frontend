@@ -161,7 +161,7 @@ const ImportantPatientInfo = (props: Props) => {
           <div className="border border-primary" style={tableContainerStyle}>
             <Table
               tableClassName="table table-hover table-sm m-0"
-              onRowClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
+              onRowClick={(row) => history.push(`/patients/${patient.id}/diagnoses/${row.id}`)}
               getID={(row) => row.id}
               columns={[
                 { label: t('patient.diagnoses.diagnosisName'), key: 'name' },
