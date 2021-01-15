@@ -42,6 +42,8 @@ describe('Sidebar', () => {
     Permissions.AddVisit,
     Permissions.RequestImaging,
     Permissions.ViewImagings,
+    Permissions.ViewPricingItems,
+    Permissions.AddPricingItems,
   ]
   const store = mockStore({
     components: { sidebarCollapsed: false },
@@ -522,7 +524,7 @@ describe('Sidebar', () => {
       const wrapper = setup('/incidents')
 
       const listItems = wrapper.find(ListItem)
-      expect(listItems.at(10).text().trim()).toEqual('incidents.visualize.label')
+      expect(listItems.at(11).text().trim()).toEqual('incidents.visualize.label')
     })
 
     it('should not render the incidents visualize link when user does not have the view incident widgets privileges', () => {
@@ -587,7 +589,7 @@ describe('Sidebar', () => {
       const listItems = wrapper.find(ListItem)
 
       act(() => {
-        const onClick = listItems.at(10).prop('onClick') as any
+        const onClick = listItems.at(11).prop('onClick') as any
         onClick()
       })
 
@@ -847,6 +849,122 @@ describe('Sidebar', () => {
       })
 
       expect(history.location.pathname).toEqual('/medications')
+    })
+  })
+
+  describe('billing links', () => {
+    it('should render the main billing links', () => {
+      const wrapper = setup('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const billingIndex = getIndex(listItems, 'billing.requests.label')
+
+      expect(billingIndex).not.toBe(-1)
+    })
+
+    it('should render the new pricing item link', () => {
+      const wrapper = setup('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const newPricingItemIndex = getIndex(listItems, 'billing.requests.new')
+
+      expect(newPricingItemIndex).not.toBe(-1)
+    })
+
+    it('should not render the new pricing item link when user does not have requested permissions', () => {
+      const wrapper = setupNoPermissions('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const newPricingItemIndex = getIndex(listItems, 'billing.requests.new')
+
+      expect(newPricingItemIndex).toBe(-1)
+    })
+
+    it('should render the pricing items link', () => {
+      const wrapper = setup('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const pricingItemsIndex = getIndex(listItems, 'billing.requests.label')
+
+      expect(pricingItemsIndex).not.toBe(-1)
+    })
+
+    it('should not render the pricing items link when user does not have view pricing privileges', () => {
+      const wrapper = setupNoPermissions('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const pricingItemsIndex = getIndex(listItems, 'billing.requests.label')
+
+      expect(pricingItemsIndex).toBe(-1)
+    })
+
+    it('main billing link should be active when the current path is /billing', () => {
+      const wrapper = setup('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const billingIndex = getIndex(listItems, 'billing.requests.label')
+
+      expect(listItems.at(billingIndex).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /billing when main Billing link is clicked', () => {
+      const wrapper = setup('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const billingIndex = getIndex(listItems, 'billing.requests.label')
+
+      act(() => {
+        const onClick = listItems.at(billingIndex).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/billing')
+    })
+
+    it('should navigate to /billing/new when add pricing item is clicked', () => {
+      const wrapper = setup('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const newPricingItemIndex = getIndex(listItems, 'billing.requests.new')
+
+      act(() => {
+        const onClick = listItems.at(newPricingItemIndex).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/billing/new')
+    })
+
+    it('add pricing item link should be active when the current path is /billing/new', () => {
+      const wrapper = setup('/billing/new')
+
+      const listItems = wrapper.find(ListItem)
+      const newPricingItemIndex = getIndex(listItems, 'billing.requests.new')
+
+      expect(listItems.at(newPricingItemIndex).prop('active')).toBeTruthy()
+    })
+
+    it('should navigate to /billing when pricing items list link is clicked', () => {
+      const wrapper = setup('/billing/new')
+
+      const listItems = wrapper.find(ListItem)
+      const pricingItemsIndex = getIndex(listItems, 'billing.requests.label')
+
+      act(() => {
+        const onClick = listItems.at(pricingItemsIndex).prop('onClick') as any
+        onClick()
+      })
+
+      expect(history.location.pathname).toEqual('/billing')
+    })
+
+    it('pricing items link should be active when the current path is /billing', () => {
+      const wrapper = setup('/billing')
+
+      const listItems = wrapper.find(ListItem)
+      const pricingItemsIndex = getIndex(listItems, 'billing.requests.label')
+
+      expect(listItems.at(pricingItemsIndex).prop('active')).toBeTruthy()
     })
   })
 })

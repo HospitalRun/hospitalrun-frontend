@@ -48,6 +48,8 @@ const Sidebar = () => {
       ? 'incidents'
       : splittedPath[1].includes('imagings')
       ? 'imagings'
+      : splittedPath[1].includes('billing')
+      ? 'billing'
       : 'none',
   )
 
@@ -412,6 +414,56 @@ const Sidebar = () => {
     </>
   )
 
+  const getBillingLinks = () => (
+    <>
+      <ListItem
+        active={splittedPath[1].includes('billing')}
+        onClick={() => {
+          navigateTo('/billing')
+          setExpansion('billing')
+        }}
+        className="nav-item"
+        style={listItemStyle}
+      >
+        <Icon
+          icon={
+            splittedPath[1].includes('billing') && expandedItem === 'billing'
+              ? 'down-arrow'
+              : 'right-arrow'
+          }
+          style={expandibleArrow}
+        />
+        <Icon icon="incident" /> {!sidebarCollapsed && t('billing.label')}
+      </ListItem>
+      {splittedPath[1].includes('billing') && expandedItem === 'billing' && (
+        <List layout="flush" className="nav flex-column">
+          {permissions.includes(Permissions.AddPricingItems) && (
+            <ListItem
+              className="nav-item"
+              style={listSubItemStyleNew}
+              onClick={() => navigateTo('/billing/new')}
+              active={splittedPath[1].includes('billing') && splittedPath.length > 2}
+            >
+              <Icon icon="add" style={iconMargin} />
+              {!sidebarCollapsed && t('billing.requests.new')}
+            </ListItem>
+          )}
+          {permissions.includes(Permissions.ViewPricingItems) && (
+            <ListItem
+              className="nav-item"
+              style={listSubItemStyle}
+              onClick={() => navigateTo('/billing')}
+              active={splittedPath[1].includes('billing') && splittedPath.length < 3}
+            >
+              <Icon icon="incident" style={iconMargin} />
+              {!sidebarCollapsed && t('billing.requests.label')}
+            </ListItem>
+          )}
+        </List>
+      )}
+    </>
+  )
+
   return (
     <nav
       className="d-none d-md-block bg-light sidebar"
@@ -435,6 +487,7 @@ const Sidebar = () => {
           {getMedicationLinks()}
           {getLabLinks()}
           {getImagingLinks()}
+          {getBillingLinks()}
           {getIncidentLinks()}
         </List>
       </div>

@@ -89,6 +89,18 @@ const pageMap: {
     path: '/incidents/visualize',
     icon: 'incident',
   },
+  newPricingItem: {
+    permission: Permissions.AddPricingItems,
+    label: 'billing.requests.new',
+    path: '/billing/new',
+    icon: 'add',
+  },
+  viewPricingItems: {
+    permission: Permissions.ViewPricingItems,
+    label: 'billing.requests.label',
+    path: '/billing',
+    icon: 'incident',
+  },
   settings: {
     permission: null,
     label: 'settings.label',

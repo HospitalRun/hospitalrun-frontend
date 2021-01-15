@@ -63,6 +63,10 @@ export const schema = [
     plural: 'medications',
     relations: { patient: { belongsTo: 'patient' } },
   },
+  {
+    singular: 'pricingItem',
+    plural: 'pricingItems',
+  },
 ]
 export const relationalDb = localDb.setSchema(schema)
 export const remoteDb = serverDb as PouchDB.Database
