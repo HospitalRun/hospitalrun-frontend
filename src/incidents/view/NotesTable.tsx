@@ -1,10 +1,10 @@
-import React from 'react'
-//import { useHistory } from 'react-router'
-
 import { Alert, Table } from '@hospitalrun/components'
-import Note from '../../shared/model/Note'
+import React from 'react'
+
 import useTranslator from '../../shared/hooks/useTranslator'
+import Note from '../../shared/model/Note'
 import { extractUsername } from '../../shared/util/extractUsername'
+
 interface Props {
   onEditNote: (note: Note) => void
   onDeleteNote: (note: Note) => void
@@ -13,7 +13,6 @@ interface Props {
 
 const NotesTable = ({ onEditNote, onDeleteNote, notes }: Props) => {
   const { t } = useTranslator()
-  //const history = useHistory()
 
   if (notes.length === 0) {
     return (

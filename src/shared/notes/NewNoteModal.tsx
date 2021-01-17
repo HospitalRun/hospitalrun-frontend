@@ -1,10 +1,10 @@
 import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
+import { NoteError } from '../../patients/util/validate-note'
 import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
 import useTranslator from '../hooks/useTranslator'
 import Note from '../model/Note'
-import { NoteError } from '../../patients/util/validate-note'
 
 interface Props {
   show: boolean
@@ -28,16 +28,24 @@ const NewNoteModal = ({ note, onCloseButtonClick, onSave, setNote, show, toggle 
   }
 
   const onSaveButtonClick = async () => {
-    try {
-      const updatedNote = {
-        ...note,
-        date: new Date().toISOString(),
+    if (note.text === '') {
+      setNoteError({
+        noteError: 'patient.notes.error.noteRequired',
+        name: 'Empty String',
+        message: 'patient.notes.error.noteRequired',
+      })
+    } else {
+      try {
+        const updatedNote = {
+          ...note,
+          date: new Date().toISOString(),
+        }
+        setNote(updatedNote)
+        onSave(updatedNote)
+        onCloseButtonClick()
+      } catch (e) {
+        setNoteError(e)
       }
-      setNote(updatedNote)
-      onSave(updatedNote)
-      onCloseButtonClick()
-    } catch (e) {
-      setNoteError(e)
     }
   }
 

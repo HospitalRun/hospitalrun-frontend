@@ -1,0 +1,9 @@
+/*
+Date should render
+
+given by should render
+
+note should render
+
+edit and delete buttons should render
+*/

@@ -158,4 +158,14 @@ describe('View Incident', () => {
     )
     expect(history.location.pathname).toEqual('/incidents')
   })
+
+  it('should render notes tab and modal')
+
+  it('should display modal when add new note button clicked')
+
+  it('modal should appear when edit note is clicked')
+
+  it('note should disappear when delete button clicked')
+
+  it('new note should appear when new note is created')
 })
