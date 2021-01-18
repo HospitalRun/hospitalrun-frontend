@@ -2,10 +2,12 @@ import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/compo
 import format from 'date-fns/format'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
+import usePatient from '../../patients/hooks/usePatient'
+import useVisit from '../../patients/hooks/useVisit'
 import SelectWithLabelFormGroup, {
   Option,
 } from '../../shared/components/input/SelectWithLabelFormGroup'
@@ -18,15 +20,24 @@ import { RootState } from '../../shared/store'
 import useRequestImaging, { ImagingRequest } from '../hooks/useRequestImaging'
 import { ImagingRequestError } from '../util/validate-imaging-request'
 
+interface IRequest {
+  patientId: string
+  visitId: string
+}
+
 const NewImagingRequest = () => {
   const { t } = useTranslator()
   const history = useHistory()
+  const location = useLocation<IRequest>()
   const { user } = useSelector((state: RootState) => state.user)
-
   const updateTitle = useUpdateTitle()
+  const { data: visit } = useVisit(location.state?.patientId, location.state?.visitId)
+  const { data: patient } = usePatient(location.state?.patientId)
+
   useEffect(() => {
     updateTitle(t('imagings.requests.new'))
   })
+
   const [mutate] = useRequestImaging(user)
   const [error, setError] = useState<ImagingRequestError>()
   const [visitOption, setVisitOption] = useState([] as Option[])
@@ -54,15 +65,15 @@ const NewImagingRequest = () => {
   ]
   useAddBreadcrumbs(breadcrumbs)
 
-  const onPatientChange = (patient: Patient) => {
+  const onPatientChange = (currentPatient: Patient) => {
     if (patient) {
       setNewImagingRequest((previousNewImagingRequest) => ({
         ...previousNewImagingRequest,
-        patient: patient.id,
-        fullName: patient.fullName as string,
+        patient: currentPatient.id,
+        fullName: currentPatient.fullName as string,
       }))
 
-      const visits = patient.visits?.map((v) => ({
+      const visits = currentPatient.visits?.map((v) => ({
         label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
         value: v.id,
       })) as Option[]
@@ -78,6 +89,30 @@ const NewImagingRequest = () => {
       setVisitOption([])
     }
   }
+
+  useEffect(() => {
+    if (location.state && visit && patient) {
+      const currentVisit = {
+        label: `${visit.type} at ${format(new Date(visit.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
+        value: visit.id,
+      }
+
+      const visits = patient.visits?.map((v) => ({
+        label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
+        value: v.id,
+      })) as Option[]
+
+      setVisitOption(visits)
+      setNewImagingRequest((previousNewImagingRequest) => ({
+        ...previousNewImagingRequest,
+        patient: patient.id,
+        fullName: patient.fullName as string,
+        visitId: currentVisit.value,
+        type: visit.type,
+        status: 'requested',
+      }))
+    }
+  }, [location.state, patient, visit])
 
   const onImagingTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const type = event.currentTarget.value
@@ -145,6 +180,7 @@ const NewImagingRequest = () => {
                 onChange={(p: Patient[]) => {
                   onPatientChange(p[0])
                 }}
+                value={patient?.fullName || ''}
                 onSearch={async (query: string) => PatientRepository.search(query)}
                 searchAccessor="fullName"
                 renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}

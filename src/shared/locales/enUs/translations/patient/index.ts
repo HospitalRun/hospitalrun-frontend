@@ -199,6 +199,7 @@ export default {
       status: 'Status',
       reason: 'Reason',
       location: 'Location',
+      newImaging: 'New Imaging Request',
       error: {
         unableToAdd: 'Unable to add a new visit.',
         startDateRequired: 'Start date is required.',
