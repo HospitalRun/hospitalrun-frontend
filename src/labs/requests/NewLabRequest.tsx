@@ -51,7 +51,7 @@ const NewLabRequest = () => {
 
   const onPatientChange = (patient: Patient) => {
     if (patient) {
-      const visits = patient.visits.map((v) => ({
+      const visits = patient.visits?.map((v) => ({
         label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
         value: v.id,
       })) as Option[]
@@ -150,7 +150,7 @@ const NewLabRequest = () => {
                 name="visit"
                 label={t('patient.visit')}
                 isEditable={newLabRequest.patient !== undefined}
-                options={visitOptions}
+                options={visitOptions || []}
                 defaultSelected={defaultSelectedVisitsOption()}
                 onChange={(values) => {
                   onVisitChange(values[0])
