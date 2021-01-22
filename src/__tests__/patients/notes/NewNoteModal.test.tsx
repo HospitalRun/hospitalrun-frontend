@@ -27,9 +27,6 @@ describe('New Note Modal', () => {
   const setup = (onCloseSpy = jest.fn(), onSaveSpy = jest.fn(), note = mockNote) => {
     jest.resetAllMocks()
     Date.now = jest.fn(() => expectedSaveDate.valueOf())
-    // jest
-    //   .spyOn(global.Date, 'now')
-    //   .mockImplementationOnce(() => new Date('2019-05-14T11:01:58.135Z').valueOf())
     const wrapper = mount(
       <NewNoteModal
         show
@@ -62,8 +59,14 @@ describe('New Note Modal', () => {
   })
 
   it("should render 'Edit Note' strings if date object is specfiied", () => {
-    // const { wrapper } = setup()
-    // TODO
+    const { wrapper } = setup(jest.fn(), jest.fn(), {
+      ...mockNote,
+      date: new Date().toISOString()
+    })
+    const modal = wrapper.find(Modal)
+    expect(modal.prop('title')).toEqual('patient.notes.edit')
+    expect(modal.prop('successButton')?.children).toEqual('patient.notes.edit')
+
   })
 
   it('should render a notes rich text editor', () => {
@@ -99,7 +102,7 @@ describe('New Note Modal', () => {
   })
 
   describe('on cancel', () => {
-    it('should call the onCloseButtonCLick function when the cancel button is clicked', () => {
+    it('should call the onCloseButtonClick function when the cancel button is clicked', () => {
       const onCloseButtonClickSpy = jest.fn()
       const { wrapper } = setup(onCloseButtonClickSpy)
 
@@ -140,7 +143,5 @@ describe('New Note Modal', () => {
       }),
     )
 
-    // Does the form reset value back to blank?
-    expect(noteTextField.prop('value')).toEqual('')
   })
 })

@@ -38,7 +38,7 @@ const NewNoteModal = ({ note, onCloseButtonClick, onSave, setNote, show, toggle 
       try {
         const updatedNote = {
           ...note,
-          date: new Date().toISOString(),
+          date: new Date(Date.now()).toISOString(),
         }
         setNote(updatedNote)
         onSave(updatedNote)
