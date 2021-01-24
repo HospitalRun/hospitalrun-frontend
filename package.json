@@ -88,7 +88,7 @@
     "commitlint-config-cz": "~0.13.0",
     "cross-env": "~7.0.0",
     "cz-conventional-changelog": "~3.3.0",
-    "dateformat": "~4.4.0",
+    "dateformat": "~4.5.0",
     "eslint": "~6.8.0",
     "eslint-config-airbnb": "~18.2.0",
     "eslint-config-prettier": "~6.15.0",
