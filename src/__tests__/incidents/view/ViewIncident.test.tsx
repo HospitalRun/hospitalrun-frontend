@@ -71,7 +71,6 @@ describe('View Incident', () => {
               </Router>
             </Provider>
           </ButtonBarProvider.ButtonBarProvider>
-          ,
         </ReactQueryCacheProvider>,
       )
     })
@@ -162,7 +161,8 @@ describe('View Incident', () => {
   it('should render notes tab and modal')
 
   it('should display modal when add new note button clicked')
-
+  it('should display add new note button', async () => {
+  })
   it('modal should appear when edit note is clicked')
 
   it('note should disappear when delete button clicked')
