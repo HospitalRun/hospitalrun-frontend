@@ -149,6 +149,7 @@ const NewLabRequest = () => {
               <SelectWithLabelFormGroup
                 name="visit"
                 label={t('patient.visit')}
+                isRequired
                 isEditable={newLabRequest.patient !== undefined}
                 options={visitOptions || []}
                 defaultSelected={defaultSelectedVisitsOption()}
