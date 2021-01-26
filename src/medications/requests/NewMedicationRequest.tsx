@@ -106,8 +106,8 @@ const NewMedicationRequest = () => {
         ...previousNewMedicationRequest,
       }
 
-      path = typeof path === 'string' ? [path] : path
-      set(medicationRequest, path, text)
+      const propertyPath = typeof path === 'string' ? [path] : path
+      set(medicationRequest, propertyPath, text)
 
       return medicationRequest
     })
