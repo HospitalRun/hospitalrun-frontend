@@ -7,6 +7,7 @@ describe('lab validator', () => {
       const lab = {
         patient: 'some patient',
         type: 'type test',
+        visitId: 'test visit id',
       } as Lab
 
       const expectedError = {} as LabError
@@ -23,6 +24,7 @@ describe('lab validator', () => {
         patient: 'labs.requests.error.patientRequired',
         type: 'labs.requests.error.typeRequired',
         message: 'labs.requests.error.unableToRequest',
+        visit: 'labs.requests.error.visitRequired',
       } as LabError
 
       const actualError = validateLabRequest(lab)

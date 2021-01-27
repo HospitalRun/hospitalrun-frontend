@@ -11,6 +11,8 @@ export class LabError extends Error {
 
   type?: string
 
+  visit?: string
+
   constructor(message: string, result: string, patient: string, type: string) {
     super(message)
     this.message = message
@@ -29,6 +31,10 @@ export function validateLabRequest(lab: Partial<Lab>): LabError {
 
   if (!lab.type) {
     labError.type = 'labs.requests.error.typeRequired'
+  }
+
+  if (!lab.visitId) {
+    labError.visit = 'labs.requests.error.visitRequired'
   }
 
   if (!isEmpty(labError)) {
