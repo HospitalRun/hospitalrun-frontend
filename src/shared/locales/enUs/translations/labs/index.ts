@@ -27,6 +27,7 @@ export default {
         unableToComplete: 'Unable to complete lab request.',
         typeRequired: 'Type is required.',
         patientRequired: 'Patient is required.',
+        visitRequired: 'Visit is required.',
         resultRequiredToComplete: 'Result is required to complete.',
       },
     },

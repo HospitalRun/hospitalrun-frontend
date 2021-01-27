@@ -34,6 +34,7 @@ const setup = (
   const expectedLab = {
     patient: '1234567',
     type: 'expected type',
+    visitId: 'visit_id',
     status: 'requested',
     notes: [expectedNotes],
     id: '1234',
@@ -224,6 +225,8 @@ describe('New Lab Request', () => {
       userEvent.type(screen.getByPlaceholderText(/labs.lab.patient/i), 'Jim Bob')
       expect(await screen.findByText(/jim bob/i)).toBeVisible()
       userEvent.click(screen.getByText(/jim bob/i))
+      userEvent.click(screen.getByPlaceholderText('-- Choose --')) // click the Visit field
+      userEvent.click(screen.getByText(/visit_type/i))
       userEvent.type(screen.getByLabelText(/labs\.lab\.type/i), expectedLab.type)
       userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), (expectedLab.notes as string[])[0])
       userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
