@@ -71,6 +71,21 @@ const ViewLab = () => {
     setNewNotes(notes)
   }
 
+  const deleteNote = async (noteIndexToDelete: number) => {
+    if (!labToView || !labToView.notes) {
+      return
+    }
+
+    const updatedNotes = labToView!.notes!.filter((_note, i) => i !== noteIndexToDelete)
+    const newLab = {
+      ...labToView,
+      notes: updatedNotes,
+    }
+
+    await updateLab(newLab as Lab)
+    Toast('success', t('states.success'), t('labs.successfullyDeletedNote'))
+  }
+
   const onUpdate = async () => {
     if (labToView) {
       const newLab = labToView as Lab
@@ -183,9 +198,14 @@ const ViewLab = () => {
 
     const getPastNotes = () => {
       if (labToView.notes && labToView.notes[0] !== '') {
-        return labToView.notes.map((note: string) => (
-          <Callout key={uuid()} data-test="note" color="info">
-            <p data-testid="note">{note}</p>
+        return labToView.notes.map((note, index) => (
+          <Callout key={uuid()} color="info">
+            <div className="d-flex justify-content-between">
+              <p data-testid="note">{note}</p>
+              <Button onClick={async () => deleteNote(index)} color="danger">
+                <span data-testid={`delete-note-index-${index}`}>Delete</span>
+              </Button>
+            </div>
           </Callout>
         ))
       }

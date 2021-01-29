@@ -28,7 +28,7 @@ const mockPatient = { fullName: 'Full Name' }
 
 const setup = (lab?: Partial<Lab>, permissions = [Permissions.ViewLab], error = {}) => {
   const expectedDate = new Date()
-  const mockLab = {
+  let mockLab = {
     ...{
       code: 'L-1234',
       id: '12456',
@@ -44,7 +44,10 @@ const setup = (lab?: Partial<Lab>, permissions = [Permissions.ViewLab], error = 
   jest.resetAllMocks()
   Date.now = jest.fn(() => expectedDate.valueOf())
   jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient as Patient)
-  jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(mockLab)
+  jest.spyOn(LabRepository, 'saveOrUpdate').mockImplementation(async (newOrUpdatedLab) => {
+    mockLab = newOrUpdatedLab
+    return mockLab
+  })
   jest.spyOn(LabRepository, 'find').mockResolvedValue(mockLab)
 
   const history = createMemoryHistory({ initialEntries: [`/labs/${mockLab.id}`] })
@@ -307,6 +310,20 @@ describe('View Lab', () => {
       })
       expect(screen.getByLabelText(/labs\.lab\.result/i)).toHaveTextContent(expectedResult)
       expect(screen.getByTestId('note')).toHaveTextContent(newNotes)
+    })
+
+    it('should be able to update the label with an individually deleted note', async () => {
+      const notes = ['Hello earth, first note', 'Hello mars, second note']
+      setup({ notes })
+
+      expect(await screen.findByText(notes[0])).toBeInTheDocument()
+      expect(await screen.findByText(notes[1])).toBeInTheDocument()
+
+      userEvent.click(screen.getByTestId('delete-note-index-1'))
+      await waitForElementToBeRemoved(() => screen.getByText(notes[1]))
+
+      expect(await screen.findByText(notes[0])).toBeInTheDocument()
+      expect(await screen.queryByText(notes[1])).not.toBeInTheDocument()
     })
   })
 
