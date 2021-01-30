@@ -1,4 +1,5 @@
-import { getTime, isAfter } from 'date-fns'
+import getTime from 'date-fns/getTime'
+import isAfter from 'date-fns/isAfter'
 import shortid from 'shortid'
 
 import { relationalDb } from '../../../shared/config/pouchdb'

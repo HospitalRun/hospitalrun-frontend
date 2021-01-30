@@ -1,7 +1,7 @@
 import { Button, Spinner, Toast } from '@hospitalrun/components'
 import addMinutes from 'date-fns/addMinutes'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
-import _ from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import React, { useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -69,12 +69,12 @@ const NewAppointment = () => {
   useEffect(() => {
     // if save click and no error proceed, else give error message.
     if (saved) {
-      if (_.isEmpty(newAppointmentMutateError) && !isErrorNewAppointment) {
+      if (isEmpty(newAppointmentMutateError) && !isErrorNewAppointment) {
         newAppointmentMutate(newAppointment).then((result) => {
           Toast('success', t('states.success'), t('scheduling.appointment.successfullyCreated'))
           history.push(`/appointments/${result?.id}`)
         })
-      } else if (!_.isEmpty(newAppointmentMutateError)) {
+      } else if (!isEmpty(newAppointmentMutateError)) {
         newAppointmentMutateError.message = 'scheduling.appointment.errors.createAppointmentError'
       }
     }
@@ -102,7 +102,7 @@ const NewAppointment = () => {
 
   return (
     <div>
-      <form>
+      <form aria-label="new appointment form">
         <AppointmentDetailForm
           appointment={newAppointment as Appointment}
           patient={patient as Patient}
@@ -112,7 +112,7 @@ const NewAppointment = () => {
         <div className="row float-right">
           <div className="btn-group btn-group-lg mr-3">
             <Button className="mr-2" color="success" onClick={onSave}>
-              {t('actions.save')}
+              {t('scheduling.appointments.createAppointment')}
             </Button>
             <Button color="danger" onClick={onCancelClick}>
               {t('actions.cancel')}

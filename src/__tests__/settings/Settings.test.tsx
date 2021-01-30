@@ -1,8 +1,10 @@
-import { mount } from 'enzyme'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
+import { CombinedState } from 'redux'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -15,14 +17,10 @@ const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Settings', () => {
   const setup = () => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-
-    const store = mockStore({ title: 'test' } as any)
-
+    const store = mockStore({ title: 'test' } as CombinedState<any>)
     const history = createMemoryHistory()
     history.push('/settings')
-
-    const wrapper = mount(
+    return render(
       <Provider store={store}>
         <Router history={history}>
           <TitleProvider>
@@ -31,14 +29,27 @@ describe('Settings', () => {
         </Router>
       </Provider>,
     )
-
-    return wrapper
   }
+  test('settings combo selection works', () => {
+    setup()
+    const langArr = [
+      /Arabic/i,
+      /Chinese/i,
+      /English, American/i,
+      /French/i,
+      /German/i,
+      /Italian/i,
+      /Japanese/i,
+      /Portuguese/i,
+      /Russian/i,
+      /Spanish/i,
+    ]
 
-  describe('layout', () => {
-    it('should call the useUpdateTitle hook', () => {
-      setup()
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
+    langArr.forEach((lang) => {
+      const combobox = screen.getByRole('combobox')
+      userEvent.click(combobox)
+      expect(screen.getByRole('option', { name: lang })).toBeInTheDocument()
+      userEvent.type(combobox, '{enter}')
     })
   })
 })

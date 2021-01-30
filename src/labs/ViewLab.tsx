@@ -41,7 +41,9 @@ const ViewLab = () => {
   const [error, setError] = useState<LabError | undefined>(undefined)
 
   const updateTitle = useUpdateTitle()
-  updateTitle(getTitle(patient, labToView))
+  useEffect(() => {
+    updateTitle(getTitle(patient, labToView))
+  })
 
   const breadcrumbs = [
     {
@@ -121,7 +123,7 @@ const ViewLab = () => {
 
     buttons.push(
       <Button className="mr-2" color="success" onClick={onUpdate} key="actions.update">
-        {t('actions.update')}
+        {t('labs.requests.update')}
       </Button>,
     )
 
@@ -183,7 +185,7 @@ const ViewLab = () => {
       if (labToView.notes && labToView.notes[0] !== '') {
         return labToView.notes.map((note: string) => (
           <Callout key={uuid()} data-test="note" color="info">
-            <p>{note}</p>
+            <p data-testid="note">{note}</p>
           </Callout>
         ))
       }

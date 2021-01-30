@@ -1,6 +1,5 @@
-import { Modal } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
@@ -11,7 +10,7 @@ import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
-const setupOnClick = (onClose: any, onContinue: any, prop: string) => {
+const setup = (onClose: any, onContinue: any) => {
   const store = mockStore({
     patient: {
       patient: {
@@ -20,7 +19,7 @@ const setupOnClick = (onClose: any, onContinue: any, prop: string) => {
     },
   } as any)
 
-  const wrapper = mount(
+  return render(
     <Provider store={store}>
       <DuplicateNewPatientModal
         show
@@ -30,51 +29,43 @@ const setupOnClick = (onClose: any, onContinue: any, prop: string) => {
       />
     </Provider>,
   )
-  wrapper.update()
-
-  act(() => {
-    const modal = wrapper.find(Modal)
-    const { onClick } = modal.prop(prop) as any
-    onClick()
-  })
-
-  return { wrapper: wrapper as ReactWrapper }
 }
 
 describe('Duplicate New Patient Modal', () => {
   it('should render a modal with the correct labels', () => {
-    const store = mockStore({
-      patient: {
-        patient: {
-          id: '1234',
-        },
-      },
-    } as any)
-    const wrapper = mount(
-      <Provider store={store}>
-        <DuplicateNewPatientModal
-          show
-          toggle={jest.fn()}
-          onCloseButtonClick={jest.fn()}
-          onContinueButtonClick={jest.fn()}
-        />
-      </Provider>,
-    )
-    wrapper.update()
-    const modal = wrapper.find(Modal)
-    expect(modal).toHaveLength(1)
-    expect(modal.prop('title')).toEqual('patients.newPatient')
-    expect(modal.prop('closeButton')?.children).toEqual('actions.cancel')
-    expect(modal.prop('closeButton')?.color).toEqual('danger')
-    expect(modal.prop('successButton')?.children).toEqual('actions.save')
-    expect(modal.prop('successButton')?.color).toEqual('success')
+    const onClose = jest.fn
+    const onContinue = jest.fn
+    setup(onClose, onContinue)
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveClass('alert-warning')
+
+    expect(screen.getByText(/patients\.warning/i)).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('button', {
+        name: /actions\.cancel/i,
+      }),
+    ).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('button', {
+        name: /actions\.save/i,
+      }),
+    ).toBeInTheDocument()
   })
 
   describe('cancel', () => {
     it('should call the onCloseButtonClick function when the close button is clicked', () => {
       const onCloseButtonClickSpy = jest.fn()
-      const closeButtonProp = 'closeButton'
-      setupOnClick(onCloseButtonClickSpy, jest.fn(), closeButtonProp)
+      setup(onCloseButtonClickSpy, jest.fn())
+
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /actions\.cancel/i,
+        }),
+      )
       expect(onCloseButtonClickSpy).toHaveBeenCalledTimes(1)
     })
   })
@@ -82,8 +73,13 @@ describe('Duplicate New Patient Modal', () => {
   describe('on save', () => {
     it('should call the onContinueButtonClick function when the continue button is clicked', () => {
       const onContinueButtonClickSpy = jest.fn()
-      const continueButtonProp = 'successButton'
-      setupOnClick(jest.fn(), onContinueButtonClickSpy, continueButtonProp)
+      setup(jest.fn(), onContinueButtonClickSpy)
+
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /actions\.save/i,
+        }),
+      )
       expect(onContinueButtonClickSpy).toHaveBeenCalledTimes(1)
     })
   })

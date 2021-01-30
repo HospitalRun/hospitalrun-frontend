@@ -1,5 +1,3 @@
-import { act } from '@testing-library/react-hooks'
-
 import useUpdateAppointment from '../../../scheduling/hooks/useUpdateAppointment'
 import AppointmentRepository from '../../../shared/db/AppointmentRepository'
 import Appointment from '../../../shared/model/Appointment'
@@ -16,17 +14,12 @@ describe('Use update appointment', () => {
     type: 'type',
   } as Appointment
 
-  jest.spyOn(AppointmentRepository, 'saveOrUpdate').mockResolvedValue(expectedAppointment)
-
   it('should update appointment', async () => {
-    let actualData: any
-
-    await act(async () => {
-      actualData = await executeMutation(() => {
-        const result = useUpdateAppointment(expectedAppointment)
-        return [result.mutate]
-      }, expectedAppointment)
-    })
+    jest.spyOn(AppointmentRepository, 'saveOrUpdate').mockResolvedValue(expectedAppointment)
+    const actualData = await executeMutation(() => {
+      const result = useUpdateAppointment(expectedAppointment)
+      return [result.mutate]
+    }, expectedAppointment)
 
     expect(AppointmentRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     expect(AppointmentRepository.saveOrUpdate).toHaveBeenCalledWith(expectedAppointment)

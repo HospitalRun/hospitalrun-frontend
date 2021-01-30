@@ -51,7 +51,7 @@ const NewLabRequest = () => {
 
   const onPatientChange = (patient: Patient) => {
     if (patient) {
-      const visits = patient.visits.map((v) => ({
+      const visits = patient.visits?.map((v) => ({
         label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
         value: v.id,
       })) as Option[]
@@ -149,8 +149,9 @@ const NewLabRequest = () => {
               <SelectWithLabelFormGroup
                 name="visit"
                 label={t('patient.visit')}
+                isRequired
                 isEditable={newLabRequest.patient !== undefined}
-                options={visitOptions}
+                options={visitOptions || []}
                 defaultSelected={defaultSelectedVisitsOption()}
                 onChange={(values) => {
                   onVisitChange(values[0])
@@ -181,7 +182,7 @@ const NewLabRequest = () => {
         <div className="row float-right">
           <div className="btn-group btn-group-lg mt-3 mr-3">
             <Button className="mr-2" color="success" onClick={onSave}>
-              {t('labs.requests.save')}
+              {t('labs.requests.new')}
             </Button>
 
             <Button color="danger" onClick={onCancel}>

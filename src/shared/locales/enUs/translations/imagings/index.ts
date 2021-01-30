@@ -10,6 +10,7 @@ export default {
       label: 'Imaging Requests',
       new: 'New Imaging Request',
       view: 'View Imaging',
+      create: 'Request Imaging',
       cancel: 'Cancel Imaging',
       complete: 'Complete Imaging',
       error: {
