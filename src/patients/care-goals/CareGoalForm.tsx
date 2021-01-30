@@ -69,7 +69,7 @@ const CareGoalForm = (props: Props) => {
   }
 
   return (
-    <form>
+    <form aria-label="care-goal-form">
       {careGoalError?.message && <Alert color="danger" message={t(careGoalError.message)} />}
       <Row>
         <Column sm={12}>

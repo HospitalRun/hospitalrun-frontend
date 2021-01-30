@@ -1,12 +1,10 @@
-import { Modal } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { screen, render, fireEvent, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router-dom'
 
 import AddVisitModal from '../../../patients/visits/AddVisitModal'
-import VisitForm from '../../../patients/visits/VisitForm'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import { VisitStatus } from '../../../shared/model/Visit'
@@ -32,73 +30,64 @@ describe('Add Visit Modal', () => {
     jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
     const history = createMemoryHistory()
-    const wrapper = mount(
+
+    return render(
       <Router history={history}>
         <AddVisitModal show onCloseButtonClick={onCloseSpy} patientId={patient.id} />
       </Router>,
     )
-
-    wrapper.update()
-
-    return { wrapper: wrapper as ReactWrapper }
   }
 
-  it('should render a modal', () => {
-    const { wrapper } = setup()
+  it('should render a modal and within a form', () => {
+    setup()
 
-    const modal = wrapper.find(Modal)
-
-    expect(modal).toHaveLength(1)
-
-    const successButton = modal.prop('successButton')
-    const cancelButton = modal.prop('closeButton')
-    expect(modal.prop('title')).toEqual('patient.visits.new')
-    expect(successButton?.children).toEqual('patient.visits.new')
-    expect(successButton?.icon).toEqual('add')
-    expect(cancelButton?.children).toEqual('actions.cancel')
-  })
-
-  it('should render the visit form', () => {
-    const { wrapper } = setup()
-
-    const addVisitModal = wrapper.find(AddVisitModal)
-    expect(addVisitModal).toHaveLength(1)
+    expect(within(screen.getByRole('dialog')).getByLabelText('visit form')).toBeInTheDocument()
   })
 
   it('should call the on close function when the cancel button is clicked', () => {
-    const { wrapper } = setup()
-
-    const modal = wrapper.find(Modal)
-
-    expect(modal).toHaveLength(1)
-
-    act(() => {
-      const cancelButton = modal.prop('closeButton')
-      const onClick = cancelButton?.onClick as any
-      onClick()
-    })
-
+    setup()
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /close/i,
+      }),
+    )
     expect(onCloseSpy).toHaveBeenCalledTimes(1)
   })
 
   it('should save the visit when the save button is clicked', async () => {
-    const { wrapper } = setup()
+    setup()
+    const testPatient = patient.visits[0]
 
-    act(() => {
-      const visitForm = wrapper.find(VisitForm)
-      const onChange = visitForm.prop('onChange') as any
-      onChange(patient.visits[0])
+    /* Date Pickers */
+    const startDateInput = within(screen.getByTestId('startDateTimeDateTimePicker')).getByRole(
+      'textbox',
+    )
+    const endDateInput = within(screen.getByTestId('endDateTimeDateTimePicker')).getByRole(
+      'textbox',
+    )
+
+    fireEvent.change(startDateInput, { target: { value: testPatient.startDateTime } })
+    fireEvent.change(endDateInput, { target: { value: testPatient.endDateTime } })
+
+    /* Text */
+    const typeInput = screen.getByPlaceholderText(/patient.visits.type/i)
+    userEvent.type(typeInput, testPatient.type)
+
+    const statusInput = screen.getByRole('combobox')
+    userEvent.type(statusInput, `${testPatient.status}{arrowdown}{enter}`)
+
+    const textareaReason = screen.getByLabelText(/patient\.visits\.reason/i)
+    userEvent.type(textareaReason, testPatient.reason)
+
+    const locationInput = screen.getByLabelText(/patient.visits.location/i)
+    userEvent.type(locationInput, testPatient.location)
+
+    const saveButton = screen.getByRole('button', { name: /patient.visits.new/i })
+    userEvent.click(saveButton)
+
+    await waitFor(() => {
+      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     })
-    wrapper.update()
-
-    await act(async () => {
-      const modal = wrapper.find(Modal)
-      const successButton = modal.prop('successButton')
-      const onClick = successButton?.onClick as any
-      await onClick()
-    })
-
-    expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(patient)
   })
 })

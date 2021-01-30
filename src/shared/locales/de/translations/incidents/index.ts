@@ -18,6 +18,7 @@ export default {
       category: 'Kategorie',
       categoryItem: 'Kategorie Artikel',
       description: 'Beschreibung des Vorfalles',
+      patient: 'Patient',
       code: 'Code',
       reportedBy: 'Gemeldet von',
       reportedOn: 'Gemeldet am',

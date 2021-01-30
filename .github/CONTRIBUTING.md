@@ -25,7 +25,7 @@ This should launch a new CouchDB instance on `http://localhost:5984`, create sys
 Go to `http://localhost:5984/_utils` in your browser to view Fauxton and perform administrative tasks.
 
 **_Cleanup_**
-To delete the development database, go to the root of the project and run `./couchdb/couchdb-init.bat` on Windows or `./couchdb/couchdb-init.sh` on UNIX like systems.
+To delete the development database, go to the root of the project and run `./couchdb/couchdb-cleanup.bat` on Windows or `./couchdb/couchdb-cleanup.sh` on UNIX like systems.
 
 ### Install dependencies & start the application
 
@@ -58,7 +58,7 @@ _Note: We no longer support the use of yarn._
 
 ## 4. Before pushing your changes, check locally that your branch passes CI checks
 
-### We use Jest + Enzyme for Behavior-Driven Development Tests
+### We use Jest + React Testing Library for Behavior-Driven Development Tests
 
 `npm run test:ci` will run the entire test suite
 
@@ -94,6 +94,6 @@ _Note: We no longer support the use of yarn._
 
 - [Getting started with PouchDB and CouchDB (tutorial) by Nolan Lawson](https://youtu.be/-Z7UF2TuSp0)
 
-### Enzyme
+### React Testing Library
 
-- [Enzyme Cheatsheet by @rstacruz](https://devhints.io/enzyme)
+- [React Testing Library Cheatsheet](https://testing-library.com/docs/react-testing-library/cheatsheet/)

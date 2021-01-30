@@ -1,26 +1,25 @@
-/* eslint-disable no-console */
-
 import useAddPatientNote from '../../../patients/hooks/useAddPatientNote'
 import * as validateNote from '../../../patients/util/validate-note'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Note from '../../../shared/model/Note'
 import Patient from '../../../shared/model/Patient'
 import * as uuid from '../../../shared/util/uuid'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add note', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
   })
 
   it('should throw an error if note validation fails', async () => {
     const expectedError = { nameError: 'some error' }
+    expectOneConsoleError(expectedError)
     jest.spyOn(validateNote, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
-      await executeMutation(() => useAddPatientNote(), { patientId: '123', note: {} })
+      await executeMutation(() => useAddPatientNote(), { patientId: '123', note: {} as Note })
     } catch (e) {
       expect(e).toEqual(expectedError)
     }

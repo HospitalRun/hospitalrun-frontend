@@ -6,8 +6,10 @@ export default {
       new: 'New Appointment',
       schedule: 'Appointment Schedule',
       editAppointment: 'Edit Appointment',
+      createAppointment: 'Schedule Appointment',
       deleteAppointment: 'Delete Appointment',
       viewAppointment: 'View Appointment',
+      updateAppointment: 'Update Appointment',
     },
     appointment: {
       startDate: 'Start Date',

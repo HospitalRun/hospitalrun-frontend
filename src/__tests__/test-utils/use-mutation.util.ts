@@ -1,19 +1,16 @@
 import { act, renderHook } from '@testing-library/react-hooks'
+import { MutateFunction } from 'react-query'
 
-export default async function executeMutation(callback: any, ...input: any[]) {
-  let mutateToTest: any
-  await act(async () => {
-    const renderHookResult = renderHook(callback)
-    const { result, waitForNextUpdate } = renderHookResult
-    await waitForNextUpdate()
-    const [mutate] = result.current as any
-    mutateToTest = mutate
-  })
+export default async function executeMutation<TResult>(
+  callback: () => [MutateFunction<unknown, unknown, TResult>, ...any[]],
+  ...input: TResult[]
+) {
+  const { result } = renderHook(callback)
+  const [mutate] = result.current
 
   let actualData: any
   await act(async () => {
-    const result = await mutateToTest(...input)
-    actualData = result
+    actualData = await mutate(...input)
   })
 
   return actualData

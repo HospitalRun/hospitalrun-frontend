@@ -1,9 +1,8 @@
-import { Table, Dropdown } from '@hospitalrun/components'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
-import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Router } from 'react-router'
 
 import IncidentFilter from '../../../incidents/IncidentFilter'
@@ -11,84 +10,68 @@ import ViewIncidentsTable, { populateExportData } from '../../../incidents/list/
 import IncidentSearchRequest from '../../../incidents/model/IncidentSearchRequest'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
+import { extractUsername } from '../../../shared/util/extractUsername'
 
 describe('View Incidents Table', () => {
-  const setup = async (
+  const expectedIncident = {
+    id: 'incidentId1',
+    code: 'someCode',
+    date: new Date(2020, 7, 4, 0, 0, 0, 0).toISOString(),
+    reportedOn: new Date(2020, 8, 4, 0, 0, 0, 0).toISOString(),
+    reportedBy: 'com.test:user',
+    status: 'reported',
+  } as Incident
+
+  const setup = (
     expectedSearchRequest: IncidentSearchRequest,
-    expectedIncidents: Incident[],
+    expectedIncidents = [expectedIncident],
   ) => {
     jest.spyOn(IncidentRepository, 'search').mockResolvedValue(expectedIncidents)
-
-    let wrapper: any
     const history = createMemoryHistory()
-    await act(async () => {
-      wrapper = await mount(
+
+    return {
+      history,
+      ...render(
         <Router history={history}>
           <ViewIncidentsTable searchRequest={expectedSearchRequest} />
         </Router>,
-      )
-    })
-    wrapper.update()
-
-    return { wrapper: wrapper as ReactWrapper, history }
+      ),
+    }
   }
 
   beforeEach(() => {
     jest.resetAllMocks()
   })
 
-  it('should call the incidents search with the search request', async () => {
-    const expectedSearchRequest: IncidentSearchRequest = {
-      status: IncidentFilter.all,
-    }
-    await setup(expectedSearchRequest, [])
-
-    expect(IncidentRepository.search).toHaveBeenCalledTimes(1)
-    expect(IncidentRepository.search).toHaveBeenCalledWith(expectedSearchRequest)
-  })
-
   it('should display a table of incidents', async () => {
-    const expectedIncidents: Incident[] = [
-      {
-        id: 'incidentId1',
-        code: 'someCode',
-        date: new Date(2020, 7, 4, 0, 0, 0, 0).toISOString(),
-        reportedOn: new Date(2020, 8, 4, 0, 0, 0, 0).toISOString(),
-        reportedBy: 'com.test:user',
-        status: 'reported',
-      } as Incident,
-    ]
-    const { wrapper } = await setup({ status: IncidentFilter.all }, expectedIncidents)
+    setup({ status: IncidentFilter.all })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
 
-    const incidentsTable = wrapper.find(Table)
-
-    expect(incidentsTable.exists()).toBeTruthy()
-    expect(incidentsTable.prop('data')).toEqual(expectedIncidents)
-    expect(incidentsTable.prop('columns')).toEqual([
-      expect.objectContaining({ label: 'incidents.reports.code', key: 'code' }),
-      expect.objectContaining({ label: 'incidents.reports.dateOfIncident', key: 'date' }),
-      expect.objectContaining({ label: 'incidents.reports.reportedBy', key: 'reportedBy' }),
-      expect.objectContaining({ label: 'incidents.reports.reportedOn', key: 'reportedOn' }),
-      expect.objectContaining({ label: 'incidents.reports.status', key: 'status' }),
-    ])
-    expect(incidentsTable.prop('actionsHeaderText')).toEqual('actions.label')
+    const headers = screen.getAllByRole('columnheader')
+    const cells = screen.getAllByRole('cell')
+    expect(headers[0]).toHaveTextContent(/incidents.reports.code/i)
+    expect(headers[1]).toHaveTextContent(/incidents.reports.dateOfIncident/i)
+    expect(headers[2]).toHaveTextContent(/incidents.reports.reportedBy/i)
+    expect(headers[3]).toHaveTextContent(/incidents.reports.reportedOn/i)
+    expect(headers[4]).toHaveTextContent(/incidents.reports.status/i)
+    expect(headers[5]).toHaveTextContent(/actions.label/i)
+    expect(cells[0]).toHaveTextContent(expectedIncident.code)
+    expect(cells[1]).toHaveTextContent(
+      format(new Date(expectedIncident.date), 'yyyy-MM-dd hh:mm a'),
+    )
+    expect(cells[2]).toHaveTextContent(extractUsername(expectedIncident.reportedBy))
+    expect(cells[3]).toHaveTextContent(
+      format(new Date(expectedIncident.reportedOn), 'yyyy-MM-dd hh:mm a'),
+    )
+    expect(cells[4]).toHaveTextContent(expectedIncident.status)
+    expect(screen.getByRole('button', { name: /actions.view/i })).toBeInTheDocument()
   })
 
   it('should display a download button', async () => {
-    const expectedIncidents: Incident[] = [
-      {
-        id: 'incidentId1',
-        code: 'someCode',
-        date: new Date(2020, 7, 4, 0, 0, 0, 0).toISOString(),
-        reportedOn: new Date(2020, 8, 4, 0, 0, 0, 0).toISOString(),
-        reportedBy: 'com.test:user',
-        status: 'reported',
-      } as Incident,
-    ]
-    const { wrapper } = await setup({ status: IncidentFilter.all }, expectedIncidents)
-
-    const dropDownButton = wrapper.find(Dropdown)
-    expect(dropDownButton.exists()).toBeTruthy()
+    setup({ status: IncidentFilter.all })
+    expect(
+      await screen.findByRole('button', { name: /incidents.reports.download/i }),
+    ).toBeInTheDocument()
   })
 
   it('should populate export data correctly', async () => {
@@ -126,48 +109,10 @@ describe('View Incidents Table', () => {
     expect(exportData).toEqual(expectedExportData)
   })
 
-  it('should format the data correctly', async () => {
-    const expectedIncidents: Incident[] = [
-      {
-        id: 'incidentId1',
-        code: 'someCode',
-        date: new Date(2020, 7, 4, 12, 0, 0, 0).toISOString(),
-        reportedOn: new Date(2020, 8, 4, 12, 0, 0, 0).toISOString(),
-        reportedBy: 'com.test:user',
-        status: 'reported',
-      } as Incident,
-    ]
-    const { wrapper } = await setup({ status: IncidentFilter.all }, expectedIncidents)
-
-    const incidentsTable = wrapper.find(Table)
-    const dateFormatter = incidentsTable.prop('columns')[1].formatter as any
-    const reportedByFormatter = incidentsTable.prop('columns')[2].formatter as any
-    const reportedOnFormatter = incidentsTable.prop('columns')[3].formatter as any
-
-    expect(dateFormatter(expectedIncidents[0])).toEqual('2020-08-04 12:00 PM')
-    expect(reportedOnFormatter(expectedIncidents[0])).toEqual('2020-09-04 12:00 PM')
-    expect(reportedByFormatter(expectedIncidents[0])).toEqual('user')
-  })
-
   it('should navigate to the view incident screen when view button is clicked', async () => {
-    const expectedIncidents: Incident[] = [
-      {
-        id: 'incidentId1',
-        code: 'someCode',
-        date: new Date(2020, 7, 4, 12, 0, 0, 0).toISOString(),
-        reportedOn: new Date(2020, 8, 4, 12, 0, 0, 0).toISOString(),
-        reportedBy: 'com.test:user',
-        status: 'reported',
-      } as Incident,
-    ]
-    const { wrapper, history } = await setup({ status: IncidentFilter.all }, expectedIncidents)
-
-    act(() => {
-      const table = wrapper.find(Table) as any
-      const onViewClick = table.prop('actions')[0].action as any
-      onViewClick(expectedIncidents[0])
-    })
-
-    expect(history.location.pathname).toEqual(`/incidents/${expectedIncidents[0].id}`)
+    const { history } = setup({ status: IncidentFilter.all })
+    expect(await screen.findByRole('table')).toBeInTheDocument()
+    userEvent.click(screen.getByRole('button', { name: /actions.view/i }))
+    expect(history.location.pathname).toEqual(`/incidents/${expectedIncident.id}`)
   })
 })

@@ -23,11 +23,13 @@ const EditPatient = () => {
 
   const updateTitle = useUpdateTitle()
 
-  updateTitle(
-    `${t('patients.editPatient')}: ${getPatientFullName(givenPatient)} (${getPatientCode(
-      givenPatient,
-    )})`,
-  )
+  useEffect(() => {
+    updateTitle(
+      `${t('patients.editPatient')}: ${getPatientFullName(givenPatient)} (${getPatientCode(
+        givenPatient,
+      )})`,
+    )
+  })
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
@@ -77,7 +79,7 @@ const EditPatient = () => {
       <div className="row float-right">
         <div className="btn-group btn-group-lg">
           <Button className="btn-save mr-2" color="success" onClick={onSave}>
-            {t('actions.save')}
+            {t('patients.updatePatient')}
           </Button>
           <Button className="btn-cancel" color="danger" onClick={onCancel}>
             {t('actions.cancel')}
