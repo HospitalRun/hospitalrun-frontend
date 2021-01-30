@@ -122,7 +122,7 @@ describe('New Lab Request', () => {
       expect(selectInput).toBeInTheDocument()
       expect(selectInput).toHaveDisplayValue([''])
       expect(selectLabel).toBeInTheDocument()
-      expect(selectLabel).not.toHaveAttribute('title', 'This is a required input')
+      expect(selectLabel).toHaveAttribute('title', 'This is a required input')
     })
 
     it('should render a save button', () => {
