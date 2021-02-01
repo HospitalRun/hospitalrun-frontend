@@ -202,9 +202,11 @@ const ViewLab = () => {
           <Callout key={uuid()} color="info">
             <div className="d-flex justify-content-between">
               <p data-testid="note">{note}</p>
-              <Button onClick={async () => deleteNote(index)} color="danger">
-                <span data-testid={`delete-note-index-${index}`}>Delete</span>
-              </Button>
+              {labToView.status === 'requested' && (
+                <Button icon="remove" onClick={async () => deleteNote(index)} color="danger">
+                  <span data-testid={`delete-note-index-${index}`}>Delete</span>
+                </Button>
+              )}
             </div>
           </Callout>
         ))

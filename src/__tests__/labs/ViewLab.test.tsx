@@ -352,6 +352,22 @@ describe('View Lab', () => {
         within(screen.getByRole('alert')).getByText(/labs\.successfullyCompleted/i),
       ).toBeInTheDocument()
     })
+
+    it('should disallow deleting notes', async () => {
+      const labNote = 'A note from the lab!'
+      setup(
+        {
+          notes: [labNote],
+          status: 'completed',
+        },
+        [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab],
+      )
+
+      const notes = await screen.findAllByTestId('note')
+      expect(notes).toHaveLength(1)
+      expect(notes[0]).toHaveTextContent(labNote)
+      expect(screen.queryAllByRole('button', { name: 'Delete' })).toHaveLength(0)
+    })
   })
 
   describe('on cancel', () => {
@@ -376,6 +392,22 @@ describe('View Lab', () => {
       await waitFor(() => {
         expect(history.location.pathname).toEqual('/labs')
       })
+    })
+
+    it('should disallow deleting notes', async () => {
+      const labNote = 'A note from the lab!'
+      setup(
+        {
+          notes: [labNote],
+          status: 'canceled',
+        },
+        [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab],
+      )
+
+      const notes = await screen.findAllByTestId('note')
+      expect(notes).toHaveLength(1)
+      expect(notes[0]).toHaveTextContent(labNote)
+      expect(screen.queryAllByRole('button', { name: 'Delete' })).toHaveLength(0)
     })
   })
 })
