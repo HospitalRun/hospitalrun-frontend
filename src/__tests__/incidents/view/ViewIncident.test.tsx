@@ -1,4 +1,3 @@
-import { Button } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -157,15 +156,4 @@ describe('View Incident', () => {
     )
     expect(history.location.pathname).toEqual('/incidents')
   })
-
-  it('should render notes tab and modal')
-
-  it('should display modal when add new note button clicked')
-  it('should display add new note button', async () => {
-  })
-  it('modal should appear when edit note is clicked')
-
-  it('note should disappear when delete button clicked')
-
-  it('new note should appear when new note is created')
 })
