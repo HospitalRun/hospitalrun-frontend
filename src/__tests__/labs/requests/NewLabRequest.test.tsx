@@ -185,6 +185,7 @@ describe('New Lab Request', () => {
       message: 'some message',
       patient: 'some patient message',
       type: 'some type error',
+      visit: 'some visit error',
     } as LabError
 
     it('should display errors', async () => {
@@ -198,6 +199,7 @@ describe('New Lab Request', () => {
       const alert = await screen.findByRole('alert')
       const patientInput = screen.getByPlaceholderText(/labs\.lab\.patient/i)
       const typeInput = screen.getByLabelText(/labs\.lab\.type/i)
+      const visit = screen.getByPlaceholderText('-- Choose --')
 
       expect(within(alert).getByText(error.message)).toBeInTheDocument()
       expect(within(alert).getByText(/states\.error/i)).toBeInTheDocument()
@@ -205,6 +207,8 @@ describe('New Lab Request', () => {
       expect(patientInput).toHaveClass('is-invalid')
       expect(typeInput).toHaveClass('is-invalid')
       expect(typeInput.nextSibling).toHaveTextContent(error.type as string)
+      expect(visit).toHaveClass('is-invalid')
+      screen.getByText(error.visit as string)
     })
   })
 

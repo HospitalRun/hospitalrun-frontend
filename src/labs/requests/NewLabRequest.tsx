@@ -152,6 +152,7 @@ const NewLabRequest = () => {
                 isRequired
                 isEditable={newLabRequest.patient !== undefined}
                 isInvalid={!!error?.visit}
+                feedback={t(error?.visit as string)}
                 options={visitOptions || []}
                 defaultSelected={defaultSelectedVisitsOption()}
                 onChange={(values) => {
