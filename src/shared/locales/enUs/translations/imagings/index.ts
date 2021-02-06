@@ -19,6 +19,7 @@ export default {
         typeRequired: 'Type is required.',
         statusRequired: 'Status is required.',
         patientRequired: 'Patient name is required.',
+        visitRequired: 'Visit is required.',
       },
     },
     imaging: {
