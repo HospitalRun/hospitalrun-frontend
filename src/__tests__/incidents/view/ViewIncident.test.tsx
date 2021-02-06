@@ -9,7 +9,6 @@ import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import NotesTable from '../../../incidents/view/NotesTable'
 import ViewIncident from '../../../incidents/view/ViewIncident'
 import ViewIncidentDetails from '../../../incidents/view/ViewIncidentDetails'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
