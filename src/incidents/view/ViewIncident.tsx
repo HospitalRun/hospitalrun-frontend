@@ -76,7 +76,14 @@ const ViewIncident = () => {
       </TabsHeader>
       <Panel>
         <div className="col-md-12 d-flex mb-3 justify-content-end">
-          <Button outlined color="success" icon="add" iconLocation="right" onClick={onNewNoteClick}>
+          <Button
+            outlined
+            color="success"
+            icon="add"
+            iconLocation="right"
+            onClick={onNewNoteClick}
+            className="create-new-note-button"
+          >
             {t('patient.notes.new')}
           </Button>
         </div>
