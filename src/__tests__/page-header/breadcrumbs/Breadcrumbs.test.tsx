@@ -1,8 +1,4 @@
-import {
-  Breadcrumb as HRBreadcrumb,
-  BreadcrumbItem as HRBreadcrumbItem,
-} from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -23,22 +19,20 @@ describe('Breadcrumbs', () => {
       breadcrumbs: { breadcrumbs },
     } as any)
 
-    const wrapper = mount(
+    return render(
       <Provider store={store}>
         <Router history={history}>
           <Breadcrumbs />
         </Router>
       </Provider>,
     )
-
-    return wrapper
   }
 
   it('should not render the breadcrumb when there are no items in the store', () => {
-    const wrapper = setup([])
+    setup([])
 
-    expect(wrapper.find(HRBreadcrumb)).toHaveLength(0)
-    expect(wrapper.find(HRBreadcrumbItem)).toHaveLength(0)
+    expect(screen.queryByRole('list')).toBeNull()
+    expect(screen.queryByRole('listitem')).toBeNull()
   })
 
   it('should render breadcrumbs items', () => {
@@ -47,13 +41,14 @@ describe('Breadcrumbs', () => {
       { text: 'Bob', location: '/patient/1' },
       { text: 'Edit Patient', location: '/patient/1/edit' },
     ]
-    const wrapper = setup(breadcrumbs)
 
-    const items = wrapper.find(HRBreadcrumbItem)
+    setup(breadcrumbs)
 
-    expect(items).toHaveLength(3)
-    expect(items.at(0).text()).toEqual('patient.label')
-    expect(items.at(1).text()).toEqual('Bob')
-    expect(items.at(2).text()).toEqual('Edit Patient')
+    const breadCrumbItems = screen.getAllByRole('listitem')
+
+    expect(breadCrumbItems).toHaveLength(3)
+    expect(breadCrumbItems[0]).toHaveTextContent('patient.label')
+    expect(breadCrumbItems[1]).toHaveTextContent('Bob')
+    expect(breadCrumbItems[2]).toHaveTextContent('Edit Patient')
   })
 })

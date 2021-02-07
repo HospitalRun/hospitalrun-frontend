@@ -1,14 +1,18 @@
-/* eslint-disable no-console */
-
 import usePatientNote from '../../../patients/hooks/usePatientNote'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import executeQuery from '../../test-utils/use-query.util'
 
 describe('use note', () => {
+  let errorMock: jest.SpyInstance
+
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
+    errorMock = jest.spyOn(console, 'error').mockImplementation()
+  })
+
+  afterEach(() => {
+    errorMock.mockRestore()
   })
 
   it('should return a note given a patient id and note id', async () => {
@@ -31,12 +35,15 @@ describe('use note', () => {
       id: expectedPatientId,
       notes: [{ id: '426', text: 'eome name', date: '1947-09-09T14:48:00.000Z' }],
     } as Patient
-    jest.spyOn(PatientRepository, 'find').mockResolvedValueOnce(expectedPatient)
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
 
     try {
-      await executeQuery(() => usePatientNote(expectedPatientId, expectedNote.id))
+      await executeQuery(
+        () => usePatientNote(expectedPatientId, expectedNote.id),
+        (query) => query.isError,
+      )
     } catch (e) {
-      expect(e).toEqual(new Error('Timed out in waitFor after 1000ms.'))
+      expect(e).toEqual(new Error('Note not found'))
     }
   })
 })

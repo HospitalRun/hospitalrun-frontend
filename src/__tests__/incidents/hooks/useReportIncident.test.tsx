@@ -1,6 +1,4 @@
-/* eslint-disable no-console */
-
-import { subDays } from 'date-fns'
+import subDays from 'date-fns/subDays'
 import shortid from 'shortid'
 
 import useReportIncident from '../../../incidents/hooks/useReportIncident'
@@ -8,12 +6,12 @@ import * as incidentValidator from '../../../incidents/util/validate-incident'
 import { IncidentError } from '../../../incidents/util/validate-incident'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('useReportIncident', () => {
   beforeEach(() => {
     jest.restoreAllMocks()
-    console.error = jest.fn()
   })
 
   it('should save the incident with correct data', async () => {
@@ -51,12 +49,13 @@ describe('useReportIncident', () => {
     const expectedIncidentError = {
       description: 'some description error',
     } as IncidentError
+    expectOneConsoleError(expectedIncidentError)
 
     jest.spyOn(incidentValidator, 'default').mockReturnValue(expectedIncidentError)
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue({} as Incident)
 
     try {
-      await executeMutation(() => useReportIncident(), {})
+      await executeMutation(() => useReportIncident(), {} as Incident)
     } catch (e) {
       expect(e).toEqual(expectedIncidentError)
       expect(IncidentRepository.save).not.toHaveBeenCalled()

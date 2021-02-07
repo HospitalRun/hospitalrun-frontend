@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns'
+import addDays from 'date-fns/addDays'
 
 import validatePatient, { PatientValidationError } from '../../../patients/util/validate-patient'
 import Patient from '../../../shared/model/Patient'

@@ -3,6 +3,7 @@ import * as validateVisit from '../../../patients/util/validate-visit'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
 import Visit, { VisitStatus } from '../../../shared/model/Visit'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add visit', () => {
@@ -17,15 +18,14 @@ describe('use add visit', () => {
     const expectedVisit: Visit[] = [
       {
         id: '123',
-        reason: 'reason for visit',
+        rev: '1',
         createdAt: expectedDate.toISOString(),
         updatedAt: expectedDate.toISOString(),
         startDateTime: new Date().toISOString(),
         endDateTime: new Date().toISOString(),
         type: 'type',
-        status: VisitStatus.Planned, //'planned',
-        rev: 'rev',
-        // reason: 'given reason',
+        status: VisitStatus.Planned,
+        reason: 'reason for visit',
         location: 'give location',
       },
     ]
@@ -47,12 +47,14 @@ describe('use add visit', () => {
   })
 
   it('should throw an error if validation fails', async () => {
-    const expectedError = { message: 'patient.visit.error.unableToAdd', title: 'some error' }
+    const expectedError: Error = { message: 'patient.visit.error.unableToAdd', name: 'some error' }
+    expectOneConsoleError(expectedError)
+
     jest.spyOn(validateVisit, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
-      await executeMutation(() => useAddVisit(), { patientId: '123', visit: {} })
+      await executeMutation(() => useAddVisit(), { patientId: '123', visit: {} as Visit })
     } catch (e) {
       expect(e).toEqual(expectedError)
     }

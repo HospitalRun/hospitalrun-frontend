@@ -1,9 +1,9 @@
-import { act, renderHook } from '@testing-library/react-hooks'
-import { subDays } from 'date-fns'
+import subDays from 'date-fns/subDays'
 
 import useResolveIncident from '../../../incidents/hooks/useResolveIncident'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
+import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('useResolvedIncident', () => {
   it('should mark incident as resolved and save', async () => {
@@ -30,20 +30,7 @@ describe('useResolvedIncident', () => {
     } as Incident
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue(expectedIncident)
 
-    let mutateToTest: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useResolveIncident())
-      const { result, waitForNextUpdate } = renderHookResult
-      await waitForNextUpdate()
-      const [mutate] = result.current
-      mutateToTest = mutate
-    })
-
-    let actualData: any
-    await act(async () => {
-      const result = await mutateToTest(givenIncident)
-      actualData = result
-    })
+    const actualData = await executeMutation(() => useResolveIncident(), givenIncident)
 
     expect(IncidentRepository.save).toHaveBeenCalledTimes(1)
     expect(IncidentRepository.save).toBeCalledWith(expectedIncident)

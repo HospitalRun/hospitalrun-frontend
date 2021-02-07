@@ -1,10 +1,9 @@
-import { act } from '@testing-library/react-hooks'
-
 import useCompleteLab from '../../../labs/hooks/useCompleteLab'
 import { LabError } from '../../../labs/utils/validate-lab'
 import * as validateLabUtils from '../../../labs/utils/validate-lab'
 import LabRepository from '../../../shared/db/LabRepository'
 import Lab from '../../../shared/model/Lab'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('Use Complete lab', () => {
@@ -20,17 +19,13 @@ describe('Use Complete lab', () => {
   } as Lab
 
   Date.now = jest.fn(() => expectedCompletedOnDate.valueOf())
-  jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedCompletedLab)
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(expectedCompletedLab)
   })
 
   it('should save lab as complete', async () => {
-    let actualData: any
-    await act(async () => {
-      actualData = await executeMutation(() => useCompleteLab(), lab)
-    })
+    const actualData = await executeMutation(() => useCompleteLab(), lab)
 
     expect(LabRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
     expect(LabRepository.saveOrUpdate).toHaveBeenCalledWith(expectedCompletedLab)
@@ -44,15 +39,14 @@ describe('Use Complete lab', () => {
       result: 'some result error message',
     } as LabError
 
+    expectOneConsoleError(expectedLabError)
     jest.spyOn(validateLabUtils, 'validateLabComplete').mockReturnValue(expectedLabError)
 
-    await act(async () => {
-      try {
-        await executeMutation(() => useCompleteLab(), lab)
-      } catch (e) {
-        expect(e).toEqual(expectedLabError)
-        expect(LabRepository.saveOrUpdate).not.toHaveBeenCalled()
-      }
-    })
+    try {
+      await executeMutation(() => useCompleteLab(), lab)
+    } catch (e) {
+      expect(e).toEqual(expectedLabError)
+      expect(LabRepository.saveOrUpdate).not.toHaveBeenCalled()
+    }
   })
 })

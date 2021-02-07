@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns'
+import addDays from 'date-fns/addDays'
 
 import validateIncident from '../../../incidents/util/validate-incident'
 import Incident from '../../../shared/model/Incident'

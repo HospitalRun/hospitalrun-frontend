@@ -11,4 +11,5 @@ export default interface Lab extends AbstractDBModel {
   requestedOn: string
   completedOn?: string
   canceledOn?: string
+  visitId?: string
 }

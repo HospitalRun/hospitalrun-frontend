@@ -7,7 +7,7 @@ export default {
       draft: 'Draft',
       active: 'Active',
       onHold: 'On Hold',
-      cancelled: 'Cancelled',
+      canceled: 'Canceled',
       completed: 'Completed',
       enteredInError: 'Entered In Error',
       stopped: 'Stopped',
@@ -38,6 +38,7 @@ export default {
       view: 'View Medication',
       cancel: 'Cancel Medication',
       complete: 'Complete Medication',
+      update: 'Update Medication',
       error: {
         unableToRequest: 'Unable to create Medication request.',
         unableToComplete: 'Unable to complete Medication request.',

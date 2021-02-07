@@ -35,7 +35,7 @@ const SelectWithLabelFormGroup = (props: Props) => {
   } = props
   const id = `${name}Select`
   return (
-    <div className="form-group">
+    <div className="form-group" data-testid={id}>
       {label && <Label text={label} htmlFor={id} isRequired={isRequired} />}
       <Select
         id={id}

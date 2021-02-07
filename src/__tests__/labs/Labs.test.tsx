@@ -1,5 +1,4 @@
-import { act } from '@testing-library/react'
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -7,8 +6,6 @@ import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Labs from '../../labs/Labs'
-import NewLabRequest from '../../labs/requests/NewLabRequest'
-import ViewLab from '../../labs/ViewLab'
 import * as titleUtil from '../../page-header/title/TitleContext'
 import LabRepository from '../../shared/db/LabRepository'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -17,68 +14,93 @@ import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { RootState } from '../../shared/store'
 
-const { TitleProvider } = titleUtil
+const { TitleProvider, useTitle } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
+const Title = () => {
+  const { title } = useTitle()
+
+  return <h1>{title}</h1>
+}
+
+const expectedLab = {
+  code: 'L-code',
+  id: '1234',
+  patient: '1234',
+  type: 'Type',
+  requestedOn: new Date().toISOString(),
+} as Lab
+const expectedPatient = {
+  fullName: 'fullName',
+  id: '1234',
+} as Patient
+
+const setup = (initialPath: string, permissions: Permissions[]) => {
+  jest.resetAllMocks()
+  jest.spyOn(LabRepository, 'find').mockResolvedValue(expectedLab)
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
+  const store = mockStore({ user: { permissions } } as any)
+
+  return {
+    ...render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[initialPath]}>
+          <TitleProvider>
+            <Title />
+            <Labs />
+          </TitleProvider>
+        </MemoryRouter>
+      </Provider>,
+    ),
+  }
+}
+
 describe('Labs', () => {
-  jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-  jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-  jest
-    .spyOn(LabRepository, 'find')
-    .mockResolvedValue({ id: '1234', requestedOn: new Date().toISOString() } as Lab)
-  jest
-    .spyOn(PatientRepository, 'find')
-    .mockResolvedValue({ id: '12345', fullName: 'test test' } as Patient)
+  describe('routing', () => {
+    describe('/labs', () => {
+      it('should render the view labs screen when /labs is accessed', async () => {
+        setup('/labs', [Permissions.ViewLabs])
+        expect(screen.getByRole('heading', { name: /labs\.label/i })).toBeInTheDocument()
+      })
 
-  const setup = async (initialEntry: string, permissions: Permissions[] = []) => {
-    const store = mockStore({
-      user: { permissions },
-    } as any)
-
-    let wrapper: any
-    await act(async () => {
-      wrapper = await mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[initialEntry]}>
-            <TitleProvider>
-              <Labs />
-            </TitleProvider>
-          </MemoryRouter>
-        </Provider>,
-      )
+      it('should not navigate to /labs if the user does not have ViewLabs permissions', async () => {
+        setup('/labs', [])
+        expect(screen.queryByRole('heading', { name: /labs\.label/i })).not.toBeInTheDocument()
+      })
     })
 
-    wrapper.update()
-    return { wrapper: wrapper as ReactWrapper }
-  }
-
-  describe('routing', () => {
     describe('/labs/new', () => {
       it('should render the new lab request screen when /labs/new is accessed', async () => {
-        const { wrapper } = await setup('/labs/new', [Permissions.RequestLab])
-
-        expect(wrapper.find(NewLabRequest)).toHaveLength(1)
+        setup('/labs/new', [Permissions.RequestLab])
+        expect(screen.getByRole('heading', { name: /labs\.requests\.new/i })).toBeInTheDocument()
       })
 
       it('should not navigate to /labs/new if the user does not have RequestLab permissions', async () => {
-        const { wrapper } = await setup('/labs/new')
-
-        expect(wrapper.find(NewLabRequest)).toHaveLength(0)
+        setup('/labs/new', [])
+        expect(
+          screen.queryByRole('heading', { name: /labs\.requests\.new/i }),
+        ).not.toBeInTheDocument()
       })
     })
 
     describe('/labs/:id', () => {
       it('should render the view lab screen when /labs/:id is accessed', async () => {
-        const { wrapper } = await setup('/labs/1234', [Permissions.ViewLab])
-
-        expect(wrapper.find(ViewLab)).toHaveLength(1)
+        setup('/labs/1234', [Permissions.ViewLab])
+        expect(
+          await screen.findByRole('heading', {
+            name: `${expectedLab.type} for ${expectedPatient.fullName}(${expectedLab.code})`,
+          }),
+        ).toBeInTheDocument()
       })
-    })
 
-    it('should not navigate to /labs/:id if the user does not have ViewLab permissions', async () => {
-      const { wrapper } = await setup('/labs/1234')
-
-      expect(wrapper.find(ViewLab)).toHaveLength(0)
+      it('should not navigate to /labs/:id if the user does not have ViewLab permissions', async () => {
+        setup('/labs/1234', [])
+        expect(
+          screen.queryByRole('heading', {
+            name: `${expectedLab.type} for ${expectedPatient.fullName}(${expectedLab.code})`,
+          }),
+        ).not.toBeInTheDocument()
+      })
     })
   })
 })

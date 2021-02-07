@@ -1,3 +1,4 @@
+import { Row, Column } from '@hospitalrun/components'
 import React, { ChangeEvent } from 'react'
 
 import SelectWithLabelFormGroup, {
@@ -43,8 +44,8 @@ const MedicationRequestSearch = (props: Props) => {
   }
 
   return (
-    <div className="row">
-      <div className="col-md-3 col-lg-2">
+    <Row>
+      <Column md={3} lg={2}>
         <SelectWithLabelFormGroup
           name="filterStatus"
           label={t('medications.filterTitle')}
@@ -53,8 +54,8 @@ const MedicationRequestSearch = (props: Props) => {
           onChange={(values) => onFilterChange(values[0] as MedicationStatus)}
           isEditable
         />
-      </div>
-      <div className="col">
+      </Column>
+      <Column>
         <TextInputWithLabelFormGroup
           name="searchbox"
           label={t('medications.search')}
@@ -63,8 +64,8 @@ const MedicationRequestSearch = (props: Props) => {
           isEditable
           onChange={onSearchQueryChange}
         />
-      </div>
-    </div>
+      </Column>
+    </Row>
   )
 }
 
