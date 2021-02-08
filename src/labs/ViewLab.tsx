@@ -30,7 +30,7 @@ const ViewLab = () => {
   const { permissions } = useSelector((state: RootState) => state.user)
 
   const [labToView, setLabToView] = useState<Lab>()
-  const [newNotes, setNewNotes] = useState<string>()
+  const [newNoteText, setNewNoteText] = useState<string>()
   const [isEditable, setIsEditable] = useState<boolean>(true)
 
   const { data: lab } = useLab(id)
@@ -68,15 +68,22 @@ const ViewLab = () => {
 
   const onNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const notes = event.currentTarget.value
-    setNewNotes(notes)
+    setNewNoteText(notes)
   }
 
-  const deleteNote = async (noteIndexToDelete: number) => {
+  const deleteNote = async (noteIdToDelete: string) => {
     if (!labToView || !labToView.notes) {
       return
     }
 
-    const updatedNotes = labToView!.notes!.filter((_note, i) => i !== noteIndexToDelete)
+    const updatedNotes = labToView!.notes!.map((note) => {
+      if (note.id === noteIdToDelete) {
+        note.deleted = true
+      }
+
+      return note
+    })
+
     const newLab = {
       ...labToView,
       notes: updatedNotes,
@@ -90,9 +97,16 @@ const ViewLab = () => {
     if (labToView) {
       const newLab = labToView as Lab
 
-      if (newNotes) {
-        newLab.notes = newLab.notes ? [...newLab.notes, newNotes] : [newNotes]
-        setNewNotes('')
+      if (newNoteText) {
+        const newNote = {
+          id: uuid(),
+          date: new Date().toISOString(),
+          text: newNoteText,
+          deleted: false,
+        }
+
+        newLab.notes = newLab.notes ? [...newLab.notes, newNote] : [newNote]
+        setNewNoteText('')
       }
 
       const updatedLab = await updateLab(newLab)
@@ -197,19 +211,21 @@ const ViewLab = () => {
     }
 
     const getPastNotes = () => {
-      if (labToView.notes && labToView.notes[0] !== '') {
-        return labToView.notes.map((note, index) => (
-          <Callout key={uuid()} color="info">
-            <div className="d-flex justify-content-between">
-              <p data-testid="note">{note}</p>
-              {labToView.status === 'requested' && (
-                <Button icon="remove" onClick={async () => deleteNote(index)} color="danger">
-                  <span data-testid={`delete-note-index-${index}`}>Delete</span>
-                </Button>
-              )}
-            </div>
-          </Callout>
-        ))
+      if (labToView?.notes?.length && labToView.notes.length > 0) {
+        return labToView.notes
+          .filter((note) => !note.deleted)
+          .map((note) => (
+            <Callout key={note.id} color="info">
+              <div className="d-flex justify-content-between">
+                <p data-testid="note">{note.text}</p>
+                {labToView.status === 'requested' && (
+                  <Button icon="remove" onClick={async () => deleteNote(note.id)} color="danger">
+                    <span data-testid={`delete-note-${note.id}`}>Delete</span>
+                  </Button>
+                )}
+              </div>
+            </Callout>
+          ))
       }
 
       return <></>
@@ -265,7 +281,7 @@ const ViewLab = () => {
           {isEditable && (
             <TextFieldWithLabelFormGroup
               name="notes"
-              value={newNotes}
+              value={newNoteText}
               isEditable={isEditable}
               onChange={onNotesChange}
             />
