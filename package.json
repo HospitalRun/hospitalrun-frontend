@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "@hospitalrun/components": "~3.1.0",
+    "@hospitalrun/components": "~3.3.0",
     "@reduxjs/toolkit": "~1.5.0",
     "@types/escape-string-regexp": "~2.0.1",
     "@types/json2csv": "~5.0.1",
@@ -97,7 +97,7 @@
     "eslint-plugin-jest": "~24.1.0",
     "eslint-plugin-jsx-a11y": "~6.4.1",
     "eslint-plugin-prettier": "~3.3.0",
-    "eslint-plugin-react": "~7.21.0",
+    "eslint-plugin-react": "~7.22.0",
     "eslint-plugin-react-hooks": "~4.1.0",
     "history": "4.10.1",
     "husky": "~4.3.0",
@@ -109,7 +109,7 @@
     "redux-mock-store": "~1.5.4",
     "rimraf": "~3.0.2",
     "source-map-explorer": "^2.2.2",
-    "standard-version": "~9.0.0"
+    "standard-version": "~9.1.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -120,7 +120,6 @@
     "prepublishOnly": "npm run build",
     "test": "npm run translation:check && react-scripts test  --testPathIgnorePatterns=src/__tests__/test-utils --detectOpenHandles",
     "test:ci": "cross-env CI=true react-scripts test  --testPathIgnorePatterns=src/__tests__/test-utils --passWithNoTests",
-    "test:debug": "cross-env CI=true react-scripts --inspect-brk test --runInBand --no-cache",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/check-translations/**/*.{js,ts}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/check-translations/**/*.{js,ts}\" --fix",
     "lint-staged": "lint-staged",
