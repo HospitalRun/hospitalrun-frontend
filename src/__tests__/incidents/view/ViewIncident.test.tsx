@@ -1,4 +1,4 @@
-import { Button, Tab, TabsHeader, Table } from '@hospitalrun/components'
+import { Button, Tab, TabsHeader } from '@hospitalrun/components'
 import { mount, ReactWrapper } from 'enzyme'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -269,31 +269,35 @@ describe('View Incident', () => {
     })
     wrapper.update()
 
+    const newNoteText = 'new note text'
     const modal = wrapper.find(NewNoteModal)
-    const successButton = modal.find('Button[color="success"]')
-
     await act(async () => {
       const onChange = modal.find(TextFieldWithLabelFormGroup).prop('onChange') as any
-      await onChange({ currentTarget: { value: 'new note text' } })
+      await onChange({ currentTarget: { value: newNoteText } })
+    })
+    wrapper.update()
 
+    expect(wrapper.find(NewNoteModal).prop('note').text).toEqual(newNoteText)
+
+    const successButton = wrapper.find(NewNoteModal).find('Button[color="success"]')
+    expect(successButton).toHaveLength(1);
+    await act(async () => {
       const onClick = successButton.prop('onClick') as any
-      await onClick({ stopPropagation: jest.fn() })
+      await onClick()
     })
     wrapper.update()
 
     expect(incidentRepositorySaveSpy).toHaveBeenCalledTimes(1)
     expect(incidentRepositorySaveSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        ...mockedIncident,
-        notes: [
-          ...(mockedIncident.notes || []),
-          {
+        notes: expect.arrayContaining(
+          [{
             id: '7777',
             date: expectedResolveDate.toISOString(),
-            text: 'new note text',
+            text: newNoteText,
             givenBy: '8542',
-          },
-        ],
+          }]
+        ),
       }),
     )
   })

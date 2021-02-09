@@ -12,7 +12,6 @@ interface AddNoteRequest {
 
 async function addNote(request: AddNoteRequest): Promise<Note[]> {
   const error = [] as any // TODO validateNote(request.note)
-
   if (isEmpty(error)) {
     const incident = await IncidentRepository.find(request.incidentId)
     const notes = incident.notes || []
