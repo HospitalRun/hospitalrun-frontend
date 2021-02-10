@@ -293,4 +293,20 @@ describe('ViewPatient', () => {
       expect(screen.getByText(/patient\.careGoals\.warning\.noCareGoals/i)).toBeInTheDocument()
     })
   })
+
+  it('should mark the visits tab as active when it is clicked and render the visit tab component when route is /patients/:id/visits', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.visits\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/visits`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.visits\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.visits\.warning\.noVisits/i)).toBeInTheDocument()
+    })
+  })
 })
