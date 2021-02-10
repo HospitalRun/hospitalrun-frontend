@@ -16,14 +16,14 @@ const VisitTable = ({ patientId }: Props) => {
 
   const { data: patientVisits, status } = usePatientVisits(patientId)
 
-  if (patientVisits === undefined && status === 'loading') {
+  if (patientVisits === undefined || status === 'loading') {
     return <Loading />
   }
 
   return (
     <Table
       getID={(row) => row.id}
-      data={patientVisits || []}
+      data={patientVisits}
       columns={[
         {
           label: t('patient.visits.startDateTime'),
