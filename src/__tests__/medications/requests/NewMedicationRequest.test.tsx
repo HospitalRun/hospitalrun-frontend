@@ -224,6 +224,6 @@ describe('New Medication Request', () => {
       expect(medicationPriority).toHaveValue('medications.priority.urgent')
       expect(quantityUnit).toHaveValue('200')
       expect(quantityValue).toHaveValue('mg')
-    })
+    }, 20000)
   })
 })
