@@ -1,4 +1,4 @@
-import { Table } from '@hospitalrun/components'
+import { Alert, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
@@ -18,6 +18,16 @@ const VisitTable = ({ patientId }: Props) => {
 
   if (patientVisits === undefined || status === 'loading') {
     return <Loading />
+  }
+
+  if (patientVisits.length === 0) {
+    return (
+      <Alert
+        color="warning"
+        title={t('patient.visits.warning.noVisits')}
+        message={t('patient.visits.warning.addVisitAbove')}
+      />
+    )
   }
 
   return (
