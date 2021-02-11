@@ -209,6 +209,10 @@ export default {
         reasonRequired: 'Reason is required.',
         locationRequired: 'Location is required.',
       },
+      warning: {
+        noVisits: 'No Visits',
+        addVisitAbove: 'Add a visit using the button above.',
+      },
     },
     types: {
       charity: 'Charity',
