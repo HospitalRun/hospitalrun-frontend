@@ -3,10 +3,11 @@ import { useQuery } from 'react-query'
 import PatientRepository from '../../shared/db/PatientRepository'
 import Visit from '../../shared/model/Visit'
 
-async function fetchPatientVisits(_: string, id: string): Promise<Visit[]> {
-  return (await PatientRepository.find(id)).visits
+async function fetchPatientVisits(_: string, patientId: string): Promise<Visit[]> {
+  const patient = await PatientRepository.find(patientId)
+  return patient.visits || []
 }
 
-export default function usePatientVisits(id: string) {
-  return useQuery(['visits', id], fetchPatientVisits)
+export default function usePatientVisits(patientId: string) {
+  return useQuery(['visits', patientId], fetchPatientVisits)
 }
