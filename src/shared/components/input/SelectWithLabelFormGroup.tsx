@@ -18,7 +18,6 @@ interface Props {
   multiple?: boolean
   isEditable?: boolean
   isInvalid?: boolean
-  feedback?: string
 }
 
 const SelectWithLabelFormGroup = (props: Props) => {
@@ -33,7 +32,6 @@ const SelectWithLabelFormGroup = (props: Props) => {
     multiple,
     isEditable,
     isInvalid,
-    feedback,
   } = props
   const id = `${name}Select`
   return (
@@ -48,7 +46,6 @@ const SelectWithLabelFormGroup = (props: Props) => {
         multiple={multiple}
         disabled={!isEditable}
         isInvalid={isInvalid}
-        feedback={feedback}
       />
     </div>
   )
