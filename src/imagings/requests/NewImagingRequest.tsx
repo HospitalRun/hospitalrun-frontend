@@ -163,6 +163,7 @@ const NewImagingRequest = () => {
                 options={visitOption || []}
                 defaultSelected={defaultSelectedVisitsOption()}
                 isInvalid={!!error?.visit}
+                feedback={t(error?.visit)}
                 onChange={(values) => {
                   onVisitChange(values[0])
                 }}
