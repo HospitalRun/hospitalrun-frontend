@@ -27,7 +27,7 @@
     "react": "~17.0.1",
     "react-bootstrap": "~1.5.0",
     "react-bootstrap-typeahead": "~5.1.0",
-    "react-dom": "~16.13.0",
+    "react-dom": "~16.14.0",
     "react-i18next": "~11.8.3",
     "react-query": "~2.25.2",
     "react-query-devtools": "~2.6.0",
