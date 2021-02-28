@@ -226,7 +226,7 @@ const NewMedicationRequest = () => {
           />
         </div>
         <div className="row float-right">
-          <div className="btn-group btn-group-lg mt-3">
+          <div className="btn-group btn-group-lg mt-3 mr-3">
             <Button className="mr-2" color="success" onClick={onSave}>
               {t('medications.requests.new')}
             </Button>
