@@ -196,6 +196,16 @@ describe('ViewPatient', () => {
     })
   })
 
+  it('should render the allergies tab as active when route starts with /patients/:id/allergies', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/allergies/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.allergies\.label/i })).toHaveClass(
+        'active',
+      )
+    })
+  })
+
   it('should mark the diagnoses tab as active when it is clicked and render the diagnoses component when route is /patients/:id/diagnoses', async () => {
     const { history } = setup()
 
@@ -225,6 +235,14 @@ describe('ViewPatient', () => {
     expect(screen.getByRole('button', { name: /patient\.notes\.label/i })).toHaveClass('active')
     await waitFor(() => {
       expect(screen.getByText(/patient\.notes\.warning\.noNotes/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should render the notes tab as active when route starts with /patients/:id/notes', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/notes/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.notes\.label/i })).toHaveClass('active')
     })
   })
 
@@ -278,6 +296,16 @@ describe('ViewPatient', () => {
     })
   })
 
+  it('should render the care plans tab as active when route starts with /patients/:id/care-plans', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/care-plans/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.carePlan\.label/i })).toHaveClass(
+        'active',
+      )
+    })
+  })
+
   it('should mark the care goals tab as active when it is clicked and render the care goal tab component when route is /patients/:id/care-goals', async () => {
     const { history } = setup()
 
@@ -291,6 +319,40 @@ describe('ViewPatient', () => {
     expect(screen.getByRole('button', { name: /patient\.careGoal\.label/i })).toHaveClass('active')
     await waitFor(() => {
       expect(screen.getByText(/patient\.careGoals\.warning\.noCareGoals/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should render the care goals tab as active when route starts with /patients/:id/care-goals', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/care-goals/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.careGoal\.label/i })).toHaveClass(
+        'active',
+      )
+    })
+  })
+
+  it('should mark the visits tab as active when it is clicked and render the visit tab component when route is /patients/:id/visits', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.visits\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/visits`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.visits\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.visits\.warning\.noVisits/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should render the visits tab as active when route starts with /patients/:id/visits', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/visits/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.visits\.label/i })).toHaveClass('active')
     })
   })
 })
