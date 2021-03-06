@@ -310,7 +310,7 @@ const ViewMedication = () => {
           </Row>
           {isEditable && (
             <div className="row float-right">
-              <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>
+              <div className="btn-group btn-group-lg mt-3 mr-3">{getButtons()}</div>
             </div>
           )}
         </form>
