@@ -41,7 +41,9 @@ const ViewLab = () => {
   const [error, setError] = useState<LabError | undefined>(undefined)
 
   const updateTitle = useUpdateTitle()
-  updateTitle(getTitle(patient, labToView))
+  useEffect(() => {
+    updateTitle(getTitle(patient, labToView))
+  })
 
   const breadcrumbs = [
     {
@@ -183,7 +185,7 @@ const ViewLab = () => {
       if (labToView.notes && labToView.notes[0] !== '') {
         return labToView.notes.map((note: string) => (
           <Callout key={uuid()} data-test="note" color="info">
-            <p>{note}</p>
+            <p data-testid="note">{note}</p>
           </Callout>
         ))
       }
@@ -248,7 +250,7 @@ const ViewLab = () => {
           )}
           {isEditable && (
             <div className="row float-right">
-              <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>
+              <div className="btn-group btn-group-lg mt-3 mr-3">{getButtons()}</div>
             </div>
           )}
         </form>

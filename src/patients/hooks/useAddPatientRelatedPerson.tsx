@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import { useMutation, queryCache } from 'react-query'
 
 import PatientRepository from '../../shared/db/PatientRepository'

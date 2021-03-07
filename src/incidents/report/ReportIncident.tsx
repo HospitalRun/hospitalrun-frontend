@@ -82,7 +82,7 @@ const ReportIncident = () => {
   }
 
   return (
-    <form>
+    <form aria-label="Report Incident form">
       <Row>
         <Column md={6}>
           <DateTimePickerWithLabelFormGroup
@@ -166,7 +166,7 @@ const ReportIncident = () => {
       </Row>
 
       <div className="row float-right">
-        <div className="btn-group btn-group-lg mt-3">
+        <div className="btn-group btn-group-lg mt-3 mr-3">
           <Button className="mr-2" color="success" onClick={onSave}>
             {t('incidents.reports.new')}
           </Button>

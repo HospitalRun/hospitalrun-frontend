@@ -45,7 +45,7 @@ describe('useScheduleAppointment', () => {
       await executeMutation(() => {
         const result = useScheduleAppointment()
         return [result.mutate]
-      }, {})
+      }, {} as Appointment)
     } catch (e) {
       expect(e).toEqual(expectedAppointmentError)
       expect(AppointmentRepository.save).not.toHaveBeenCalled()

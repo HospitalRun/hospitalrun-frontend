@@ -5,6 +5,7 @@ import PatientRepository from '../../../shared/db/PatientRepository'
 import CareGoal, { CareGoalStatus, CareGoalAchievementStatus } from '../../../shared/model/CareGoal'
 import Patient from '../../../shared/model/Patient'
 import * as uuid from '../../../shared/util/uuid'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add care goal', () => {
@@ -59,12 +60,13 @@ describe('use add care goal', () => {
     const expectedError = {
       message: 'patient.careGoal.error.unableToAdd',
       description: 'some error',
-    }
-    jest.spyOn(validateCareGoal, 'default').mockReturnValue(expectedError as CareGoalError)
+    } as CareGoalError
+    expectOneConsoleError(expectedError)
+    jest.spyOn(validateCareGoal, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
-      await executeMutation(() => useAddCareGoal(), { patientId: '123', careGoal: {} })
+      await executeMutation(() => useAddCareGoal(), { patientId: '123', careGoal: {} as CareGoal })
     } catch (e) {
       expect(e).toEqual(expectedError)
     }

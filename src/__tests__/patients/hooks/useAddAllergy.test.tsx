@@ -1,26 +1,25 @@
-/* eslint-disable no-console */
-
 import useAddAllergy from '../../../patients/hooks/useAddAllergy'
 import * as validateAllergy from '../../../patients/util/validate-allergy'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Allergy from '../../../shared/model/Allergy'
 import Patient from '../../../shared/model/Patient'
 import * as uuid from '../../../shared/util/uuid'
+import { expectOneConsoleError } from '../../test-utils/console.utils'
 import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('use add allergy', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    console.error = jest.fn()
   })
 
   it('should throw an error if allergy validation fails', async () => {
     const expectedError = { nameError: 'some error' }
+    expectOneConsoleError(expectedError)
     jest.spyOn(validateAllergy, 'default').mockReturnValue(expectedError)
     jest.spyOn(PatientRepository, 'saveOrUpdate')
 
     try {
-      await executeMutation(() => useAddAllergy(), { patientId: '123', allergy: {} })
+      await executeMutation(() => useAddAllergy(), { patientId: '123', allergy: {} as Allergy })
     } catch (e) {
       expect(e).toEqual(expectedError)
     }

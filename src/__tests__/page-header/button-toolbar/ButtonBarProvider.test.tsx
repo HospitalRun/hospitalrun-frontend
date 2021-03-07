@@ -1,6 +1,6 @@
 import { Button } from '@hospitalrun/components'
-import { renderHook } from '@testing-library/react-hooks'
-import React, { useEffect } from 'react'
+import { renderHook, act } from '@testing-library/react-hooks'
+import React from 'react'
 
 import {
   ButtonBarProvider,
@@ -11,20 +11,19 @@ import {
 describe('Button Bar Provider', () => {
   it('should update and fetch data from the button bar provider', () => {
     const expectedButtons = [<Button>test 1</Button>]
-    const wrapper = ({ children }: any) => <ButtonBarProvider>{children}</ButtonBarProvider>
+    const wrapper: React.FC = ({ children }) => <ButtonBarProvider>{children}</ButtonBarProvider>
 
     const { result } = renderHook(
       () => {
         const update = useButtonToolbarSetter()
-        useEffect(() => {
-          update(expectedButtons)
-        }, [update])
-
-        return useButtons()
+        const buttons = useButtons()
+        return { buttons, update }
       },
       { wrapper },
     )
 
-    expect(result.current).toEqual(expectedButtons)
+    act(() => result.current.update(expectedButtons))
+
+    expect(result.current.buttons).toEqual(expectedButtons)
   })
 })

@@ -1,105 +1,118 @@
-import { Button } from '@hospitalrun/components'
-import { mount } from 'enzyme'
+import { screen, render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import AddVisitModal from '../../../patients/visits/AddVisitModal'
-import ViewVisit from '../../../patients/visits/ViewVisit'
 import VisitTab from '../../../patients/visits/VisitTab'
-import VisitTable from '../../../patients/visits/VisitTable'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
 import Permissions from '../../../shared/model/Permissions'
+import Visit, { VisitStatus } from '../../../shared/model/Visit'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('Visit Tab', () => {
-  const patient = {
-    id: 'patientId',
-  }
+  const visit = {
+    id: '456',
+    startDateTime: new Date(2020, 6, 3).toISOString(),
+    endDateTime: new Date(2020, 6, 5).toISOString(),
+    type: 'standard type',
+    status: VisitStatus.Arrived,
+    reason: 'some reason',
+    location: 'main building',
+  } as Visit
 
-  const setup = async (route: string, permissions: Permissions[]) => {
+  const patient = {
+    id: '123',
+    visits: [visit],
+  } as Patient
+
+  const setup = (route: string, permissions: Permissions[]) => {
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
     const store = mockStore({ user: { permissions } } as any)
     const history = createMemoryHistory()
     history.push(route)
-    let wrapper: any
 
-    await act(async () => {
-      wrapper = await mount(
+    return {
+      history,
+      ...render(
         <Provider store={store}>
           <Router history={history}>
             <VisitTab patientId={patient.id} />
           </Router>
         </Provider>,
-      )
-    })
-
-    wrapper.update()
-
-    return { wrapper, history }
+      ),
+    }
   }
 
-  it('should render an add visit button if user has correct permissions', async () => {
-    const { wrapper } = await setup('/patients/123/visits', [Permissions.AddVisit])
+  it('should render an add visit button if user has correct permissions', () => {
+    setup(`/patients/${patient.id}/visits`, [Permissions.AddVisit])
 
-    const addNewButton = wrapper.find(Button).at(0)
-    expect(addNewButton).toHaveLength(1)
-    expect(addNewButton.text().trim()).toEqual('patient.visits.new')
+    expect(screen.queryByRole('button', { name: /patient.visits.new/i })).toBeInTheDocument()
   })
 
-  it('should open the add visit modal on click', async () => {
-    const { wrapper } = await setup('/patients/123/visits', [Permissions.AddVisit])
+  it('should open the add visit modal on click', () => {
+    setup(`/patients/${patient.id}/visits`, [Permissions.AddVisit])
 
-    act(() => {
-      const addNewButton = wrapper.find(Button).at(0)
-      const onClick = addNewButton.prop('onClick') as any
-      onClick()
-    })
-    wrapper.update()
+    const addNewButton = screen.getByRole('button', { name: /patient.visits.new/i })
+    userEvent.click(addNewButton)
 
-    const modal = wrapper.find(AddVisitModal)
-    expect(modal.prop('show')).toBeTruthy()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByRole('dialog').classList).toContain('show')
   })
 
   it('should close the modal when the close button is clicked', async () => {
-    const { wrapper } = await setup('/patients/123/visits', [Permissions.AddVisit])
+    setup(`/patients/${patient.id}/visits`, [Permissions.AddVisit])
 
-    act(() => {
-      const addNewButton = wrapper.find(Button).at(0)
-      const onClick = addNewButton.prop('onClick') as any
-      onClick()
-    })
-    wrapper.update()
+    const addNewButton = screen.getByRole('button', { name: /patient.visits.new/i })
+    userEvent.click(addNewButton)
 
-    act(() => {
-      const modal = wrapper.find(AddVisitModal)
-      const onClose = modal.prop('onCloseButtonClick') as any
-      onClose()
-    })
-    wrapper.update()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByRole('dialog').classList).toContain('show')
 
-    expect(wrapper.find(AddVisitModal).prop('show')).toBeFalsy()
+    const closeButton = screen.getByRole('button', { name: /close/i })
+
+    userEvent.click(closeButton)
+    expect(screen.getByRole('dialog').classList).not.toContain('show')
   })
 
-  it('should not render visit button if user does not have permissions', async () => {
-    const { wrapper } = await setup('/patients/123/visits', [])
+  it('should not render visit button if user does not have permissions', () => {
+    setup(`/patients/${patient.id}/visits`, [])
 
-    expect(wrapper.find(Button)).toHaveLength(0)
+    expect(screen.queryByRole('button', { name: /patient.visits.new/i })).not.toBeInTheDocument()
   })
 
   it('should render the visits table when on /patient/:id/visits', async () => {
-    const { wrapper } = await setup('/patients/123/visits', [Permissions.ReadVisits])
+    setup(`/patients/${patient.id}/visits`, [Permissions.ReadVisits])
 
-    expect(wrapper.find(VisitTable)).toHaveLength(1)
+    await waitFor(() => {
+      expect(screen.queryByRole('table')).toBeInTheDocument()
+    })
+
+    expect(
+      screen.getByRole('columnheader', { name: /patient.visits.startDateTime/i }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('columnheader', { name: /patient.visits.endDateTime/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.type/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.status/i })).toBeInTheDocument()
+    expect(screen.getByRole('columnheader', { name: /patient.visits.reason/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('columnheader', { name: /patient.visits.location/i }),
+    ).toBeInTheDocument()
   })
 
   it('should render the visit view when on /patient/:id/visits/:visitId', async () => {
-    const { wrapper } = await setup('/patients/123/visits/456', [Permissions.ReadVisits])
+    setup(`/patients/${patient.id}/visits/${visit.id}`, [Permissions.ReadVisits])
 
-    expect(wrapper.find(ViewVisit)).toHaveLength(1)
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', { name: visit.reason })).toBeInTheDocument()
+    })
   })
 })

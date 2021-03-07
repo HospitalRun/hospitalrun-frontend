@@ -1,22 +1,13 @@
-import { Toaster } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen, within } from '@testing-library/react'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Dashboard from '../dashboard/Dashboard'
 import HospitalRun from '../HospitalRun'
-import ViewImagings from '../imagings/search/ViewImagings'
-import Incidents from '../incidents/Incidents'
-import ViewLabs from '../labs/ViewLabs'
-import ViewMedications from '../medications/search/ViewMedications'
 import { addBreadcrumbs } from '../page-header/breadcrumbs/breadcrumbs-slice'
 import * as titleUtil from '../page-header/title/TitleContext'
-import Appointments from '../scheduling/appointments/Appointments'
-import Settings from '../settings/Settings'
 import ImagingRepository from '../shared/db/ImagingRepository'
 import IncidentRepository from '../shared/db/IncidentRepository'
 import LabRepository from '../shared/db/LabRepository'
@@ -28,8 +19,7 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('HospitalRun', () => {
-  const setup = async (route: string, permissions: Permissions[] = []) => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
+  const setup = (route: string, permissions: Permissions[] = []) => {
     const store = mockStore({
       user: { user: { id: '123' }, permissions },
       appointments: { appointments: [] },
@@ -39,7 +29,8 @@ describe('HospitalRun', () => {
       breadcrumbs: { breadcrumbs: [] },
       components: { sidebarCollapsed: false },
     } as any)
-    const wrapper = mount(
+
+    const results = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>
           <TitleProvider>
@@ -49,20 +40,17 @@ describe('HospitalRun', () => {
       </Provider>,
     )
 
-    await act(async () => {
-      wrapper.update()
-    })
-
-    return { wrapper: wrapper as ReactWrapper, store: store as any }
+    return { ...results, store }
   }
 
   describe('routing', () => {
     describe('/appointments', () => {
-      it('should render the appointments screen when /appointments is accessed', async () => {
-        const permissions: Permissions[] = [Permissions.ReadAppointments]
-        const { wrapper, store } = await setup('/appointments', permissions)
+      it('should render the appointments screen when /appointments is accessed', () => {
+        const { store } = setup('/appointments', [Permissions.ReadAppointments])
 
-        expect(wrapper.find(Appointments)).toHaveLength(1)
+        expect(
+          screen.getByRole('heading', { name: /scheduling\.appointments\.label/i }),
+        ).toBeInTheDocument()
 
         expect(store.getActions()).toContainEqual(
           addBreadcrumbs([
@@ -72,98 +60,109 @@ describe('HospitalRun', () => {
         )
       })
 
-      it('should render the Dashboard when the user does not have read appointment privileges', async () => {
-        const { wrapper } = await setup('/appointments')
-        expect(wrapper.find(Dashboard)).toHaveLength(1)
+      it('should render the Dashboard when the user does not have read appointment privileges', () => {
+        setup('/appointments')
+
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
     describe('/labs', () => {
-      it('should render the Labs component when /labs is accessed', async () => {
+      it('should render the Labs component when /labs is accessed', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-        const permissions: Permissions[] = [Permissions.ViewLabs]
-        const { wrapper } = await setup('/labs', permissions)
+        setup('/labs', [Permissions.ViewLabs])
 
-        expect(wrapper.find(ViewLabs)).toHaveLength(1)
+        const table = screen.getByRole('table')
+        expect(within(table).getByText(/labs.lab.code/i)).toBeInTheDocument()
+        expect(within(table).getByText(/labs.lab.type/i)).toBeInTheDocument()
+        expect(within(table).getByText(/labs.lab.requestedOn/i)).toBeInTheDocument()
+        expect(within(table).getByText(/labs.lab.status/i)).toBeInTheDocument()
+        expect(within(table).getByText(/actions.label/i)).toBeInTheDocument()
       })
 
-      it('should render the dashboard if the user does not have permissions to view labs', async () => {
+      it('should render the dashboard if the user does not have permissions to view labs', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-        const { wrapper } = await setup('/labs')
+        setup('/labs')
 
-        expect(wrapper.find(ViewLabs)).toHaveLength(0)
-        expect(wrapper.find(Dashboard)).toHaveLength(1)
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
     describe('/medications', () => {
-      it('should render the Medications component when /medications is accessed', async () => {
+      it('should render the Medications component when /medications is accessed', () => {
         jest.spyOn(MedicationRepository, 'search').mockResolvedValue([])
-        const permissions: Permissions[] = [Permissions.ViewMedications]
-        const { wrapper } = await setup('/medications', permissions)
+        setup('/medications', [Permissions.ViewMedications])
 
-        expect(wrapper.find(ViewMedications)).toHaveLength(1)
+        const medicationInput = screen.getByRole(/combobox/i) as HTMLInputElement
+        expect(medicationInput.value).toBe('medications.filter.all')
+        expect(screen.getByLabelText(/medications.search/i)).toBeInTheDocument()
       })
 
-      it('should render the dashboard if the user does not have permissions to view medications', async () => {
+      it('should render the dashboard if the user does not have permissions to view medications', () => {
         jest.spyOn(MedicationRepository, 'findAll').mockResolvedValue([])
-        const { wrapper } = await setup('/medications')
+        setup('/medications')
 
-        expect(wrapper.find(ViewMedications)).toHaveLength(0)
-        expect(wrapper.find(Dashboard)).toHaveLength(1)
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
     describe('/incidents', () => {
-      it('should render the Incidents component when /incidents is accessed', async () => {
+      it('should render the Incidents component when /incidents is accessed', () => {
         jest.spyOn(IncidentRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewIncidents]
-        const { wrapper } = await setup('/incidents', permissions)
+        setup('/incidents', permissions)
 
-        expect(wrapper.find(Incidents)).toHaveLength(1)
+        const incidentInput = screen.getByRole(/combobox/i) as HTMLInputElement
+        expect(incidentInput.value).toBe('incidents.status.reported')
+        expect(screen.getByRole('button', { name: /incidents.reports.new/i })).toBeInTheDocument()
       })
 
-      it('should render the dashboard if the user does not have permissions to view incidents', async () => {
+      it('should render the dashboard if the user does not have permissions to view incidents', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-        const { wrapper } = await setup('/incidents')
+        setup('/incidents')
 
-        expect(wrapper.find(Incidents)).toHaveLength(0)
-        expect(wrapper.find(Dashboard)).toHaveLength(1)
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
     describe('/imaging', () => {
-      it('should render the Imagings component when /imaging is accessed', async () => {
+      it('should render the Imagings component when /imaging is accessed', () => {
         jest.spyOn(ImagingRepository, 'search').mockResolvedValue([])
         const permissions: Permissions[] = [Permissions.ViewImagings]
-        const { wrapper } = await setup('/imaging', permissions)
+        setup('/imaging', permissions)
 
-        expect(wrapper.find(ViewImagings)).toHaveLength(1)
+        expect(screen.getByRole('heading', { name: /imagings.label/i })).toBeInTheDocument()
       })
 
-      it('should render the dashboard if the user does not have permissions to view imagings', async () => {
+      it('should render the dashboard if the user does not have permissions to view imagings', () => {
         jest.spyOn(LabRepository, 'findAll').mockResolvedValue([])
-        const { wrapper } = await setup('/imaging')
+        setup('/imaging')
 
-        expect(wrapper.find(ViewImagings)).toHaveLength(0)
-        expect(wrapper.find(Dashboard)).toHaveLength(1)
+        expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument()
+        expect(window.location.pathname).toBe('/')
       })
     })
 
     describe('/settings', () => {
-      it('should render the Settings component when /settings is accessed', async () => {
-        const { wrapper } = await setup('/settings')
-        expect(wrapper.find(Settings)).toHaveLength(1)
+      it('should render the Settings component when /settings is accessed', () => {
+        setup('/settings')
+
+        expect(screen.getByText(/settings.language.label/i)).toBeInTheDocument()
       })
     })
   })
 
   describe('layout', () => {
-    it('should render a Toaster', async () => {
+    it('should render a Toaster', () => {
       const permissions: Permissions[] = [Permissions.WritePatients]
-      const { wrapper } = await setup('/', permissions)
+      setup('/', permissions)
 
-      expect(wrapper.find(Toaster)).toHaveLength(1)
+      const main = screen.getByRole('main')
+      expect(main.lastChild).toHaveClass('Toastify')
     })
   })
 })

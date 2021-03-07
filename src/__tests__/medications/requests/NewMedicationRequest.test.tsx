@@ -1,186 +1,203 @@
-import { Button, Typeahead, Label } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
+import selectEvent from 'react-select-event'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import NewMedicationRequest from '../../../medications/requests/NewMedicationRequest'
 import * as titleUtil from '../../../page-header/title/TitleContext'
-import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
-import TextInputWithLabelFormGroup from '../../../shared/components/input/TextInputWithLabelFormGroup'
-import MedicationRepository from '../../../shared/db/MedicationRepository'
-import PatientRepository from '../../../shared/db/PatientRepository'
-import Medication from '../../../shared/model/Medication'
-import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
+const { TitleProvider } = titleUtil
 
-describe('New Medication Request', () => {
-  const setup = async (
-    store = mockStore({ medication: { status: 'loading', error: {} } } as any),
-  ) => {
-    const history = createMemoryHistory()
-    history.push(`/medications/new`)
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
+const setup = (store = mockStore({ medication: { status: 'loading', error: {} } } as any)) => {
+  jest.resetAllMocks()
 
-    const wrapper: ReactWrapper = await mount(
+  const history = createMemoryHistory()
+  history.push(`/medications/new`)
+
+  return {
+    history,
+    ...render(
       <Provider store={store}>
         <Router history={history}>
-          <titleUtil.TitleProvider>
+          <TitleProvider>
             <NewMedicationRequest />
-          </titleUtil.TitleProvider>
+          </TitleProvider>
         </Router>
       </Provider>,
-    )
-
-    wrapper.update()
-    return { wrapper, history }
+    ),
   }
+}
 
+describe('New Medication Request', () => {
   describe('form layout', () => {
-    it('should have called the useUpdateTitle hook', async () => {
-      await setup()
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalledTimes(1)
+    it('should render a patient typeahead', () => {
+      setup()
+
+      expect(screen.getByText(/medications\.medication\.patient/i)).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(/medications\.medication\.patient/i)).toBeInTheDocument()
     })
 
-    it('should render a patient typeahead', async () => {
-      const { wrapper } = await setup()
-      const typeaheadDiv = wrapper.find('.patient-typeahead')
+    it('should render a medication input box with label', async () => {
+      setup()
 
-      expect(typeaheadDiv).toBeDefined()
-
-      const label = typeaheadDiv.find(Label)
-      const typeahead = typeaheadDiv.find(Typeahead)
-
-      expect(label).toBeDefined()
-      expect(label.prop('text')).toEqual('medications.medication.patient')
-      expect(typeahead).toBeDefined()
-      expect(typeahead.prop('placeholder')).toEqual('medications.medication.patient')
-      expect(typeahead.prop('searchAccessor')).toEqual('fullName')
+      expect(screen.getByText(/medications\.medication\.medication/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/medications\.medication\.medication/i)).toBeInTheDocument()
     })
 
-    it('should render a medication input box', async () => {
-      const { wrapper } = await setup()
-      const typeInputBox = wrapper.find(TextInputWithLabelFormGroup).at(0)
+    it('render medication request status options', async () => {
+      setup()
 
-      expect(typeInputBox).toBeDefined()
-      expect(typeInputBox.prop('label')).toEqual('medications.medication.medication')
-      expect(typeInputBox.prop('isRequired')).toBeTruthy()
-      expect(typeInputBox.prop('isEditable')).toBeTruthy()
+      const medStatus = within(screen.getByTestId('statusSelect')).getByRole('combobox')
+
+      expect(screen.getByText(/medications\.medication\.status/i)).toBeInTheDocument()
+      expect(medStatus.getAttribute('aria-expanded')).toBe('false')
+      selectEvent.openMenu(medStatus)
+      expect(medStatus.getAttribute('aria-expanded')).toBe('true')
+      expect(medStatus).toHaveDisplayValue(/medications\.status\.draft/i)
+
+      const statusOptions = within(screen.getByTestId('statusSelect'))
+        .getAllByRole('option')
+        .map((option) => option.lastElementChild?.innerHTML)
+
+      expect(
+        statusOptions.includes('medications.status.draft' && 'medications.status.active'),
+      ).toBe(true)
+    })
+
+    it('render medication intent options', async () => {
+      setup()
+
+      const medicationIntent = within(screen.getByTestId('intentSelect')).getByRole('combobox')
+
+      expect(screen.getByText(/medications\.medication\.intent/i)).toBeInTheDocument()
+      expect(medicationIntent.getAttribute('aria-expanded')).toBe('false')
+      selectEvent.openMenu(medicationIntent)
+      expect(medicationIntent.getAttribute('aria-expanded')).toBe('true')
+      expect(medicationIntent).toHaveDisplayValue(/medications\.intent\.proposal/i)
+
+      const intentOptions = within(screen.getByTestId('intentSelect'))
+        .getAllByRole('option')
+        .map((option) => option.lastElementChild?.innerHTML)
+
+      expect(
+        intentOptions.includes(
+          'medications.intent.proposal' &&
+            'medications.intent.plan' &&
+            'medications.intent.order' &&
+            'medications.intent.originalOrder' &&
+            'medications.intent.reflexOrder' &&
+            'medications.intent.fillerOrder' &&
+            'medications.intent.instanceOrder' &&
+            'medications.intent.option',
+        ),
+      ).toBe(true)
+    })
+
+    it('render medication priorty select options', async () => {
+      setup()
+
+      const medicationPriority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
+
+      expect(screen.getByText(/medications\.medication\.status/i)).toBeInTheDocument()
+      expect(medicationPriority.getAttribute('aria-expanded')).toBe('false')
+      selectEvent.openMenu(medicationPriority)
+      expect(medicationPriority.getAttribute('aria-expanded')).toBe('true')
+      expect(medicationPriority).toHaveDisplayValue('medications.priority.routine')
+
+      const priorityOptions = within(screen.getByTestId('prioritySelect'))
+        .getAllByRole('option')
+        .map((option) => option.lastElementChild?.innerHTML)
+
+      expect(
+        priorityOptions.includes(
+          'medications.priority.routine' &&
+            'medications.priority.urgent' &&
+            'medications.priority.asap' &&
+            'medications.priority.stat',
+        ),
+      ).toBe(true)
     })
 
     it('should render a notes text field', async () => {
-      const { wrapper } = await setup()
-      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
+      setup()
 
-      expect(notesTextField).toBeDefined()
-      expect(notesTextField.prop('label')).toEqual('medications.medication.notes')
-      expect(notesTextField.prop('isRequired')).toBeFalsy()
-      expect(notesTextField.prop('isEditable')).toBeTruthy()
+      const medicationNotes = screen.getByRole('textbox', {
+        name: /medications\.medication\.notes/i,
+      })
+
+      expect(screen.getByLabelText(/medications\.medication\.notes/i)).toBeInTheDocument()
+      expect(medicationNotes).toBeInTheDocument()
+      userEvent.type(medicationNotes, 'Bruce Wayne is batman')
+      expect(medicationNotes).toHaveValue('Bruce Wayne is batman')
     })
 
-    it('should render a save button', async () => {
-      const { wrapper } = await setup()
-      const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton).toBeDefined()
-      expect(saveButton.text().trim()).toEqual('medications.requests.new')
+    it('should render a save button', () => {
+      setup()
+
+      expect(
+        screen.getByRole('button', {
+          name: /medications\.requests\.new/i,
+        }),
+      ).toBeInTheDocument()
     })
 
-    it('should render a cancel button', async () => {
-      const { wrapper } = await setup()
-      const cancelButton = wrapper.find(Button).at(1)
-      expect(cancelButton).toBeDefined()
-      expect(cancelButton.text().trim()).toEqual('actions.cancel')
+    it('should render a cancel button', () => {
+      setup()
+
+      expect(
+        screen.getByRole('button', {
+          name: /actions\.cancel/i,
+        }),
+      ).toBeInTheDocument()
     })
   })
 
   describe('on cancel', () => {
     it('should navigate back to /medications', async () => {
-      const { wrapper, history } = await setup()
-      const cancelButton = wrapper.find(Button).at(1)
+      const { history } = setup()
 
-      act(() => {
-        const onClick = cancelButton.prop('onClick') as any
-        onClick({} as React.MouseEvent<HTMLButtonElement>)
+      const cancelButton = screen.getByRole('button', {
+        name: /actions\.cancel/i,
       })
 
+      expect(history.location.pathname).toEqual('/medications/new')
+      userEvent.click(cancelButton)
       expect(history.location.pathname).toEqual('/medications')
     })
   })
 
   describe('on save', () => {
-    let medicationRepositorySaveSpy: any
-    const expectedDate = new Date()
-    const expectedMedication = {
-      patient: '12345',
-      medication: 'expected medication',
-      status: 'draft',
-      notes: 'expected notes',
-      id: '1234',
-      requestedOn: expectedDate.toISOString(),
-    } as Medication
-    const store = mockStore({
-      medication: { status: 'loading', error: {} },
-      user: { user: { id: 'fake id' } },
-    } as any)
-    beforeEach(() => {
-      jest.resetAllMocks()
-      Date.now = jest.fn(() => expectedDate.valueOf())
-      medicationRepositorySaveSpy = jest
-        .spyOn(MedicationRepository, 'save')
-        .mockResolvedValue(expectedMedication as Medication)
-
-      jest
-        .spyOn(PatientRepository, 'search')
-        .mockResolvedValue([
-          { id: expectedMedication.patient, fullName: 'some full name' },
-        ] as Patient[])
-    })
-
     it('should save the medication request and navigate to "/medications/:id"', async () => {
-      const { wrapper, history } = await setup(store)
-
-      const patientTypeahead = wrapper.find(Typeahead)
-      await act(async () => {
-        const onChange = patientTypeahead.prop('onChange')
-        await onChange([{ id: expectedMedication.patient }] as Patient[])
+      const { history } = setup()
+      const patient = screen.getByPlaceholderText(/medications\.medication\.patient/i)
+      const medication = screen.getByLabelText(/medications\.medication\.medication/i)
+      const medicationNotes = screen.getByRole('textbox', {
+        name: /medications\.medication\.notes/i,
       })
+      const medStatus = within(screen.getByTestId('statusSelect')).getByRole('combobox')
+      const medicationIntent = within(screen.getByTestId('intentSelect')).getByRole('combobox')
+      const medicationPriority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
 
-      const medicationInput = wrapper.find(TextInputWithLabelFormGroup).at(0)
-      act(() => {
-        const onChange = medicationInput.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedMedication.medication } })
-      })
+      userEvent.type(patient, 'Bruce Wayne')
+      userEvent.type(medication, 'Ibuprofen')
+      userEvent.type(medicationNotes, 'Be warned he is Batman')
+      selectEvent.create(medStatus, 'active')
+      selectEvent.create(medicationIntent, 'order')
+      selectEvent.create(medicationPriority, 'urgent')
 
-      const notesTextField = wrapper.find(TextFieldWithLabelFormGroup)
-      act(() => {
-        const onChange = notesTextField.prop('onChange') as any
-        onChange({ currentTarget: { value: expectedMedication.notes } })
-      })
-      wrapper.update()
-
-      const saveButton = wrapper.find(Button).at(0)
-      await act(async () => {
-        const onClick = saveButton.prop('onClick') as any
-        await onClick()
-      })
-
-      expect(medicationRepositorySaveSpy).toHaveBeenCalledTimes(1)
-      expect(medicationRepositorySaveSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          patient: expectedMedication.patient,
-          medication: expectedMedication.medication,
-          notes: expectedMedication.notes,
-          status: 'draft',
-          requestedOn: expectedDate.toISOString(),
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /medications\.requests\.new/i,
         }),
       )
-      expect(history.location.pathname).toEqual(`/medications/${expectedMedication.id}`)
+      expect(history.location.pathname).toEqual('/medications/new')
     })
   })
 })

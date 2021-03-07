@@ -1,4 +1,5 @@
-import { mount } from 'enzyme'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -6,7 +7,6 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TitleProvider } from '../../../page-header/title/TitleContext'
-import SearchPatients from '../../../patients/search/SearchPatients'
 import ViewPatients from '../../../patients/search/ViewPatients'
 import PatientRepository from '../../../shared/db/PatientRepository'
 
@@ -16,7 +16,8 @@ const mockStore = configureStore(middlewares)
 describe('Patients', () => {
   const setup = () => {
     const store = mockStore({})
-    return mount(
+
+    return render(
       <Provider store={store}>
         <MemoryRouter>
           <TitleProvider>
@@ -33,8 +34,11 @@ describe('Patients', () => {
   })
 
   it('should render the search patients component', () => {
-    const wrapper = setup()
+    setup()
+    userEvent.type(screen.getByRole('textbox'), 'Jean Luc Picard')
+    expect(screen.getByRole('textbox')).toHaveValue('Jean Luc Picard')
 
-    expect(wrapper.exists(SearchPatients)).toBeTruthy()
+    userEvent.clear(screen.getByRole('textbox'))
+    expect(screen.queryByRole('textbox')).not.toHaveValue('Jean Luc Picard')
   })
 })

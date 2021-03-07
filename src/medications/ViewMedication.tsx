@@ -33,7 +33,9 @@ const ViewMedication = () => {
   const [isEditable, setIsEditable] = useState<boolean>(true)
 
   const updateTitle = useUpdateTitle()
-  updateTitle(getTitle(patient, medicationToView))
+  useEffect(() => {
+    updateTitle(getTitle(patient, medicationToView))
+  })
 
   const breadcrumbs = [
     {
@@ -297,17 +299,18 @@ const ViewMedication = () => {
           <Row>
             <Column>
               <TextFieldWithLabelFormGroup
+                data-testid="notes"
                 name="notes"
                 label={t('medications.medication.notes')}
                 value={medicationToView.notes}
                 isEditable={isEditable}
-                onChange={onNotesChange}
+                onChange={(event) => onNotesChange(event)}
               />
             </Column>
           </Row>
           {isEditable && (
             <div className="row float-right">
-              <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>
+              <div className="btn-group btn-group-lg mt-3 mr-3">{getButtons()}</div>
             </div>
           )}
         </form>
