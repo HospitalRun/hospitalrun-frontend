@@ -1,18 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Toast } from '@hospitalrun/components'
-import Patient from '../model/Patient'
-import PatientRepository from '../clients/db/PatientRepository'
-import { AppThunk } from '../store'
-import il8n from '../i18n'
+
+import PatientRepository from '../shared/db/PatientRepository'
+import SortRequest, { Unsorted } from '../shared/db/SortRequest'
+import Patient from '../shared/model/Patient'
+import { AppThunk } from '../shared/store'
 
 interface PatientsState {
   isLoading: boolean
   patients: Patient[]
+  count: number
 }
 
 const initialState: PatientsState = {
   isLoading: false,
   patients: [],
+  count: 0,
 }
 
 function startLoading(state: PatientsState) {
@@ -23,46 +25,29 @@ const patientsSlice = createSlice({
   name: 'patients',
   initialState,
   reducers: {
-    getPatientsStart: startLoading,
-    createPatientStart: startLoading,
-    getAllPatientsSuccess(state, { payload }: PayloadAction<Patient[]>) {
+    fetchPatientsStart: startLoading,
+    fetchPatientsSuccess(state, { payload }: PayloadAction<Patient[]>) {
       state.isLoading = false
       state.patients = payload
     },
-    createPatientSuccess(state) {
-      state.isLoading = false
+    fetchCountSuccess(state, { payload }: PayloadAction<number>) {
+      state.count = payload
     },
   },
 })
-export const {
-  getPatientsStart,
-  getAllPatientsSuccess,
-  createPatientStart,
-  createPatientSuccess,
-} = patientsSlice.actions
 
-export const createPatient = (patient: Patient, history: any): AppThunk => async (dispatch) => {
-  dispatch(createPatientStart())
-  const newPatient = await PatientRepository.save(patient)
-  dispatch(createPatientSuccess())
-  history.push(`/patients/${newPatient.id}`)
-  Toast(
-    'success',
-    il8n.t('Success!'),
-    `${il8n.t('patients.successfullyCreated')} ${patient.givenName} ${patient.familyName} ${
-      patient.suffix
-    }`,
-  )
-}
+export const { fetchPatientsStart, fetchPatientsSuccess, fetchCountSuccess } = patientsSlice.actions
 
-export const fetchPatients = (): AppThunk => async (dispatch) => {
-  dispatch(getPatientsStart())
-  const patients = await PatientRepository.findAll()
-  dispatch(getAllPatientsSuccess(patients))
+export const fetchPatients = (sortRequest: SortRequest = Unsorted): AppThunk => async (
+  dispatch,
+) => {
+  dispatch(fetchPatientsStart())
+  const patients = await PatientRepository.findAll(sortRequest)
+  dispatch(fetchPatientsSuccess(patients))
 }
 
 export const searchPatients = (searchString: string): AppThunk => async (dispatch) => {
-  dispatch(getPatientsStart())
+  dispatch(fetchPatientsStart())
 
   let patients
   if (searchString.trim() === '') {
@@ -70,8 +55,9 @@ export const searchPatients = (searchString: string): AppThunk => async (dispatc
   } else {
     patients = await PatientRepository.search(searchString)
   }
-
-  dispatch(getAllPatientsSuccess(patients))
+  const count = await PatientRepository.count()
+  dispatch(fetchCountSuccess(count))
+  dispatch(fetchPatientsSuccess(patients))
 }
 
 export default patientsSlice.reducer

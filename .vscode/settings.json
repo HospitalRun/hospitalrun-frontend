@@ -12,5 +12,8 @@
       "autoFix": true,
       "language": "typescriptreact"
     }
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

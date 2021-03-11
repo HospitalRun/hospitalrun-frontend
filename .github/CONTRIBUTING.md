@@ -1,45 +1,99 @@
-# Contributing
+# Welcome to the Frontend Contributing Guide!
 
-HospitalRun is a community project. We invite your participation through
-financial contributions, issues, and pull requests!
+Before contributing, please read the [code of conduct](https://github.com/HospitalRun/hospitalrun/blob/master/.github/CODE_OF_CONDUCT.md).
 
-Contributions are always welcome. Before contributing please read the [JS Foundation's
-code of conduct](https://js.foundation/community/code-of-conduct) and
-[search the issue tracker](https://github.com/HospitalRun/hospitalrun-frontend/issues); your issue
-may have already been discussed or fixed in `master`. If you're new to the project,
-maybe you'd like to open a pull request to address one of [good-first-issue](https://github.com/HospitalRun/hospitalrun-frontend/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
+## 1. Check out the [HospitalRun General Contributing Guide](https://github.com/HospitalRun/hospitalrun/blob/master/.github/CONTRIBUTING.md) for how to:
 
-To contribute,
-[fork](https://help.github.com/articles/fork-a-repo/) HospitalRun components, commit your changes, and [send a Pull Request](https://help.github.com/articles/using-pull-requests/).
+1.  Browse Issues
+2.  Get Assigned an Issue
+3.  Fork the Repository and Create a Branch
+4.  Commit Changes
+5.  Submit a Pull Request
 
-Please note we have a [code of conduct](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
+## 2. After creating a local fork (step 3 above), follow these steps to configure CouchDB
 
-## Feature Requests
+CouchDB is the server side database which data from the frontend will sync from and to. CouchDB is required to login
+to HospitalRun. You could install and run CouchDB in any way you wish. For convienence, we have added a docker compose file in the
+root of this project to launch CouchDB. Below are the steps:
 
-Feature requests should be submitted in the
-[issue tracker](https://github.com/HospitalRun/hospitalrun-frontend/issues), with a description of
-the expected behavior & use case, where they’ll remain closed until sufficient interest,
-[e.g. :+1: reactions](https://help.github.com/articles/about-discussions-in-issues-and-pull-requests/),
-has been [shown by the community](https://github.com/HospitalRun/hospitalrun-frontend/issues?q=label%3A%22votes+needed%22+sort%3Areactions-%2B1-desc).
-Before submitting a request, please search for similar ones in the
-[closed issues](https://github.com/HospitalRun/hospitalrun-frontend/issues?q=is%3Aissue+is%3Aclosed+label%3Aenhancement).
+1. Start [Docker](https://docs.docker.com/get-docker/). Install it if you don't have it yet.
+2. Install [Docker Compose](https://docs.docker.com/compose/install/) if you don't have it yet.
+3. In the root directory run `./couchdb/couchdb-init.bat` on Windows or `./couchdb/couchdb-init.sh` on UNIX like systems.
 
-## Pull Requests
+This should launch a new CouchDB instance on `http://localhost:5984`, create system database, configure CouchDB as Single Node, enable CORS, create `hospitalrun` database, create a default admin with a username of `admin` and password of 'password', create a sample user with a username of `username` and password of 'password' to use new login page [#2137](https://github.com/HospitalRun/hospitalrun-frontend/pull/2137).
 
-1. Ensure any install or build dependencies are removed before the end of the layer when doing a
-   build.
-2. Update the README.md with details of changes to the interface, this includes new environment
-   variables, exposed ports, useful file locations and container parameters.
-3. Increase the version numbers in any examples files and the README.md to the new version that this
-   Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
-4. You may merge the Pull Request in once you have the sign-off of two other developers, or if you
-   do not have permission to do that, you may request the second reviewer to merge it for you.
+Go to `http://localhost:5984/_utils` in your browser to view Fauxton and perform administrative tasks.
 
-## Contributor License Agreement
+**_Cleanup_**
+To delete the development database, go to the root of the project and run `./couchdb/couchdb-cleanup.bat` on Windows or `./couchdb/couchdb-cleanup.sh` on UNIX like systems.
 
-HospitalRun is a member of the [Open JS Foundation](https://openjsf.org/).
-As such, we request that all contributors sign our
-[contributor license agreement (CLA)](https://js.foundation/CLA/).
+### Install dependencies & start the application
 
-For more information about CLAs, please check out Alex Russell’s excellent post,
-[“Why Do I Need to Sign This?”](https://infrequently.org/2008/06/why-do-i-need-to-sign-this/).
+1. Install dependencies: `npm install`
+2. Configure `REACT_APP_HOSPITALRUN_API=http://localhost:5984` environment variable in `.env`
+3. Run the application `npm start`
+
+## 3. Start the application
+
+```
+npm install
+npm run start
+```
+
+Open a file named `.env` and add a line `REACT_APP_HOSPITALRUN_API=http://localhost:5984` if you don't have it yet.
+
+_Note: To delete the development database, go to the root of the project and run `docker-compose down -v --rmi all --remove-orphans`_
+
+If your branch's packages changed, reinstall the packages before starting the application:
+
+```
+rm -fr node_modules
+rm yarn.lock (if you used yarn before)
+rm package-lock.json
+npm install
+npm run start
+```
+
+_Note: We no longer support the use of yarn._
+
+## 4. Before pushing your changes, check locally that your branch passes CI checks
+
+### We use Jest + React Testing Library for Behavior-Driven Development Tests
+
+`npm run test:ci` will run the entire test suite
+
+`npm run test:ci <file name>` e.g. `npm run test:ci src/__tests__/HospitalRun.test.tsx` will run that specific test file
+
+`npm run test` will run the test suite in watch mode
+
+### We use ESLint for static program analysis
+
+`npm run lint` will run the linter
+
+`npm run lint:fix` will run the linter and fix fixable errors
+
+## 5. Get familiar with documentation
+
+- For a list of i18n language codes, see [this](https://github.com/HospitalRun/hospitalrun-frontend/tree/master/src/locales/README.md).
+
+## [ Extra ] Resources to help get you ramped up on the tech stack!
+
+### React
+
+- [React Tutorial for Beginners by
+  Programming with Mosh](https://www.youtube.com/watch?v=Ke90Tje7VS0)
+- [Chrome React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+- [VSCode React Extension Pack](https://marketplace.visualstudio.com/items?itemName=jawandarajbir.react-vscode-extension-pack)
+
+### Redux
+
+- [Redux For Beginners | React Redux Tutorial by DevEd](https://youtu.be/CVpUuw9XSjY)
+- [Chrome Redux Developer Tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+
+### PouchDB
+
+- [Getting started with PouchDB and CouchDB (tutorial) by Nolan Lawson](https://youtu.be/-Z7UF2TuSp0)
+
+### React Testing Library
+
+- [React Testing Library Cheatsheet](https://testing-library.com/docs/react-testing-library/cheatsheet/)

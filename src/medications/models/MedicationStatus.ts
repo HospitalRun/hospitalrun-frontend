@@ -1,0 +1,10 @@
+export type MedicationStatus =
+  | 'draft'
+  | 'active'
+  | 'on hold'
+  | 'canceled'
+  | 'completed'
+  | 'entered in error'
+  | 'stopped'
+  | 'unknown'
+  | 'all'

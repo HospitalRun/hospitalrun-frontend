@@ -1,18 +1,26 @@
-import '../../../__mocks__/matchMediaMock'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { mount } from 'enzyme'
-import { mocked } from 'ts-jest/utils'
-import { act } from 'react-dom/test-utils'
-import { MemoryRouter, Route } from 'react-router-dom'
-import Patient from '../../../model/Patient'
-import PatientRepository from '../../../clients/db/PatientRepository'
-import * as titleUtil from '../../../page-header/useTitle'
+import { Router, Route } from 'react-router'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { ButtonBarProvider } from '../../../page-header/button-toolbar/ButtonBarProvider'
+import ButtonToolbar from '../../../page-header/button-toolbar/ButtonToolBar'
+import * as titleUtil from '../../../page-header/title/TitleContext'
 import ViewPatient from '../../../patients/view/ViewPatient'
-import store from '../../../store'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
+import Permissions from '../../../shared/model/Permissions'
+import { RootState } from '../../../shared/store'
+
+const { TitleProvider } = titleUtil
+const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('ViewPatient', () => {
-  const patient = {
+  const testPatient = ({
     id: '123',
     prefix: 'prefix',
     givenName: 'givenName',
@@ -25,167 +33,326 @@ describe('ViewPatient', () => {
     phoneNumber: 'phoneNumber',
     email: 'email@email.com',
     address: 'address',
-    friendlyId: 'P00001',
+    code: 'P00001',
     dateOfBirth: new Date().toISOString(),
-  } as Patient
+  } as unknown) as Patient
 
-  const setup = () => {
-    jest.spyOn(PatientRepository, 'find')
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.find.mockResolvedValue(patient)
-    jest.mock('react-router-dom', () => ({
-      useParams: () => ({
-        id: '123',
-      }),
-    }))
+  interface SetupProps {
+    permissions?: string[]
+    startPath?: string
+  }
+  const setup = ({
+    permissions = [],
+    startPath = `/patients/${testPatient.id}`,
+  }: SetupProps = {}) => {
+    jest.spyOn(PatientRepository, 'find').mockResolvedValue(testPatient)
+    jest.spyOn(PatientRepository, 'getLabs').mockResolvedValue([])
+    jest.spyOn(PatientRepository, 'getMedications').mockResolvedValue([])
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/patients/123']}>
-          <Route path="/patients/:id">
-            <ViewPatient />
-          </Route>
-        </MemoryRouter>
-      </Provider>,
-    )
+    const history = createMemoryHistory({ initialEntries: [startPath] })
+    const store = mockStore({
+      user: { permissions: [Permissions.ReadPatients, ...permissions] },
+    } as any)
 
-    wrapper.update()
-    return wrapper
+    return {
+      history,
+      store,
+      ...render(
+        <Provider store={store}>
+          <ButtonBarProvider>
+            <ButtonToolbar />
+            <Router history={history}>
+              <Route path="/patients/:id">
+                <TitleProvider>
+                  <ViewPatient />
+                </TitleProvider>
+              </Route>
+            </Router>
+          </ButtonBarProvider>
+        </Provider>,
+      ),
+    }
   }
 
-  beforeEach(() => {
-    jest.restoreAllMocks()
-  })
+  it('should dispatch fetchPatient when component loads', async () => {
+    setup()
 
-  it('should render a header with the patients given, family, and suffix', async () => {
-    jest.spyOn(titleUtil, 'default')
-    await act(async () => {
-      await setup()
+    await waitFor(() => {
+      expect(PatientRepository.find).toHaveBeenCalledWith(testPatient.id)
     })
-    expect(titleUtil.default).toHaveBeenCalledWith(
-      `${patient.givenName} ${patient.familyName} ${patient.suffix} (${patient.friendlyId})`,
-    )
   })
 
-  it('should render the sex select', () => {
-    const wrapper = setup()
+  it('should render an "Edit Patient" button to the button tool bar if user has WritePatients permissions', async () => {
+    setup({ permissions: [Permissions.WritePatients] })
 
-    const sexSelect = wrapper.findWhere((w) => w.prop('name') === 'sex')
-    expect(sexSelect.prop('value')).toEqual(patient.sex)
-    expect(sexSelect.prop('label')).toEqual('patient.sex')
-    expect(sexSelect.prop('isEditable')).toBeFalsy()
+    await waitFor(() => {
+      expect(screen.getByText(/actions\.edit/i)).toBeInTheDocument()
+    })
   })
 
-  it('should render the patient type select', () => {
-    const wrapper = setup()
+  it('should render an empty button toolbar if the user has only ReadPatients permissions', async () => {
+    setup()
 
-    const typeSelect = wrapper.findWhere((w) => w.prop('name') === 'type')
-    expect(typeSelect.prop('value')).toEqual(patient.type)
-    expect(typeSelect.prop('label')).toEqual('patient.type')
-    expect(typeSelect.prop('isEditable')).toBeFalsy()
+    expect(screen.queryByText(/actions\.edit/i)).not.toBeInTheDocument()
   })
 
-  it('should render the age of the patient', () => {
-    const wrapper = setup()
+  it('should render a tabs header with the correct tabs', async () => {
+    setup()
 
-    const ageInput = wrapper.findWhere((w) => w.prop('name') === 'age')
-    expect(ageInput.prop('value')).toEqual('0')
-    expect(ageInput.prop('label')).toEqual('patient.age')
-    expect(ageInput.prop('isEditable')).toBeFalsy()
+    await waitFor(() => {
+      expect(screen.getAllByRole('tab')).toHaveLength(11)
+    })
+    expect(screen.getByRole('tab', { name: /patient\.generalInformation/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.relatedPersons\.label/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('tab', { name: /scheduling\.appointments\.label/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.allergies\.label/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.diagnoses\.label/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.notes\.label/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.medications\.label/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.labs\.label/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.carePlan\.label/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.careGoal\.label/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.visits\.label/i })).toBeInTheDocument()
   })
 
-  it('should render the date of the birth of the patient', () => {
-    const wrapper = setup()
+  it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
+    setup()
 
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'dateOfBirth')
-    expect(dateOfBirthInput.prop('value')).toEqual(new Date(patient.dateOfBirth))
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.dateOfBirth')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the occupation of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'occupation')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.occupation)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.occupation')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the preferred language of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'preferredLanguage')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.preferredLanguage)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.preferredLanguage')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the phone number of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'phoneNumber')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.phoneNumber)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.phoneNumber')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the email of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'email')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.email)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.email')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the address of the patient', () => {
-    const wrapper = setup()
-
-    const dateOfBirthInput = wrapper.findWhere((w) => w.prop('name') === 'address')
-    expect(dateOfBirthInput.prop('value')).toEqual(patient.address)
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.address')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
-  })
-
-  it('should render the age and date of birth as approximate if patient.isApproximateDateOfBirth is true', async () => {
-    jest.restoreAllMocks()
-    const patientWithApproximateDob = {
-      ...patient,
-      isApproximateDateOfBirth: true,
-    } as Patient
-    jest.spyOn(PatientRepository, 'find')
-    const mockedPatientRepository = mocked(PatientRepository, true)
-    mockedPatientRepository.find.mockResolvedValue(patientWithApproximateDob)
-    jest.mock('react-router-dom', () => ({
-      useParams: () => ({
-        id: '123',
-      }),
-    }))
-
-    let wrapper: any
-    await act(async () => {
-      wrapper = await mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={['/patients/123']}>
-            <Route path="/patients/:id">
-              <ViewPatient />
-            </Route>
-          </MemoryRouter>
-        </Provider>,
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.generalInformation/i })).toHaveClass(
+        'active',
       )
     })
+    expect(screen.getByText(/patient\.basicinformation/i)).toBeInTheDocument()
+  })
 
-    wrapper.update()
+  it('should navigate /patients/:id when the general information tab is clicked', async () => {
+    const { history } = setup({ startPath: `/patients/${testPatient.id}/relatedpersons` }) // Start from NOT the General Information tab
 
-    const ageInput = wrapper.findWhere((w: any) => w.prop('name') === 'age')
-    expect(ageInput.prop('value')).toEqual('0')
-    expect(ageInput.prop('label')).toEqual('patient.approximateAge')
-    expect(ageInput.prop('isEditable')).toBeFalsy()
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.generalInformation/i }))
+    })
 
-    const dateOfBirthInput = wrapper.findWhere((w: any) => w.prop('name') === 'dateOfBirth')
-    expect(dateOfBirthInput.prop('value')).toEqual(new Date(patient.dateOfBirth))
-    expect(dateOfBirthInput.prop('label')).toEqual('patient.approximateDateOfBirth')
-    expect(dateOfBirthInput.prop('isEditable')).toBeFalsy()
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}`)
+    })
+  })
+
+  it('should mark the related persons tab as active when it is clicked and render the Related Person Tab component when route is /patients/:id/relatedpersons', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.relatedPersons\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/relatedpersons`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.relatedPersons\.label/i })).toHaveClass(
+      'active',
+    )
+    await waitFor(() => {
+      expect(
+        screen.getByText(/patient\.relatedPersons\.warning\.noRelatedPersons/i),
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('should mark the appointments tab as active when it is clicked and render the appointments tab component when route is /patients/:id/appointments', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /scheduling\.appointments\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/appointments`)
+    })
+    expect(screen.getByRole('button', { name: /scheduling\.appointments\.label/i })).toHaveClass(
+      'active',
+    )
+    await waitFor(() => {
+      expect(
+        screen.getByText(/patient\.appointments\.warning\.noAppointments/i),
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('should mark the allergies tab as active when it is clicked and render the allergies component when route is /patients/:id/allergies', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.allergies\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/allergies`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.allergies\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.allergies\.warning\.noAllergies/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should render the allergies tab as active when route starts with /patients/:id/allergies', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/allergies/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.allergies\.label/i })).toHaveClass(
+        'active',
+      )
+    })
+  })
+
+  it('should mark the diagnoses tab as active when it is clicked and render the diagnoses component when route is /patients/:id/diagnoses', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.diagnoses\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/diagnoses`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.diagnoses\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.diagnoses\.warning\.noDiagnoses/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should mark the notes tab as active when it is clicked and render the note component when route is /patients/:id/notes', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.notes\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/notes`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.notes\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.notes\.warning\.noNotes/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should render the notes tab as active when route starts with /patients/:id/notes', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/notes/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.notes\.label/i })).toHaveClass('active')
+    })
+  })
+
+  it('should mark the medications tab as active when it is clicked and render the medication component when route is /patients/:id/medications', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.medications\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/medications`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.medications\.label/i })).toHaveClass(
+      'active',
+    )
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.medications\.warning\.noMedications/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should mark the labs tab as active when it is clicked and render the lab component when route is /patients/:id/labs', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.labs\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/labs`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.labs\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.labs\.warning\.noLabs/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should mark the care plans tab as active when it is clicked and render the care plan tab component when route is /patients/:id/care-plans', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.carePlan\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/care-plans`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.carePlan\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.carePlans\.warning\.noCarePlans/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should render the care plans tab as active when route starts with /patients/:id/care-plans', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/care-plans/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.carePlan\.label/i })).toHaveClass(
+        'active',
+      )
+    })
+  })
+
+  it('should mark the care goals tab as active when it is clicked and render the care goal tab component when route is /patients/:id/care-goals', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.careGoal\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/care-goals`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.careGoal\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.careGoals\.warning\.noCareGoals/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should render the care goals tab as active when route starts with /patients/:id/care-goals', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/care-goals/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.careGoal\.label/i })).toHaveClass(
+        'active',
+      )
+    })
+  })
+
+  it('should mark the visits tab as active when it is clicked and render the visit tab component when route is /patients/:id/visits', async () => {
+    const { history } = setup()
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /patient\.visits\.label/i }))
+    })
+
+    await waitFor(() => {
+      expect(history.location.pathname).toEqual(`/patients/${testPatient.id}/visits`)
+    })
+    expect(screen.getByRole('button', { name: /patient\.visits\.label/i })).toHaveClass('active')
+    await waitFor(() => {
+      expect(screen.getByText(/patient\.visits\.warning\.noVisits/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should render the visits tab as active when route starts with /patients/:id/visits', async () => {
+    setup({ startPath: `/patients/${testPatient.id}/visits/nested-route` })
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /patient\.visits\.label/i })).toHaveClass('active')
+    })
   })
 })

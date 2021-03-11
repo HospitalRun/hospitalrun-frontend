@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Feature request
+    url: https://github.com/HospitalRun/hospitalrun/issues/new?template=feature.md
+    about: Submit a proposal for a new feature
+  - name: Slack Workspace
+    url: https://hospitalrun-slack.herokuapp.com/
+    about: Please ask and answer questions here.

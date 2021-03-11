@@ -1,10 +1,14 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import useTitle from '../page-header/useTitle'
+import React, { useEffect } from 'react'
+
+import { useUpdateTitle } from '../page-header/title/TitleContext'
+import useTranslator from '../shared/hooks/useTranslator'
 
 const Dashboard: React.FC = () => {
-  const { t } = useTranslation()
-  useTitle(t('dashboard.label'))
+  const { t } = useTranslator()
+  const updateTitle = useUpdateTitle()
+  useEffect(() => {
+    updateTitle(t('dashboard.label'))
+  })
   return <h3>Example</h3>
 }
 

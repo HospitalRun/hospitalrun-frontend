@@ -1,0 +1,85 @@
+trigger:
+  branches:
+    include:
+      - refs/tags/v*
+
+pr: none
+
+stages:
+  - stage: Build
+    jobs:
+      - job: npm_job
+        continueOnError: false
+        pool:
+          vmImage: ubuntu-latest
+        strategy:
+          matrix:
+            node_12_x:
+              node_version: 12.x
+          maxParallel: 5
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(node_version)
+            displayName: 'Install Node.js'
+          - bash: npm install
+            displayName: 'Install dependencies'
+          - bash: npm run lint
+            displayName: 'Lint code'
+          - bash: npm run build
+            displayName: 'Build code'
+          - bash: npm run test:ci
+            displayName: 'Test compiled code'
+      - job: yarn_job
+        continueOnError: false
+        pool:
+          vmImage: ubuntu-latest
+        strategy:
+          matrix:
+            node_12_x:
+              node_version: 12.x
+          maxParallel: 5
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(node_version)
+            displayName: 'Install Node.js'
+          - bash: yarn install
+            displayName: 'Install dependencies'
+          - bash: yarn lint
+            displayName: 'Lint code'
+          - bash: yarn build
+            displayName: 'Build code'
+          - bash: yarn test:ci
+            displayName: 'Test compiled code'
+
+  - stage: Docker
+    jobs:
+      - job: docker_job
+        condition: succeeded('Build')
+        continueOnError: false
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - script: |
+              echo '{ "experimental": true }' | sudo tee /etc/docker/daemon.json
+              sudo service docker restart
+            displayName: 'Enable Docker Engine experimental '
+          - script: |
+              GIT_TAG=`git describe --tags` && VERSION_TAG="$(cut -d'-' -f1 <<<"$GIT_TAG")"  && echo "##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG"
+            displayName: 'Get Git Tag'
+          - task: Docker@0
+            displayName: 'Build an image'
+            inputs:
+              containerregistrytype: 'Container Registry'
+              dockerRegistryConnection: Docker # it is necessary to create a new "service connection" via Azure DevOps portal
+              dockerFile: ./Dockerfile
+              buildArguments: '--rm --squash'
+              imageName: '$(Build.Repository.Name):$(VERSION_TAG)'
+          - task: Docker@0
+            displayName: 'Push an image'
+            inputs:
+              containerregistrytype: 'Container Registry'
+              dockerRegistryConnection: Docker # it is necessary to create a new "service connection" via Azure DevOps portal
+              action: 'Push an image'
+              imageName: '$(Build.Repository.Name):$(VERSION_TAG)'

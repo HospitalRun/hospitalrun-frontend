@@ -1,24 +1,28 @@
 name: GitHub CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - "!master"
+  pull_request:
+    branches:
+      - master
+
 
 jobs:
   npm:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 13.x]
-        os: [ubuntu-18.04]
-
+        node-version: [14.x]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
-      - uses: actions/checkout@v1
-
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
+      - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
       - name: Install with npm
         run: |
           npm install
@@ -30,33 +34,9 @@ jobs:
           npm run build
       - name: Run tests
         run: |
-          npm run test:ci
-  yarn:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 13.x]
-        os: [ubuntu-18.04]
-
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Use Node.js
-        uses: actions/setup-node@v1
+          npm run coveralls
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install with yarn
-        run: |
-          curl -o- -L https://yarnpkg.com/install.sh | bash
-          yarn install
-      - name: Lint code
-        run: |
-          yarn lint
-      - name: Build
-        run: |
-          yarn build
-      - name: Run tests
-        run: |
-          yarn test:ci
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage/lcov.info

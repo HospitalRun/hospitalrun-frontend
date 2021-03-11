@@ -1,0 +1,13 @@
+site_name: HospitalRun
+site_url: https://hospitalrun.io
+site_description: HospitalRun project documentation
+site_author: HospitalRun Core Team
+
+repo_url: https://github.com/hospitalrun/hospitalrun-frontend/
+
+theme:
+  name: readthedocs
+  highlightjs: true
+
+plugins:
+  - search

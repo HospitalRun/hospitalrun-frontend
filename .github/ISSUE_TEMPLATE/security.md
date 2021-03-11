@@ -1,9 +1,7 @@
 ---
 name: 👮 Security Issue
 about: Responsible Disclosure
-title: ''
-labels: ''
-assignees: ''
+labels: 'security'
 
 ---
 

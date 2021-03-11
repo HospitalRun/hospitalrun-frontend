@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -25,7 +29,7 @@ code {
   left: 0;
   z-index: 0; /* Behind the navbar */
   padding: 48px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  border-right: 1px solid rgba(0, 0, 0, .1);
 }
 
 .sidebar-sticky {
@@ -70,6 +74,11 @@ code {
 
 .navbar {
   z-index: 1000;
+  top: 0;
+}
+
+.navbar.navbar-dark {
+  position: sticky;
 }
 
 .navbar .form-control {
@@ -87,4 +96,17 @@ code {
 .form-control-dark:focus {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+.breadcrumb {
+  padding: 0;
+  background-color: white;
+}
+
+.button-toolbar > button {
+	margin-left: .5rem;
+}
+
+.react-datepicker-wrapper {
+  flex-grow: 1;
 }

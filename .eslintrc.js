@@ -1,15 +1,20 @@
 module.exports = {
+  ignorePatterns: ['commitlint.config.js', 'jest.config.js'],
   env: {
     browser: true,
     es6: true,
     'jest/globals': true,
   },
   extends: [
+    'react-app',
     'airbnb',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
+    'eslint-config-prettier',
   ],
   globals: {
     Atomics: 'readonly',
@@ -17,24 +22,31 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: ['./tsconfig.json', './scripts/tsconfig.json'],
     tsconfigRootDir: './',
-    // TODO: we need this because of an issue with @typescript-eslint/parser: https://github.com/typescript-eslint/typescript-eslint/issues/864
-    createDefaultProgram: true,
   },
   settings: {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules'],
+      },
+      typescript: {
+        alwaysTryTypes: true,
       },
     },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
   },
-  plugins: ['react', '@typescript-eslint', 'prettier', 'jest'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'jest', 'import'],
   rules: {
+    'prettier/prettier': 'error',
     '@typescript-eslint/member-delimiter-style': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    "@typescript-eslint/explicit-module-boundary-types": 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     '@typescript-eslint/unified-signatures': 'error',
     '@typescript-eslint/no-inferrable-types': ['error', { ignoreParameters: true }],
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
@@ -44,12 +56,26 @@ module.exports = {
     'arrow-body-style': ['warn', 'as-needed'],
     'no-param-reassign': ['error', { props: false }],
     'import/prefer-default-export': 'off',
-    'no-console': 'off',
+    'import/no-cycle': 'off',
+    'no-console': 'error',
     'eol-last': ['error', 'always'],
     'no-debugger': 'error',
     'no-nested-ternary': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': ['error', 'never'],
+    'import/order': [
+      'error',
+      {
+        groups: ['external', ['sibling', 'parent', 'internal'], 'builtin', 'unknown'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
     curly: ['error', 'all'],
+    'react/require-default-props': ['warn'],
+    'react/default-props-match-prop-types': ['warn']
   },
 }
