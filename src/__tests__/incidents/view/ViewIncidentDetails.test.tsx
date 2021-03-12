@@ -105,14 +105,14 @@ describe('View Incident Details', () => {
         ).toBeInTheDocument()
       })
     })
-    describe('form elements should not be editable', () => {
+    describe('form elements should be editable', () => {
       it('should render the department input with label and display value', async () => {
         setup(expectedIncident, [Permissions.ViewIncident])
         expect(await screen.findByText(/incidents\.reports\.department/i)).toBeInTheDocument()
 
         expect(
           await screen.findByRole('textbox', { name: /incidents\.reports\.department/i }),
-        ).not.toBeEnabled()
+        ).toBeEnabled()
 
         expect(
           await screen.findByRole('textbox', { name: /incidents\.reports\.department/i }),
@@ -125,7 +125,7 @@ describe('View Incident Details', () => {
 
         expect(
           await screen.findByRole('textbox', { name: /incidents\.reports\.category$/i }),
-        ).not.toBeEnabled()
+        ).toBeEnabled()
 
         expect(
           await screen.findByRole('textbox', { name: /incidents\.reports\.category$/i }),
@@ -137,7 +137,7 @@ describe('View Incident Details', () => {
 
         expect(
           await screen.findByRole('textbox', { name: /incidents\.reports\.categoryItem$/i }),
-        ).not.toBeEnabled()
+        ).toBeEnabled()
 
         expect(
           await screen.findByRole('textbox', { name: /incidents\.reports\.categoryItem$/i }),
@@ -155,13 +155,14 @@ describe('View Incident Details', () => {
           screen.getByRole('textbox', {
             name: /incidents\.reports\.description/i,
           }),
-        ).not.toBeEnabled()
+        ).toBeEnabled()
 
         expect(
           await screen.findByRole('textbox', { name: /incidents\.reports\.description/i }),
         ).toHaveDisplayValue('some description')
       })
     })
+
     describe('on resolve', () => {
       it('should mark the status as resolved and fill in the resolved date with the current time', async () => {
         const { history } = setup(expectedIncident, [
