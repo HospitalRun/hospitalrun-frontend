@@ -1,6 +1,6 @@
 import subDays from 'date-fns/subDays'
 
-import useResolveIncident from '../../../incidents/hooks/useResolveIncident'
+import useUpdateIncident from '../../../incidents/hooks/useUpdateIncident'
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
 import executeMutation from '../../test-utils/use-mutation.util'
@@ -30,7 +30,7 @@ describe('useResolvedIncident', () => {
     } as Incident
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue(expectedIncident)
 
-    const actualData = await executeMutation(() => useResolveIncident(), givenIncident)
+    const actualData = await executeMutation(() => useUpdateIncident(), givenIncident)
 
     expect(IncidentRepository.save).toHaveBeenCalledTimes(1)
     expect(IncidentRepository.save).toBeCalledWith(expectedIncident)
