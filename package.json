@@ -29,7 +29,7 @@
     "react-bootstrap-typeahead": "~5.1.0",
     "react-dom": "~16.13.0",
     "react-i18next": "~11.8.3",
-    "react-query": "~2.25.2",
+    "react-query": "~3.12.1",
     "react-query-devtools": "~2.6.0",
     "react-redux": "~7.2.0",
     "react-router": "~5.2.0",
