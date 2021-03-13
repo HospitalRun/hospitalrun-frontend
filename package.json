@@ -82,7 +82,7 @@
     "@types/uuid": "^8.0.0",
     "@types/validator": "~13.1.0",
     "@typescript-eslint/eslint-plugin": "~3.10.0",
-    "@typescript-eslint/parser": "~3.10.0",
+    "@typescript-eslint/parser": "~4.17.0",
     "chalk": "^4.0.0",
     "commitizen": "~4.2.0",
     "commitlint-config-cz": "~0.13.0",
