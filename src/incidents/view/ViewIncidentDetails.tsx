@@ -42,12 +42,7 @@ function ViewIncidentDetails(props: Props) {
 
     if (permissions.includes(Permissions.ResolveIncident)) {
       buttons.push(
-        <Button
-          className="mr-2"
-          onClick={onResolve}
-          color="primary"
-          key="incidents.reports.resolve"
-        >
+        <Button onClick={onResolve} color="primary" key="incidents.reports.resolve">
           {t('incidents.reports.resolve')}
         </Button>,
       )
@@ -147,7 +142,7 @@ function ViewIncidentDetails(props: Props) {
       )}
       {data.resolvedOn === undefined && (
         <div className="row float-right">
-          <div className="btn-group btn-group-lg mt-3">{getButtons()}</div>
+          <div className="btn-group btn-group-lg mt-3 mr-3">{getButtons()}</div>
         </div>
       )}
     </>

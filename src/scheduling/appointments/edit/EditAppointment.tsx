@@ -87,7 +87,7 @@ const EditAppointment = () => {
         error={updateMutateError}
       />
       <div className="row float-right">
-        <div className="btn-group btn-group-lg">
+        <div className="btn-group btn-group-lg mr-3">
           <Button className="mr-2" color="success" onClick={onSave}>
             {t('scheduling.appointments.updateAppointment')}
           </Button>
