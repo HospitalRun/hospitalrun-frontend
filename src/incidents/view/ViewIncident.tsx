@@ -75,18 +75,20 @@ const ViewIncident = () => {
         />
       </TabsHeader>
       <Panel>
-        <div className="col-md-12 d-flex mb-3 justify-content-end">
-          <Button
-            outlined
-            color="success"
-            icon="add"
-            iconLocation="right"
-            onClick={onNewNoteClick}
-            className="create-new-note-button"
-          >
-            {t('patient.notes.new')}
-          </Button>
-        </div>
+        {permissions.includes(Permissions.ReportIncident) && (
+          <div className="col-md-12 d-flex mb-3 justify-content-end">
+            <Button
+              outlined
+              color="success"
+              icon="add"
+              iconLocation="right"
+              onClick={onNewNoteClick}
+              className="create-new-note-button"
+            >
+              {t('patient.notes.new')}
+            </Button>
+          </div>
+        )}
         <NotesTable
           onEditNote={(note: Note) => {
             setEditedNote(note)

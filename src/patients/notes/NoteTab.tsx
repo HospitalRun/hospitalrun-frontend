@@ -8,8 +8,8 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Note from '../../shared/model/Note'
 import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
-import { RootState } from '../../shared/store'
 import NewNoteModal from '../../shared/notes/NewNoteModal'
+import { RootState } from '../../shared/store'
 import { uuid } from '../../shared/util/uuid'
 import useAddPatientNote from '../hooks/useAddPatientNote'
 import NotesList from './NotesList'
@@ -26,7 +26,7 @@ const NoteTab = (props: Props) => {
   const [showNewNoteModal, setShowNoteModal] = useState<boolean>(false)
   const defaultNoteValue = {
     id: uuid(),
-    givenBy: 'some user', // TODO
+    givenBy: 'some user',
     text: '',
     date: '',
   }

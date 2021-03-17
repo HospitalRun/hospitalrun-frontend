@@ -76,19 +76,17 @@ describe('View Incident', () => {
     let wrapper: any
     await act(async () => {
       wrapper = await mount(
-        <ReactQueryCacheProvider queryCache={queryCache}>
-          <ButtonBarProvider.ButtonBarProvider>
-            <Provider store={store}>
-              <Router history={history}>
-                <Route path="/incidents/:id">
-                  <TitleProvider>
-                    <ViewIncident />
-                  </TitleProvider>
-                </Route>
-              </Router>
-            </Provider>
-          </ButtonBarProvider.ButtonBarProvider>
-        </ReactQueryCacheProvider>,
+        <ButtonBarProvider.ButtonBarProvider>
+          <Provider store={store}>
+            <Router history={history}>
+              <Route path="/incidents/:id">
+                <TitleProvider>
+                  <ViewIncident />
+                </TitleProvider>
+              </Route>
+            </Router>
+          </Provider>
+        </ButtonBarProvider.ButtonBarProvider>,
       )
     })
     wrapper.update()
@@ -198,21 +196,36 @@ describe('View Incident', () => {
   })
 
   it('should display add new note button', async () => {
-    const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
+    const { wrapper } = await setup(
+      [Permissions.ViewIncident, Permissions.ReportIncident],
+      mockedIncident,
+    )
 
     const button = wrapper.find('Button[color="success"]').at(0)
     expect(button.exists()).toBeTruthy()
     expect(button.text().trim()).toEqual('patient.notes.new')
   })
 
-  it('should not display modal before new note button clicked', async () => {
+  it('should not display add new note button without permission to report', async () => {
     const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
+    const button = wrapper.find('Button[color="success"]').at(0)
+    expect(button.exists()).toBeFalsy()
+  })
+
+  it('should not display modal before new note button clicked', async () => {
+    const { wrapper } = await setup(
+      [Permissions.ViewIncident, Permissions.ReportIncident],
+      mockedIncident,
+    )
     const modal = wrapper.find(NewNoteModal)
     expect(modal.prop('show')).toBeFalsy()
   })
 
   it('should display modal after new note button clicked', async () => {
-    const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
+    const { wrapper } = await setup(
+      [Permissions.ViewIncident, Permissions.ReportIncident],
+      mockedIncident,
+    )
 
     const newNoteButton = wrapper.find({ className: 'create-new-note-button' }).at(0)
     act(() => {
@@ -225,7 +238,10 @@ describe('View Incident', () => {
   })
 
   it('modal should appear when edit note is clicked', async () => {
-    const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
+    const { wrapper } = await setup(
+      [Permissions.ViewIncident, Permissions.ReportIncident],
+      mockedIncident,
+    )
 
     const tableRow = wrapper.find('tr').at(1)
     await act(async () => {
@@ -260,7 +276,10 @@ describe('View Incident', () => {
   })
 
   it('new note should appear when new note is created', async () => {
-    const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
+    const { wrapper } = await setup(
+      [Permissions.ViewIncident, Permissions.ReportIncident],
+      mockedIncident,
+    )
 
     const newNoteButton = wrapper.find({ className: 'create-new-note-button' }).at(0)
     act(() => {
@@ -280,7 +299,7 @@ describe('View Incident', () => {
     expect(wrapper.find(NewNoteModal).prop('note').text).toEqual(newNoteText)
 
     const successButton = wrapper.find(NewNoteModal).find('Button[color="success"]')
-    expect(successButton).toHaveLength(1);
+    expect(successButton).toHaveLength(1)
     await act(async () => {
       const onClick = successButton.prop('onClick') as any
       await onClick()
@@ -290,14 +309,14 @@ describe('View Incident', () => {
     expect(incidentRepositorySaveSpy).toHaveBeenCalledTimes(1)
     expect(incidentRepositorySaveSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        notes: expect.arrayContaining(
-          [{
+        notes: expect.arrayContaining([
+          {
             id: '7777',
             date: expectedResolveDate.toISOString(),
             text: newNoteText,
             givenBy: '8542',
-          }]
-        ),
+          },
+        ]),
       }),
     )
   })

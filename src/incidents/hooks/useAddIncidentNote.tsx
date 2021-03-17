@@ -1,4 +1,3 @@
-import { isEmpty } from 'lodash'
 import { queryCache, useMutation } from 'react-query'
 
 import IncidentRepository from '../../shared/db/IncidentRepository'
@@ -12,7 +11,7 @@ interface AddNoteRequest {
 async function addNote(request: AddNoteRequest): Promise<Note[]> {
   const incident = await IncidentRepository.find(request.incidentId)
   const notes = incident.notes || []
-  let noteIdx = notes.findIndex((note) => note.id === request.note.id)
+  const noteIdx = notes.findIndex((note) => note.id === request.note.id)
   if (noteIdx === -1) {
     // This note is new.
     notes.push(request.note)
