@@ -59,7 +59,7 @@
     "Stefano Casasola"
   ],
   "devDependencies": {
-    "@commitlint/cli": "~9.1.2",
+    "@commitlint/cli": "~12.1.0",
     "@commitlint/config-conventional": "~12.1.0",
     "@commitlint/core": "~12.1.0",
     "@commitlint/prompt": "~11.0.0",
