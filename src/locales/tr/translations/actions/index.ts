@@ -1,0 +1,15 @@
+export default {
+  actions: {
+    label: 'Eylemler',
+    edit: 'Düzenle',
+    save: 'Kaydet',
+    update: 'Güncelle',
+    complete: 'Tamamla',
+    delete: 'Sil',
+    cancel: 'İptal',
+    new: 'Yeni',
+    list: 'Liste',
+    search: 'Ara',
+    confirmDelete: 'Seçilenleri Sil',
+  },
+}
