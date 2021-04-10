@@ -153,7 +153,7 @@ export default {
         startDate: 'Başlangıç Zamanı bilgisinin girilmesi zorunludur.',
         dueDate: 'Planlanan Bitiş Zamanı bilgisinin girilmesi zorunludur.',
         dueDateMustBeAfterStartDate:
-         'Planlanan Bitiş Zamanı Başlangıç Zamanından sonra olmak zorundadır.',
+          'Planlanan Bitiş Zamanı Başlangıç Zamanından sonra olmak zorundadır.',
       },
     },
     careGoals: {
