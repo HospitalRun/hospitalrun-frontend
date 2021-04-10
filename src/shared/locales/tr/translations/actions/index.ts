@@ -1,13 +1,6 @@
 export default {
   actions: {
     label: 'Eylemler',
-    name: 'İsim',
-    next: 'Sonraki',
-    previous: 'Önceki',
-    page: 'Sayfa',
-    add: 'Ekle',
-    view: 'Görünüle',
-    logout: 'Çıkış',
     edit: 'Düzenle',
     save: 'Kaydet',
     update: 'Güncelle',
@@ -18,5 +11,12 @@ export default {
     list: 'Liste',
     search: 'Ara',
     confirmDelete: 'Seçilenleri Sil',
+    next: 'Sonraki',
+    page: 'Sayfa',
+    previous: 'Önceki',
+    add: 'Ekle',
+    name: 'İsim',
+    view: 'Görünüle',
+    logout: 'Çıkış',
   },
 }

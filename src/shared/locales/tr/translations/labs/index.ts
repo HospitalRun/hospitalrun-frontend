@@ -1,16 +1,32 @@
 export default {
   labs: {
     label: 'Laboratuvarlar',
+    filterTitle: 'Filter by status',
+    search: 'Search labs',
+    successfullyUpdated: 'Successfully updated',
+    successfullyCompleted: 'Successfully completed',
+    successfullyCreated: 'Successfully created',
+    status: {
+      requested: 'Requested',
+      completed: 'Completed',
+      canceled: 'Canceled',
+    },
+    filter: {
+      all: 'All statuses',
+    },
     requests: {
       label: 'Laboratuvar Talepleri',
       new: 'Yeni Laboratuvar Talebi',
+      save: 'Request',
       view: 'Laboratuvarı Görüntüle',
       cancel: 'Laboratuvarı İptal Et',
       complete: 'Laboratuvarı Tamamla',
+      update: 'Update Lab',
       error: {
         unableToRequest: 'Yeni laboratuvar talebi oluşturulamıyor.',
         unableToComplete: 'Laboratuvar talebi tamamlanamıyor.',
         typeRequired: 'Tür alanının doldurulması zorunludur.',
+        patientRequired: 'Patient is required.',
         resultRequiredToComplete: 'Tamamlama işlemi için sonuç gerekli.',
       },
     },
@@ -21,7 +37,6 @@ export default {
       type: 'Tür',
       result: 'Sonuç',
       notes: 'Notlar',
-      visitSelect: 'Ziyaret',
       requestedOn: 'Talep Tarihi',
       completedOn: 'Tamamlanma Tarihi',
       canceledOn: 'İptal Tarih',

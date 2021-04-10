@@ -6,10 +6,10 @@ export default {
       new: 'Yeni Randevu Oluştur',
       schedule: 'Randevuyu Planla',
       editAppointment: 'Randevuyu Düzenle',
+      createAppointment: 'Randevuyu Kaydet',
       deleteAppointment: 'Randevuyu Sil',
       viewAppointment: 'Randevuyu Görüntüle',
-      scheduleAppointment: 'Randevuyu Kaydet'
-
+      updateAppointment: 'Randevuyu Güncelle',
     },
     appointment: {
       startDate: 'Başlangıç Zamanı',
@@ -24,14 +24,17 @@ export default {
         walkIn: 'Rezervasyonsuz',
       },
       errors: {
+        createAppointmentError: 'Randevu kaydı oluşturulamıyor!',
+        updateAppointmentError: 'Randevu kaydı güncellenemiyor.',
         patientRequired: 'Hasta alanı zorunludur.',
-        errorCreatingAppointment: 'Randevu oluşturulurken hata!',
         startDateMustBeBeforeEndDate: 'Başlangıç zamanı Bitiş zamanından önce olmalıdır.',
       },
       reason: 'Gerekçe',
       patient: 'Hasta',
       deleteConfirmationMessage: 'Bu randevu kaydını silmek istediğinize emin misiniz?',
       successfullyCreated: 'Randevu kaydı başarılı bir şekilde oluşturuldu.',
+      successfullyDeleted: 'Randevu kaydı başarılı bir şekilde silindi.',
+      successfullyUpdated: 'Randevu kaydı başarılı bir şekilde güncellendi.',
     },
   },
 }
