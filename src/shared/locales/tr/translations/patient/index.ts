@@ -49,7 +49,7 @@ export default {
       warning: {
         noRelatedPersons: 'Akraba bulunamadı.',
       },
-      ddRelatedPersonAbove: 'Üstteki buton ile yeni akraba ekleyebilirsiniz.',
+      addRelatedPersonAbove: 'Üstteki buton ile yeni akraba ekleyebilirsiniz.',
     },
     appointments: {
       new: 'Yeni Randevu Ekle',
