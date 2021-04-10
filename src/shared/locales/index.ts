@@ -53,8 +53,8 @@ const resources: { [language: string]: any } = {
     translation: translationRU,
   },
   tr: {
-      name: 'Turkish',
-      translation: translationTR,
+    name: 'Turkish',
+    translation: translationTR,
   },
   zhCN: {
     name: 'Chinese',
