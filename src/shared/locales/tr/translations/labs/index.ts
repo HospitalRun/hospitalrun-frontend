@@ -1,18 +1,18 @@
 export default {
   labs: {
     label: 'Laboratuvarlar',
-    filterTitle: 'Filter by status',
-    search: 'Search labs',
-    successfullyUpdated: 'Successfully updated',
-    successfullyCompleted: 'Successfully completed',
-    successfullyCreated: 'Successfully created',
+    filterTitle: 'Duruma Göre Filtrele',
+    search: 'Laboratuvarlar İçinde Ara',
+    successfullyUpdated: 'Başarılı bir şekilde güncellendi',
+    successfullyCompleted: 'Başarılı bir şekilde tamamlandı',
+    successfullyCreated: 'Başarılı bir şekilde oluşturuldu',
     status: {
-      requested: 'Requested',
-      completed: 'Completed',
-      canceled: 'Canceled',
+      requested: 'Talep Oluşturuldu',
+      completed: 'Tamamlandı',
+      canceled: 'İptal Edildi',
     },
     filter: {
-      all: 'All statuses',
+      all: 'Tüm Durumlar',
     },
     requests: {
       label: 'Laboratuvar Talepleri',
