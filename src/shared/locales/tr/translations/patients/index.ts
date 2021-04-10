@@ -4,7 +4,7 @@ export default {
     warning: 'Warning!',
     patientsList: 'Hasta Listesi',
     viewPatients: 'Hastaları Görüntüle',
-    noPatients: "Henüz bir hasta yok hadi bir tane ekleyelim!",
+    noPatients: 'Henüz bir hasta yok hadi bir tane ekleyelim!',
     viewPatient: 'Hastayı Kaydını Görüntüle',
     createPatient: 'Hasta Kaydını Oluştur',
     newPatient: 'Yeni Hasta Kaydı',
