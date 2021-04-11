@@ -15,6 +15,7 @@ export default {
       new: 'Report Incident',
       view: 'View Incident',
       resolve: 'Resolve Incident',
+      update: 'Update Incident',
       dateOfIncident: 'Date of Incident',
       department: 'Department',
       download: 'Download',
