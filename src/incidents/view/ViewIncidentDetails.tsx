@@ -7,11 +7,11 @@ import usePatient from '../../patients/hooks/usePatient'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
+import Incident from '../../shared/model/Incident'
 import Permissions from '../../shared/model/Permissions'
 import { extractUsername } from '../../shared/util/extractUsername'
 import useIncident from '../hooks/useIncident'
 import useUpdateIncident from '../hooks/useUpdateIncident'
-import Incident from '../../shared/model/Incident'
 
 interface Props {
   incidentId: string
@@ -51,11 +51,16 @@ function ViewIncidentDetails(props: Props) {
     }
     if (permissions.includes(Permissions.ResolveIncident)) {
       buttons.push(
-        <Button onClick={onResolve} color="primary" key="incidents.reports.resolve">
-          {t('incidents.reports.resolve')}
-        </Button>,
-        <Button onClick={onUpdate} color="primary" key="incidents.reports.update">
+        <Button className="mr-2" color="success" onClick={onUpdate} key="incidents.reports.update">
           {t('incidents.reports.update')}
+        </Button>,
+        <Button
+          onClick={onResolve}
+          className="mr-2"
+          color="primary"
+          key="incidents.reports.resolve"
+        >
+          {t('incidents.reports.resolve')}
         </Button>,
       )
     }
@@ -126,7 +131,7 @@ function ViewIncidentDetails(props: Props) {
             label={t('incidents.reports.department')}
             name="department"
             value={incident.department}
-            isEditable={true}
+            isEditable
             onChange={onIncidentChange('department')}
           />
         </Column>
@@ -137,7 +142,7 @@ function ViewIncidentDetails(props: Props) {
             name="category"
             label={t('incidents.reports.category')}
             value={incident.category}
-            isEditable={true}
+            isEditable
             onChange={onIncidentChange('category')}
           />
         </Column>
@@ -146,7 +151,7 @@ function ViewIncidentDetails(props: Props) {
             label={t('incidents.reports.categoryItem')}
             name="categoryItem"
             value={incident.categoryItem}
-            isEditable={true}
+            isEditable
             onChange={onIncidentChange('categoryItem')}
           />
         </Column>
@@ -157,7 +162,7 @@ function ViewIncidentDetails(props: Props) {
             label={t('incidents.reports.description')}
             name="description"
             value={incident.description}
-            isEditable={true}
+            isEditable
             onChange={onIncidentChange('description')}
           />
         </Column>
@@ -169,7 +174,7 @@ function ViewIncidentDetails(props: Props) {
               label={t('incidents.reports.patient')}
               name="patient"
               value={patient?.fullName}
-              isEditable={true}
+              isEditable
               onChange={onIncidentChange('patient')}
             />
           </Column>
