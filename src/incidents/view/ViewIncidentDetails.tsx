@@ -1,13 +1,14 @@
-import { Button, Column, Row, Spinner } from '@hospitalrun/components'
+import { Button, Column, Row, Spinner, Label, Typeahead } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 
-import usePatient from '../../patients/hooks/usePatient'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
+import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Incident from '../../shared/model/Incident'
+import Patient from '../../shared/model/Patient'
 import Permissions from '../../shared/model/Permissions'
 import { extractUsername } from '../../shared/util/extractUsername'
 import useIncident from '../hooks/useIncident'
@@ -25,7 +26,6 @@ function ViewIncidentDetails(props: Props) {
   const { data, isLoading } = useIncident(incidentId)
   const [incident, setIncident] = useState<Incident | undefined>(data)
 
-  const { data: patient } = usePatient(incident?.patient)
   const [mutate] = useUpdateIncident()
 
   useEffect(() => {
@@ -95,6 +95,21 @@ function ViewIncidentDetails(props: Props) {
       setIncident(incidentCopy)
     }
   }
+
+  const onPatientChange = (patient: Patient) => {
+    const { id = '', fullName = '' } = patient || {}
+
+    setIncident((prevIncident) =>
+      prevIncident
+        ? {
+            ...prevIncident,
+            patient: id,
+            patientFullName: fullName,
+          }
+        : prevIncident,
+    )
+  }
+
   return (
     <>
       <Row>
@@ -167,19 +182,20 @@ function ViewIncidentDetails(props: Props) {
           />
         </Column>
       </Row>
-      {incident.patient && (
-        <Row>
-          <Column md={6}>
-            <TextInputWithLabelFormGroup
-              label={t('incidents.reports.patient')}
-              name="patient"
-              value={patient?.fullName}
-              isEditable
-              onChange={onIncidentChange('patient')}
-            />
-          </Column>
-        </Row>
-      )}
+      <Row>
+        <Column md={6}>
+          <Label htmlFor="patientTypeahead" text={t('incidents.reports.patient')} />
+          <Typeahead
+            id="patientTypeahead"
+            placeholder={t('incidents.reports.patient')}
+            onChange={(p: Patient[]) => onPatientChange(p[0])}
+            onSearch={async (query: string) => PatientRepository.search(query)}
+            searchAccessor="fullName"
+            renderMenuItemChildren={(p: Patient) => <div>{`${p.fullName} (${p.code})`}</div>}
+            value={incident?.patientFullName}
+          />
+        </Column>
+      </Row>
       {incident.resolvedOn === undefined && (
         <div className="row float-right">
           <div className="btn-group btn-group-lg mt-3 mr-3">{getButtons()}</div>
