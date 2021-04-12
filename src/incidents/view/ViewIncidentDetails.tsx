@@ -184,6 +184,15 @@ function ViewIncidentDetails(props: Props) {
       </Row>
       <Row>
         <Column md={6}>
+          <TextInputWithLabelFormGroup
+            label={t('incidents.reports.reportedTo')}
+            name="reportedTo"
+            value={incident.reportedTo}
+            isEditable
+            onChange={onIncidentChange('reportedTo')}
+          />
+        </Column>
+        <Column md={6}>
           <Label htmlFor="patientTypeahead" text={t('incidents.reports.patient')} />
           <Typeahead
             id="patientTypeahead"
