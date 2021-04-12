@@ -24,6 +24,7 @@ export default {
       description: 'Description of Incident',
       patient: 'Patient',
       code: 'Code',
+      reportedTo: 'Reported To',
       reportedBy: 'Reported By',
       reportedOn: 'Reported On',
       resolvedOn: 'Resolved On',
