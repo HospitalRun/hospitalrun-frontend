@@ -1,4 +1,4 @@
-import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
+import { Select, Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -6,9 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -155,17 +153,19 @@ const NewImagingRequest = () => {
           </Column>
           <Column>
             <div className="visits">
-              <SelectWithLabelFormGroup
-                name="visit"
-                label={t('patient.visits.label')}
-                isRequired
-                isEditable={newImagingRequest.patient !== undefined}
-                options={visitOption || []}
-                defaultSelected={defaultSelectedVisitsOption()}
-                onChange={(values) => {
-                  onVisitChange(values[0])
-                }}
-              />
+            <Label
+              text={t('patient.visits.label')}
+              title="visit"
+              isRequired
+            />
+            <Select 
+              id="visit"
+              options={visitOption || []}
+              defaultSelected={defaultSelectedVisitsOption()}
+              onChange={(values) => {
+                onVisitChange(values[0])
+              }}
+            />
             </div>
           </Column>
         </Row>
@@ -181,17 +181,19 @@ const NewImagingRequest = () => {
           onChange={onImagingTypeChange}
         />
         <div className="imaging-status">
-          <SelectWithLabelFormGroup
-            name="status"
-            label={t('imagings.imaging.status')}
-            options={statusOptions}
-            isRequired
-            isEditable
-            defaultSelected={statusOptions.filter(
-              ({ value }) => value === newImagingRequest.status,
-            )}
-            onChange={(values) => onStatusChange(values[0])}
-          />
+            <Label
+              text={t('imagings.imaging.status')}
+              title="status"
+              isRequired
+            />
+            <Select 
+              id="status"
+              options={statusOptions}
+              defaultSelected={statusOptions.filter(
+                ({ value }) => value === newImagingRequest.status,
+              )}
+              onChange={(values) => onStatusChange(values[0])}
+            />
         </div>
         <div className="form-group">
           <TextFieldWithLabelFormGroup

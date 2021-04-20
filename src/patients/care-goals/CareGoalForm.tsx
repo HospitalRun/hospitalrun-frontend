@@ -1,10 +1,8 @@
-import { Alert, Row, Column } from '@hospitalrun/components'
+import { Select, Label, Alert, Row, Column } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
 import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import CareGoal, { CareGoalStatus, CareGoalAchievementStatus } from '../../shared/model/CareGoal'
@@ -87,49 +85,52 @@ const CareGoalForm = (props: Props) => {
       </Row>
       <Row>
         <Column sm={12}>
-          <SelectWithLabelFormGroup
-            name="priority"
-            label={t('patient.careGoal.priority.label')}
-            isRequired
-            options={priorityOptions}
-            defaultSelected={priorityOptions.filter(({ value }) => value === priority)}
-            isEditable={!disabled}
-            isInvalid={!!careGoalError?.priority}
-            onChange={onPriorityChange}
+          <Label
+          title="priority"
+          text={t('patient.careGoal.priority.label')}
+          isRequired
+          />
+          <Select
+          id="priority"
+          options={priorityOptions}
+          onChange={onPriorityChange}
+          defaultSelected={priorityOptions.filter(({ value }) => value === priority)}
           />
         </Column>
       </Row>
       <Row>
         <Column sm={6}>
-          <SelectWithLabelFormGroup
-            name="status"
-            label={t('patient.careGoal.status')}
-            isRequired
-            options={statusOptions}
-            defaultSelected={statusOptions.filter(({ value }) => value === status)}
-            isEditable={!disabled}
-            isInvalid={!!careGoalError?.status}
-            onChange={(values) => {
-              onFieldChange('status', values[0])
-              setStatus(values[0] as CareGoalStatus)
-            }}
+          <Label
+          title="status"
+          text={t('patient.careGoal.status')}
+          isRequired
+          />
+          <Select
+          id="status"
+          options={statusOptions}
+          onChange={(values) => {
+            onFieldChange('status', values[0])
+            setStatus(values[0] as CareGoalStatus)
+          }}
+          defaultSelected={statusOptions.filter(({ value }) => value === status)}
           />
         </Column>
         <Column sm={6}>
-          <SelectWithLabelFormGroup
-            name="achievementStatus"
-            label={t('patient.careGoal.achievementStatus')}
-            isRequired
-            options={achievementsStatusOptions}
-            defaultSelected={achievementsStatusOptions.filter(
-              ({ value }) => value === achievementStatus,
-            )}
-            isEditable={!disabled}
-            isInvalid={!!careGoalError?.achievementStatus}
-            onChange={(values) => {
-              onFieldChange('achievementStatus', values[0])
-              setAchievementStatus(values[0] as CareGoalAchievementStatus)
-            }}
+          <Label
+          title="achievementStatus"
+          text={t('patient.careGoal.achievementStatus')}
+          isRequired
+          />
+          <Select
+          id="achievementStatus"
+          options={achievementsStatusOptions}
+          onChange={(values) => {
+            onFieldChange('achievementStatus', values[0])
+            setAchievementStatus(values[0] as CareGoalAchievementStatus)
+          }}
+          defaultSelected={achievementsStatusOptions.filter(
+            ({ value }) => value === achievementStatus,
+          )}
           />
         </Column>
       </Row>

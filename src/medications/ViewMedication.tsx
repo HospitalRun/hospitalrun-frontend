@@ -1,4 +1,4 @@
-import { Row, Column, Badge, Button, Alert } from '@hospitalrun/components'
+import { Select, Row, Column, Badge, Button, Alert, Label } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -6,9 +6,7 @@ import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
@@ -226,42 +224,39 @@ const ViewMedication = () => {
         <div className="border-bottom" />
         <Row>
           <Column>
-            <SelectWithLabelFormGroup
-              name="status"
-              label={t('medications.medication.status')}
-              isRequired
-              options={statusOptionsEdit}
-              defaultSelected={statusOptionsEdit.filter(
-                ({ value }) => value === medicationToView.status,
-              )}
-              onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
-              isEditable={isEditable}
+            <Label
+            title="status"
+            text={t('medications.medication.status')}
+            isRequired
+            />
+            <Select
+            id="status"
+            options={statusOptionsEdit}
+            onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
             />
           </Column>
           <Column>
-            <SelectWithLabelFormGroup
-              name="intent"
-              label={t('medications.medication.intent')}
-              isRequired
-              options={intentOptions}
-              defaultSelected={intentOptions.filter(
-                ({ value }) => value === medicationToView.intent,
-              )}
-              onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
-              isEditable={isEditable}
+            <Label
+            title="intent"
+            text={t('medications.medication.intent')}
+            isRequired
+            />
+            <Select
+            id="intent"
+            options={intentOptions}
+            onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
             />
           </Column>
           <Column>
-            <SelectWithLabelFormGroup
-              name="priority"
-              label={t('medications.medication.priority')}
-              isRequired
-              options={priorityOptions}
-              defaultSelected={priorityOptions.filter(
-                ({ value }) => value === medicationToView.priority,
-              )}
-              onChange={(values) => onFieldChange && onFieldChange('priority', values[0])}
-              isEditable={isEditable}
+            <Label
+            title="priority"
+            text={t('medications.medication.priority')}
+            isRequired
+            />
+            <Select
+            id="priority"
+            options={priorityOptions}
+            onChange={(values) => onFieldChange && onFieldChange('priority', values[0])}
             />
           </Column>
         </Row>

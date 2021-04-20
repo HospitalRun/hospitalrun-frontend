@@ -1,9 +1,7 @@
-import { Row, Column } from '@hospitalrun/components'
+import { Select, Label, Row, Column } from '@hospitalrun/components'
 import React, { ChangeEvent } from 'react'
 
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import MedicationSearchRequest from '../models/MedicationSearchRequest'
@@ -46,14 +44,15 @@ const MedicationRequestSearch = (props: Props) => {
   return (
     <Row>
       <Column md={3} lg={2}>
-        <SelectWithLabelFormGroup
-          name="filterStatus"
-          label={t('medications.filterTitle')}
+          <Label
+          title="filterStatus"
+          text={t('medications.filterTitle')}
+          />
+          <Select
+          id="filterStatus"
           options={filterOptions}
-          defaultSelected={filterOptions.filter(({ value }) => value === searchRequest.status)}
           onChange={(values) => onFilterChange(values[0] as MedicationStatus)}
-          isEditable
-        />
+          />
       </Column>
       <Column>
         <TextInputWithLabelFormGroup

@@ -1,10 +1,8 @@
-import { Alert, Column, Row } from '@hospitalrun/components'
+import { Select, Label, Alert, Column, Row } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
 import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
@@ -89,49 +87,55 @@ const CarePlanForm = (props: Props) => {
       <Row>
         <Column sm={12}>
           {/* add feedback in next round */}
-          <SelectWithLabelFormGroup
-            name="condition"
-            label={t('patient.carePlan.condition')}
+          <Label
+            text={t('patient.carePlan.condition')}
+            title="condition"
             isRequired
+          />
+          <Select 
+            id="condition"
             options={conditionOptions}
             defaultSelected={conditionOptions.filter(({ value }) => value === condition)}
             onChange={(values) => {
               onFieldChange('diagnosisId', values[0])
               setCondition(values[0])
             }}
-            isEditable={!disabled}
             isInvalid={!!carePlanError?.condition}
           />
         </Column>
       </Row>
       <Row>
         <Column sm={6}>
-          <SelectWithLabelFormGroup
-            name="status"
-            label={t('patient.carePlan.status')}
+          <Label
+            text={t('patient.carePlan.status')}
+            title="status"
             isRequired
+          />
+          <Select 
+            id="status"
             options={statusOptions}
             defaultSelected={statusOptions.filter(({ value }) => value === status)}
             onChange={(values) => {
               onFieldChange('status', values[0])
               setStatus(values[0] as CarePlanStatus)
             }}
-            isEditable={!disabled}
             isInvalid={!!carePlanError?.status}
           />
         </Column>
         <Column sm={6}>
-          <SelectWithLabelFormGroup
-            name="intent"
-            label={t('patient.carePlan.intent')}
+          <Label
+            text={t('patient.carePlan.intent')}
+            title="intent"
             isRequired
+          />
+          <Select 
+            id="intent"
             options={intentOptions}
             defaultSelected={intentOptions.filter(({ value }) => value === intent)}
             onChange={(values) => {
               onFieldChange('intent', values[0])
               setIntent(values[0] as CarePlanIntent)
             }}
-            isEditable={!disabled}
             isInvalid={!!carePlanError?.intent}
           />
         </Column>

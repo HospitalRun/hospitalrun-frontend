@@ -1,9 +1,7 @@
-import { Spinner, Row, Column, Icon } from '@hospitalrun/components'
+import { Select, Label, Spinner, Row, Column, Icon } from '@hospitalrun/components'
 import React, { useEffect, ReactElement } from 'react'
 
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
@@ -82,12 +80,13 @@ const ContactInfo = (props: Props): ReactElement => {
     return (
       <Row key={entry.id}>
         <Column sm={4}>
-          <SelectWithLabelFormGroup
-            name={`${name}Type${i}`}
-            options={typeOptions}
-            defaultSelected={typeOptions.filter(({ value }) => value === entry.type)}
-            onChange={(values) => onTypeChange(values[0], i)}
-            isEditable={isEditable}
+          <Label
+          text={`${name}Type${i}`}
+          />
+          <Select
+          id="filterStatus"
+          options={typeOptions}
+          onChange={(values) => onTypeChange(values[0], i)}
           />
         </Column>
         <Column sm={8}>

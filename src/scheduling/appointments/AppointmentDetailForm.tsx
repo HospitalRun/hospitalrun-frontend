@@ -1,10 +1,8 @@
-import { Typeahead, Label, Alert } from '@hospitalrun/components'
+import { Select, Typeahead, Label, Alert } from '@hospitalrun/components'
 import React from 'react'
 
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -116,13 +114,15 @@ const AppointmentDetailForm = (props: Props) => {
       </div>
       <div className="row">
         <div className="col">
-          <SelectWithLabelFormGroup
-            name="type"
-            label={t('scheduling.appointment.type')}
+          <Label
+            text={t('scheduling.appointment.type')}
+            title="type"
+          />
+          <Select 
+            id="type"
             options={typeOptions}
             defaultSelected={typeOptions.filter(({ value }) => value === appointment.type)}
             onChange={(values) => onFieldChange && onFieldChange('type', values[0])}
-            isEditable={isEditable}
           />
         </div>
       </div>

@@ -1,13 +1,11 @@
-import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
+import { Select, Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -148,42 +146,48 @@ const NewMedicationRequest = () => {
           onChange={onMedicationChange}
         />
         <div className="form-group">
-          <SelectWithLabelFormGroup
-            name="status"
-            label={t('medications.medication.status')}
-            isRequired
-            options={statusOptionsNew}
-            defaultSelected={statusOptionsNew.filter(
-              ({ value }) => value === newMedicationRequest.status,
-            )}
-            onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
-            isEditable
-          />
+        <Label
+          text={t('medications.medication.status')}
+          title="status"
+          isRequired
+        />
+        <Select 
+          id="status"
+          options={statusOptionsNew}
+          defaultSelected={statusOptionsNew.filter(
+            ({ value }) => value === newMedicationRequest.status,
+          )}
+          onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
+        />
         </div>
         <div className="form-group">
-          <SelectWithLabelFormGroup
-            name="intent"
-            label={t('medications.medication.intent')}
-            isRequired
-            options={intentOptions}
-            defaultSelected={intentOptions.filter(
-              ({ value }) => value === newMedicationRequest.intent,
-            )}
-            onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
-            isEditable
-          />
+        <Label
+          text={t('medications.medication.intent')}
+          title="intent"
+          isRequired
+        />
+        <Select 
+          id="intent"
+          options={intentOptions}
+          defaultSelected={intentOptions.filter(
+            ({ value }) => value === newMedicationRequest.intent,
+          )}
+          onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
+        />
         </div>
         <div className="form-group">
-          <SelectWithLabelFormGroup
-            name="priority"
-            label={t('medications.medication.priority')}
+          <Label
+            text={t('medications.medication.priority')}
+            title="priority"
             isRequired
+          />
+          <Select 
+            id="priority"
             options={priorityOptions}
             defaultSelected={priorityOptions.filter(
               ({ value }) => value === newMedicationRequest.priority,
             )}
             onChange={(values) => onFieldChange && onFieldChange('priority', values[0])}
-            isEditable
           />
         </div>
         <Row>

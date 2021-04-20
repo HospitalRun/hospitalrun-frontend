@@ -1,4 +1,4 @@
-import { Button, Table, Container, Row, Column } from '@hospitalrun/components'
+import { Select, Label, Button, Table, Container, Row, Column } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux'
@@ -6,9 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarProvider'
 import { useUpdateTitle } from '../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../shared/components/input/SelectWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useDebounce from '../shared/hooks/useDebounce'
 import useTranslator from '../shared/hooks/useTranslator'
@@ -81,13 +79,15 @@ const ViewLabs = () => {
     <Container>
       <Row>
         <Column md={3} lg={2}>
-          <SelectWithLabelFormGroup
-            name="type"
-            label={t('labs.filterTitle')}
-            options={filterOptions}
-            defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
-            onChange={(values) => setSearchFilter(values[0] as LabFilter)}
-            isEditable
+          <Label
+          title="type"
+          text={t('labs.filterTitle')}
+          />
+          <Select
+          id="type"
+          options={filterOptions}
+          onChange={(values) => setSearchFilter(values[0] as LabFilter)}
+          defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
           />
         </Column>
         <Column>

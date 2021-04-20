@@ -1,12 +1,10 @@
-import { Button, Container, Row, Column } from '@hospitalrun/components'
+import { Select, Label, Button, Container, Row, Column } from '@hospitalrun/components'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import IncidentFilter from '../IncidentFilter'
 import ViewIncidentsTable from './ViewIncidentsTable'
@@ -48,13 +46,15 @@ const ViewIncidents = () => {
     <Container>
       <Row>
         <Column md={3} lg={2}>
-          <SelectWithLabelFormGroup
-            name="type"
-            label={t('incidents.filterTitle')}
+          <Label
+            text={t('incidents.filterTitle')}
+            title="type"
+          />
+          <Select 
+            id="type"
             options={filterOptions}
             defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
             onChange={(values) => setSearchFilter(values[0] as IncidentFilter)}
-            isEditable
           />
         </Column>
       </Row>

@@ -1,4 +1,4 @@
-import { Typeahead, Label, Button, Alert, Toast, Column, Row } from '@hospitalrun/components'
+import { Select, Typeahead, Label, Button, Alert, Toast, Column, Row } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -6,9 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -146,16 +144,18 @@ const NewLabRequest = () => {
           </Column>
           <Column>
             <div className="form-group">
-              <SelectWithLabelFormGroup
-                name="visit"
-                label={t('patient.visit')}
-                isRequired
-                isEditable={newLabRequest.patient !== undefined}
-                options={visitOptions || []}
-                defaultSelected={defaultSelectedVisitsOption()}
-                onChange={(values) => {
-                  onVisitChange(values[0])
-                }}
+              <Label
+              text={t('patient.visit')}
+              title="visit"
+              isRequired
+              />
+              <Select 
+              id="visit"
+              options={visitOptions || []}
+              defaultSelected={defaultSelectedVisitsOption()}
+              onChange={(values) => {
+                onVisitChange(values[0])
+              }}
               />
             </div>
           </Column>
