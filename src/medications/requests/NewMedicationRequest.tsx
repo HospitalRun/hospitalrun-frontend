@@ -146,42 +146,30 @@ const NewMedicationRequest = () => {
           onChange={onMedicationChange}
         />
         <div className="form-group">
-        <Label
-          text={t('medications.medication.status')}
-          title="status"
-          isRequired
-        />
-        <Select 
-          id="status"
-          options={statusOptionsNew}
-          defaultSelected={statusOptionsNew.filter(
-            ({ value }) => value === newMedicationRequest.status,
-          )}
-          onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
-        />
-        </div>
-        <div className="form-group">
-        <Label
-          text={t('medications.medication.intent')}
-          title="intent"
-          isRequired
-        />
-        <Select 
-          id="intent"
-          options={intentOptions}
-          defaultSelected={intentOptions.filter(
-            ({ value }) => value === newMedicationRequest.intent,
-          )}
-          onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
-        />
-        </div>
-        <div className="form-group">
-          <Label
-            text={t('medications.medication.priority')}
-            title="priority"
-            isRequired
+          <Label text={t('medications.medication.status')} title="status" isRequired />
+          <Select
+            id="status"
+            options={statusOptionsNew}
+            defaultSelected={statusOptionsNew.filter(
+              ({ value }) => value === newMedicationRequest.status,
+            )}
+            onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
           />
-          <Select 
+        </div>
+        <div className="form-group">
+          <Label text={t('medications.medication.intent')} title="intent" isRequired />
+          <Select
+            id="intent"
+            options={intentOptions}
+            defaultSelected={intentOptions.filter(
+              ({ value }) => value === newMedicationRequest.intent,
+            )}
+            onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
+          />
+        </div>
+        <div className="form-group">
+          <Label text={t('medications.medication.priority')} title="priority" isRequired />
+          <Select
             id="priority"
             options={priorityOptions}
             defaultSelected={priorityOptions.filter(

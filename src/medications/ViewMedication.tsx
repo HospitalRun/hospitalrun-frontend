@@ -224,39 +224,27 @@ const ViewMedication = () => {
         <div className="border-bottom" />
         <Row>
           <Column>
-            <Label
-            title="status"
-            text={t('medications.medication.status')}
-            isRequired
-            />
+            <Label title="status" text={t('medications.medication.status')} isRequired />
             <Select
-            id="status"
-            options={statusOptionsEdit}
-            onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
+              id="status"
+              options={statusOptionsEdit}
+              onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
             />
           </Column>
           <Column>
-            <Label
-            title="intent"
-            text={t('medications.medication.intent')}
-            isRequired
-            />
+            <Label title="intent" text={t('medications.medication.intent')} isRequired />
             <Select
-            id="intent"
-            options={intentOptions}
-            onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
+              id="intent"
+              options={intentOptions}
+              onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
             />
           </Column>
           <Column>
-            <Label
-            title="priority"
-            text={t('medications.medication.priority')}
-            isRequired
-            />
+            <Label title="priority" text={t('medications.medication.priority')} isRequired />
             <Select
-            id="priority"
-            options={priorityOptions}
-            onChange={(values) => onFieldChange && onFieldChange('priority', values[0])}
+              id="priority"
+              options={priorityOptions}
+              onChange={(values) => onFieldChange && onFieldChange('priority', values[0])}
             />
           </Column>
         </Row>

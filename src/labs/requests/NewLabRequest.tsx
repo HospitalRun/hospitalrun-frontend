@@ -1,4 +1,13 @@
-import { Select, Typeahead, Label, Button, Alert, Toast, Column, Row } from '@hospitalrun/components'
+import {
+  Select,
+  Typeahead,
+  Label,
+  Button,
+  Alert,
+  Toast,
+  Column,
+  Row,
+} from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -144,18 +153,14 @@ const NewLabRequest = () => {
           </Column>
           <Column>
             <div className="form-group">
-              <Label
-              text={t('patient.visit')}
-              title="visit"
-              isRequired
-              />
-              <Select 
-              id="visit"
-              options={visitOptions || []}
-              defaultSelected={defaultSelectedVisitsOption()}
-              onChange={(values) => {
-                onVisitChange(values[0])
-              }}
+              <Label text={t('patient.visit')} title="visit" isRequired />
+              <Select
+                id="visit"
+                options={visitOptions || []}
+                defaultSelected={defaultSelectedVisitsOption()}
+                onChange={(values) => {
+                  onVisitChange(values[0])
+                }}
               />
             </div>
           </Column>

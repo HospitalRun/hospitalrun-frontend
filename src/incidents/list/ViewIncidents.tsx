@@ -46,11 +46,8 @@ const ViewIncidents = () => {
     <Container>
       <Row>
         <Column md={3} lg={2}>
-          <Label
-            text={t('incidents.filterTitle')}
-            title="type"
-          />
-          <Select 
+          <Label text={t('incidents.filterTitle')} title="type" />
+          <Select
             id="type"
             options={filterOptions}
             defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}

@@ -1,11 +1,10 @@
+import { Select, Label } from '@hospitalrun/components'
 import sortBy from 'lodash/sortBy'
 import React, { useState } from 'react'
 
 import i18n, { resources } from '../../config/i18n'
 import useTranslator from '../../hooks/useTranslator'
 import { Option } from './Option'
-import { Select, Label } from '@hospitalrun/components'
-
 
 const LanguageSelector = () => {
   const { t } = useTranslator()
@@ -24,11 +23,8 @@ const LanguageSelector = () => {
 
   return (
     <>
-      <Label
-        text={t('settings.language.label')}
-        title="language"
-      />
-      <Select 
+      <Label text={t('settings.language.label')} title="language" />
+      <Select
         id="language"
         options={languageOptions}
         defaultSelected={languageOptions.filter(({ value }) => value === selected)}

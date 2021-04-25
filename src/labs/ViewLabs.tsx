@@ -79,15 +79,12 @@ const ViewLabs = () => {
     <Container>
       <Row>
         <Column md={3} lg={2}>
-          <Label
-          title="type"
-          text={t('labs.filterTitle')}
-          />
+          <Label title="type" text={t('labs.filterTitle')} />
           <Select
-          id="type"
-          options={filterOptions}
-          onChange={(values) => setSearchFilter(values[0] as LabFilter)}
-          defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
+            id="type"
+            options={filterOptions}
+            onChange={(values) => setSearchFilter(values[0] as LabFilter)}
+            defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
           />
         </Column>
         <Column>

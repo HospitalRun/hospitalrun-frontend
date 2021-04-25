@@ -89,12 +89,8 @@ const VisitForm = (props: Props) => {
       </Row>
       <Row>
         <Column sm={12}>
-          <Label
-            text={t('patient.visits.status')}
-            title="status"
-            isRequired
-          />
-          <Select 
+          <Label text={t('patient.visits.status')} title="status" isRequired />
+          <Select
             id="status"
             options={statusOptions}
             defaultSelected={statusOptions.filter(({ value }) => value === status)}

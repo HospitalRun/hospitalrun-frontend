@@ -85,52 +85,44 @@ const CareGoalForm = (props: Props) => {
       </Row>
       <Row>
         <Column sm={12}>
-          <Label
-          title="priority"
-          text={t('patient.careGoal.priority.label')}
-          isRequired
-          />
+          <Label title="priority" text={t('patient.careGoal.priority.label')} isRequired />
           <Select
-          id="priority"
-          options={priorityOptions}
-          onChange={onPriorityChange}
-          defaultSelected={priorityOptions.filter(({ value }) => value === priority)}
+            id="priority"
+            options={priorityOptions}
+            onChange={onPriorityChange}
+            defaultSelected={priorityOptions.filter(({ value }) => value === priority)}
           />
         </Column>
       </Row>
       <Row>
         <Column sm={6}>
-          <Label
-          title="status"
-          text={t('patient.careGoal.status')}
-          isRequired
-          />
+          <Label title="status" text={t('patient.careGoal.status')} isRequired />
           <Select
-          id="status"
-          options={statusOptions}
-          onChange={(values) => {
-            onFieldChange('status', values[0])
-            setStatus(values[0] as CareGoalStatus)
-          }}
-          defaultSelected={statusOptions.filter(({ value }) => value === status)}
+            id="status"
+            options={statusOptions}
+            onChange={(values) => {
+              onFieldChange('status', values[0])
+              setStatus(values[0] as CareGoalStatus)
+            }}
+            defaultSelected={statusOptions.filter(({ value }) => value === status)}
           />
         </Column>
         <Column sm={6}>
           <Label
-          title="achievementStatus"
-          text={t('patient.careGoal.achievementStatus')}
-          isRequired
+            title="achievementStatus"
+            text={t('patient.careGoal.achievementStatus')}
+            isRequired
           />
           <Select
-          id="achievementStatus"
-          options={achievementsStatusOptions}
-          onChange={(values) => {
-            onFieldChange('achievementStatus', values[0])
-            setAchievementStatus(values[0] as CareGoalAchievementStatus)
-          }}
-          defaultSelected={achievementsStatusOptions.filter(
-            ({ value }) => value === achievementStatus,
-          )}
+            id="achievementStatus"
+            options={achievementsStatusOptions}
+            onChange={(values) => {
+              onFieldChange('achievementStatus', values[0])
+              setAchievementStatus(values[0] as CareGoalAchievementStatus)
+            }}
+            defaultSelected={achievementsStatusOptions.filter(
+              ({ value }) => value === achievementStatus,
+            )}
           />
         </Column>
       </Row>

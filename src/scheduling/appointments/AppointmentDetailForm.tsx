@@ -114,11 +114,8 @@ const AppointmentDetailForm = (props: Props) => {
       </div>
       <div className="row">
         <div className="col">
-          <Label
-            text={t('scheduling.appointment.type')}
-            title="type"
-          />
-          <Select 
+          <Label text={t('scheduling.appointment.type')} title="type" />
+          <Select
             id="type"
             options={typeOptions}
             defaultSelected={typeOptions.filter(({ value }) => value === appointment.type)}

@@ -138,23 +138,17 @@ const GeneralInformation = (props: Props): ReactElement => {
         </div>
         <div className="row">
           <div className="col">
-          <Label
-            text={t('patient.sex')}
-            title="sex"
-          />
-          <Select 
-            id="sex"
-            options={sexOptions}
-            defaultSelected={sexOptions.filter(({ value }) => value === patient.sex)}
-            onChange={(values) => onFieldChange('sex', values[0])}
-          />
+            <Label text={t('patient.sex')} title="sex" />
+            <Select
+              id="sex"
+              options={sexOptions}
+              defaultSelected={sexOptions.filter(({ value }) => value === patient.sex)}
+              onChange={(values) => onFieldChange('sex', values[0])}
+            />
           </div>
           <div className="col">
-            <Label
-              text={t('patient.type')}
-              title="type"
-            />
-            <Select 
+            <Label text={t('patient.type')} title="type" />
+            <Select
               id="type"
               options={typeOptions}
               defaultSelected={typeOptions.filter(({ value }) => value === patient.type)}
@@ -162,11 +156,8 @@ const GeneralInformation = (props: Props): ReactElement => {
             />
           </div>
           <div className="col">
-            <Label
-              text={t('patient.bloodType')}
-              title="bloodType"
-            />
-            <Select 
+            <Label text={t('patient.bloodType')} title="bloodType" />
+            <Select
               id="bloodType"
               options={bloodTypeOptions}
               defaultSelected={bloodTypeOptions.filter(({ value }) => value === patient.bloodType)}

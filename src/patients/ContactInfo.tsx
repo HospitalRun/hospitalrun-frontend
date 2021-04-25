@@ -80,13 +80,11 @@ const ContactInfo = (props: Props): ReactElement => {
     return (
       <Row key={entry.id}>
         <Column sm={4}>
-          <Label
-          text={`${name}Type${i}`}
-          />
+          <Label text={`${name}Type${i}`} />
           <Select
-          id="filterStatus"
-          options={typeOptions}
-          onChange={(values) => onTypeChange(values[0], i)}
+            id="filterStatus"
+            options={typeOptions}
+            onChange={(values) => onTypeChange(values[0], i)}
           />
         </Column>
         <Column sm={8}>

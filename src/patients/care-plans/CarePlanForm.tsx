@@ -87,12 +87,8 @@ const CarePlanForm = (props: Props) => {
       <Row>
         <Column sm={12}>
           {/* add feedback in next round */}
-          <Label
-            text={t('patient.carePlan.condition')}
-            title="condition"
-            isRequired
-          />
-          <Select 
+          <Label text={t('patient.carePlan.condition')} title="condition" isRequired />
+          <Select
             id="condition"
             options={conditionOptions}
             defaultSelected={conditionOptions.filter(({ value }) => value === condition)}
@@ -106,12 +102,8 @@ const CarePlanForm = (props: Props) => {
       </Row>
       <Row>
         <Column sm={6}>
-          <Label
-            text={t('patient.carePlan.status')}
-            title="status"
-            isRequired
-          />
-          <Select 
+          <Label text={t('patient.carePlan.status')} title="status" isRequired />
+          <Select
             id="status"
             options={statusOptions}
             defaultSelected={statusOptions.filter(({ value }) => value === status)}
@@ -123,12 +115,8 @@ const CarePlanForm = (props: Props) => {
           />
         </Column>
         <Column sm={6}>
-          <Label
-            text={t('patient.carePlan.intent')}
-            title="intent"
-            isRequired
-          />
-          <Select 
+          <Label text={t('patient.carePlan.intent')} title="intent" isRequired />
+          <Select
             id="intent"
             options={intentOptions}
             defaultSelected={intentOptions.filter(({ value }) => value === intent)}

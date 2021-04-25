@@ -131,37 +131,29 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <Label
-          title="visit"
-          text={t('patient.diagnoses.visit')}
-          isRequired={false}
-          />
+          <Label title="visit" text={t('patient.diagnoses.visit')} isRequired={false} />
           <Select
-          id="visit"
-          options={patientVisits || []}
-          onChange={(values) => {
-            onFieldChange('visit', values[0])
-          }}
-          defaultSelected={defaultSelectedVisitOption()}
+            id="visit"
+            options={patientVisits || []}
+            onChange={(values) => {
+              onFieldChange('visit', values[0])
+            }}
+            defaultSelected={defaultSelectedVisitOption()}
           />
         </Column>
       </Row>
 
       <Row>
         <Column md={12}>
-          <Label
-          title="status"
-          text={t('patient.diagnoses.status')}
-          isRequired
-          />
+          <Label title="status" text={t('patient.diagnoses.status')} isRequired />
           <Select
-          id="status"
-          options={statusOptions}
-          onChange={(values) => {
-            onFieldChange('status', values[0])
-            setStatus(values[0] as DiagnosisStatus)
-          }}
-          defaultSelected={statusOptions.filter(({ value }) => value === status)}
+            id="status"
+            options={statusOptions}
+            onChange={(values) => {
+              onFieldChange('status', values[0])
+              setStatus(values[0] as DiagnosisStatus)
+            }}
+            defaultSelected={statusOptions.filter(({ value }) => value === status)}
           />
         </Column>
       </Row>

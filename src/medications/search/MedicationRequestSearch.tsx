@@ -44,15 +44,12 @@ const MedicationRequestSearch = (props: Props) => {
   return (
     <Row>
       <Column md={3} lg={2}>
-          <Label
-          title="filterStatus"
-          text={t('medications.filterTitle')}
-          />
-          <Select
+        <Label title="filterStatus" text={t('medications.filterTitle')} />
+        <Select
           id="filterStatus"
           options={filterOptions}
           onChange={(values) => onFilterChange(values[0] as MedicationStatus)}
-          />
+        />
       </Column>
       <Column>
         <TextInputWithLabelFormGroup
