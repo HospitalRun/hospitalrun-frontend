@@ -1,7 +1,7 @@
 import { Select, Label, Spinner, Row, Column, Icon } from '@hospitalrun/components'
 import React, { useEffect, ReactElement } from 'react'
 
-import { Option } from '../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../shared/components/input/Option'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'

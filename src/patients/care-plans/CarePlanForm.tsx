@@ -2,7 +2,7 @@ import { Select, Label, Alert, Column, Row } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
 import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
-import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/Option'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'

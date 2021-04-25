@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/Option'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'

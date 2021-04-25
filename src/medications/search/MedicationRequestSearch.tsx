@@ -1,7 +1,7 @@
 import { Select, Label, Row, Column } from '@hospitalrun/components'
 import React, { ChangeEvent } from 'react'
 
-import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/Option'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import MedicationSearchRequest from '../models/MedicationSearchRequest'

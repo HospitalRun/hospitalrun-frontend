@@ -3,7 +3,9 @@ import React, { useState } from 'react'
 
 import i18n, { resources } from '../../config/i18n'
 import useTranslator from '../../hooks/useTranslator'
-import SelectWithLabelFormGroup, { Option } from './SelectWithLabelFormGroup'
+import { Option } from './Option'
+import { Select, Label } from '@hospitalrun/components'
+
 
 const LanguageSelector = () => {
   const { t } = useTranslator()
@@ -21,14 +23,18 @@ const LanguageSelector = () => {
   }
 
   return (
-    <SelectWithLabelFormGroup
-      name="language"
-      label={t('settings.language.label')}
-      options={languageOptions}
-      defaultSelected={languageOptions.filter(({ value }) => value === selected)}
-      onChange={(values) => onChange(values[0])}
-      isEditable
-    />
+    <>
+      <Label
+        text={t('settings.language.label')}
+        title="language"
+      />
+      <Select 
+        id="language"
+        options={languageOptions}
+        defaultSelected={languageOptions.filter(({ value }) => value === selected)}
+        onChange={(values) => onChange(values[0])}
+      />
+    </>
   )
 }
 

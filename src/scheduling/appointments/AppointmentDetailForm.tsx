@@ -2,7 +2,7 @@ import { Select, Typeahead, Label, Alert } from '@hospitalrun/components'
 import React from 'react'
 
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
-import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/Option'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'

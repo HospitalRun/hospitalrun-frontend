@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarProvider'
 import { useUpdateTitle } from '../page-header/title/TitleContext'
-import { Option } from '../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../shared/components/input/Option'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useDebounce from '../shared/hooks/useDebounce'
 import useTranslator from '../shared/hooks/useTranslator'

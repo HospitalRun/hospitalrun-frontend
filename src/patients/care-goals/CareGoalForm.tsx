@@ -2,7 +2,7 @@ import { Select, Label, Alert, Row, Column } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
 import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
-import { Option } from '../../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../../shared/components/input/Option'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import CareGoal, { CareGoalStatus, CareGoalAchievementStatus } from '../../shared/model/CareGoal'

@@ -5,7 +5,7 @@ import subYears from 'date-fns/subYears'
 import React, { ReactElement } from 'react'
 
 import DatePickerWithLabelFormGroup from '../shared/components/input/DatePickerWithLabelFormGroup'
-import { Option } from '../shared/components/input/SelectWithLabelFormGroup'
+import { Option } from '../shared/components/input/Option'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
 import { ContactInfoPiece } from '../shared/model/ContactInformation'
