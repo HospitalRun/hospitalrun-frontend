@@ -1,0 +1,139 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "09:00"
+    timezone: Europe/Rome
+  open-pull-requests-limit: 10
+  labels:
+  - dependencies
+  ignore:
+  - dependency-name: escape-string-regexp
+    versions:
+    - ">= 5.a, < 6"
+  - dependency-name: eslint
+    versions:
+    - ">= 7.a, < 8"
+  - dependency-name: eslint-config-prettier
+    versions:
+    - ">= 8.a, < 9"
+  - dependency-name: eslint-plugin-react-hooks
+    versions:
+    - ">= 4.2.a, < 4.3"
+  - dependency-name: history
+    versions:
+    - ">= 5.a, < 6"
+  - dependency-name: jest
+    versions:
+    - ">= 25.a, < 26"
+  - dependency-name: jest
+    versions:
+    - ">= 26.3.a, < 26.4"
+  - dependency-name: jest
+    versions:
+    - ">= 26.a, < 27"
+  - dependency-name: react
+    versions:
+    - ">= 16.14.a, < 16.15"
+  - dependency-name: react-bootstrap
+    versions:
+    - ">= 1.4.a, < 1.5"
+  - dependency-name: react-dom
+    versions:
+    - ">= 17.a, < 18"
+  - dependency-name: react-query
+    versions:
+    - ">= 2.11.a, < 2.12"
+  - dependency-name: react-query
+    versions:
+    - ">= 2.12.a, < 2.13"
+  - dependency-name: react-query
+    versions:
+    - ">= 2.13.a, < 2.14"
+  - dependency-name: react-query
+    versions:
+    - ">= 2.14.a, < 2.15"
+  - dependency-name: react-query
+    versions:
+    - ">= 2.15.a, < 2.16"
+  - dependency-name: react-query
+    versions:
+    - ">= 2.26.a, < 2.27"
+  - dependency-name: react-query
+    versions:
+    - ">= 2.8.a, < 2.9"
+  - dependency-name: react-query
+    versions:
+    - ">= 3.a, < 4"
+  - dependency-name: react-scripts
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: "@testing-library/react-hooks"
+    versions:
+    - ">= 5.a, < 6"
+  - dependency-name: "@testing-library/user-event"
+    versions:
+    - ">= 13.0.a, < 13.1"
+  - dependency-name: "@testing-library/user-event"
+    versions:
+    - ">= 13.a, < 14"
+  - dependency-name: typescript
+    versions:
+    - ">= 3.9.a, < 3.10"
+  - dependency-name: typescript
+    versions:
+    - ">= 4.0.a, < 4.1"
+  - dependency-name: typescript
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: "@typescript-eslint/eslint-plugin"
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: "@typescript-eslint/parser"
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: "@types/node"
+    versions:
+    - ">= 14.14.a, < 14.15"
+  - dependency-name: "@commitlint/prompt"
+    versions:
+    - 12.0.0
+    - 12.0.1
+    - 12.1.0
+  - dependency-name: eslint-plugin-jest
+    versions:
+    - 24.2.0
+    - 24.2.1
+  - dependency-name: "@testing-library/user-event"
+    versions:
+    - 12.8.0
+    - 12.8.1
+    - 12.8.2
+  - dependency-name: i18next
+    versions:
+    - 19.9.0
+    - 19.9.1
+  - dependency-name: date-fns
+    versions:
+    - 2.18.0
+  - dependency-name: husky
+    versions:
+    - 5.1.0
+    - 5.1.1
+    - 5.1.2
+  - dependency-name: "@commitlint/cli"
+    versions:
+    - 12.0.0
+    - 12.0.1
+  - dependency-name: "@commitlint/core"
+    versions:
+    - 12.0.0
+    - 12.0.1
+  - dependency-name: react-select-event
+    versions:
+    - 5.2.0
+  - dependency-name: react-dom
+    versions:
+    - 16.14.0
