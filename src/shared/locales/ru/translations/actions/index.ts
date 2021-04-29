@@ -16,5 +16,6 @@ export default {
     page: 'Страница',
     add: 'Добавить',
     view: 'Просмотр',
+    logout: 'выйти',
   },
 }
