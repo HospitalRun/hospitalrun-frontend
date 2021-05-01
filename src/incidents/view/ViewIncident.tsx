@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import { Button, Tab, Panel, TabsHeader } from '@hospitalrun/components'
-import React, { useState } from 'react'
-=======
-import React, { useEffect } from 'react'
->>>>>>> master
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 

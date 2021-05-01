@@ -16,35 +16,12 @@ interface Props {
 function ViewIncidentDetails(props: Props) {
   const { incident, isLoading } = props
   const { t } = useTranslator()
-  const { data, isLoading } = useIncident(incidentId)
-  const { data: patient } = usePatient(data?.patient)
-  const [mutate] = useResolveIncident()
+  const { data: patient } = usePatient(incident?.patient)
 
   if (incident === undefined || isLoading) {
     return <Spinner type="DotLoader" loading />
   }
 
-  const onResolve = async () => {
-    await mutate(data)
-    history.push('/incidents')
-  }
-
-  const getButtons = () => {
-    const buttons: React.ReactNode[] = []
-    if (data.status === 'resolved') {
-      return buttons
-    }
-
-    if (permissions.includes(Permissions.ResolveIncident)) {
-      buttons.push(
-        <Button onClick={onResolve} color="primary" key="incidents.reports.resolve">
-          {t('incidents.reports.resolve')}
-        </Button>,
-      )
-    }
-
-    return buttons
-  }
 
   const getResolvedOnDate = () => {
     if (incident.status === 'resolved' && incident.resolvedOn) {
@@ -124,7 +101,7 @@ function ViewIncidentDetails(props: Props) {
           />
         </Column>
       </Row>
-      {data.patient && (
+      {incident.patient && (
         <Row>
           <Column md={6}>
             <TextInputWithLabelFormGroup
@@ -134,11 +111,6 @@ function ViewIncidentDetails(props: Props) {
             />
           </Column>
         </Row>
-      )}
-      {data.resolvedOn === undefined && (
-        <div className="row float-right">
-          <div className="btn-group btn-group-lg mt-3 mr-3">{getButtons()}</div>
-        </div>
       )}
     </>
   )

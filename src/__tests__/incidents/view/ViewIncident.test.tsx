@@ -1,15 +1,6 @@
-<<<<<<< HEAD
-import { Button, Tab, TabsHeader } from '@hospitalrun/components'
-import { mount, ReactWrapper } from 'enzyme'
-import { createMemoryHistory } from 'history'
-import React from 'react'
-import { act } from 'react-dom/test-utils'
-import { ReactQueryCacheProvider, QueryCache } from 'react-query'
-=======
 import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
->>>>>>> master
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -17,14 +8,8 @@ import thunk from 'redux-thunk'
 
 import ViewIncident from '../../../incidents/view/ViewIncident'
 import * as breadcrumbUtil from '../../../page-header/breadcrumbs/useAddBreadcrumbs'
-<<<<<<< HEAD
-import * as ButtonBarProvider from '../../../page-header/button-toolbar/ButtonBarProvider'
-import * as titleUtil from '../../../page-header/title/TitleContext'
-import TextFieldWithLabelFormGroup from '../../../shared/components/input/TextFieldWithLabelFormGroup'
-=======
 import { ButtonBarProvider } from '../../../page-header/button-toolbar/ButtonBarProvider'
 import { TitleProvider } from '../../../page-header/title/TitleContext'
->>>>>>> master
 import IncidentRepository from '../../../shared/db/IncidentRepository'
 import Incident from '../../../shared/model/Incident'
 import Note from '../../../shared/model/Note'
