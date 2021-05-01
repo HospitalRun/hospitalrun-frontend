@@ -7,7 +7,6 @@ import executeMutation from '../../test-utils/use-mutation.util'
 
 describe('useResolvedIncident', () => {
   it('should mark incident as resolved and save', async () => {
-    const expectedStatus = 'resolved'
     const expectedResolvedDate = new Date(Date.now())
     Date.now = jest.fn().mockReturnValue(expectedResolvedDate)
 
@@ -26,7 +25,6 @@ describe('useResolvedIncident', () => {
     const expectedIncident = {
       ...givenIncident,
       resolvedOn: expectedResolvedDate.toISOString(),
-      // status: expectedStatus,
     } as Incident
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue(expectedIncident)
 
