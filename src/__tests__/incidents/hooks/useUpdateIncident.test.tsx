@@ -17,7 +17,7 @@ describe('useResolvedIncident', () => {
       date: subDays(new Date(), 3).toISOString(),
       department: 'some department',
       description: 'some description',
-      status: 'reported',
+      status: 'resolved',
       code: 'I-some-code',
       reportedOn: subDays(new Date(), 2).toISOString(),
       reportedBy: 'some user',
@@ -26,7 +26,7 @@ describe('useResolvedIncident', () => {
     const expectedIncident = {
       ...givenIncident,
       resolvedOn: expectedResolvedDate.toISOString(),
-      status: expectedStatus,
+      // status: expectedStatus,
     } as Incident
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue(expectedIncident)
 
