@@ -65,12 +65,12 @@ it('should not render ViewIncidentDetails if there are no Permissions', async ()
   ).not.toBeInTheDocument()
 })
 
-  // it('should render tabs header', async () => {
-  //   const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
+it('should render tabs header', async () => {
+  const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
 
-  //   const tabs = wrapper.find(TabsHeader)
-  //   expect(tabs.exists()).toBeTruthy()
-  // })
+  const tabs = wrapper.find(TabsHeader)
+  expect(tabs.exists()).toBeTruthy()
+})
 
   // it('should render notes tab when clicked', async () => {
   //   const { wrapper } = await setup([Permissions.ViewIncident], mockedIncident)
