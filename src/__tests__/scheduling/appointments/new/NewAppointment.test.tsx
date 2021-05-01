@@ -1,21 +1,20 @@
-import * as components from '@hospitalrun/components'
-import { Alert, Button, Typeahead } from '@hospitalrun/components'
-import { act } from '@testing-library/react'
+import { Toaster } from '@hospitalrun/components'
+import { render, screen, waitFor, fireEvent, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import addMinutes from 'date-fns/addMinutes'
 import roundToNearestMinutes from 'date-fns/roundToNearestMinutes'
-import { mount } from 'enzyme'
-import { createMemoryHistory, MemoryHistory } from 'history'
+import { createMemoryHistory } from 'history'
 import React from 'react'
+import { ReactQueryConfigProvider } from 'react-query'
 import { Provider } from 'react-redux'
-import { Router, Route } from 'react-router-dom'
-import createMockStore, { MockStore } from 'redux-mock-store'
+import { Router } from 'react-router'
+import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as titleUtil from '../../../../page-header/title/TitleContext'
-import AppointmentDetailForm from '../../../../scheduling/appointments/AppointmentDetailForm'
 import NewAppointment from '../../../../scheduling/appointments/new/NewAppointment'
-import DateTimePickerWithLabelFormGroup from '../../../../shared/components/input/DateTimePickerWithLabelFormGroup'
 import AppointmentRepository from '../../../../shared/db/AppointmentRepository'
+import PatientRepository from '../../../../shared/db/PatientRepository'
 import Appointment from '../../../../shared/model/Appointment'
 import Patient from '../../../../shared/model/Patient'
 import { RootState } from '../../../../shared/store'
@@ -24,71 +23,76 @@ const { TitleProvider } = titleUtil
 const mockStore = createMockStore<RootState, any>([thunk])
 
 describe('New Appointment', () => {
-  let history: MemoryHistory
-  let store: MockStore
-  const expectedNewAppointment = { id: '123' }
-
-  const setup = () => {
-    jest.spyOn(titleUtil, 'useUpdateTitle').mockImplementation(() => jest.fn())
-    jest
-      .spyOn(AppointmentRepository, 'save')
-      .mockResolvedValue(expectedNewAppointment as Appointment)
-    history = createMemoryHistory()
-    store = mockStore({
-      appointment: {
-        appointment: {} as Appointment,
-        patient: {} as Patient,
-      },
-    } as any)
-
-    history.push('/appointments/new')
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Route path="/appointments/new">
-            <TitleProvider>
-              <NewAppointment />
-            </TitleProvider>
-          </Route>
-        </Router>
-      </Provider>,
-    )
-
-    wrapper.update()
-    return wrapper
+  const expectedPatient: Patient = {
+    addresses: [],
+    bloodType: 'o',
+    careGoals: [],
+    carePlans: [],
+    code: 'P-qrQc3FkCO',
+    createdAt: new Date().toISOString(),
+    dateOfBirth: new Date(0).toISOString(),
+    emails: [],
+    id: '123',
+    index: '',
+    isApproximateDateOfBirth: false,
+    phoneNumbers: [],
+    rev: '',
+    sex: 'female',
+    updatedAt: new Date().toISOString(),
+    visits: [],
+    givenName: 'Popo',
+    prefix: 'Mr',
+    fullName: 'Mr Popo',
   }
 
-  describe('header', () => {
-    it('should have called useUpdateTitle hook', async () => {
-      await act(async () => {
-        await setup()
-      })
+  const noRetryConfig = {
+    queries: {
+      retry: false,
+    },
+  }
 
-      expect(titleUtil.useUpdateTitle).toHaveBeenCalled()
-    })
-  })
+  const setup = () => {
+    const expectedAppointment = { id: '123' } as Appointment
+    jest.spyOn(AppointmentRepository, 'save').mockResolvedValue(expectedAppointment)
+    jest.spyOn(PatientRepository, 'search').mockResolvedValue([expectedPatient])
+
+    const history = createMemoryHistory({ initialEntries: ['/appointments/new'] })
+
+    return {
+      expectedAppointment,
+      history,
+      ...render(
+        <ReactQueryConfigProvider config={noRetryConfig}>
+          <Provider store={mockStore({} as any)}>
+            <Router history={history}>
+              <TitleProvider>
+                <NewAppointment />
+              </TitleProvider>
+            </Router>
+            <Toaster draggable hideProgressBar />
+          </Provider>
+        </ReactQueryConfigProvider>,
+      ),
+    }
+  }
 
   describe('layout', () => {
     it('should render an Appointment Detail Component', async () => {
-      let wrapper: any
-      await act(async () => {
-        wrapper = await setup()
-      })
+      setup()
 
-      expect(wrapper.find(AppointmentDetailForm)).toHaveLength(1)
+      expect(await screen.findByLabelText('new appointment form')).toBeInTheDocument()
     })
   })
 
   describe('on save click', () => {
     it('should have error when error saving without patient', async () => {
-      let wrapper: any
-      await act(async () => {
-        wrapper = await setup()
-      })
+      setup()
+
       const expectedError = {
         message: 'scheduling.appointment.errors.createAppointmentError',
         patient: 'scheduling.appointment.errors.patientRequired',
       }
+
       const expectedAppointment = {
         patient: '',
         startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
@@ -98,88 +102,68 @@ describe('New Appointment', () => {
         ).toISOString(),
         location: 'location',
         reason: 'reason',
-        type: 'type',
+        type: 'routine',
       } as Appointment
 
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patient', expectedAppointment.patient)
-      })
+      userEvent.type(
+        screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
+        expectedAppointment.patient,
+      )
 
-      wrapper.update()
+      userEvent.click(screen.getByText(/scheduling.appointments.createAppointment/i))
 
-      const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
-      const onClick = saveButton.prop('onClick') as any
-
-      await act(async () => {
-        await onClick()
-      })
-      wrapper.update()
-      const alert = wrapper.find(Alert)
-      const typeahead = wrapper.find(Typeahead)
-
-      expect(AppointmentRepository.save).toHaveBeenCalledTimes(0)
-      expect(alert.prop('message')).toEqual(expectedError.message)
-      expect(typeahead.prop('isInvalid')).toBeTruthy()
+      expect(screen.getByText(expectedError.message)).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(/scheduling\.appointment\.patient/i)).toHaveClass(
+        'is-invalid',
+      )
+      expect(AppointmentRepository.save).not.toHaveBeenCalled()
     })
 
     it('should have error when error saving with end time earlier than start time', async () => {
-      let wrapper: any
-      await act(async () => {
-        wrapper = await setup()
-      })
+      setup()
+
       const expectedError = {
         message: 'scheduling.appointment.errors.createAppointmentError',
         startDateTime: 'scheduling.appointment.errors.startDateMustBeBeforeEndDate',
       }
+
       const expectedAppointment = {
-        patient: 'Mr Popo',
+        patient: expectedPatient.fullName,
         startDateTime: new Date(2020, 10, 10, 0, 0, 0, 0).toISOString(),
         endDateTime: new Date(1957, 10, 10, 0, 0, 0, 0).toISOString(),
         location: 'location',
         reason: 'reason',
-        type: 'type',
+        type: 'routine',
       } as Appointment
 
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patient', expectedAppointment.patient)
-        onFieldChange('startDateTime', expectedAppointment.startDateTime)
-        onFieldChange('endDateTime', expectedAppointment.endDateTime)
+      userEvent.type(
+        screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
+        expectedAppointment.patient,
+      )
+      fireEvent.change(within(screen.getByTestId('startDateDateTimePicker')).getByRole('textbox'), {
+        target: { value: expectedAppointment.startDateTime },
       })
-
-      wrapper.update()
-
-      const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
-      const onClick = saveButton.prop('onClick') as any
-
-      await act(async () => {
-        await onClick()
+      fireEvent.change(within(screen.getByTestId('endDateDateTimePicker')).getByRole('textbox'), {
+        target: { value: expectedAppointment.endDateTime },
       })
-      wrapper.update()
-      const alert = wrapper.find(Alert)
-      const typeahead = wrapper.find(Typeahead)
-      const dateInput = wrapper.find(DateTimePickerWithLabelFormGroup).at(0)
+      userEvent.click(screen.getByText(/scheduling.appointments.createAppointment/i))
 
+      expect(screen.getByText(expectedError.message)).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(/scheduling\.appointment\.patient/i)).toHaveClass(
+        'is-invalid',
+      )
+      expect(
+        within(screen.getByTestId('startDateDateTimePicker')).getByRole('textbox'),
+      ).toHaveClass('is-invalid')
+      expect(screen.getByText(expectedError.startDateTime)).toBeInTheDocument()
       expect(AppointmentRepository.save).toHaveBeenCalledTimes(0)
-      expect(alert.prop('message')).toEqual(expectedError.message)
-      expect(typeahead.prop('isInvalid')).toBeTruthy()
-      expect(dateInput.prop('isInvalid')).toBeTruthy()
-      expect(dateInput.prop('feedback')).toEqual(expectedError.startDateTime)
     })
 
     it('should call AppointmentRepo.save when save button is clicked', async () => {
-      let wrapper: any
-      await act(async () => {
-        wrapper = await setup()
-      })
+      setup()
 
       const expectedAppointment = {
-        patient: '123',
+        patient: expectedPatient.fullName,
         startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
         endDateTime: addMinutes(
           roundToNearestMinutes(new Date(), { nearestTo: 15 }),
@@ -187,123 +171,79 @@ describe('New Appointment', () => {
         ).toISOString(),
         location: 'location',
         reason: 'reason',
-        type: 'type',
+        type: 'routine',
       } as Appointment
 
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patient', expectedAppointment.patient)
+      userEvent.type(
+        screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
+        expectedAppointment.patient,
+      )
+      userEvent.click(
+        await screen.findByText(`${expectedPatient.fullName} (${expectedPatient.code})`),
+      )
+
+      fireEvent.change(within(screen.getByTestId('startDateDateTimePicker')).getByRole('textbox'), {
+        target: { value: expectedAppointment.startDateTime },
       })
 
-      wrapper.update()
-
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('startDateTime', expectedAppointment.startDateTime)
+      fireEvent.change(within(screen.getByTestId('endDateDateTimePicker')).getByRole('textbox'), {
+        target: { value: expectedAppointment.endDateTime },
       })
 
-      wrapper.update()
+      userEvent.type(
+        screen.getByRole('textbox', { name: /scheduling\.appointment\.location/i }),
+        expectedAppointment.location,
+      )
 
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('endDateTime', expectedAppointment.endDateTime)
+      userEvent.type(
+        screen.getByPlaceholderText('-- Choose --'),
+        `${expectedAppointment.type}{arrowdown}{enter}`,
+      )
+
+      const reasonInput = screen.queryAllByRole('textbox', { hidden: false })[3]
+      userEvent.type(reasonInput, expectedAppointment.reason)
+
+      userEvent.click(
+        screen.getByRole('button', {
+          name: /scheduling.appointments.createAppointment/i,
+        }),
+      )
+
+      await waitFor(() => {
+        expect(AppointmentRepository.save).toHaveBeenCalledWith({
+          ...expectedAppointment,
+          patient: expectedPatient.id,
+        })
       })
-
-      wrapper.update()
-
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('location', expectedAppointment.location)
-      })
-
-      wrapper.update()
-
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('reason', expectedAppointment.reason)
-      })
-
-      wrapper.update()
-
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('type', expectedAppointment.type)
-      })
-
-      wrapper.update()
-
-      const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
-      const onClick = saveButton.prop('onClick') as any
-
-      await act(async () => {
-        await onClick()
-      })
-
-      expect(AppointmentRepository.save).toHaveBeenCalledWith(expectedAppointment)
-    })
+    }, 30000)
 
     it('should navigate to /appointments/:id when a new appointment is created', async () => {
-      jest.spyOn(components, 'Toast')
-      let wrapper: any
-      await act(async () => {
-        wrapper = await setup()
-      })
+      const { history, expectedAppointment } = setup()
 
-      const expectedAppointment = {
-        patient: '123',
-        startDateTime: roundToNearestMinutes(new Date(), { nearestTo: 15 }).toISOString(),
-        endDateTime: addMinutes(
-          roundToNearestMinutes(new Date(), { nearestTo: 15 }),
-          60,
-        ).toISOString(),
-        location: 'location',
-        reason: 'reason',
-        type: 'type',
-      } as Appointment
-
-      act(() => {
-        const appointmentDetailForm = wrapper.find(AppointmentDetailForm)
-        const onFieldChange = appointmentDetailForm.prop('onFieldChange')
-        onFieldChange('patient', expectedAppointment.patient)
-      })
-      wrapper.update()
-      const saveButton = wrapper.find(Button).at(0)
-      expect(saveButton.text().trim()).toEqual('scheduling.appointments.createAppointment')
-      const onClick = saveButton.prop('onClick') as any
-
-      await act(async () => {
-        await onClick()
-      })
-
-      expect(history.location.pathname).toEqual(`/appointments/${expectedNewAppointment.id}`)
-      expect(components.Toast).toHaveBeenCalledWith(
-        'success',
-        'states.success',
-        `scheduling.appointment.successfullyCreated`,
+      userEvent.type(
+        screen.getByPlaceholderText(/scheduling\.appointment\.patient/i),
+        `${expectedPatient.fullName}`,
       )
+      userEvent.click(
+        await screen.findByText(`${expectedPatient.fullName} (${expectedPatient.code})`),
+      )
+
+      userEvent.click(screen.getByText(/scheduling.appointments.createAppointment/i))
+
+      await waitFor(() => {
+        expect(history.location.pathname).toEqual(`/appointments/${expectedAppointment.id}`)
+      })
+      await waitFor(() => {
+        expect(screen.getByText(`scheduling.appointment.successfullyCreated`)).toBeInTheDocument()
+      })
     })
   })
 
   describe('on cancel click', () => {
     it('should navigate back to /appointments', async () => {
-      let wrapper: any
-      await act(async () => {
-        wrapper = await setup()
-      })
+      const { history } = setup()
 
-      const cancelButton = wrapper.find(Button).at(1)
-
-      act(() => {
-        const onClick = cancelButton.prop('onClick') as any
-        onClick()
-      })
+      userEvent.click(screen.getByText(/actions\.cancel/i))
 
       expect(history.location.pathname).toEqual('/appointments')
     })

@@ -2,6 +2,7 @@ import { Column, Row, Spinner } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React from 'react'
 
+import usePatient from '../../patients/hooks/usePatient'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
@@ -15,9 +16,34 @@ interface Props {
 function ViewIncidentDetails(props: Props) {
   const { incident, isLoading } = props
   const { t } = useTranslator()
+  const { data, isLoading } = useIncident(incidentId)
+  const { data: patient } = usePatient(data?.patient)
+  const [mutate] = useResolveIncident()
 
   if (incident === undefined || isLoading) {
     return <Spinner type="DotLoader" loading />
+  }
+
+  const onResolve = async () => {
+    await mutate(data)
+    history.push('/incidents')
+  }
+
+  const getButtons = () => {
+    const buttons: React.ReactNode[] = []
+    if (data.status === 'resolved') {
+      return buttons
+    }
+
+    if (permissions.includes(Permissions.ResolveIncident)) {
+      buttons.push(
+        <Button onClick={onResolve} color="primary" key="incidents.reports.resolve">
+          {t('incidents.reports.resolve')}
+        </Button>,
+      )
+    }
+
+    return buttons
   }
 
   const getResolvedOnDate = () => {
@@ -98,6 +124,22 @@ function ViewIncidentDetails(props: Props) {
           />
         </Column>
       </Row>
+      {data.patient && (
+        <Row>
+          <Column md={6}>
+            <TextInputWithLabelFormGroup
+              label={t('incidents.reports.patient')}
+              name="patient"
+              value={patient?.fullName}
+            />
+          </Column>
+        </Row>
+      )}
+      {data.resolvedOn === undefined && (
+        <div className="row float-right">
+          <div className="btn-group btn-group-lg mt-3 mr-3">{getButtons()}</div>
+        </div>
+      )}
     </>
   )
 }

@@ -1,10 +1,8 @@
-import { act, renderHook } from '@testing-library/react-hooks'
-
 import useLabsSearch from '../../../labs/hooks/useLabsSearch'
 import LabSearchRequest from '../../../labs/model/LabSearchRequest'
 import LabRepository from '../../../shared/db/LabRepository'
 import Lab from '../../../shared/model/Lab'
-import waitUntilQueryIsSuccessful from '../../test-utils/wait-for-query.util'
+import executeQuery from '../../test-utils/use-query.util'
 
 describe('Use Labs Search', () => {
   const expectedLabs = [
@@ -13,13 +11,9 @@ describe('Use Labs Search', () => {
     },
   ] as Lab[]
 
-  const labRepositoryFindAllSpy = jest
-    .spyOn(LabRepository, 'findAll')
-    .mockResolvedValue(expectedLabs)
-  const labRepositorySearchSpy = jest.spyOn(LabRepository, 'search').mockResolvedValue(expectedLabs)
-
   beforeEach(() => {
-    labRepositoryFindAllSpy.mockClear()
+    jest.spyOn(LabRepository, 'findAll').mockResolvedValue(expectedLabs)
+    jest.spyOn(LabRepository, 'search').mockResolvedValue(expectedLabs)
   })
 
   it('should return all labs', async () => {
@@ -28,16 +22,10 @@ describe('Use Labs Search', () => {
       status: 'all',
     } as LabSearchRequest
 
-    let actualData: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useLabsSearch(expectedLabsSearchRequest))
-      const { result } = renderHookResult
-      await waitUntilQueryIsSuccessful(renderHookResult)
-      actualData = result.current.data
-    })
+    const actualData = await executeQuery(() => useLabsSearch(expectedLabsSearchRequest))
 
-    expect(labRepositoryFindAllSpy).toHaveBeenCalledTimes(1)
-    expect(labRepositorySearchSpy).not.toHaveBeenCalled()
+    expect(LabRepository.findAll).toHaveBeenCalledTimes(1)
+    expect(LabRepository.search).not.toHaveBeenCalled()
     expect(actualData).toEqual(expectedLabs)
   })
 
@@ -47,17 +35,11 @@ describe('Use Labs Search', () => {
       status: 'all',
     } as LabSearchRequest
 
-    let actualData: any
-    await act(async () => {
-      const renderHookResult = renderHook(() => useLabsSearch(expectedLabsSearchRequest))
-      const { result } = renderHookResult
-      await waitUntilQueryIsSuccessful(renderHookResult)
-      actualData = result.current.data
-    })
+    const actualData = await executeQuery(() => useLabsSearch(expectedLabsSearchRequest))
 
-    expect(labRepositoryFindAllSpy).not.toHaveBeenCalled()
-    expect(labRepositorySearchSpy).toHaveBeenCalledTimes(1)
-    expect(labRepositorySearchSpy).toHaveBeenCalledWith(
+    expect(LabRepository.findAll).not.toHaveBeenCalled()
+    expect(LabRepository.search).toHaveBeenCalledTimes(1)
+    expect(LabRepository.search).toHaveBeenCalledWith(
       expect.objectContaining(expectedLabsSearchRequest),
     )
     expect(actualData).toEqual(expectedLabs)

@@ -1,5 +1,5 @@
 import { Spinner, Button, Toast } from '@hospitalrun/components'
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -18,7 +18,9 @@ const EditAppointment = () => {
   const { id } = useParams()
 
   const updateTitle = useUpdateTitle()
-  updateTitle(t('scheduling.appointments.editAppointment'))
+  useEffect(() => {
+    updateTitle(t('scheduling.appointments.editAppointment'))
+  }, [updateTitle, t])
   const history = useHistory()
 
   const [newAppointment, setAppointment] = useState({} as Appointment)
@@ -85,7 +87,7 @@ const EditAppointment = () => {
         error={updateMutateError}
       />
       <div className="row float-right">
-        <div className="btn-group btn-group-lg">
+        <div className="btn-group btn-group-lg mr-3">
           <Button className="mr-2" color="success" onClick={onSave}>
             {t('scheduling.appointments.updateAppointment')}
           </Button>

@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { Button, Tab, Panel, TabsHeader } from '@hospitalrun/components'
 import React, { useState } from 'react'
+=======
+import React, { useEffect } from 'react'
+>>>>>>> master
 import { useSelector } from 'react-redux'
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 
@@ -38,6 +42,9 @@ const ViewIncident = () => {
     date: '',
   }
   const [editedNote, setEditedNote] = useState<Note>(newNoteState)
+  useEffect(() => {
+    updateTitle(t('incidents.reports.view'))
+  })
   useAddBreadcrumbs([
     {
       i18nKey: 'incidents.reports.view',

@@ -3,9 +3,7 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import useDebounce from '../../../shared/hooks/useDebounce'
 
 describe('useDebounce', () => {
-  beforeAll(() => jest.useFakeTimers())
-
-  afterAll(() => jest.useRealTimers())
+  beforeEach(() => jest.useFakeTimers())
 
   it('should set the next value after the input value has not changed for the specified amount of time', () => {
     const initialValue = 'initialValue'

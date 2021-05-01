@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 
 import PatientRepository from '../shared/db/PatientRepository'
 import Diagnosis from '../shared/model/Diagnosis'

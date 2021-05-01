@@ -72,6 +72,7 @@ const NewMedicationRequest = () => {
     setNewMedicationRequest((previousNewMedicationRequest) => ({
       ...previousNewMedicationRequest,
       patient: patient.id,
+      fullName: patient.fullName as string,
     }))
   }
 
@@ -123,7 +124,7 @@ const NewMedicationRequest = () => {
       {status === 'error' && (
         <Alert color="danger" title={t('states.error')} message={t(error.message || '')} />
       )}
-      <form>
+      <form aria-label="Medication Request form">
         <div className="form-group patient-typeahead">
           <Label htmlFor="patientTypeahead" isRequired text={t('medications.medication.patient')} />
           <Typeahead
@@ -225,7 +226,7 @@ const NewMedicationRequest = () => {
           />
         </div>
         <div className="row float-right">
-          <div className="btn-group btn-group-lg mt-3">
+          <div className="btn-group btn-group-lg mt-3 mr-3">
             <Button className="mr-2" color="success" onClick={onSave}>
               {t('medications.requests.new')}
             </Button>

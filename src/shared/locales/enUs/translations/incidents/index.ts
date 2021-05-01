@@ -6,9 +6,9 @@ export default {
       report: 'Report',
     },
     status: {
-      reported: 'reported',
-      resolved: 'resolved',
-      all: 'all',
+      reported: 'Reported',
+      resolved: 'Resolved',
+      all: 'All',
     },
     reports: {
       label: 'Reported Incidents',
@@ -21,6 +21,7 @@ export default {
       category: 'Category',
       categoryItem: 'Category Item',
       description: 'Description of Incident',
+      patient: 'Patient',
       code: 'Code',
       reportedBy: 'Reported By',
       reportedOn: 'Reported On',

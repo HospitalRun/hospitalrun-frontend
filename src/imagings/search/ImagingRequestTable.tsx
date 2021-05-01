@@ -37,7 +37,7 @@ const ImagingRequestTable = (props: Props) => {
         {
           label: t('imagings.imaging.requestedBy'),
           key: 'requestedBy',
-          formatter: (row) => extractUsername(row.requestedBy),
+          formatter: (row) => extractUsername(row.requestedByFullName || ''),
         },
         { label: t('imagings.imaging.status'), key: 'status' },
       ]}

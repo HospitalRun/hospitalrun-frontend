@@ -1,5 +1,7 @@
 import actions from './actions'
+import bloodType from './blood-type'
 import dashboard from './dashboard'
+import imagings from './imagings'
 import incidents from './incidents'
 import labs from './labs'
 import medications from './medications'
@@ -24,4 +26,6 @@ export default {
   ...patients,
   ...settings,
   ...medications,
+  ...bloodType,
+  ...imagings,
 }

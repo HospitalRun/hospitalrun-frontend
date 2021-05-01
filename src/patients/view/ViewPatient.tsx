@@ -22,6 +22,7 @@ import CareGoalTab from '../care-goals/CareGoalTab'
 import CarePlanTab from '../care-plans/CarePlanTab'
 import Diagnoses from '../diagnoses/Diagnoses'
 import GeneralInformation from '../GeneralInformation'
+import HistoryTab from '../history/HistoryTab'
 import usePatient from '../hooks/usePatient'
 import Labs from '../labs/Labs'
 import Medications from '../medications/Medications'
@@ -43,7 +44,9 @@ const ViewPatient = () => {
   const { data: patient, status } = usePatient(id)
 
   const updateTitle = useUpdateTitle()
-  updateTitle(t('patient.label'))
+  useEffect(() => {
+    updateTitle(t('patient.label'))
+  }, [updateTitle, t])
 
   const breadcrumbs = [
     { i18nKey: 'patients.label', location: '/patients' },
@@ -102,7 +105,7 @@ const ViewPatient = () => {
             onClick={() => history.push(`/patients/${patient.id}/appointments`)}
           />
           <Tab
-            active={location.pathname === `/patients/${patient.id}/allergies`}
+            active={location.pathname.startsWith(`/patients/${patient.id}/allergies`)}
             label={t('patient.allergies.label')}
             onClick={() => history.push(`/patients/${patient.id}/allergies`)}
           />
@@ -112,7 +115,7 @@ const ViewPatient = () => {
             onClick={() => history.push(`/patients/${patient.id}/diagnoses`)}
           />
           <Tab
-            active={location.pathname === `/patients/${patient.id}/notes`}
+            active={location.pathname.startsWith(`/patients/${patient.id}/notes`)}
             label={t('patient.notes.label')}
             onClick={() => history.push(`/patients/${patient.id}/notes`)}
           />
@@ -127,19 +130,24 @@ const ViewPatient = () => {
             onClick={() => history.push(`/patients/${patient.id}/labs`)}
           />
           <Tab
-            active={location.pathname === `/patients/${patient.id}/care-plans`}
+            active={location.pathname.startsWith(`/patients/${patient.id}/care-plans`)}
             label={t('patient.carePlan.label')}
             onClick={() => history.push(`/patients/${patient.id}/care-plans`)}
           />
           <Tab
-            active={location.pathname === `/patients/${patient.id}/care-goals`}
+            active={location.pathname.startsWith(`/patients/${patient.id}/care-goals`)}
             label={t('patient.careGoal.label')}
             onClick={() => history.push(`/patients/${patient.id}/care-goals`)}
           />
           <Tab
-            active={location.pathname === `/patients/${patient.id}/visits`}
+            active={location.pathname.startsWith(`/patients/${patient.id}/visits`)}
             label={t('patient.visits.label')}
             onClick={() => history.push(`/patients/${patient.id}/visits`)}
+          />
+          <Tab
+            active={location.pathname.startsWith(`/patients/${patient.id}/history`)}
+            label={t('patient.history.label')}
+            onClick={() => history.push(`/patients/${patient.id}/history`)}
           />
         </TabsHeader>
         <Panel>
@@ -175,6 +183,9 @@ const ViewPatient = () => {
           </Route>
           <Route path={`${path}/visits`}>
             <VisitTab patientId={patient.id} />
+          </Route>
+          <Route path={`${path}/history`}>
+            <HistoryTab patientId={patient.id} />
           </Route>
         </Panel>
       </div>

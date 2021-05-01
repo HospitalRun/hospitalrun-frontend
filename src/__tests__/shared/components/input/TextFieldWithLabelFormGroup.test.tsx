@@ -1,5 +1,5 @@
-import { Label, TextField } from '@hospitalrun/components'
-import { shallow } from 'enzyme'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import TextFieldWithLabelFormGroup from '../../../../shared/components/input/TextFieldWithLabelFormGroup'
@@ -8,7 +8,8 @@ describe('text field with label form group', () => {
   describe('layout', () => {
     it('should render a label', () => {
       const expectedName = 'test'
-      const wrapper = shallow(
+
+      render(
         <TextFieldWithLabelFormGroup
           name={expectedName}
           label="test"
@@ -18,36 +19,28 @@ describe('text field with label form group', () => {
         />,
       )
 
-      const label = wrapper.find(Label)
-      expect(label).toHaveLength(1)
-      expect(label.prop('htmlFor')).toEqual(`${expectedName}TextField`)
-      expect(label.prop('text')).toEqual(expectedName)
+      expect(screen.getByText(expectedName)).toHaveAttribute('for', `${expectedName}TextField`)
     })
 
     it('should render label as required if isRequired is true', () => {
-      const expectedName = 'test'
-      const expectedRequired = true
-      const wrapper = shallow(
+      render(
         <TextFieldWithLabelFormGroup
-          name={expectedName}
+          name="test"
           label="test"
           value=""
           isEditable
-          isRequired={expectedRequired}
+          isRequired
           onChange={jest.fn()}
         />,
       )
 
-      const label = wrapper.find(Label)
-      expect(label).toHaveLength(1)
-      expect(label.prop('isRequired')).toBeTruthy()
+      expect(screen.getByTitle(/required/i)).toBeInTheDocument()
     })
 
     it('should render a text field', () => {
-      const expectedName = 'test'
-      const wrapper = shallow(
+      render(
         <TextFieldWithLabelFormGroup
-          name={expectedName}
+          name="test"
           label="test"
           value=""
           isEditable
@@ -55,15 +48,13 @@ describe('text field with label form group', () => {
         />,
       )
 
-      const input = wrapper.find(TextField)
-      expect(input).toHaveLength(1)
+      expect(screen.getByRole('textbox')).toBeInTheDocument()
     })
 
     it('should render disabled is isDisable disabled is true', () => {
-      const expectedName = 'test'
-      const wrapper = shallow(
+      render(
         <TextFieldWithLabelFormGroup
-          name={expectedName}
+          name="test"
           label="test"
           value=""
           isEditable={false}
@@ -71,48 +62,47 @@ describe('text field with label form group', () => {
         />,
       )
 
-      const input = wrapper.find(TextField)
-      expect(input).toHaveLength(1)
-      expect(input.prop('disabled')).toBeTruthy()
+      expect(screen.getByRole('textbox')).toBeDisabled()
     })
 
     it('should render the proper value', () => {
-      const expectedName = 'test'
       const expectedValue = 'expected value'
-      const wrapper = shallow(
+
+      render(
         <TextFieldWithLabelFormGroup
-          name={expectedName}
+          data-testid="test"
+          name="test"
           label="test"
           value={expectedValue}
-          isEditable={false}
+          isEditable
           onChange={jest.fn()}
         />,
       )
 
-      const input = wrapper.find(TextField)
-      expect(input).toHaveLength(1)
-      expect(input.prop('value')).toEqual(expectedValue)
+      expect(screen.getByRole('textbox')).toHaveValue(expectedValue)
     })
   })
 
   describe('change handler', () => {
     it('should call the change handler on change', () => {
-      const expectedName = 'test'
       const expectedValue = 'expected value'
-      const handler = jest.fn()
-      const wrapper = shallow(
+      let callBackValue = ''
+
+      render(
         <TextFieldWithLabelFormGroup
-          name={expectedName}
+          name="test"
           label="test"
-          value={expectedValue}
-          isEditable={false}
-          onChange={handler}
+          value=""
+          isEditable
+          onChange={(e) => {
+            callBackValue += e.target.value
+          }}
         />,
       )
 
-      const input = wrapper.find(TextField)
-      input.simulate('change')
-      expect(handler).toHaveBeenCalledTimes(1)
+      userEvent.type(screen.getByRole('textbox'), expectedValue)
+
+      expect(callBackValue).toBe(expectedValue)
     })
   })
 })
