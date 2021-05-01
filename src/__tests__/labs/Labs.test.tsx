@@ -20,7 +20,7 @@ const mockStore = createMockStore<RootState, any>([thunk])
 const Title = () => {
   const { title } = useTitle()
 
-  return <h1>{title}</h1>
+  retur:n <h1>{title}</h1>
 }
 
 const expectedLab = {

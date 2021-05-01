@@ -48,8 +48,6 @@ const ViewIncident = () => {
     },
   ])
 
-  updateTitle(t('incidents.reports.view'))
-
   const onNewNoteClick = () => {
     setEditedNote(newNoteState)
     setShowNoteModal(true)
