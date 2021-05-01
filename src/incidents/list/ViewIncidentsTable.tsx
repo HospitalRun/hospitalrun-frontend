@@ -113,7 +113,7 @@ function ViewIncidentsTable(props: Props) {
             key: 'status',
           },
           {
-            label: t('imagings.imaging.patient'),
+            label: t('incidents.reports.patient'),
             key: 'patient',
             formatter: (row) => row.patientFullName,
           },
