@@ -111,7 +111,7 @@
     "redux-mock-store": "~1.5.4",
     "rimraf": "~3.0.2",
     "source-map-explorer": "^2.2.2",
-    "standard-version": "~9.2.0"
+    "standard-version": "~9.3.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
