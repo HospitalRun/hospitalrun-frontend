@@ -10,7 +10,7 @@
     "@types/escape-string-regexp": "~2.0.1",
     "@types/json2csv": "~5.0.1",
     "@types/pouchdb-find": "~6.3.4",
-    "bootstrap": "~4.6.0",
+    "bootstrap": "~5.0.0",
     "date-fns": "~2.21.0",
     "escape-string-regexp": "~4.0.0",
     "i18next": "~20.2.0",
