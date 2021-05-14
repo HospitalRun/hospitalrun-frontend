@@ -67,6 +67,13 @@ function start(state: PatientState) {
   state.createError = {}
 }
 
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
 const patientSlice = createSlice({
   name: 'patient',
   initialState,
@@ -76,6 +83,7 @@ const patientSlice = createSlice({
       state.status = 'completed'
     },
     createPatientError(state, { payload }: PayloadAction<Error>) {
+      scrollToTop()
       state.status = 'error'
       state.createError = payload
     },
@@ -85,6 +93,7 @@ const patientSlice = createSlice({
       state.patient = payload
     },
     updatePatientError(state, { payload }: PayloadAction<Error>) {
+      scrollToTop()
       state.status = 'error'
       state.updateError = payload
     },
