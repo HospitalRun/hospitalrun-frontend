@@ -12,7 +12,7 @@ const validateEmails = (emails: ContactInfoPiece[] | undefined) =>
 
 const validatePhoneNumbers = (phoneNumbers: ContactInfoPiece[] | undefined) =>
   (phoneNumbers ?? []).map((phone) =>
-    !validator.isMobilePhone(phone.value) ? 'patient.errors.invalidPhoneNumber' : undefined,
+    (!validator.isMobilePhone(phone.value) || !new RegExp(`^[\\s\\d]{${10}}$`).test(phone.value)) ? 'patient.errors.invalidPhoneNumber' : undefined,
   )
 
 const existAndIsAfterToday = (value: string | undefined) => {
