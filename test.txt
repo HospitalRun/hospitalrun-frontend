@@ -1,0 +1,4 @@
+
+> @hospitalrun/frontend@2.0.0-alpha.7 test:ci /Users/cynthiachen/Desktop/Code the Change/hospitalrun-frontend
+> cross-env CI=true react-scripts test  --testPathIgnorePatterns=src/__tests__/test-utils --passWithNoTests --env=jest-environment-jsdom-sixteen --maxWorkers=2
+

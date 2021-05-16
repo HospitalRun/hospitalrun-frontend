@@ -145,10 +145,10 @@ const NewMedicationRequest = () => {
           value={newMedicationRequest.medication}
           onChange={onMedicationChange}
         />
-        <div className="form-group">
+        <div className="form-group" data-testid="statusSelect">
           <Label text={t('medications.medication.status')} title="status" isRequired />
           <Select
-            id="status"
+            id="statusSelect"
             options={statusOptionsNew}
             defaultSelected={statusOptionsNew.filter(
               ({ value }) => value === newMedicationRequest.status,
@@ -156,10 +156,10 @@ const NewMedicationRequest = () => {
             onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group" data-testid="intentSelect">
           <Label text={t('medications.medication.intent')} title="intent" isRequired />
           <Select
-            id="intent"
+            id="intentSelect"
             options={intentOptions}
             defaultSelected={intentOptions.filter(
               ({ value }) => value === newMedicationRequest.intent,
@@ -167,10 +167,10 @@ const NewMedicationRequest = () => {
             onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group" data-testid="prioritySelect">
           <Label text={t('medications.medication.priority')} title="priority" isRequired />
           <Select
-            id="priority"
+            id="prioritySelect"
             options={priorityOptions}
             defaultSelected={priorityOptions.filter(
               ({ value }) => value === newMedicationRequest.priority,

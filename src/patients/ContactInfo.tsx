@@ -80,12 +80,16 @@ const ContactInfo = (props: Props): ReactElement => {
     return (
       <Row key={entry.id}>
         <Column sm={4}>
-          <Label text={`${name}Type${i}`} />
-          <Select
-            id="filterStatus"
-            options={typeOptions}
-            onChange={(values) => onTypeChange(values[0], i)}
-          />
+          <div className="form-group" data-testid={`${name}Type${i}Select`}>
+            <Label text={`${name}Type${i}`} />
+            <Select
+              id={`${name}Type${i}Select`}
+              options={typeOptions}
+              defaultSelected={typeOptions.filter(({ value }) => value === entry.type)}
+              onChange={(values) => onTypeChange(values[0], i)}
+              disabled={!isEditable}
+            />
+          </div>
         </Column>
         <Column sm={8}>
           <Component
