@@ -152,7 +152,7 @@ const NewImagingRequest = () => {
             </div>
           </Column>
           <Column>
-          <div className="visits" data-testid="visitSelect">
+            <div className="visits" data-testid="visitSelect">
               <Label text={t('patient.visits.label')} title="visit" isRequired />
               <Select
                 id="visitSelect"

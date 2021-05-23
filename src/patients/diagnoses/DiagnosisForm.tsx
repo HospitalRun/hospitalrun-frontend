@@ -131,30 +131,42 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <Label title="visit" text={t('patient.diagnoses.visit')} isRequired={false} />
-          <Select
-            id="visit"
-            options={patientVisits || []}
-            onChange={(values) => {
-              onFieldChange('visit', values[0])
-            }}
-            defaultSelected={defaultSelectedVisitOption()}
-          />
+          <div className="form-group" data-testid="visitSelect">
+            <Label title="visit" text={t('patient.diagnoses.visit')} />
+            <Select
+              id="visitSelect"
+              options={patientVisits || []}
+              onChange={(values) => {
+                onFieldChange('visit', values[0])
+              }}
+              defaultSelected={defaultSelectedVisitOption()}
+              disabled={disabled}
+            />
+          </div>
         </Column>
       </Row>
 
       <Row>
         <Column md={12}>
-          <Label title="status" text={t('patient.diagnoses.status')} isRequired />
-          <Select
-            id="status"
-            options={statusOptions}
-            onChange={(values) => {
-              onFieldChange('status', values[0])
-              setStatus(values[0] as DiagnosisStatus)
-            }}
-            defaultSelected={statusOptions.filter(({ value }) => value === status)}
-          />
+          <div className="form-group" data-testid="statusSelect">
+            <Label
+              text={t('patient.diagnoses.status')}
+              htmlFor={t('patient.diagnoses.status')}
+              title="This is a required input"
+              isRequired
+            />
+            <Select
+              id="statusSelect"
+              options={statusOptions || []}
+              defaultSelected={statusOptions.filter(({ value }) => value === status)}
+              onChange={(values) => {
+                onFieldChange('status', values[0])
+                setStatus(values[0] as DiagnosisStatus)
+              }}
+              disabled={disabled}
+              isInvalid={!!diagnosisError?.status}
+            />
+          </div>
         </Column>
       </Row>
 

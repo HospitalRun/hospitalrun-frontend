@@ -138,31 +138,42 @@ const GeneralInformation = (props: Props): ReactElement => {
         </div>
         <div className="row">
           <div className="col">
-            <Label text={t('patient.sex')} title="sex" />
-            <Select
-              id="sex"
-              options={sexOptions}
-              defaultSelected={sexOptions.filter(({ value }) => value === patient.sex)}
-              onChange={(values) => onFieldChange('sex', values[0])}
-            />
+            <div className="form-group" data-testid="sexSelect">
+              <Label text={t('patient.sex')} title="sex" />
+              <Select
+                id="sexSelect"
+                options={sexOptions}
+                defaultSelected={sexOptions.filter(({ value }) => value === patient.sex)}
+                onChange={(values) => onFieldChange('sex', values[0])}
+                disabled={!isEditable}
+              />
+            </div>
           </div>
           <div className="col">
-            <Label text={t('patient.type')} title="type" />
-            <Select
-              id="type"
-              options={typeOptions}
-              defaultSelected={typeOptions.filter(({ value }) => value === patient.type)}
-              onChange={(values) => onFieldChange('type', values[0])}
-            />
+            <div className="form-group" data-testid="typeSelect">
+              <Label text={t('patient.type')} title="type" />
+              <Select
+                id="typeSelect"
+                options={typeOptions}
+                defaultSelected={typeOptions.filter(({ value }) => value === patient.type)}
+                onChange={(values) => onFieldChange('type', values[0])}
+                disabled={!isEditable}
+              />
+            </div>
           </div>
           <div className="col">
-            <Label text={t('patient.bloodType')} title="bloodType" />
-            <Select
-              id="bloodType"
-              options={bloodTypeOptions}
-              defaultSelected={bloodTypeOptions.filter(({ value }) => value === patient.bloodType)}
-              onChange={(values) => onFieldChange('bloodType', values[0])}
-            />
+            <div className="form-group" data-testid="bloodTypeSelect">
+              <Label text={t('patient.bloodType')} title="bloodType" />
+              <Select
+                id="bloodTypeSelect"
+                options={bloodTypeOptions}
+                defaultSelected={bloodTypeOptions.filter(
+                  ({ value }) => value === patient.bloodType,
+                )}
+                onChange={(values) => onFieldChange('bloodType', values[0])}
+                disabled={!isEditable}
+              />
+            </div>
           </div>
         </div>
         <div className="row">

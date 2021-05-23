@@ -86,12 +86,19 @@ const CareGoalForm = (props: Props) => {
       <Row>
         <Column sm={12}>
           <div className="form-group" data-testid="prioritySelect">
-            <Label title="priority" text={t('patient.careGoal.priority.label')} isRequired />
+            <Label
+              title="This is a required input"
+              text={t('patient.careGoal.priority.label')}
+              htmlFor={t('patient.careGoal.priority.label')}
+              isRequired
+            />
             <Select
               id="prioritySelect"
               options={priorityOptions}
               onChange={onPriorityChange}
               defaultSelected={priorityOptions.filter(({ value }) => value === priority)}
+              isInvalid={!!careGoalError?.priority}
+              disabled={disabled}
             />
           </div>
         </Column>
@@ -99,7 +106,12 @@ const CareGoalForm = (props: Props) => {
       <Row>
         <Column sm={6}>
           <div className="form-group" data-testid="statusSelect">
-            <Label title="status" text={t('patient.careGoal.status')} isRequired />
+            <Label
+              title="This is a required input"
+              text={t('patient.careGoal.status')}
+              htmlFor={t('patient.careGoal.status')}
+              isRequired
+            />
             <Select
               id="statusSelect"
               options={statusOptions}
@@ -108,14 +120,17 @@ const CareGoalForm = (props: Props) => {
                 setStatus(values[0] as CareGoalStatus)
               }}
               defaultSelected={statusOptions.filter(({ value }) => value === status)}
+              isInvalid={!!careGoalError?.status}
+              disabled={disabled}
             />
           </div>
         </Column>
         <Column sm={6}>
           <div className="form-group" data-testid="achievementStatusSelect">
             <Label
-              title="achievementStatus"
+              title="This is a required input"
               text={t('patient.careGoal.achievementStatus')}
+              htmlFor={t('patient.careGoal.achievementStatus')}
               isRequired
             />
             <Select
@@ -128,6 +143,8 @@ const CareGoalForm = (props: Props) => {
               defaultSelected={achievementsStatusOptions.filter(
                 ({ value }) => value === achievementStatus,
               )}
+              isInvalid={!!careGoalError?.achievementStatus}
+              disabled={disabled}
             />
           </div>
         </Column>

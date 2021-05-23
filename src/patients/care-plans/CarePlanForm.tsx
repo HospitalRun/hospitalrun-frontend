@@ -88,7 +88,12 @@ const CarePlanForm = (props: Props) => {
         <Column sm={12}>
           {/* add feedback in next round */}
           <div className="form-group" data-testid="conditionSelect">
-            <Label text={t('patient.carePlan.condition')} title={t('patient.carePlan.condition')}  isRequired />
+            <Label
+              text={t('patient.carePlan.condition')}
+              htmlFor={t('patient.carePlan.condition')}
+              title="This is a required input"
+              isRequired
+            />
             <Select
               id="conditionSelect"
               options={conditionOptions}
@@ -106,7 +111,12 @@ const CarePlanForm = (props: Props) => {
       <Row>
         <Column sm={6}>
           <div className="form-group" data-testid="statusSelect">
-            <Label text={t('patient.carePlan.status')} title={t('patient.carePlan.status')}  isRequired />
+            <Label
+              text={t('patient.carePlan.status')}
+              htmlFor={t('patient.carePlan.status')}
+              title="This is a required input"
+              isRequired
+            />
             <Select
               id="statusSelect"
               options={statusOptions}
@@ -122,7 +132,12 @@ const CarePlanForm = (props: Props) => {
         </Column>
         <Column sm={6}>
           <div className="form-group" data-testid="intentSelect">
-            <Label text={t('patient.carePlan.intent')} title={t('patient.carePlan.intent')}  isRequired />
+            <Label
+              text={t('patient.carePlan.intent')}
+              htmlFor={t('patient.carePlan.intent')}
+              title="This is a required input"
+              isRequired
+            />
             <Select
               id="intentSelect"
               options={intentOptions}
