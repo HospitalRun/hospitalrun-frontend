@@ -12,20 +12,22 @@ import scheduling from './scheduling'
 import settings from './settings'
 import sex from './sex'
 import states from './states'
+import user from './user'
 
 export default {
   ...actions,
   ...dashboard,
-  ...sex,
-  ...incidents,
   ...networkStatus,
-  ...labs,
-  ...states,
-  ...scheduling,
   ...patient,
   ...patients,
-  ...settings,
+  ...scheduling,
+  ...states,
+  ...sex,
+  ...labs,
   ...medications,
+  ...incidents,
+  ...settings,
+  ...user,
   ...bloodType,
   ...imagings,
 }
