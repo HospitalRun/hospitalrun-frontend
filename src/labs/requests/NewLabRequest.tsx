@@ -152,8 +152,8 @@ const NewLabRequest = () => {
             </div>
           </Column>
           <Column>
-            <div className="form-group">
-              <Label text={t('patient.visit')} title="visit" isRequired />
+            <div className="form-group" data-testid="visitSelect">
+              <Label text={t('patient.visit')} title="This is a required input" isRequired />
               <Select
                 id="visit"
                 options={visitOptions || []}
@@ -161,6 +161,7 @@ const NewLabRequest = () => {
                 onChange={(values) => {
                   onVisitChange(values[0])
                 }}
+                disabled={false}
               />
             </div>
           </Column>

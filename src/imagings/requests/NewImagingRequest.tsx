@@ -152,10 +152,10 @@ const NewImagingRequest = () => {
             </div>
           </Column>
           <Column>
-            <div className="visits">
+            <div className="visits" data-testid="visitSelect">
               <Label text={t('patient.visits.label')} title="visit" isRequired />
               <Select
-                id="visit"
+                id="visitSelect"
                 options={visitOption || []}
                 defaultSelected={defaultSelectedVisitsOption()}
                 onChange={(values) => {
@@ -176,10 +176,10 @@ const NewImagingRequest = () => {
           value={newImagingRequest.type}
           onChange={onImagingTypeChange}
         />
-        <div className="imaging-status">
+        <div className="imaging-status" data-testid="statusSelect">
           <Label text={t('imagings.imaging.status')} title="status" isRequired />
           <Select
-            id="status"
+            id="statusSelect"
             options={statusOptions}
             defaultSelected={statusOptions.filter(
               ({ value }) => value === newImagingRequest.status,

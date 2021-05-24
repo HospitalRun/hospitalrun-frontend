@@ -114,13 +114,16 @@ const AppointmentDetailForm = (props: Props) => {
       </div>
       <div className="row">
         <div className="col">
-          <Label text={t('scheduling.appointment.type')} title="type" />
-          <Select
-            id="type"
-            options={typeOptions}
-            defaultSelected={typeOptions.filter(({ value }) => value === appointment.type)}
-            onChange={(values) => onFieldChange && onFieldChange('type', values[0])}
-          />
+          <div className="form-group" data-testid="typeSelect">
+            <Label text={t('scheduling.appointment.type')} title="type" />
+            <Select
+              id="type"
+              options={typeOptions}
+              defaultSelected={typeOptions.filter(({ value }) => value === appointment.type)}
+              onChange={(values) => onFieldChange && onFieldChange('type', values[0])}
+              disabled={!isEditable}
+            />
+          </div>
         </div>
       </div>
       <div className="row">

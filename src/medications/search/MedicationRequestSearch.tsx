@@ -49,6 +49,8 @@ const MedicationRequestSearch = (props: Props) => {
           id="filterStatus"
           options={filterOptions}
           onChange={(values) => onFilterChange(values[0] as MedicationStatus)}
+          defaultSelected={filterOptions.filter(({ value }) => value === searchRequest.status)}
+          disabled={false}
         />
       </Column>
       <Column>

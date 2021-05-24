@@ -85,45 +85,68 @@ const CareGoalForm = (props: Props) => {
       </Row>
       <Row>
         <Column sm={12}>
-          <Label title="priority" text={t('patient.careGoal.priority.label')} isRequired />
-          <Select
-            id="priority"
-            options={priorityOptions}
-            onChange={onPriorityChange}
-            defaultSelected={priorityOptions.filter(({ value }) => value === priority)}
-          />
+          <div className="form-group" data-testid="prioritySelect">
+            <Label
+              title="This is a required input"
+              text={t('patient.careGoal.priority.label')}
+              htmlFor={t('patient.careGoal.priority.label')}
+              isRequired
+            />
+            <Select
+              id="prioritySelect"
+              options={priorityOptions}
+              onChange={onPriorityChange}
+              defaultSelected={priorityOptions.filter(({ value }) => value === priority)}
+              isInvalid={!!careGoalError?.priority}
+              disabled={disabled}
+            />
+          </div>
         </Column>
       </Row>
       <Row>
         <Column sm={6}>
-          <Label title="status" text={t('patient.careGoal.status')} isRequired />
-          <Select
-            id="status"
-            options={statusOptions}
-            onChange={(values) => {
-              onFieldChange('status', values[0])
-              setStatus(values[0] as CareGoalStatus)
-            }}
-            defaultSelected={statusOptions.filter(({ value }) => value === status)}
-          />
+          <div className="form-group" data-testid="statusSelect">
+            <Label
+              title="This is a required input"
+              text={t('patient.careGoal.status')}
+              htmlFor={t('patient.careGoal.status')}
+              isRequired
+            />
+            <Select
+              id="statusSelect"
+              options={statusOptions}
+              onChange={(values) => {
+                onFieldChange('status', values[0])
+                setStatus(values[0] as CareGoalStatus)
+              }}
+              defaultSelected={statusOptions.filter(({ value }) => value === status)}
+              isInvalid={!!careGoalError?.status}
+              disabled={disabled}
+            />
+          </div>
         </Column>
         <Column sm={6}>
-          <Label
-            title="achievementStatus"
-            text={t('patient.careGoal.achievementStatus')}
-            isRequired
-          />
-          <Select
-            id="achievementStatus"
-            options={achievementsStatusOptions}
-            onChange={(values) => {
-              onFieldChange('achievementStatus', values[0])
-              setAchievementStatus(values[0] as CareGoalAchievementStatus)
-            }}
-            defaultSelected={achievementsStatusOptions.filter(
-              ({ value }) => value === achievementStatus,
-            )}
-          />
+          <div className="form-group" data-testid="achievementStatusSelect">
+            <Label
+              title="This is a required input"
+              text={t('patient.careGoal.achievementStatus')}
+              htmlFor={t('patient.careGoal.achievementStatus')}
+              isRequired
+            />
+            <Select
+              id="achievementStatusSelect"
+              options={achievementsStatusOptions}
+              onChange={(values) => {
+                onFieldChange('achievementStatus', values[0])
+                setAchievementStatus(values[0] as CareGoalAchievementStatus)
+              }}
+              defaultSelected={achievementsStatusOptions.filter(
+                ({ value }) => value === achievementStatus,
+              )}
+              isInvalid={!!careGoalError?.achievementStatus}
+              disabled={disabled}
+            />
+          </div>
         </Column>
       </Row>
       <Row>

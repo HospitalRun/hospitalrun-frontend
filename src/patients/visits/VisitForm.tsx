@@ -98,6 +98,7 @@ const VisitForm = (props: Props) => {
               onFieldChange('status', values[0])
               setStatus(values[0] as VisitStatus)
             }}
+            disabled={disabled}
             isInvalid={!!visitError?.status}
           />
         </Column>

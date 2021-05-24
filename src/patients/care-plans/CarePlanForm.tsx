@@ -87,45 +87,69 @@ const CarePlanForm = (props: Props) => {
       <Row>
         <Column sm={12}>
           {/* add feedback in next round */}
-          <Label text={t('patient.carePlan.condition')} title="condition" isRequired />
-          <Select
-            id="condition"
-            options={conditionOptions}
-            defaultSelected={conditionOptions.filter(({ value }) => value === condition)}
-            onChange={(values) => {
-              onFieldChange('diagnosisId', values[0])
-              setCondition(values[0])
-            }}
-            isInvalid={!!carePlanError?.condition}
-          />
+          <div className="form-group" data-testid="conditionSelect">
+            <Label
+              text={t('patient.carePlan.condition')}
+              htmlFor={t('patient.carePlan.condition')}
+              title="This is a required input"
+              isRequired
+            />
+            <Select
+              id="conditionSelect"
+              options={conditionOptions}
+              defaultSelected={conditionOptions.filter(({ value }) => value === condition)}
+              onChange={(values) => {
+                onFieldChange('diagnosisId', values[0])
+                setCondition(values[0])
+              }}
+              disabled={disabled}
+              isInvalid={!!carePlanError?.condition}
+            />
+          </div>
         </Column>
       </Row>
       <Row>
         <Column sm={6}>
-          <Label text={t('patient.carePlan.status')} title="status" isRequired />
-          <Select
-            id="status"
-            options={statusOptions}
-            defaultSelected={statusOptions.filter(({ value }) => value === status)}
-            onChange={(values) => {
-              onFieldChange('status', values[0])
-              setStatus(values[0] as CarePlanStatus)
-            }}
-            isInvalid={!!carePlanError?.status}
-          />
+          <div className="form-group" data-testid="statusSelect">
+            <Label
+              text={t('patient.carePlan.status')}
+              htmlFor={t('patient.carePlan.status')}
+              title="This is a required input"
+              isRequired
+            />
+            <Select
+              id="statusSelect"
+              options={statusOptions}
+              defaultSelected={statusOptions.filter(({ value }) => value === status)}
+              onChange={(values) => {
+                onFieldChange('status', values[0])
+                setStatus(values[0] as CarePlanStatus)
+              }}
+              disabled={disabled}
+              isInvalid={!!carePlanError?.status}
+            />
+          </div>
         </Column>
         <Column sm={6}>
-          <Label text={t('patient.carePlan.intent')} title="intent" isRequired />
-          <Select
-            id="intent"
-            options={intentOptions}
-            defaultSelected={intentOptions.filter(({ value }) => value === intent)}
-            onChange={(values) => {
-              onFieldChange('intent', values[0])
-              setIntent(values[0] as CarePlanIntent)
-            }}
-            isInvalid={!!carePlanError?.intent}
-          />
+          <div className="form-group" data-testid="intentSelect">
+            <Label
+              text={t('patient.carePlan.intent')}
+              htmlFor={t('patient.carePlan.intent')}
+              title="This is a required input"
+              isRequired
+            />
+            <Select
+              id="intentSelect"
+              options={intentOptions}
+              defaultSelected={intentOptions.filter(({ value }) => value === intent)}
+              onChange={(values) => {
+                onFieldChange('intent', values[0])
+                setIntent(values[0] as CarePlanIntent)
+              }}
+              disabled={disabled}
+              isInvalid={!!carePlanError?.intent}
+            />
+          </div>
         </Column>
       </Row>
       <Row>
