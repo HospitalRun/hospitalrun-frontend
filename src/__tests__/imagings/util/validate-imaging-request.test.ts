@@ -8,6 +8,8 @@ describe('imaging request validator', () => {
       patient: 'imagings.requests.error.patientRequired',
       status: 'imagings.requests.error.statusRequired',
       type: 'imagings.requests.error.typeRequired',
+      visit: 'imagings.requests.error.visitRequired',
+      message: 'imagings.requests.error.unableToRequest',
     }
 
     const actualError = validateImagingRequest(newImagingRequest)
