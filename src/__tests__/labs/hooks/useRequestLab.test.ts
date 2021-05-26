@@ -11,6 +11,7 @@ describe('Use Request lab', () => {
   const lab = {
     type: 'test',
     patient: '123',
+    visitId: 'visit id',
   } as Lab
   const expectedRequestedLab = {
     ...lab,
