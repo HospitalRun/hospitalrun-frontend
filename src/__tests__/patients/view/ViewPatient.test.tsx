@@ -100,7 +100,7 @@ describe('ViewPatient', () => {
     setup()
 
     await waitFor(() => {
-      expect(screen.getAllByRole('tab')).toHaveLength(11)
+      expect(screen.getAllByRole('tab')).toHaveLength(12)
     })
     expect(screen.getByRole('tab', { name: /patient\.generalInformation/i })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: /patient\.relatedPersons\.label/i })).toBeInTheDocument()
@@ -115,6 +115,7 @@ describe('ViewPatient', () => {
     expect(screen.getByRole('tab', { name: /patient\.carePlan\.label/i })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: /patient\.careGoal\.label/i })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: /patient\.visits\.label/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /patient\.history\.label/i })).toBeInTheDocument()
   })
 
   it('should mark the general information tab as active and render the general information component when route is /patients/:id', async () => {
