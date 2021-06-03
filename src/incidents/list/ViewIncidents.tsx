@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../../page-header/button-toolbar/ButtonBarProvider'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import useTranslator from '../../shared/hooks/useTranslator'
 import IncidentFilter from '../IncidentFilter'
 import ViewIncidentsTable from './ViewIncidentsTable'
@@ -37,7 +37,7 @@ const ViewIncidents = () => {
     }
   }, [setButtonToolBar, t, history])
 
-  const filterOptions: Option[] = Object.values(IncidentFilter).map((filter) => ({
+  const filterOptions: SelectOption[] = Object.values(IncidentFilter).map((filter) => ({
     label: t(`incidents.status.${filter}`),
     value: `${filter}`,
   }))
@@ -52,6 +52,7 @@ const ViewIncidents = () => {
             options={filterOptions}
             defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
             onChange={(values) => setSearchFilter(values[0] as IncidentFilter)}
+            disabled={false}
           />
         </Column>
       </Row>

@@ -6,7 +6,7 @@ import { useParams, useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../page-header/title/TitleContext'
-import { Option } from '../shared/components/input/Option'
+import { SelectOption } from '../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
@@ -56,7 +56,7 @@ const ViewMedication = () => {
     }
   }, [medication])
 
-  const statusOptionsEdit: Option[] = [
+  const statusOptionsEdit: SelectOption[] = [
     { label: t('medications.status.draft'), value: 'draft' },
     { label: t('medications.status.active'), value: 'active' },
     { label: t('medications.status.onHold'), value: 'on hold' },
@@ -66,7 +66,7 @@ const ViewMedication = () => {
     { label: t('medications.status.unknown'), value: 'unknown' },
   ]
 
-  const intentOptions: Option[] = [
+  const intentOptions: SelectOption[] = [
     { label: t('medications.intent.proposal'), value: 'proposal' },
     { label: t('medications.intent.plan'), value: 'plan' },
     { label: t('medications.intent.order'), value: 'order' },
@@ -77,7 +77,7 @@ const ViewMedication = () => {
     { label: t('medications.intent.option'), value: 'option' },
   ]
 
-  const priorityOptions: Option[] = [
+  const priorityOptions: SelectOption[] = [
     { label: t('medications.priority.routine'), value: 'routine' },
     { label: t('medications.priority.urgent'), value: 'urgent' },
     { label: t('medications.priority.asap'), value: 'asap' },
@@ -229,6 +229,7 @@ const ViewMedication = () => {
               id="status"
               options={statusOptionsEdit}
               onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
+              disabled={!isEditable}
             />
           </Column>
           <Column>
@@ -237,6 +238,7 @@ const ViewMedication = () => {
               id="intent"
               options={intentOptions}
               onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
+              disabled={!isEditable}
             />
           </Column>
           <Column>
@@ -245,6 +247,7 @@ const ViewMedication = () => {
               id="priority"
               options={priorityOptions}
               onChange={(values) => onFieldChange && onFieldChange('priority', values[0])}
+              disabled={!isEditable}
             />
           </Column>
         </Row>

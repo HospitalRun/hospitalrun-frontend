@@ -1,7 +1,7 @@
 import { Select, Label, Row, Column } from '@hospitalrun/components'
 import React, { ChangeEvent } from 'react'
 
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import MedicationSearchRequest from '../models/MedicationSearchRequest'
@@ -15,7 +15,7 @@ interface Props {
 const MedicationRequestSearch = (props: Props) => {
   const { searchRequest, onChange } = props
   const { t } = useTranslator()
-  const filterOptions: Option[] = [
+  const filterOptions: SelectOption[] = [
     { label: t('medications.filter.all'), value: 'all' },
     { label: t('medications.status.draft'), value: 'draft' },
     { label: t('medications.status.active'), value: 'active' },

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -35,12 +35,12 @@ const NewMedicationRequest = () => {
     quantity: { value: ('' as unknown) as number, unit: '' },
   } as unknown) as Medication)
 
-  const statusOptionsNew: Option[] = [
+  const statusOptionsNew: SelectOption[] = [
     { label: t('medications.status.draft'), value: 'draft' },
     { label: t('medications.status.active'), value: 'active' },
   ]
 
-  const intentOptions: Option[] = [
+  const intentOptions: SelectOption[] = [
     { label: t('medications.intent.proposal'), value: 'proposal' },
     { label: t('medications.intent.plan'), value: 'plan' },
     { label: t('medications.intent.order'), value: 'order' },
@@ -51,7 +51,7 @@ const NewMedicationRequest = () => {
     { label: t('medications.intent.option'), value: 'option' },
   ]
 
-  const priorityOptions: Option[] = [
+  const priorityOptions: SelectOption[] = [
     { label: t('medications.priority.routine'), value: 'routine' },
     { label: t('medications.priority.urgent'), value: 'urgent' },
     { label: t('medications.priority.asap'), value: 'asap' },
@@ -154,6 +154,7 @@ const NewMedicationRequest = () => {
               ({ value }) => value === newMedicationRequest.status,
             )}
             onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
+            disabled={false}
           />
         </div>
         <div className="form-group" data-testid="intentSelect">
@@ -165,6 +166,7 @@ const NewMedicationRequest = () => {
               ({ value }) => value === newMedicationRequest.intent,
             )}
             onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
+            disabled={false}
           />
         </div>
         <div className="form-group" data-testid="prioritySelect">
@@ -176,6 +178,7 @@ const NewMedicationRequest = () => {
               ({ value }) => value === newMedicationRequest.priority,
             )}
             onChange={(values) => onFieldChange && onFieldChange('priority', values[0])}
+            disabled={false}
           />
         </div>
         <Row>

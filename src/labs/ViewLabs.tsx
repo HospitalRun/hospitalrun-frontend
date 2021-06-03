@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import { useButtonToolbarSetter } from '../page-header/button-toolbar/ButtonBarProvider'
 import { useUpdateTitle } from '../page-header/title/TitleContext'
-import { Option } from '../shared/components/input/Option'
+import { SelectOption } from '../shared/components/input/SelectOption'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useDebounce from '../shared/hooks/useDebounce'
 import useTranslator from '../shared/hooks/useTranslator'
@@ -68,7 +68,7 @@ const ViewLabs = () => {
     setSearchText(event.target.value)
   }
 
-  const filterOptions: Option[] = [
+  const filterOptions: SelectOption[] = [
     { label: t('labs.status.requested'), value: 'requested' },
     { label: t('labs.status.completed'), value: 'completed' },
     { label: t('labs.status.canceled'), value: 'canceled' },
@@ -85,6 +85,7 @@ const ViewLabs = () => {
             options={filterOptions}
             onChange={(values) => setSearchFilter(values[0] as LabFilter)}
             defaultSelected={filterOptions.filter(({ value }) => value === searchFilter)}
+            disabled={false}
           />
         </Column>
         <Column>

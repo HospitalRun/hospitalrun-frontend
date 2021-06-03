@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -33,7 +33,7 @@ const NewLabRequest = () => {
   const [mutate] = useRequestLab()
   const [newNote, setNewNote] = useState('')
   const [error, setError] = useState<LabError | undefined>(undefined)
-  const [visitOptions, setVisitOptions] = useState([] as Option[])
+  const [visitOptions, setVisitOptions] = useState([] as SelectOption[])
 
   const updateTitle = useUpdateTitle()
   useEffect(() => {
@@ -61,7 +61,7 @@ const NewLabRequest = () => {
       const visits = patient.visits?.map((v) => ({
         label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
         value: v.id,
-      })) as Option[]
+      })) as SelectOption[]
 
       setVisitOptions(visits)
       setNewLabRequest((previousNewLabRequest) => ({

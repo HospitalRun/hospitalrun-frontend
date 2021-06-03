@@ -5,7 +5,7 @@ import subYears from 'date-fns/subYears'
 import React, { ReactElement } from 'react'
 
 import DatePickerWithLabelFormGroup from '../shared/components/input/DatePickerWithLabelFormGroup'
-import { Option } from '../shared/components/input/Option'
+import { SelectOption } from '../shared/components/input/SelectOption'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
 import { ContactInfoPiece } from '../shared/model/ContactInformation'
@@ -61,19 +61,19 @@ const GeneralInformation = (props: Props): ReactElement => {
     onFieldChange('isApproximateDateOfBirth', checked)
   }
 
-  const sexOptions: Option[] = [
+  const sexOptions: SelectOption[] = [
     { label: t('sex.male'), value: 'male' },
     { label: t('sex.female'), value: 'female' },
     { label: t('sex.other'), value: 'other' },
     { label: t('sex.unknown'), value: 'unknown' },
   ]
 
-  const typeOptions: Option[] = [
+  const typeOptions: SelectOption[] = [
     { label: t('patient.types.charity'), value: 'charity' },
     { label: t('patient.types.private'), value: 'private' },
   ]
 
-  const bloodTypeOptions: Option[] = [
+  const bloodTypeOptions: SelectOption[] = [
     { label: t('bloodType.apositive'), value: 'A+' },
     { label: t('bloodType.anegative'), value: 'A-' },
     { label: t('bloodType.abpositive'), value: 'AB+' },

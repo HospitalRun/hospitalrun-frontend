@@ -2,7 +2,7 @@ import { Select, Label, Alert, Row, Column } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
 import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import CareGoal, { CareGoalStatus, CareGoalAchievementStatus } from '../../shared/model/CareGoal'
@@ -33,18 +33,23 @@ const CareGoalForm = (props: Props) => {
   const [status, setStatus] = useState(careGoal.status)
   const [achievementStatus, setAchievementStatus] = useState(careGoal.achievementStatus)
 
-  const priorityOptions: Option[] = [
+  const priorityOptions: SelectOption[] = [
     { label: t('patient.careGoal.priority.low'), value: 'low' },
     { label: t('patient.careGoal.priority.medium'), value: 'medium' },
     { label: t('patient.careGoal.priority.high'), value: 'high' },
   ]
 
-  const statusOptions: Option[] = Object.values(CareGoalStatus).map((v) => ({ label: v, value: v }))
-
-  const achievementsStatusOptions: Option[] = Object.values(CareGoalAchievementStatus).map((v) => ({
+  const statusOptions: SelectOption[] = Object.values(CareGoalStatus).map((v) => ({
     label: v,
     value: v,
   }))
+
+  const achievementsStatusOptions: SelectOption[] = Object.values(CareGoalAchievementStatus).map(
+    (v) => ({
+      label: v,
+      value: v,
+    }),
+  )
 
   const onFieldChange = (
     name: string,
@@ -89,7 +94,7 @@ const CareGoalForm = (props: Props) => {
             <Label
               title="This is a required input"
               text={t('patient.careGoal.priority.label')}
-              htmlFor={t('patient.careGoal.priority.label')}
+              htmlFor="prioritySelect"
               isRequired
             />
             <Select
@@ -109,7 +114,7 @@ const CareGoalForm = (props: Props) => {
             <Label
               title="This is a required input"
               text={t('patient.careGoal.status')}
-              htmlFor={t('patient.careGoal.status')}
+              htmlFor="statusSelect"
               isRequired
             />
             <Select
@@ -130,7 +135,7 @@ const CareGoalForm = (props: Props) => {
             <Label
               title="This is a required input"
               text={t('patient.careGoal.achievementStatus')}
-              htmlFor={t('patient.careGoal.achievementStatus')}
+              htmlFor="achievementStatusSelect"
               isRequired
             />
             <Select

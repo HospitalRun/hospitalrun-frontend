@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -27,9 +27,9 @@ const NewImagingRequest = () => {
   })
   const [mutate] = useRequestImaging(user)
   const [error, setError] = useState<ImagingRequestError>()
-  const [visitOption, setVisitOption] = useState([] as Option[])
+  const [visitOption, setVisitOption] = useState([] as SelectOption[])
 
-  const statusOptions: Option[] = [
+  const statusOptions: SelectOption[] = [
     { label: t('imagings.status.requested'), value: 'requested' },
     { label: t('imagings.status.completed'), value: 'completed' },
     { label: t('imagings.status.canceled'), value: 'canceled' },
@@ -63,7 +63,7 @@ const NewImagingRequest = () => {
       const visits = patient.visits?.map((v) => ({
         label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
         value: v.id,
-      })) as Option[]
+      })) as SelectOption[]
 
       setVisitOption(visits)
     } else {
@@ -161,6 +161,7 @@ const NewImagingRequest = () => {
                 onChange={(values) => {
                   onVisitChange(values[0])
                 }}
+                disabled={false}
               />
             </div>
           </Column>
@@ -185,6 +186,7 @@ const NewImagingRequest = () => {
               ({ value }) => value === newImagingRequest.status,
             )}
             onChange={(values) => onStatusChange(values[0])}
+            disabled={false}
           />
         </div>
         <div className="form-group">

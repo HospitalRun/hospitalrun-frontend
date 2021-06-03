@@ -2,7 +2,7 @@ import { Select, Label, Alert, Column, Row } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
 import DatePickerWithLabelFormGroup from '../../shared/components/input/DatePickerWithLabelFormGroup'
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
@@ -46,12 +46,18 @@ const CarePlanForm = (props: Props) => {
     }
   }
 
-  const conditionOptions: Option[] =
+  const conditionOptions: SelectOption[] =
     patient.diagnoses?.map((d) => ({ label: d.name, value: d.id })) || []
 
-  const statusOptions: Option[] = Object.values(CarePlanStatus).map((v) => ({ label: v, value: v }))
+  const statusOptions: SelectOption[] = Object.values(CarePlanStatus).map((v) => ({
+    label: v,
+    value: v,
+  }))
 
-  const intentOptions: Option[] = Object.values(CarePlanIntent).map((v) => ({ label: v, value: v }))
+  const intentOptions: SelectOption[] = Object.values(CarePlanIntent).map((v) => ({
+    label: v,
+    value: v,
+  }))
 
   return (
     <form aria-label="form">
@@ -90,7 +96,7 @@ const CarePlanForm = (props: Props) => {
           <div className="form-group" data-testid="conditionSelect">
             <Label
               text={t('patient.carePlan.condition')}
-              htmlFor={t('patient.carePlan.condition')}
+              htmlFor="conditionSelect"
               title="This is a required input"
               isRequired
             />
@@ -113,7 +119,7 @@ const CarePlanForm = (props: Props) => {
           <div className="form-group" data-testid="statusSelect">
             <Label
               text={t('patient.carePlan.status')}
-              htmlFor={t('patient.carePlan.status')}
+              htmlFor="statusSelect"
               title="This is a required input"
               isRequired
             />
@@ -134,7 +140,7 @@ const CarePlanForm = (props: Props) => {
           <div className="form-group" data-testid="intentSelect">
             <Label
               text={t('patient.carePlan.intent')}
-              htmlFor={t('patient.carePlan.intent')}
+              htmlFor="intentSelect"
               title="This is a required input"
               isRequired
             />

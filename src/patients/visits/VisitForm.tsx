@@ -2,7 +2,7 @@ import { Select, Label, Alert, Column, Row } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
@@ -41,7 +41,7 @@ const VisitForm = (props: Props) => {
     }
   }
 
-  const statusOptions: Option[] =
+  const statusOptions: SelectOption[] =
     Object.values(VisitStatus).map((v) => ({ label: v, value: v })) || []
 
   return (

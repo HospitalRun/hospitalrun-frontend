@@ -1,7 +1,7 @@
 import { Select, Label, Spinner, Row, Column, Icon } from '@hospitalrun/components'
 import React, { useEffect, ReactElement } from 'react'
 
-import { Option } from '../shared/components/input/Option'
+import { SelectOption } from '../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
@@ -30,7 +30,7 @@ const ContactInfo = (props: Props): ReactElement => {
     }
   }, [data, onChange])
 
-  const typeOptions: Option[] = Object.values(ContactInfoTypes).map((value) => ({
+  const typeOptions: SelectOption[] = Object.values(ContactInfoTypes).map((value) => ({
     label: t(`patient.contactInfoType.options.${value}`),
     value: `${value}`,
   }))

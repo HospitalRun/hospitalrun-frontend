@@ -2,7 +2,7 @@ import { Select, Typeahead, Label, Alert } from '@hospitalrun/components'
 import React from 'react'
 
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
-import { Option } from '../../shared/components/input/Option'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -28,7 +28,7 @@ const AppointmentDetailForm = (props: Props) => {
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
 
-  const typeOptions: Option[] = [
+  const typeOptions: SelectOption[] = [
     { label: t('scheduling.appointment.types.checkup'), value: 'checkup' },
     { label: t('scheduling.appointment.types.emergency'), value: 'emergency' },
     { label: t('scheduling.appointment.types.followUp'), value: 'follow up' },
