@@ -8,6 +8,7 @@ import translationIT from './it/translations'
 import translationJA from './ja/translations'
 import translationPtBR from './ptBr/translations'
 import translationRU from './ru/translations'
+import translationTR from './tr/translations'
 import translationZhCN from './zhCN/translations'
 
 const resources: { [language: string]: any } = {
@@ -50,6 +51,10 @@ const resources: { [language: string]: any } = {
   ru: {
     name: 'Russian',
     translation: translationRU,
+  },
+  tr: {
+    name: 'Turkish',
+    translation: translationTR,
   },
   zhCN: {
     name: 'Chinese',
