@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -10,6 +10,8 @@ import thunk from 'redux-thunk'
 
 import NewMedicationRequest from '../../../medications/requests/NewMedicationRequest'
 import * as titleUtil from '../../../page-header/title/TitleContext'
+import PatientRepository from '../../../shared/db/PatientRepository'
+import Patient from '../../../shared/model/Patient'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -176,6 +178,15 @@ describe('New Medication Request', () => {
   describe('on save', () => {
     it('should save the medication request and navigate to "/medications/:id"', async () => {
       const { history } = setup()
+
+      jest.spyOn(PatientRepository, 'search').mockResolvedValue([
+        {
+          id: 'batman',
+          fullName: 'Bruce Wayne',
+          code: 'test code',
+        } as Patient,
+      ])
+
       const patient = screen.getByPlaceholderText(/medications\.medication\.patient/i)
       const medication = screen.getByLabelText(/medications\.medication\.medication/i)
       const medicationNotes = screen.getByRole('textbox', {
@@ -184,20 +195,35 @@ describe('New Medication Request', () => {
       const medStatus = within(screen.getByTestId('statusSelect')).getByRole('combobox')
       const medicationIntent = within(screen.getByTestId('intentSelect')).getByRole('combobox')
       const medicationPriority = within(screen.getByTestId('prioritySelect')).getByRole('combobox')
+      const quantityValue = screen.getByLabelText(/quantityValue/)
+      const quantityUnit = screen.getByLabelText(/quantityUnit/)
 
-      userEvent.type(patient, 'Bruce Wayne')
+      userEvent.type(patient, 'Bruce')
+      await selectEvent.select(patient, /Bruce/)
       userEvent.type(medication, 'Ibuprofen')
       userEvent.type(medicationNotes, 'Be warned he is Batman')
-      selectEvent.create(medStatus, 'active')
-      selectEvent.create(medicationIntent, 'order')
-      selectEvent.create(medicationPriority, 'urgent')
-
+      await selectEvent.select(medStatus, /active/)
+      await selectEvent.select(medicationIntent, /order/)
+      await selectEvent.select(medicationPriority, /urgent/)
+      userEvent.type(quantityUnit, '200')
+      userEvent.type(quantityValue, 'mg')
       userEvent.click(
         screen.getByRole('button', {
           name: /medications\.requests\.new/i,
         }),
       )
-      expect(history.location.pathname).toEqual('/medications/new')
-    })
+
+      await waitFor(() => {
+        expect(history.location.pathname).toMatch(
+          /\/medications\/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{11}/,
+        )
+      })
+
+      expect(medStatus).toHaveValue('medications.status.active')
+      expect(medicationIntent).toHaveValue('medications.intent.order')
+      expect(medicationPriority).toHaveValue('medications.priority.urgent')
+      expect(quantityUnit).toHaveValue('200')
+      expect(quantityValue).toHaveValue('mg')
+    }, 20000)
   })
 })
