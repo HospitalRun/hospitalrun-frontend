@@ -1,9 +1,10 @@
-import { Alert, Row, Column } from '@hospitalrun/components'
+import { Select, Label, Alert, Row, Column } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Input, { Option } from '../../shared/components/input'
+import Input from '../../shared/components/input'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import Diagnosis, { DiagnosisStatus } from '../../shared/model/Diagnosis'
 import Patient from '../../shared/model/Patient'
 import usePatientVisits from '../hooks/usePatientVisits'
@@ -45,7 +46,7 @@ const DiagnosisForm = (props: Props) => {
   const patientVisits = visits?.map((v) => ({
     label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd, hh:mm a')}`,
     value: v.id,
-  })) as Option[]
+  })) as SelectOption[]
 
   const defaultSelectedVisitOption = () => {
     if (patientVisits !== undefined) {
@@ -54,7 +55,7 @@ const DiagnosisForm = (props: Props) => {
     return []
   }
 
-  const statusOptions: Option[] = Object.values(DiagnosisStatus).map((v) => ({
+  const statusOptions: SelectOption[] = Object.values(DiagnosisStatus).map((v) => ({
     label: v,
     value: v,
   }))
@@ -131,35 +132,42 @@ const DiagnosisForm = (props: Props) => {
 
       <Row>
         <Column md={12}>
-          <Input.SelectWithLabelFormGroup
-            name="visit"
-            label={t('patient.diagnoses.visit')}
-            isRequired={false}
-            options={patientVisits || []}
-            defaultSelected={defaultSelectedVisitOption()}
-            onChange={(values) => {
-              onFieldChange('visit', values[0])
-            }}
-            isEditable={patient?.visits !== undefined}
-          />
+          <div className="form-group" data-testid="visitSelect">
+            <Label title="visit" text={t('patient.diagnoses.visit')} />
+            <Select
+              id="visitSelect"
+              options={patientVisits || []}
+              onChange={(values) => {
+                onFieldChange('visit', values[0])
+              }}
+              defaultSelected={defaultSelectedVisitOption()}
+              disabled={disabled}
+            />
+          </div>
         </Column>
       </Row>
 
       <Row>
         <Column md={12}>
-          <Input.SelectWithLabelFormGroup
-            name="status"
-            label={t('patient.diagnoses.status')}
-            isRequired
-            options={statusOptions}
-            defaultSelected={statusOptions.filter(({ value }) => value === status)}
-            onChange={(values) => {
-              onFieldChange('status', values[0])
-              setStatus(values[0] as DiagnosisStatus)
-            }}
-            isEditable={!disabled}
-            isInvalid={!!diagnosisError?.status}
-          />
+          <div className="form-group" data-testid="statusSelect">
+            <Label
+              text={t('patient.diagnoses.status')}
+              htmlFor="statusSelect"
+              title="This is a required input"
+              isRequired
+            />
+            <Select
+              id="statusSelect"
+              options={statusOptions || []}
+              defaultSelected={statusOptions.filter(({ value }) => value === status)}
+              onChange={(values) => {
+                onFieldChange('status', values[0])
+                setStatus(values[0] as DiagnosisStatus)
+              }}
+              disabled={disabled}
+              isInvalid={!!diagnosisError?.status}
+            />
+          </div>
         </Column>
       </Row>
 
