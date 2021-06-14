@@ -7,7 +7,7 @@ export default {
       draft: 'Проект',
       active: 'Активный',
       onHold: 'На удерживании',
-      cancelled: 'Отменено',
+      canceled: 'Отменено',
       completed: 'Завершено',
       enteredInError: 'Введено по ошибке',
       stopped: 'Остановлен',
@@ -38,6 +38,7 @@ export default {
       view: 'Просмотреть лекарство',
       cancel: 'Отменить лечение',
       complete: 'Полное лекарство',
+      update: 'Изменить лекарство',
       error: {
         unableToRequest: 'Невозможно создать запрос на лекарство.',
         unableToComplete: 'Невозможно выполнить запрос на лекарство.',

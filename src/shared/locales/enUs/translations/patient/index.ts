@@ -190,6 +190,14 @@ export default {
       },
     },
     visit: 'Visit',
+    history: {
+      label: 'History',
+      eventDate: 'Event Date',
+      recordType: 'Record Type',
+      information: 'Information',
+      noHistoryTitle: 'No History',
+      noHistoryMessage: 'There is no histories for this patient',
+    },
     visits: {
       new: 'Add Visit',
       label: 'Visits',

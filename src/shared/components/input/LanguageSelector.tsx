@@ -1,15 +1,16 @@
+import { Select, Label } from '@hospitalrun/components'
 import sortBy from 'lodash/sortBy'
 import React, { useState } from 'react'
 
 import i18n, { resources } from '../../config/i18n'
 import useTranslator from '../../hooks/useTranslator'
-import SelectWithLabelFormGroup, { Option } from './SelectWithLabelFormGroup'
+import { SelectOption } from './SelectOption'
 
 const LanguageSelector = () => {
   const { t } = useTranslator()
   const [selected, setSelected] = useState(i18n.language)
 
-  let languageOptions: Option[] = Object.keys(resources).map((abbr) => ({
+  let languageOptions: SelectOption[] = Object.keys(resources).map((abbr) => ({
     label: resources[abbr].name,
     value: abbr,
   }))
@@ -21,14 +22,15 @@ const LanguageSelector = () => {
   }
 
   return (
-    <SelectWithLabelFormGroup
-      name="language"
-      label={t('settings.language.label')}
-      options={languageOptions}
-      defaultSelected={languageOptions.filter(({ value }) => value === selected)}
-      onChange={(values) => onChange(values[0])}
-      isEditable
-    />
+    <>
+      <Label text={t('settings.language.label')} title="language" />
+      <Select
+        id="language"
+        options={languageOptions}
+        defaultSelected={languageOptions.filter(({ value }) => value === selected)}
+        onChange={(values) => onChange(values[0])}
+      />
+    </>
   )
 }
 
