@@ -79,7 +79,7 @@ const EditPatient = () => {
         error={updateError}
       />
       <div className="row float-right">
-        <div className="btn-group btn-group-lg">
+        <div className="btn-group btn-group-lg mt-3 mr-3">
           <Button className="btn-save mr-2" color="success" onClick={onSave}>
             {t('patients.updatePatient')}
           </Button>

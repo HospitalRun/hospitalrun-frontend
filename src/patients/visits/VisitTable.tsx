@@ -1,4 +1,4 @@
-import { Table } from '@hospitalrun/components'
+import { Alert, Table } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
@@ -16,14 +16,24 @@ const VisitTable = ({ patientId }: Props) => {
 
   const { data: patientVisits, status } = usePatientVisits(patientId)
 
-  if (patientVisits === undefined && status === 'loading') {
+  if (patientVisits === undefined || status === 'loading') {
     return <Loading />
+  }
+
+  if (patientVisits.length === 0) {
+    return (
+      <Alert
+        color="warning"
+        title={t('patient.visits.warning.noVisits')}
+        message={t('patient.visits.warning.addVisitAbove')}
+      />
+    )
   }
 
   return (
     <Table
       getID={(row) => row.id}
-      data={patientVisits || []}
+      data={patientVisits}
       columns={[
         {
           label: t('patient.visits.startDateTime'),

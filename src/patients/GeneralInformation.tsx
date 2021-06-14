@@ -1,13 +1,11 @@
-import { Panel, Checkbox, Alert } from '@hospitalrun/components'
+import { Select, Label, Panel, Checkbox, Alert } from '@hospitalrun/components'
 import differenceInYears from 'date-fns/differenceInYears'
 import startOfDay from 'date-fns/startOfDay'
 import subYears from 'date-fns/subYears'
 import React, { ReactElement } from 'react'
 
 import DatePickerWithLabelFormGroup from '../shared/components/input/DatePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../shared/components/input/SelectWithLabelFormGroup'
+import { SelectOption } from '../shared/components/input/SelectOption'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
 import { ContactInfoPiece } from '../shared/model/ContactInformation'
@@ -63,19 +61,19 @@ const GeneralInformation = (props: Props): ReactElement => {
     onFieldChange('isApproximateDateOfBirth', checked)
   }
 
-  const sexOptions: Option[] = [
+  const sexOptions: SelectOption[] = [
     { label: t('sex.male'), value: 'male' },
     { label: t('sex.female'), value: 'female' },
     { label: t('sex.other'), value: 'other' },
     { label: t('sex.unknown'), value: 'unknown' },
   ]
 
-  const typeOptions: Option[] = [
+  const typeOptions: SelectOption[] = [
     { label: t('patient.types.charity'), value: 'charity' },
     { label: t('patient.types.private'), value: 'private' },
   ]
 
-  const bloodTypeOptions: Option[] = [
+  const bloodTypeOptions: SelectOption[] = [
     { label: t('bloodType.apositive'), value: 'A+' },
     { label: t('bloodType.anegative'), value: 'A-' },
     { label: t('bloodType.abpositive'), value: 'AB+' },
@@ -140,34 +138,42 @@ const GeneralInformation = (props: Props): ReactElement => {
         </div>
         <div className="row">
           <div className="col">
-            <SelectWithLabelFormGroup
-              name="sex"
-              label={t('patient.sex')}
-              options={sexOptions}
-              defaultSelected={sexOptions.filter(({ value }) => value === patient.sex)}
-              onChange={(values) => onFieldChange('sex', values[0])}
-              isEditable={isEditable}
-            />
+            <div className="form-group" data-testid="sexSelect">
+              <Label text={t('patient.sex')} title="sex" />
+              <Select
+                id="sexSelect"
+                options={sexOptions}
+                defaultSelected={sexOptions.filter(({ value }) => value === patient.sex)}
+                onChange={(values) => onFieldChange('sex', values[0])}
+                disabled={!isEditable}
+              />
+            </div>
           </div>
           <div className="col">
-            <SelectWithLabelFormGroup
-              name="type"
-              label={t('patient.type')}
-              options={typeOptions}
-              defaultSelected={typeOptions.filter(({ value }) => value === patient.type)}
-              onChange={(values) => onFieldChange('type', values[0])}
-              isEditable={isEditable}
-            />
+            <div className="form-group" data-testid="typeSelect">
+              <Label text={t('patient.type')} title="type" />
+              <Select
+                id="typeSelect"
+                options={typeOptions}
+                defaultSelected={typeOptions.filter(({ value }) => value === patient.type)}
+                onChange={(values) => onFieldChange('type', values[0])}
+                disabled={!isEditable}
+              />
+            </div>
           </div>
           <div className="col">
-            <SelectWithLabelFormGroup
-              name="bloodType"
-              label={t('patient.bloodType')}
-              options={bloodTypeOptions}
-              defaultSelected={bloodTypeOptions.filter(({ value }) => value === patient.bloodType)}
-              onChange={(values) => onFieldChange('bloodType', values[0])}
-              isEditable={isEditable}
-            />
+            <div className="form-group" data-testid="bloodTypeSelect">
+              <Label text={t('patient.bloodType')} title="bloodType" />
+              <Select
+                id="bloodTypeSelect"
+                options={bloodTypeOptions}
+                defaultSelected={bloodTypeOptions.filter(
+                  ({ value }) => value === patient.bloodType,
+                )}
+                onChange={(values) => onFieldChange('bloodType', values[0])}
+                disabled={!isEditable}
+              />
+            </div>
           </div>
         </div>
         <div className="row">
