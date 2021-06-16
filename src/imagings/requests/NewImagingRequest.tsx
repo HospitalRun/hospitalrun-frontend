@@ -1,4 +1,4 @@
-import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
+import { Select, Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -6,9 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -29,9 +27,9 @@ const NewImagingRequest = () => {
   })
   const [mutate] = useRequestImaging(user)
   const [error, setError] = useState<ImagingRequestError>()
-  const [visitOption, setVisitOption] = useState([] as Option[])
+  const [visitOption, setVisitOption] = useState([] as SelectOption[])
 
-  const statusOptions: Option[] = [
+  const statusOptions: SelectOption[] = [
     { label: t('imagings.status.requested'), value: 'requested' },
     { label: t('imagings.status.completed'), value: 'completed' },
     { label: t('imagings.status.canceled'), value: 'canceled' },
@@ -65,7 +63,7 @@ const NewImagingRequest = () => {
       const visits = patient.visits?.map((v) => ({
         label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
         value: v.id,
-      })) as Option[]
+      })) as SelectOption[]
 
       setVisitOption(visits)
     } else {
@@ -154,17 +152,16 @@ const NewImagingRequest = () => {
             </div>
           </Column>
           <Column>
-            <div className="visits">
-              <SelectWithLabelFormGroup
-                name="visit"
-                label={t('patient.visits.label')}
-                isRequired
-                isEditable={newImagingRequest.patient !== undefined}
+            <div className="visits" data-testid="visitSelect">
+              <Label text={t('patient.visits.label')} title="visit" isRequired />
+              <Select
+                id="visitSelect"
                 options={visitOption || []}
                 defaultSelected={defaultSelectedVisitsOption()}
                 onChange={(values) => {
                   onVisitChange(values[0])
                 }}
+                disabled={false}
               />
             </div>
           </Column>
@@ -180,17 +177,16 @@ const NewImagingRequest = () => {
           value={newImagingRequest.type}
           onChange={onImagingTypeChange}
         />
-        <div className="imaging-status">
-          <SelectWithLabelFormGroup
-            name="status"
-            label={t('imagings.imaging.status')}
+        <div className="imaging-status" data-testid="statusSelect">
+          <Label text={t('imagings.imaging.status')} title="status" isRequired />
+          <Select
+            id="statusSelect"
             options={statusOptions}
-            isRequired
-            isEditable
             defaultSelected={statusOptions.filter(
               ({ value }) => value === newImagingRequest.status,
             )}
             onChange={(values) => onStatusChange(values[0])}
+            disabled={false}
           />
         </div>
         <div className="form-group">
