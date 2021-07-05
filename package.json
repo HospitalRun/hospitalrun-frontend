@@ -80,7 +80,7 @@
     "@types/redux-mock-store": "~1.0.1",
     "@types/shortid": "^0.0.29",
     "@types/uuid": "^8.0.0",
-    "@types/validator": "~13.1.0",
+    "@types/validator": "~13.6.2",
     "@typescript-eslint/eslint-plugin": "~3.10.0",
     "@typescript-eslint/parser": "~3.10.0",
     "chalk": "^4.0.0",
