@@ -70,7 +70,7 @@
     "@testing-library/user-event": "~12.8.3",
     "@types/jest": "~26.0.0",
     "@types/lodash": "^4.14.150",
-    "@types/node": "~15.12.2",
+    "@types/node": "~16.0.0",
     "@types/pouchdb": "~6.4.0",
     "@types/react": "~17.0.0",
     "@types/react-dom": "~17.0.0",
