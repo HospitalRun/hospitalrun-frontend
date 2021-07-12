@@ -129,7 +129,7 @@ const ViewLab = () => {
 
     if (permissions.includes(Permissions.CompleteLab)) {
       buttons.push(
-        <Button className="mr-2" onClick={onComplete} color="primary" key="labs.requests.complete">
+        <Button className="mr-2" color="primary" onClick={onComplete} key="labs.requests.complete">
           {t('labs.requests.complete')}
         </Button>,
       )
