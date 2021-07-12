@@ -3,12 +3,17 @@ import { queryCache, useMutation } from 'react-query'
 import IncidentRepository from '../../shared/db/IncidentRepository'
 import Incident from '../../shared/model/Incident'
 
-function getResolvedOn(incident: Incident) {
-  return incident.status === 'resolved'
-    ? {
-        resolvedOn: new Date(Date.now()).toISOString(),
-      }
-    : {}
+interface ResolvedOnDate {
+  resolvedOn?: string
+}
+
+/**
+ * Returns incident object with resolvedOn string if incident.status was resolved on, otherwise returns empty object
+ * @param {Incident} incident
+ * @returns {ResolvedOnDate}
+ */
+function getResolvedOn(incident: Incident): ResolvedOnDate {
+  return incident.status === 'resolved' ? { resolvedOn: new Date(Date.now()).toISOString() } : {}
 }
 
 function resolveIncident(incident: Incident): Promise<Incident> {

@@ -60,7 +60,7 @@ function ViewIncidentDetails(props: Props) {
           color="primary"
           key="incidents.reports.resolve"
         >
-          {t('incidents.reports.resolve')}
+          {t('incidents.reports.update')}
         </Button>,
       )
     }
@@ -100,13 +100,7 @@ function ViewIncidentDetails(props: Props) {
     const { id = '', fullName = '' } = patient || {}
 
     setIncident((prevIncident) =>
-      prevIncident
-        ? {
-            ...prevIncident,
-            patient: id,
-            patientFullName: fullName,
-          }
-        : prevIncident,
+      prevIncident ? { ...prevIncident, patient: id, patientFullName: fullName } : prevIncident,
     )
   }
 
