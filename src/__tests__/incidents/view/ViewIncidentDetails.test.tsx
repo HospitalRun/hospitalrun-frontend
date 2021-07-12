@@ -171,7 +171,7 @@ describe('View Incident Details', () => {
         ])
 
         const resolveButton = await screen.findByRole('button', {
-          name: /incidents\.reports\.resolve/i,
+          name: /incidents\.reports\.update/i,
         })
 
         userEvent.click(resolveButton)
