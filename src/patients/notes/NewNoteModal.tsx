@@ -12,7 +12,7 @@ interface Props {
   onCloseButtonClick: () => void
   patientId: string
 }
-const initialNoteState = { text: '', date: new Date().toISOString() }
+const initialNoteState = { text: '', date: new Date().toISOString(), deleted: false }
 
 const NewNoteModal = (props: Props) => {
   const { show, toggle, onCloseButtonClick, patientId } = props

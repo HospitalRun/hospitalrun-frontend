@@ -28,7 +28,12 @@ describe('use add note', () => {
   })
 
   it('should add the note to the patient', async () => {
-    const expectedNote = { id: '456', text: 'eome name', date: '1947-09-09T14:48:00.000Z' }
+    const expectedNote = {
+      id: '456',
+      text: 'eome name',
+      date: '1947-09-09T14:48:00.000Z',
+      deleted: false,
+    }
     const givenPatient = { id: 'patientId', notes: [] as Note[] } as Patient
     jest.spyOn(uuid, 'uuid').mockReturnValue(expectedNote.id)
     const expectedPatient = { ...givenPatient, notes: [expectedNote] }

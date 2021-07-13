@@ -30,7 +30,13 @@ const setup = (
   } as any),
 ) => {
   const expectedDate = new Date()
-  const expectedNotes = 'expected notes'
+  const expectedNotes = {
+    id: 'test-note-id',
+    date: new Date().toISOString(),
+    text: 'Hi, this is an example test note',
+    deleted: false,
+  }
+
   const expectedLab = {
     patient: '1234567',
     type: 'expected type',
@@ -225,7 +231,7 @@ describe('New Lab Request', () => {
       expect(await screen.findByText(/jim bob/i)).toBeVisible()
       userEvent.click(screen.getByText(/jim bob/i))
       userEvent.type(screen.getByLabelText(/labs\.lab\.type/i), expectedLab.type)
-      userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), (expectedLab.notes as string[])[0])
+      userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), expectedLab?.notes?.[0].text)
       userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
 
       expect(await screen.findByRole('alert')).toBeInTheDocument()

@@ -21,8 +21,10 @@ import TextInputWithLabelFormGroup from '../../shared/components/input/TextInput
 import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Lab from '../../shared/model/Lab'
+import Note from '../../shared/model/Note'
 import Patient from '../../shared/model/Patient'
 import { RootState } from '../../shared/store'
+import { uuid } from '../../shared/util/uuid'
 import useRequestLab from '../hooks/useRequestLab'
 import { LabError } from '../utils/validate-lab'
 
@@ -31,7 +33,7 @@ const NewLabRequest = () => {
   const history = useHistory()
   const { user } = useSelector((state: RootState) => state.user)
   const [mutate] = useRequestLab()
-  const [newNote, setNewNote] = useState('')
+  const [newNoteText, setNewNoteText] = useState('')
   const [error, setError] = useState<LabError | undefined>(undefined)
   const [visitOptions, setVisitOptions] = useState([] as SelectOption[])
 
@@ -88,11 +90,19 @@ const NewLabRequest = () => {
   }
 
   const onNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const notes = event.currentTarget.value
-    setNewNote(notes)
+    const noteText = event.currentTarget.value
+    setNewNoteText(noteText)
+
+    const newNote: Note = {
+      id: uuid(),
+      date: new Date().toISOString(),
+      text: noteText,
+      deleted: false,
+    }
+
     setNewLabRequest((previousNewLabRequest) => ({
       ...previousNewLabRequest,
-      notes: [notes],
+      notes: [newNote],
     }))
   }
 
@@ -181,7 +191,7 @@ const NewLabRequest = () => {
             name="labNotes"
             label={t('labs.lab.notes')}
             isEditable
-            value={newNote}
+            value={newNoteText}
             onChange={onNoteChange}
           />
         </div>
