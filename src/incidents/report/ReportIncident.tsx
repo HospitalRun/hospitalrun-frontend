@@ -41,10 +41,18 @@ const ReportIncident = () => {
   const [error, setError] = useState<IncidentError | undefined>(undefined)
 
   const onDateChange = (newDate: Date) => {
-    setIncident((prevState) => ({
-      ...prevState,
-      date: newDate.toISOString(),
-    }))
+    setIncident((prevState) => {
+      if (newDate) {
+        return {
+          ...prevState,
+          date: newDate.toISOString(),
+        }
+      }
+      return {
+        ...prevState,
+        date: new Date().toISOString(),
+      }
+    })
   }
 
   const onTextInputChange = (text: string, name: string) => {
