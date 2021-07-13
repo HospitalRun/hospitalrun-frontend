@@ -1,5 +1,6 @@
 import { Button, Row, Column, Typeahead, Label } from '@hospitalrun/components'
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
@@ -11,6 +12,7 @@ import PatientRepository from '../../shared/db/PatientRepository'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Incident from '../../shared/model/Incident'
 import Patient from '../../shared/model/Patient'
+import { RootState } from '../../shared/store'
 import useReportIncident from '../hooks/useReportIncident'
 import { IncidentError } from '../util/validate-incident'
 
@@ -19,6 +21,7 @@ const ReportIncident = () => {
   const history = useHistory()
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
+  const { user } = useSelector((state: RootState) => state.user)
   useEffect(() => {
     updateTitle(t('incidents.reports.new'))
   })
@@ -30,6 +33,7 @@ const ReportIncident = () => {
   ]
   useAddBreadcrumbs(breadcrumbs)
   const [incident, setIncident] = useState({
+    reportedBy: user?.id || 'some user',
     date: new Date().toISOString(),
     department: '',
     category: '',

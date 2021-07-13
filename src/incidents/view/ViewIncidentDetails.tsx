@@ -8,7 +8,7 @@ import TextFieldWithLabelFormGroup from '../../shared/components/input/TextField
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Permissions from '../../shared/model/Permissions'
-import { extractUsername } from '../../shared/util/extractUsername'
+import { extractFullName } from '../../shared/util/extractFullName'
 import useIncident from '../hooks/useIncident'
 import useResolveIncident from '../hooks/useResolveIncident'
 
@@ -83,7 +83,7 @@ function ViewIncidentDetails(props: Props) {
         <Column>
           <div className="form-group incident-reported-by">
             <h4>{t('incidents.reports.reportedBy')}</h4>
-            <h5>{extractUsername(data.reportedBy)}</h5>
+            <h5>{extractFullName(data.reportedBy)}</h5>
           </div>
         </Column>
         <Column>
