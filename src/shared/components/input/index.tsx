@@ -1,5 +1,6 @@
 import DatePickerWithLabelFormGroup from './DatePickerWithLabelFormGroup'
 import DateTimePickerWithLabelFromGroup from './DateTimePickerWithLabelFormGroup'
+import IntlTelInputWithLabelFormGroup from './IntlTelInputWithLabelFormGroup'
 import LanguageSelector from './LanguageSelector'
 import { SelectOption } from './SelectOption'
 import TextFieldWithLabelFormGroup from './TextFieldWithLabelFormGroup'
@@ -13,4 +14,5 @@ export default {
   LanguageSelector,
   TextFieldWithLabelFormGroup,
   TextInputWithLabelFormGroup,
+  IntlTelInputWithLabelFormGroup,
 }

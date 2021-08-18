@@ -239,7 +239,7 @@ const GeneralInformation = (props: Props): ReactElement => {
         <div className="mb-4">
           <Panel title={t('patient.phoneNumber')} color="primary" collapsible>
             <ContactInfo
-              component="TextInputWithLabelFormGroup"
+              component="IntlTelInputWithLabelFormGroup"
               data={patient.phoneNumbers}
               errors={error?.phoneNumbers}
               label="patient.phoneNumber"

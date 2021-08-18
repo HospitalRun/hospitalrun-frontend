@@ -1,6 +1,7 @@
 import { Select, Label, Spinner, Row, Column, Icon } from '@hospitalrun/components'
 import React, { useEffect, ReactElement } from 'react'
 
+import IntlTelInputWithLabelFormGroup from '../shared/components/input/IntlTelInputWithLabelFormGroup'
 import { SelectOption } from '../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
@@ -10,7 +11,10 @@ import { uuid } from '../shared/util/uuid'
 import ContactInfoTypes from './ContactInfoTypes'
 
 interface Props {
-  component: 'TextInputWithLabelFormGroup' | 'TextFieldWithLabelFormGroup'
+  component:
+    | 'TextInputWithLabelFormGroup'
+    | 'TextFieldWithLabelFormGroup'
+    | 'IntlTelInputWithLabelFormGroup'
   data: ContactInfoPiece[]
   errors?: (string | undefined)[]
   label: string
@@ -50,6 +54,7 @@ const ContactInfo = (props: Props): ReactElement => {
   const componentList = {
     TextInputWithLabelFormGroup,
     TextFieldWithLabelFormGroup,
+    IntlTelInputWithLabelFormGroup,
   }
   const Component = componentList[component]
 
@@ -62,12 +67,14 @@ const ContactInfo = (props: Props): ReactElement => {
     }
   }
 
-  const onValueChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number,
-  ) => {
+  const onValueChange = (event: any, index: number) => {
     if (onChange) {
-      const newValue = event.currentTarget.value
+      let newValue
+      if (event.currentTarget !== undefined) {
+        newValue = event.currentTarget.value
+      } else {
+        newValue = event
+      }
       const currentContact = { ...data[index], value: newValue }
       const newContacts = [...data]
       newContacts.splice(index, 1, currentContact)
