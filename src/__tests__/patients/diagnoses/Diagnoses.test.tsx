@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router, Route } from 'react-router-dom'
+import { Route, Router } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -22,20 +22,21 @@ const expectedPatient = {
 } as Patient
 
 const mockStore = createMockStore<RootState, any>([thunk])
-const history = createMemoryHistory()
 
-let user: any
-let store: any
+const setup = async (patient = expectedPatient, permissions = [Permissions.AddDiagnosis]) => {
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+  const store = mockStore({ user: { permissions } } as any)
+  const history = createMemoryHistory()
+  history.push(`/patients/${patient.id}/diagnoses`)
 
-const setup = (patient = expectedPatient, permissions = [Permissions.AddDiagnosis]) => {
-  user = { permissions }
-  store = mockStore({ patient, user } as any)
   return render(
-    <Router history={history}>
-      <Provider store={store}>
-        <Diagnoses patient={patient} />
-      </Provider>
-    </Router>,
+    <Provider store={store}>
+      <Router history={history}>
+        <Route path="/patients/:id/diagnoses">
+          <Diagnoses />
+        </Route>
+      </Router>
+    </Provider>,
   )
 }
 
@@ -46,31 +47,32 @@ describe('Diagnoses', () => {
       jest.spyOn(PatientRepository, 'saveOrUpdate')
     })
 
-    it('should render a add diagnoses button', () => {
+    it('should render an add diagnoses button', async () => {
       setup()
 
       expect(
-        screen.getByRole('button', {
-          name: /patient\.diagnoses\.new/i,
+        await screen.findByRole('button', {
+          name: /patient.diagnoses.new/i,
         }),
       ).toBeInTheDocument()
     })
 
     it('should not render a diagnoses button if the user does not have permissions', () => {
       setup(expectedPatient, [])
+
       expect(
         screen.queryByRole('button', {
-          name: /patient\.diagnoses\.new/i,
+          name: /patient.diagnoses.new/i,
         }),
       ).not.toBeInTheDocument()
     })
 
-    it('should open the Add Diagnosis Modal', () => {
+    it('should open the Add Diagnosis Modal', async () => {
       setup()
 
       userEvent.click(
-        screen.getByRole('button', {
-          name: /patient\.diagnoses\.new/i,
+        await screen.findByRole('button', {
+          name: /patient.diagnoses.new/i,
         }),
       )
 

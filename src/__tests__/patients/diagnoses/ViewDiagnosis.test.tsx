@@ -1,83 +1,57 @@
-import { mount } from 'enzyme'
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
 
-import DiagnosisForm from '../../../patients/diagnoses/DiagnosisForm'
 import ViewDiagnosis from '../../../patients/diagnoses/ViewDiagnosis'
-import Loading from '../../../shared/components/Loading'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Diagnosis from '../../../shared/model/Diagnosis'
 import Patient from '../../../shared/model/Patient'
 
+const diagnosis = {
+  id: '123',
+  name: 'some name',
+  diagnosisDate: new Date().toISOString(),
+} as Diagnosis
+
+const expectedPatient = {
+  id: 'patientId',
+  diagnoses: [diagnosis],
+} as Patient
+
+const setup = () => {
+  jest.resetAllMocks()
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
+  const history = createMemoryHistory()
+  history.push(`/patients/${expectedPatient.id}/diagnoses/${diagnosis.id}`)
+
+  return render(
+    <Router history={history}>
+      <Route path="/patients/:id/diagnoses/:diagnosisId">
+        <ViewDiagnosis />
+      </Route>
+    </Router>,
+  )
+}
+
 describe('View Diagnosis', () => {
-  const diagnosis = {
-    id: '123',
-    name: 'some name',
-    diagnosisDate: new Date().toISOString(),
-  } as Diagnosis
-
-  const patient = {
-    id: 'patientId',
-    diagnoses: [diagnosis],
-  } as Patient
-
-  const setup = async () => {
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
-    const history = createMemoryHistory()
-    history.push(`/patients/${patient.id}/diagnoses/${diagnosis.id}`)
-    let wrapper: any
-
-    await act(async () => {
-      wrapper = await mount(
-        <Router history={history}>
-          <Route path="/patients/:id/diagnoses/:diagnosisId">
-            <ViewDiagnosis />
-          </Route>
-        </Router>,
-      )
-    })
-    wrapper.update()
-
-    return { wrapper }
-  }
-
   it('should render the loading spinner only while diagnosis data is being fetched', async () => {
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
-    const history = createMemoryHistory()
-    history.push(`/patients/${patient.id}/diagnoses/${diagnosis.id}`)
-    const wrapper = mount(
-      <Router history={history}>
-        <Route path="/patients/:id/diagnoses/:diagnosisId">
-          <ViewDiagnosis />
-        </Route>
-      </Router>,
-    )
+    const { container } = setup()
 
-    expect(wrapper.exists).toBeTruthy()
-    expect(wrapper.find(Loading)).toHaveLength(1)
-
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0))
-    })
-    wrapper.update()
-
-    expect(wrapper.find(Loading)).toHaveLength(0)
+    expect(container.querySelector(`[class^='css-']`)).toBeInTheDocument()
+    await waitForElementToBeRemoved(container.querySelector('.css-0'))
+    expect(container.querySelector(`[class^='css-']`)).not.toBeInTheDocument()
   })
 
   it('should render the diagnosis name', async () => {
-    const { wrapper } = await setup()
+    setup()
 
-    expect(wrapper.find('h2').text()).toEqual(diagnosis.name)
+    expect(await screen.findByRole('heading', { name: diagnosis.name })).toBeInTheDocument()
   })
 
-  it('should render a diagnosis form with the correct data', async () => {
-    const { wrapper } = await setup()
+  it('should render a diagnosis form', async () => {
+    setup()
 
-    const diagnosisForm = wrapper.find(DiagnosisForm)
-    expect(diagnosisForm).toHaveLength(1)
-    expect(diagnosisForm.prop('diagnosis')).toEqual(diagnosis)
-    expect(diagnosisForm.prop('patient')).toEqual(patient)
+    expect(await screen.findByRole('form')).toBeInTheDocument()
   })
 })

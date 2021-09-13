@@ -1,42 +1,48 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Route, Router } from 'react-router-dom'
 
-import DiagnosisTable from '../../../patients/diagnoses/DiagnosisTable'
 import ViewDiagnoses from '../../../patients/diagnoses/ViewDiagnoses'
 import PatientRepository from '../../../shared/db/PatientRepository'
-import Diagnosis from '../../../shared/model/Diagnosis'
+import Diagnosis, { DiagnosisStatus } from '../../../shared/model/Diagnosis'
 import Patient from '../../../shared/model/Patient'
 
+const diagnosis = {
+  id: '456',
+  name: 'diagnosis name',
+  diagnosisDate: new Date(2020, 12, 2).toISOString(),
+  onsetDate: new Date(2020, 12, 3).toISOString(),
+  abatementDate: new Date(2020, 12, 4).toISOString(),
+  status: DiagnosisStatus.Active,
+  note: 'note',
+  visit: 'visit',
+} as Diagnosis
+
+const expectedPatient = {
+  id: '123',
+  diagnoses: [diagnosis],
+} as Patient
+
+const setup = async () => {
+  jest.resetAllMocks()
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
+
+  const history = createMemoryHistory()
+  history.push(`/patients/${expectedPatient.id}/diagnoses`)
+
+  return render(
+    <Router history={history}>
+      <Route path="/patients/:id/diagnoses">
+        <ViewDiagnoses />
+      </Route>
+    </Router>,
+  )
+}
+
 describe('View Diagnoses', () => {
-  const patient = { id: '123', diagnoses: [] as Diagnosis[] } as Patient
-  const setup = async () => {
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
-
-    const history = createMemoryHistory()
-    history.push(`/patients/${patient.id}/diagnoses`)
-    let wrapper: any
-
-    await act(async () => {
-      wrapper = await mount(
-        <Router history={history}>
-          <Route path="/patients/:id/diagnoses">
-            <ViewDiagnoses />
-          </Route>
-        </Router>,
-      )
-    })
-
-    return { wrapper: wrapper as ReactWrapper }
-  }
-
   it('should render a diagnoses table with the patient id', async () => {
-    const { wrapper } = await setup()
-
-    expect(wrapper.exists(DiagnosisTable)).toBeTruthy()
-    const diagnosisTable = wrapper.find(DiagnosisTable)
-    expect(diagnosisTable.prop('patientId')).toEqual(patient.id)
+    setup()
+    expect(await screen.findByRole('table')).toBeInTheDocument()
   })
 })

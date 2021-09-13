@@ -196,13 +196,17 @@ describe('Important Patient Info Panel', () => {
   describe('patient diagnosis routing', () => {
     it('should render the diagnosis form when the table row is clicked', async () => {
       setup(expectedPatient, [])
-      userEvent.click(screen.getByRole('button', { name: /actions.view/i }))
 
-      await waitFor(() => {
-        expect(history.location.pathname).toEqual(`/patients/${expectedPatient.id}/diagnoses/${diagnosis.id}`)
-      })
+      const rows = await screen.findAllByRole('row')
+      userEvent.click(rows[2])
+      expect(history.location.pathname).toEqual(
+        `/patients/${expectedPatient.id}/diagnoses/${diagnosis.id}`,
+      )
 
-      expect(getAllByLabelText(/patient.diagnoses.visit/i)).toHaveLength(2)
+      const form = await screen.findByRole('form')
+      expect(
+        within(form).getByPlaceholderText(/patient.diagnoses.diagnosisName/i),
+      ).toBeInTheDocument()
     })
   })
 })
