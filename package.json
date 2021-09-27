@@ -13,7 +13,7 @@
     "bootstrap": "~5.1.0",
     "date-fns": "~2.24.0",
     "escape-string-regexp": "~4.0.0",
-    "i18next": "~21.0.2",
+    "i18next": "~21.1.0",
     "i18next-browser-languagedetector": "~6.1.0",
     "i18next-xhr-backend": "~3.2.2",
     "json2csv": "~5.0.1",
