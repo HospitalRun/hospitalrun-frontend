@@ -88,11 +88,11 @@ const EditAppointment = () => {
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg mr-3">
-          <Button className="mr-2" color="success" onClick={onSave}>
-            {t('scheduling.appointments.updateAppointment')}
-          </Button>
-          <Button color="danger" onClick={onCancel}>
+          <Button className="mr-2" color="danger" onClick={onCancel}>
             {t('actions.cancel')}
+          </Button>
+          <Button color="success" onClick={onSave}>
+            {t('scheduling.appointments.updateAppointment')}
           </Button>
         </div>
       </div>
