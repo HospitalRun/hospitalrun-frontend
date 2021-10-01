@@ -99,11 +99,11 @@ const NewPatient = () => {
       />
       <div className="row float-right">
         <div className="btn-group btn-group-lg mt-3 mr-3">
-          <Button className="btn-save mr-2" color="success" onClick={onSave}>
-            {t('patients.createPatient')}
-          </Button>
-          <Button className="btn-cancel" color="danger" onClick={onCancel}>
+          <Button className="btn-cancel mr-2" color="danger" onClick={onCancel}>
             {t('actions.cancel')}
+          </Button>
+          <Button className="btn-save" color="success" onClick={onSave}>
+            {t('patients.createPatient')}
           </Button>
         </div>
       </div>

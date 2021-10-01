@@ -187,12 +187,11 @@ const NewLabRequest = () => {
         </div>
         <div className="row float-right">
           <div className="btn-group btn-group-lg mt-3 mr-3">
-            <Button className="mr-2" color="success" onClick={onSave}>
-              {t('labs.requests.new')}
-            </Button>
-
-            <Button color="danger" onClick={onCancel}>
+            <Button className="mr-2" color="danger" onClick={onCancel}>
               {t('actions.cancel')}
+            </Button>
+            <Button color="success" onClick={onSave}>
+              {t('labs.requests.new')}
             </Button>
           </div>
         </div>
