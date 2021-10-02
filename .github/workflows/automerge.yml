@@ -1,15 +1,5 @@
 name: Automerge 
 on:
-  pull_request:
-    types:
-      - labeled
-      - synchronize
-      - opened
-      - edited
-      - ready_for_review
-  pull_request_review:
-    types:
-      - submitted
   check_suite:
     types:
       - completed
