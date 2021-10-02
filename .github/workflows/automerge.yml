@@ -1,0 +1,30 @@
+name: Automerge 
+on:
+  pull_request:
+    types:
+      - labeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.14.3"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+          MERGE_LABELS: "autoapproved, dependencies, !in progress"
+          MERGE_METHOD: "merge"
+          MERGE_RETRIES: "6"
+          MERGE_REQUIRED_APPROVALS: "1"
+          UPDATE_LABELS: "automerged"
+          UPDATE_METHOD: "rebase"
