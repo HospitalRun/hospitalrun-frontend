@@ -1,17 +1,16 @@
 import DatePickerWithLabelFormGroup from './DatePickerWithLabelFormGroup'
 import DateTimePickerWithLabelFromGroup from './DateTimePickerWithLabelFormGroup'
 import LanguageSelector from './LanguageSelector'
-import SelectWithLabelFormGroup, { Option } from './SelectWithLabelFormGroup'
+import { SelectOption } from './SelectOption'
 import TextFieldWithLabelFormGroup from './TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from './TextInputWithLabelFormGroup'
 
-export type { Option }
+export type { SelectOption }
 
 export default {
   DatePickerWithLabelFormGroup,
   DateTimePickerWithLabelFromGroup,
   LanguageSelector,
-  SelectWithLabelFormGroup,
   TextFieldWithLabelFormGroup,
   TextInputWithLabelFormGroup,
 }

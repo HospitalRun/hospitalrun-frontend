@@ -1,9 +1,7 @@
-import { Spinner, Row, Column, Icon } from '@hospitalrun/components'
+import { Select, Label, Spinner, Row, Column, Icon } from '@hospitalrun/components'
 import React, { useEffect, ReactElement } from 'react'
 
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../shared/components/input/SelectWithLabelFormGroup'
+import { SelectOption } from '../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../shared/hooks/useTranslator'
@@ -32,7 +30,7 @@ const ContactInfo = (props: Props): ReactElement => {
     }
   }, [data, onChange])
 
-  const typeOptions: Option[] = Object.values(ContactInfoTypes).map((value) => ({
+  const typeOptions: SelectOption[] = Object.values(ContactInfoTypes).map((value) => ({
     label: t(`patient.contactInfoType.options.${value}`),
     value: `${value}`,
   }))
@@ -82,13 +80,16 @@ const ContactInfo = (props: Props): ReactElement => {
     return (
       <Row key={entry.id}>
         <Column sm={4}>
-          <SelectWithLabelFormGroup
-            name={`${name}Type${i}`}
-            options={typeOptions}
-            defaultSelected={typeOptions.filter(({ value }) => value === entry.type)}
-            onChange={(values) => onTypeChange(values[0], i)}
-            isEditable={isEditable}
-          />
+          <div className="form-group" data-testid={`${name}Type${i}Select`}>
+            <Label text={`${name}Type${i}`} />
+            <Select
+              id={`${name}Type${i}Select`}
+              options={typeOptions}
+              defaultSelected={typeOptions.filter(({ value }) => value === entry.type)}
+              onChange={(values) => onTypeChange(values[0], i)}
+              disabled={!isEditable}
+            />
+          </div>
         </Column>
         <Column sm={8}>
           <Component

@@ -1,5 +1,6 @@
 export default {
   patient: {
+    label: 'Пациент',
     code: 'Код пациента',
     firstName: 'Имя',
     lastName: 'Фамилия',
@@ -13,6 +14,7 @@ export default {
     approximateAge: 'Приблизительный возраст',
     placeOfBirth: 'Место рождения',
     sex: 'Пол',
+    bloodType: 'Группа крови',
     contactInfoType: {
       label: 'Тип',
       options: {
@@ -51,6 +53,10 @@ export default {
     },
     appointments: {
       new: 'Добавить назначение',
+      warning: {
+        noAppointments: 'Нет назначений',
+      },
+      addAppointmentAbove: 'Добавьте назначение, используя кнопку сверху.',
     },
     allergies: {
       label: 'Аллергии',
@@ -71,6 +77,17 @@ export default {
       new: 'Добавить диагноз',
       diagnosisName: 'имя',
       diagnosisDate: 'Дата',
+      onsetDate: 'Начальная дата',
+      abatementDate: 'Конечная дата',
+      visit: 'Визит',
+      status: 'Тип',
+      active: 'Активный',
+      recurrence: 'Повторный',
+      relapse: 'Рецидив',
+      inactive: 'Неактивный',
+      remission: 'Ремиссия',
+      resolved: 'Завершённый',
+      note: 'Заметка',
       warning: {
         noDiagnoses: 'Нет диагнозов',
       },
@@ -111,6 +128,39 @@ export default {
       },
       noLabsMessage: 'Нет запросов анализов для этого человека.',
     },
+    careGoal: {
+      new: 'Добавить цель лечения',
+      label: 'Цели лечения',
+      title: 'Заголовок',
+      description: 'Описание',
+      status: 'Статус',
+      achievementStatus: 'Состояние цели',
+      priority: {
+        label: 'Приоритет',
+        low: 'низкий',
+        medium: 'средний',
+        high: 'высокий',
+      },
+      startDate: 'Дата начала',
+      dueDate: 'Срок окончания',
+      note: 'Заметки',
+      error: {
+        unableToAdd: 'Невозможно добавить цель лечения.',
+        descriptionRequired: 'Необходимо указать описание.',
+        priorityRequired: 'Необходимо указать приоритет.',
+        statusRequired: 'Необходимо указать статус.',
+        achievementStatusRequired: 'Необходимо указать состояние цели.',
+        startDate: 'Необходимо указать дату начала.',
+        dueDate: 'Необходимо указать срок окончания.',
+        dueDateMustBeAfterStartDate: 'Дата начала должна предшествовать сроку окончания.',
+      },
+    },
+    careGoals: {
+      warning: {
+        noCareGoals: 'Нет целей лечения',
+        addCareGoalAbove: 'Добавьте цель лечения, используя кнопку сверху.',
+      },
+    },
     carePlan: {
       new: 'Добавить план лечения',
       label: 'Планы лечения',
@@ -131,6 +181,45 @@ export default {
         intentRequired: 'Необходимо указать тип.',
         startDate: 'Необходимо указать дату начала.',
         endDate: 'Необходимо указать дату окончания',
+      },
+    },
+    carePlans: {
+      warning: {
+        noCarePlans: 'Нет планов лечения',
+        addCarePlanAbove: 'Добавьте план лечения, используя кнопку сверху.',
+      },
+    },
+    visit: 'Визит',
+    history: {
+      label: 'Журнал',
+      eventDate: 'Дата события',
+      recordType: 'Тип записи',
+      information: 'Информация',
+      noHistoryTitle: 'Нет событий',
+      noHistoryMessage: 'Нет событий для этого пациента',
+    },
+    visits: {
+      new: 'Добавить визит',
+      label: 'Визиты',
+      startDateTime: 'Дата начала',
+      endDateTime: 'Дата окончания',
+      type: 'Тип',
+      status: 'Статус',
+      reason: 'Причина',
+      location: 'Местоположение',
+      error: {
+        unableToAdd: 'Невозможно добавить визит.',
+        startDateRequired: 'Необходимо указать дату начала.',
+        endDateRequired: 'Необходимо указать дату окончания.',
+        endDateMustBeAfterStartDate: 'Дата начала должна предшествовать дате окончания.',
+        typeRequired: 'Необходимо указать тип.',
+        statusRequired: 'Необходимо указать статус.',
+        reasonRequired: 'Необходимо указать причину.',
+        locationRequired: 'Необходимо указать местоположение.',
+      },
+      warning: {
+        noVisits: 'Нет визитов',
+        addVisitAbove: 'Добавьте визит, используя кнопку сверху.',
       },
     },
     types: {

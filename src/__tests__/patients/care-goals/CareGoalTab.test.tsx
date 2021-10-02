@@ -117,7 +117,7 @@ describe('Care Goals Tab', () => {
     expect(cells[1]).toHaveTextContent(format(expectedCareGoal.startDate, 'yyyy-MM-dd'))
     expect(cells[2]).toHaveTextContent(format(expectedCareGoal.dueDate, 'yyyy-MM-dd'))
     expect(cells[3]).toHaveTextContent(expectedCareGoal.status)
-  }, 30000)
+  }, 50000)
 
   it('should open and close the modal when the add care goal and close buttons are clicked', async () => {
     setup('/patients/123/care-goals', [Permissions.AddCareGoal])

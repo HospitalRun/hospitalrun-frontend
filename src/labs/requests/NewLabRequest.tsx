@@ -1,4 +1,13 @@
-import { Typeahead, Label, Button, Alert, Toast, Column, Row } from '@hospitalrun/components'
+import {
+  Select,
+  Typeahead,
+  Label,
+  Button,
+  Alert,
+  Toast,
+  Column,
+  Row,
+} from '@hospitalrun/components'
 import format from 'date-fns/format'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -6,9 +15,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -26,7 +33,7 @@ const NewLabRequest = () => {
   const [mutate] = useRequestLab()
   const [newNote, setNewNote] = useState('')
   const [error, setError] = useState<LabError | undefined>(undefined)
-  const [visitOptions, setVisitOptions] = useState([] as Option[])
+  const [visitOptions, setVisitOptions] = useState([] as SelectOption[])
 
   const updateTitle = useUpdateTitle()
   useEffect(() => {
@@ -54,7 +61,7 @@ const NewLabRequest = () => {
       const visits = patient.visits?.map((v) => ({
         label: `${v.type} at ${format(new Date(v.startDateTime), 'yyyy-MM-dd hh:mm a')}`,
         value: v.id,
-      })) as Option[]
+      })) as SelectOption[]
 
       setVisitOptions(visits)
       setNewLabRequest((previousNewLabRequest) => ({
@@ -145,17 +152,16 @@ const NewLabRequest = () => {
             </div>
           </Column>
           <Column>
-            <div className="form-group">
-              <SelectWithLabelFormGroup
-                name="visit"
-                label={t('patient.visit')}
-                isRequired
-                isEditable={newLabRequest.patient !== undefined}
+            <div className="form-group" data-testid="visitSelect">
+              <Label text={t('patient.visit')} title="This is a required input" isRequired />
+              <Select
+                id="visit"
                 options={visitOptions || []}
                 defaultSelected={defaultSelectedVisitsOption()}
                 onChange={(values) => {
                   onVisitChange(values[0])
                 }}
+                disabled={false}
               />
             </div>
           </Column>
