@@ -1,10 +1,8 @@
-import { Alert, Column, Row } from '@hospitalrun/components'
+import { Select, Label, Alert, Column, Row } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import useTranslator from '../../shared/hooks/useTranslator'
@@ -43,7 +41,7 @@ const VisitForm = (props: Props) => {
     }
   }
 
-  const statusOptions: Option[] =
+  const statusOptions: SelectOption[] =
     Object.values(VisitStatus).map((v) => ({ label: v, value: v })) || []
 
   return (
@@ -91,17 +89,16 @@ const VisitForm = (props: Props) => {
       </Row>
       <Row>
         <Column sm={12}>
-          <SelectWithLabelFormGroup
-            name="status"
-            label={t('patient.visits.status')}
-            isRequired
+          <Label text={t('patient.visits.status')} title="status" isRequired />
+          <Select
+            id="status"
             options={statusOptions}
             defaultSelected={statusOptions.filter(({ value }) => value === status)}
             onChange={(values) => {
               onFieldChange('status', values[0])
               setStatus(values[0] as VisitStatus)
             }}
-            isEditable={!disabled}
+            disabled={disabled}
             isInvalid={!!visitError?.status}
           />
         </Column>
