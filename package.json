@@ -62,7 +62,7 @@
     "@commitlint/cli": "~13.2.0",
     "@commitlint/config-conventional": "~13.1.0",
     "@commitlint/core": "~13.1.0",
-    "@commitlint/prompt": "~13.1.0",
+    "@commitlint/prompt": "~13.2.0",
     "@testing-library/dom": "~7.31.0",
     "@testing-library/jest-dom": "~5.14.1",
     "@testing-library/react": "~11.2.2",
