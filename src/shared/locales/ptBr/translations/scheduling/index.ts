@@ -33,7 +33,7 @@ export default {
       patient: 'Paciente',
       deleteConfirmationMessage: 'Tem a certeza de que deseja eliminar este compromisso?',
       successfullyCreated: 'Compromisso criado com sucesso',
-      successfullyDeleted: 'Compromisso deletedo com sucesso.',
+      successfullyDeleted: 'Compromisso deletado com sucesso.',
       successfullyUpdated: 'Compromisso atualizado com sucesso.',
     },
   },

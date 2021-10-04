@@ -16,7 +16,7 @@ export default {
       view: 'Ver Incidente',
       resolve: 'Resolver Incidente',
       dateOfIncident: 'Data do Incidente',
-      department: 'Departmento',
+      department: 'Departamento',
       download: 'Download',
       category: 'Categoria',
       categoryItem: 'Categoria do Item',
