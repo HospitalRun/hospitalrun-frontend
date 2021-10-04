@@ -8,7 +8,7 @@ export default {
     status: {
       reported: 'Criado',
       resolved: 'Resolvido',
-      all: 'All',
+      all: 'Todos',
     },
     reports: {
       label: 'Incidentes criados',
@@ -21,7 +21,7 @@ export default {
       category: 'Categoria',
       categoryItem: 'Categoria do Item',
       description: 'Descrição do Incidente',
-      patient: 'Patiente',
+      patient: 'Paciente',
       code: 'Code',
       reportedBy: 'Criado por',
       reportedOn: 'Criado em',

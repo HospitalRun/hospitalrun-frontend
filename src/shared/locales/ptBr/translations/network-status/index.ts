@@ -1,6 +1,6 @@
 export default {
   networkStatus: {
-    offline: 'você está trabalhando no modo offiline',
-    online: 'você está online',
+    offline: 'Você está trabalhando no modo offiline',
+    online: 'Você está online',
   },
 }
