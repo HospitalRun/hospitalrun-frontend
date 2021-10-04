@@ -22,7 +22,7 @@ export default {
       },
     },
     imaging: {
-      label: 'imagem',
+      label: 'Imagem',
       code: 'Código da imagem',
       status: 'Status',
       type: 'Tipos',
