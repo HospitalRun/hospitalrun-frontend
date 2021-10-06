@@ -190,6 +190,14 @@ export default {
       },
     },
     visit: 'Visit',
+    history: {
+      label: 'History',
+      eventDate: 'Event Date',
+      recordType: 'Record Type',
+      information: 'Information',
+      noHistoryTitle: 'No History',
+      noHistoryMessage: 'There is no histories for this patient',
+    },
     visits: {
       new: 'Add Visit',
       label: 'Visits',
@@ -208,6 +216,10 @@ export default {
         statusRequired: 'Status is required.',
         reasonRequired: 'Reason is required.',
         locationRequired: 'Location is required.',
+      },
+      warning: {
+        noVisits: 'No Visits',
+        addVisitAbove: 'Add a visit using the button above.',
       },
     },
     types: {

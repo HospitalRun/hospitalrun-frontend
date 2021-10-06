@@ -25,8 +25,8 @@ const patient = {
   visits: [visit],
 } as Patient
 
-const setup = () => {
-  jest.spyOn(PatientRepository, 'find').mockResolvedValue(patient)
+const setup = (expectedPatient = patient) => {
+  jest.spyOn(PatientRepository, 'find').mockResolvedValue(expectedPatient)
   const history = createMemoryHistory()
   history.push(`/patients/${patient.id}/visits/${patient.visits[0].id}`)
 
@@ -34,7 +34,7 @@ const setup = () => {
     history,
     ...render(
       <Router history={history}>
-        <VisitTable patientId={patient.id} />
+        <VisitTable patientId={expectedPatient.id} />
       </Router>,
     ),
   }
@@ -84,5 +84,14 @@ describe('Visit Table', () => {
     userEvent.click(actionButton)
 
     expect(history.location.pathname).toEqual(`/patients/${patient.id}/visits/${visit.id}`)
+  })
+
+  it('should display a warning if there are no visits', async () => {
+    setup({ ...patient, visits: [] })
+    const alert = await screen.findByRole('alert')
+    expect(alert).toBeInTheDocument()
+    expect(alert).toHaveClass('alert-warning')
+    expect(screen.getByText(/patient.visits.warning.noVisits/i)).toBeInTheDocument()
+    expect(screen.getByText(/patient.visits.warning.addVisitAbove/i)).toBeInTheDocument()
   })
 })

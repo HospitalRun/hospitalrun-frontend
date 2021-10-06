@@ -1,4 +1,4 @@
-import { Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
+import { Select, Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
 import { set } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,9 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -38,12 +36,12 @@ const NewMedicationRequest = () => {
     quantity: { value: ('' as unknown) as number, unit: '' },
   } as unknown) as Medication)
 
-  const statusOptionsNew: Option[] = [
+  const statusOptionsNew: SelectOption[] = [
     { label: t('medications.status.draft'), value: 'draft' },
     { label: t('medications.status.active'), value: 'active' },
   ]
 
-  const intentOptions: Option[] = [
+  const intentOptions: SelectOption[] = [
     { label: t('medications.intent.proposal'), value: 'proposal' },
     { label: t('medications.intent.plan'), value: 'plan' },
     { label: t('medications.intent.order'), value: 'order' },
@@ -54,7 +52,7 @@ const NewMedicationRequest = () => {
     { label: t('medications.intent.option'), value: 'option' },
   ]
 
-  const priorityOptions: Option[] = [
+  const priorityOptions: SelectOption[] = [
     { label: t('medications.priority.routine'), value: 'routine' },
     { label: t('medications.priority.urgent'), value: 'urgent' },
     { label: t('medications.priority.asap'), value: 'asap' },
@@ -154,43 +152,40 @@ const NewMedicationRequest = () => {
           value={newMedicationRequest.medication}
           onChange={onMedicationChange}
         />
-        <div className="form-group">
-          <SelectWithLabelFormGroup
-            name="status"
-            label={t('medications.medication.status')}
-            isRequired
+        <div className="form-group" data-testid="statusSelect">
+          <Label text={t('medications.medication.status')} title="status" isRequired />
+          <Select
+            id="statusSelect"
             options={statusOptionsNew}
             defaultSelected={statusOptionsNew.filter(
               ({ value }) => value === newMedicationRequest.status,
             )}
             onChange={(values) => onFieldChange && onFieldChange('status', values[0])}
-            isEditable
+            disabled={false}
           />
         </div>
-        <div className="form-group">
-          <SelectWithLabelFormGroup
-            name="intent"
-            label={t('medications.medication.intent')}
-            isRequired
+        <div className="form-group" data-testid="intentSelect">
+          <Label text={t('medications.medication.intent')} title="intent" isRequired />
+          <Select
+            id="intentSelect"
             options={intentOptions}
             defaultSelected={intentOptions.filter(
               ({ value }) => value === newMedicationRequest.intent,
             )}
             onChange={(values) => onFieldChange && onFieldChange('intent', values[0])}
-            isEditable
+            disabled={false}
           />
         </div>
-        <div className="form-group">
-          <SelectWithLabelFormGroup
-            name="priority"
-            label={t('medications.medication.priority')}
-            isRequired
+        <div className="form-group" data-testid="prioritySelect">
+          <Label text={t('medications.medication.priority')} title="priority" isRequired />
+          <Select
+            id="prioritySelect"
             options={priorityOptions}
             defaultSelected={priorityOptions.filter(
               ({ value }) => value === newMedicationRequest.priority,
             )}
             onChange={(values) => onFieldChange && onFieldChange('priority', values[0])}
-            isEditable
+            disabled={false}
           />
         </div>
         <Row>
@@ -237,7 +232,7 @@ const NewMedicationRequest = () => {
           />
         </div>
         <div className="row float-right">
-          <div className="btn-group btn-group-lg mt-3">
+          <div className="btn-group btn-group-lg mt-3 mr-3">
             <Button className="mr-2" color="success" onClick={onSave}>
               {t('medications.requests.new')}
             </Button>
