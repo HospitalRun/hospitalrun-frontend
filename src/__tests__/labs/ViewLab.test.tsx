@@ -1,5 +1,12 @@
 import { Toaster } from '@hospitalrun/components'
-import { render, screen, waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
+import {
+  act,
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+  within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
@@ -28,7 +35,7 @@ const mockPatient = { fullName: 'Full Name' }
 
 const setup = (lab?: Partial<Lab>, permissions = [Permissions.ViewLab], error = {}) => {
   const expectedDate = new Date()
-  const mockLab = {
+  let mockLab = {
     ...{
       code: 'L-1234',
       id: '12456',
@@ -44,7 +51,10 @@ const setup = (lab?: Partial<Lab>, permissions = [Permissions.ViewLab], error = 
   jest.resetAllMocks()
   Date.now = jest.fn(() => expectedDate.valueOf())
   jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient as Patient)
-  jest.spyOn(LabRepository, 'saveOrUpdate').mockResolvedValue(mockLab)
+  jest.spyOn(LabRepository, 'saveOrUpdate').mockImplementation(async (newOrUpdatedLab) => {
+    mockLab = newOrUpdatedLab
+    return mockLab
+  })
   jest.spyOn(LabRepository, 'find').mockResolvedValue(mockLab)
 
   const history = createMemoryHistory({ initialEntries: [`/labs/${mockLab.id}`] })
@@ -142,11 +152,29 @@ describe('View Lab', () => {
       expect(screen.queryAllByTestId('note')).toHaveLength(0)
     })
 
-    it('should display the past notes', async () => {
-      const expectedNotes = 'expected notes'
+    it('should display the past notes that are not deleted', async () => {
+      const expectedNotes = {
+        id: 'test-note-id',
+        date: new Date().toISOString(),
+        text: 'expected notes',
+        deleted: false,
+      }
+
       setup({ notes: [expectedNotes] })
 
-      expect(await screen.findByTestId('note')).toHaveTextContent(expectedNotes)
+      expect(await screen.findByTestId('note')).toHaveTextContent(expectedNotes.text)
+    })
+
+    it('should not display the past notes that are deleted', async () => {
+      const deletedNote = {
+        id: 'test-note-id',
+        date: new Date().toISOString(),
+        text: 'deleted note',
+        deleted: true,
+      }
+
+      setup({ notes: [deletedNote] })
+      expect(await screen.queryByText('deleted note')).toBe(null)
     })
 
     it('should display the notes text field empty', async () => {
@@ -308,6 +336,32 @@ describe('View Lab', () => {
       expect(screen.getByLabelText(/labs\.lab\.result/i)).toHaveTextContent(expectedResult)
       expect(screen.getByTestId('note')).toHaveTextContent(newNotes)
     })
+
+    it('should be able delete an note from the lab', async () => {
+      const notes = [
+        {
+          id: 'earth-test-id',
+          date: new Date().toISOString(),
+          text: 'Hello earth, first note',
+          deleted: false,
+        },
+        {
+          id: 'mars-test-id',
+          date: new Date().toISOString(),
+          text: 'Hello mars, second note',
+          deleted: false,
+        },
+      ]
+      setup({ notes })
+
+      expect(await screen.findByText(notes[0].text)).toBeInTheDocument()
+      expect(await screen.findByText(notes[1].text)).toBeInTheDocument()
+
+      act(() => userEvent.click(screen.getByTestId(`delete-note-${notes[1].id}`)))
+
+      expect(await screen.findByText(notes[0].text)).toBeInTheDocument()
+      expect(await screen.queryByText(notes[1].text)).not.toBeInTheDocument()
+    })
   })
 
   describe('on complete', () => {
@@ -335,6 +389,28 @@ describe('View Lab', () => {
         within(screen.getByRole('alert')).getByText(/labs\.successfullyCompleted/i),
       ).toBeInTheDocument()
     })
+
+    it('should disallow deleting notes', async () => {
+      const labNote = {
+        id: 'earth-test-id',
+        date: new Date().toISOString(),
+        text: 'A note from the lab!',
+        deleted: false,
+      }
+
+      setup(
+        {
+          notes: [labNote],
+          status: 'completed',
+        },
+        [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab],
+      )
+
+      const notes = await screen.findAllByTestId('note')
+      expect(notes).toHaveLength(1)
+      expect(notes[0]).toHaveTextContent(labNote.text)
+      expect(screen.queryAllByRole('button', { name: 'Delete' })).toHaveLength(0)
+    })
   })
 
   describe('on cancel', () => {
@@ -359,6 +435,28 @@ describe('View Lab', () => {
       await waitFor(() => {
         expect(history.location.pathname).toEqual('/labs')
       })
+    })
+
+    it('should disallow deleting notes', async () => {
+      const labNote = {
+        id: 'earth-test-id',
+        date: new Date().toISOString(),
+        text: 'A note from the lab!',
+        deleted: false,
+      }
+
+      setup(
+        {
+          notes: [labNote],
+          status: 'canceled',
+        },
+        [Permissions.ViewLab, Permissions.CompleteLab, Permissions.CancelLab],
+      )
+
+      const notes = await screen.findAllByTestId('note')
+      expect(notes).toHaveLength(1)
+      expect(notes[0]).toHaveTextContent(labNote.text)
+      expect(screen.queryAllByRole('button', { name: 'Delete' })).toHaveLength(0)
     })
   })
 })

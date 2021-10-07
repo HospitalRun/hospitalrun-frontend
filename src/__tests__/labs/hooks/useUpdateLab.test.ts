@@ -6,7 +6,14 @@ import executeMutation from '../../test-utils/use-mutation.util'
 describe('Use update lab', () => {
   const expectedLab = {
     type: 'some type',
-    notes: ['some note'],
+    notes: [
+      {
+        id: 'test-note-id',
+        date: new Date().toISOString(),
+        text: 'Hi, this is an example test note',
+        deleted: false,
+      },
+    ],
   } as Lab
 
   it('should update lab', async () => {
