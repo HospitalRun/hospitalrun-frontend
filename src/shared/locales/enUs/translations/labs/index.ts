@@ -6,6 +6,7 @@ export default {
     successfullyUpdated: 'Successfully updated',
     successfullyCompleted: 'Successfully completed',
     successfullyCreated: 'Successfully created',
+    successfullyDeletedNote: 'Note was deleted',
     status: {
       requested: 'Requested',
       completed: 'Completed',
