@@ -6,7 +6,9 @@ import { useHistory } from 'react-router-dom'
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
+import usePatients from '../hooks/usePatients'
 import Patient from '../../shared/model/Patient'
+import PatientSearchRequest from '../models/PatientSearchRequest'
 import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
 import { createPatient } from '../patient-slice'
@@ -23,10 +25,11 @@ const NewPatient = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { createError } = useSelector((state: RootState) => state.patient)
-  const { patients } = Object(useSelector((state: RootState) => state.patients))
+  const [searchRequest] = useState<PatientSearchRequest>({ queryString: '' })
+  const { data } = usePatients(searchRequest)
 
   const [patient, setPatient] = useState({} as Patient)
-  const [duplicatePatient, setDuplicatePatient] = useState<Patient | undefined>(undefined)
+  const [duplicatePatientList, setDuplicatePatientList] = useState<Patient[] | undefined>(undefined)
   const [showDuplicateNewPatientModal, setShowDuplicateNewPatientModal] = useState<boolean>(false)
 
   const testPatient = {
@@ -56,16 +59,16 @@ const NewPatient = () => {
   }
 
   const onSave = () => {
-    let duplicatePatients = []
-    if (patients !== undefined) {
-      duplicatePatients = patients.filter((existingPatient: any) =>
+    let duplicatePatients: Patient[] = [];
+    if (data !== undefined && data.patients !== undefined) {
+      duplicatePatients = data.patients.filter((existingPatient: any) =>
         isPossibleDuplicatePatient(patient, existingPatient),
       )
     }
 
     if (duplicatePatients.length > 0) {
       setShowDuplicateNewPatientModal(true)
-      setDuplicatePatient(duplicatePatients as Patient)
+      setDuplicatePatientList(duplicatePatients)
     } else {
       dispatch(createPatient(patient, onSuccessfulSave))
     }
@@ -109,7 +112,7 @@ const NewPatient = () => {
       </div>
 
       <DuplicateNewPatientModal
-        duplicatePatient={duplicatePatient}
+        duplicatePatientList={duplicatePatientList}
         show={showDuplicateNewPatientModal}
         toggle={closeDuplicateNewPatientModal}
         onContinueButtonClick={createDuplicateNewPatient}
