@@ -6,11 +6,11 @@ import { useHistory } from 'react-router-dom'
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
 import useTranslator from '../../shared/hooks/useTranslator'
-import usePatients from '../hooks/usePatients'
 import Patient from '../../shared/model/Patient'
-import PatientSearchRequest from '../models/PatientSearchRequest'
 import { RootState } from '../../shared/store'
 import GeneralInformation from '../GeneralInformation'
+import usePatients from '../hooks/usePatients'
+import PatientSearchRequest from '../models/PatientSearchRequest'
 import { createPatient } from '../patient-slice'
 import { isPossibleDuplicatePatient } from '../util/is-possible-duplicate-patient'
 import DuplicateNewPatientModal from './DuplicateNewPatientModal'
@@ -59,7 +59,7 @@ const NewPatient = () => {
   }
 
   const onSave = () => {
-    let duplicatePatients: Patient[] = [];
+    let duplicatePatients: Patient[] = []
     if (data !== undefined && data.patients !== undefined) {
       duplicatePatients = data.patients.filter((existingPatient: any) =>
         isPossibleDuplicatePatient(patient, existingPatient),
