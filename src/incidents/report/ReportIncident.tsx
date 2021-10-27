@@ -34,7 +34,7 @@ const ReportIncident = () => {
   ]
   useAddBreadcrumbs(breadcrumbs)
   const [incident, setIncident] = useState({
-    reportedBy: user?.id || 'some user',
+    reportedBy: user?.id || 'some user',  //user is read from redux store state.user and the id is used while showing details
     date: new Date().toISOString(),
     department: '',
     category: '',
