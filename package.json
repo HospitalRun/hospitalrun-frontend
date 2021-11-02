@@ -13,7 +13,7 @@
     "bootstrap": "~5.1.0",
     "date-fns": "~2.25.0",
     "escape-string-regexp": "~4.0.0",
-    "i18next": "~21.3.3",
+    "i18next": "~21.4.0",
     "i18next-browser-languagedetector": "~6.1.0",
     "i18next-xhr-backend": "~3.2.2",
     "json2csv": "~5.0.1",
@@ -60,7 +60,7 @@
   ],
   "devDependencies": {
     "@commitlint/cli": "~13.2.0",
-    "@commitlint/config-conventional": "~13.2.0",
+    "@commitlint/config-conventional": "~14.1.0",
     "@commitlint/core": "~14.1.0",
     "@commitlint/prompt": "~13.2.0",
     "@testing-library/dom": "~7.31.0",
