@@ -60,7 +60,7 @@
   ],
   "devDependencies": {
     "@commitlint/cli": "~13.2.0",
-    "@commitlint/config-conventional": "~13.2.0",
+    "@commitlint/config-conventional": "~14.1.0",
     "@commitlint/core": "~14.1.0",
     "@commitlint/prompt": "~13.2.0",
     "@testing-library/dom": "~7.31.0",
