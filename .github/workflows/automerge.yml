@@ -2,10 +2,13 @@ name: Automerge
 
 on:
   pull_request:
-    types: [labeled]
+    types:
+      - labeled
+      - synchronize
   check_suite:
     types:
       - completed
+  status: {}
  
 jobs:
   automerge:
