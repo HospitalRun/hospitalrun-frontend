@@ -2,12 +2,15 @@ name: Automerge
 
 on:
   pull_request:
-    types: [labeled, synchronize]
+    types: [labeled]
+  check_suite:
+    types:
+      - completed
  
 jobs:
   automerge:
     runs-on: ubuntu-latest
-    if: ${{ github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'dependencies') || github.event.label.name == 'dependencies' }}
+    if: ${{ github.event.label.name == 'dependencies' }}
     steps:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.14.3"
