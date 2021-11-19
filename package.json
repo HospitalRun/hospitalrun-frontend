@@ -68,7 +68,7 @@
     "@testing-library/react": "~11.2.2",
     "@testing-library/react-hooks": "~7.0.0",
     "@testing-library/user-event": "~12.8.3",
-    "@types/jest": "~26.0.0",
+    "@types/jest": "~27.0.3",
     "@types/lodash": "^4.14.150",
     "@types/node": "~16.11.2",
     "@types/pouchdb": "~6.4.0",
