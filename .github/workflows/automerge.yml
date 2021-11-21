@@ -13,7 +13,6 @@ on:
 jobs:
   automerge:
     runs-on: ubuntu-latest
-    if: ${{ github.event.label.name == 'dependencies' }}
     steps:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.14.3"
