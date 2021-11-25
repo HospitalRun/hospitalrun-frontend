@@ -7,6 +7,7 @@ import { getPatientName } from './patient-util'
  */
 const cleanupPatient = (patient: Patient) => {
   const newPatient = { ...patient }
+  newPatient.visits = newPatient.visits ?? []
 
   const { givenName, familyName, suffix } = patient
   newPatient.fullName = getPatientName(givenName, familyName, suffix)
