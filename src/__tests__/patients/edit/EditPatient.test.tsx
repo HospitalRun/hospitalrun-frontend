@@ -12,6 +12,7 @@ import * as titleUtil from '../../../page-header/title/TitleContext'
 import EditPatient from '../../../patients/edit/EditPatient'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import Patient from '../../../shared/model/Patient'
+import Visit from '../../../shared/model/Visit'
 import { RootState } from '../../../shared/store'
 
 const mockStore = createMockStore<RootState, any>([thunk])
@@ -33,6 +34,7 @@ const patient = {
   code: 'P00001',
   dateOfBirth: subDays(new Date(), 2).toISOString(),
   index: 'Bruce Banner MDP00001',
+  visits: [] as Visit[],
 } as Patient
 
 const setup = () => {
