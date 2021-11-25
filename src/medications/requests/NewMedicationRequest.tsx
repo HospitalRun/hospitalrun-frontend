@@ -1,4 +1,5 @@
 import { Select, Typeahead, Label, Button, Alert, Column, Row } from '@hospitalrun/components'
+import { set } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -97,11 +98,17 @@ const NewMedicationRequest = () => {
     }))
   }
 
-  const onTextInputChange = (text: string, name: string) => {
-    setNewMedicationRequest((previousNewMedicationRequest) => ({
-      ...previousNewMedicationRequest,
-      [name]: text,
-    }))
+  const onTextInputChange = (text: string, path: string | Array<string>) => {
+    setNewMedicationRequest((previousNewMedicationRequest) => {
+      const medicationRequest = {
+        ...previousNewMedicationRequest,
+      }
+
+      const propertyPath = typeof path === 'string' ? [path] : path
+      set(medicationRequest, propertyPath, text)
+
+      return medicationRequest
+    })
   }
 
   const onSave = async () => {
@@ -191,7 +198,9 @@ const NewMedicationRequest = () => {
               isEditable
               isRequired
               value={(newMedicationRequest.quantity.value as unknown) as string}
-              onChange={(event) => onTextInputChange(event.currentTarget.value, 'quantity.value')}
+              onChange={(event) =>
+                onTextInputChange(event.currentTarget.value, ['quantity', 'value'])
+              }
               isInvalid={!!error?.quantityValue}
               feedback={t(error?.quantityValue as string)}
             />
@@ -205,7 +214,9 @@ const NewMedicationRequest = () => {
               isRequired
               isEditable
               value={newMedicationRequest.quantity.unit}
-              onChange={(event) => onTextInputChange(event.currentTarget.value, 'quantity.unit')}
+              onChange={(event) =>
+                onTextInputChange(event.currentTarget.value, ['quantity', 'unit'])
+              }
               isInvalid={!!error?.quantityUnit}
               feedback={t(error?.quantityUnit as string)}
             />
