@@ -52,9 +52,8 @@ const AppointmentDetailForm = (props: Props) => {
               disabled={!isEditable || patient !== undefined}
               value={patient?.fullName}
               placeholder={t('scheduling.appointment.patient')}
-              onChange={
-                (p: Patient[]) => onFieldChange && p[0] && onFieldChange('patient', p[0].id)
-                // eslint-disable-next-line react/jsx-curly-newline
+              onChange={(p: Patient[]) =>
+                onFieldChange && p[0] && onFieldChange('patient', p[0].id)
               }
               onSearch={async (query: string) => PatientRepository.search(query)}
               searchAccessor="fullName"
@@ -134,10 +133,8 @@ const AppointmentDetailForm = (props: Props) => {
               label={t('scheduling.appointment.reason')}
               value={appointment.reason}
               isEditable={isEditable}
-              onChange={
-                (event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  onFieldChange && onFieldChange('reason', event.currentTarget.value)
-                // eslint-disable-next-line react/jsx-curly-newline
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                onFieldChange && onFieldChange('reason', event.currentTarget.value)
               }
             />
           </div>
