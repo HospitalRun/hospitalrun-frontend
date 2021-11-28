@@ -118,7 +118,7 @@ const NewLabRequest = () => {
         }`,
       )
       setError(undefined)
-    } catch (e) {
+    } catch (e : any) {
       setError(e)
     }
   }

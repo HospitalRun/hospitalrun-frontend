@@ -131,15 +131,10 @@ describe('New Lab Request', () => {
       expect(selectLabel).toHaveAttribute('title', 'This is a required input')
     })
 
-    it('should render a save button', () => {
+    it('should render a save button and a cancel button', () => {
       setup()
 
       expect(screen.getByRole('button', { name: /labs\.requests\.new/i })).toBeInTheDocument()
-    })
-
-    it('should render a cancel button', () => {
-      setup()
-
       expect(screen.getByRole('button', { name: /actions\.cancel/i })).toBeInTheDocument()
     })
 
@@ -231,7 +226,7 @@ describe('New Lab Request', () => {
       expect(await screen.findByText(/jim bob/i)).toBeVisible()
       userEvent.click(screen.getByText(/jim bob/i))
       userEvent.type(screen.getByLabelText(/labs\.lab\.type/i), expectedLab.type)
-      userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), expectedLab?.notes?.[0].text)
+      userEvent.type(screen.getByLabelText(/labs\.lab\.notes/i), expectedLab?.notes[0].text)
       userEvent.click(screen.getByRole('button', { name: /labs\.requests\.new/i }))
 
       expect(await screen.findByRole('alert')).toBeInTheDocument()
@@ -239,6 +234,6 @@ describe('New Lab Request', () => {
         within(screen.getByRole('alert')).getByText(/labs\.successfullyCreated/i),
       ).toBeInTheDocument()
       expect(history.location.pathname).toEqual(`/labs/${expectedLab.id}`)
-    }, 15000)
+    })
   })
 })
