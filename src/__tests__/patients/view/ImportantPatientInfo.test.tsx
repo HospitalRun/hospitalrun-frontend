@@ -4,10 +4,11 @@ import format from 'date-fns/format'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import ViewDiagnosis from '../../../patients/diagnoses/ViewDiagnosis'
 import ImportantPatientInfo from '../../../patients/view/ImportantPatientInfo'
 import PatientRepository from '../../../shared/db/PatientRepository'
 import CarePlan from '../../../shared/model/CarePlan'
@@ -23,15 +24,19 @@ describe('Important Patient Info Panel', () => {
   let user: any
   let store: any
 
+  const diagnosis = {
+    id: 'diagnosisId',
+    name: 'diagnosis1',
+    diagnosisDate: new Date().toISOString(),
+  } as Diagnosis
+
   const expectedPatient = {
     id: '123',
     sex: 'male',
     fullName: 'full Name',
     code: 'P-123',
     dateOfBirth: format(new Date(), 'MM/dd/yyyy'),
-    diagnoses: [
-      { id: '123', name: 'diagnosis1', diagnosisDate: new Date().toISOString() } as Diagnosis,
-    ],
+    diagnoses: [diagnosis],
     allergies: [
       { id: '1', name: 'allergy1' },
       { id: '2', name: 'allergy2' },
@@ -63,6 +68,11 @@ describe('Important Patient Info Panel', () => {
       <Provider store={store}>
         <Router history={history}>
           <ImportantPatientInfo patient={patient} />
+          <Switch>
+            <Route exact path="/patients/:id/diagnoses/:diagnosisId">
+              <ViewDiagnosis />
+            </Route>
+          </Switch>
         </Router>
       </Provider>,
     )
@@ -180,6 +190,23 @@ describe('Important Patient Info Panel', () => {
       expect(
         screen.queryByRole('button', { name: /patient.diagnoses.new/i }),
       ).not.toBeInTheDocument()
+    })
+  })
+
+  describe('patient diagnosis routing', () => {
+    it('should render the diagnosis form when the table row is clicked', async () => {
+      setup(expectedPatient, [])
+
+      const rows = await screen.findAllByRole('row')
+      userEvent.click(rows[2])
+      expect(history.location.pathname).toEqual(
+        `/patients/${expectedPatient.id}/diagnoses/${diagnosis.id}`,
+      )
+
+      const form = await screen.findByRole('form')
+      expect(
+        within(form).getByPlaceholderText(/patient.diagnoses.diagnosisName/i),
+      ).toBeInTheDocument()
     })
   })
 })
