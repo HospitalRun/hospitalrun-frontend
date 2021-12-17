@@ -64,7 +64,7 @@
     "@commitlint/core": "~15.0.0",
     "@commitlint/prompt": "~15.0.0",
     "@testing-library/dom": "~7.31.0",
-    "@testing-library/jest-dom": "~5.15.0",
+    "@testing-library/jest-dom": "~5.16.1",
     "@testing-library/react": "~11.2.2",
     "@testing-library/react-hooks": "~7.0.0",
     "@testing-library/user-event": "~12.8.3",
