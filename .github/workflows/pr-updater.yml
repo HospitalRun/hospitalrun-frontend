@@ -13,4 +13,5 @@ jobs:
         - name: PR updater
           uses: maxkomarychev/pr-updater-action@v1.0.0
           with:
-            token: ${{ secrets.GH_TOKEN }}
+            # token: ${{ secrets.GH_TOKEN }}
+            token: ${{ secrets.BOT_PAT }}
