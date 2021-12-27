@@ -11,7 +11,7 @@ export default {
       all: 'Tümü',
     },
     reports: {
-      label: 'Raporlanmış Olaş',
+      label: 'Raporlanmış Olay',
       new: 'Yeni Rapor Oluştur',
       view: 'Olayı Görüntüle',
       resolve: 'Olayı Çöz',
