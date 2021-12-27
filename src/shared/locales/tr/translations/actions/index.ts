@@ -16,7 +16,7 @@ export default {
     previous: 'Önceki',
     add: 'Ekle',
     name: 'İsim',
-    view: 'Görünüle',
+    view: 'Görüntüle',
     logout: 'Çıkış',
   },
 }
