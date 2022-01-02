@@ -1,6 +1,0 @@
-from_owner:
-  - dependabot[bot]
-required_labels:
-  - dependencies
-apply_labels:
-  - autoapproved
