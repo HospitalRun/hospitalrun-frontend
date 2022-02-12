@@ -7,7 +7,7 @@ declare namespace PouchDB {
     //  Or build the index
     build?: true
 
-    //  F ields to search over
+    //  Fields to search over
     fields: (keyof Content)[] | { [field in keyof Content]: number }
 
     limit?: number
