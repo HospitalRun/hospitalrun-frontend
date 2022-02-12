@@ -13,23 +13,28 @@ import Incident from '../../shared/model/Incident'
 import Patient from '../../shared/model/Patient'
 import useReportIncident from '../hooks/useReportIncident'
 import { IncidentError } from '../util/validate-incident'
+import {useSelector } from 'react-redux'
+import { RootState } from '../../shared/store'
 
 const ReportIncident = () => {
   const [mutate] = useReportIncident()
   const history = useHistory()
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()
+  const {user} = useSelector((state: RootState) => state.user)
+
   useEffect(() => {
     updateTitle(t('incidents.reports.new'))
   })
   const breadcrumbs = [
     {
-      i18nKey: 'incidents.reports.new',
+      i18nKey: 'incidents.reports.new',  
       location: `/incidents/new`,
     },
   ]
   useAddBreadcrumbs(breadcrumbs)
   const [incident, setIncident] = useState({
+    reportedBy: user?.id || 'some user',  //user is read from redux store state.user and the id is used while showing details
     date: new Date().toISOString(),
     department: '',
     category: '',

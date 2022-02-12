@@ -65,7 +65,7 @@ describe('Report Incident', () => {
 
     userEvent.type(departmentInput, 'Engineering Bay')
     expect(departmentInput).toHaveDisplayValue('Engineering Bay')
-  })
+  }) 
 
   it('renders a category form element that allows user input', async () => {
     setup([Permissions.ViewIncident, Permissions.ResolveIncident])
