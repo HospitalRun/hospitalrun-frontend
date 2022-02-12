@@ -111,11 +111,11 @@ const NewAppointment = () => {
         />
         <div className="row float-right">
           <div className="btn-group btn-group-lg mr-3">
-            <Button className="mr-2" color="success" onClick={onSave}>
-              {t('scheduling.appointments.createAppointment')}
-            </Button>
-            <Button color="danger" onClick={onCancelClick}>
+            <Button className="mr-2" color="danger" onClick={onCancelClick}>
               {t('actions.cancel')}
+            </Button>
+            <Button color="success" onClick={onSave}>
+              {t('scheduling.appointments.createAppointment')}
             </Button>
           </div>
         </div>
