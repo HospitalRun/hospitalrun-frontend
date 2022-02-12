@@ -61,7 +61,7 @@
   "devDependencies": {
     "@commitlint/cli": "~16.1.0",
     "@commitlint/config-conventional": "~16.0.0",
-    "@commitlint/core": "~15.0.0",
+    "@commitlint/core": "~16.0.0",
     "@commitlint/prompt": "~16.1.0",
     "@testing-library/dom": "~7.31.0",
     "@testing-library/jest-dom": "~5.16.1",
