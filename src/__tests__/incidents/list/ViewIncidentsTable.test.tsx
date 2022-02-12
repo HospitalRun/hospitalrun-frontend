@@ -46,15 +46,16 @@ describe('View Incidents Table', () => {
   it('should display a table of incidents', async () => {
     setup({ status: IncidentFilter.all })
     expect(await screen.findByRole('table')).toBeInTheDocument()
-
     const headers = screen.getAllByRole('columnheader')
     const cells = screen.getAllByRole('cell')
+
     expect(headers[0]).toHaveTextContent(/incidents.reports.code/i)
     expect(headers[1]).toHaveTextContent(/incidents.reports.dateOfIncident/i)
     expect(headers[2]).toHaveTextContent(/incidents.reports.reportedBy/i)
     expect(headers[3]).toHaveTextContent(/incidents.reports.reportedOn/i)
     expect(headers[4]).toHaveTextContent(/incidents.reports.status/i)
-    expect(headers[5]).toHaveTextContent(/actions.label/i)
+    expect(headers[5]).toHaveTextContent(/incidents.reports.patient/i)
+    expect(headers[6]).toHaveTextContent(/actions.label/i)
     expect(cells[0]).toHaveTextContent(expectedIncident.code)
     expect(cells[1]).toHaveTextContent(
       format(new Date(expectedIncident.date), 'yyyy-MM-dd hh:mm a'),
@@ -64,6 +65,7 @@ describe('View Incidents Table', () => {
       format(new Date(expectedIncident.reportedOn), 'yyyy-MM-dd hh:mm a'),
     )
     expect(cells[4]).toHaveTextContent(expectedIncident.status)
+
     expect(screen.getByRole('button', { name: /actions.view/i })).toBeInTheDocument()
   })
 

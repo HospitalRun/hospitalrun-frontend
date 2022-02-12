@@ -39,7 +39,6 @@ function ViewIncidentsTable(props: Props) {
   const { t } = useTranslator()
   const history = useHistory()
   const { data, isLoading } = useIncidents(searchRequest)
-
   if (data === undefined || isLoading) {
     return <Spinner type="DotLoader" loading />
   }
@@ -112,6 +111,11 @@ function ViewIncidentsTable(props: Props) {
           {
             label: t('incidents.reports.status'),
             key: 'status',
+          },
+          {
+            label: t('incidents.reports.patient'),
+            key: 'patient',
+            formatter: (row) => row.patientFullName,
           },
         ]}
         actionsHeaderText={t('actions.label')}

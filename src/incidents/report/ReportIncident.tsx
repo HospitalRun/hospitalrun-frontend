@@ -36,6 +36,7 @@ const ReportIncident = () => {
     categoryItem: '',
     description: '',
     patient: '',
+    reportedTo: '',
   })
 
   const [error, setError] = useState<IncidentError | undefined>(undefined)
@@ -68,17 +69,13 @@ const ReportIncident = () => {
   }
 
   const onPatientChange = (patient: Patient) => {
-    if (patient) {
-      setIncident((prevIncident) => ({
-        ...prevIncident,
-        patient: patient.id,
-      }))
-    } else {
-      setIncident((prevIncident) => ({
-        ...prevIncident,
-        patient: '',
-      }))
-    }
+    const { id = '', fullName = '' } = patient || {}
+
+    setIncident((prevIncident) => ({
+      ...prevIncident,
+      patient: id,
+      patientFullName: fullName,
+    }))
   }
 
   return (
@@ -150,6 +147,15 @@ const ReportIncident = () => {
         </Column>
       </Row>
       <Row>
+        <Column md={6}>
+          <TextInputWithLabelFormGroup
+            label={t('incidents.reports.reportedTo')}
+            name="reportedTo"
+            value={incident.reportedTo}
+            isEditable
+            onChange={(event) => onTextInputChange(event.currentTarget.value, 'reportedTo')}
+          />
+        </Column>
         <Column md={6}>
           <div className="form-group patient-typeahead">
             <Label htmlFor="patientTypeahead" text={t('incidents.reports.patient')} />
