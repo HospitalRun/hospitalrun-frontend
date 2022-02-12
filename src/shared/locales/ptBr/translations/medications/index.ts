@@ -38,6 +38,7 @@ export default {
       view: 'Ver medicação',
       cancel: 'Cancelar medicação',
       complete: 'Medicação Completa',
+      update: 'Atualizar Medicação',
       error: {
         unableToRequest: 'Incapaz de criar um pedido de medicação.',
         unableToComplete: 'Incapaz de completar o pedido de medicação.',

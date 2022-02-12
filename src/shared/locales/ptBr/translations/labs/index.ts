@@ -1,16 +1,32 @@
 export default {
   labs: {
     label: 'Laboratório',
+    filterTitle: 'Fitlrar por status',
+    search: 'Procurar laboratórios',
+    successfullyUpdated: 'Atualizado com sucesso',
+    successfullyCompleted: 'Finalizado com sucesso',
+    successfullyCreated: 'Criado com sucesso',
+    status: {
+      requested: 'Solicitado',
+      completed: 'Finalizado',
+      canceled: 'Canceledo',
+    },
+    filter: {
+      all: 'Todos',
+    },
     requests: {
       label: 'Pedidos de Laboratório',
       new: 'Novo Pedido de Laboratório',
+      save: 'Solicitar',
       view: 'Ver Laboratório',
       cancel: 'Cancelar Laboratório',
       complete: 'Completar Laboratório',
+      update: 'Atualizar Laboratório',
       error: {
         unableToRequest: 'Impossibilidade de criar um novo pedido de laboratório.',
         unableToComplete: 'Impossibilidade de completar o pedido de laboratório.',
         typeRequired: 'O tipo é necessário.',
+        patientRequired: 'Patiente é obrigatório.',
         resultRequiredToComplete: 'O resultado é necessário para completar.',
       },
     },

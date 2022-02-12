@@ -5,9 +5,11 @@ export default {
       label: 'Agendamantos',
       new: 'Novo Agendamento',
       schedule: 'Agenda de compromissos',
-      editAppointment: 'Editar um compromisso',
-      deleteAppointment: 'Eliminar um compromisso',
-      viewAppointment: 'Ver um compromisso',
+      editAppointment: 'Editar compromisso',
+      createAppointment: 'Criar compromisso',
+      deleteAppointment: 'Eliminar compromisso',
+      viewAppointment: 'Ver compromisso',
+      updateAppointment: 'Atualizar Compromisso',
     },
     appointment: {
       startDate: 'Data de início',
@@ -22,6 +24,8 @@ export default {
         walkIn: 'Primeira consulta',
       },
       errors: {
+        createAppointmentError: 'Não possível criar um novo compromisso.',
+        updateAppointmentError: 'Não foi possível atualizar o compromisso.',        
         patientRequired: 'Paciente é necessario.',
         startDateMustBeBeforeEndDate: 'Horário de início deve ser antes do horário final.',
       },
@@ -29,6 +33,8 @@ export default {
       patient: 'Paciente',
       deleteConfirmationMessage: 'Tem a certeza de que deseja eliminar este compromisso?',
       successfullyCreated: 'Compromisso criado com sucesso',
+      successfullyDeleted: 'Compromisso deletado com sucesso.',
+      successfullyUpdated: 'Compromisso atualizado com sucesso.',
     },
   },
 }
