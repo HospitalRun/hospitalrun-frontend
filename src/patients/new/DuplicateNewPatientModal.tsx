@@ -6,7 +6,7 @@ import useTranslator from '../../shared/hooks/useTranslator'
 import Patient from '../../shared/model/Patient'
 
 interface Props {
-  duplicatePatient?: Patient
+  duplicatePatientList?: Patient[]
   show: boolean
   toggle: () => void
   onCloseButtonClick: () => void
@@ -15,7 +15,7 @@ interface Props {
 
 const DuplicateNewPatientModal = (props: Props) => {
   const { t } = useTranslator()
-  const { duplicatePatient, show, toggle, onCloseButtonClick, onContinueButtonClick } = props
+  const { duplicatePatientList, show, toggle, onCloseButtonClick, onContinueButtonClick } = props
 
   const body = (
     <>
@@ -27,8 +27,8 @@ const DuplicateNewPatientModal = (props: Props) => {
       <div className="row">
         <div className="col-md-12">
           {t('patients.possibleDuplicatePatient')}
-          {duplicatePatient !== undefined &&
-            Object.entries(duplicatePatient).map(([key, patient]) => (
+          {duplicatePatientList !== undefined &&
+            Object.entries(duplicatePatientList).map(([key, patient]) => (
               <li key={key.toString()}>
                 <Link to={`/patients/${patient.id}`}>{patient.fullName}</Link>
               </li>
