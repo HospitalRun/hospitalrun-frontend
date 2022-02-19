@@ -14,6 +14,10 @@ interface Props {
   setNote: (note: Note) => void
   note: Note // New if note.date === ''
 }
+<<<<<<< HEAD:src/shared/notes/NewNoteModal.tsx
+=======
+const initialNoteState = { text: '', date: new Date().toISOString(), deleted: false }
+>>>>>>> master:src/patients/notes/NewNoteModal.tsx
 
 const NewNoteModal = ({ note, onCloseButtonClick, onSave, setNote, show, toggle }: Props) => {
   const { t } = useTranslator()

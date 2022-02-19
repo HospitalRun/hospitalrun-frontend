@@ -1,10 +1,8 @@
-import { Typeahead, Label, Alert } from '@hospitalrun/components'
+import { Select, Typeahead, Label, Alert } from '@hospitalrun/components'
 import React from 'react'
 
 import DateTimePickerWithLabelFormGroup from '../../shared/components/input/DateTimePickerWithLabelFormGroup'
-import SelectWithLabelFormGroup, {
-  Option,
-} from '../../shared/components/input/SelectWithLabelFormGroup'
+import { SelectOption } from '../../shared/components/input/SelectOption'
 import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
 import TextInputWithLabelFormGroup from '../../shared/components/input/TextInputWithLabelFormGroup'
 import PatientRepository from '../../shared/db/PatientRepository'
@@ -30,7 +28,7 @@ const AppointmentDetailForm = (props: Props) => {
   const onInputElementChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) =>
     onFieldChange && onFieldChange(fieldName, event.target.value)
 
-  const typeOptions: Option[] = [
+  const typeOptions: SelectOption[] = [
     { label: t('scheduling.appointment.types.checkup'), value: 'checkup' },
     { label: t('scheduling.appointment.types.emergency'), value: 'emergency' },
     { label: t('scheduling.appointment.types.followUp'), value: 'follow up' },
@@ -54,9 +52,8 @@ const AppointmentDetailForm = (props: Props) => {
               disabled={!isEditable || patient !== undefined}
               value={patient?.fullName}
               placeholder={t('scheduling.appointment.patient')}
-              onChange={
-                (p: Patient[]) => onFieldChange && p[0] && onFieldChange('patient', p[0].id)
-                // eslint-disable-next-line react/jsx-curly-newline
+              onChange={(p: Patient[]) =>
+                onFieldChange && p[0] && onFieldChange('patient', p[0].id)
               }
               onSearch={async (query: string) => PatientRepository.search(query)}
               searchAccessor="fullName"
@@ -116,14 +113,16 @@ const AppointmentDetailForm = (props: Props) => {
       </div>
       <div className="row">
         <div className="col">
-          <SelectWithLabelFormGroup
-            name="type"
-            label={t('scheduling.appointment.type')}
-            options={typeOptions}
-            defaultSelected={typeOptions.filter(({ value }) => value === appointment.type)}
-            onChange={(values) => onFieldChange && onFieldChange('type', values[0])}
-            isEditable={isEditable}
-          />
+          <div className="form-group" data-testid="typeSelect">
+            <Label text={t('scheduling.appointment.type')} title="type" />
+            <Select
+              id="type"
+              options={typeOptions}
+              defaultSelected={typeOptions.filter(({ value }) => value === appointment.type)}
+              onChange={(values) => onFieldChange && onFieldChange('type', values[0])}
+              disabled={!isEditable}
+            />
+          </div>
         </div>
       </div>
       <div className="row">
@@ -134,10 +133,8 @@ const AppointmentDetailForm = (props: Props) => {
               label={t('scheduling.appointment.reason')}
               value={appointment.reason}
               isEditable={isEditable}
-              onChange={
-                (event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  onFieldChange && onFieldChange('reason', event.currentTarget.value)
-                // eslint-disable-next-line react/jsx-curly-newline
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                onFieldChange && onFieldChange('reason', event.currentTarget.value)
               }
             />
           </div>
