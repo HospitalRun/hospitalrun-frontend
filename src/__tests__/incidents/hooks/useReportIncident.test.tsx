@@ -18,7 +18,6 @@ describe('useReportIncident', () => {
     const expectedCode = '123456'
     const expectedDate = new Date(Date.now())
     const expectedStatus = 'reported'
-    const expectedReportedBy = 'some user'
     Date.now = jest.fn().mockReturnValue(expectedDate)
 
     const givenIncidentRequest = {
@@ -34,7 +33,6 @@ describe('useReportIncident', () => {
       code: `I-${expectedCode}`,
       reportedOn: expectedDate.toISOString(),
       status: expectedStatus,
-      reportedBy: expectedReportedBy,
     } as Incident
     jest.spyOn(shortid, 'generate').mockReturnValue(expectedCode)
     jest.spyOn(IncidentRepository, 'save').mockResolvedValue(expectedIncident)
