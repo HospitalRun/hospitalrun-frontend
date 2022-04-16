@@ -29,6 +29,7 @@ const NoteTab = (props: Props) => {
     givenBy: 'some user',
     text: '',
     date: '',
+    deleted: false,
   }
   const [newNote, setNewNote] = useState<Note>(defaultNoteValue)
   const [mutate] = useAddPatientNote()

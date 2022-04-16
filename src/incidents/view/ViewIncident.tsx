@@ -5,6 +5,7 @@ import { useParams, useHistory, useLocation } from 'react-router-dom'
 
 import useAddBreadcrumbs from '../../page-header/breadcrumbs/useAddBreadcrumbs'
 import { useUpdateTitle } from '../../page-header/title/TitleContext'
+import Loading from '../../shared/components/Loading'
 import useTranslator from '../../shared/hooks/useTranslator'
 import Note from '../../shared/model/Note'
 import Permissions from '../../shared/model/Permissions'
@@ -36,6 +37,7 @@ const ViewIncident = () => {
     givenBy: user?.id,
     text: '',
     date: '',
+    deleted: false,
   }
   const [editedNote, setEditedNote] = useState<Note>(newNoteState)
   useEffect(() => {
@@ -63,6 +65,10 @@ const ViewIncident = () => {
 
   if (id === undefined || permissions === undefined) {
     return <></>
+  }
+
+  if (isLoading) {
+    return <Loading />
   }
 
   return (

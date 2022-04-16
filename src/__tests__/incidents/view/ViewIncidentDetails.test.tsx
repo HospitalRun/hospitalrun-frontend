@@ -1,5 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router'
@@ -14,7 +13,6 @@ describe('View Incident Details', () => {
   const expectedDate = new Date(2020, 5, 1, 19, 48)
   const reportedDate = new Date(2020, 5, 1, 19, 50)
   const expectedResolveDate = new Date()
-  let incidentRepositorySaveSpy: any
   const expectedIncidentId = '1234'
   const expectedIncident = {
     id: expectedIncidentId,
@@ -29,14 +27,11 @@ describe('View Incident Details', () => {
     date: expectedDate.toISOString(),
   } as Incident
 
-  const setup = (mockIncident: Incident, permissions: Permissions[]) => {
-    jest.resetAllMocks()
+  const setup = (mockIncident: Incident) => {
     Date.now = jest.fn(() => expectedResolveDate.valueOf())
     jest.spyOn(breadcrumbUtil, 'default')
     jest.spyOn(IncidentRepository, 'find').mockResolvedValue(mockIncident)
-    incidentRepositorySaveSpy = jest
-      .spyOn(IncidentRepository, 'saveOrUpdate')
-      .mockResolvedValue(expectedIncident)
+    jest.spyOn(IncidentRepository, 'saveOrUpdate').mockResolvedValue(expectedIncident)
 
     const history = createMemoryHistory()
     history.push(`/incidents/1234`)
@@ -44,7 +39,7 @@ describe('View Incident Details', () => {
     const renderResults = render(
       <ButtonBarProvider.ButtonBarProvider>
         <Router history={history}>
-          <ViewIncidentDetails incidentId="1234" permissions={permissions} />
+          <ViewIncidentDetails incident={mockIncident} isLoading={false} />
         </Router>
       </ButtonBarProvider.ButtonBarProvider>,
     )
@@ -55,7 +50,7 @@ describe('View Incident Details', () => {
   describe('view incident details', () => {
     describe('view incident details header', () => {
       it('should render the date of the incident', async () => {
-        setup(expectedIncident, [Permissions.ViewIncident])
+        setup(expectedIncident)
         expect(
           await screen.findByRole('heading', {
             name: /incidents\.reports\.dateofincident/i,
@@ -68,7 +63,7 @@ describe('View Incident Details', () => {
       })
 
       it('should render the status of the incident', async () => {
-        setup(expectedIncident, [Permissions.ViewIncident])
+        setup(expectedIncident)
 
         expect(
           await screen.findByRole('heading', {
@@ -80,7 +75,7 @@ describe('View Incident Details', () => {
       })
 
       it('should render who reported the incident', async () => {
-        setup(expectedIncident, [Permissions.ViewIncident])
+        setup(expectedIncident)
 
         expect(
           await screen.findByRole('heading', {
@@ -91,7 +86,7 @@ describe('View Incident Details', () => {
         expect(await screen.findByRole('heading', { name: 'some user id' }))
       })
       it('should render the date the incident was reported', async () => {
-        setup(expectedIncident, [Permissions.ViewIncident])
+        setup(expectedIncident)
 
         expect(
           await screen.findByRole('heading', {
@@ -106,7 +101,7 @@ describe('View Incident Details', () => {
     })
     describe('form elements should not be editable', () => {
       it('should render the department input with label and display value', async () => {
-        setup(expectedIncident, [Permissions.ViewIncident])
+        setup(expectedIncident)
         expect(await screen.findByText(/incidents\.reports\.department/i)).toBeInTheDocument()
 
         expect(
@@ -119,7 +114,7 @@ describe('View Incident Details', () => {
       })
 
       it('should render the category input with label and display value', async () => {
-        setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
+        setup(expectedIncident)
         expect(await screen.findByText(/incidents\.reports\.category$/i)).toBeInTheDocument()
 
         expect(
@@ -131,7 +126,7 @@ describe('View Incident Details', () => {
         ).toHaveDisplayValue('some category')
       })
       it('should render the categoryItem input with label and display value', async () => {
-        setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
+        setup(expectedIncident)
         expect(await screen.findByText(/incidents\.reports\.categoryItem$/i)).toBeInTheDocument()
 
         expect(
@@ -144,7 +139,7 @@ describe('View Incident Details', () => {
       })
 
       it('should render the description input with label and display value', async () => {
-        setup(expectedIncident, [Permissions.ViewIncident, Permissions.ResolveIncident])
+        setup(expectedIncident)
         expect(
           await screen.findByRole('textbox', {
             name: /incidents\.reports\.description/i,
@@ -159,23 +154,6 @@ describe('View Incident Details', () => {
         expect(
           await screen.findByRole('textbox', { name: /incidents\.reports\.description/i }),
         ).toHaveDisplayValue('some description')
-      })
-    })
-    describe('on resolve', () => {
-      it('should mark the status as resolved and fill in the resolved date with the current time', async () => {
-        const { history } = setup(expectedIncident, [
-          Permissions.ViewIncident,
-          Permissions.ResolveIncident,
-        ])
-
-        const resolveButton = await screen.findByRole('button', {
-          name: /incidents\.reports\.resolve/i,
-        })
-
-        userEvent.click(resolveButton)
-
-        await waitFor(() => expect(incidentRepositorySaveSpy).toHaveBeenCalledTimes(1))
-        expect(history.location.pathname).toEqual('/incidents')
       })
     })
   })

@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash'
 import { queryCache, useMutation } from 'react-query'
 
+import validateNote from '../../patients/util/validate-note'
 import IncidentRepository from '../../shared/db/IncidentRepository'
 import Note from '../../shared/model/Note'
 
@@ -10,7 +11,7 @@ interface DeleteNoteRequest {
 }
 
 async function deleteNote(request: DeleteNoteRequest): Promise<Note[]> {
-  const error = [] as any
+  const error = validateNote(request.note)
 
   if (isEmpty(error)) {
     const incident = await IncidentRepository.find(request.incidentId)
