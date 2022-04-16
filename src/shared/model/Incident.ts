@@ -1,5 +1,6 @@
 import AbstractDBModel from './AbstractDBModel'
 import Note from './Note'
+
 export default interface Incident extends AbstractDBModel {
   reportedBy: string
   reportedOn: string

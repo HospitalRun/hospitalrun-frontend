@@ -8,6 +8,7 @@ import TextInputWithLabelFormGroup from '../../shared/components/input/TextInput
 import useTranslator from '../../shared/hooks/useTranslator'
 import Incident from '../../shared/model/Incident'
 import { extractUsername } from '../../shared/util/extractUsername'
+
 interface Props {
   incident?: Incident
   isLoading: boolean
@@ -21,7 +22,6 @@ function ViewIncidentDetails(props: Props) {
   if (incident === undefined || isLoading) {
     return <Spinner type="DotLoader" loading />
   }
-
 
   const getResolvedOnDate = () => {
     if (incident.status === 'resolved' && incident.resolvedOn) {
