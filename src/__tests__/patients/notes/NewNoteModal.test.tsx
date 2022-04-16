@@ -2,27 +2,35 @@ import { screen, render, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import NewNoteModal from '../../../patients/notes/NewNoteModal'
-import PatientRepository from '../../../shared/db/PatientRepository'
-import Patient from '../../../shared/model/Patient'
+import Note from '../../../shared/model/Note'
+import NewNoteModal from '../../../shared/notes/NewNoteModal'
 import { expectOneConsoleError } from '../../test-utils/console.utils'
 
 describe('New Note Modal', () => {
-  const mockPatient = {
-    id: '123',
-    givenName: 'someName',
-  } as Patient
+  const expectedSaveDate = new Date()
 
-  const onCloseSpy = jest.fn()
-  const setup = () => {
-    jest.spyOn(PatientRepository, 'saveOrUpdate').mockResolvedValue(mockPatient)
-    jest.spyOn(PatientRepository, 'find').mockResolvedValue(mockPatient)
+  const mockNote: Note = {
+    id: 'note id',
+    text: 'note text',
+    givenBy: 'given by person',
+  } as Note
+
+  const noTextNote: Note = {
+    id: 'note id',
+    text: '',
+    givenBy: 'given by person',
+  } as Note
+
+  const setup = (onCloseSpy = jest.fn(), onSaveSpy = jest.fn(), note = mockNote) => {
+    Date.now = jest.fn(() => expectedSaveDate.valueOf())
     return render(
       <NewNoteModal
         show
         onCloseButtonClick={onCloseSpy}
         toggle={jest.fn()}
-        patientId={mockPatient.id}
+        onSave={onSaveSpy}
+        setNote={jest.fn()}
+        note={note}
       />,
     )
   }
@@ -47,6 +55,14 @@ describe('New Note Modal', () => {
     expect(within(successButton).getByRole('img')).toHaveAttribute('data-icon', 'plus')
   })
 
+  it("should render 'Edit Note' title and button if date object is specified", async () => {
+    setup(jest.fn(), jest.fn(), { ...mockNote, date: new Date().toISOString() })
+
+    expect(await screen.findByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByText(/patient\.notes\.edit/i, { selector: 'div' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /patient\.notes\.edit/i })).toBeInTheDocument()
+  })
+
   it('should render a notes rich text editor', () => {
     setup()
 
@@ -64,7 +80,7 @@ describe('New Note Modal', () => {
     }
     expectOneConsoleError(expectedError)
 
-    setup()
+    setup(jest.fn(), jest.fn(), noTextNote)
 
     userEvent.click(
       screen.getByRole('button', {
@@ -80,8 +96,9 @@ describe('New Note Modal', () => {
   })
 
   describe('on cancel', () => {
-    it('should call the onCloseButtonCLick function when the cancel button is clicked', async () => {
-      setup()
+    it('should call the onCloseButtonClick function when the cancel button is clicked', async () => {
+      const onCloseSpy = jest.fn()
+      setup(onCloseSpy)
 
       userEvent.click(
         screen.getByRole('button', {
@@ -95,7 +112,8 @@ describe('New Note Modal', () => {
   describe('on save', () => {
     it('should dispatch add note', async () => {
       const expectedNote = 'some note'
-      setup()
+      const onSaveSpy = jest.fn()
+      setup(jest.fn(), onSaveSpy)
 
       const noteTextField = screen.getByRole('textbox')
       userEvent.type(noteTextField, expectedNote)
@@ -106,15 +124,13 @@ describe('New Note Modal', () => {
         }),
       )
       await waitFor(() => {
-        expect(PatientRepository.saveOrUpdate).toHaveBeenCalledTimes(1)
+        expect(onSaveSpy).toHaveBeenCalledTimes(1)
       })
-      expect(PatientRepository.saveOrUpdate).toHaveBeenCalledWith(
+      expect(onSaveSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          notes: [expect.objectContaining({ text: expectedNote })],
+          date: expectedSaveDate.toISOString(),
         }),
       )
-      // Does the form reset value back to blank?
-      expect(noteTextField).toHaveValue('')
     })
   })
 })

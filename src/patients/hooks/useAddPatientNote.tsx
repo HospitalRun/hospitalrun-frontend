@@ -3,12 +3,11 @@ import { queryCache, useMutation } from 'react-query'
 
 import PatientRepository from '../../shared/db/PatientRepository'
 import Note from '../../shared/model/Note'
-import { uuid } from '../../shared/util/uuid'
 import validateNote from '../util/validate-note'
 
 interface AddNoteRequest {
   patientId: string
-  note: Omit<Note, 'id'>
+  note: Note
 }
 
 async function addNote(request: AddNoteRequest): Promise<Note[]> {
@@ -17,11 +16,7 @@ async function addNote(request: AddNoteRequest): Promise<Note[]> {
   if (isEmpty(error)) {
     const patient = await PatientRepository.find(request.patientId)
     const notes = patient.notes ? [...patient.notes] : []
-    const newNote: Note = {
-      id: uuid(),
-      ...request.note,
-    }
-    notes.push(newNote)
+    notes.push(request.note)
 
     await PatientRepository.saveOrUpdate({
       ...patient,

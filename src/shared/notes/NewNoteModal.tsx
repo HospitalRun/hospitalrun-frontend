@@ -1,42 +1,51 @@
 import { Modal, Alert } from '@hospitalrun/components'
 import React, { useState } from 'react'
 
-import TextFieldWithLabelFormGroup from '../../shared/components/input/TextFieldWithLabelFormGroup'
-import useTranslator from '../../shared/hooks/useTranslator'
-import useAddPatientNote from '../hooks/useAddPatientNote'
-import { NoteError } from '../util/validate-note'
+import { NoteError } from '../../patients/util/validate-note'
+import TextFieldWithLabelFormGroup from '../components/input/TextFieldWithLabelFormGroup'
+import useTranslator from '../hooks/useTranslator'
+import Note from '../model/Note'
 
 interface Props {
   show: boolean
   toggle: () => void
   onCloseButtonClick: () => void
-  patientId: string
+  onSave: (note: Note) => void
+  setNote: (note: Note) => void
+  note: Note // New if note.date === ''
 }
-const initialNoteState = { text: '', date: new Date().toISOString(), deleted: false }
 
-const NewNoteModal = (props: Props) => {
-  const { show, toggle, onCloseButtonClick, patientId } = props
+const NewNoteModal = ({ note, onCloseButtonClick, onSave, setNote, show, toggle }: Props) => {
   const { t } = useTranslator()
-  const [mutate] = useAddPatientNote()
 
   const [noteError, setNoteError] = useState<NoteError | undefined>(undefined)
-  const [note, setNote] = useState(initialNoteState)
 
   const onNoteTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const text = event.currentTarget.value
     setNote({
       ...note,
-      text,
+      text: event.currentTarget.value,
     })
   }
 
   const onSaveButtonClick = async () => {
-    try {
-      await mutate({ patientId, note })
-      setNote(initialNoteState)
-      onCloseButtonClick()
-    } catch (e) {
-      setNoteError(e)
+    if (note.text === '') {
+      setNoteError({
+        noteError: 'patient.notes.error.noteRequired',
+        name: 'Empty String',
+        message: 'patient.notes.error.noteRequired',
+      })
+    } else {
+      try {
+        const updatedNote = {
+          ...note,
+          date: new Date(Date.now()).toISOString(),
+        }
+        setNote(updatedNote)
+        onSave(updatedNote)
+        onCloseButtonClick()
+      } catch (e) {
+        setNoteError(e)
+      }
     }
   }
 
@@ -67,12 +76,12 @@ const NewNoteModal = (props: Props) => {
       </div>
     </form>
   )
-
+  const actionString = note.date ? t('patient.notes.edit') : t('patient.notes.new')
   return (
     <Modal
       show={show}
       toggle={toggle}
-      title={t('patient.notes.new')}
+      title={actionString}
       body={body}
       closeButton={{
         children: t('actions.cancel'),
@@ -80,7 +89,7 @@ const NewNoteModal = (props: Props) => {
         onClick: onCloseButtonClick,
       }}
       successButton={{
-        children: t('patient.notes.new'),
+        children: actionString,
         color: 'success',
         icon: 'add',
         iconLocation: 'left',
