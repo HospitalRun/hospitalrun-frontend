@@ -1,1 +1,1 @@
-# Hospitalrun Frontend Documentation
+# Hospitalrun Frontend Documentation.
