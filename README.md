@@ -9,32 +9,32 @@
 
 </div>
 
-React frontend for [HospitalRun](http://hospitalrun.io/): free software for developing world hospitals.
+React frontend para [HospitalRun](http://hospitalrun.io/): software libre para hospitales del mundo en desarrollo.
 
 ---
 
-# Are you a user? If yes...
+# ¿Es usted un usuario? En caso afirmativo...
 
-[Visit this page for general information on the HospitalRun application](https://github.com/HospitalRun/hospitalrun/blob/master/README.md) including:
+[Visite esta página para obtener información general sobre la aplicación](https://github.com/HospitalRun/hospitalrun/blob/master/README.md) incluyendo:
 
-- How can I deploy 1.0.0-beta?
-- Where do I report a bug or request a feature?
-- How can I contribute? (There are several other ways besides coding)
-- What is the project structure?
-- What is the application infrastructure?
-- Who is behind HospitalRun? etc.
+- ¿Cómo puedo implementar 1.0.0-beta?
+- ¿Dónde informo de un error o solicito una función?
+- ¿Cómo puedo contribuir? (Hay varias otras maneras además de la codificación)
+- ¿Cuál es la estructura del proyecto?
+- ¿Qué es la infraestructura de aplicaciones?
+- ¿Quién está detrás de HospitalRun? etc.
 
-# Would you like to contribute? If yes...
+# ¿Te gustaría contribuir? Si es así...
 
-[Get started by checking out the Frontend Contributing Guide](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for:
-- What's the tech stack?
-- Where can I become familiar with the technologies?
-- Where do I browse issues?
-- How do I set up my local environment?
-- How do I run tests locally?
-- How do I submit my changes?
+[Comience por consultar la Guía de Contribuciones de Frontend](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) para:
+- ¿Cuál es la pila de tecnología?
+- ¿Dónde puedo familiarizarme con las tecnologías?
+- ¿Dónde puedo examinar los problemas?
+- ¿Cómo configuro mi entorno local?
+- ¿Cómo puedo realizar pruebas localmente?
+- ¿Cómo envío mis cambios?
 - etc.
 
-# License
+# licencia
 
-Released under the [MIT license](LICENSE).
+Publicado bajo la [MIT license](LICENSE).
