@@ -65,7 +65,7 @@ const Sidebar = () => {
     fontSize: 'small',
     borderBottomWidth: 0,
     borderTopWidth: 0,
-    // color: 'black',
+    // color: 'translation',
     padding: '.6rem 1.25rem',
     // backgroundColor: 'rgba(245,245,245,1)',
   }
@@ -75,7 +75,7 @@ const Sidebar = () => {
     fontSize: 'small',
     borderBottomWidth: 0,
     borderTopWidth: 0,
-    // color: 'black',
+    // color: 'translation',
     padding: '.6rem 1.25rem',
     // backgroundColor: 'rgba(245,245,245,1)',
   }
@@ -329,7 +329,11 @@ const Sidebar = () => {
               className="nav-item"
               style={listSubItemStyleNew}
               onClick={() => navigateTo('/incidents/new')}
-              active={splittedPath[1].includes('incidents') && splittedPath.length > 2}
+              active={
+                splittedPath[1].includes('incidents') &&
+                splittedPath.length > 2 &&
+                splittedPath[2].includes('new')
+              }
             >
               <Icon icon="add" style={iconMargin} />
               {!sidebarCollapsed && t('incidents.reports.new')}
@@ -340,7 +344,7 @@ const Sidebar = () => {
               className="nav-item"
               style={listSubItemStyle}
               onClick={() => navigateTo('/incidents')}
-              active={splittedPath[1].includes('incidents') && splittedPath.length < 3}
+              active={splittedPath[1].includes('incidents') && splittedPath.length === 2}
             >
               <Icon icon="incident" style={iconMargin} />
               {!sidebarCollapsed && t('incidents.reports.label')}
@@ -351,7 +355,11 @@ const Sidebar = () => {
               className="nav-item"
               style={listSubItemStyle}
               onClick={() => navigateTo('/incidents/visualize')}
-              active={splittedPath[1].includes('incidents') && splittedPath.length < 3}
+              active={
+                splittedPath[1].includes('incidents') &&
+                splittedPath.length === 3 &&
+                splittedPath.includes('visualize')
+              }
             >
               <Icon icon="incident" style={iconMargin} />
               {!sidebarCollapsed && t('incidents.visualize.label')}
