@@ -39,16 +39,16 @@ const Sidebar = () => {
     splittedPath[1].includes('patients')
       ? 'patient'
       : splittedPath[1].includes('appointments')
-      ? 'appointment'
-      : splittedPath[1].includes('labs')
-      ? 'labs'
-      : splittedPath[1].includes('medications')
-      ? 'medications'
-      : splittedPath[1].includes('incidents')
-      ? 'incidents'
-      : splittedPath[1].includes('imagings')
-      ? 'imagings'
-      : 'none',
+        ? 'appointment'
+        : splittedPath[1].includes('labs')
+          ? 'labs'
+          : splittedPath[1].includes('medications')
+            ? 'medications'
+            : splittedPath[1].includes('incidents')
+              ? 'incidents'
+              : splittedPath[1].includes('imagings')
+                ? 'imagings'
+                : 'none',
   )
 
   const setExpansion = (item: string) => {
@@ -65,9 +65,9 @@ const Sidebar = () => {
     fontSize: 'small',
     borderBottomWidth: 0,
     borderTopWidth: 0,
-    color: 'black',
+    // color: 'black',
     padding: '.6rem 1.25rem',
-    backgroundColor: 'rgba(245,245,245,1)',
+    // backgroundColor: 'rgba(245,245,245,1)',
   }
 
   const listSubItemStyleNew: CSSProperties = {
@@ -75,9 +75,9 @@ const Sidebar = () => {
     fontSize: 'small',
     borderBottomWidth: 0,
     borderTopWidth: 0,
-    color: 'black',
+    // color: 'black',
     padding: '.6rem 1.25rem',
-    backgroundColor: 'rgba(245,245,245,1)',
+    // backgroundColor: 'rgba(245,245,245,1)',
   }
 
   const getDashboardLink = () => (
