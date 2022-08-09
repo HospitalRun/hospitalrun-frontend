@@ -15,7 +15,7 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 
 # Are you a user? If yes...
 
-[Visit this page for general information on the HospitalRun application](https://github.com/HospitalRun/hospitalrun/blob/master/README.md) including:
+Visit [this page](https://github.com/HospitalRun/hospitalrun/blob/master/README.md) for general information on the HospitalRun application including:
 
 - How can I deploy 1.0.0-beta?
 - Where do I report a bug or request a feature?
@@ -26,7 +26,7 @@ React frontend for [HospitalRun](http://hospitalrun.io/): free software for deve
 
 # Would you like to contribute? If yes...
 
-[Get started by checking out the Frontend Contributing Guide](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for:
+Get started by checking out the [Frontend Contributing Guide](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for:
 - What's the tech stack?
 - Where can I become familiar with the technologies?
 - Where do I browse issues?
