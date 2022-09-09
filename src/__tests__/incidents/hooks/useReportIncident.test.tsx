@@ -27,7 +27,9 @@ describe('useReportIncident', () => {
       date: subDays(new Date(), 3).toISOString(),
       department: 'some department',
       description: 'some description',
-    } as Incident
+      reportedBy: 'some user',
+      reportByUserID: 'some id',
+        } as Incident
 
     const expectedIncident = {
       ...givenIncidentRequest,

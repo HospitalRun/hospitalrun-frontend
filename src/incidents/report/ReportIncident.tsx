@@ -35,14 +35,14 @@ const ReportIncident = () => {
   useAddBreadcrumbs(breadcrumbs)
   const [incident, setIncident] = useState({
     reportedBy: user?.fullName, //user is read from redux store state.user and the fullName is used while showing details
+    reportByUserID: user?.id,
     date: new Date().toISOString(),
     department: '',
     category: '',
     categoryItem: '',
     description: '',
     patient: '',
-    reportByUserID: user?.id,
-  })
+        })
 
   const [error, setError] = useState<IncidentError | undefined>(undefined)
 
