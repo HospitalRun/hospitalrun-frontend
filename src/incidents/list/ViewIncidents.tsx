@@ -23,7 +23,7 @@ const ViewIncidents = () => {
     setButtonToolBar([
       <Button
         key="newIncidentButton"
-        outlined 
+        outlined
         color="success"
         icon="add"
         onClick={() => history.push('/incidents/new')}
