@@ -29,7 +29,7 @@ describe('useReportIncident', () => {
       description: 'some description',
       reportedBy: 'some user',
       reportByUserID: 'some id',
-        } as Incident
+    } as Incident
 
     const expectedIncident = {
       ...givenIncidentRequest,
