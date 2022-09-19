@@ -12,4 +12,5 @@ export default interface Incident extends AbstractDBModel {
   status: 'reported' | 'resolved'
   resolvedOn: string
   patient?: string
+  reportByUserID: string
 }
