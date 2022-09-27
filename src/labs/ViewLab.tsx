@@ -24,7 +24,7 @@ const getTitle = (patient: Patient | undefined, lab: Lab | undefined) =>
   patient && lab ? `${lab.type} for ${patient.fullName}(${lab.code})` : ''
 
 const ViewLab = () => {
-  const { id } = useParams()
+  const { id } = useParams<any>()
   const { t } = useTranslator()
   const history = useHistory()
   const { permissions } = useSelector((state: RootState) => state.user)
@@ -132,7 +132,7 @@ const ViewLab = () => {
         )
       }
       setError(undefined)
-    } catch (e) {
+    } catch (e: any) {
       setError(e)
     }
   }

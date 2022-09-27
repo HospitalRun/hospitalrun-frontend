@@ -35,7 +35,7 @@ const NewNoteModal = (props: Props) => {
       await mutate({ patientId, note })
       setNote(initialNoteState)
       onCloseButtonClick()
-    } catch (e) {
+    } catch (e: any) {
       setNoteError(e)
     }
   }

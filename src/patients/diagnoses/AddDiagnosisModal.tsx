@@ -42,7 +42,7 @@ const AddDiagnosisModal = (props: NewDiagnosisModalProps) => {
     try {
       await mutate({ diagnosis, patientId: patient.id })
       onCloseButtonClick()
-    } catch (e) {
+    } catch (e: any) {
       setDiagnosisError(e)
     }
   }

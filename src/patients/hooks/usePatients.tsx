@@ -15,6 +15,15 @@ async function fetchPatients(_: any, searchRequest: PatientSearchRequest): Promi
   return { totalCount, patients }
 }
 
+// async function filterPatients(
+//   _: any,
+//   searchRequest: PatientSearchRequest,
+// ): Promise<PatientsResult> {
+//   const patients = await PatientRepository.search(searchRequest.queryString)
+//   const totalCount = await PatientRepository.count()
+//   return { totalCount, patients }
+// }
+
 export default function usePatients(searchRequest: PatientSearchRequest) {
   return useQuery(['patients', searchRequest], fetchPatients)
 }

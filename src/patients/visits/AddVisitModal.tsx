@@ -46,7 +46,7 @@ const AddVisitModal = ({ show, onCloseButtonClick, patientId }: Props) => {
     try {
       await mutate({ patientId, visit })
       onClose()
-    } catch (e) {
+    } catch (e: any) {
       setError(e)
     }
   }

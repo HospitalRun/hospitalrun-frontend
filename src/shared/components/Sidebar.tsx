@@ -61,6 +61,7 @@ const Sidebar = () => {
   }
 
   const listSubItemStyle: CSSProperties = {
+    width:'16vw',
     cursor: 'pointer',
     fontSize: 'small',
     borderBottomWidth: 0,

@@ -38,8 +38,9 @@ const ContactInfo = (props: Props): ReactElement => {
   const header = (
     <Row className="header mb-2">
       <Column xs={12} sm={4}>
-        <span className="">{t('patient.contactInfoType.label')}</span>
-        <span className="d-sm-none"> &amp; {t(label)}</span>
+        {/* <span className="">{t('patient.contactInfoType.label')}</span>
+        <span className="d-sm-none"> &amp; {t(label)}</span> */}
+         <Label text={`${name} Type`} />
       </Column>
       <Column className="d-none d-sm-block" sm={8}>
         {t(label)}
@@ -81,7 +82,7 @@ const ContactInfo = (props: Props): ReactElement => {
       <Row key={entry.id}>
         <Column sm={4}>
           <div className="form-group" data-testid={`${name}Type${i}Select`}>
-            <Label text={`${name}Type${i}`} />
+            {/* <Label text={`${name}Type${i}`} /> */}
             <Select
               id={`${name}Type${i}Select`}
               options={typeOptions}

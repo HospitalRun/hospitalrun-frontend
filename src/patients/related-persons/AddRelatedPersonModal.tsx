@@ -64,7 +64,7 @@ const AddRelatedPersonModal = (props: Props) => {
     try {
       await mutate({ patientId, relatedPerson })
       onCloseButtonClick()
-    } catch (e) {
+    } catch (e: any) {
       setRelatedPersonError(e)
     }
   }

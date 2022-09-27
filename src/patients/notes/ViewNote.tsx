@@ -8,7 +8,7 @@ import usePatientNote from '../hooks/usePatientNote'
 
 const ViewNote = () => {
   const { t } = useTranslator()
-  const { noteId, id: patientId } = useParams()
+  const { noteId, id: patientId } = useParams<any>()
   const { data, status } = usePatientNote(patientId, noteId)
 
   if (data === undefined || status === 'loading') {

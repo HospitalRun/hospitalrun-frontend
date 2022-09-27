@@ -39,7 +39,7 @@ const ViewPatient = () => {
   const { path } = useRouteMatch()
   const setButtonToolBar = useButtonToolbarSetter()
 
-  const { id } = useParams()
+  const { id } = useParams<any>()
   const { permissions } = useSelector((state: RootState) => state.user)
   const { data: patient, status } = usePatient(id)
 

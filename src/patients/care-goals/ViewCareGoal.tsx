@@ -6,7 +6,7 @@ import useCareGoal from '../hooks/useCareGoal'
 import CareGoalForm from './CareGoalForm'
 
 const ViewCareGoal = () => {
-  const { careGoalId, id: patientId } = useParams()
+  const { careGoalId, id: patientId } = useParams<any>()
   const { data: careGoal, status } = useCareGoal(patientId, careGoalId)
 
   if (careGoal === undefined || status === 'loading') {
