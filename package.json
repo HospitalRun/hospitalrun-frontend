@@ -123,7 +123,7 @@
       "analyze": "source-map-explorer 'build/static/js/*.js'",
       "commit": "npx git-cz",
       "start": "react-scripts --openssl-legacy-provider start",
-      "build": "react-scripts build",
+      "build": "react-scripts --openssl-legacy-provider build",
       "update": "npx npm-check -u",
       "prepublishOnly": "npm run build",
       "test": "npm run translation:check && react-scripts test  --testPathIgnorePatterns=src/__tests__/test-utils --env=jest-environment-jsdom-sixteen",

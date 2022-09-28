@@ -1,7 +1,7 @@
 export default {
   incidents: {
     filterTitle: ' Filter by status',
-    label: 'Incidents',
+    label: 'Notes',
     actions: {
       report: 'Report',
     },
@@ -11,16 +11,16 @@ export default {
       all: 'All',
     },
     reports: {
-      label: 'Reported Incidents',
-      new: 'Report Incident',
-      view: 'View Incident',
-      resolve: 'Resolve Incident',
-      dateOfIncident: 'Date of Incident',
+      label: 'Unsigned Notes',
+      new: 'Report Note',
+      view: 'View Note',
+      resolve: 'Resolve Note',
+      dateOfIncident: 'Date of Note',
       department: 'Department',
       download: 'Download',
       category: 'Category',
       categoryItem: 'Category Item',
-      description: 'Description of Incident',
+      description: 'Description of Note',
       patient: 'Patient',
       code: 'Code',
       reportedBy: 'Reported By',
@@ -38,7 +38,7 @@ export default {
     },
     visualize: {
       label: 'Visualize',
-      view: 'Visualize Incidents',
+      view: 'Visualize Notes',
     },
   },
 }
