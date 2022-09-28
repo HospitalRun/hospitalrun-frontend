@@ -42,7 +42,7 @@ function ViewIncidentDetails(props: Props) {
 
     if (permissions.includes(Permissions.ResolveIncident)) {
       buttons.push(
-        <Button onClick={onResolve} color="primary" key="incidents.reports.resolve">
+        <Button onClick={onResolve} color="dark" key="incidents.reports.resolve">
           {t('incidents.reports.resolve')}
         </Button>,
       )

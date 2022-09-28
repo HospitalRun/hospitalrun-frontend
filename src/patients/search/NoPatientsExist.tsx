@@ -23,7 +23,7 @@ const NoPatientsExist = () => {
           <Button
             key="newPatientButton"
             outlined
-            color="primary"
+            color="dark"
             icon="patient-add"
             onClick={() => history.push('/patients/new')}
           >

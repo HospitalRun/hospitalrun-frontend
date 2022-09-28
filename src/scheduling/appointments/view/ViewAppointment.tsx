@@ -25,7 +25,7 @@ const ViewAppointment = () => {
     }
   }, [updateTitle, t])
 
-  const { id } = useParams()
+  const { id } = useParams<any>()
   const history = useHistory()
   const [deleteMutate] = useDeleteAppointment()
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false)

@@ -9,7 +9,7 @@ interface Props {
   patientId: string
 }
 const ViewVisit = ({ patientId }: Props) => {
-  const { visitId } = useParams()
+  const { visitId } = useParams<any>()
 
   const { data: visit, status } = useVisit(patientId, visitId)
 

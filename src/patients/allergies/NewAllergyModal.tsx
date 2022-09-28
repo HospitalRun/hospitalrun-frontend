@@ -33,7 +33,7 @@ const NewAllergyModal = (props: NewAllergyModalProps) => {
     try {
       await mutate({ patientId, allergy })
       onCloseButtonClick()
-    } catch (e) {
+    } catch (e: any) {
       setAllergyError(e)
     }
   }

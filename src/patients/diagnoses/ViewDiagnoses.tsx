@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import DiagnosisTable from './DiagnosisTable'
 
 const ViewDiagnoses = () => {
-  const { id: patientId } = useParams()
+  const { id: patientId } = useParams<any>()
 
   return <DiagnosisTable patientId={patientId} />
 }

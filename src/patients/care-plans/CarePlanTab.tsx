@@ -13,7 +13,7 @@ import ViewCarePlan from './ViewCarePlan'
 import ViewCarePlans from './ViewCarePlans'
 
 const CarePlanTab = () => {
-  const { id: patientId } = useParams()
+  const { id: patientId } = useParams<any>()
   const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const { data, status } = usePatient(patientId)

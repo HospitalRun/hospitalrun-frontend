@@ -87,7 +87,7 @@ const GeneralInformation = (props: Props): ReactElement => {
 
   return (
     <div>
-      <Panel title={t('patient.basicInformation')} color="primary" collapsible>
+      <Panel title={t('patient.basicInformation')} color="dark" collapsible>
         {error?.message && <Alert className="alert" color="danger" message={t(error?.message)} />}
         <div className="row">
           <div className="col-md-2">

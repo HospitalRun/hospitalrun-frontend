@@ -113,7 +113,7 @@ export const login = (username: string, password: string): AppThunk => async (di
         permissions: initialState.permissions,
       }),
     )
-  } catch (error) {
+  } catch (error: any) {
     if (!username || !password) {
       dispatch(
         loginError({

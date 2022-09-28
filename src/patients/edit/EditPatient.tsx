@@ -17,7 +17,7 @@ const EditPatient = () => {
   const { t } = useTranslator()
   const history = useHistory()
   const dispatch = useDispatch()
-  const { id } = useParams()
+  const { id } = useParams<any>()
 
   const { data: givenPatient, status } = usePatient(id)
   const [patient, setPatient] = useState({} as Patient)

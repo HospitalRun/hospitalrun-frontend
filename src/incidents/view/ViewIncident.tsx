@@ -9,7 +9,7 @@ import { RootState } from '../../shared/store'
 import ViewIncidentDetails from './ViewIncidentDetails'
 
 const ViewIncident = () => {
-  const { id } = useParams()
+  const { id } = useParams<any>()
   const { permissions } = useSelector((root: RootState) => root.user)
   const { t } = useTranslator()
   const updateTitle = useUpdateTitle()

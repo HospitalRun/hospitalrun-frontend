@@ -134,7 +134,7 @@ const ImportantPatientInfo = (props: Props) => {
       <Row style={middleRowStyle}>
         <div className="col allergies-section" style={middleRowSectionStyle}>
           <Typography variant="h5">{t('patient.allergies.label')}</Typography>
-          <div className="border border-primary" style={tableContainerStyle}>
+          <div className="border border-dark" style={tableContainerStyle}>
             <Table
               tableClassName="table table-hover table-sm m-0"
               onRowClick={() => history.push(`/patients/${patient.id}/allergies`)}
@@ -146,7 +146,7 @@ const ImportantPatientInfo = (props: Props) => {
           {permissions.includes(Permissions.AddAllergy) && (
             <Button
               size="small"
-              color="primary"
+              color="dark"
               icon="add"
               iconLocation="left"
               onClick={() => setShowNewAllergyModal(true)}
@@ -158,7 +158,7 @@ const ImportantPatientInfo = (props: Props) => {
 
         <div className="col diagnoses-section" style={middleRowSectionStyle}>
           <Typography variant="h5">{t('patient.diagnoses.label')}</Typography>
-          <div className="border border-primary" style={tableContainerStyle}>
+          <div className="border border-dark" style={tableContainerStyle}>
             <Table
               tableClassName="table table-hover table-sm m-0"
               onRowClick={(row) => history.push(`/patients/${patient.id}/diagnoses/${row.id}`)}
@@ -178,7 +178,7 @@ const ImportantPatientInfo = (props: Props) => {
           {permissions.includes(Permissions.AddDiagnosis) && (
             <Button
               size="small"
-              color="primary"
+              color="dark"
               icon="add"
               iconLocation="left"
               onClick={() => setShowDiagnosisModal(true)}
@@ -190,7 +190,7 @@ const ImportantPatientInfo = (props: Props) => {
 
         <div className="col carePlan-section" style={middleRowSectionStyle}>
           <Typography variant="h5">{t('patient.carePlan.label')}</Typography>
-          <div className="border border-primary" style={tableContainerStyle}>
+          <div className="border border-dark" style={tableContainerStyle}>
             <Table
               tableClassName="table table-hover table-sm m-0"
               onRowClick={(row) => history.push(`/patients/${patient.id}/care-plans/${row.id}`)}
@@ -215,7 +215,7 @@ const ImportantPatientInfo = (props: Props) => {
           {permissions.includes(Permissions.AddCarePlan) && (
             <Button
               size="small"
-              color="primary"
+              color="dark"
               icon="add"
               iconLocation="left"
               onClick={() => setShowAddCarePlanModal(true)}

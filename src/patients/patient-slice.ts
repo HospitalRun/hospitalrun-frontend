@@ -188,7 +188,7 @@ export const addDiagnosis = (
   if (isEmpty(newDiagnosisError)) {
     const patient = await PatientRepository.find(patientId)
     const diagnoses = patient.diagnoses || []
-    diagnoses.push({ id: uuid(), ...diagnosis })
+    diagnoses.push({ ...diagnosis, id: uuid() })
     patient.diagnoses = diagnoses
 
     await dispatch(updatePatient(patient, onSuccess))

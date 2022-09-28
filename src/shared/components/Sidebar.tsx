@@ -7,6 +7,7 @@ import useTranslator from '../hooks/useTranslator'
 import Permissions from '../model/Permissions'
 import { RootState } from '../store'
 import { updateSidebar } from './component-slice'
+import '../../index.css'
 
 const Sidebar = () => {
   const dispatch = useDispatch()
@@ -25,6 +26,13 @@ const Sidebar = () => {
 
   const listItemStyle: CSSProperties = {
     cursor: 'pointer',
+    // backgroundColor: 'red',
+    backgroundColor: '#edf5ff',
+  }
+
+  const listItemStyle2: CSSProperties = {
+    cursor: 'pointer',
+    backgroundColor: '#001a39',
   }
 
   const expandibleArrow: CSSProperties = {
@@ -89,7 +97,7 @@ const Sidebar = () => {
           setExpansion('none')
         }}
         className="nav-item"
-        style={listItemStyle}
+        style={pathname === '/' ? listItemStyle2 : listItemStyle}
       >
         <Icon icon="dashboard" /> {!sidebarCollapsed && t('dashboard.label')}
       </ListItem>
@@ -110,7 +118,7 @@ const Sidebar = () => {
           setExpandedItem('patient')
         }}
         className="nav-item"
-        style={listItemStyle}
+        style={splittedPath[1].includes('patient') ? listItemStyle2 : listItemStyle}
       >
         <Icon
           icon={
@@ -160,7 +168,7 @@ const Sidebar = () => {
           setExpansion('appointment')
         }}
         className="nav-item"
-        style={listItemStyle}
+        style={splittedPath[1].includes('appointments') ? listItemStyle2 : listItemStyle}
       >
         <Icon
           icon={
@@ -210,7 +218,7 @@ const Sidebar = () => {
           setExpansion('labs')
         }}
         className="nav-item"
-        style={listItemStyle}
+        style={splittedPath[1].includes('labs') ? listItemStyle2 : listItemStyle}
       >
         <Icon
           icon={
@@ -260,7 +268,7 @@ const Sidebar = () => {
           setExpansion('medications')
         }}
         className="nav-item"
-        style={listItemStyle}
+        style={splittedPath[1].includes('medications') ? listItemStyle2 : listItemStyle}
       >
         <Icon
           icon={
@@ -310,7 +318,7 @@ const Sidebar = () => {
           setExpansion('incidents')
         }}
         className="nav-item"
-        style={listItemStyle}
+        style={splittedPath[1].includes('incidents') ? listItemStyle2 : listItemStyle}
       >
         <Icon
           icon={
@@ -371,7 +379,7 @@ const Sidebar = () => {
           setExpansion('imagings')
         }}
         className="nav-item"
-        style={listItemStyle}
+        style={splittedPath[1].includes('imaging') ? listItemStyle2 : listItemStyle}
       >
         <Icon
           icon={
@@ -417,7 +425,7 @@ const Sidebar = () => {
       className="d-none d-md-block bg-light sidebar"
       style={{ width: sidebarCollapsed ? '56px' : '' }}
     >
-      <div className="sidebar-sticky">
+      <div className="sidebar-sticky" style={{ backgroundColor: 'rgb(237, 245, 255)' }}>
         <List layout="flush" className="nav flex-column">
           <ListItem
             onClick={() => dispatch(updateSidebar())}

@@ -48,6 +48,12 @@ code {
   }
 }
 
+.nav-header{
+  /* font-family: Sans-serif; */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: xx-large;
+}
+
 .sidebar .nav-link {
   font-weight: 500;
   color: #333;
@@ -85,6 +91,11 @@ code {
   padding: .75rem 1rem;
   border-width: 0;
   border-radius: 0;
+}
+
+.nav-image{
+  width:18px;
+  height:12px
 }
 
 .form-control-dark {

@@ -48,7 +48,7 @@ const AddCareGoalModal = (props: Props) => {
     try {
       await mutate({ patientId: patient.id, careGoal })
       onClose()
-    } catch (e) {
+    } catch (e: any) {
       setCareGoalError(e)
     }
   }

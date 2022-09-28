@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import useTranslator from '../../shared/hooks/useTranslator'
 import { RootState } from '../../shared/store'
+import '../../index.css'
 
 const Breadcrumbs = () => {
   const history = useHistory()
@@ -22,7 +23,14 @@ const Breadcrumbs = () => {
         const onClick = !isLast ? () => history.push(location) : undefined
 
         return (
-          <BreadcrumbItem key={location} active={isLast} onClick={onClick}>
+          <BreadcrumbItem
+            key={location}
+            active={isLast}
+            onClick={onClick}
+            // style={{ color: !isLast ? '#001a39' : '#6c757d' }}
+            // style={!isLast ? { color: 'red' } : { color: '#001a39' }}
+            // style={isLast ? { backgroundColor: 'red' } : { color: 'black' }}
+          >
             {i18nKey ? t(i18nKey) : text}
           </BreadcrumbItem>
         )

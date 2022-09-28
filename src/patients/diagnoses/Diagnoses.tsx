@@ -14,7 +14,7 @@ import ViewDiagnoses from './ViewDiagnoses'
 import ViewDiagnosis from './ViewDiagnosis'
 
 const Diagnoses = () => {
-  const { id: patientId } = useParams()
+  const { id: patientId } = useParams<any>()
   const { t } = useTranslator()
   const { permissions } = useSelector((state: RootState) => state.user)
   const { data, status } = usePatient(patientId)

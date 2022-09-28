@@ -20,7 +20,7 @@ const getTitle = (patient: Patient | undefined, medication: Medication | undefin
   patient && medication ? `${medication.medication} for ${patient.fullName}` : ''
 
 const ViewMedication = () => {
-  const { id } = useParams()
+  const { id } = useParams<any>()
   const { t } = useTranslator()
   const history = useHistory()
   const dispatch = useDispatch()

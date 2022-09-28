@@ -7,7 +7,7 @@ import usePatient from '../hooks/usePatient'
 import CarePlanForm from './CarePlanForm'
 
 const ViewCarePlan = () => {
-  const { carePlanId, id: patientId } = useParams()
+  const { carePlanId, id: patientId } = useParams<any>()
   const { data: patient, status: patientStatus } = usePatient(patientId)
   const { data: carePlan, status: carePlanStatus } = useCarePlan(patientId, carePlanId)
 

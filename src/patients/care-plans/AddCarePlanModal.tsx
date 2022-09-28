@@ -49,7 +49,7 @@ const AddCarePlanModal = (props: Props) => {
     try {
       await mutate({ patientId: patient.id, carePlan })
       onClose()
-    } catch (e) {
+    } catch (e: any) {
       setCarePlanError(e)
     }
   }
