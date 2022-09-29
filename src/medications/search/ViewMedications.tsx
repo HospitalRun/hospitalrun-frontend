@@ -59,9 +59,9 @@ const ViewMedications = () => {
   }
 
   return (
-    <Container>
+    <Container style={{ margin: 0, paddingLeft: 0, maxWidth: '100%' }}>
       <MedicationRequestSearch searchRequest={searchRequest} onChange={onSearchRequestChange} />
-      <Row>
+      <Row style={{ marginLeft: 0, display: 'flex' }}>
         <MedicationRequestTable searchRequest={searchRequest} />
       </Row>
     </Container>

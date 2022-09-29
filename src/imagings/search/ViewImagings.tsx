@@ -57,8 +57,8 @@ const ViewImagings = () => {
   }, [getButtons, setButtons])
 
   return (
-    <Container>
-      <Row>
+    <Container style={{ margin: 0, padding: 0, maxWidth: '100%' }}>
+      <Row style={{ marginLeft: 0 }}>
         <ImagingRequestTable searchRequest={searchRequest} />
       </Row>
     </Container>

@@ -76,7 +76,7 @@ const ViewLabs = () => {
   ]
 
   return (
-    <Container>
+    <Container style={{ margin: 0, padding: 0, maxWidth: '100%' }}>
       <Row>
         <Column md={3} lg={2}>
           <Label title="type" text={t('labs.filterTitle')} />
@@ -99,7 +99,7 @@ const ViewLabs = () => {
           />
         </Column>
       </Row>
-      <Row>
+      <Row style={{ marginLeft: 0 }}>
         <Table
           getID={(row) => row.id}
           columns={[

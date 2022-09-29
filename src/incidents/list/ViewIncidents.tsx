@@ -43,7 +43,7 @@ const ViewIncidents = () => {
   }))
 
   return (
-    <Container>
+    <Container style={{ margin: 0, padding: 0, maxWidth: '100%' }}>
       <Row>
         <Column md={3} lg={2}>
           <Label text={t('incidents.filterTitle')} title="type" />
@@ -56,7 +56,7 @@ const ViewIncidents = () => {
           />
         </Column>
       </Row>
-      <Row>
+      <Row style={{ marginLeft: 0, maxWidth: '99.5%' }}>
         <ViewIncidentsTable searchRequest={{ status: searchFilter }} />
       </Row>
     </Container>

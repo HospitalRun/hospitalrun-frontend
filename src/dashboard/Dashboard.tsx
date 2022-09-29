@@ -12,7 +12,15 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <h3>Practice Summary</h3>
-      <img src="banner.jpg" alt="" height="600px" />
+      <img
+        src="banner.svg"
+        style={{
+          objectFit: 'cover',
+          // height: '70vh',
+          width: '100%',
+        }}
+        alt=""
+      />
     </>
   )
 }
