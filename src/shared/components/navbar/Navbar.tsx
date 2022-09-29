@@ -70,7 +70,7 @@ const Navbar = () => {
         },
         {
           type: 'image',
-          src: 'logo3.jpeg',
+          src: 'logo3.png',
           onClick: () => {
             navigateTo('/')
           },

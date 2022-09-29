@@ -101,10 +101,10 @@ const VisualizeIncidents = () => {
                 y: monthlyIncidents[11],
               },
             ],
-            label: 'Incidents',
+            label: 'Unsigned Notes',
           },
         ]}
-        title="Reported Incidents Overtime"
+        title="Unsigned Notes Overtime"
         xAxes={[
           {
             label: 'Months',

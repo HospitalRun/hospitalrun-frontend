@@ -81,7 +81,7 @@ const ContactInfo = (props: Props): ReactElement => {
       <Row key={entry.id}>
         <Column sm={4}>
           <div className="form-group" data-testid={`${name}Type${i}Select`}>
-            <Label text={`${name}Type${i}`} />
+            <Label text={`${name}Type`} />
             <Select
               id={`${name}Type${i}Select`}
               options={typeOptions}

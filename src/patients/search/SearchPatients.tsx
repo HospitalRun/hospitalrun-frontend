@@ -14,13 +14,26 @@ const SearchPatients = () => {
 
   return (
     <div>
-      <Container>
+      <Container
+        style={{
+          maxWidth: '100%',
+          // width: '100vw',
+          padding: 0,
+          margin: 0,
+        }}
+      >
         <Row>
-          <Column md={12}>
+          <Column>
             <PatientSearchInput onChange={onSearchRequestChange} />
           </Column>
         </Row>
-        <Row>
+        <Row
+          style={{
+            width: '100%',
+            display: 'flex',
+            marginLeft: 0,
+          }}
+        >
           <ViewPatientsTable searchRequest={searchRequest} />
         </Row>
       </Container>

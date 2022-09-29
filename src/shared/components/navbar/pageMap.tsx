@@ -68,7 +68,7 @@ const pageMap: {
   viewImagings: {
     permission: Permissions.ReadPatients,
     label: 'imagings.requests.label',
-    path: '/imaging',
+    path: '/Imaging',
     icon: 'image',
   },
   newIncident: {
@@ -80,7 +80,7 @@ const pageMap: {
   viewIncidents: {
     permission: Permissions.ViewIncidents,
     label: 'incidents.reports.label',
-    path: '/incidents',
+    path: '/ncidents',
     icon: 'incident',
   },
   viewIncidentWidgets: {

@@ -1,5 +1,5 @@
 export default {
   dashboard: {
-    label: 'Dashboard',
+    label: 'Home',
   },
 }

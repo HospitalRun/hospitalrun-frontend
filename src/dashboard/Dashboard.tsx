@@ -9,7 +9,12 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     updateTitle(t('dashboard.label'))
   })
-  return <h3>Example</h3>
+  return (
+    <>
+      <h3>Practice Summary</h3>
+      <img src="banner.jpg" alt="" height="600px" />
+    </>
+  )
 }
 
 export default Dashboard

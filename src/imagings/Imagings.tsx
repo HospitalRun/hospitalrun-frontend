@@ -13,7 +13,7 @@ const Imagings = () => {
   const { permissions } = useSelector((state: RootState) => state.user)
   const breadcrumbs = [
     {
-      i18nKey: 'imagings.imaging.label',
+      i18nKey: 'Imaging',
       location: '/imaging',
     },
   ]

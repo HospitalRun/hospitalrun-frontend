@@ -1,6 +1,6 @@
 export default {
   imagings: {
-    label: 'Imagings',
+    label: 'Imaging',
     status: {
       requested: 'Requested',
       completed: 'Completed',
@@ -22,7 +22,7 @@ export default {
       },
     },
     imaging: {
-      label: 'imaging',
+      label: 'Imaging',
       code: 'Imaging Code',
       status: 'Status',
       type: 'Type',

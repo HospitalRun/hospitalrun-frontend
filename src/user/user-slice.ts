@@ -20,9 +20,9 @@ export interface UserState {
 
 const initialState: UserState = {
   user: {
-    givenName: 'HospitalRun',
-    familyName: 'Test',
-    fullName: 'HospitalRun Test',
+    givenName: 'Sam',
+    familyName: 'Scribe',
+    fullName: 'Sam Scribe',
     id: 'test-hospitalrun',
   },
   permissions: [

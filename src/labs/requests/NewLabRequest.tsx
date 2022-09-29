@@ -178,7 +178,7 @@ const NewLabRequest = () => {
         </Row>
         <TextInputWithLabelFormGroup
           name="labType"
-          label={t('labs.lab.type')}
+          label="Lab Order"
           isRequired
           isEditable
           isInvalid={!!error?.type}

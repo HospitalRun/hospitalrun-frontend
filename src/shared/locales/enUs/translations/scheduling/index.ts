@@ -1,6 +1,6 @@
 export default {
   scheduling: {
-    label: 'Scheduling',
+    label: 'Appointment',
     appointments: {
       label: 'Appointments',
       new: 'New Appointment',
